@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Core">
+      <UniqueIdentifier>{359f962e-8c0d-417b-a958-fffb218976ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Apllication">
+      <UniqueIdentifier>{369c1615-6455-4718-afd2-cc41c0e2ec43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\StateManager">
+      <UniqueIdentifier>{5d8d7c9b-360d-4ad0-b0b8-bc9ff7439e3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\InputHandler">
+      <UniqueIdentifier>{c5b0207c-94e0-423b-9459-fad00ca9d467}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\EventHandler">
+      <UniqueIdentifier>{39d10acc-9d02-4a3f-a653-590381ae9dc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Register">
+      <UniqueIdentifier>{34d50975-a0c1-40cb-b5cf-dc6563f1e364}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Component">
+      <UniqueIdentifier>{cebbc219-6577-403a-aa34-5e38b7609e8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Object">
+      <UniqueIdentifier>{71339100-ff81-4901-9cdd-5a39c5284dfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{07e54cf3-5f66-4111-bea8-df7f7ae845b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System">
+      <UniqueIdentifier>{7ea65125-7fdf-413c-bbd2-9eb3fe634193}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Timer">
+      <UniqueIdentifier>{e3a02e1f-c28e-4366-9f45-83c1b92f4736}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Debug">
+      <UniqueIdentifier>{fab48147-2d4e-4174-b8cb-fde6ad4061a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Archetype">
+      <UniqueIdentifier>{3a4b995a-177b-40ba-8e98-0558e209a8b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Math">
+      <UniqueIdentifier>{c8836a79-4ff9-4fe4-b278-a79335a07ccf}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\Debug.cpp">
+      <Filter>Utils\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Application.cpp">
+      <Filter>Core\Apllication</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Platform_win32.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\StateManager.cpp">
+      <Filter>Core\StateManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Timer.cpp">
+      <Filter>Utils\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\InputHandler.cpp">
+      <Filter>Core\InputHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\State.cpp">
+      <Filter>Core\StateManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Object.cpp">
+      <Filter>Core\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ObjectManager.cpp">
+      <Filter>Core\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\ComponentContainer.cpp">
+      <Filter>Core\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Matrix2x2.cpp">
+      <Filter>Utils\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Matrix4x4.cpp">
+      <Filter>Utils\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Vector2.cpp">
+      <Filter>Utils\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Vector3.cpp">
+      <Filter>Utils\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Vector4.cpp">
+      <Filter>Utils\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\MathUtils.cpp">
+      <Filter>Utils\Math</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\JayEngine\Debug.h">
+      <Filter>Utils\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\Application.h">
+      <Filter>Core\Apllication</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\StateManager.h">
+      <Filter>Core\StateManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\Timer.h">
+      <Filter>Utils\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\InputHandler.h">
+      <Filter>Core\InputHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\State.h">
+      <Filter>Core\StateManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\Object.h">
+      <Filter>Core\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\ObjectManager.h">
+      <Filter>Core\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\Component.h">
+      <Filter>Core\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\ComponentManager.h">
+      <Filter>Core\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\Macro.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\ComponentContainer.h">
+      <Filter>Core\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\Vector2.h">
+      <Filter>Utils\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\Vector3.h">
+      <Filter>Utils\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\Vector4.h">
+      <Filter>Utils\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\MathUtils.h">
+      <Filter>Utils\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\Matrix2x2.h">
+      <Filter>Utils\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\Matrix4x4.h">
+      <Filter>Utils\Math</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\JayEngine\ComponentManager.inl">
+      <Filter>Core\Component</Filter>
+    </None>
+    <None Include="..\..\include\JayEngine\ComponentContainer.inl">
+      <Filter>Core\Component</Filter>
+    </None>
+  </ItemGroup>
+</Project>

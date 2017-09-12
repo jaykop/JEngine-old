@@ -1,0 +1,214 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7009F910-80FF-42E0-AF5B-40F1F37F55AC}</ProjectGuid>
+    <RootNamespace>JayEngine</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)..\..\bin\x86\</OutDir>
+    <IntDir>$(SolutionDir)..\..\temp\x86\</IntDir>
+    <TargetExt>.exe</TargetExt>
+    <IncludePath>$(SolutionDir)..\..\include\JayEngine;$(SolutionDir)..\..\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\..\lib\SDL2\x86;$(LibraryPath)</LibraryPath>
+    <TargetName>JayEngine</TargetName>
+    <ExecutablePath>$(ExecutablePath);</ExecutablePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)..\..\bin\x86\</OutDir>
+    <IntDir>$(SolutionDir)..\..\temp\x86\</IntDir>
+    <TargetExt>.exe</TargetExt>
+    <IncludePath>$(SolutionDir)..\..\include\JayEngine;$(SolutionDir)..\..\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\..\lib\SDL2\x86;$(LibraryPath)</LibraryPath>
+    <TargetName>JayEngine</TargetName>
+    <ExecutablePath>$(ExecutablePath);</ExecutablePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)..\..\bin\x64\</OutDir>
+    <IntDir>$(SolutionDir)..\..\temp\x64\</IntDir>
+    <TargetName>JayEngine</TargetName>
+    <ExecutablePath>$(ExecutablePath);</ExecutablePath>
+    <IncludePath>$(SolutionDir)..\..\include\JayEngine;$(SolutionDir)..\..\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\..\lib\SDL2\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)..\..\bin\x64\</OutDir>
+    <IntDir>$(SolutionDir)..\..\temp\x64\</IntDir>
+    <TargetName>JayEngine</TargetName>
+    <ExecutablePath>$(ExecutablePath);</ExecutablePath>
+    <IncludePath>$(SolutionDir)..\..\include\JayEngine;$(SolutionDir)..\..\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\..\lib\SDL2\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JayEngine;$(SolutionDir)..\..\include;$(SolutionDir)..\..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\lib\SDL2\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JayEngine;$(SolutionDir)..\..\include;$(SolutionDir)..\..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)\lib\SDL2\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JayEngine;$(SolutionDir)..\..\include;$(SolutionDir)..\..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\lib\SDL2\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JayEngine;$(SolutionDir)..\..\include;$(SolutionDir)..\..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(SolutionDir)\lib\SDL2\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\Application.cpp" />
+    <ClCompile Include="..\..\src\ComponentContainer.cpp" />
+    <ClCompile Include="..\..\src\Debug.cpp" />
+    <ClCompile Include="..\..\src\InputHandler.cpp" />
+    <ClCompile Include="..\..\src\MathUtils.cpp" />
+    <ClCompile Include="..\..\src\Matrix2x2.cpp" />
+    <ClCompile Include="..\..\src\Matrix4x4.cpp" />
+    <ClCompile Include="..\..\src\Object.cpp" />
+    <ClCompile Include="..\..\src\ObjectManager.cpp" />
+    <ClCompile Include="..\..\src\Platform_win32.cpp" />
+    <ClCompile Include="..\..\src\State.cpp" />
+    <ClCompile Include="..\..\src\StateManager.cpp" />
+    <ClCompile Include="..\..\src\Timer.cpp" />
+    <ClCompile Include="..\..\src\Vector2.cpp" />
+    <ClCompile Include="..\..\src\Vector3.cpp" />
+    <ClCompile Include="..\..\src\Vector4.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\JayEngine\Application.h" />
+    <ClInclude Include="..\..\include\JayEngine\Component.h" />
+    <ClInclude Include="..\..\include\JayEngine\ComponentContainer.h" />
+    <ClInclude Include="..\..\include\JayEngine\Debug.h" />
+    <ClInclude Include="..\..\include\JayEngine\InputHandler.h" />
+    <ClInclude Include="..\..\include\JayEngine\Macro.h" />
+    <ClInclude Include="..\..\include\JayEngine\MathUtils.h" />
+    <ClInclude Include="..\..\include\JayEngine\Matrix2x2.h" />
+    <ClInclude Include="..\..\include\JayEngine\Matrix4x4.h" />
+    <ClInclude Include="..\..\include\JayEngine\Object.h" />
+    <ClInclude Include="..\..\include\JayEngine\ComponentManager.h" />
+    <ClInclude Include="..\..\include\JayEngine\ObjectManager.h" />
+    <ClInclude Include="..\..\include\JayEngine\State.h" />
+    <ClInclude Include="..\..\include\JayEngine\StateManager.h" />
+    <ClInclude Include="..\..\include\JayEngine\Timer.h" />
+    <ClInclude Include="..\..\include\JayEngine\Vector2.h" />
+    <ClInclude Include="..\..\include\JayEngine\Vector3.h" />
+    <ClInclude Include="..\..\include\JayEngine\Vector4.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\JayEngine\ComponentContainer.inl" />
+    <None Include="..\..\include\JayEngine\ComponentManager.inl" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
