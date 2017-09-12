@@ -1,0 +1,13 @@
+temp/
+bin/
+*.db
+*.suo
+*.user
+*.pdb
+*.orig
+*.tlog
+*.exe
+*.pdb
+*.obj
+*.log
+
