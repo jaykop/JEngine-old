@@ -48,7 +48,7 @@ public:
 
 	// Trasnforming functions and helpers
 	void		Set(const Vector4& _copy);
-	void		Set(float _x, float _y, float _z);
+	void		Set(float _x, float _y, float _z, float _w);
 	void		SetZero();
 	void		SetOne();
 	void		SetUnitX();

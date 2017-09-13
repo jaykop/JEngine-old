@@ -10,8 +10,8 @@ Contains Matrix2x2's class and member function
 Custom Matrix looks like this...
 
 		   0  1  
-	0	[ 00 10 ]
-	1	[ 01 11 ]
+	0	[ 00 01 ]
+	1	[ 10 11 ]
 
 */
 /******************************************************************************/
@@ -138,7 +138,7 @@ Matrix2x2 Matrix2x2::operator*(const Matrix2x2& _rhs) const
 {
 	Matrix2x2 result;
 
-	result.m_member[0][0] = m_member[0][0] * _rhs.m_member[0][0] + m_member[0][1] * _rhs.m_member[1][0];
+	result.m_member[0][0] = m_member[0][0] * _rhs.m_member[0][0] + m_member[1][0] * _rhs.m_member[0][1];
 	result.m_member[0][1] = m_member[0][0] * _rhs.m_member[0][1] + m_member[0][1] * _rhs.m_member[1][1];
 	result.m_member[1][0] = m_member[1][0] * _rhs.m_member[0][0] + m_member[1][1] * _rhs.m_member[1][0];
 	result.m_member[1][1] = m_member[1][0] * _rhs.m_member[0][1] + m_member[1][1] * _rhs.m_member[1][1];

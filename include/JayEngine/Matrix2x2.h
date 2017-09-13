@@ -67,4 +67,6 @@ struct Matrix2x2
 	float m_member[2][2];
 };
 
+typedef Matrix2x2 mat22;
+
 NS_JE_END

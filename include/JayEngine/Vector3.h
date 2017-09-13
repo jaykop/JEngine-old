@@ -84,6 +84,20 @@ public:
 	static const Vector3 UNIT_Y;
 	static const Vector3 UNIT_Z;
 
+	// Static functions
+	static Vector3 GetRotated(const Vector3& point, float angle, const Vector3& pivot);
+	static float GetDegree(const Vector3& a, const Vector3& b);
+	static float GetDistance(const Vector3& a, const Vector3& b);
+	static float DistanceToLine(const Vector3& point, const Vector3& line_start, const Vector3& line_end);
+
+	static Vector3  GetIntersection(
+		const Vector3& line1_start, const Vector3& line1_end,
+		const Vector3& line2_start, const Vector3& line2_end);
+
+	static bool IsIntersected(
+		const Vector3& line1_start, const Vector3& line1_end,
+		const Vector3& line2_start, const Vector3& line2_end);
+
 	// Memver variables
 	float x, y, z;
 

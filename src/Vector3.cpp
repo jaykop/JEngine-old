@@ -617,6 +617,48 @@ float Vector3::GetAngle(const Vector3& _other)
 	return Math::RadToDeg(radian);
 }
 
+float Vector3::GetDistance(const Vector3 & a, const Vector3 & b)
+{
+	return (a-b).LengthSqrt();
+}
+
+/******************************************************************************/
+/*!
+\brief - Calculate the distance of point and segment.
+\param point
+\param line_start
+\param line_end
+\return distance
+*/
+/******************************************************************************/
+float Vector3::DistanceToLine(const Vector3 & point, const Vector3 & line_start, const Vector3 & line_end)
+{
+	// segment is nit a segment; a point
+	float length = GetDistance(line_start, line_end);
+	if (!length)
+		return GetDistance(line_start, point);
+
+	// Unless...
+	float projection = ((point.x - line_start.x) * (line_end.x - line_start.x) +
+		(point.y - line_start.y) * (line_end.y - line_start.y)) / length;
+
+	//
+	//	1st case		2nd case		3rd case
+	//		*				*				*
+	//		   A						 B
+	//			=========================
+
+	// 1st case
+	if (projection < 0)
+		return GetDistance(line_start, point);
+	// 3rd case
+	else if (projection > length)
+		return GetDistance(line_end, point);
+	// 2nd case
+	else return abs((point.y - line_start.y) * (line_end.x - line_start.x)
+		- (point.x - line_start.x) * (line_end.y - line_start.y)) / length;
+}
+
 /******************************************************************************/
 /*!
 \brief - Calculate rotated vector
@@ -662,6 +704,123 @@ bool Vector3::operator!=(const Vector3& _rhs) const
 		return false;
 
 	return true;
+}
+
+/******************************************************************************/
+/*!
+\brief - Get Rotated point around specific pivot point
+\param point - point to be rotated
+\param angle - rotate degree
+\param pivot - pivot point
+\return new_point
+*/
+/******************************************************************************/
+Vector3 GetRotated(const Vector3& point, float angle, const Vector3& pivot)
+{
+	Vector3 new_point(point);
+
+	float s = sinf(Math::DegToRad(angle));
+	float c = cosf(Math::DegToRad(angle));
+
+	new_point.x -= pivot.x;
+	new_point.y -= pivot.y;
+
+	float new_x = new_point.x * c - new_point.y * s;
+	float new_y = new_point.x * s + new_point.y * c;
+
+	new_point.x = new_x + pivot.x;
+	new_point.y = new_y + pivot.y;
+
+	return new_point;
+}
+
+/******************************************************************************/
+/*!
+\brief - Get a intersection point by two lines
+\param line1 - 1st line's staring point(vector)
+\param line2 - 2nd line's staring point(vector)
+\param line1 - 1st line's ending point(vector)
+\param line2 - 2nd line's ending point(vector)
+\return Vector3
+*/
+/******************************************************************************/
+Vector3  GetIntersection(
+	const Vector3& line1_start, const Vector3& line1_end,
+	const Vector3& line2_start, const Vector3& line2_end)
+{
+	//Get Coefficients
+	float a2 = line2_end.y - line2_start.y;
+	float b2 = line2_start.x - line2_end.x;
+	float c2 = line2_end.x * line2_start.y - line2_start.x * line2_end.y;
+
+	float a1 = line1_end.y - line1_start.y;
+	float b1 = line1_start.x - line1_end.x;
+	float c1 = line1_end.x * line1_start.y - line1_start.x * line1_end.y;
+
+	//Check if they are parallel
+	float D = a1 * b2 - a2 * b1;
+	try {
+		if (!D)
+			throw D;
+	}
+	catch (float exception) {
+		std::cout << exception << "is invalid.\nCannot calculate properly...\n";
+	}
+
+	return Vector3((b1*c2 - b2*c1) / D, (a2*c1 - a1*c2) / D);
+}
+
+/******************************************************************************/
+/*!
+\brief - Check if two line is intersected or not; for vectors.
+\param line1 - 1st line's staring point(vector)
+\param line2 - 2nd line's staring point(vector)
+\param line1 - 1st line's ending point(vector)
+\param line2 - 2nd line's ending point(vector)
+\return bool
+*/
+/******************************************************************************/
+bool IsIntersected(
+	const Vector3& line1_start, const Vector3& line1_end,
+	const Vector3& line2_start, const Vector3& line2_end)
+{
+	//float s1_x, s1_y, s2_x, s2_y;
+	//s1_x = line1_end.x - line1_start.x;     s1_y = line1_end.y - line1_start.y;
+	//s2_x = line2_end.x - line2_start.x;     s2_y = line2_end.y - line2_start.y;
+
+	//float s, t;
+	//s = (-s1_y * (line1_start.x - line2_start.x) + s1_x * (line1_start.y - line2_start.y)) / (-s2_x * s1_y + s1_x * s2_y);
+	//t = (s2_x * (line1_start.y - line2_start.y) - s2_y * (line1_start.x - line2_start.x)) / (-s2_x * s1_y + s1_x * s2_y);
+
+	//if (s >= 0 && s <= 1 && t >= 0 && t <= 1)
+	//	return true;
+	//
+
+	//return false;
+
+	float denominator = ((line1_end.x - line1_start.x) * (line2_end.y - line2_start.y)) - ((line1_end.y - line1_start.y) * (line2_end.x - line2_start.x));
+	float numerator1 = ((line1_start.y - line2_start.y) * (line2_end.x - line2_start.x)) - ((line1_start.x - line2_start.x) * (line2_end.y - line2_start.y));
+	float numerator2 = ((line1_start.y - line2_start.y) * (line1_end.x - line1_start.x)) - ((line1_start.x - line2_start.x) * (line1_end.y - line1_start.y));
+
+	if (!denominator) return numerator1 == 0 && numerator2 == 0;
+	float r = numerator1 / denominator;
+	float s = numerator2 / denominator;
+
+	return (r >= 0 && r <= 1) && (s >= 0 && s <= 1);
+}
+
+/******************************************************************************/
+/*!
+\brief - Calculate the degree of two point.
+\param a - 1st point
+\param b - 2nd point
+\return distance
+*/
+/******************************************************************************/
+float GetDegree(const Vector3 & a, const Vector3 & b)
+{
+	float result = atan2(b.y - a.y, b.x - a.x) * Math::RADIAN_DEGREE;;
+	return result < 0 ? 360 + result : result;
 }
 
 NS_JE_END

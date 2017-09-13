@@ -10,10 +10,10 @@ Contains Matrix4x4's template class and member function
 Custom Matrix looks like this...
 
 		  0  1  2  3
-	0	[ 00 10 20 30 ]
-	1	[ 01 11 21 31 ]
-	2	[ 02 12 22 32 ]
-	3	[ 03 13 23 33 ]
+	0	[ 00 01 02 03 ]
+	1	[ 10 11 12 13 ]
+	2	[ 20 21 22 23 ]
+	3	[ 30 31 32 33 ]
 
 */
 /******************************************************************************/
@@ -418,136 +418,278 @@ Matrix4x4 Matrix4x4::GetInverse() const
 {
 	Matrix4x4 result;
 
-	result.m_member[0] = m_member[5] * m_member[10] * m_member[3]][3] -
-		m_member[5] * m_member[11] * m_member[14] -
-		m_member[9] * m_member[6] * m_member[3]][3] +
-		m_member[9] * m_member[7] * m_member[14] +
-		m_member[13] * m_member[6] * m_member[11] -
-		m_member[13] * m_member[7] * m_member[10];
+	// Caculate all the elements in matrix
+	result.m_member[0][0] = m_member[1][1] * m_member[2][2] * m_member[3][3] -
+		m_member[1][1] * m_member[2][3] * m_member[3][2] -
+		m_member[2][1] * m_member[1][2] * m_member[3][3] +
+		m_member[2][1] * m_member[1][3] * m_member[3][2] +
+		m_member[3][1] * m_member[1][2] * m_member[2][3] -
+		m_member[3][1] * m_member[1][3] * m_member[2][2];
 
-	result.m_member[4] = -m_member[4] * m_member[10] * m_member[3]][3] +
-		m_member[4] * m_member[11] * m_member[14] +
-		m_member[8] * m_member[6] * m_member[3]][3] -
-		m_member[8] * m_member[7] * m_member[14] -
-		m_member[12] * m_member[6] * m_member[11] +
-		m_member[12] * m_member[7] * m_member[10];
+	result.m_member[1][0] = -m_member[1][0] * m_member[2][2] * m_member[3][3] +
+		m_member[1][0] * m_member[2][3] * m_member[3][2] +
+		m_member[2][0] * m_member[1][2] * m_member[3][3] -
+		m_member[2][0] * m_member[1][3] * m_member[3][2] -
+		m_member[3][0] * m_member[1][2] * m_member[2][3] +
+		m_member[3][0] * m_member[1][3] * m_member[2][2];
 
-	result.m_member[8] = m_member[4] * m_member[9] * m_member[3]][3] -
-		m_member[4] * m_member[11] * m_member[13] -
-		m_member[8] * m_member[5] * m_member[3]][3] +
-		m_member[8] * m_member[7] * m_member[13] +
-		m_member[12] * m_member[5] * m_member[11] -
-		m_member[12] * m_member[7] * m_member[9];
+	result.m_member[2][0] = m_member[1][0] * m_member[2][1] * m_member[3][3] -
+		m_member[1][0] * m_member[2][3] * m_member[3][1] -
+		m_member[2][0] * m_member[1][1] * m_member[3][3] +
+		m_member[2][0] * m_member[1][3] * m_member[3][1] +
+		m_member[3][0] * m_member[1][1] * m_member[2][3] -
+		m_member[3][0] * m_member[1][3] * m_member[2][1];
 
-	result.m_member[12] = -m_member[4] * m_member[9] * m_member[14] +
-		m_member[4] * m_member[10] * m_member[13] +
-		m_member[8] * m_member[5] * m_member[14] -
-		m_member[8] * m_member[6] * m_member[13] -
-		m_member[12] * m_member[5] * m_member[10] +
-		m_member[12] * m_member[6] * m_member[9];
+	result.m_member[3][0] = -m_member[1][0] * m_member[2][1] * m_member[3][2] +
+		m_member[1][0] * m_member[2][2] * m_member[3][1] +
+		m_member[2][0] * m_member[1][1] * m_member[3][2] -
+		m_member[2][0] * m_member[1][2] * m_member[3][1] -
+		m_member[3][0] * m_member[1][1] * m_member[2][2] +
+		m_member[3][0] * m_member[1][2] * m_member[2][1];
 
-	result.m_member[1] = -m_member[1] * m_member[10] * m_member[3]][3] +
-		m_member[1] * m_member[11] * m_member[14] +
-		m_member[9] * m_member[2] * m_member[3]][3] -
-		m_member[9] * m_member[3] * m_member[14] -
-		m_member[13] * m_member[2] * m_member[11] +
-		m_member[13] * m_member[3] * m_member[10];
+	result.m_member[0][1] = -m_member[0][1] * m_member[2][2] * m_member[3][3] +
+		m_member[0][1] * m_member[2][3] * m_member[3][2] +
+		m_member[2][1] * m_member[0][2] * m_member[3][3] -
+		m_member[2][1] * m_member[0][3] * m_member[3][2] -
+		m_member[3][1] * m_member[0][2] * m_member[2][3] +
+		m_member[3][1] * m_member[0][3] * m_member[2][2];
 
-	result.m_member[5] = m_member[0] * m_member[10] * m_member[3]][3] -
-		m_member[0] * m_member[11] * m_member[14] -
-		m_member[8] * m_member[2] * m_member[3]][3] +
-		m_member[8] * m_member[3] * m_member[14] +
-		m_member[12] * m_member[2] * m_member[11] -
-		m_member[12] * m_member[3] * m_member[10];
+	result.m_member[1][1] = m_member[0][0] * m_member[2][2] * m_member[3][3] -
+		m_member[0][0] * m_member[2][3] * m_member[3][2] -
+		m_member[2][0] * m_member[0][2] * m_member[3][3] +
+		m_member[2][0] * m_member[0][3] * m_member[3][2] +
+		m_member[3][0] * m_member[0][2] * m_member[2][3] -
+		m_member[3][0] * m_member[0][3] * m_member[2][2];
 
-	result.m_member[9] = -m_member[0] * m_member[9] * m_member[3]][3] +
-		m_member[0] * m_member[11] * m_member[13] +
-		m_member[8] * m_member[1] * m_member[3]][3] -
-		m_member[8] * m_member[3] * m_member[13] -
-		m_member[12] * m_member[1] * m_member[11] +
-		m_member[12] * m_member[3] * m_member[9];
+	result.m_member[2][1] = -m_member[0][0] * m_member[2][1] * m_member[3][3] +
+		m_member[0][0] * m_member[2][3] * m_member[3][1] +
+		m_member[2][0] * m_member[0][1] * m_member[3][3] -
+		m_member[2][0] * m_member[0][3] * m_member[3][1] -
+		m_member[3][0] * m_member[0][1] * m_member[2][3] +
+		m_member[3][0] * m_member[0][3] * m_member[2][1];
 
-	result.m_member[13] = m_member[0] * m_member[9] * m_member[14] -
-		m_member[0] * m_member[10] * m_member[13] -
-		m_member[8] * m_member[1] * m_member[14] +
-		m_member[8] * m_member[2] * m_member[13] +
-		m_member[12] * m_member[1] * m_member[10] -
-		m_member[12] * m_member[2] * m_member[9];
+	result.m_member[3][1] = m_member[0][0] * m_member[2][1] * m_member[3][2] -
+		m_member[0][0] * m_member[2][2] * m_member[3][1] -
+		m_member[2][0] * m_member[0][1] * m_member[3][2] +
+		m_member[2][0] * m_member[0][2] * m_member[3][1] +
+		m_member[3][0] * m_member[0][1] * m_member[2][2] -
+		m_member[3][0] * m_member[0][2] * m_member[2][1];
 
-	result.m_member[2] = m_member[1] * m_member[6] * m_member[3]][3] -
-		m_member[1] * m_member[7] * m_member[14] -
-		m_member[5] * m_member[2] * m_member[3]][3] +
-		m_member[5] * m_member[3] * m_member[14] +
-		m_member[13] * m_member[2] * m_member[7] -
-		m_member[13] * m_member[3] * m_member[6];
+	result.m_member[0][2] = m_member[0][1] * m_member[1][2] * m_member[3][3] -
+		m_member[0][1] * m_member[1][3] * m_member[3][2] -
+		m_member[1][1] * m_member[0][2] * m_member[3][3] +
+		m_member[1][1] * m_member[0][3] * m_member[3][2] +
+		m_member[3][1] * m_member[0][2] * m_member[1][3] -
+		m_member[3][1] * m_member[0][3] * m_member[1][2];
 
-	result.m_member[6] = -m_member[0] * m_member[6] * m_member[3]][3] +
-		m_member[0] * m_member[7] * m_member[14] +
-		m_member[4] * m_member[2] * m_member[3]][3] -
-		m_member[4] * m_member[3] * m_member[14] -
-		m_member[12] * m_member[2] * m_member[7] +
-		m_member[12] * m_member[3] * m_member[6];
+	result.m_member[1][2] = -m_member[0][0] * m_member[1][2] * m_member[3][3] +
+		m_member[0][0] * m_member[1][3] * m_member[3][2] +
+		m_member[1][0] * m_member[0][2] * m_member[3][3] -
+		m_member[1][0] * m_member[0][3] * m_member[3][2] -
+		m_member[3][0] * m_member[0][2] * m_member[1][3] +
+		m_member[3][0] * m_member[0][3] * m_member[1][2];
 
-	result.m_member[10] = m_member[0] * m_member[5] * m_member[3]][3] -
-		m_member[0] * m_member[7] * m_member[13] -
-		m_member[4] * m_member[1] * m_member[3]][3] +
-		m_member[4] * m_member[3] * m_member[13] +
-		m_member[12] * m_member[1] * m_member[7] -
-		m_member[12] * m_member[3] * m_member[5];
+	result.m_member[2][2] = m_member[0][0] * m_member[1][1] * m_member[3][3] -
+		m_member[0][0] * m_member[1][3] * m_member[3][1] -
+		m_member[1][0] * m_member[0][1] * m_member[3][3] +
+		m_member[1][0] * m_member[0][3] * m_member[3][1] +
+		m_member[3][0] * m_member[0][1] * m_member[1][3] -
+		m_member[3][0] * m_member[0][3] * m_member[1][1];
 
-	result.m_member[14] = -m_member[0] * m_member[5] * m_member[14] +
-		m_member[0] * m_member[6] * m_member[13] +
-		m_member[4] * m_member[1] * m_member[14] -
-		m_member[4] * m_member[2] * m_member[13] -
-		m_member[12] * m_member[1] * m_member[6] +
-		m_member[12] * m_member[2] * m_member[5];
+	result.m_member[3][2] = -m_member[0][0] * m_member[1][1] * m_member[3][2] +
+		m_member[0][0] * m_member[1][2] * m_member[3][1] +
+		m_member[1][0] * m_member[0][1] * m_member[3][2] -
+		m_member[1][0] * m_member[0][2] * m_member[3][1] -
+		m_member[3][0] * m_member[0][1] * m_member[1][2] +
+		m_member[3][0] * m_member[0][2] * m_member[1][1];
 
-	result.m_member[3] = -m_member[1] * m_member[6] * m_member[11] +
-		m_member[1] * m_member[7] * m_member[10] +
-		m_member[5] * m_member[2] * m_member[11] -
-		m_member[5] * m_member[3] * m_member[10] -
-		m_member[9] * m_member[2] * m_member[7] +
-		m_member[9] * m_member[3] * m_member[6];
+	result.m_member[0][3] = -m_member[0][1] * m_member[1][2] * m_member[2][3] +
+		m_member[0][1] * m_member[1][3] * m_member[2][2] +
+		m_member[1][1] * m_member[0][2] * m_member[2][3] -
+		m_member[1][1] * m_member[0][3] * m_member[2][2] -
+		m_member[2][1] * m_member[0][2] * m_member[1][3] +
+		m_member[2][1] * m_member[0][3] * m_member[1][2];
 
-	result.m_member[7] = m_member[0] * m_member[6] * m_member[11] -
-		m_member[0] * m_member[7] * m_member[10] -
-		m_member[4] * m_member[2] * m_member[11] +
-		m_member[4] * m_member[3] * m_member[10] +
-		m_member[8] * m_member[2] * m_member[7] -
-		m_member[8] * m_member[3] * m_member[6];
+	result.m_member[1][3] = m_member[0][0] * m_member[1][2] * m_member[2][3] -
+		m_member[0][0] * m_member[1][3] * m_member[2][2] -
+		m_member[1][0] * m_member[0][2] * m_member[2][3] +
+		m_member[1][0] * m_member[0][3] * m_member[2][2] +
+		m_member[2][0] * m_member[0][2] * m_member[1][3] -
+		m_member[2][0] * m_member[0][3] * m_member[1][2];
 
-	result.m_member[11] = -m_member[0] * m_member[5] * m_member[11] +
-		m_member[0] * m_member[7] * m_member[9] +
-		m_member[4] * m_member[1] * m_member[11] -
-		m_member[4] * m_member[3] * m_member[9] -
-		m_member[8] * m_member[1] * m_member[7] +
-		m_member[8] * m_member[3] * m_member[5];
+	result.m_member[2][3] = -m_member[0][0] * m_member[1][1] * m_member[2][3] +
+		m_member[0][0] * m_member[1][3] * m_member[2][1] +
+		m_member[1][0] * m_member[0][1] * m_member[2][3] -
+		m_member[1][0] * m_member[0][3] * m_member[2][1] -
+		m_member[2][0] * m_member[0][1] * m_member[1][3] +
+		m_member[2][0] * m_member[0][3] * m_member[1][1];
 
-	result.m_member[3]][3] = m_member[0] * m_member[5] * m_member[10] -
-		m_member[0] * m_member[6] * m_member[9] -
-		m_member[4] * m_member[1] * m_member[10] +
-		m_member[4] * m_member[2] * m_member[9] +
-		m_member[8] * m_member[1] * m_member[6] -
-		m_member[8] * m_member[2] * m_member[5];
+	result.m_member[3][3] = m_member[0][0] * m_member[1][1] * m_member[2][2] -
+		m_member[0][0] * m_member[1][2] * m_member[2][1] -
+		m_member[1][0] * m_member[0][1] * m_member[2][2] +
+		m_member[1][0] * m_member[0][2] * m_member[2][1] +
+		m_member[2][0] * m_member[0][1] * m_member[1][2] -
+		m_member[2][0] * m_member[0][2] * m_member[1][1];
 
-	det = m_member[0] * result.m_member[0] + m_member[1] * result.m_member[4] + m_member[2] * result.m_member[8] + m_member[3] * result.m_member[12];
+	// Get determine
+	float det = m_member[0][0] * result.m_member[0][0] + 
+		m_member[0][1] * result.m_member[1][0] + 
+		m_member[0][2] * result.m_member[2][0] + 
+		m_member[0][3] * result.m_member[3][0];
 
+	// No inverse in this case
 	if (det == 0)
 		return false;
 
-	det = 1.0 / det;
+	// Make denomitator
+	det = 1.f / det;
 
-	for (i = 0; i < 16; i++)
-		invOut[i] = inv[i] * det;
+	for (int i = 0; i < 4; ++i)
+		for (int j = 0; j < 4; ++j)
+		result.m_member[i][j] = result.m_member[i][j] * det;
+
+	return result;
 }
 
 Matrix4x4& Matrix4x4::Inverse()
 {
-	// TODO: 여기에 반환 구문을 삽입합니다.
+	Matrix4x4 result;
+
+	// Caculate all the elements in matrix
+	result.m_member[0][0] = m_member[1][1] * m_member[2][2] * m_member[3][3] -
+		m_member[1][1] * m_member[2][3] * m_member[3][2] -
+		m_member[2][1] * m_member[1][2] * m_member[3][3] +
+		m_member[2][1] * m_member[1][3] * m_member[3][2] +
+		m_member[3][1] * m_member[1][2] * m_member[2][3] -
+		m_member[3][1] * m_member[1][3] * m_member[2][2];
+
+	result.m_member[1][0] = -m_member[1][0] * m_member[2][2] * m_member[3][3] +
+		m_member[1][0] * m_member[2][3] * m_member[3][2] +
+		m_member[2][0] * m_member[1][2] * m_member[3][3] -
+		m_member[2][0] * m_member[1][3] * m_member[3][2] -
+		m_member[3][0] * m_member[1][2] * m_member[2][3] +
+		m_member[3][0] * m_member[1][3] * m_member[2][2];
+
+	result.m_member[2][0] = m_member[1][0] * m_member[2][1] * m_member[3][3] -
+		m_member[1][0] * m_member[2][3] * m_member[3][1] -
+		m_member[2][0] * m_member[1][1] * m_member[3][3] +
+		m_member[2][0] * m_member[1][3] * m_member[3][1] +
+		m_member[3][0] * m_member[1][1] * m_member[2][3] -
+		m_member[3][0] * m_member[1][3] * m_member[2][1];
+
+	result.m_member[3][0] = -m_member[1][0] * m_member[2][1] * m_member[3][2] +
+		m_member[1][0] * m_member[2][2] * m_member[3][1] +
+		m_member[2][0] * m_member[1][1] * m_member[3][2] -
+		m_member[2][0] * m_member[1][2] * m_member[3][1] -
+		m_member[3][0] * m_member[1][1] * m_member[2][2] +
+		m_member[3][0] * m_member[1][2] * m_member[2][1];
+
+	result.m_member[0][1] = -m_member[0][1] * m_member[2][2] * m_member[3][3] +
+		m_member[0][1] * m_member[2][3] * m_member[3][2] +
+		m_member[2][1] * m_member[0][2] * m_member[3][3] -
+		m_member[2][1] * m_member[0][3] * m_member[3][2] -
+		m_member[3][1] * m_member[0][2] * m_member[2][3] +
+		m_member[3][1] * m_member[0][3] * m_member[2][2];
+
+	result.m_member[1][1] = m_member[0][0] * m_member[2][2] * m_member[3][3] -
+		m_member[0][0] * m_member[2][3] * m_member[3][2] -
+		m_member[2][0] * m_member[0][2] * m_member[3][3] +
+		m_member[2][0] * m_member[0][3] * m_member[3][2] +
+		m_member[3][0] * m_member[0][2] * m_member[2][3] -
+		m_member[3][0] * m_member[0][3] * m_member[2][2];
+
+	result.m_member[2][1] = -m_member[0][0] * m_member[2][1] * m_member[3][3] +
+		m_member[0][0] * m_member[2][3] * m_member[3][1] +
+		m_member[2][0] * m_member[0][1] * m_member[3][3] -
+		m_member[2][0] * m_member[0][3] * m_member[3][1] -
+		m_member[3][0] * m_member[0][1] * m_member[2][3] +
+		m_member[3][0] * m_member[0][3] * m_member[2][1];
+
+	result.m_member[3][1] = m_member[0][0] * m_member[2][1] * m_member[3][2] -
+		m_member[0][0] * m_member[2][2] * m_member[3][1] -
+		m_member[2][0] * m_member[0][1] * m_member[3][2] +
+		m_member[2][0] * m_member[0][2] * m_member[3][1] +
+		m_member[3][0] * m_member[0][1] * m_member[2][2] -
+		m_member[3][0] * m_member[0][2] * m_member[2][1];
+
+	result.m_member[0][2] = m_member[0][1] * m_member[1][2] * m_member[3][3] -
+		m_member[0][1] * m_member[1][3] * m_member[3][2] -
+		m_member[1][1] * m_member[0][2] * m_member[3][3] +
+		m_member[1][1] * m_member[0][3] * m_member[3][2] +
+		m_member[3][1] * m_member[0][2] * m_member[1][3] -
+		m_member[3][1] * m_member[0][3] * m_member[1][2];
+
+	result.m_member[1][2] = -m_member[0][0] * m_member[1][2] * m_member[3][3] +
+		m_member[0][0] * m_member[1][3] * m_member[3][2] +
+		m_member[1][0] * m_member[0][2] * m_member[3][3] -
+		m_member[1][0] * m_member[0][3] * m_member[3][2] -
+		m_member[3][0] * m_member[0][2] * m_member[1][3] +
+		m_member[3][0] * m_member[0][3] * m_member[1][2];
+
+	result.m_member[2][2] = m_member[0][0] * m_member[1][1] * m_member[3][3] -
+		m_member[0][0] * m_member[1][3] * m_member[3][1] -
+		m_member[1][0] * m_member[0][1] * m_member[3][3] +
+		m_member[1][0] * m_member[0][3] * m_member[3][1] +
+		m_member[3][0] * m_member[0][1] * m_member[1][3] -
+		m_member[3][0] * m_member[0][3] * m_member[1][1];
+
+	result.m_member[3][2] = -m_member[0][0] * m_member[1][1] * m_member[3][2] +
+		m_member[0][0] * m_member[1][2] * m_member[3][1] +
+		m_member[1][0] * m_member[0][1] * m_member[3][2] -
+		m_member[1][0] * m_member[0][2] * m_member[3][1] -
+		m_member[3][0] * m_member[0][1] * m_member[1][2] +
+		m_member[3][0] * m_member[0][2] * m_member[1][1];
+
+	result.m_member[0][3] = -m_member[0][1] * m_member[1][2] * m_member[2][3] +
+		m_member[0][1] * m_member[1][3] * m_member[2][2] +
+		m_member[1][1] * m_member[0][2] * m_member[2][3] -
+		m_member[1][1] * m_member[0][3] * m_member[2][2] -
+		m_member[2][1] * m_member[0][2] * m_member[1][3] +
+		m_member[2][1] * m_member[0][3] * m_member[1][2];
+
+	result.m_member[1][3] = m_member[0][0] * m_member[1][2] * m_member[2][3] -
+		m_member[0][0] * m_member[1][3] * m_member[2][2] -
+		m_member[1][0] * m_member[0][2] * m_member[2][3] +
+		m_member[1][0] * m_member[0][3] * m_member[2][2] +
+		m_member[2][0] * m_member[0][2] * m_member[1][3] -
+		m_member[2][0] * m_member[0][3] * m_member[1][2];
+
+	result.m_member[2][3] = -m_member[0][0] * m_member[1][1] * m_member[2][3] +
+		m_member[0][0] * m_member[1][3] * m_member[2][1] +
+		m_member[1][0] * m_member[0][1] * m_member[2][3] -
+		m_member[1][0] * m_member[0][3] * m_member[2][1] -
+		m_member[2][0] * m_member[0][1] * m_member[1][3] +
+		m_member[2][0] * m_member[0][3] * m_member[1][1];
+
+	result.m_member[3][3] = m_member[0][0] * m_member[1][1] * m_member[2][2] -
+		m_member[0][0] * m_member[1][2] * m_member[2][1] -
+		m_member[1][0] * m_member[0][1] * m_member[2][2] +
+		m_member[1][0] * m_member[0][2] * m_member[2][1] +
+		m_member[2][0] * m_member[0][1] * m_member[1][2] -
+		m_member[2][0] * m_member[0][2] * m_member[1][1];
+
+	// Get determine
+	float det = m_member[0][0] * result.m_member[0][0] +
+		m_member[0][1] * result.m_member[1][0] +
+		m_member[0][2] * result.m_member[2][0] +
+		m_member[0][3] * result.m_member[3][0];
+
+	// No inverse in this case
+	if (det == 0)
+		return *this;
+
+	// Make denomitator
+	det = 1.f / det;
+
+	for (int i = 0; i < 4; ++i)
+		for (int j = 0; j < 4; ++j)
+			(*this).m_member[i][j] = result.m_member[i][j] * det;
+
+	return *this;
 }
 
 
-Matrix4x4 Matrix4x4::Perspective(float const & fovy, float const & aspect, float const & zNear, float const & zFar)
+Matrix4x4 Matrix4x4::Perspective(float fovy, float aspect, float zNear, float zFar)
 {
 	float tanHalfFovy = tan(fovy / static_cast<float>(2));
 
@@ -561,7 +703,7 @@ Matrix4x4 Matrix4x4::Perspective(float const & fovy, float const & aspect, float
 }
 
 
-Matrix4x4 Matrix4x4::Ortho(float const & left, float const & right, float const& bottom, float const& top, float const & zNear, float const & zFar)
+Matrix4x4 Matrix4x4::Ortho(float left, float right, float bottom, float top, float zNear, float zFar)
 {
 	//tmat4x4<T, defaultp> Result(1);
 	//Result[0][0] = static_cast<T>(2) / (right - left);
@@ -572,13 +714,13 @@ Matrix4x4 Matrix4x4::Ortho(float const & left, float const & right, float const&
 	//Result[3][2] = -(zFar + zNear) / (zFar - zNear);
 
 	Matrix4x4 Result;
-	Result.m_member[0][0] = static_cast(2) / (right - left);
-	Result.m_member[1][1] = static_cast(2) / (top - bottom);
-	Result.m_member[2][2] = -static_cast(2) / (zFar - zNear);
+	Result.m_member[0][0] = 2.f / (right - left);
+	Result.m_member[1][1] = 2.f / (top - bottom);
+	Result.m_member[2][2] = -2.f / (zFar - zNear);
 	Result.m_member[3][0] = (-(right + left)) / (right - left);
 	Result.m_member[3][1] = (-(top + bottom)) / (top - bottom);
 	Result.m_member[3][2] = (-(zFar + zNear)) / (zFar - zNear);
-	Result.m_member[3][3] = static_cast(1);
+	Result.m_member[3][3] = 1.f;
 	return Result;
 }
 

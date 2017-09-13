@@ -72,8 +72,8 @@ public:
 	static Matrix4x4 Translate(const Vector3& vec);
 	static Matrix4x4 Scale(const Vector3& vec);
 	static Matrix4x4 Rotation(float degree, Vector3& vec);
-	static Matrix4x4 Perspective(float const & fovy, float const & aspect, float const & zNear, float const & zFar);
-	static Matrix4x4 Ortho(float const & left, float const & right, float const& bottom, float const& top, float const & zNear, float const & zFar);
+	static Matrix4x4 Perspective(float fovy, float aspect, float zNear, float zFar);
+	static Matrix4x4 Ortho(float left, float right, float bottom, float top, float zNear, float zFar);
 	static Matrix4x4 LookAt(Vector3 eye, Vector3 center, Vector3 up);
 
 
@@ -87,5 +87,7 @@ public:
 private:
 
 };
+
+typedef Matrix4x4 mat44;
 
 NS_JE_END
