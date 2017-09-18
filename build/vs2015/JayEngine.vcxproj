@@ -72,8 +72,8 @@
     <OutDir>$(SolutionDir)..\..\bin\x86\</OutDir>
     <IntDir>$(SolutionDir)..\..\temp\x86\</IntDir>
     <TargetExt>.exe</TargetExt>
-    <IncludePath>$(SolutionDir)..\..\include\JayEngine;$(SolutionDir)..\..\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)..\..\lib\SDL2\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)..\..\include\JayEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\..\lib\GL\x86;$(SolutionDir)..\..\lib\SDL2\x86;$(LibraryPath)</LibraryPath>
     <TargetName>JayEngine</TargetName>
     <ExecutablePath>$(ExecutablePath);</ExecutablePath>
   </PropertyGroup>
@@ -81,8 +81,8 @@
     <OutDir>$(SolutionDir)..\..\bin\x86\</OutDir>
     <IntDir>$(SolutionDir)..\..\temp\x86\</IntDir>
     <TargetExt>.exe</TargetExt>
-    <IncludePath>$(SolutionDir)..\..\include\JayEngine;$(SolutionDir)..\..\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)..\..\lib\SDL2\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)..\..\include\JayEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\..\lib\GL\x86;$(SolutionDir)..\..\lib\SDL2\x86;$(LibraryPath)</LibraryPath>
     <TargetName>JayEngine</TargetName>
     <ExecutablePath>$(ExecutablePath);</ExecutablePath>
   </PropertyGroup>
@@ -91,16 +91,16 @@
     <IntDir>$(SolutionDir)..\..\temp\x64\</IntDir>
     <TargetName>JayEngine</TargetName>
     <ExecutablePath>$(ExecutablePath);</ExecutablePath>
-    <IncludePath>$(SolutionDir)..\..\include\JayEngine;$(SolutionDir)..\..\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)..\..\lib\SDL2\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)..\..\include\JayEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\..\lib\GL\x64;$(SolutionDir)..\..\lib\SDL2\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)..\..\bin\x64\</OutDir>
     <IntDir>$(SolutionDir)..\..\temp\x64\</IntDir>
     <TargetName>JayEngine</TargetName>
     <ExecutablePath>$(ExecutablePath);</ExecutablePath>
-    <IncludePath>$(SolutionDir)..\..\include\JayEngine;$(SolutionDir)..\..\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)..\..\lib\SDL2\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)..\..\include\JayEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\..\lib\GL\x64;$(SolutionDir)..\..\lib\SDL2\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -111,8 +111,8 @@
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JayEngine;$(SolutionDir)..\..\include;$(SolutionDir)..\..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\lib\SDL2\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glew32s.lib;;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\lib\GL\x86;$(SolutionDir)\lib\SDL2\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -125,8 +125,8 @@
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)\lib\SDL2\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\lib\GL\x64;$(SolutionDir)\lib\SDL2\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glew32s.lib;;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -143,8 +143,8 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\lib\SDL2\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glew32s.lib;;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\lib\GL\x86;$(SolutionDir)\lib\SDL2\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -161,8 +161,8 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)\lib\SDL2\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\lib\GL\x64;$(SolutionDir)\lib\SDL2\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glew32s.lib;;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -170,6 +170,9 @@
     <ClCompile Include="..\..\src\Application.cpp" />
     <ClCompile Include="..\..\src\ComponentContainer.cpp" />
     <ClCompile Include="..\..\src\Debug.cpp" />
+    <ClCompile Include="..\..\src\Event.cpp" />
+    <ClCompile Include="..\..\src\EventHandler.cpp" />
+    <ClCompile Include="..\..\src\GLManager.cpp" />
     <ClCompile Include="..\..\src\InputHandler.cpp" />
     <ClCompile Include="..\..\src\MathUtils.cpp" />
     <ClCompile Include="..\..\src\Matrix2x2.cpp" />
@@ -189,6 +192,9 @@
     <ClInclude Include="..\..\include\JayEngine\Component.h" />
     <ClInclude Include="..\..\include\JayEngine\ComponentContainer.h" />
     <ClInclude Include="..\..\include\JayEngine\Debug.h" />
+    <ClInclude Include="..\..\include\JayEngine\Event.h" />
+    <ClInclude Include="..\..\include\JayEngine\EventHandler.h" />
+    <ClInclude Include="..\..\include\JayEngine\GLManager.h" />
     <ClInclude Include="..\..\include\JayEngine\InputHandler.h" />
     <ClInclude Include="..\..\include\JayEngine\Macro.h" />
     <ClInclude Include="..\..\include\JayEngine\MathUtils.h" />
@@ -207,6 +213,7 @@
   <ItemGroup>
     <None Include="..\..\include\JayEngine\ComponentContainer.inl" />
     <None Include="..\..\include\JayEngine\ComponentManager.inl" />
+    <None Include="..\..\include\JayEngine\EventHandler.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

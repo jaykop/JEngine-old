@@ -759,13 +759,9 @@ Vector3  GetIntersection(
 
 	//Check if they are parallel
 	float D = a1 * b2 - a2 * b1;
-	try {
-		if (!D)
-			throw D;
-	}
-	catch (float exception) {
-		std::cout << exception << "is invalid.\nCannot calculate properly...\n";
-	}
+	
+	if (!D)
+		JE_DEBUG_PRINT("is invalid.\nCannot calculate properly...\n");
 
 	return Vector3((b1*c2 - b2*c1) / D, (a2*c1 - a1*c2) / D);
 }

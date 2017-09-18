@@ -2,6 +2,7 @@
 #include "StateManager.h"
 #include "Timer.h"
 #include "InputHandler.h"
+#include "Application.h"
 
 NS_JE_BEGIN
 
@@ -24,6 +25,9 @@ void StateManager::Init()
 
 void StateManager::Update(SDL_Event& _event)
 {
+	//	Get pointer to window
+	SDL_Window* pWindow = Application::GetWindow();
+
 	// Timer
 	Timer::Start();
 
@@ -49,6 +53,9 @@ void StateManager::Update(SDL_Event& _event)
 			s_stack = 0.f;
 			s_frame = 0;
 			Timer::Start();
+
+			// Swap buffer
+			SDL_GL_SwapWindow(pWindow);
 		}
 	}
 

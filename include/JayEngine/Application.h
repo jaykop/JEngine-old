@@ -42,7 +42,7 @@ public:
 	static bool Initialize();
 	static void Update();
 	static void Close();
-
+	static SDL_Window* GetWindow();
 private:
 
 	// Locked functions
@@ -51,9 +51,10 @@ private:
 	void operator=(const Application& /*app*/) {};
 
 	// Private variables
-	static InitData		m_pData;	// Window config
-	static SDL_Window*	m_pWindow;	// SDL window
-	static SDL_Event	m_pEvent;	// SDL Event
+	static InitData			m_pData;	// Window config
+	static SDL_Window*		m_pWindow;	// SDL window
+	static SDL_Event		m_pEvent;	// SDL Event
+	static SDL_GLContext	m_pContext;	// SDL GL context
 };
 
 NS_JE_END

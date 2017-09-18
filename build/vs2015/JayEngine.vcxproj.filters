@@ -43,6 +43,9 @@
     <Filter Include="Utils\Math">
       <UniqueIdentifier>{c8836a79-4ff9-4fe4-b278-a79335a07ccf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="System\Graphic">
+      <UniqueIdentifier>{4d1d4f03-6a36-41c3-9095-1185bc70918d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Debug.cpp">
@@ -92,6 +95,15 @@
     </ClCompile>
     <ClCompile Include="..\..\src\MathUtils.cpp">
       <Filter>Utils\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Event.cpp">
+      <Filter>Core\EventHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\EventHandler.cpp">
+      <Filter>Core\EventHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\GLManager.cpp">
+      <Filter>System\Graphic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -149,6 +161,15 @@
     <ClInclude Include="..\..\include\JayEngine\Matrix4x4.h">
       <Filter>Utils\Math</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\Event.h">
+      <Filter>Core\EventHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\EventHandler.h">
+      <Filter>Core\EventHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\GLManager.h">
+      <Filter>System\Graphic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\include\JayEngine\ComponentManager.inl">
@@ -156,6 +177,9 @@
     </None>
     <None Include="..\..\include\JayEngine\ComponentContainer.inl">
       <Filter>Core\Component</Filter>
+    </None>
+    <None Include="..\..\include\JayEngine\EventHandler.inl">
+      <Filter>Core\EventHandler</Filter>
     </None>
   </ItemGroup>
 </Project>
