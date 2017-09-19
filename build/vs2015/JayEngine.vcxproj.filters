@@ -1,180 +1,109 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Core">
-      <UniqueIdentifier>{359f962e-8c0d-417b-a958-fffb218976ce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Apllication">
-      <UniqueIdentifier>{369c1615-6455-4718-afd2-cc41c0e2ec43}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\StateManager">
-      <UniqueIdentifier>{5d8d7c9b-360d-4ad0-b0b8-bc9ff7439e3c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\InputHandler">
-      <UniqueIdentifier>{c5b0207c-94e0-423b-9459-fad00ca9d467}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\EventHandler">
-      <UniqueIdentifier>{39d10acc-9d02-4a3f-a653-590381ae9dc0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Register">
-      <UniqueIdentifier>{34d50975-a0c1-40cb-b5cf-dc6563f1e364}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Component">
-      <UniqueIdentifier>{cebbc219-6577-403a-aa34-5e38b7609e8f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Object">
-      <UniqueIdentifier>{71339100-ff81-4901-9cdd-5a39c5284dfd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utils">
-      <UniqueIdentifier>{07e54cf3-5f66-4111-bea8-df7f7ae845b7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="System">
-      <UniqueIdentifier>{7ea65125-7fdf-413c-bbd2-9eb3fe634193}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utils\Timer">
-      <UniqueIdentifier>{e3a02e1f-c28e-4366-9f45-83c1b92f4736}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utils\Debug">
-      <UniqueIdentifier>{fab48147-2d4e-4174-b8cb-fde6ad4061a0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Archetype">
-      <UniqueIdentifier>{3a4b995a-177b-40ba-8e98-0558e209a8b2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utils\Math">
-      <UniqueIdentifier>{c8836a79-4ff9-4fe4-b278-a79335a07ccf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="System\Graphic">
-      <UniqueIdentifier>{4d1d4f03-6a36-41c3-9095-1185bc70918d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="System\Physics">
-      <UniqueIdentifier>{02e78906-43db-45c6-8aba-0dfac3af09c9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="System\Sound">
-      <UniqueIdentifier>{db45680b-b5a4-463e-af88-6860557a71aa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="System\Behavior">
-      <UniqueIdentifier>{1534c8b2-703b-42fb-9a84-95eb9c8fb24e}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\src\Debug.cpp">
+    <ClCompile Include="..\..\src\JayEngine\Application.cpp">
+      <Filter>Core\App</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\Debug.cpp">
       <Filter>Utils\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Application.cpp">
-      <Filter>Core\Apllication</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Platform_win32.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\StateManager.cpp">
-      <Filter>Core\StateManager</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Timer.cpp">
-      <Filter>Utils\Timer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\InputHandler.cpp">
-      <Filter>Core\InputHandler</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\State.cpp">
-      <Filter>Core\StateManager</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Object.cpp">
-      <Filter>Core\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ObjectManager.cpp">
-      <Filter>Core\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\ComponentContainer.cpp">
+    <ClCompile Include="..\..\src\JayEngine\ComponentContainer.cpp">
       <Filter>Core\Component</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Matrix2x2.cpp">
-      <Filter>Utils\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Matrix4x4.cpp">
-      <Filter>Utils\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Vector2.cpp">
-      <Filter>Utils\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Vector3.cpp">
-      <Filter>Utils\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Vector4.cpp">
-      <Filter>Utils\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\MathUtils.cpp">
-      <Filter>Utils\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Event.cpp">
-      <Filter>Core\EventHandler</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\EventHandler.cpp">
-      <Filter>Core\EventHandler</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\GLManager.cpp">
+    <ClCompile Include="..\..\src\JayEngine\GLManager.cpp">
       <Filter>System\Graphic</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\SystemManager.cpp">
+    <ClCompile Include="..\..\src\JayEngine\GraphicSystem.cpp">
+      <Filter>System\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\MathUtils.cpp">
+      <Filter>Utils\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\Matrix2x2.cpp">
+      <Filter>Utils\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\Matrix4x4.cpp">
+      <Filter>Utils\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\Vector2.cpp">
+      <Filter>Utils\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\Vector3.cpp">
+      <Filter>Utils\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\Vector4.cpp">
+      <Filter>Utils\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\Timer.cpp">
+      <Filter>Utils\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\Object.cpp">
+      <Filter>Core\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\ObjectManager.cpp">
+      <Filter>Core\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\SystemManager.cpp">
       <Filter>System</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\GraphicSystem.cpp">
-      <Filter>System\Graphic</Filter>
+    <ClCompile Include="..\..\src\JayEngine\State.cpp">
+      <Filter>Core\State</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\BehaviorSystem.cpp">
-      <Filter>System\Behavior</Filter>
+    <ClCompile Include="..\..\src\JayEngine\StateManager.cpp">
+      <Filter>Core\State</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\PhysicsSystem.cpp">
+    <ClCompile Include="..\..\src\JayEngine\InputHandler.cpp">
+      <Filter>Core\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\SoundSystem.cpp">
+      <Filter>System\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\PhysicsSystem.cpp">
       <Filter>System\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\SoundSystem.cpp">
-      <Filter>System\Sound</Filter>
+    <ClCompile Include="..\..\src\JayEngine\BehaviorSystem.cpp">
+      <Filter>System\Behavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\imgui\imgui.cpp">
+      <Filter>Utils\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\imgui\imgui_demo.cpp">
+      <Filter>Utils\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\imgui\imgui_draw.cpp">
+      <Filter>Utils\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\imgui\imgui_impl_sdl_gl3.cpp">
+      <Filter>Utils\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\ImguiManager.cpp">
+      <Filter>Utils\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\Platform_win32.cpp">
+      <Filter>Core\Platform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\JayEngine\Application.h">
+      <Filter>Core\App</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\include\JayEngine\Debug.h">
       <Filter>Utils\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JayEngine\Application.h">
-      <Filter>Core\Apllication</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JayEngine\StateManager.h">
-      <Filter>Core\StateManager</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JayEngine\Timer.h">
-      <Filter>Utils\Timer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JayEngine\InputHandler.h">
-      <Filter>Core\InputHandler</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JayEngine\State.h">
-      <Filter>Core\StateManager</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JayEngine\Object.h">
-      <Filter>Core\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JayEngine\ObjectManager.h">
-      <Filter>Core\Object</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\JayEngine\Component.h">
+      <Filter>Core\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\ComponentContainer.h">
       <Filter>Core\Component</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\JayEngine\ComponentManager.h">
       <Filter>Core\Component</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JayEngine\Macro.h">
-      <Filter>Utils</Filter>
+    <ClInclude Include="..\..\include\JayEngine\GraphicSystem.h">
+      <Filter>System\Graphic</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JayEngine\ComponentContainer.h">
-      <Filter>Core\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JayEngine\Vector2.h">
-      <Filter>Utils\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JayEngine\Vector3.h">
-      <Filter>Utils\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JayEngine\Vector4.h">
-      <Filter>Utils\Math</Filter>
+    <ClInclude Include="..\..\include\JayEngine\GLManager.h">
+      <Filter>System\Graphic</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\JayEngine\MathUtils.h">
       <Filter>Utils\Math</Filter>
@@ -185,32 +114,74 @@
     <ClInclude Include="..\..\include\JayEngine\Matrix4x4.h">
       <Filter>Utils\Math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JayEngine\Event.h">
-      <Filter>Core\EventHandler</Filter>
+    <ClInclude Include="..\..\include\JayEngine\Vector2.h">
+      <Filter>Utils\Math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JayEngine\EventHandler.h">
-      <Filter>Core\EventHandler</Filter>
+    <ClInclude Include="..\..\include\JayEngine\Vector3.h">
+      <Filter>Utils\Math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JayEngine\GLManager.h">
-      <Filter>System\Graphic</Filter>
+    <ClInclude Include="..\..\include\JayEngine\Vector4.h">
+      <Filter>Utils\Math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\System.h">
+    <ClInclude Include="..\..\include\JayEngine\Macro.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\Timer.h">
+      <Filter>Utils\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\ObjectManager.h">
+      <Filter>Core\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\Object.h">
+      <Filter>Core\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\SystemManager.h">
       <Filter>System</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\SystemManager.h">
+    <ClInclude Include="..\..\include\JayEngine\System.h">
       <Filter>System</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\GraphicSystem.h">
-      <Filter>System\Graphic</Filter>
+    <ClInclude Include="..\..\include\JayEngine\StateManager.h">
+      <Filter>Core\State</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\BehaviorSystem.h">
-      <Filter>System\Behavior</Filter>
+    <ClInclude Include="..\..\include\JayEngine\State.h">
+      <Filter>Core\State</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\PhysicsSystem.h">
+    <ClInclude Include="..\..\include\JayEngine\InputHandler.h">
+      <Filter>Core\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\SoundSystem.h">
+      <Filter>System\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\PhysicsSystem.h">
       <Filter>System\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\SoundSystem.h">
-      <Filter>System\Sound</Filter>
+    <ClInclude Include="..\..\include\JayEngine\BehaviorSystem.h">
+      <Filter>System\Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\imgui\stb_truetype.h">
+      <Filter>Utils\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\imgui\imconfig.h">
+      <Filter>Utils\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\imgui\imgui.h">
+      <Filter>Utils\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\imgui\imgui_impl_sdl_gl3.h">
+      <Filter>Utils\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\imgui\imgui_internal.h">
+      <Filter>Utils\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\ImguiManager.h">
+      <Filter>Utils\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\imgui\stb_rect_pack.h">
+      <Filter>Utils\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\imgui\stb_textedit.h">
+      <Filter>Utils\imgui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -220,8 +191,58 @@
     <None Include="..\..\include\JayEngine\ComponentContainer.inl">
       <Filter>Core\Component</Filter>
     </None>
-    <None Include="..\..\include\JayEngine\EventHandler.inl">
-      <Filter>Core\EventHandler</Filter>
-    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Core">
+      <UniqueIdentifier>{c5f49fe2-fc63-4c2f-8ec2-b290784f01fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{9bffcf43-a96e-4552-a001-767bdf5793f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System">
+      <UniqueIdentifier>{00fdd4bc-6e55-45e4-a3ac-63f8facc319b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\App">
+      <UniqueIdentifier>{bcdcc18d-cf0a-4400-81ef-d3c87c86c656}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Debug">
+      <UniqueIdentifier>{83ee4304-9c1f-47e7-aa89-ba3255915d28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Component">
+      <UniqueIdentifier>{26ac7441-907e-4fdb-bba0-735fba778a40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System\Graphic">
+      <UniqueIdentifier>{f272a1d4-e9f0-46e0-8775-d039aeb821ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Math">
+      <UniqueIdentifier>{4b3b7090-1116-4b0f-82d8-94eacc3ac278}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Timer">
+      <UniqueIdentifier>{58685a2c-ee35-4bd9-81b8-2fde3b81cb3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Object">
+      <UniqueIdentifier>{20fa0740-a98f-495f-b9b3-a043bc6eb913}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\State">
+      <UniqueIdentifier>{d00d2038-6fd9-438d-80b2-3661ae11faba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Input">
+      <UniqueIdentifier>{96c8d347-dc80-4fa2-908d-6b73abd03d35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System\Physics">
+      <UniqueIdentifier>{a09c1bc8-7cc5-48be-b215-8d7815c32bd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System\Behavior">
+      <UniqueIdentifier>{b37de483-cfd7-4e67-95a4-ac3bf3cd0c00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System\Sound">
+      <UniqueIdentifier>{24db24ef-c289-4ced-b69a-9ef4ba8ec897}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\imgui">
+      <UniqueIdentifier>{d3baf318-43c8-4edd-9dd9-7a0a4905cea1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Platform">
+      <UniqueIdentifier>{488e267d-18b4-431f-a9bf-4f8439a29a29}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

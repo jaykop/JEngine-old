@@ -2,6 +2,7 @@
 #include "SDL2\SDL_opengl.h"
 #include "Application.h"
 #include "StateManager.h"
+#include "ImguiManager.h"
 
 NS_JE_BEGIN
 
@@ -57,7 +58,8 @@ void Application::Update()
 		// Get GL context
 		m_pContext = SDL_GL_CreateContext(m_pWindow);
 		
-		GLManager::initSDL_GL();
+		GLManager::initSDL_GL();		// Init gl
+		ImguiManager::Init(m_pWindow);	// init imgui
 
 		//Get window surface
 		screenSurface = SDL_GetWindowSurface(m_pWindow);
@@ -94,6 +96,9 @@ void Application::Close()
 {
 	// Close the state manager
 	StateManager::Close();
+
+	// Close imgui manager
+	ImguiManager::Close();
 
 	// Destroy
 	SDL_GL_DeleteContext(m_pContext);
