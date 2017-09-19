@@ -16,8 +16,8 @@ public:
 private:
 
 	Component() {};
-	Component(const Component& /*copy*/) {};
-	void operator=(const Component& /*copy*/) {};
+	Component(const Component& /*_copy*/) {};
+	void operator=(const Component& /*_copy*/) {};
 
 	Object* m_pOwner;
 

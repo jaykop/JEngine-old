@@ -25,8 +25,8 @@ private:
 
 	ObjectManager() {};
 	~ObjectManager() {};
-	ObjectManager(const ObjectManager& /*copy*/) {};
-	void operator=(const ObjectManager& /*copy*/) {};
+	ObjectManager(const ObjectManager& /*_copy*/) {};
+	void operator=(const ObjectManager& /*_copy*/) {};
 
 	static Object*			m_pLastMade;
 	static ObjectContainer	m_objContainer;

@@ -24,8 +24,8 @@ public:
 
 private:
 
-	Event(const Event& /*copy*/) {};
-	void operator=(const Event& /*copy*/) {};
+	Event(const Event& /*_copy*/) {};
+	void operator=(const Event& /*_copy*/) {};
 
 	Object* m_owner;
 	unsigned m_eventId;

@@ -21,8 +21,8 @@ private:
 
 	friend class StateManager;
 
-	State(const State& /*copy*/) {};
-	void operator=(const State& /*copy*/) {};
+	State(const State& /*_copy*/) {};
+	void operator=(const State& /*_copy*/) {};
 
 	State*		m_pLastStage;
 	bool		m_paused;

@@ -46,6 +46,15 @@
     <Filter Include="System\Graphic">
       <UniqueIdentifier>{4d1d4f03-6a36-41c3-9095-1185bc70918d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="System\Physics">
+      <UniqueIdentifier>{02e78906-43db-45c6-8aba-0dfac3af09c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System\Sound">
+      <UniqueIdentifier>{db45680b-b5a4-463e-af88-6860557a71aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System\Behavior">
+      <UniqueIdentifier>{1534c8b2-703b-42fb-9a84-95eb9c8fb24e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Debug.cpp">
@@ -104,6 +113,21 @@
     </ClCompile>
     <ClCompile Include="..\..\src\GLManager.cpp">
       <Filter>System\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\SystemManager.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\GraphicSystem.cpp">
+      <Filter>System\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\BehaviorSystem.cpp">
+      <Filter>System\Behavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\PhysicsSystem.cpp">
+      <Filter>System\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\SoundSystem.cpp">
+      <Filter>System\Sound</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -169,6 +193,24 @@
     </ClInclude>
     <ClInclude Include="..\..\include\JayEngine\GLManager.h">
       <Filter>System\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\System.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\SystemManager.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\GraphicSystem.h">
+      <Filter>System\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\BehaviorSystem.h">
+      <Filter>System\Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\PhysicsSystem.h">
+      <Filter>System\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\SoundSystem.h">
+      <Filter>System\Sound</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

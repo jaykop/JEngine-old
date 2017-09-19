@@ -1,10 +1,13 @@
 #include "State.h"
-#include "InputHandler.h"
 #include "StateManager.h"
+#include "SystemManager.h"
+
+//TODO Remove later
+#include "InputHandler.h"
 
 NS_JE_BEGIN
 
-State::State(const char * _name)
+State::State(const char* _name)
 	:m_pLastStage(nullptr)
 {
 	m_name.assign(_name);
@@ -12,16 +15,19 @@ State::State(const char * _name)
 
 void State::Load()
 {
+	SystemManager::Load();
 	JE_DEBUG_PRINT("Loading %s...\n", m_name.c_str());
 }
 
 void State::Init()
 {
+	SystemManager::Init();
 	JE_DEBUG_PRINT("Initializing %s...\n", m_name.c_str());
 }
 
 void State::Update(float _dt)
 {
+	SystemManager::Update(_dt);
 	JE_UNUSED_PARAM(_dt);
 
 	//JE_DEBUG_PRINT("Updating %s...\n", m_name.c_str());
@@ -71,11 +77,13 @@ void State::Update(float _dt)
 
 void State::Close()
 {
+	SystemManager::Close();
 	JE_DEBUG_PRINT("Closing %s...\n", m_name.c_str());
 }
 
 void State::Unload()
 {
+	SystemManager::Unload();
 	JE_DEBUG_PRINT("Unloading %s...\n", m_name.c_str());
 }
 

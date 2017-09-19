@@ -73,7 +73,10 @@ void Application::Update()
 		StateManager::PushState("PauseState");
 		StateManager::SetStartingState("testState1");
 
-		//Update the surface
+		// Init State manager
+		StateManager::Init();
+
+		// Update the surface
 		while (StateManager::GetStatus()
 			!= StateManager::StateStatus::S_QUIT) {
 			

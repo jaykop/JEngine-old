@@ -16,11 +16,11 @@ public:
 		S_NONE, S_PAUSE, S_RESUME, S_CHANGE, S_RESUME_AND_CHANGE, S_QUIT
 	};
 
-	static void Load();
+	//static void Load();
 	static void Init();
 	static void Update(SDL_Event& _event);
 	static void Close();
-	static void Unload();
+	//static void Unload();
 
 	static void PushState(const char* _stateName);
 	static void PopState(const char* _stateName);
@@ -40,8 +40,8 @@ private:
 
 	StateManager() {};
 	~StateManager() {};
-	StateManager(const StateManager& /*copy*/) {};
-	void operator=(const StateManager& /*copy*/) {};
+	StateManager(const StateManager& /*_copy*/) {};
+	void operator=(const StateManager& /*_copy*/) {};
 
 	static void EventHandle();
 	static void ChangeState();

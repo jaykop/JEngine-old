@@ -111,7 +111,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JayEngine;$(SolutionDir)..\..\include;$(SolutionDir)..\..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>opengl32.lib;glew32s.lib;;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\lib\GL\x86;$(SolutionDir)\lib\SDL2\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Windows</SubSystem>
     </Link>
@@ -126,7 +126,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)\lib\GL\x64;$(SolutionDir)\lib\SDL2\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glew32s.lib;;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -143,7 +143,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;glew32s.lib;;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\lib\GL\x86;$(SolutionDir)\lib\SDL2\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Windows</SubSystem>
     </Link>
@@ -162,38 +162,65 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)\lib\GL\x64;$(SolutionDir)\lib\SDL2\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glew32s.lib;;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Application.cpp" />
+    <ClCompile Include="..\..\src\BehaviorSystem.cpp" />
     <ClCompile Include="..\..\src\ComponentContainer.cpp" />
     <ClCompile Include="..\..\src\Debug.cpp" />
-    <ClCompile Include="..\..\src\Event.cpp" />
-    <ClCompile Include="..\..\src\EventHandler.cpp" />
+    <ClCompile Include="..\..\src\Event.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\src\EventHandler.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\src\GLManager.cpp" />
+    <ClCompile Include="..\..\src\GraphicSystem.cpp" />
     <ClCompile Include="..\..\src\InputHandler.cpp" />
     <ClCompile Include="..\..\src\MathUtils.cpp" />
     <ClCompile Include="..\..\src\Matrix2x2.cpp" />
     <ClCompile Include="..\..\src\Matrix4x4.cpp" />
     <ClCompile Include="..\..\src\Object.cpp" />
     <ClCompile Include="..\..\src\ObjectManager.cpp" />
+    <ClCompile Include="..\..\src\PhysicsSystem.cpp" />
     <ClCompile Include="..\..\src\Platform_win32.cpp" />
+    <ClCompile Include="..\..\src\SoundSystem.cpp" />
     <ClCompile Include="..\..\src\State.cpp" />
     <ClCompile Include="..\..\src\StateManager.cpp" />
+    <ClCompile Include="..\..\src\SystemManager.cpp" />
     <ClCompile Include="..\..\src\Timer.cpp" />
     <ClCompile Include="..\..\src\Vector2.cpp" />
     <ClCompile Include="..\..\src\Vector3.cpp" />
     <ClCompile Include="..\..\src\Vector4.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\BehaviorSystem.h" />
+    <ClInclude Include="..\..\include\GraphicSystem.h" />
     <ClInclude Include="..\..\include\JayEngine\Application.h" />
     <ClInclude Include="..\..\include\JayEngine\Component.h" />
     <ClInclude Include="..\..\include\JayEngine\ComponentContainer.h" />
     <ClInclude Include="..\..\include\JayEngine\Debug.h" />
-    <ClInclude Include="..\..\include\JayEngine\Event.h" />
-    <ClInclude Include="..\..\include\JayEngine\EventHandler.h" />
+    <ClInclude Include="..\..\include\JayEngine\Event.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\EventHandler.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\..\include\JayEngine\GLManager.h" />
     <ClInclude Include="..\..\include\JayEngine\InputHandler.h" />
     <ClInclude Include="..\..\include\JayEngine\Macro.h" />
@@ -209,11 +236,20 @@
     <ClInclude Include="..\..\include\JayEngine\Vector2.h" />
     <ClInclude Include="..\..\include\JayEngine\Vector3.h" />
     <ClInclude Include="..\..\include\JayEngine\Vector4.h" />
+    <ClInclude Include="..\..\include\PhysicsSystem.h" />
+    <ClInclude Include="..\..\include\SoundSystem.h" />
+    <ClInclude Include="..\..\include\System.h" />
+    <ClInclude Include="..\..\include\SystemManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\include\JayEngine\ComponentContainer.inl" />
     <None Include="..\..\include\JayEngine\ComponentManager.inl" />
-    <None Include="..\..\include\JayEngine\EventHandler.inl" />
+    <None Include="..\..\include\JayEngine\EventHandler.inl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

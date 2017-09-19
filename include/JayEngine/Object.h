@@ -32,9 +32,9 @@ public:
 private:
 
 	Object() {};
-	Object(const Object& /*copy*/) {};
+	Object(const Object& /*_copy*/) {};
 
-	void operator=(const Object& /*copy*/) {};
+	void operator=(const Object& /*_copy*/) {};
 
 	bool				m_active;
 	Object*				m_pParent;

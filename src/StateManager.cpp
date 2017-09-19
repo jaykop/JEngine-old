@@ -3,6 +3,7 @@
 #include "Timer.h"
 #include "InputHandler.h"
 #include "Application.h"
+#include "SystemManager.h"
 
 NS_JE_BEGIN
 
@@ -15,12 +16,14 @@ State						*StateManager::m_pCurrent = nullptr,
 							*StateManager::m_pNext = nullptr, 
 							*StateManager::m_pPause = nullptr;
 
-void StateManager::Load()
-{
-}
+//void StateManager::Load()
+//{
+//}
 
 void StateManager::Init()
 {
+	// Allocate systems in advance
+	SystemManager::Bind();
 }
 
 void StateManager::Update(SDL_Event& _event)
@@ -55,7 +58,8 @@ void StateManager::Update(SDL_Event& _event)
 			Timer::Start();
 
 			// Swap buffer
-			SDL_GL_SwapWindow(pWindow);
+			SDL_GL_SwapWindow(pWindow);
+
 		}
 	}
 
@@ -76,12 +80,16 @@ void StateManager::Update(SDL_Event& _event)
 
 void StateManager::Close()
 {
+	// Deallocate systems in advance
+	SystemManager::Unbind();
+
+	// Clear all the states
 	Clear();
 }
 
-void StateManager::Unload()
-{
-}
+//void StateManager::Unload()
+//{
+//}
 
 void StateManager::EventHandle()
 {
