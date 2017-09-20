@@ -1,4 +1,5 @@
 #include "GLManager.h"
+#include <cstdio>
 
 NS_JE_BEGIN
 
@@ -22,6 +23,19 @@ bool GLManager::initSDL_GL()
 
 void GLManager::CloseSDL_GL()
 {
+}
+
+void GLManager::SetVbo()
+{
+	// Generate vertex buffer object(VBO)
+	glGenBuffers(1, &m_vbo);
+
+	// Set vbo active
+	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+
+	// Now we can copy vertex data to this vbo
+	glBufferData(GL_ARRAY_BUFFER, sizeof(s_vertices), s_vertices, GL_STATIC_DRAW);
+
 }
 
 NS_JE_END

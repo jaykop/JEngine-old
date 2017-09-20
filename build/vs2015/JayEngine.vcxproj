@@ -39,6 +39,7 @@
     <ClCompile Include="..\..\src\JayEngine\PhysicsSystem.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Platform_win32.cpp" />
     <ClCompile Include="..\..\src\JayEngine\SoundSystem.cpp" />
+    <ClCompile Include="..\..\src\JayEngine\Shader.cpp" />
     <ClCompile Include="..\..\src\JayEngine\State.cpp" />
     <ClCompile Include="..\..\src\JayEngine\StateManager.cpp" />
     <ClCompile Include="..\..\src\JayEngine\SystemManager.cpp" />
@@ -72,6 +73,7 @@
     <ClInclude Include="..\..\include\JayEngine\Object.h" />
     <ClInclude Include="..\..\include\JayEngine\ObjectManager.h" />
     <ClInclude Include="..\..\include\JayEngine\PhysicsSystem.h" />
+    <ClInclude Include="..\..\include\JayEngine\Shader.hpp" />
     <ClInclude Include="..\..\include\JayEngine\SoundSystem.h" />
     <ClInclude Include="..\..\include\JayEngine\State.h" />
     <ClInclude Include="..\..\include\JayEngine\StateManager.h" />

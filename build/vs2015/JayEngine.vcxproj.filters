@@ -82,6 +82,9 @@
     <ClCompile Include="..\..\src\JayEngine\Platform_win32.cpp">
       <Filter>Core\Platform</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\Shader.cpp">
+      <Filter>System\Graphic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\JayEngine\Application.h">
@@ -182,6 +185,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\imgui\stb_textedit.h">
       <Filter>Utils\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\Shader.hpp">
+      <Filter>System\Graphic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

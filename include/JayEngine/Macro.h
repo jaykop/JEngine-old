@@ -50,5 +50,7 @@ Contains Engine's generic macros
 #ifdef _DEBUG
 #include <cstdio>
 #define JE_DEBUG_PRINT(...) printf(__VA_ARGS__)
+#else
+#define JE_DEBUG_PRINT(...)	JE_UNUSED_PARAM(__VA_ARGS__)
 #endif
 // And the other...?
