@@ -1,3 +1,4 @@
+#include "GLManager.h"
 #include "GraphicSystem.h"
 
 NS_JE_BEGIN
@@ -17,6 +18,7 @@ void GraphicSystem::Init()
 
 void GraphicSystem::Update(float /*dt*/)
 {
+	glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 
 void GraphicSystem::Close()

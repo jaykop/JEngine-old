@@ -62,7 +62,7 @@ void StateManager::Update(SDL_Event& _event)
 			SDL_GL_SwapWindow(pWindow);
 
 			// Update imgui renderer
-			ImguiManager::Update();
+			//ImguiManager::Update();
 		}
 	}
 

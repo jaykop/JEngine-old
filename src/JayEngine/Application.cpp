@@ -55,11 +55,17 @@ void Application::Update()
 
 	else {
 		
-		// Get GL context
-		m_pContext = SDL_GL_CreateContext(m_pWindow);
-		
-		GLManager::initSDL_GL();		// Init gl
-		ImguiManager::Init(m_pWindow);	// init imgui
+		/*************** OpenGL **************/
+		m_pContext = SDL_GL_CreateContext(m_pWindow);	// Get GL context
+		GLManager::initSDL_GL();						// Init gl
+
+		// TODO
+		GLManager::ActivateShader(						// Call Shader
+			"../../src/Shader/vertexshader.vs",				// vertex Shader
+			"../../src/Shader/fragmentshader.fs");			// fragment shader
+
+		/**************** imgui **************/
+		//ImguiManager::Init(m_pWindow);					// init imgui
 
 		//Get window surface
 		screenSurface = SDL_GetWindowSurface(m_pWindow);
@@ -87,7 +93,9 @@ void Application::Update()
 		
 			// Update sdl window
 			SDL_UpdateWindowSurface(m_pWindow);
-		}
+
+		}	// while (StateManager::GetStatus()
+			// != StateManager::StateStatus::S_QUIT) {
 
 	} // else {
 }
@@ -98,7 +106,7 @@ void Application::Close()
 	StateManager::Close();
 
 	// Close imgui manager
-	ImguiManager::Close();
+	//ImguiManager::Close();
 
 	// Destroy
 	SDL_GL_DeleteContext(m_pContext);

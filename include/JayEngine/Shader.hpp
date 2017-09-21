@@ -4,15 +4,17 @@
 
 NS_JE_BEGIN
 
+class GLManager;
+
 class Shader {
 
 private:
 
+	friend class GLManager;
+
 	static void LoadShader(
 		const char* _vertex_file_path,
 		const char* _fragment_file_path);
-
-public:
 	
 	Shader() {};
 	~Shader() {};
