@@ -6,6 +6,9 @@ NS_JE_BEGIN
 
 GLuint GLManager::m_vao = 0;
 GLuint GLManager::m_vbo = 0;
+GLuint GLManager::m_ebo = 0;
+GLManager::DrawMode GLManager::m_mode = DrawMode::GRAPHIC_FILL;
+GLint GLManager::m_uniformType[GRAPHIC_END];
 
 bool GLManager::initSDL_GL()
 {
@@ -23,6 +26,12 @@ bool GLManager::initSDL_GL()
 		SetVao();	// Generate vertex array object
 		SetVbo();	// Generate vertex buffuer object
 		SetVA();	// Set vertex attributes pointers
+		SetEbo();	// Set indices
+
+		// Show how much attributes are available
+		int nrAttributes;
+		glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
+		JE_DEBUG_PRINT("Maximum nr of vertex attributes supported: %d\n", nrAttributes);
 	}
 
 	return true;
@@ -36,6 +45,29 @@ void GLManager::ActivateShader(const char * _vertexDir, const char * _fregmentDi
 {
 	// Load shader and compile and link
 	Shader::LoadShader(_vertexDir, _fregmentDir);
+}
+
+void GLManager::SetDrawMode(DrawMode _mode)
+{
+	switch (_mode)
+	{
+	case GRAPHIC_DOT:
+		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+		break;
+	case GRAPHIC_LINE:
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		break;
+	case GRAPHIC_FILL:
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		break;
+	}
+
+	m_mode = _mode;
+}
+
+void GLManager::RegisterUniform()
+{
+
 }
 
 void GLManager::SetVao()
@@ -70,6 +102,14 @@ void GLManager::SetVA()
 
 	// TODO
 	// maybe more...
+}
+
+void GLManager::SetEbo()
+{
+	// Just like vbo...
+	glGenBuffers(1, &m_ebo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(s_indices), s_indices, GL_STATIC_DRAW);
 }
 
 NS_JE_END

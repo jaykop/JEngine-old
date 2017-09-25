@@ -85,6 +85,12 @@
     <ClCompile Include="..\..\src\JayEngine\Shader.cpp">
       <Filter>System\Graphic</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\Sprite.cpp">
+      <Filter>System\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\Transform.cpp">
+      <Filter>System\Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\JayEngine\Application.h">
@@ -188,6 +194,12 @@
     </ClInclude>
     <ClInclude Include="..\..\include\JayEngine\Shader.hpp">
       <Filter>System\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\Sprite.h">
+      <Filter>System\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\Transform.h">
+      <Filter>System\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -8,6 +8,7 @@ class Component {
 
 public:
 
+	Component() {};
 	Component(Object* _owner)
 		: m_pOwner(_owner) {};
 
@@ -15,7 +16,6 @@ public:
 
 private:
 
-	Component() {};
 	Component(const Component& /*_copy*/) {};
 	void operator=(const Component& /*_copy*/) {};
 

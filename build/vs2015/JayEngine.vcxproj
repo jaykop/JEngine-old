@@ -40,10 +40,12 @@
     <ClCompile Include="..\..\src\JayEngine\Platform_win32.cpp" />
     <ClCompile Include="..\..\src\JayEngine\SoundSystem.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Shader.cpp" />
+    <ClCompile Include="..\..\src\JayEngine\Sprite.cpp" />
     <ClCompile Include="..\..\src\JayEngine\State.cpp" />
     <ClCompile Include="..\..\src\JayEngine\StateManager.cpp" />
     <ClCompile Include="..\..\src\JayEngine\SystemManager.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Timer.cpp" />
+    <ClCompile Include="..\..\src\JayEngine\Transform.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Vector2.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Vector3.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Vector4.cpp" />
@@ -75,11 +77,13 @@
     <ClInclude Include="..\..\include\JayEngine\PhysicsSystem.h" />
     <ClInclude Include="..\..\include\JayEngine\Shader.hpp" />
     <ClInclude Include="..\..\include\JayEngine\SoundSystem.h" />
+    <ClInclude Include="..\..\include\JayEngine\Sprite.h" />
     <ClInclude Include="..\..\include\JayEngine\State.h" />
     <ClInclude Include="..\..\include\JayEngine\StateManager.h" />
     <ClInclude Include="..\..\include\JayEngine\System.h" />
     <ClInclude Include="..\..\include\JayEngine\SystemManager.h" />
     <ClInclude Include="..\..\include\JayEngine\Timer.h" />
+    <ClInclude Include="..\..\include\JayEngine\Transform.h" />
     <ClInclude Include="..\..\include\JayEngine\Vector2.h" />
     <ClInclude Include="..\..\include\JayEngine\Vector3.h" />
     <ClInclude Include="..\..\include\JayEngine\Vector4.h" />
