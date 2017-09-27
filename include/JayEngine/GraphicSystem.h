@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "System.h"
+#include "Vector4.h"
 
 NS_JE_BEGIN
 
@@ -26,6 +27,7 @@ private:
 	void operator=(const GraphicSystem& /*_copy*/) {};
 
 	std::vector<Sprite*> m_sprites;
+	vec4 m_renderColor;
 };
 
 NS_JE_END

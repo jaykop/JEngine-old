@@ -4,12 +4,15 @@
 
 NS_JE_BEGIN
 
+class   Object;
 class	Component;
 typedef std::unordered_map<std::string, Component*>	ComponentMap;
 
 class ComponentContainer {
 
 public:
+
+	friend class Object;
 
 	template <typename ComponentType>
 	inline void				AddComponent();
@@ -24,6 +27,7 @@ public:
 
 private:
 
+	Object* m_owner;
 	ComponentMap m_cptMap;
 
 };

@@ -103,4 +103,9 @@ bool Object::GetActive(void) const
 	return m_active;
 }
 
+ComponentContainer* Object::GetComponentMap()
+{
+	return &m_cptContainer;
+}
+
 NS_JE_END

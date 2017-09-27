@@ -7,9 +7,9 @@ inline void ComponentContainer::AddComponent()
 {
 	// Insert new component to the list
 	m_cptMap.insert(
-		ComponentMap::value_type(
-			ComponentManager::CreateComponent<ComponentType>(),
-			typeid(ComponentType).name()));
+		ComponentMap::value_type(typeid(ComponentType).name(),
+			ComponentManager::CreateComponent<ComponentType>(m_owner)
+			));
 }
 
 template<typename ComponentType>
@@ -20,7 +20,7 @@ inline ComponentType* ComponentContainer::GetComponent()
 
 	// If there is return it
 	if (found != m_cptMap.end())
-		return found->second;
+		return static_cast<ComponentType*>(found->second);
 
 	// Unless...
 	else {

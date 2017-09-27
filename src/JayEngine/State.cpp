@@ -4,6 +4,10 @@
 
 //TODO Remove later
 #include "InputHandler.h"
+#include "Object.h"
+#include "Transform.h"
+#include "Sprite.h"
+#include "ObjectManager.h"
 
 NS_JE_BEGIN
 
@@ -23,6 +27,14 @@ void State::Init()
 {
 	SystemManager::Init();
 	JE_DEBUG_PRINT("Initializing %s...\n", m_name.c_str());
+
+	ObjectManager::CreateObject("test");
+	ObjectManager::GetCreatedObject()->GetComponentMap()->AddComponent<Transform>();
+	ObjectManager::GetCreatedObject()->GetComponentMap()->AddComponent<Sprite>();
+	ObjectManager::AddCreatedObject();
+
+	ObjectManager::GetObject("test")->GetComponentMap()->GetComponent<Transform>()->SetScale(vec3(10.f, 10.f, 0.f));
+	ObjectManager::GetObject("test")->GetComponentMap()->GetComponent<Sprite>()->SetColor(vec4(1.f, 0.f, 0.f, 1.f));
 }
 
 void State::Update(float _dt)

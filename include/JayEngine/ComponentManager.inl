@@ -1,11 +1,11 @@
 NS_JE_BEGIN
 
 template<typename ComponentType>
-inline ComponentType * ComponentManager::CreateComponent()
+inline ComponentType* ComponentManager::CreateComponent(Object* _owner)
 {
 	// Check if component tpye is derived from base component
 	if (std::is_base_of<Component, ComponentType>())
-		return new ComponentType;
+		return new ComponentType(_owner);
 
 	return nullptr;
 }

@@ -1,3 +1,4 @@
+#include "Sprite.h"
 #include "GLManager.h"
 #include "GraphicSystem.h"
 
@@ -20,12 +21,15 @@ void GraphicSystem::Update(float /*dt*/)
 {
 	// Update sprites
 	for (auto sprite : m_sprites) {
-		;
-	}
 
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	//glDrawArrays(GL_TRIANGLES, 0, 3);
+		// Get color from component and send to shader
+		m_renderColor = (*sprite).GetColor();
+		glUniform4f(GLManager::GetUniform(GLManager::UNIFORM_COLOR),
+			m_renderColor.x, m_renderColor.y, m_renderColor.z, m_renderColor.w);
+
+		// Render image
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	}
 }
 
 void GraphicSystem::Close()

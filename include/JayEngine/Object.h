@@ -29,6 +29,8 @@ public:
 	void	SetActive(bool _active);
 	bool	GetActive(void) const;
 
+	ComponentContainer* GetComponentMap();
+
 private:
 
 	Object() {};

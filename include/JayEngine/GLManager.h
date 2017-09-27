@@ -33,16 +33,15 @@ class GLManager {
 
 public:
 
-	enum DrawMode {GRAPHIC_DOT, GRAPHIC_LINE, GRAPHIC_FILL};
-
-	enum UniformType {GRAPHIC_COLOR, GRAPHIC_END};
+	enum DrawMode {DRAW_DOT, DRAW_LINE, DRAW_FILL};
+	enum UniformType {UNIFORM_COLOR, UNIFORM_END};
 
 	static bool initSDL_GL();
 	static void CloseSDL_GL();
 	static void ActivateShader(const char* _vertexDir, const char* _fregmentDir);
 
 	static void SetDrawMode(DrawMode _mode);
-	static void RegisterUniform();
+	static GLint GetUniform(UniformType _uniform);
 
 private:
 
@@ -57,10 +56,11 @@ private:
 	static void SetVao();
 	static void SetVA();
 	static void SetEbo();
+	static void RegisterUniform();
 
 	static GLuint m_vbo, m_vao, m_ebo;
 	static DrawMode m_mode;
-	static GLint m_uniformType[GRAPHIC_END];
+	static GLint m_uniformType[UNIFORM_END];
 
 };
 

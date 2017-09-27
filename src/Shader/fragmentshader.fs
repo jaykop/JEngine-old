@@ -1,6 +1,6 @@
 #version 330 core
 
-in vec4 outColor;
+uniform outColor;
 
 out vec4 fragColor;
 

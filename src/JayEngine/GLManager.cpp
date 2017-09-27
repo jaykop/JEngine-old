@@ -7,8 +7,8 @@ NS_JE_BEGIN
 GLuint GLManager::m_vao = 0;
 GLuint GLManager::m_vbo = 0;
 GLuint GLManager::m_ebo = 0;
-GLManager::DrawMode GLManager::m_mode = DrawMode::GRAPHIC_FILL;
-GLint GLManager::m_uniformType[GRAPHIC_END];
+GLManager::DrawMode GLManager::m_mode = DrawMode::DRAW_FILL;
+GLint GLManager::m_uniformType[UNIFORM_END];
 
 bool GLManager::initSDL_GL()
 {
@@ -51,13 +51,13 @@ void GLManager::SetDrawMode(DrawMode _mode)
 {
 	switch (_mode)
 	{
-	case GRAPHIC_DOT:
+	case DRAW_DOT:
 		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
 		break;
-	case GRAPHIC_LINE:
+	case DRAW_LINE:
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		break;
-	case GRAPHIC_FILL:
+	case DRAW_FILL:
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		break;
 	}
@@ -67,7 +67,12 @@ void GLManager::SetDrawMode(DrawMode _mode)
 
 void GLManager::RegisterUniform()
 {
+	glGetUniformLocation(m_uniformType[UNIFORM_COLOR], "outColor");
+}
 
+GLint GLManager::GetUniform(UniformType _uniform)
+{
+	return m_uniformType[_uniform];
 }
 
 void GLManager::SetVao()
@@ -78,7 +83,7 @@ void GLManager::SetVao()
 	// Generate vertex array object(VAO)
 	glGenVertexArrays(1, &m_vao);
 
-	// 1. bind Vertex Array Object
+	// Bind Vertex Array Object
 	glBindVertexArray(m_vao);
 }
 
