@@ -40,5 +40,21 @@ void GraphicSystem::Unload()
 {
 }
 
+void GraphicSystem::AddSprite(Sprite* _sprite)
+{
+	m_sprites.push_back(_sprite);
+}
+
+void GraphicSystem::RemoveSprite(Sprite* _sprite)
+{
+	for (Sprites::iterator it = m_sprites.begin();
+		it != m_sprites.end(); ++it) {
+		if ((*it)->m_id == _sprite->m_id) {
+			m_sprites.erase(it);
+			break;
+		}
+	}
+}
+
 NS_JE_END
 

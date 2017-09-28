@@ -33,7 +33,7 @@ void State::Init()
 	ObjectManager::GetCreatedObject()->GetComponentMap()->AddComponent<Sprite>();
 	ObjectManager::AddCreatedObject();
 
-	ObjectManager::GetObject("test")->GetComponentMap()->GetComponent<Transform>()->SetScale(vec3(10.f, 10.f, 0.f));
+	ObjectManager::GetObject("test")->GetComponentMap()->GetComponent<Transform>()->SetScale(vec3(1.f, 1.f, 0.f));
 	ObjectManager::GetObject("test")->GetComponentMap()->GetComponent<Sprite>()->SetColor(vec4(1.f, 0.f, 0.f, 1.f));
 }
 
@@ -89,6 +89,8 @@ void State::Update(float _dt)
 
 void State::Close()
 {
+	ObjectManager::ClearObjectContainer();
+
 	SystemManager::Close();
 	JE_DEBUG_PRINT("Closing %s...\n", m_name.c_str());
 }

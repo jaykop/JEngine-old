@@ -7,6 +7,8 @@ NS_JE_BEGIN
 Object::Object(const std::string& _name)
 	:m_name(_name), m_active(true), m_pParent(nullptr)
 {
+	m_id = ObjectManager::m_registerNumber;
+	m_cptContainer.m_owner = this;
 }
 
 Object::~Object()
@@ -17,6 +19,11 @@ Object::~Object()
 
 	// Remove all components belong to this object
 	m_cptContainer.ClearContainer();
+}
+
+unsigned Object::GetId() const
+{
+	return m_id;
 }
 
 const std::string& Object::GetName(void) const

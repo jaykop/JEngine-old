@@ -6,12 +6,12 @@ NS_JE_BEGIN
 void ComponentContainer::ClearContainer()
 {
 	// Clear all components in the list
-	for (auto it = m_cptMap.begin();
-		it != m_cptMap.end(); ) {
-
-		// Remove the one
-		m_cptMap.erase(it);
-		delete (it++)->second;
+	for (auto component : m_cptMap) {
+		
+		if (component.second) {
+			delete component.second;
+			component.second = nullptr;
+		}
 	}
 }
 

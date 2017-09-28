@@ -18,6 +18,8 @@ public:
 	Object(const std::string& _name);
 	~Object();
 
+	unsigned GetId() const;
+
 	const std::string&	GetName(void) const;
 	void				SetName(const char* _name);
 
@@ -35,9 +37,9 @@ private:
 
 	Object() {};
 	Object(const Object& /*_copy*/) {};
-
 	void operator=(const Object& /*_copy*/) {};
 
+	unsigned			m_id;
 	bool				m_active;
 	Object*				m_pParent;
 	std::string			m_name;

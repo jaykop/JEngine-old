@@ -40,9 +40,6 @@
     <ClCompile Include="..\..\src\JayEngine\Object.cpp">
       <Filter>Core\Object</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JayEngine\ObjectManager.cpp">
-      <Filter>Core\Object</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\JayEngine\SystemManager.cpp">
       <Filter>System</Filter>
     </ClCompile>
@@ -91,6 +88,9 @@
     <ClCompile Include="..\..\src\JayEngine\Transform.cpp">
       <Filter>System\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\ObjectManager.cpp">
+      <Filter>Core\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\JayEngine\Application.h">
@@ -137,9 +137,6 @@
     </ClInclude>
     <ClInclude Include="..\..\include\JayEngine\Timer.h">
       <Filter>Utils\Timer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JayEngine\ObjectManager.h">
-      <Filter>Core\Object</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\JayEngine\Object.h">
       <Filter>Core\Object</Filter>
@@ -200,6 +197,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\JayEngine\Transform.h">
       <Filter>System\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\ObjectManager.h">
+      <Filter>Core\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

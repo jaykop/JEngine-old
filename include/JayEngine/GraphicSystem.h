@@ -11,6 +11,9 @@ class GraphicSystem : public System
 
 public:
 
+	typedef std::vector<Sprite*> Sprites;
+
+	friend class Sprite;
 	friend class SystemManager;
 
 	void Load() override;
@@ -26,7 +29,10 @@ private:
 	GraphicSystem(const GraphicSystem& /*_copy*/) {};
 	void operator=(const GraphicSystem& /*_copy*/) {};
 
-	std::vector<Sprite*> m_sprites;
+	void AddSprite(Sprite* _sprite);
+	void RemoveSprite(Sprite* _sprite);
+
+	Sprites m_sprites;
 	vec4 m_renderColor;
 };
 

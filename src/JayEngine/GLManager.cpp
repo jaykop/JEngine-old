@@ -45,6 +45,7 @@ void GLManager::ActivateShader(const char * _vertexDir, const char * _fregmentDi
 {
 	// Load shader and compile and link
 	Shader::LoadShader(_vertexDir, _fregmentDir);
+	RegisterUniform();
 }
 
 void GLManager::SetDrawMode(DrawMode _mode)
@@ -67,7 +68,7 @@ void GLManager::SetDrawMode(DrawMode _mode)
 
 void GLManager::RegisterUniform()
 {
-	glGetUniformLocation(m_uniformType[UNIFORM_COLOR], "outColor");
+	m_uniformType[UNIFORM_COLOR] = glGetUniformLocation(Shader::m_programId, "color");
 }
 
 GLint GLManager::GetUniform(UniformType _uniform)

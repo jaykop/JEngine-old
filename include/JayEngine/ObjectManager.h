@@ -11,9 +11,13 @@ class ObjectManager {
 
 public:
 
+	friend class Object;
+
 	static void				CreateObject(const char* _name);
 	static Object*			GetCreatedObject();
 	static void				AddCreatedObject();
+
+	static void				ClearObjectContainer();
 
 	static void				RemoveObject(const char* _name);
 	static Object*			GetObject(const char* _name);
@@ -23,11 +27,12 @@ public:
 
 private:
 
-	ObjectManager() {};
 	~ObjectManager() {};
+	ObjectManager() {};
 	ObjectManager(const ObjectManager& /*_copy*/) {};
 	void operator=(const ObjectManager& /*_copy*/) {};
 
+	static unsigned			m_registerNumber;
 	static Object*			m_pLastMade;
 	static ObjectContainer	m_objContainer;
 };

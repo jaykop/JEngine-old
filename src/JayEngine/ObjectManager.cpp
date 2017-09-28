@@ -9,8 +9,20 @@ NS_JE_BEGIN
 //////////////////////////////////////////////////////////////////////////
 ObjectContainer ObjectManager::m_objContainer;
 Object*			ObjectManager::m_pLastMade = nullptr;
+unsigned		ObjectManager::m_registerNumber = 0;
 
-void ObjectManager::CreateObject(const char * _name)
+void ObjectManager::ClearObjectContainer() 
+{
+	for (auto obj : m_objContainer)
+	{
+		if (obj.second) {
+			delete obj.second;
+			obj.second = nullptr;
+		}
+	}
+}
+
+void ObjectManager::CreateObject(const char* _name)
 {
 	// If there is created object in advance,
 	// remove it
@@ -34,6 +46,8 @@ void ObjectManager::AddCreatedObject()
 		ObjectContainer::value_type(
 			m_pLastMade->m_name, m_pLastMade));
 
+	++m_registerNumber;
+
 	// TODO vector way
 	//// Register the objects
 	//m_objContainer.push_back(m_pLastMade);
@@ -46,7 +60,7 @@ void ObjectManager::RemoveObject(const char* _name)
 
 	// If found the one
 	if (toRemove != m_objContainer.end()) {
-		delete (*toRemove).second;;
+		delete (*toRemove).second;
 	}
 
 	// Unless...

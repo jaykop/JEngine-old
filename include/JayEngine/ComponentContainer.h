@@ -27,6 +27,12 @@ public:
 
 private:
 
+	ComponentContainer() {};
+	~ComponentContainer() {};
+
+	ComponentContainer(const ComponentContainer& /*_copy*/) {};
+	void operator=(const ComponentContainer& /*_copy*/) {};
+
 	Object* m_owner;
 	ComponentMap m_cptMap;
 

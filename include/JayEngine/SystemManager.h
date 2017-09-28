@@ -22,17 +22,17 @@ public:
 	static void Bind();
 	static void Unbind();
 
+	static GraphicSystem	*m_grpSystem;
+	static PhysicsSystem	*m_phySystem;
+	static SoundSystem		*m_sndSystem;
+	static BehaviorSystem	*m_bhvSystem;
+
 private:
 
 	SystemManager();
 	~SystemManager() {};
 	SystemManager(const SystemManager& /*_copy*/) {};
 	void operator=(const SystemManager& /*_copy*/) {};
-
-	static GraphicSystem	*m_grpSystem;
-	static PhysicsSystem	*m_phySystem;
-	static SoundSystem		*m_sndSystem;
-	static BehaviorSystem	*m_bhvSystem;
 };
 
 NS_JE_END

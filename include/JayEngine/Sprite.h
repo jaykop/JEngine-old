@@ -11,8 +11,10 @@ class Sprite : public Component
 
 public:
 
+	friend class GraphicSystem;
+
 	Sprite(Object* _owner);
-	~Sprite() {};
+	~Sprite();
 
 	void SetColor(const vec4& _color);
 	const vec4& GetColor() const;
