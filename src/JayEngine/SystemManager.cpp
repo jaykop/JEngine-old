@@ -35,7 +35,6 @@ void SystemManager::Update(float _dt)
 	m_bhvSystem->Update(_dt);
 }
 
-
 void SystemManager::Close()
 {
 	m_grpSystem->Close();

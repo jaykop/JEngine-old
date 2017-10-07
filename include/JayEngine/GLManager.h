@@ -34,7 +34,17 @@ class GLManager {
 public:
 
 	enum DrawMode {DRAW_DOT, DRAW_LINE, DRAW_FILL};
-	enum UniformType {UNIFORM_COLOR, UNIFORM_END};
+	enum UniformType {
+		
+		// Martix uniform
+		UNIFORM_TRANSLATE, UNIFORM_SCALE, UNIFORM_ROTATE,
+		 UNIFORM_CAMERA, UNIFORM_PROJECTION, UNIFORM_MVP,
+		
+		// Vertor uniform
+		UNIFORM_COLOR, 
+		
+		// Last enum
+		UNIFORM_END};
 
 	static bool initSDL_GL();
 	static void CloseSDL_GL();

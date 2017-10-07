@@ -266,7 +266,7 @@ Vector2& Vector2::operator*=(float _constant)
 Vector2& Vector2::operator/=(float _constant)
 {
 	// If _constant is not zero,
-	if (!_constant) {
+	if (_constant) {
 		x /= _constant;
 		y /= _constant;
 	}
@@ -385,7 +385,7 @@ Vector2 Vector2::operator/(float _constant) const
 	Vector2 result;
 
 	// If _constant is not zero,
-	if (!_constant) {
+	if (_constant) {
 		result.x = x / _constant;
 		result.y = y / _constant;
 	}

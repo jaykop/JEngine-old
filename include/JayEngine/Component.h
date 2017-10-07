@@ -9,6 +9,8 @@ class Component {
 
 public:
 
+	friend class Object;
+
 	Component() {};
 	Component(Object* _owner)
 		: m_pOwner(_owner), m_id(_owner->GetId()) {};

@@ -18,6 +18,8 @@ Custom Matrix looks like this...
 */
 /******************************************************************************/
 
+#include <cmath>
+#include "MathUtils.h"
 #include "Matrix4x4.h"
 
 NS_JE_BEGIN
@@ -47,7 +49,6 @@ Matrix4x4::Matrix4x4(float element)
 \brief - Matrix4x4 Copy Constructor
 */
 /******************************************************************************/
-
 Matrix4x4::Matrix4x4(const Matrix4x4& rhs)
 {
 	if (this != &rhs)
@@ -370,10 +371,10 @@ Matrix4x4 operator*(float constant, const Matrix4x4& rhs)
 /******************************************************************************/
 std::ostream& operator<<(std::ostream& os, const Matrix4x4& contents)
 {
-	for (int i = 0; i < 4; ++i)
+	for (int i = 0; i < 4; ++i)	// row
 	{
 		os << "[ ";
-		for (int j = 0; j < 4; ++j)
+		for (int j = 0; j < 4; ++j)	// column
 		{
 			os.setf(std::ios_base::showpoint);
 			os << contents.m_member[i][j] << " ";
@@ -396,9 +397,10 @@ Matrix4x4 Matrix4x4::GetTranspose(void) const
 	Matrix4x4 result;
 
 	for (int i = 0; i < 4; ++i)
-		for (int j = 0; j < 4; ++j)
+		for (int j = 0; j <= i; ++j) {
 			result.m_member[j][i] = m_member[i][j];
-
+			result.m_member[i][j] = m_member[j][i];
+		}
 	return result;
 }
 
@@ -407,10 +409,12 @@ Matrix4x4& Matrix4x4::Transpose(void)
 	Matrix4x4 result;
 
 	for (int i = 0; i < 4; ++i)
-		for (int j = 0; j < 4; ++j)
+		for (int j = 0; j <= i; ++j) {
 			result.m_member[j][i] = m_member[i][j];
-	*this = result;
+			result.m_member[i][j] = m_member[j][i];
+		}
 
+	*this = result;
 	return *this;
 }
 
@@ -689,123 +693,117 @@ Matrix4x4& Matrix4x4::Inverse()
 }
 
 
-Matrix4x4 Matrix4x4::Perspective(float fovy, float aspect, float zNear, float zFar)
+Matrix4x4 Matrix4x4::Perspective(float _fovy, float _aspect, float _zNear, float _zFar)
 {
-	float tanHalfFovy = tan(fovy / static_cast<float>(2));
+	float distance = 1.f / tanf(_fovy * .5f);
 
-	Matrix4x4 Result(static_cast<float>(0));
-	Result.m_member[0][0] = static_cast<float>(1) / (aspect * tanHalfFovy);
-	Result.m_member[1][1] = static_cast<float>(1) / (tanHalfFovy);
-	Result.m_member[2][2] = -(zFar + zNear) / (zFar - zNear);
-	Result.m_member[2][3] = -static_cast<float>(1);
-	Result.m_member[3][2] = -(static_cast<float>(2) * zFar * zNear) / (zFar - zNear);
+	Matrix4x4 Result;
+
+	Result.m_member[0][0] = distance / _aspect;
+	Result.m_member[1][1] = distance;
+	Result.m_member[2][2] = (_zFar + _zNear) / (_zNear- _zFar);
+
+	Result.m_member[2][3] = (2 * _zFar * _zNear) / (_zNear -_zFar);
+	Result.m_member[3][2] = -1.f;
+	
 	return Result;
 }
 
-
-Matrix4x4 Matrix4x4::Ortho(float left, float right, float bottom, float top, float zNear, float zFar)
+Matrix4x4 Matrix4x4::Orthogonal(float _left, float _right, float _bottom, float _top, float _zNear, float _zFar)
 {
-	//tmat4x4<T, defaultp> Result(1);
-	//Result[0][0] = static_cast<T>(2) / (right - left);
-	//Result[1][1] = static_cast<T>(2) / (top - bottom);
-	//Result[2][2] = -static_cast<T>(2) / (zFar - zNear);
-	//Result[3][0] = -(right + left) / (right - left);
-	//Result[3][1] = -(top + bottom) / (top - bottom);
-	//Result[3][2] = -(zFar + zNear) / (zFar - zNear);
-
 	Matrix4x4 Result;
-	Result.m_member[0][0] = 2.f / (right - left);
-	Result.m_member[1][1] = 2.f / (top - bottom);
-	Result.m_member[2][2] = -2.f / (zFar - zNear);
-	Result.m_member[3][0] = (-(right + left)) / (right - left);
-	Result.m_member[3][1] = (-(top + bottom)) / (top - bottom);
-	Result.m_member[3][2] = (-(zFar + zNear)) / (zFar - zNear);
+
+	Result.m_member[0][0] = 2.f / (_right - _left);
+	Result.m_member[1][1] = 2.f / (_top - _bottom);
+	Result.m_member[2][2] = -2.f / (_zFar - _zNear);
+	Result.m_member[0][3] = -(_right + _left) / (_right - _left);
+	Result.m_member[1][3] = -(_top + _bottom) / (_top - _bottom);
+	Result.m_member[2][3] = -(_zFar + _zNear) / (_zFar - _zNear);
 	Result.m_member[3][3] = 1.f;
-	return Result;
-}
-
-
-Matrix4x4 Matrix4x4::LookAt(Vector3 eye, Vector3 center, Vector3 up)
-{
-	Vector3 temp = (center - eye);
-
-	Vector3 f = temp.Normalize();
-	Vector3 cal = f.CrossProduct(up);
-	Vector3 s = cal * 1 / (sqrt(cal.DotProduct(cal)));
-	//		return x * inversesqrt(dot(x, x));
-	Vector3 u = s.CrossProduct(f);
-
-	Matrix4x4 Result;
-	Result.SetIdentity();
-
-	Result.m_member[0][0] = s.x;
-	Result.m_member[1][0] = s.y;
-	Result.m_member[2][0] = s.z;
-
-	Result.m_member[0][1] = u.x;
-	Result.m_member[1][1] = u.y;
-	Result.m_member[2][1] = u.z;
-
-	Result.m_member[0][2] = -f.x;
-	Result.m_member[1][2] = -f.y;
-	Result.m_member[2][2] = -f.z;
-
-	Result.m_member[3][0] = -(s.DotProduct(eye));
-	Result.m_member[3][1] = -(u.DotProduct(eye));
-	Result.m_member[3][2] = f.DotProduct(eye);
 
 	return Result;
 }
 
-
-Matrix4x4 Matrix4x4::Translate(const Vector3& vec)
+Matrix4x4 Matrix4x4::Camera(const Vector3 _eye, const Vector3 _target, const Vector3 _up)
 {
-	Matrix4x4 Result;
-	Result.SetIdentity();
+	Vector3 look = (_eye - _target).GetNormalize();
+	Vector3 up = _up;
+	Vector3 right = up.CrossProduct(look);
+	up = look.CrossProduct(right);
 
-	Result.m_member[3][0] = vec.x;
-	Result.m_member[3][1] = vec.y;
-	Result.m_member[3][2] = vec.z;
+	Matrix4x4 Result;
+
+	Result.m_member[0][0] = right.x;
+	Result.m_member[0][1] = right.y;
+	Result.m_member[0][2] = right.z;
+	Result.m_member[0][3] = -right.DotProduct(_eye);
+
+	Result.m_member[1][0] = up.x;
+	Result.m_member[1][1] = up.y;
+	Result.m_member[1][2] = up.z;
+	Result.m_member[1][3] = -up.DotProduct(_eye);
+
+	Result.m_member[2][0] = look.x;
+	Result.m_member[2][1] = look.y;
+	Result.m_member[2][2] = look.z;
+	Result.m_member[2][3] = -look.DotProduct(_eye);
+
+	Result.m_member[3][3] = 1.f;
 
 	return Result;
 }
 
 
-Matrix4x4 Matrix4x4::Scale(const Vector3& vec)
+Matrix4x4 Matrix4x4::Translate(const Vector3& _vec)
 {
 	Matrix4x4 Result;
 	Result.SetIdentity();
 
-	Result.m_member[0][0] = vec.x;
-	Result.m_member[1][1] = vec.y;
-	Result.m_member[2][2] = vec.z;
+	Result.m_member[0][3] = _vec.x;
+	Result.m_member[1][3] = _vec.y;
+	Result.m_member[2][3] = _vec.z;
 
 	return Result;
 }
 
 
-Matrix4x4 Matrix4x4::Rotation(float degree, Vector3& vec)
+Matrix4x4 Matrix4x4::Scale(const Vector3& _vec)
 {
 	Matrix4x4 Result;
-	Result.SetIdentity();
 
-	float c = cos(degree);
-	float s = sin(degree);
+	Result.m_member[0][0] = _vec.x;
+	Result.m_member[1][1] = _vec.y;
+	Result.m_member[2][2] = _vec.z;
+	Result.m_member[3][3] = 1.f;
 
-	Vector3 a = vec.Normalize();
-	Vector3 n = ((float(1) - c) * a);
+	return Result;
+}
 
-	Result.m_member[0][0] = c + n.x + a.x;
-	Result.m_member[0][1] = n.x * a.y + s * a.z;
-	Result.m_member[0][2] = n.x * a.z - s * a.y;
+Matrix4x4 Matrix4x4::Rotate(float _degree, const Vector3& _vec)
+{
+	Matrix4x4 Result;
 
-	Result.m_member[1][0] = n.y * a.x - s * a.z;
-	Result.m_member[1][1] = c + n.y * a.y;
-	Result.m_member[1][2] = n.y * a.z + s * a.x;
+	float radian = Math::DegToRad(_degree);
 
-	Result.m_member[2][0] = n.z * a.x + s * a.y;
-	Result.m_member[2][1] = n.z * a.y - s * a.x;
-	Result.m_member[2][2] = c + n.z * a.z;
+	float cosine = cos(radian);
+	float sine = sin(radian);
+
+	Vector3 norm = _vec.GetNormalize();
+	Vector3 offset = (1.f - cosine) * norm;
+
+	Result.m_member[0][0] = offset.x * norm.x + cosine;
+	Result.m_member[1][0] = offset.x * norm.y + norm.z * sine;
+	Result.m_member[2][0] = offset.x * norm.z - norm.y * sine;
+
+	Result.m_member[0][1] = offset.x * norm.y - norm.z * sine;
+	Result.m_member[1][1] = offset.y * norm.y + cosine;
+	Result.m_member[2][1] = offset.y * norm.z + norm.x * sine;
+
+	Result.m_member[0][2] = offset.x * norm.z + norm.y * sine;
+	Result.m_member[1][2] = offset.y * norm.z - norm.x * sine;
+	Result.m_member[2][2] = offset.z * norm.z + cosine;
+
+	Result.m_member[3][3] = 1.f;
 
 	return Result;
 }

@@ -199,7 +199,7 @@ Vector4 Vector4::operator / (float _constant) const
 	Vector4 result;
 
 	// If _constant is not zero,
-	if (!_constant) {
+	if (_constant) {
 		result.x = x / _constant;
 		result.y = y / _constant;
 		result.z = z / _constant;
@@ -384,7 +384,7 @@ Vector4& Vector4::operator*=(float _constant)
 Vector4& Vector4::operator/=(float _constant)
 {
 	// If _constant is not zero,
-	if (!_constant) {
+	if (_constant) {
 		x /= _constant;
 		y /= _constant;
 		y /= _constant;

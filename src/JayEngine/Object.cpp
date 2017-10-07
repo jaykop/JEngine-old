@@ -1,24 +1,18 @@
 #include "Object.h"
+#include "Component.h"
 #include "ObjectManager.h"
 #include "ComponentManager.h"
 
 NS_JE_BEGIN
 
-Object::Object(const std::string& _name)
-	:m_name(_name), m_active(true), m_pParent(nullptr)
-{
-	m_id = ObjectManager::m_registerNumber;
-	m_cptContainer.m_owner = this;
-}
+Object::Object(const char* _name)
+	:m_name(_name), m_active(true), m_pParent(nullptr),
+	m_id(ObjectManager::m_registerNumber)
+{}
 
 Object::~Object()
 {
-	// Remove all child objects belong to this object
-	for (auto child : m_childObjs)
-		ObjectManager::RemoveObject(child.second->GetName().c_str());
-
-	// Remove all components belong to this object
-	m_cptContainer.ClearContainer();
+	ClearComponents();
 }
 
 unsigned Object::GetId() const
@@ -31,7 +25,7 @@ const std::string& Object::GetName(void) const
 	return m_name;
 }
 
-void Object::SetName(const char * _name)
+void Object::SetName(const char* _name)
 {
 	m_name.assign(_name);
 }
@@ -42,17 +36,20 @@ void Object::AddChild(Object* _child)
 	auto found = m_childObjs.find(_child->GetName());
 	
 	// If there is not, add
-	if (found == m_childObjs.end())
+	if (found == m_childObjs.end()) {
 		m_childObjs.insert(
 			ChildObjects::value_type(
 				_child->GetName(), _child));
+		
+		_child->SetParent(this);
+	}
 
 	// Unless...
 	else
 		JE_DEBUG_PRINT("Existing child\n");
 }
 
-void Object::RemoveChild(const char * _name)
+void Object::RemoveChild(const char* _name)
 {
 	// Find if there is the once
 	auto found = m_childObjs.find(_name);
@@ -63,7 +60,6 @@ void Object::RemoveChild(const char * _name)
 		ObjectManager::RemoveObject(_name);	// Remove from obj manager
 	}
 		
-	// Unless...
 	else 
 		JE_DEBUG_PRINT("No such object\n");
 }
@@ -100,6 +96,21 @@ bool Object::HasChild(const char* _name)
 	}
 }
 
+void Object::SetParent(Object* _pObject)
+{
+	m_pParent = _pObject;
+}
+
+Object* Object::GetParent()
+{
+	return m_pParent;
+}
+
+bool Object::HasParent()
+{
+	return m_pParent != nullptr ? true : false ;
+}
+
 void Object::SetActive(bool _active)
 {
 	m_active = _active;
@@ -110,9 +121,23 @@ bool Object::GetActive(void) const
 	return m_active;
 }
 
-ComponentContainer* Object::GetComponentMap()
+void Object::ClearComponents()
 {
-	return &m_cptContainer;
+	// Clear all components in the list
+	for (auto component : m_componentMap) {
+
+		if (component.second) {
+			delete component.second;
+			component.second = nullptr;
+		}
+	}
 }
+
+void Object::ClearChildren()
+{
+	for (auto child : m_childObjs)
+		ObjectManager::RemoveObject(child.second->GetName().c_str());
+}
+
 
 NS_JE_END

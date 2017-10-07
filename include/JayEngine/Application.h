@@ -43,6 +43,9 @@ public:
 	static void Update();
 	static void Close();
 	static SDL_Window* GetWindow();
+
+	static InitData& GetData();
+
 private:
 
 	// Locked functions

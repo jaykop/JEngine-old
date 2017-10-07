@@ -9,10 +9,10 @@ class ComponentManager {
 public:
 
 	template <typename ComponentType>
-	static inline ComponentType* CreateComponent(Object* _owner);
+	static inline ComponentType* CreateComponent(Object* _pOwner);
 
 	template <typename ComponentType>
-	static inline void RemoveComponent(ComponentType* _component);
+	static inline void RemoveComponent(ComponentType* _pComponent);
 
 private:
 

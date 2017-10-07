@@ -48,7 +48,7 @@ public:
 
 	Matrix4x4 operator+(const Matrix4x4& rhs) const;
 	Matrix4x4 operator*(const Matrix4x4& rhs) const;
-	Vector4 operator*(const Vector4& rhs) const;
+	Vector4	  operator*(const Vector4& rhs) const;
 	Matrix4x4 operator-(const Matrix4x4& rhs) const;
 
 	Matrix4x4 operator+(float constant) const;
@@ -71,16 +71,15 @@ public:
 	// To use graphic...
 	static Matrix4x4 Translate(const Vector3& vec);
 	static Matrix4x4 Scale(const Vector3& vec);
-	static Matrix4x4 Rotation(float degree, Vector3& vec);
+	static Matrix4x4 Rotate(float degree, const Vector3& vec);
 	static Matrix4x4 Perspective(float fovy, float aspect, float zNear, float zFar);
-	static Matrix4x4 Ortho(float left, float right, float bottom, float top, float zNear, float zFar);
-	static Matrix4x4 LookAt(Vector3 eye, Vector3 center, Vector3 up);
-
+	static Matrix4x4 Orthogonal(float left, float right, float bottom, float top, float zNear, float zFar);
+	static Matrix4x4 Camera(const Vector3 eye, const Vector3 center, const Vector3 up);
 
 	//Friend functions
-	friend Matrix4x4 operator+(float constant, const Matrix4x4& rhs);
-	friend Matrix4x4 operator*(float constant, const Matrix4x4& rhs);
-	friend std::ostream& operator<<(std::ostream& os, const Matrix4x4& contents);
+	friend Matrix4x4		operator+(float constant, const Matrix4x4& rhs);
+	friend Matrix4x4		operator*(float constant, const Matrix4x4& rhs);
+	friend std::ostream&	operator<<(std::ostream& os, const Matrix4x4& contents);
 
 	float m_member[4][4];
 
@@ -88,6 +87,6 @@ private:
 
 };
 
-typedef Matrix4x4 mat44;
+typedef Matrix4x4 mat4;
 
 NS_JE_END

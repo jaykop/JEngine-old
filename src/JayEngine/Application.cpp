@@ -123,4 +123,9 @@ SDL_Window * Application::GetWindow()
 	return m_pWindow;
 }
 
+Application::InitData& Application::GetData()
+{
+	return m_pData;
+}
+
 NS_JE_END

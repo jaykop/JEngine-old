@@ -3,11 +3,12 @@
 #include "SystemManager.h"
 
 //TODO Remove later
-#include "InputHandler.h"
+#include "Sprite.h"
 #include "Object.h"
 #include "Transform.h"
-#include "Sprite.h"
+#include "InputHandler.h"
 #include "ObjectManager.h"
+#include "Matrix4x4.h"
 
 NS_JE_BEGIN
 
@@ -29,12 +30,19 @@ void State::Init()
 	JE_DEBUG_PRINT("Initializing %s...\n", m_name.c_str());
 
 	ObjectManager::CreateObject("test");
-	ObjectManager::GetCreatedObject()->GetComponentMap()->AddComponent<Transform>();
-	ObjectManager::GetCreatedObject()->GetComponentMap()->AddComponent<Sprite>();
+	ObjectManager::GetCreatedObject()->AddComponent<Transform>();
+	ObjectManager::GetCreatedObject()->AddComponent<Sprite>();
 	ObjectManager::AddCreatedObject();
 
-	ObjectManager::GetObject("test")->GetComponentMap()->GetComponent<Transform>()->SetScale(vec3(1.f, 1.f, 0.f));
-	ObjectManager::GetObject("test")->GetComponentMap()->GetComponent<Sprite>()->SetColor(vec4(1.f, 0.f, 0.f, 1.f));
+	//ObjectManager::GetObject("test")->GetComponent<Transform>()->SetPosition(vec3::ZERO);
+	//ObjectManager::GetObject("test")->GetComponent<Transform>()->SetRotation(45.f);
+	//ObjectManager::GetObject("test")->GetComponent<Transform>()->SetScale(vec3(1.f, 1.f, 0.f));
+	//ObjectManager::GetObject("test")->GetComponent<Sprite>()->SetColor(vec4(1.f, 0.f, 0.f, 1.f));
+
+	ObjectManager::GetObject("test")->GetComponent<Transform>()->m_position.Set(20, -30, 0);
+	ObjectManager::GetObject("test")->GetComponent<Transform>()->m_rotation = 90;
+	ObjectManager::GetObject("test")->GetComponent<Transform>()->m_scale.Set(10.f, 50.f, 0.f);
+	ObjectManager::GetObject("test")->GetComponent<Sprite>()->m_color.Set(1.f, 1.f, 0.f, 1.f);
 }
 
 void State::Update(float _dt)

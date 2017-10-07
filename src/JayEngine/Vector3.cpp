@@ -216,7 +216,7 @@ Vector3 Vector3::operator/(float _constant) const
 	Vector3 result;
 
 	// If _constant is not zero,
-	if (!_constant) {
+	if (_constant) {
 		result.x = x / _constant;
 		result.y = y / _constant;
 		result.z = z / _constant;
@@ -224,7 +224,7 @@ Vector3 Vector3::operator/(float _constant) const
 
 	// Unless.
 	else
-		JE_DEBUG_PRINT("Cannot devide by 0");
+		JE_DEBUG_PRINT("Cannot devide by 0\n");
 
 	return result;
 }
@@ -399,7 +399,7 @@ Vector3& Vector3::operator*=(float _constant)
 Vector3& Vector3::operator/=(float _constant)
 {
 	// If _constant is not zero,
-	if (!_constant) {
+	if (_constant) {
 		x /= _constant;
 		y /= _constant;
 		y /= _constant;
@@ -407,7 +407,7 @@ Vector3& Vector3::operator/=(float _constant)
 
 	// Unless.
 	else
-		JE_DEBUG_PRINT("Cannot devide by 0");
+		JE_DEBUG_PRINT("Cannot devide by 0\n");
 
 	return *this;
 }
@@ -491,7 +491,7 @@ Vector3& Vector3::Normalize(void)
 
 		// Unless.
 		else
-			JE_DEBUG_PRINT("Cannot devide by 0");
+			JE_DEBUG_PRINT("Cannot devide by 0\n");
 
 		return *this;
 }
@@ -506,7 +506,7 @@ Vector3 Vector3::GetNormalize() const
 
 	// Unless.
 	else
-		JE_DEBUG_PRINT("Cannot devide by 0");
+		JE_DEBUG_PRINT("Cannot devide by 0\n");
 
 	return result;
 }

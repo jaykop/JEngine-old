@@ -7,9 +7,6 @@
     <ClCompile Include="..\..\src\JayEngine\Debug.cpp">
       <Filter>Utils\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JayEngine\ComponentContainer.cpp">
-      <Filter>Core\Component</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\JayEngine\GLManager.cpp">
       <Filter>System\Graphic</Filter>
     </ClCompile>
@@ -91,6 +88,9 @@
     <ClCompile Include="..\..\src\JayEngine\ObjectManager.cpp">
       <Filter>Core\Object</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\Camera.cpp">
+      <Filter>System\Graphic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\JayEngine\Application.h">
@@ -100,9 +100,6 @@
       <Filter>Utils\Debug</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\JayEngine\Component.h">
-      <Filter>Core\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JayEngine\ComponentContainer.h">
       <Filter>Core\Component</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\JayEngine\ComponentManager.h">
@@ -201,14 +198,9 @@
     <ClInclude Include="..\..\include\JayEngine\ObjectManager.h">
       <Filter>Core\Object</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\include\JayEngine\ComponentManager.inl">
-      <Filter>Core\Component</Filter>
-    </None>
-    <None Include="..\..\include\JayEngine\ComponentContainer.inl">
-      <Filter>Core\Component</Filter>
-    </None>
+    <ClInclude Include="..\..\include\JayEngine\Camera.h">
+      <Filter>System\Graphic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -262,5 +254,13 @@
     <Filter Include="Core\Platform">
       <UniqueIdentifier>{488e267d-18b4-431f-a9bf-4f8439a29a29}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\JayEngine\Object.inl">
+      <Filter>Core\Object</Filter>
+    </None>
+    <None Include="..\..\include\JayEngine\ComponentManager.inl">
+      <Filter>Core\Component</Filter>
+    </None>
   </ItemGroup>
 </Project>

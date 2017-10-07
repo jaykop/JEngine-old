@@ -32,6 +32,8 @@ bool GLManager::initSDL_GL()
 		int nrAttributes;
 		glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
 		JE_DEBUG_PRINT("Maximum nr of vertex attributes supported: %d\n", nrAttributes);
+
+		glEnable(GL_DEPTH_TEST);
 	}
 
 	return true;
@@ -68,7 +70,16 @@ void GLManager::SetDrawMode(DrawMode _mode)
 
 void GLManager::RegisterUniform()
 {
-	m_uniformType[UNIFORM_COLOR] = glGetUniformLocation(Shader::m_programId, "color");
+	// Matrix uniform
+	m_uniformType[UNIFORM_TRANSLATE] = glGetUniformLocation(Shader::m_programId, "m4_translate");
+	m_uniformType[UNIFORM_SCALE] = glGetUniformLocation(Shader::m_programId, "m4_scale");
+	m_uniformType[UNIFORM_ROTATE] = glGetUniformLocation(Shader::m_programId, "m4_rotate");
+
+	m_uniformType[UNIFORM_CAMERA] = glGetUniformLocation(Shader::m_programId, "m4_viewport");
+	m_uniformType[UNIFORM_PROJECTION] = glGetUniformLocation(Shader::m_programId, "m4_projection");
+
+	// Vector uniform
+	m_uniformType[UNIFORM_COLOR] = glGetUniformLocation(Shader::m_programId, "v4_color");
 }
 
 GLint GLManager::GetUniform(UniformType _uniform)
