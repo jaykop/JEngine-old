@@ -11,6 +11,7 @@ NS_JE_BEGIN
 //////////////////////////////////////////////////////////////////////////
 SDL_Event				Application::m_pEvent;
 SDL_Window*				Application::m_pWindow = nullptr;
+SDL_Surface*			Application::m_pSurface = nullptr;
 SDL_GLContext			Application::m_pContext = nullptr;
 Application::InitData	Application::m_pData = { "demo", false, 800, 600 };
 
@@ -21,9 +22,6 @@ Application::Application(const InitData& _data)
 
 bool Application::Initialize()
 {
-	//Initialize SDL
-	bool output = true;
-
 	// Call opengl 3.2
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
@@ -34,18 +32,14 @@ bool Application::Initialize()
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		// Print error message
 		JE_DEBUG_PRINT("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
-		output = false;
+		return false;
 	}
 
-	return output;
+	return true;
 }
 
 void Application::Update()
 {	
-
-	//The surface contained by the window
-	SDL_Surface* screenSurface = nullptr;
-
 	//Create window
 	m_pWindow = SDL_CreateWindow(m_pData.m_title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 		m_pData.m_width, m_pData.m_height, SDL_WINDOW_OPENGL);
@@ -59,29 +53,17 @@ void Application::Update()
 		m_pContext = SDL_GL_CreateContext(m_pWindow);	// Get GL context
 		GLManager::initSDL_GL();						// Init gl
 
-		// TODO
-		GLManager::ActivateShader(						// Call Shader
-			"../../src/Shader/vertexshader.vs",				// vertex Shader
-			"../../src/Shader/fragmentshader.fs");			// fragment shader
-
 		/**************** imgui **************/
-		//ImguiManager::Init(m_pWindow);					// init imgui
+		//ImguiManager::Init(m_pWindow);				// init imgui
 
 		//Get window surface
-		screenSurface = SDL_GetWindowSurface(m_pWindow);
+		m_pSurface = SDL_GetWindowSurface(m_pWindow);
 
 		//Fill the surface white
-		SDL_FillRect(screenSurface, nullptr, SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));
+		SDL_FillRect(m_pSurface, nullptr, SDL_MapRGB(m_pSurface->format, 0xFF, 0xFF, 0xFF));
 
-		//TODO
-		// Making new state
-		StateManager::PushState("testState1");
-		StateManager::PushState("testState2");
-		StateManager::PushState("testState3");
-		StateManager::PushState("PauseState");
-		StateManager::SetStartingState("testState1");
-
-		// Init State manager
+		// Load and init State manager
+		StateManager::Load();
 		StateManager::Init();
 
 		// Update the surface
@@ -102,8 +84,9 @@ void Application::Update()
 
 void Application::Close()
 {
-	// Close the state manager
+	// Close and Unload the state manager
 	StateManager::Close();
+	StateManager::Unload();
 
 	// Close imgui manager
 	//ImguiManager::Close();
@@ -118,9 +101,14 @@ void Application::Close()
 	SDL_Quit();
 }
 
-SDL_Window * Application::GetWindow()
+SDL_Window* Application::GetWindow()
 {
 	return m_pWindow;
+}
+
+SDL_Surface* Application::GetSurface()
+{
+	return m_pSurface;
 }
 
 Application::InitData& Application::GetData()

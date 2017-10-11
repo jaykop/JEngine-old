@@ -39,12 +39,13 @@ public:
 
 	Application(const InitData& _data);
 	
-	static bool Initialize();
-	static void Update();
-	static void Close();
-	static SDL_Window* GetWindow();
+	static bool	Initialize();
+	static void	Update();
+	static void	Close();
 
-	static InitData& GetData();
+	static InitData&	GetData();
+	static SDL_Window*	GetWindow();
+	static SDL_Surface* GetSurface();
 
 private:
 
@@ -58,6 +59,7 @@ private:
 	static SDL_Window*		m_pWindow;	// SDL window
 	static SDL_Event		m_pEvent;	// SDL Event
 	static SDL_GLContext	m_pContext;	// SDL GL context
+	static SDL_Surface*		m_pSurface; // SDL screen surface
 };
 
 NS_JE_END

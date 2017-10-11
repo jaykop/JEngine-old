@@ -10,20 +10,13 @@ typedef std::vector<State*> States;
 
 class StateManager {
 
+	friend class Application;
+
 public:
 
 	enum StateStatus {
 		S_NONE, S_PAUSE, S_RESUME, S_CHANGE, S_RESUME_AND_CHANGE, S_QUIT
 	};
-
-	//static void Load();
-	static void Init();
-	static void Update(SDL_Event& _event);
-	static void Close();
-	//static void Unload();
-
-	static void PushState(const char* _stateName);
-	static void PopState(const char* _stateName);
 
 	static void Quit();
 	static void Resume();
@@ -38,16 +31,28 @@ public:
 
 private:
 
+	// Locked contsturctord and destructor
 	StateManager() {};
 	~StateManager() {};
 	StateManager(const StateManager& /*_copy*/) {};
 	void operator=(const StateManager& /*_copy*/) {};
+
+	// Private member functions
+	static void Load();
+	static void Init();
+	static void Update(SDL_Event& _event);
+	static void Close();
+	static void Unload();
+
+	static void PushState(const char* _stateName);
+	static void PopState(const char* _stateName);
 
 	static void EventHandle();
 	static void ChangeState();
 
 	static void Clear();
 
+	// Private member variables
 	static States		m_states;
 	static StateStatus	m_status;
 	static State*		m_pCurrent, *m_pNext, *m_pPause;

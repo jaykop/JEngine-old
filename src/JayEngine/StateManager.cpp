@@ -5,6 +5,7 @@
 #include "Application.h"
 #include "SystemManager.h"
 #include "ImguiManager.h"
+#include "AssetManager.h"
 
 NS_JE_BEGIN
 
@@ -17,12 +18,21 @@ State						*StateManager::m_pCurrent = nullptr,
 							*StateManager::m_pNext = nullptr, 
 							*StateManager::m_pPause = nullptr;
 
-//void StateManager::Load()
-//{
-//}
+void StateManager::Load()
+{
+	AssetManager::Load();
+}
 
 void StateManager::Init()
 {
+	//TODO
+	// Making new state
+	StateManager::PushState("testState1");
+	StateManager::PushState("testState2");
+	StateManager::PushState("testState3");
+	StateManager::PushState("PauseState");
+	StateManager::SetStartingState("testState1");
+
 	// Allocate systems in advance
 	SystemManager::Bind();
 }
@@ -90,9 +100,10 @@ void StateManager::Close()
 	Clear();
 }
 
-//void StateManager::Unload()
-//{
-//}
+void StateManager::Unload()
+{
+	AssetManager::Unload();
+}
 
 void StateManager::EventHandle()
 {

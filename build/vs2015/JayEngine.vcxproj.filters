@@ -91,6 +91,27 @@
     <ClCompile Include="..\..\src\JayEngine\Camera.cpp">
       <Filter>System\Graphic</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\Texture.cpp">
+      <Filter>System\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\AssetManager.cpp">
+      <Filter>Core\AssetManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lodePNG\lodepng_util.cpp">
+      <Filter>Utils\lodePNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lodePNG\pngdetail.cpp">
+      <Filter>Utils\lodePNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lodePNG\lodepng.cpp">
+      <Filter>Utils\lodePNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lodePNG\lodepng_benchmark.cpp">
+      <Filter>Utils\lodePNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lodePNG\lodepng_unittest.cpp">
+      <Filter>Utils\lodePNG</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\JayEngine\Application.h">
@@ -201,6 +222,18 @@
     <ClInclude Include="..\..\include\JayEngine\Camera.h">
       <Filter>System\Graphic</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\Texture.h">
+      <Filter>System\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\AssetManager.h">
+      <Filter>Core\AssetManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\external\lodePNG\lodepng_util.h">
+      <Filter>Utils\lodePNG</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\external\lodePNG\lodepng.h">
+      <Filter>Utils\lodePNG</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -253,6 +286,12 @@
     </Filter>
     <Filter Include="Core\Platform">
       <UniqueIdentifier>{488e267d-18b4-431f-a9bf-4f8439a29a29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\AssetManager">
+      <UniqueIdentifier>{0a986e7c-bd4e-42f0-8103-e990ccdb45db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\lodePNG">
+      <UniqueIdentifier>{bc410694-fe95-44ed-9f15-422bf2106700}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

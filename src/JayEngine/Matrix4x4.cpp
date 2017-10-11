@@ -119,6 +119,57 @@ Matrix4x4& Matrix4x4::operator-(void)
 	return *this;
 }
 
+void Matrix4x4::operator+=(const Matrix4x4& rhs)
+{
+	for (int i = 0; i < 4; ++i)
+		for (int j = 0; j < 4; ++j)
+			m_member[i][j] += rhs.m_member[i][j];
+}
+
+void Matrix4x4::operator*=(const Matrix4x4& rhs)
+{
+	(*this) = (*this)*rhs;
+}
+
+void Matrix4x4::operator-=(const Matrix4x4 & rhs)
+{
+	for (int i = 0; i < 4; ++i)
+		for (int j = 0; j < 4; ++j)
+			m_member[i][j] -= rhs.m_member[i][j];
+}
+
+void Matrix4x4::operator+=(float constant)
+{
+	for (int i = 0; i < 4; ++i)
+		for (int j = 0; j < 4; ++j)
+			m_member[i][j] += constant;
+}
+
+void Matrix4x4::operator-=(float constant)
+{
+	for (int i = 0; i < 4; ++i)
+		for (int j = 0; j < 4; ++j)
+			m_member[i][j] -= constant;
+}
+
+void Matrix4x4::operator*=(float constant)
+{
+	for (int i = 0; i < 4; ++i)
+		for (int j = 0; j < 4; ++j)
+			m_member[i][j] *= constant;
+}
+
+void Matrix4x4::operator/=(float constant)
+{
+	if (constant)
+		for (int i = 0; i < 4; ++i)
+			for (int j = 0; j < 4; ++j)
+				m_member[i][j] /= constant;
+
+	else
+		JE_DEBUG_PRINT("Cannot devide by 0.\n");
+}
+
 /******************************************************************************/
 /*!
 \brief - Matrix4x4 + operator

@@ -24,8 +24,8 @@ void ObjectManager::ClearObjectContainer()
 
 void ObjectManager::CreateObject(const char* _name)
 {
-	// If there is created object in advance,
-	// remove it
+	// If there is created object 
+	// but not added to the list in advance, remove it
 	if (m_pLastMade)
 		RemoveObject(m_pLastMade->m_name.c_str());
 
@@ -46,6 +46,7 @@ void ObjectManager::AddCreatedObject()
 		ObjectContainer::value_type(
 			m_pLastMade->m_name, m_pLastMade));
 
+	m_pLastMade = nullptr;
 	++m_registerNumber;
 
 	// TODO vector way

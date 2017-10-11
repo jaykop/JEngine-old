@@ -224,7 +224,7 @@ Vector3 Vector3::operator/(float _constant) const
 
 	// Unless.
 	else
-		JE_DEBUG_PRINT("Cannot devide by 0\n");
+		JE_DEBUG_PRINT("Cannot devide by 0.\n");
 
 	return result;
 }
@@ -407,7 +407,7 @@ Vector3& Vector3::operator/=(float _constant)
 
 	// Unless.
 	else
-		JE_DEBUG_PRINT("Cannot devide by 0\n");
+		JE_DEBUG_PRINT("Cannot devide by 0.\n");
 
 	return *this;
 }
@@ -491,7 +491,7 @@ Vector3& Vector3::Normalize(void)
 
 		// Unless.
 		else
-			JE_DEBUG_PRINT("Cannot devide by 0\n");
+			JE_DEBUG_PRINT("Cannot devide by 0.\n");
 
 		return *this;
 }
@@ -506,7 +506,7 @@ Vector3 Vector3::GetNormalize() const
 
 	// Unless.
 	else
-		JE_DEBUG_PRINT("Cannot devide by 0\n");
+		JE_DEBUG_PRINT("Cannot devide by 0.\n");
 
 	return result;
 }

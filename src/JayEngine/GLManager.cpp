@@ -28,12 +28,14 @@ bool GLManager::initSDL_GL()
 		SetVA();	// Set vertex attributes pointers
 		SetEbo();	// Set indices
 
-		// Show how much attributes are available
-		int nrAttributes;
-		glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
-		JE_DEBUG_PRINT("Maximum nr of vertex attributes supported: %d\n", nrAttributes);
+		// Do gl stuff
+		InitGLEnvironment();
 
-		glEnable(GL_DEPTH_TEST);
+		// Do shader stuff
+		ActivateShader(
+			"../../src/Shader/vertexshader.vs",		// vertex Shader
+			"../../src/Shader/fragmentshader.fs");	// fragment Shader
+		RegisterUniform();
 	}
 
 	return true;
@@ -43,11 +45,25 @@ void GLManager::CloseSDL_GL()
 {
 }
 
+void GLManager::InitGLEnvironment()
+{
+	// Show how much attributes are available
+	int nrAttributes;
+	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
+	JE_DEBUG_PRINT("Maximum nr of vertex attributes supported: %d\n", nrAttributes);
+
+	// Check depth
+	glEnable(GL_DEPTH_TEST);
+
+	// Texture attribute setting
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+}
+
 void GLManager::ActivateShader(const char * _vertexDir, const char * _fregmentDir)
 {
 	// Load shader and compile and link
 	Shader::LoadShader(_vertexDir, _fregmentDir);
-	RegisterUniform();
 }
 
 void GLManager::SetDrawMode(DrawMode _mode)
@@ -74,10 +90,10 @@ void GLManager::RegisterUniform()
 	m_uniformType[UNIFORM_TRANSLATE] = glGetUniformLocation(Shader::m_programId, "m4_translate");
 	m_uniformType[UNIFORM_SCALE] = glGetUniformLocation(Shader::m_programId, "m4_scale");
 	m_uniformType[UNIFORM_ROTATE] = glGetUniformLocation(Shader::m_programId, "m4_rotate");
-
 	m_uniformType[UNIFORM_CAMERA] = glGetUniformLocation(Shader::m_programId, "m4_viewport");
 	m_uniformType[UNIFORM_PROJECTION] = glGetUniformLocation(Shader::m_programId, "m4_projection");
-
+	m_uniformType[UNIFORM_ANIMATION] = glGetUniformLocation(Shader::m_programId, "m4_animation"); 
+	
 	// Vector uniform
 	m_uniformType[UNIFORM_COLOR] = glGetUniformLocation(Shader::m_programId, "v4_color");
 }
@@ -114,8 +130,13 @@ void GLManager::SetVbo()
 void GLManager::SetVA()
 {
 	// Interpret vertex attributes data (s_vertices)
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	// vertex position
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
+
+	// text coordinate position
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
 
 	// TODO
 	// maybe more...

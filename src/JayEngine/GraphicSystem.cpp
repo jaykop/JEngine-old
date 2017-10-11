@@ -1,4 +1,5 @@
 #include "Sprite.h"
+#include "Texture.h"
 #include "Camera.h"
 #include "GLManager.h"
 #include "GraphicSystem.h"
@@ -61,7 +62,7 @@ void GraphicSystem::RemoveSprite(Sprite* _sprite)
 {
 	for (Sprites::iterator it = m_sprites.begin();
 		it != m_sprites.end(); ++it) {
-		if ((*it)->m_id == _sprite->m_id) {
+		if ((*it)->m_ownerId == _sprite->m_ownerId) {
 			m_sprites.erase(it);
 			break;
 		}
@@ -102,6 +103,31 @@ void GraphicSystem::Pipeline(Sprite* _sprite)
 	glUniform4f(GLManager::GetUniform(GLManager::UNIFORM_COLOR),
 		m_colorStorage.x, m_colorStorage.y, m_colorStorage.z, m_colorStorage.w);
 
+	glBindTexture(GL_TEXTURE_2D, _sprite->GetCurrentTexutre()->GetId());
+
+	if (_sprite->m_activeAnimation) {
+		
+		float realSpeed = 1 / _sprite->m_animationSpeed;
+		float devidedFrame = 1 / _sprite->m_animationFrames;
+		if (realSpeed <= _sprite->m_timer.GetTime()) {
+	
+			if ()
+			;
+
+			else
+				_sprite->m_curretFrame += ;
+
+			_sprite->m_timer.Start();
+		}
+
+	
+	}
+
+	m_animation.SetIdentity();
+	m_animation *= mat4::Scale(vec3(, 1.f));
+	m_animation *= mat4::Translate(vec3(, 0.f)); 
+	glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_ANIMATION), 1, GL_FALSE,
+		&m_animation.m_member[0][0]);
 }
 
 void GraphicSystem::SetBackgroundColor(const vec4& _color)

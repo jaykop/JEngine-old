@@ -9,26 +9,20 @@ NS_JE_BEGIN
 
 class Camera;
 class Sprite;
+class Texture;
 class Transform;
 
 class GraphicSystem : public System
 {
-
-public:
-
-	enum GraphicMode {MODE_2D, MODE_3D};
-
-	typedef std::vector<Sprite*>						Sprites;
-	typedef std::unordered_map<std::string, Camera*>	CameraMap;
-
 	friend class Sprite;
 	friend class SystemManager;
 
-	void Load() override;
-	void Init() override;
-	void Update(float dt) override;
-	void Close() override;
-	void Unload() override;
+	typedef std::vector<Sprite*>						Sprites;
+	typedef std::unordered_map<std::string, Camera*>	CameraMap;
+	
+	enum GraphicMode { MODE_2D, MODE_3D };
+
+public:
 
 	void	AddCamera(const char* _camaraName);
 	void	RemoveCamera(const char* _camaraName);
@@ -46,6 +40,12 @@ private:
 	GraphicSystem(const GraphicSystem& /*_copy*/) {};
 	void operator=(const GraphicSystem& /*_copy*/) {};
 
+	void Load() override;
+	void Init() override;
+	void Update(float dt) override;
+	void Close() override;
+	void Unload() override;
+
 	// Helper functions
 	void InitCamera();
 
@@ -58,6 +58,7 @@ private:
 	Sprites		m_sprites; 
 	Transform*	m_pTransformStorage;
 	
+	mat4	m_animation;
 	vec4	m_colorStorage, m_backgroundColor;
 	float	m_fovy, m_aspect, m_zNear, m_zFar;
 	float	m_left, m_right, m_top, m_bottom;

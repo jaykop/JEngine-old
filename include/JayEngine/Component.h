@@ -10,17 +10,16 @@ class Component {
 public:
 
 	friend class Object;
-
-	Component() {};
-	Component(Object* _owner)
-		: m_pOwner(_owner), m_id(_owner->GetId()) {};
-
-	virtual	~Component() {};
+	unsigned GetOwnerId() { return m_ownerId; }
 
 protected:
 
+	Component(Object* _owner = nullptr)
+		: m_pOwner(_owner), m_ownerId(_owner->GetId()) {};
+	virtual	~Component() {};
+
 	Object* m_pOwner;
-	unsigned m_id;
+	unsigned m_ownerId;
 
 private:
 

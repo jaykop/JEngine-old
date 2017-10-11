@@ -9,6 +9,8 @@
 #include "InputHandler.h"
 #include "ObjectManager.h"
 #include "Matrix4x4.h"
+#include "GraphicSystem.h"
+
 
 NS_JE_BEGIN
 
@@ -20,37 +22,42 @@ State::State(const char* _name)
 
 void State::Load()
 {
-	SystemManager::Load();
 	JE_DEBUG_PRINT("Loading %s...\n", m_name.c_str());
+	SystemManager::Load();
 }
 
 void State::Init()
 {
-	SystemManager::Init();
 	JE_DEBUG_PRINT("Initializing %s...\n", m_name.c_str());
+	SystemManager::Init();
 
 	ObjectManager::CreateObject("test");
 	ObjectManager::GetCreatedObject()->AddComponent<Transform>();
 	ObjectManager::GetCreatedObject()->AddComponent<Sprite>();
 	ObjectManager::AddCreatedObject();
 
-	//ObjectManager::GetObject("test")->GetComponent<Transform>()->SetPosition(vec3::ZERO);
-	//ObjectManager::GetObject("test")->GetComponent<Transform>()->SetRotation(45.f);
-	//ObjectManager::GetObject("test")->GetComponent<Transform>()->SetScale(vec3(1.f, 1.f, 0.f));
-	//ObjectManager::GetObject("test")->GetComponent<Sprite>()->SetColor(vec4(1.f, 0.f, 0.f, 1.f));
-
-	ObjectManager::GetObject("test")->GetComponent<Transform>()->m_position.Set(20, -30, 0);
-	ObjectManager::GetObject("test")->GetComponent<Transform>()->m_rotation = 90;
-	ObjectManager::GetObject("test")->GetComponent<Transform>()->m_scale.Set(10.f, 50.f, 0.f);
+	ObjectManager::GetObject("test")->GetComponent<Transform>()->m_position.Set(10, 10, 0);
+	ObjectManager::GetObject("test")->GetComponent<Transform>()->m_rotation = 0;
+	ObjectManager::GetObject("test")->GetComponent<Transform>()->m_scale.Set(30.f, 30.f, 0.f);
 	ObjectManager::GetObject("test")->GetComponent<Sprite>()->m_color.Set(1.f, 1.f, 0.f, 1.f);
+	ObjectManager::GetObject("test")->GetComponent<Sprite>()->AddTexture("testTexture");
+
+	ObjectManager::CreateObject("test2");
+	ObjectManager::GetCreatedObject()->AddComponent<Transform>();
+	ObjectManager::GetCreatedObject()->AddComponent<Sprite>();
+	ObjectManager::GetCreatedObject()->GetComponent<Transform>()->m_position.Set(-10, -10, 0);
+	ObjectManager::GetCreatedObject()->GetComponent<Transform>()->m_rotation = 0;
+	ObjectManager::GetCreatedObject()->GetComponent<Transform>()->m_scale.Set(30.f, 30.f, 0.f);
+	ObjectManager::GetCreatedObject()->GetComponent<Sprite>()->m_color.Set(1.f, 1.f, 0.f, 1.f);
+	ObjectManager::GetCreatedObject()->GetComponent<Sprite>()->AddTexture("testAnimation");
+	ObjectManager::AddCreatedObject();
+
 }
 
 void State::Update(float _dt)
 {
-	SystemManager::Update(_dt);
-	JE_UNUSED_PARAM(_dt);
-
 	//JE_DEBUG_PRINT("Updating %s...\n", m_name.c_str());
+	SystemManager::Update(_dt);
 
 	/*************************** Temp state test key ******************************/
 	if (InputHandler::KeyTriggered(JE_1))
@@ -97,10 +104,9 @@ void State::Update(float _dt)
 
 void State::Close()
 {
-	ObjectManager::ClearObjectContainer();
-
-	SystemManager::Close();
 	JE_DEBUG_PRINT("Closing %s...\n", m_name.c_str());
+	ObjectManager::ClearObjectContainer();
+	SystemManager::Close();
 }
 
 void State::Unload()

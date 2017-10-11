@@ -46,9 +46,18 @@ public:
 	Matrix4x4& operator=(const Matrix4x4& rhs);
 	Matrix4x4& operator-(void);
 
+	void operator+=(const Matrix4x4& rhs);
+	void operator*=(const Matrix4x4& rhs);
+	void operator-=(const Matrix4x4& rhs);
+
+	void operator+=(float constant);
+	void operator-=(float constant);
+	void operator*=(float constant);
+	void operator/=(float constant);
+
+	Vector4	  operator*(const Vector4& rhs) const;
 	Matrix4x4 operator+(const Matrix4x4& rhs) const;
 	Matrix4x4 operator*(const Matrix4x4& rhs) const;
-	Vector4	  operator*(const Vector4& rhs) const;
 	Matrix4x4 operator-(const Matrix4x4& rhs) const;
 
 	Matrix4x4 operator+(float constant) const;
