@@ -8,6 +8,9 @@ uniform mat4 m4_scale;
 uniform mat4 m4_rotate;
 uniform mat4 m4_viewport;
 uniform mat4 m4_projection;
+
+uniform mat4 m4_aniScale;
+uniform mat4 m4_aniTranslate;
 uniform mat4 m4_animation;
 
 // uniform vectors
@@ -26,5 +29,8 @@ void main(){
 	v4_outColor = v4_color;
 	gl_Position = mvp * vec4(position, 1);
 	
-	v2_outTexCoord = uvPosition;
+	mat4 animation = m4_aniScale * m4_aniTranslate;
+	vec4 newTexCoord = transpose(animation) * vec4(uvPosition, 0, 1);
+	
+	v2_outTexCoord = newTexCoord.xy;
 }

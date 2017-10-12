@@ -1,4 +1,5 @@
 #include "Sprite.h"
+#include "Transform.h"
 #include "AssetManager.h"
 #include "GraphicSystem.h"
 #include "SystemManager.h"
@@ -6,29 +7,55 @@
 NS_JE_BEGIN
 
 Sprite::Sprite(Object* _owner)
-	:Component(_owner), m_color(vec4::UNIT_W),
-	m_projection(PERSPECTIVE), m_mainTex(nullptr)
+	:Component(_owner), m_color(vec4::ONE),m_projection(PERSPECTIVE), 
+	m_mainTex(nullptr), m_curretFrame(0.f), m_animationSpeed(0.f), 
+	m_animationFrames(1), m_animationFixFrame(1), m_realSpeed(0.f), 
+	m_realFrame(1.f), m_activeAnimation(false), m_transform(nullptr)
 {
 	SystemManager::m_grpSystem->AddSprite(this);
+	if (m_pOwner->GetComponent<Transform>())
+		m_transform = m_pOwner->GetComponent<Transform>();
+}
+
+bool Sprite::GetActiveAnimationToggle()
+{
+	return m_activeAnimation;
+}
+
+void Sprite::ActiveAnimation(bool _toggle)
+{
+	m_activeAnimation = _toggle;
+	if (m_activeAnimation)
+		m_timer.Start();
 }
 
 void Sprite::FixAnimationFrame(int _thFrame)
 {
 	m_animationSpeed = 0.f;
 	m_activeAnimation = false;
-	m_realFrame = _thFrame * m_realFrame;
+	m_curretFrame = float(_thFrame) * m_realFrame;
 }
 
 void Sprite::SetAnimationFrame(int _numOfFrame)
 {
 	m_animationFrames = _numOfFrame;
-	m_realFrame = 1.f / float(_numOfFrame);
+	m_realFrame = 1.f / float(m_animationFrames);
 }
 
 void Sprite::SetAnimationSpeed(float _speed)
 {
 	m_animationSpeed = _speed;
 	m_realSpeed = 1.f / _speed;
+}
+
+int Sprite::GetAnimationFrame()
+{
+	return m_animationFrames;
+}
+
+float Sprite::GetAnimationSpeed()
+{
+	return m_animationSpeed;
 }
 
 void Sprite::AddTexture(const char *_key)

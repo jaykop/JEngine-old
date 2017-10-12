@@ -11,7 +11,6 @@
 #include "Matrix4x4.h"
 #include "GraphicSystem.h"
 
-
 NS_JE_BEGIN
 
 State::State(const char* _name)
@@ -48,10 +47,12 @@ void State::Init()
 	ObjectManager::GetCreatedObject()->GetComponent<Transform>()->m_position.Set(-10, -10, 0);
 	ObjectManager::GetCreatedObject()->GetComponent<Transform>()->m_rotation = 0;
 	ObjectManager::GetCreatedObject()->GetComponent<Transform>()->m_scale.Set(30.f, 30.f, 0.f);
-	ObjectManager::GetCreatedObject()->GetComponent<Sprite>()->m_color.Set(1.f, 1.f, 0.f, 1.f);
+	ObjectManager::GetCreatedObject()->GetComponent<Sprite>()->m_color.Set(1.f, 1.f, 1.f, 1.f);
 	ObjectManager::GetCreatedObject()->GetComponent<Sprite>()->AddTexture("testAnimation");
+	ObjectManager::GetCreatedObject()->GetComponent<Sprite>()->ActiveAnimation(true);
+	ObjectManager::GetCreatedObject()->GetComponent<Sprite>()->SetAnimationFrame(8);
+	ObjectManager::GetCreatedObject()->GetComponent<Sprite>()->SetAnimationSpeed(10.f);
 	ObjectManager::AddCreatedObject();
-
 }
 
 void State::Update(float _dt)
@@ -97,9 +98,6 @@ void State::Update(float _dt)
 		JE_DEBUG_PRINT("Quit\n");
 		StateManager::Quit();
 	}
-
-	/*************************** Temp state test key ******************************/
-
 }
 
 void State::Close()
@@ -111,8 +109,8 @@ void State::Close()
 
 void State::Unload()
 {
-	SystemManager::Unload();
 	JE_DEBUG_PRINT("Unloading %s...\n", m_name.c_str());
+	SystemManager::Unload();
 }
 
 NS_JE_END

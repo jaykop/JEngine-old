@@ -8,25 +8,24 @@ NS_JE_BEGIN
 
 class Object;
 class Texture;
+class Transform;
 class Sprite : public Component
 {
 	// Keyword Definitions
-	friend class GraphicSystem;
-	friend class ComponentManager;
-	typedef std::unordered_map<std::string, Texture*>	TextureMap;
-	enum ProjectType { PERSPECTIVE, ORTHOGONAL };
+	friend class	GraphicSystem;
+	friend class	ComponentManager;
+	typedef			std::unordered_map<std::string, Texture*>	TextureMap;
+	enum			ProjectType { PERSPECTIVE, ORTHOGONAL };
 
 public:
-
-	bool	m_activeAnimation;
 	
-	vec4		m_color;
-	Timer		m_timer;
-	ProjectType m_projection;
-
-	void FixAnimationFrame(int _thFrame);
-	void SetAnimationFrame(int _numOfFrame);
-	void SetAnimationSpeed(float _speed);
+	int		GetAnimationFrame();
+	float	GetAnimationSpeed();
+	bool	GetActiveAnimationToggle();
+	void	ActiveAnimation(bool _toggle);
+	void	FixAnimationFrame(int _thFrame);
+	void	SetAnimationSpeed(float _speed);
+	void	SetAnimationFrame(int _numOfFrame);
 
 	void		AddTexture(const char* _key);
 	void		RemoveTexture(const char* _key);
@@ -34,24 +33,29 @@ public:
 	Texture*	GetCurrentTexutre();
 	Texture*	GetTexutre(const char* _key);
 
+	vec4		m_color;
+	ProjectType m_projection;
+
 private:
 
 	// Locked constuctors and destructor
 	~Sprite();
-	Sprite(Object* _owner);
+	Sprite(Object* _owner = nullptr);
 	Sprite(const Sprite& /*_copy*/) {};
 	void operator=(const Sprite& /*_copy*/) {};
 
-	float m_curretFrame;
-	float m_animationSpeed;
-	float m_animationFrames;
-	float m_animationFixFrame;
-
-	float m_realSpeed;
-	float m_realFrame;
+	Timer	m_timer;
+	int		m_animationFrames;
+	int		m_animationFixFrame;
+	bool	m_activeAnimation;
+	float	m_realSpeed;
+	float	m_realFrame;
+	float	m_curretFrame;
+	float	m_animationSpeed;
 
 	Texture		*m_mainTex;
 	TextureMap	m_textureMap;
+	Transform	*m_transform;
 
 };
 

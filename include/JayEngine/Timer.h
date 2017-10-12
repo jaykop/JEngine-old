@@ -1,6 +1,6 @@
 #pragma once
-#include <ctime>
 #include "Macro.h"
+#include <ctime>
 
 NS_JE_BEGIN
 
@@ -8,12 +8,18 @@ class Timer {
 
 public:
 
-	static void		Start(void);
-	static float	GetTime(void);
+	Timer():m_time(0.f) {};
+	~Timer() {};
+
+	void	Start(void);
+	float	GetTime(void);
 
 private:
 
-	static float m_time;
+	Timer(const Timer& /*_cpoy*/) {};
+	void operator=(const Timer& /*_cpoy*/) {};
+
+	float m_time;
 
 };
 

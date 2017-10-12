@@ -1,3 +1,5 @@
+#include <functional>
+#include <algorithm>
 #include "Sprite.h"
 #include "Texture.h"
 #include "Camera.h"
@@ -11,7 +13,8 @@ NS_JE_BEGIN
 GraphicSystem::GraphicSystem()
 	:System(), m_pTransformStorage(nullptr), m_pMainCamera(nullptr),
 	m_backgroundColor(vec4::ZERO), m_colorStorage(vec4::ZERO),
-	m_fovy(45.f), m_zNear(.1f), m_zFar(100.f), m_mode(MODE_2D)
+	m_fovy(45.f), m_zNear(.1f), m_zFar(100.f), m_mode(MODE_2D),
+	m_orthoFirst(true)
 {
 	m_aspect = float(Application::GetData().m_width) / float(Application::GetData().m_height);
 	m_right = Application::GetData().m_width * .5f;
@@ -34,14 +37,12 @@ void GraphicSystem::Update(float /*dt*/)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(m_backgroundColor.x, m_backgroundColor.y, m_backgroundColor.z, m_backgroundColor.w);
 
+	// Sort sprites by sprite's z position
+	std::sort(m_sprites.begin(), m_sprites.end(), SortZorder);
+
 	// Update sprites
-	for (auto sprite : m_sprites) {
-
+	for (auto sprite : m_sprites)
 		Pipeline(sprite);
-
-		// Render image
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	}
 }
 
 void GraphicSystem::Close()
@@ -71,24 +72,33 @@ void GraphicSystem::RemoveSprite(Sprite* _sprite)
 
 void GraphicSystem::Pipeline(Sprite* _sprite)
 {
-	// Send transform info to shader
-	m_pTransformStorage = _sprite->m_pOwner->GetComponent<Transform>();
+	TransformPipeline(_sprite);
+	MappingPipeline(_sprite);
+	AnimationPipeline(_sprite);
 
-	// Send color info to shader
-	m_colorStorage = _sprite->m_color;
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+}
+
+void GraphicSystem::TransformPipeline(Sprite * _sprite)
+{
+	// Send transform info to shader
+	m_pTransformStorage = _sprite->m_transform;
 
 	// Send transform info to shader
-	glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_TRANSLATE), 1, GL_FALSE, &mat4::Translate(m_pTransformStorage->m_position).m_member[0][0]);
-	glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_SCALE), 1, GL_FALSE, &mat4::Scale(m_pTransformStorage->m_scale).m_member[0][0]);
+	glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_TRANSLATE), 1, GL_FALSE,
+		&mat4::Translate(m_pTransformStorage->m_position).m_member[0][0]);
+	glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_SCALE), 1, GL_FALSE, 
+		&mat4::Scale(m_pTransformStorage->m_scale).m_member[0][0]);
 
 	if (m_mode == MODE_2D)
-		glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_ROTATE), 1, GL_FALSE, &mat4::Rotate(m_pTransformStorage->m_rotation, vec3::UNIT_Z).m_member[0][0]);
-	
+		glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_ROTATE), 1, GL_FALSE, 
+			&mat4::Rotate(m_pTransformStorage->m_rotation, vec3::UNIT_Z).m_member[0][0]);
+
 	// TODO
 	// else 3d rotation
 
 	// Send camera info to shader
-	glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_CAMERA), 1, GL_FALSE, 
+	glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_CAMERA), 1, GL_FALSE,
 		&mat4::Camera(m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up).m_member[0][0]);
 
 	// Send projection info to shader
@@ -100,34 +110,64 @@ void GraphicSystem::Pipeline(Sprite* _sprite)
 		glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_PROJECTION), 1, GL_FALSE,
 			&mat4::Orthogonal(m_left, m_right, m_bottom, m_top, m_zNear, m_zFar).m_member[0][0]);
 
+}
+
+void GraphicSystem::MappingPipeline(Sprite * _sprite)
+{
+	// Send color info to shader
+	m_colorStorage = _sprite->m_color;
+
 	glUniform4f(GLManager::GetUniform(GLManager::UNIFORM_COLOR),
 		m_colorStorage.x, m_colorStorage.y, m_colorStorage.z, m_colorStorage.w);
 
 	glBindTexture(GL_TEXTURE_2D, _sprite->GetCurrentTexutre()->GetId());
+}
 
+void GraphicSystem::AnimationPipeline(Sprite * _sprite)
+{
 	if (_sprite->m_activeAnimation) {
-		
-		float realSpeed = 1 / _sprite->m_animationSpeed;
-		float devidedFrame = 1 / _sprite->m_animationFrames;
-		if (realSpeed <= _sprite->m_timer.GetTime()) {
-	
-			if ()
-			;
 
+		float realSpeed = _sprite->m_realSpeed;
+
+		if (realSpeed <= _sprite->m_timer.GetTime()) {
+
+			float nextFrame = _sprite->m_curretFrame + _sprite->m_realFrame;
+			if (nextFrame >= 1.f)
+				_sprite->m_curretFrame = 0.f;
 			else
-				_sprite->m_curretFrame += ;
+				_sprite->m_curretFrame = nextFrame;
 
 			_sprite->m_timer.Start();
 		}
-
-	
 	}
 
-	m_animation.SetIdentity();
-	m_animation *= mat4::Scale(vec3(, 1.f));
-	m_animation *= mat4::Translate(vec3(, 0.f)); 
-	glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_ANIMATION), 1, GL_FALSE,
-		&m_animation.m_member[0][0]);
+	glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_ANI_SCALE), 1, GL_FALSE,
+		&(mat4::Scale(vec3(_sprite->m_realFrame, 1.f))).m_member[0][0]);
+	glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_ANI_TRANSLATE), 1, GL_FALSE,
+		&(mat4::Translate(vec3(_sprite->m_curretFrame))).m_member[0][0]);
+}
+
+bool GraphicSystem::SortZorder(const Sprite * _leftSpt, const Sprite * _rightSpt)
+{
+	Transform* left = _leftSpt->m_transform;
+	Transform* right = _rightSpt->m_transform;
+
+	if (m_orthoFirst) {
+	
+		if (_leftSpt->m_projection == Sprite::PERSPECTIVE
+			&& _rightSpt->m_projection == Sprite::ORTHOGONAL)
+			return false;
+
+		else if (_leftSpt->m_projection == Sprite::ORTHOGONAL
+			&& _rightSpt->m_projection == Sprite::PERSPECTIVE)
+			return true;
+
+		else
+			return left->m_position.z < right->m_position.z;
+	}
+
+	else
+		return left->m_position.z < right->m_position.z;
 }
 
 void GraphicSystem::SetBackgroundColor(const vec4& _color)
@@ -144,8 +184,6 @@ void GraphicSystem::InitCamera()
 {
 	AddCamera("Main");
 	m_pMainCamera = GetCamera("Main");
-	/*m_pMainCamera->SetUpVector(vec3::UNIT_Y);
-	m_pMainCamera->SetPosition(vec3(0.f, 0.f, 100.f));*/
 
 	m_pMainCamera->m_up.SetUnitY();
 	m_pMainCamera->m_position.Set(0.f, 0.f, 80.f);

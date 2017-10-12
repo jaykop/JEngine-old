@@ -31,9 +31,6 @@
     <ClCompile Include="..\..\src\JayEngine\Vector4.cpp">
       <Filter>Utils\Math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JayEngine\Timer.cpp">
-      <Filter>Utils\Timer</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\JayEngine\Object.cpp">
       <Filter>Core\Object</Filter>
     </ClCompile>
@@ -111,6 +108,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\lodePNG\lodepng_unittest.cpp">
       <Filter>Utils\lodePNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\Timer.cpp">
+      <Filter>Utils\Timer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -53,11 +53,16 @@ private:
 	void RemoveSprite(Sprite* _sprite);
 
 	void Pipeline(Sprite* _sprite);
+	void TransformPipeline(Sprite* _sprite);
+	void MappingPipeline(Sprite* _sprite);
+	void AnimationPipeline(Sprite* _sprite);
+	bool SortZorder(const Sprite *_leftSpt, const Sprite *_rightSpt);
 
 	// Member variables
 	Sprites		m_sprites; 
 	Transform*	m_pTransformStorage;
 	
+	bool	m_orthoFirst;
 	mat4	m_animation;
 	vec4	m_colorStorage, m_backgroundColor;
 	float	m_fovy, m_aspect, m_zNear, m_zFar;

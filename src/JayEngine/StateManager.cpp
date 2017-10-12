@@ -1,6 +1,5 @@
 #include "State.h"
 #include "StateManager.h"
-#include "Timer.h"
 #include "InputHandler.h"
 #include "Application.h"
 #include "SystemManager.h"
@@ -12,6 +11,7 @@ NS_JE_BEGIN
 //////////////////////////////////////////////////////////////////////////
 // static variables
 //////////////////////////////////////////////////////////////////////////
+Timer						StateManager::m_timer;
 States						StateManager::m_states;
 StateManager::StateStatus	StateManager::m_status = S_CHANGE;
 State						*StateManager::m_pCurrent = nullptr, 
@@ -43,7 +43,7 @@ void StateManager::Update(SDL_Event& _event)
 	SDL_Window* pWindow = Application::GetWindow();
 
 	// Timer
-	Timer::Start();
+	m_timer.Start();
 
 	static int s_frame = 0;
 	static float s_dt = 0.f, s_stack = 0.f;
@@ -59,14 +59,14 @@ void StateManager::Update(SDL_Event& _event)
 		// Update state manager
 		m_pCurrent->Update(s_dt);
 
-		s_dt = Timer::GetTime();	// Get delta time
+		s_dt = m_timer.GetTime();	// Get delta time
 		++s_frame;					// Increment to framw
 		s_stack += s_dt;			// Stack dt
 
 		if (s_stack >= 1.f) {		// Refresh every sec
 			s_stack = 0.f;
 			s_frame = 0;
-			Timer::Start();
+			m_timer.Start();
 
 			// Swap buffer
 			SDL_GL_SwapWindow(pWindow);

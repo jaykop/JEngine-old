@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "Macro.h"
+#include "Timer.h"
 #include "SDL2\SDL.h"
 
 NS_JE_BEGIN
@@ -11,12 +11,11 @@ typedef std::vector<State*> States;
 class StateManager {
 
 	friend class Application;
-
-public:
-
 	enum StateStatus {
 		S_NONE, S_PAUSE, S_RESUME, S_CHANGE, S_RESUME_AND_CHANGE, S_QUIT
 	};
+
+public:
 
 	static void Quit();
 	static void Resume();
@@ -53,6 +52,7 @@ private:
 	static void Clear();
 
 	// Private member variables
+	static Timer		m_timer;
 	static States		m_states;
 	static StateStatus	m_status;
 	static State*		m_pCurrent, *m_pNext, *m_pPause;

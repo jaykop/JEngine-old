@@ -92,7 +92,9 @@ void GLManager::RegisterUniform()
 	m_uniformType[UNIFORM_ROTATE] = glGetUniformLocation(Shader::m_programId, "m4_rotate");
 	m_uniformType[UNIFORM_CAMERA] = glGetUniformLocation(Shader::m_programId, "m4_viewport");
 	m_uniformType[UNIFORM_PROJECTION] = glGetUniformLocation(Shader::m_programId, "m4_projection");
-	m_uniformType[UNIFORM_ANIMATION] = glGetUniformLocation(Shader::m_programId, "m4_animation"); 
+	
+	m_uniformType[UNIFORM_ANI_TRANSLATE] = glGetUniformLocation(Shader::m_programId, "m4_aniTranslate");
+	m_uniformType[UNIFORM_ANI_SCALE] = glGetUniformLocation(Shader::m_programId, "m4_aniScale");
 	
 	// Vector uniform
 	m_uniformType[UNIFORM_COLOR] = glGetUniformLocation(Shader::m_programId, "v4_color");
