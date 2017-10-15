@@ -6,87 +6,104 @@
 
 NS_JE_BEGIN
 
-GraphicSystem	*SystemManager::m_grpSystem = nullptr;
-PhysicsSystem	*SystemManager::m_phySystem = nullptr;
-SoundSystem		*SystemManager::m_sndSystem = nullptr;
-BehaviorSystem	*SystemManager::m_bhvSystem = nullptr;
+SoundSystem					*SystemManager::m_pSoundSystem = nullptr;
+GraphicSystem				*SystemManager::m_pGraphicSystem = nullptr;
+PhysicsSystem				*SystemManager::m_pPhysicsSystem = nullptr;
+BehaviorSystem				*SystemManager::m_pBehaviorSystem = nullptr;
+SystemManager::SystemStack	SystemManager::m_pauseStack;
 
 void SystemManager::Load()
 {
-	m_grpSystem->Load();
-	m_phySystem->Load();
-	m_sndSystem->Load();
-	m_bhvSystem->Load();
+	m_pSoundSystem->Load();
+	m_pGraphicSystem->Load();
+	m_pPhysicsSystem->Load();
+	m_pBehaviorSystem->Load();
 }
 
 void SystemManager::Init()
 {
-	m_grpSystem->Init();
-	m_phySystem->Init();
-	m_sndSystem->Init();
-	m_bhvSystem->Init();
+	m_pSoundSystem->Init();
+	m_pGraphicSystem->Init();
+	m_pPhysicsSystem->Init();
+	m_pBehaviorSystem->Init();
 }
 
 void SystemManager::Update(float _dt)
 {
-	m_grpSystem->Update(_dt);
-	m_phySystem->Update(_dt);
-	m_sndSystem->Update(_dt);
-	m_bhvSystem->Update(_dt);
+	m_pGraphicSystem->Update(_dt);
+	m_pPhysicsSystem->Update(_dt);
+	m_pSoundSystem->Update(_dt);
+	m_pBehaviorSystem->Update(_dt);
 }
 
 void SystemManager::Close()
 {
-	m_grpSystem->Close();
-	m_phySystem->Close();
-	m_sndSystem->Close();
-	m_bhvSystem->Close();
+	m_pSoundSystem->Close();
+	m_pGraphicSystem->Close();
+	m_pPhysicsSystem->Close();
+	m_pBehaviorSystem->Close();
 }
 
 void SystemManager::Unload()
 {
-	m_grpSystem->Unload();
-	m_phySystem->Unload();
-	m_sndSystem->Unload();
-	m_bhvSystem->Unload();
+	m_pSoundSystem->Unload();
+	m_pGraphicSystem->Unload();
+	m_pPhysicsSystem->Unload();
+	m_pBehaviorSystem->Unload();
+}
+
+void SystemManager::Pause()
+{
+	m_pauseStack.push(this);
+}
+
+void SystemManager::Resume()
+{
+
 }
 
 void SystemManager::Bind()
 {
-	m_grpSystem = new GraphicSystem{};
-	m_phySystem = new PhysicsSystem;
-	m_sndSystem = new SoundSystem;
-	m_bhvSystem = new BehaviorSystem;
+	if (!m_binded) {
+		m_pGraphicSystem = new GraphicSystem;
+		m_pPhysicsSystem = new PhysicsSystem;
+		m_pSoundSystem = new SoundSystem;
+		m_pBehaviorSystem = new BehaviorSystem;
+			
+		m_binded = true;
+	}
 }
 
 void SystemManager::Unbind()
 {
-	// Delete graphic system
-	if (m_grpSystem) {
-		delete m_grpSystem;
-		m_grpSystem = nullptr;
-	}
+	if (m_binded) {
+		// Delete graphic system
+		if (m_pGraphicSystem) {
+			delete m_pGraphicSystem;
+			m_pGraphicSystem = nullptr;
+		}
 
-	// Delete physic system
-	if (m_phySystem) {
-		delete m_phySystem;
-		m_phySystem = nullptr;
-	}
+		// Delete physic system
+		if (m_pPhysicsSystem) {
+			delete m_pPhysicsSystem;
+			m_pPhysicsSystem = nullptr;
+		}
 
-	// Delete sound system
-	if (m_sndSystem) {
-		delete m_sndSystem;
-		m_sndSystem = nullptr;
-	}
+		// Delete sound system
+		if (m_pSoundSystem) {
+			delete m_pSoundSystem;
+			m_pSoundSystem = nullptr;
+		}
 
-	// Delete System
-	if (m_bhvSystem) {
-		delete m_bhvSystem;
-		m_bhvSystem = nullptr;
+		// Delete System
+		if (m_pBehaviorSystem) {
+			delete m_pBehaviorSystem;
+			m_pBehaviorSystem = nullptr;
+		}
+	
+		m_binded = false;
 	}
 }
-
-
 
 NS_JE_END
 

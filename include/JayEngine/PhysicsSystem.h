@@ -5,17 +5,11 @@ NS_JE_BEGIN
 
 class PhysicsSystem : public System
 {
-
-public:
-
+	
 	friend class SystemManager;
 
-	void Load() override;
-	void Init() override;
-	void Update(float dt) override;
-	void Close() override;
-	void Unload() override;
-
+public:
+	
 private:
 
 	PhysicsSystem();
@@ -23,6 +17,14 @@ private:
 	PhysicsSystem(const PhysicsSystem& /*_copy*/) {};
 	void operator=(const PhysicsSystem& /*_copy*/) {};
 
+	void Load() override;
+	void Init() override;
+	void Update(float dt) override;
+	void Close() override;
+	void Unload() override;
+
+	void Pause() override;
+	void Resume() override;
 
 };
 

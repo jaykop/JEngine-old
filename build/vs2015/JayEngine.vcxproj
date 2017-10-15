@@ -36,7 +36,8 @@
     <ClCompile Include="..\..\src\JayEngine\Matrix2x2.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Matrix4x4.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Object.cpp" />
-    <ClCompile Include="..\..\src\JayEngine\ObjectManager.cpp" />
+    <ClCompile Include="..\..\src\JayEngine\ObjectContainer.cpp" />
+    <ClCompile Include="..\..\src\JayEngine\ObjectFactory.cpp" />
     <ClCompile Include="..\..\src\JayEngine\PhysicsSystem.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Platform_win32.cpp" />
     <ClCompile Include="..\..\src\JayEngine\SoundSystem.cpp" />
@@ -52,25 +53,7 @@
     <ClCompile Include="..\..\src\JayEngine\Vector3.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Vector4.cpp" />
     <ClCompile Include="..\..\src\lodePNG\lodepng.cpp" />
-    <ClCompile Include="..\..\src\lodePNG\lodepng_benchmark.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lodePNG\lodepng_unittest.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="..\..\src\lodePNG\lodepng_util.cpp" />
-    <ClCompile Include="..\..\src\lodePNG\pngdetail.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\external\lodePNG\lodepng.h" />
@@ -98,7 +81,8 @@
     <ClInclude Include="..\..\include\JayEngine\Matrix2x2.h" />
     <ClInclude Include="..\..\include\JayEngine\Matrix4x4.h" />
     <ClInclude Include="..\..\include\JayEngine\Object.h" />
-    <ClInclude Include="..\..\include\JayEngine\ObjectManager.h" />
+    <ClInclude Include="..\..\include\JayEngine\ObjectContainer.h" />
+    <ClInclude Include="..\..\include\JayEngine\ObjectFactory.h" />
     <ClInclude Include="..\..\include\JayEngine\PhysicsSystem.h" />
     <ClInclude Include="..\..\include\JayEngine\Shader.hpp" />
     <ClInclude Include="..\..\include\JayEngine\SoundSystem.h" />
@@ -127,6 +111,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </None>
+    <None Include="..\..\include\JayEngine\ObjectContainer.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C395ED3A-CA17-4FD0-ADE9-4D7231D0677C}</ProjectGuid>

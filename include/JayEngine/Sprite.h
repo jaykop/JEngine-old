@@ -15,10 +15,11 @@ class Sprite : public Component
 	friend class	GraphicSystem;
 	friend class	ComponentManager;
 	typedef			std::unordered_map<std::string, Texture*>	TextureMap;
-	enum			ProjectType { PERSPECTIVE, ORTHOGONAL };
 
 public:
 	
+	enum	ProjectType { PERSPECTIVE, ORTHOGONAL };
+
 	int		GetAnimationFrame();
 	float	GetAnimationSpeed();
 	bool	GetActiveAnimationToggle();
@@ -32,7 +33,9 @@ public:
 	void		SetCurrentTexutre(const char* _key);
 	Texture*	GetCurrentTexutre();
 	Texture*	GetTexutre(const char* _key);
+	//Transform*	GetTransform();
 
+	bool		m_flip;
 	vec4		m_color;
 	ProjectType m_projection;
 

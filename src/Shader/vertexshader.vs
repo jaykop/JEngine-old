@@ -16,6 +16,9 @@ uniform mat4 m4_animation;
 // uniform vectors
 uniform vec4 v4_color;
 
+// uniform boolean
+uniform bool boolean_flip;
+
 // out variables
 out		vec4 v4_outColor;
 out		vec2 v2_outTexCoord;
@@ -32,5 +35,8 @@ void main(){
 	mat4 animation = m4_aniScale * m4_aniTranslate;
 	vec4 newTexCoord = transpose(animation) * vec4(uvPosition, 0, 1);
 	
+	if (boolean_flip)
+		newTexCoord.x = -newTexCoord.x;
+		
 	v2_outTexCoord = newTexCoord.xy;
 }

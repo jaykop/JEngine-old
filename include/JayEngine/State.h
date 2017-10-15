@@ -6,10 +6,18 @@ NS_JE_BEGIN
 
 class State {
 
+	friend class StateManager;
+	friend class AssetManager;
+	friend class ObjectContainer;
+
 public:
+
+private:
 
 	State(const char* _name);
 	~State() {};
+	State(const State& /*_copy*/) {};
+	void operator=(const State& /*_copy*/) {};
 
 	void Load();
 	void Init();
@@ -17,16 +25,12 @@ public:
 	void Close();
 	void Unload();
 
-private:
+	void ClearObjectContainer();
 
-	friend class StateManager;
-
-	State(const State& /*_copy*/) {};
-	void operator=(const State& /*_copy*/) {};
-
-	State*		m_pLastStage;
-	bool		m_paused;
-	std::string m_name;
+	State*				m_pLastStage;
+	bool				m_paused;
+	std::string			m_name;
+	ObjectContainer*	m_objContainer;
 };
 
 NS_JE_END

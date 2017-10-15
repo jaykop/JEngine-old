@@ -10,9 +10,10 @@ Sprite::Sprite(Object* _owner)
 	:Component(_owner), m_color(vec4::ONE),m_projection(PERSPECTIVE), 
 	m_mainTex(nullptr), m_curretFrame(0.f), m_animationSpeed(0.f), 
 	m_animationFrames(1), m_animationFixFrame(1), m_realSpeed(0.f), 
-	m_realFrame(1.f), m_activeAnimation(false), m_transform(nullptr)
+	m_realFrame(1.f), m_activeAnimation(false), m_transform(nullptr),
+	m_flip(false)
 {
-	SystemManager::m_grpSystem->AddSprite(this);
+	SystemManager::m_pGraphicSystem->AddSprite(this);
 	if (m_pOwner->GetComponent<Transform>())
 		m_transform = m_pOwner->GetComponent<Transform>();
 }
@@ -101,10 +102,15 @@ Texture* Sprite::GetTexutre(const char *_key)
 	return nullptr;
 }
 
+//Transform * Sprite::GetTransform()
+//{
+//	return m_transform;
+//}
+
 Sprite::~Sprite()
 {
 	m_textureMap.clear();
-	SystemManager::m_grpSystem->RemoveSprite(this);
+	SystemManager::m_pGraphicSystem->RemoveSprite(this);
 }
 
 NS_JE_END

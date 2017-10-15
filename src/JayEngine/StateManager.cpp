@@ -78,10 +78,20 @@ void StateManager::Update(SDL_Event& _event)
 
 	switch (m_status) {
 
+		// TODO 
+		// Pause process
 	case S_PAUSE:
 		break;
 
 	case S_QUIT:				// The case to quit app
+		while (m_pCurrent) {
+			State* pLast = m_pCurrent->m_pLastStage;
+			m_pCurrent->Close();
+			m_pCurrent->Unload();
+			m_pCurrent = pLast;
+		}
+		break;
+	
 	case S_RESUME:				// The case to resume to last state
 	case S_CHANGE:				// The case to change to next state
 	case S_RESUME_AND_CHANGE:	// The case to resume and change
@@ -97,16 +107,12 @@ void StateManager::Close()
 	SystemManager::Unbind();
 
 	// Clear all the states
-	Clear();
+	ClearStates();
 }
 
 void StateManager::Unload()
 {
 	AssetManager::Unload();
-}
-
-void StateManager::EventHandle()
-{
 }
 
 void StateManager::ChangeState()
@@ -290,7 +296,7 @@ State* StateManager::GetState(const char* _stateName)
 	return nullptr;
 }
 
-void StateManager::Clear()
+void StateManager::ClearStates()
 {
 	// Remove all states from the vector
 	for (auto it = m_states.begin(); it != m_states.end(); )

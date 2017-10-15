@@ -1,5 +1,4 @@
 #pragma once
-#include "Macro.h"
 #include "Vector3.h"
 #include "Component.h"
 
@@ -18,7 +17,7 @@ public:
 
 private:
 
-	Transform(Object* _owner);
+	Transform(Object* _owner = nullptr);
 	~Transform() {};
 	Transform(const Transform& /*_copy*/) {};
 	void operator= (const Transform& /*_copy*/) {};

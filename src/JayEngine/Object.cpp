@@ -1,17 +1,19 @@
 #include "Object.h"
 #include "Component.h"
-#include "ObjectManager.h"
+#include "ObjectFactory.h"
+#include "ObjectContainer.h"
 #include "ComponentManager.h"
 
 NS_JE_BEGIN
 
 Object::Object(const char* _name)
 	:m_name(_name), m_active(true), m_pParent(nullptr),
-	m_id(ObjectManager::m_registerNumber)
+	m_id(ObjectFactory::m_registerNumber)
 {}
 
 Object::~Object()
 {
+	ClearChildren();
 	ClearComponents();
 }
 
@@ -57,7 +59,7 @@ void Object::RemoveChild(const char* _name)
 	// If there is, remove
 	if (found != m_childObjs.end()) {
 		m_childObjs.erase(_name);			// Remove from the child list
-		ObjectManager::RemoveObject(_name);	// Remove from obj manager
+		m_pOBC->RemoveObject(_name);	// Remove from obj manager
 	}
 		
 	else 
@@ -136,7 +138,7 @@ void Object::ClearComponents()
 void Object::ClearChildren()
 {
 	for (auto child : m_childObjs)
-		ObjectManager::RemoveObject(child.second->GetName().c_str());
+		m_pOBC->RemoveObject(child.second->GetName().c_str());
 }
 
 

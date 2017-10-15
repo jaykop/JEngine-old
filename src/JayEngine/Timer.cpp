@@ -1,4 +1,4 @@
-#include <iostream>
+#include <ctime>
 #include "Timer.h"
 
 NS_JE_BEGIN

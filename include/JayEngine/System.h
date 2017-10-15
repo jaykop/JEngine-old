@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Macro.h"
 
 NS_JE_BEGIN
@@ -15,6 +14,9 @@ protected:
 	virtual void Update(float dt) = 0;
 	virtual void Close() = 0;
 	virtual void Unload() = 0;
+
+	virtual void Pause() = 0;
+	virtual void Resume() = 0;
 
 	System() {};
 	~System() {};

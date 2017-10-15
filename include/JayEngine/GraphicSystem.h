@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include <unordered_map>
 #include "System.h"
 #include "Vector4.h"
 #include "Matrix4x4.h"
@@ -17,17 +16,14 @@ class GraphicSystem : public System
 	friend class Sprite;
 	friend class SystemManager;
 
-	typedef std::vector<Sprite*>						Sprites;
-	typedef std::unordered_map<std::string, Camera*>	CameraMap;
+	typedef std::vector<Sprite*> Sprites;
+	typedef std::vector<Camera*> Cameras;
 	
 	enum GraphicMode { MODE_2D, MODE_3D };
 
 public:
 
-	void	AddCamera(const char* _camaraName);
-	void	RemoveCamera(const char* _camaraName);
-	void	ClearCameraMap();
-	Camera* GetCamera(const char* _camaraName);
+	void	SetMainCamera(Camera* _camera);
 	Camera* GetMainCamera();
 
 	void		SetBackgroundColor(const vec4& _color);
@@ -46,20 +42,28 @@ private:
 	void Close() override;
 	void Unload() override;
 
+	void Pause() override;
+	void Resume() override;
+
 	// Helper functions
 	void InitCamera();
 
 	void AddSprite(Sprite* _sprite);
 	void RemoveSprite(Sprite* _sprite);
 
+	void AddCamera(Camera* _camera);
+	void RemoveCamera(Camera* _camera);
+
 	void Pipeline(Sprite* _sprite);
 	void TransformPipeline(Sprite* _sprite);
 	void MappingPipeline(Sprite* _sprite);
 	void AnimationPipeline(Sprite* _sprite);
-	bool SortZorder(const Sprite *_leftSpt, const Sprite *_rightSpt);
 
 	// Member variables
-	Sprites		m_sprites; 
+	GraphicMode m_mode;
+	Sprites		m_sprites;
+	Cameras		m_cameras;
+	Camera*		m_pMainCamera;
 	Transform*	m_pTransformStorage;
 	
 	bool	m_orthoFirst;
@@ -68,10 +72,14 @@ private:
 	float	m_fovy, m_aspect, m_zNear, m_zFar;
 	float	m_left, m_right, m_top, m_bottom;
 
-	Camera*		m_pMainCamera;
-	CameraMap	m_cameraMap;
-
-	GraphicMode m_mode;
+	struct compareOrder {
+		
+		compareOrder(bool _orthoFirst) { m_orthoFirst = _orthoFirst; }
+		bool operator()(Sprite * _leftSpt, Sprite * _rightSpt);
+		
+		private:
+			bool m_orthoFirst;
+	};
 };
 
 NS_JE_END

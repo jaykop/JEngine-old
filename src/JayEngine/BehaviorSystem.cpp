@@ -27,4 +27,12 @@ void BehaviorSystem::Unload()
 {
 }
 
+void BehaviorSystem::Pause()
+{
+}
+
+void BehaviorSystem::Resume()
+{
+}
+
 NS_JE_END

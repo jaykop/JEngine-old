@@ -1,31 +1,23 @@
 #pragma once
-#include "Macro.h"
 #include "Vector3.h"
+#include "Component.h"
 
 NS_JE_BEGIN
 
-class Camera {
-
-public:
+class Camera : public Component
+{
 
 	friend class GraphicSystem;
+	friend class ComponentManager;
 
-	//void SetRotation2D(float _rotation);
-	//void SetTarget(const vec3& _target);
-	//void SetUpVector(const vec3& _upVector);
-	//void SetPosition(const vec3& _position);
-	//
-	//float		GetRotation2D();
-	//const vec3& GetTarget() const;
-	//const vec3& GetPosition() const;
-	//const vec3& GetUpVector() const;
+public:
 
 	vec3 m_position, m_up, m_target;
 	float m_rotation;
 
 private:
 
-	Camera();
+	Camera(Object* _owner = nullptr);
 	~Camera() {};
 
 	Camera(const Camera& /*_copy*/) {};

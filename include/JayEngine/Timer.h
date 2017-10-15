@@ -1,6 +1,5 @@
 #pragma once
 #include "Macro.h"
-#include <ctime>
 
 NS_JE_BEGIN
 

@@ -4,11 +4,39 @@
 
 NS_JE_BEGIN
 
+//////////////////////////////////////////////////////////////////////////
+// static variables
+//////////////////////////////////////////////////////////////////////////
 GLuint GLManager::m_vao = 0;
 GLuint GLManager::m_vbo = 0;
 GLuint GLManager::m_ebo = 0;
 GLManager::DrawMode GLManager::m_mode = DrawMode::DRAW_FILL;
 GLint GLManager::m_uniformType[UNIFORM_END];
+
+//////////////////////////////////////////////////////////////////////////
+// vertex variables
+//////////////////////////////////////////////////////////////////////////
+const static float s_vertices[] =
+{
+	// vertic position	// texture coordinate
+	-.5f, .5f, 0.f,		0.f, 0.f,	// top left	
+	.5f, .5f, 0.f,		1.f, 0.f,	// top right
+	.5f, -.5f,	0.f,	1.f, 1.f,	// bottom right
+	-.5f, -.5f, 0.f,	0.f, 1.f	// bottom left
+};
+
+const static int s_indices[] =
+{
+	/***************/
+	/*  *   second */
+	/*     *       */
+	/*        *    */
+	/*  first    * */
+	/***************/
+
+	0 ,2, 3,	// first triangle
+	2, 0, 1		// second triangle
+};
 
 bool GLManager::initSDL_GL()
 {
@@ -52,8 +80,9 @@ void GLManager::InitGLEnvironment()
 	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
 	JE_DEBUG_PRINT("Maximum nr of vertex attributes supported: %d\n", nrAttributes);
 
-	// Check depth
-	glEnable(GL_DEPTH_TEST);
+	// Active blend function
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// Texture attribute setting
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
@@ -98,6 +127,10 @@ void GLManager::RegisterUniform()
 	
 	// Vector uniform
 	m_uniformType[UNIFORM_COLOR] = glGetUniformLocation(Shader::m_programId, "v4_color");
+
+	// Boolean uniform
+	m_uniformType[UNIFORM_FLIP] = glGetUniformLocation(Shader::m_programId, "boolean_flip");
+	
 }
 
 GLint GLManager::GetUniform(UniformType _uniform)

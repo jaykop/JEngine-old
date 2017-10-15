@@ -6,30 +6,6 @@
 #include "Macro.h"
 NS_JE_BEGIN
 
-// Vertex data
-const static float s_vertices[] = 
-{
-	// vertic position	// texture coordinate
-	-.5f, .5f, 0.f,		0.f, 0.f,	// top left	
-	.5f, .5f, 0.f,		1.f, 0.f,	// top right
-	.5f, -.5f,	0.f,	1.f, 1.f,	// bottom right
-	-.5f, -.5f, 0.f,	0.f, 1.f	// bottom left
-};
-
-// Index data
-const static int s_indices[] =
-{
-	/***************/
-	/*  *   second */
-	/*     *       */
-	/*        *    */
-	/*  first    * */
-	/***************/
-
-	0 ,2, 3,	// first triangle
-	2, 0, 1		// second triangle
-};
-
 class GLManager {
 
 	friend class Application;
@@ -45,6 +21,9 @@ class GLManager {
 
 		// Vector uniform
 		UNIFORM_COLOR, 
+
+		// Boolean uniform
+		UNIFORM_FLIP,
 
 		// Last enum
 		UNIFORM_END

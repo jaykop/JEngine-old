@@ -82,9 +82,6 @@
     <ClCompile Include="..\..\src\JayEngine\Transform.cpp">
       <Filter>System\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JayEngine\ObjectManager.cpp">
-      <Filter>Core\Object</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\JayEngine\Camera.cpp">
       <Filter>System\Graphic</Filter>
     </ClCompile>
@@ -97,20 +94,17 @@
     <ClCompile Include="..\..\src\lodePNG\lodepng_util.cpp">
       <Filter>Utils\lodePNG</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\lodePNG\pngdetail.cpp">
-      <Filter>Utils\lodePNG</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\lodePNG\lodepng.cpp">
-      <Filter>Utils\lodePNG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lodePNG\lodepng_benchmark.cpp">
-      <Filter>Utils\lodePNG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lodePNG\lodepng_unittest.cpp">
       <Filter>Utils\lodePNG</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\JayEngine\Timer.cpp">
       <Filter>Utils\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\ObjectContainer.cpp">
+      <Filter>Core\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\ObjectFactory.cpp">
+      <Filter>Core\Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -216,9 +210,6 @@
     <ClInclude Include="..\..\include\JayEngine\Transform.h">
       <Filter>System\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JayEngine\ObjectManager.h">
-      <Filter>Core\Object</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\JayEngine\Camera.h">
       <Filter>System\Graphic</Filter>
     </ClInclude>
@@ -233,6 +224,12 @@
     </ClInclude>
     <ClInclude Include="..\..\external\lodePNG\lodepng.h">
       <Filter>Utils\lodePNG</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\ObjectContainer.h">
+      <Filter>Core\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\ObjectFactory.h">
+      <Filter>Core\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -300,6 +297,9 @@
     </None>
     <None Include="..\..\include\JayEngine\ComponentManager.inl">
       <Filter>Core\Component</Filter>
+    </None>
+    <None Include="..\..\include\JayEngine\ObjectContainer.inl">
+      <Filter>Core\Object</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -46,10 +46,8 @@ private:
 	static void PushState(const char* _stateName);
 	static void PopState(const char* _stateName);
 
-	static void EventHandle();
 	static void ChangeState();
-
-	static void Clear();
+	static void ClearStates();
 
 	// Private member variables
 	static Timer		m_timer;

@@ -6,9 +6,17 @@ NS_JE_BEGIN
 class SoundSystem : public System
 {
 
+	friend class SystemManager;
+
 public:
 
-	friend class SystemManager;
+	
+private:
+
+	SoundSystem();
+	~SoundSystem() {};
+	SoundSystem(const SoundSystem& /*_copy*/) {};
+	void operator=(const SoundSystem& /*_copy*/) {};
 
 	void Load() override;
 	void Init() override;
@@ -16,13 +24,8 @@ public:
 	void Close() override;
 	void Unload() override;
 
-private:
-
-	SoundSystem();
-	~SoundSystem() {};
-	SoundSystem(const SoundSystem& /*_copy*/) {};
-	void operator=(const SoundSystem& /*_copy*/) {};
-\
+	void Pause() override;
+	void Resume() override;
 };
 
 NS_JE_END

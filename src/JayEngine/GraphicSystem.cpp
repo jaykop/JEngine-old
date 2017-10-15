@@ -1,4 +1,3 @@
-#include <functional>
 #include <algorithm>
 #include "Sprite.h"
 #include "Texture.h"
@@ -38,7 +37,7 @@ void GraphicSystem::Update(float /*dt*/)
 	glClearColor(m_backgroundColor.x, m_backgroundColor.y, m_backgroundColor.z, m_backgroundColor.w);
 
 	// Sort sprites by sprite's z position
-	std::sort(m_sprites.begin(), m_sprites.end(), SortZorder);
+	std::sort(m_sprites.begin(), m_sprites.end(), compareOrder(m_orthoFirst));
 
 	// Update sprites
 	for (auto sprite : m_sprites)
@@ -47,10 +46,21 @@ void GraphicSystem::Update(float /*dt*/)
 
 void GraphicSystem::Close()
 {
-	ClearCameraMap();
+	m_sprites.clear();
+	m_cameras.clear();
 }
 
 void GraphicSystem::Unload()
+{
+	
+}
+
+void GraphicSystem::Pause()
+{
+
+}
+
+void GraphicSystem::Resume()
 {
 }
 
@@ -72,6 +82,7 @@ void GraphicSystem::RemoveSprite(Sprite* _sprite)
 
 void GraphicSystem::Pipeline(Sprite* _sprite)
 {
+	
 	TransformPipeline(_sprite);
 	MappingPipeline(_sprite);
 	AnimationPipeline(_sprite);
@@ -121,6 +132,8 @@ void GraphicSystem::MappingPipeline(Sprite * _sprite)
 		m_colorStorage.x, m_colorStorage.y, m_colorStorage.z, m_colorStorage.w);
 
 	glBindTexture(GL_TEXTURE_2D, _sprite->GetCurrentTexutre()->GetId());
+
+	glUniform1i(GLManager::GetUniform(GLManager::UNIFORM_FLIP), true);
 }
 
 void GraphicSystem::AnimationPipeline(Sprite * _sprite)
@@ -131,7 +144,12 @@ void GraphicSystem::AnimationPipeline(Sprite * _sprite)
 
 		if (realSpeed <= _sprite->m_timer.GetTime()) {
 
-			float nextFrame = _sprite->m_curretFrame + _sprite->m_realFrame;
+			float nextFrame;
+			if (_sprite->m_flip)
+				nextFrame = _sprite->m_curretFrame - _sprite->m_realFrame;
+			else
+				nextFrame = _sprite->m_curretFrame + _sprite->m_realFrame;
+			
 			if (nextFrame >= 1.f)
 				_sprite->m_curretFrame = 0.f;
 			else
@@ -147,13 +165,54 @@ void GraphicSystem::AnimationPipeline(Sprite * _sprite)
 		&(mat4::Translate(vec3(_sprite->m_curretFrame))).m_member[0][0]);
 }
 
-bool GraphicSystem::SortZorder(const Sprite * _leftSpt, const Sprite * _rightSpt)
+void GraphicSystem::SetBackgroundColor(const vec4& _color)
+{
+	m_backgroundColor = _color;
+}
+
+const vec4& GraphicSystem::GetBackgroundColor() const
+{
+	return m_backgroundColor;
+}
+
+void GraphicSystem::InitCamera()
+{
+	
+}
+
+void GraphicSystem::SetMainCamera(Camera* _camera)
+{
+	m_pMainCamera = _camera;
+}
+
+Camera* GraphicSystem::GetMainCamera()
+{
+	return m_pMainCamera;
+}
+
+void GraphicSystem::AddCamera(Camera* _camera)
+{
+	m_cameras.push_back(_camera);
+}
+
+void GraphicSystem::RemoveCamera(Camera* _camera)
+{	
+	for (Cameras::iterator it = m_cameras.begin();
+		it != m_cameras.end(); ++it) {
+		if ((*it)->m_ownerId == _camera->m_ownerId) {
+			m_cameras.erase(it);
+			break;
+		}
+	}
+}
+
+bool GraphicSystem::compareOrder::operator()(Sprite * _leftSpt, Sprite * _rightSpt)
 {
 	Transform* left = _leftSpt->m_transform;
 	Transform* right = _rightSpt->m_transform;
 
 	if (m_orthoFirst) {
-	
+
 		if (_leftSpt->m_projection == Sprite::PERSPECTIVE
 			&& _rightSpt->m_projection == Sprite::ORTHOGONAL)
 			return false;
@@ -168,82 +227,6 @@ bool GraphicSystem::SortZorder(const Sprite * _leftSpt, const Sprite * _rightSpt
 
 	else
 		return left->m_position.z < right->m_position.z;
-}
-
-void GraphicSystem::SetBackgroundColor(const vec4& _color)
-{
-	m_backgroundColor = _color;
-}
-
-const vec4& GraphicSystem::GetBackgroundColor() const
-{
-	return m_backgroundColor;
-}
-
-void GraphicSystem::InitCamera()
-{
-	AddCamera("Main");
-	m_pMainCamera = GetCamera("Main");
-
-	m_pMainCamera->m_up.SetUnitY();
-	m_pMainCamera->m_position.Set(0.f, 0.f, 80.f);
-}
-
-Camera* GraphicSystem::GetMainCamera()
-{
-	return m_pMainCamera;
-}
-
-void GraphicSystem::AddCamera(const char* _camaraName)
-{
-	auto found = m_cameraMap.find(_camaraName);
-
-	// Found nothing exsting camera
-	// Insert new camera to the list
-	if (found == m_cameraMap.end())
-		m_cameraMap.insert(
-			CameraMap::value_type(
-				_camaraName, new Camera));
-
-	else
-		JE_DEBUG_PRINT("Cannot add identical component again!\n");
-}
-
-void GraphicSystem::RemoveCamera(const char* _camaraName)
-{	
-	// Find if there is the once
-	auto found = m_cameraMap.find(_camaraName);
-
-	// If there is return it
-	if (found != m_cameraMap.end())
-		delete found->second;
-
-	else 
-		JE_DEBUG_PRINT("No such name of camera\n");
-}
-
-void GraphicSystem::ClearCameraMap()
-{
-	for (auto camera : m_cameraMap) {
-		delete camera.second;
-		camera.second = nullptr;
-	}
-}
-
-Camera* GraphicSystem::GetCamera(const char* _camaraName)
-{
-	// Find if there is the once
-	auto found = m_cameraMap.find(_camaraName);
-
-	// If there is return it
-	if (found != m_cameraMap.end())
-		return found->second;
-
-	// Unless...
-	else {
-		JE_DEBUG_PRINT("No such name of camera\n");
-		return nullptr;
-	}
 }
 
 NS_JE_END

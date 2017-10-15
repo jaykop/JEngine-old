@@ -16,7 +16,8 @@ class Object {
 
 public:
 
-	friend class ObjectManager;
+	friend class ObjectFactory;
+	friend class ObjectContainer;
 
 	Object(const char* _name);
 	~Object();
@@ -58,12 +59,13 @@ private:
 	void ClearComponents();
 	void ClearChildren();
 
-	unsigned		m_id;
-	bool			m_active;
-	Object*			m_pParent;
-	std::string		m_name;
-	ChildObjects	m_childObjs;
-	ComponentMap	m_componentMap;
+	unsigned			m_id;
+	bool				m_active;
+	Object*				m_pParent;
+	std::string			m_name;
+	ChildObjects		m_childObjs;
+	ComponentMap		m_componentMap;
+	ObjectContainer*	m_pOBC;
 };
 
 NS_JE_END

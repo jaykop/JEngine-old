@@ -27,5 +27,13 @@ void PhysicsSystem::Unload()
 {
 }
 
+void PhysicsSystem::Pause()
+{
+}
+
+void PhysicsSystem::Resume()
+{
+}
+
 
 NS_JE_END

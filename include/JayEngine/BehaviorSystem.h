@@ -6,9 +6,16 @@ NS_JE_BEGIN
 class BehaviorSystem : public System
 {
 
-public:
-
 	friend class SystemManager;
+
+public:
+	
+private:
+
+	BehaviorSystem();
+	~BehaviorSystem() {};
+	BehaviorSystem(const BehaviorSystem& /*_copy*/) {};
+	void operator=(const BehaviorSystem& /*_copy*/) {};
 
 	void Load() override;
 	void Init() override;
@@ -16,12 +23,8 @@ public:
 	void Close() override;
 	void Unload() override;
 
-private:
-
-	BehaviorSystem();
-	~BehaviorSystem() {};
-	BehaviorSystem(const BehaviorSystem& /*_copy*/) {};
-	void operator=(const BehaviorSystem& /*_copy*/) {};
+	void Pause() override;
+	void Resume() override;
 
 };
 
