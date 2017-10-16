@@ -5,7 +5,6 @@ NS_JE_BEGIN
 
 class SoundSystem : public System
 {
-
 	friend class SystemManager;
 
 public:

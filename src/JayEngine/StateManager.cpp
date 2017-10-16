@@ -81,6 +81,7 @@ void StateManager::Update(SDL_Event& _event)
 		// TODO 
 		// Pause process
 	case S_PAUSE:
+		SystemManager::Pause();
 		break;
 
 	case S_QUIT:				// The case to quit app
@@ -93,6 +94,11 @@ void StateManager::Update(SDL_Event& _event)
 		break;
 	
 	case S_RESUME:				// The case to resume to last state
+		m_pCurrent->Close();
+		m_pCurrent->Unload();
+		SystemManager::Resume();
+		break;
+
 	case S_CHANGE:				// The case to change to next state
 	case S_RESUME_AND_CHANGE:	// The case to resume and change
 		m_pCurrent->Close();

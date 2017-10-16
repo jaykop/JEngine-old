@@ -13,7 +13,7 @@ Sprite::Sprite(Object* _owner)
 	m_realFrame(1.f), m_activeAnimation(false), m_transform(nullptr),
 	m_flip(false)
 {
-	SystemManager::m_pGraphicSystem->AddSprite(this);
+	SystemManager::GetGraphicSystem()->AddSprite(this);
 	if (m_pOwner->GetComponent<Transform>())
 		m_transform = m_pOwner->GetComponent<Transform>();
 }
@@ -110,7 +110,7 @@ Texture* Sprite::GetTexutre(const char *_key)
 Sprite::~Sprite()
 {
 	m_textureMap.clear();
-	SystemManager::m_pGraphicSystem->RemoveSprite(this);
+	SystemManager::GetGraphicSystem()->RemoveSprite(this);
 }
 
 NS_JE_END

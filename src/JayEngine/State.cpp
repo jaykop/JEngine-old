@@ -37,7 +37,7 @@ void State::Init()
 	ObjectFactory::CreateObject("camera");
 	ObjectFactory::GetCreatedObject()->AddComponent<Camera>();
 	ObjectFactory::GetCreatedObject()->GetComponent<Camera>()->m_position = vec3(0 ,0, 80);
-	SystemManager::m_pGraphicSystem->SetMainCamera(
+	SystemManager::GetGraphicSystem()->SetMainCamera(
 		ObjectFactory::GetCreatedObject()->GetComponent<Camera>());
 	ObjectFactory::AddCreatedObject(m_objContainer);
 
@@ -65,7 +65,7 @@ void State::Init()
 	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->SetAnimationSpeed(10.f);
 	ObjectFactory::AddCreatedObject(m_objContainer);
 
-	SystemManager::m_pGraphicSystem->SetBackgroundColor(vec4(1,0,0,1));
+	SystemManager::GetGraphicSystem()->SetBackgroundColor(vec4(1,0,0,1));
 }
 
 void State::Update(float _dt)
