@@ -13,7 +13,7 @@ NS_JE_BEGIN
 GraphicSystem::GraphicSystem()
 	:System(), m_pTransformStorage(nullptr), m_pMainCamera(nullptr),
 	m_backgroundColor(vec4::ZERO), m_colorStorage(vec4::ZERO),
-	m_fovy(45.f), m_zNear(.1f), m_zFar(100.f), m_mode(MODE_2D),
+	m_fovy(45.f), m_zNear(.1f), m_zFar(1000.f), m_mode(MODE_2D),
 	m_orthoFirst(false), m_width(Application::GetData().m_width),
 	m_height(Application::GetData().m_height)
 {
@@ -25,6 +25,7 @@ GraphicSystem::GraphicSystem()
 
 	m_perspective = mat4::Perspective(m_fovy, m_aspect, m_zNear, m_zFar);
 	m_orthogonal = mat4::Orthogonal(m_left, m_right, m_bottom, m_top, m_zNear, m_zFar);
+	
 }
 
 void GraphicSystem::Load()
@@ -41,14 +42,14 @@ void GraphicSystem::Update(float /*dt*/)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(m_backgroundColor.x, m_backgroundColor.y, m_backgroundColor.z, m_backgroundColor.w);
 
-	GLMousePosition();
-
 	// Sort sprites by sprite's z position
 	std::sort(m_sprites.begin(), m_sprites.end(), compareOrder(m_orthoFirst));
 
 	// Update sprites
 	for (auto sprite : m_sprites)
 		Pipeline(sprite);
+
+	GLMousePosition();
 }
 
 void GraphicSystem::Close()
@@ -96,11 +97,11 @@ void GraphicSystem::TransformPipeline(Sprite * _sprite)
 	// Send transform info to shader
 	glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_TRANSLATE), 1, GL_FALSE,
 		&mat4::Translate(m_pTransformStorage->m_position).m_member[0][0]);
-	glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_SCALE), 1, GL_FALSE, 
+	glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_SCALE), 1, GL_FALSE,
 		&mat4::Scale(m_pTransformStorage->m_scale).m_member[0][0]);
 
 	if (m_mode == MODE_2D)
-		glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_ROTATE), 1, GL_FALSE, 
+		glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_ROTATE), 1, GL_FALSE,
 			&mat4::Rotate(m_pTransformStorage->m_rotation, vec3::UNIT_Z).m_member[0][0]);
 
 	// TODO
@@ -116,7 +117,7 @@ void GraphicSystem::TransformPipeline(Sprite * _sprite)
 		glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_PROJECTION), 1, GL_FALSE,
 			&m_perspective.m_member[0][0]);
 
-	else
+	else 
 		glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_PROJECTION), 1, GL_FALSE,
 			&m_orthogonal.m_member[0][0]);
 }
@@ -241,7 +242,6 @@ void GraphicSystem::GLMousePosition() {
 	float new_w1 = 1.f / orthoPos.w;
 	InputHandler::m_orthoPosition.Set(orthoPos.x, orthoPos.y, orthoPos.z);
 	InputHandler::m_orthoPosition *= new_w1;
-	InputHandler::m_orthoPosition.z = 0.f;
 
 	mat4 perspective = m_perspective * m_viewport;
 	perspective.Inverse();
@@ -249,7 +249,6 @@ void GraphicSystem::GLMousePosition() {
 	float new_w2 = 1.f / perspPos.w;
 	InputHandler::m_perspPosition.Set(perspPos.x, perspPos.y, perspPos.z);
 	InputHandler::m_perspPosition *= new_w2;
-	InputHandler::m_perspPosition.z = 0.f;
 
 }
 

@@ -754,7 +754,7 @@ Matrix4x4 Matrix4x4::Perspective(float _fovy, float _aspect, float _zNear, float
 
 	Result.m_member[0][0] = distance / _aspect;
 	Result.m_member[1][1] = distance;
-	Result.m_member[2][2] = (_zFar + _zNear) / (_zNear- _zFar);
+	Result.m_member[2][2] = (_zFar + _zNear) / (_zNear - _zFar);
 
 	Result.m_member[2][3] = (2 * _zFar * _zNear) / (_zNear -_zFar);
 	Result.m_member[3][2] = -1.f;
@@ -766,12 +766,16 @@ Matrix4x4 Matrix4x4::Orthogonal(float _left, float _right, float _bottom, float 
 {
 	Matrix4x4 Result;
 
+	// TODO
+	// Need offset here to consider resolution?
+	// I don't know...
+
 	Result.m_member[0][0] = 2.f / (_right - _left);
 	Result.m_member[1][1] = 2.f / (_top - _bottom);
-	Result.m_member[2][2] = -2.f / (_zFar - _zNear);
-	Result.m_member[0][3] = -(_right + _left) / (_right - _left);
-	Result.m_member[1][3] = -(_top + _bottom) / (_top - _bottom);
-	Result.m_member[2][3] = -(_zFar + _zNear) / (_zFar - _zNear);
+	Result.m_member[2][2] = 2.f / (_zNear - _zFar);
+	Result.m_member[0][3] = (_right + _left) / (_left - _right);
+	Result.m_member[1][3] = (_top + _bottom) / (_bottom - _top);
+	Result.m_member[2][3] = (_zFar + _zNear) / (_zNear - _zFar);
 	Result.m_member[3][3] = 1.f;
 
 	return Result;
