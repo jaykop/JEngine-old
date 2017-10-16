@@ -7,6 +7,9 @@ NS_JE_BEGIN
 //////////////////////////////////////////////////////////////////////////
 bool					InputHandler::m_keyPressed = false;
 bool					InputHandler::m_mousePressed = false;
+vec3					InputHandler::m_rawPosition = vec3::ZERO;
+vec3					InputHandler::m_orthoPosition = vec3::ZERO;
+vec3					InputHandler::m_perspPosition = vec3::ZERO;
 InputHandler::KeyMap	InputHandler::m_keys, InputHandler::m_triggerList;
 
 bool InputHandler::KeyPressed(JE_KEY _pressed)
@@ -308,8 +311,7 @@ void InputHandler::Update(SDL_Event* _event)
 		break;
 
 	case SDL_MOUSEMOTION:
-		// m_position = vec2(event.motion.x, event.motion.y);
-		// SDL_GetModState();
+		m_rawPosition = vec3(float(_event->motion.x), float(_event->motion.y));
 		break;
 	
 	case SDL_MOUSEWHEEL:

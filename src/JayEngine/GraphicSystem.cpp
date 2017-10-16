@@ -6,6 +6,7 @@
 #include "GraphicSystem.h"
 #include "Transform.h"
 #include "Application.h"
+#include "InputHandler.h"
 
 NS_JE_BEGIN
 
@@ -13,13 +14,17 @@ GraphicSystem::GraphicSystem()
 	:System(), m_pTransformStorage(nullptr), m_pMainCamera(nullptr),
 	m_backgroundColor(vec4::ZERO), m_colorStorage(vec4::ZERO),
 	m_fovy(45.f), m_zNear(.1f), m_zFar(100.f), m_mode(MODE_2D),
-	m_orthoFirst(true)
+	m_orthoFirst(false), m_width(Application::GetData().m_width),
+	m_height(Application::GetData().m_height)
 {
-	m_aspect = float(Application::GetData().m_width) / float(Application::GetData().m_height);
-	m_right = Application::GetData().m_width * .5f;
+	m_aspect = float(m_width) / float(m_height);
+	m_right = m_width * .5f;
 	m_left = -m_right;
-	m_top = Application::GetData().m_height * .5f;
+	m_top = m_height * .5f;
 	m_bottom = -m_top;
+
+	m_perspective = mat4::Perspective(m_fovy, m_aspect, m_zNear, m_zFar);
+	m_orthogonal = mat4::Orthogonal(m_left, m_right, m_bottom, m_top, m_zNear, m_zFar);
 }
 
 void GraphicSystem::Load()
@@ -35,6 +40,8 @@ void GraphicSystem::Update(float /*dt*/)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(m_backgroundColor.x, m_backgroundColor.y, m_backgroundColor.z, m_backgroundColor.w);
+
+	GLMousePosition();
 
 	// Sort sprites by sprite's z position
 	std::sort(m_sprites.begin(), m_sprites.end(), compareOrder(m_orthoFirst));
@@ -53,15 +60,6 @@ void GraphicSystem::Close()
 void GraphicSystem::Unload()
 {
 	
-}
-
-void GraphicSystem::Pause()
-{
-
-}
-
-void GraphicSystem::Resume()
-{
 }
 
 void GraphicSystem::AddSprite(Sprite* _sprite)
@@ -109,18 +107,18 @@ void GraphicSystem::TransformPipeline(Sprite * _sprite)
 	// else 3d rotation
 
 	// Send camera info to shader
+	m_viewport = mat4::Camera(m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
 	glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_CAMERA), 1, GL_FALSE,
-		&mat4::Camera(m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up).m_member[0][0]);
+		&m_viewport.m_member[0][0]);
 
 	// Send projection info to shader
 	if (_sprite->m_projection == Sprite::PERSPECTIVE)
 		glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_PROJECTION), 1, GL_FALSE,
-			&mat4::Perspective(m_fovy, m_aspect, m_zNear, m_zFar).m_member[0][0]);
+			&m_perspective.m_member[0][0]);
 
 	else
 		glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_PROJECTION), 1, GL_FALSE,
-			&mat4::Orthogonal(m_left, m_right, m_bottom, m_top, m_zNear, m_zFar).m_member[0][0]);
-
+			&m_orthogonal.m_member[0][0]);
 }
 
 void GraphicSystem::MappingPipeline(Sprite * _sprite)
@@ -222,11 +220,37 @@ bool GraphicSystem::compareOrder::operator()(Sprite * _leftSpt, Sprite * _rightS
 			return true;
 
 		else
-			return left->m_position.z < right->m_position.z;
+			return left->m_position.z > right->m_position.z;
 	}
 
 	else
-		return left->m_position.z < right->m_position.z;
+		return left->m_position.z > right->m_position.z;
+}
+
+void GraphicSystem::GLMousePosition() {
+
+	// Do unprojection by viewport and proejction matrix
+	vec4 in;
+	in.x = (2.f * (InputHandler::m_rawPosition.x / m_width)) - 1.f;
+	in.y = 1.f - (2.f* (InputHandler::m_rawPosition.y / m_height));
+	in.w = in.z = 1.f;
+	
+	mat4 ortho = m_orthogonal * m_viewport;
+	ortho.Inverse();
+	vec4 orthoPos = ortho * in;
+	float new_w1 = 1.f / orthoPos.w;
+	InputHandler::m_orthoPosition.Set(orthoPos.x, orthoPos.y, orthoPos.z);
+	InputHandler::m_orthoPosition *= new_w1;
+	InputHandler::m_orthoPosition.z = 0.f;
+
+	mat4 perspective = m_perspective * m_viewport;
+	perspective.Inverse();
+	vec4 perspPos = perspective * in;
+	float new_w2 = 1.f / perspPos.w;
+	InputHandler::m_perspPosition.Set(perspPos.x, perspPos.y, perspPos.z);
+	InputHandler::m_perspPosition *= new_w2;
+	InputHandler::m_perspPosition.z = 0.f;
+
 }
 
 NS_JE_END

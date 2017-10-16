@@ -22,9 +22,6 @@ private:
 	void Close() override;
 	void Unload() override;
 
-	void Pause() override;
-	void Resume() override;
-
 };
 
 NS_JE_END

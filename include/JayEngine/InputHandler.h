@@ -1,8 +1,8 @@
 #pragma once
-
 #include <map>
 #include "SDL2\SDL.h"
 #include "Macro.h"
+#include "Vector3.h"
 
 NS_JE_BEGIN
 
@@ -81,17 +81,24 @@ enum JE_KEY {
 
 class InputHandler {
 
-public:
-
-	// typedef key map
+	friend class StateManager;
 	typedef std::map<unsigned, bool> KeyMap;
 
-	static void Update(SDL_Event* _event);
+public:
 	
 	// Basic key triggers
 	static bool KeyPressed(JE_KEY _pressed);
 	static bool KeyTriggered(JE_KEY _trigger);
-	
+
+	static vec3 m_orthoPosition, m_perspPosition, m_rawPosition;
+
+private:
+
+	InputHandler();
+	~InputHandler() {};
+	InputHandler(const InputHandler& /*_handle*/) {};
+	void operator=(const InputHandler& /*_handle*/) {};
+
 	// Keyboard
 	static void KeyUp();
 	static void KeyDown();
@@ -100,18 +107,12 @@ public:
 	static void MouseUp();
 	static void MouseDown();
 
-private:
-
-	InputHandler();
-	~InputHandler() {};
-	InputHandler(const InputHandler& /*handle*/) {};
-	void operator=(const InputHandler& /*handle*/) {};
+	static void Update(SDL_Event* _event);
 
 	static JE_KEY	KeyTranslator(SDL_Event* _event);
 
 	static bool		m_keyPressed, m_mousePressed;
 	static KeyMap	m_keys, m_triggerList;
-	//static vec2 m_position;
 };
 
 NS_JE_END

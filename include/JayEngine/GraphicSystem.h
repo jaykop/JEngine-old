@@ -42,9 +42,6 @@ private:
 	void Close() override;
 	void Unload() override;
 
-	void Pause() override;
-	void Resume() override;
-
 	// Helper functions
 	void InitCamera();
 
@@ -59,6 +56,8 @@ private:
 	void MappingPipeline(Sprite* _sprite);
 	void AnimationPipeline(Sprite* _sprite);
 
+	void GLMousePosition();
+
 	// Member variables
 	GraphicMode m_mode;
 	Sprites		m_sprites;
@@ -66,8 +65,9 @@ private:
 	Camera*		m_pMainCamera;
 	Transform*	m_pTransformStorage;
 	
+	int		m_width, m_height;
 	bool	m_orthoFirst;
-	mat4	m_animation;
+	mat4	m_animation, m_perspective, m_orthogonal, m_viewport;
 	vec4	m_colorStorage, m_backgroundColor;
 	float	m_fovy, m_aspect, m_zNear, m_zFar;
 	float	m_left, m_right, m_top, m_bottom;

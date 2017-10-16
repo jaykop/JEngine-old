@@ -18,6 +18,9 @@ State						*StateManager::m_pCurrent = nullptr,
 							*StateManager::m_pNext = nullptr, 
 							*StateManager::m_pPause = nullptr;
 
+//////////////////////////////////////////////////////////////////////////
+// funciton bodues
+//////////////////////////////////////////////////////////////////////////
 void StateManager::Load()
 {
 	AssetManager::Load();

@@ -27,14 +27,4 @@ void SoundSystem::Unload()
 {
 }
 
-void SoundSystem::Pause()
-{
-	
-}
-
-void SoundSystem::Resume()
-{
-
-}
-
 NS_JE_END

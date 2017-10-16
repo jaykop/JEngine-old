@@ -15,9 +15,6 @@ protected:
 	virtual void Close() = 0;
 	virtual void Unload() = 0;
 
-	virtual void Pause() = 0;
-	virtual void Resume() = 0;
-
 	System() {};
 	~System() {};
 

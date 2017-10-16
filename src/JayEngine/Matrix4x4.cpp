@@ -612,116 +612,116 @@ Matrix4x4& Matrix4x4::Inverse()
 
 	// Caculate all the elements in matrix
 	result.m_member[0][0] = m_member[1][1] * m_member[2][2] * m_member[3][3] -
-		m_member[1][1] * m_member[2][3] * m_member[3][2] -
-		m_member[2][1] * m_member[1][2] * m_member[3][3] +
-		m_member[2][1] * m_member[1][3] * m_member[3][2] +
-		m_member[3][1] * m_member[1][2] * m_member[2][3] -
-		m_member[3][1] * m_member[1][3] * m_member[2][2];
+							m_member[1][1] * m_member[2][3] * m_member[3][2] -
+							m_member[2][1] * m_member[1][2] * m_member[3][3] +
+							m_member[2][1] * m_member[1][3] * m_member[3][2] +
+							m_member[3][1] * m_member[1][2] * m_member[2][3] -
+							m_member[3][1] * m_member[1][3] * m_member[2][2];
 
 	result.m_member[1][0] = -m_member[1][0] * m_member[2][2] * m_member[3][3] +
-		m_member[1][0] * m_member[2][3] * m_member[3][2] +
-		m_member[2][0] * m_member[1][2] * m_member[3][3] -
-		m_member[2][0] * m_member[1][3] * m_member[3][2] -
-		m_member[3][0] * m_member[1][2] * m_member[2][3] +
-		m_member[3][0] * m_member[1][3] * m_member[2][2];
+							m_member[1][0] * m_member[2][3] * m_member[3][2] +
+							m_member[2][0] * m_member[1][2] * m_member[3][3] -
+							m_member[2][0] * m_member[1][3] * m_member[3][2] -
+							m_member[3][0] * m_member[1][2] * m_member[2][3] +
+							m_member[3][0] * m_member[1][3] * m_member[2][2];
 
 	result.m_member[2][0] = m_member[1][0] * m_member[2][1] * m_member[3][3] -
-		m_member[1][0] * m_member[2][3] * m_member[3][1] -
-		m_member[2][0] * m_member[1][1] * m_member[3][3] +
-		m_member[2][0] * m_member[1][3] * m_member[3][1] +
-		m_member[3][0] * m_member[1][1] * m_member[2][3] -
-		m_member[3][0] * m_member[1][3] * m_member[2][1];
+							m_member[1][0] * m_member[2][3] * m_member[3][1] -
+							m_member[2][0] * m_member[1][1] * m_member[3][3] +
+							m_member[2][0] * m_member[1][3] * m_member[3][1] +
+							m_member[3][0] * m_member[1][1] * m_member[2][3] -
+							m_member[3][0] * m_member[1][3] * m_member[2][1];
 
 	result.m_member[3][0] = -m_member[1][0] * m_member[2][1] * m_member[3][2] +
-		m_member[1][0] * m_member[2][2] * m_member[3][1] +
-		m_member[2][0] * m_member[1][1] * m_member[3][2] -
-		m_member[2][0] * m_member[1][2] * m_member[3][1] -
-		m_member[3][0] * m_member[1][1] * m_member[2][2] +
-		m_member[3][0] * m_member[1][2] * m_member[2][1];
+							m_member[1][0] * m_member[2][2] * m_member[3][1] +
+							m_member[2][0] * m_member[1][1] * m_member[3][2] -
+							m_member[2][0] * m_member[1][2] * m_member[3][1] -
+							m_member[3][0] * m_member[1][1] * m_member[2][2] +
+							m_member[3][0] * m_member[1][2] * m_member[2][1];
 
 	result.m_member[0][1] = -m_member[0][1] * m_member[2][2] * m_member[3][3] +
-		m_member[0][1] * m_member[2][3] * m_member[3][2] +
-		m_member[2][1] * m_member[0][2] * m_member[3][3] -
-		m_member[2][1] * m_member[0][3] * m_member[3][2] -
-		m_member[3][1] * m_member[0][2] * m_member[2][3] +
-		m_member[3][1] * m_member[0][3] * m_member[2][2];
+							m_member[0][1] * m_member[2][3] * m_member[3][2] +
+							m_member[2][1] * m_member[0][2] * m_member[3][3] -
+							m_member[2][1] * m_member[0][3] * m_member[3][2] -
+							m_member[3][1] * m_member[0][2] * m_member[2][3] +
+							m_member[3][1] * m_member[0][3] * m_member[2][2];
 
 	result.m_member[1][1] = m_member[0][0] * m_member[2][2] * m_member[3][3] -
-		m_member[0][0] * m_member[2][3] * m_member[3][2] -
-		m_member[2][0] * m_member[0][2] * m_member[3][3] +
-		m_member[2][0] * m_member[0][3] * m_member[3][2] +
-		m_member[3][0] * m_member[0][2] * m_member[2][3] -
-		m_member[3][0] * m_member[0][3] * m_member[2][2];
+							m_member[0][0] * m_member[2][3] * m_member[3][2] -
+							m_member[2][0] * m_member[0][2] * m_member[3][3] +
+							m_member[2][0] * m_member[0][3] * m_member[3][2] +
+							m_member[3][0] * m_member[0][2] * m_member[2][3] -
+							m_member[3][0] * m_member[0][3] * m_member[2][2];
 
 	result.m_member[2][1] = -m_member[0][0] * m_member[2][1] * m_member[3][3] +
-		m_member[0][0] * m_member[2][3] * m_member[3][1] +
-		m_member[2][0] * m_member[0][1] * m_member[3][3] -
-		m_member[2][0] * m_member[0][3] * m_member[3][1] -
-		m_member[3][0] * m_member[0][1] * m_member[2][3] +
-		m_member[3][0] * m_member[0][3] * m_member[2][1];
+							m_member[0][0] * m_member[2][3] * m_member[3][1] +
+							m_member[2][0] * m_member[0][1] * m_member[3][3] -
+							m_member[2][0] * m_member[0][3] * m_member[3][1] -
+							m_member[3][0] * m_member[0][1] * m_member[2][3] +
+							m_member[3][0] * m_member[0][3] * m_member[2][1];
 
 	result.m_member[3][1] = m_member[0][0] * m_member[2][1] * m_member[3][2] -
-		m_member[0][0] * m_member[2][2] * m_member[3][1] -
-		m_member[2][0] * m_member[0][1] * m_member[3][2] +
-		m_member[2][0] * m_member[0][2] * m_member[3][1] +
-		m_member[3][0] * m_member[0][1] * m_member[2][2] -
-		m_member[3][0] * m_member[0][2] * m_member[2][1];
+							m_member[0][0] * m_member[2][2] * m_member[3][1] -
+							m_member[2][0] * m_member[0][1] * m_member[3][2] +
+							m_member[2][0] * m_member[0][2] * m_member[3][1] +
+							m_member[3][0] * m_member[0][1] * m_member[2][2] -
+							m_member[3][0] * m_member[0][2] * m_member[2][1];
 
 	result.m_member[0][2] = m_member[0][1] * m_member[1][2] * m_member[3][3] -
-		m_member[0][1] * m_member[1][3] * m_member[3][2] -
-		m_member[1][1] * m_member[0][2] * m_member[3][3] +
-		m_member[1][1] * m_member[0][3] * m_member[3][2] +
-		m_member[3][1] * m_member[0][2] * m_member[1][3] -
-		m_member[3][1] * m_member[0][3] * m_member[1][2];
+							m_member[0][1] * m_member[1][3] * m_member[3][2] -
+							m_member[1][1] * m_member[0][2] * m_member[3][3] +
+							m_member[1][1] * m_member[0][3] * m_member[3][2] +
+							m_member[3][1] * m_member[0][2] * m_member[1][3] -
+							m_member[3][1] * m_member[0][3] * m_member[1][2];
 
 	result.m_member[1][2] = -m_member[0][0] * m_member[1][2] * m_member[3][3] +
-		m_member[0][0] * m_member[1][3] * m_member[3][2] +
-		m_member[1][0] * m_member[0][2] * m_member[3][3] -
-		m_member[1][0] * m_member[0][3] * m_member[3][2] -
-		m_member[3][0] * m_member[0][2] * m_member[1][3] +
-		m_member[3][0] * m_member[0][3] * m_member[1][2];
+							m_member[0][0] * m_member[1][3] * m_member[3][2] +
+							m_member[1][0] * m_member[0][2] * m_member[3][3] -
+							m_member[1][0] * m_member[0][3] * m_member[3][2] -
+							m_member[3][0] * m_member[0][2] * m_member[1][3] +
+							m_member[3][0] * m_member[0][3] * m_member[1][2];
 
 	result.m_member[2][2] = m_member[0][0] * m_member[1][1] * m_member[3][3] -
-		m_member[0][0] * m_member[1][3] * m_member[3][1] -
-		m_member[1][0] * m_member[0][1] * m_member[3][3] +
-		m_member[1][0] * m_member[0][3] * m_member[3][1] +
-		m_member[3][0] * m_member[0][1] * m_member[1][3] -
-		m_member[3][0] * m_member[0][3] * m_member[1][1];
+							m_member[0][0] * m_member[1][3] * m_member[3][1] -
+							m_member[1][0] * m_member[0][1] * m_member[3][3] +
+							m_member[1][0] * m_member[0][3] * m_member[3][1] +
+							m_member[3][0] * m_member[0][1] * m_member[1][3] -
+							m_member[3][0] * m_member[0][3] * m_member[1][1];
 
 	result.m_member[3][2] = -m_member[0][0] * m_member[1][1] * m_member[3][2] +
-		m_member[0][0] * m_member[1][2] * m_member[3][1] +
-		m_member[1][0] * m_member[0][1] * m_member[3][2] -
-		m_member[1][0] * m_member[0][2] * m_member[3][1] -
-		m_member[3][0] * m_member[0][1] * m_member[1][2] +
-		m_member[3][0] * m_member[0][2] * m_member[1][1];
+							m_member[0][0] * m_member[1][2] * m_member[3][1] +
+							m_member[1][0] * m_member[0][1] * m_member[3][2] -
+							m_member[1][0] * m_member[0][2] * m_member[3][1] -
+							m_member[3][0] * m_member[0][1] * m_member[1][2] +
+							m_member[3][0] * m_member[0][2] * m_member[1][1];
 
 	result.m_member[0][3] = -m_member[0][1] * m_member[1][2] * m_member[2][3] +
-		m_member[0][1] * m_member[1][3] * m_member[2][2] +
-		m_member[1][1] * m_member[0][2] * m_member[2][3] -
-		m_member[1][1] * m_member[0][3] * m_member[2][2] -
-		m_member[2][1] * m_member[0][2] * m_member[1][3] +
-		m_member[2][1] * m_member[0][3] * m_member[1][2];
+							m_member[0][1] * m_member[1][3] * m_member[2][2] +
+							m_member[1][1] * m_member[0][2] * m_member[2][3] -
+							m_member[1][1] * m_member[0][3] * m_member[2][2] -
+							m_member[2][1] * m_member[0][2] * m_member[1][3] +
+							m_member[2][1] * m_member[0][3] * m_member[1][2];
 
 	result.m_member[1][3] = m_member[0][0] * m_member[1][2] * m_member[2][3] -
-		m_member[0][0] * m_member[1][3] * m_member[2][2] -
-		m_member[1][0] * m_member[0][2] * m_member[2][3] +
-		m_member[1][0] * m_member[0][3] * m_member[2][2] +
-		m_member[2][0] * m_member[0][2] * m_member[1][3] -
-		m_member[2][0] * m_member[0][3] * m_member[1][2];
+							m_member[0][0] * m_member[1][3] * m_member[2][2] -
+							m_member[1][0] * m_member[0][2] * m_member[2][3] +
+							m_member[1][0] * m_member[0][3] * m_member[2][2] +
+							m_member[2][0] * m_member[0][2] * m_member[1][3] -
+							m_member[2][0] * m_member[0][3] * m_member[1][2];
 
 	result.m_member[2][3] = -m_member[0][0] * m_member[1][1] * m_member[2][3] +
-		m_member[0][0] * m_member[1][3] * m_member[2][1] +
-		m_member[1][0] * m_member[0][1] * m_member[2][3] -
-		m_member[1][0] * m_member[0][3] * m_member[2][1] -
-		m_member[2][0] * m_member[0][1] * m_member[1][3] +
-		m_member[2][0] * m_member[0][3] * m_member[1][1];
+							m_member[0][0] * m_member[1][3] * m_member[2][1] +
+							m_member[1][0] * m_member[0][1] * m_member[2][3] -
+							m_member[1][0] * m_member[0][3] * m_member[2][1] -
+							m_member[2][0] * m_member[0][1] * m_member[1][3] +
+							m_member[2][0] * m_member[0][3] * m_member[1][1];
 
 	result.m_member[3][3] = m_member[0][0] * m_member[1][1] * m_member[2][2] -
-		m_member[0][0] * m_member[1][2] * m_member[2][1] -
-		m_member[1][0] * m_member[0][1] * m_member[2][2] +
-		m_member[1][0] * m_member[0][2] * m_member[2][1] +
-		m_member[2][0] * m_member[0][1] * m_member[1][2] -
-		m_member[2][0] * m_member[0][2] * m_member[1][1];
+							m_member[0][0] * m_member[1][2] * m_member[2][1] -
+							m_member[1][0] * m_member[0][1] * m_member[2][2] +
+							m_member[1][0] * m_member[0][2] * m_member[2][1] +
+							m_member[2][0] * m_member[0][1] * m_member[1][2] -
+							m_member[2][0] * m_member[0][2] * m_member[1][1];
 
 	// Get determine
 	float det = m_member[0][0] * result.m_member[0][0] +
@@ -730,8 +730,10 @@ Matrix4x4& Matrix4x4::Inverse()
 		m_member[0][3] * result.m_member[3][0];
 
 	// No inverse in this case
-	if (det == 0)
+	if (det == 0) {
+		JE_DEBUG_PRINT("Cannot devide by 0.\n");
 		return *this;
+	}
 
 	// Make denomitator
 	det = 1.f / det;

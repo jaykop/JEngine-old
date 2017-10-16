@@ -46,11 +46,24 @@ void State::Init()
 	ObjectFactory::GetCreatedObject()->AddComponent<Sprite>();
 	ObjectFactory::AddCreatedObject(m_objContainer);
 
-	m_objContainer->GetObject("test")->GetComponent<Transform>()->m_position.Set(10, 10, 0);
+	m_objContainer->GetObject("test")->GetComponent<Transform>()->m_position.Set(10, 10, 1);
 	m_objContainer->GetObject("test")->GetComponent<Transform>()->m_rotation = 0;
 	m_objContainer->GetObject("test")->GetComponent<Transform>()->m_scale.Set(30.f, 30.f, 0.f);
 	m_objContainer->GetObject("test")->GetComponent<Sprite>()->m_color.Set(1.f, 1.f, 0.f, 1.f);
 	m_objContainer->GetObject("test")->GetComponent<Sprite>()->AddTexture("testTexture");
+	m_objContainer->GetObject("test")->GetComponent<Sprite>()->m_projection = Sprite::ORTHOGONAL;
+
+	ObjectFactory::CreateObject("test1");
+	ObjectFactory::GetCreatedObject()->AddComponent<Transform>();
+	ObjectFactory::GetCreatedObject()->AddComponent<Sprite>();
+	ObjectFactory::AddCreatedObject(m_objContainer);
+
+	m_objContainer->GetObject("test1")->GetComponent<Transform>()->m_position.Set(10, 10, 2);
+	m_objContainer->GetObject("test1")->GetComponent<Transform>()->m_rotation = 0;
+	m_objContainer->GetObject("test1")->GetComponent<Transform>()->m_scale.Set(30.f, 30.f, 0.f);
+	m_objContainer->GetObject("test1")->GetComponent<Sprite>()->m_color.Set(1.f, 1.f, 0.f, 1.f);
+	m_objContainer->GetObject("test1")->GetComponent<Sprite>()->AddTexture("testTexture");
+	m_objContainer->GetObject("test1")->GetComponent<Sprite>()->m_projection = Sprite::PERSPECTIVE;
 
 	ObjectFactory::CreateObject("test2");
 	ObjectFactory::GetCreatedObject()->AddComponent<Transform>();
@@ -66,6 +79,9 @@ void State::Init()
 	ObjectFactory::AddCreatedObject(m_objContainer);
 
 	SystemManager::GetGraphicSystem()->SetBackgroundColor(vec4(1,0,0,1));
+
+	mat4 matrix = mat4(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16).Inverse();
+	std::cout << matrix << std::endl;
 }
 
 void State::Update(float _dt)
@@ -92,8 +108,13 @@ void State::Update(float _dt)
 	if (InputHandler::KeyTriggered(JE_6))
 		StateManager::ResumeAndNext("testState3");
 
-	if (InputHandler::KeyTriggered(JE_MOUSE_LEFT))
+	if (InputHandler::KeyTriggered(JE_MOUSE_LEFT)) {
 		JE_DEBUG_PRINT("Left Mouse\n");
+		m_objContainer->GetObject("test")->GetComponent<Transform>()->m_position 
+			= InputHandler::m_orthoPosition;
+		m_objContainer->GetObject("test1")->GetComponent<Transform>()->m_position
+			= InputHandler::m_perspPosition;
+	}
 
 	if (InputHandler::KeyTriggered(JE_MOUSE_RIGHT))
 		JE_DEBUG_PRINT("Right Mouse\n");
@@ -111,6 +132,9 @@ void State::Update(float _dt)
 		JE_DEBUG_PRINT("Quit\n");
 		StateManager::Quit();
 	}
+
+
+	std::cout << InputHandler::m_orthoPosition << std::endl;
 }
 
 void State::Close()
