@@ -7,13 +7,18 @@ NS_JE_BEGIN
 class Transform : public Component
 {
 
-public:
+	struct Edge {
+		Vector3 m_leftTop, m_rightTop, m_leftBot, m_rightBot;
+	};
 
 	friend class PhysicsSystem;
 	friend class ComponentManager;
 
+public:
+
 	vec3 m_position, m_scale;
 	float m_rotation;
+	Edge m_edges;
 
 private:
 

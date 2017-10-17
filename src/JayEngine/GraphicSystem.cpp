@@ -81,12 +81,18 @@ void GraphicSystem::RemoveSprite(Sprite* _sprite)
 
 void GraphicSystem::Pipeline(Sprite* _sprite)
 {
-	
+	// Here check it the sprite is
+	// either outside the screen or not
 	TransformPipeline(_sprite);
-	MappingPipeline(_sprite);
-	AnimationPipeline(_sprite);
 
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	// It so, not draw
+	if (!_sprite->m_culled) {
+	
+		MappingPipeline(_sprite);
+		AnimationPipeline(_sprite);
+
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	}
 }
 
 void GraphicSystem::TransformPipeline(Sprite * _sprite)
@@ -113,13 +119,25 @@ void GraphicSystem::TransformPipeline(Sprite * _sprite)
 		&m_viewport.m_member[0][0]);
 
 	// Send projection info to shader
-	if (_sprite->m_projection == Sprite::PERSPECTIVE)
+	if (_sprite->m_projection == Sprite::PERSPECTIVE) {
 		glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_PROJECTION), 1, GL_FALSE,
 			&m_perspective.m_member[0][0]);
 
-	else 
+		//m_inside = ;
+	}
+
+	else {
 		glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_PROJECTION), 1, GL_FALSE,
 			&m_orthogonal.m_member[0][0]);
+
+		//m_inside = ;
+	}
+
+	if (m_inside) 
+		_sprite->m_culled = true;
+
+	else
+		_sprite->m_culled = false;
 }
 
 void GraphicSystem::MappingPipeline(Sprite * _sprite)

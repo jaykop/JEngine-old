@@ -66,7 +66,7 @@ private:
 	Transform*	m_pTransformStorage;
 	
 	int		m_width, m_height;
-	bool	m_orthoFirst;
+	bool	m_orthoFirst, m_inside;
 	mat4	m_animation, m_perspective, m_orthogonal, m_viewport;
 	vec4	m_colorStorage, m_backgroundColor;
 	float	m_fovy, m_aspect, m_zNear, m_zFar;

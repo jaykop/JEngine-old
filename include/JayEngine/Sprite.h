@@ -47,6 +47,8 @@ private:
 	Sprite(const Sprite& /*_copy*/) {};
 	void operator=(const Sprite& /*_copy*/) {};
 
+	bool m_culled;
+
 	Timer	m_timer;
 	int		m_animationFrames;
 	int		m_animationFixFrame;
