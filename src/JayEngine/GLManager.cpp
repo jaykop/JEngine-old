@@ -61,8 +61,8 @@ bool GLManager::initSDL_GL()
 
 		// Do shader stuff
 		ActivateShader(
-			"../../src/Shader/vertexshader.vs",		// vertex Shader
-			"../../src/Shader/fragmentshader.fs");	// fragment Shader
+			"../src/Shader/vertexshader.vs",	// vertex Shader
+			"../src/Shader/fragmentshader.fs");	// fragment Shader
 		RegisterUniform();
 	}
 

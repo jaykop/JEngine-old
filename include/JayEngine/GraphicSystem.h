@@ -6,14 +6,12 @@
 
 NS_JE_BEGIN
 
-class Camera;
-class Sprite;
-class Texture;
 class Transform;
 
 class GraphicSystem : public System
 {
 	friend class Sprite;
+	friend class Camera;
 	friend class SystemManager;
 
 	typedef std::vector<Sprite*> Sprites;

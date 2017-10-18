@@ -15,8 +15,8 @@ AssetManager::ArchetypeMap	AssetManager::m_archetypeMap;
 
 void AssetManager::Load()
 {
-	LoadImage("../../src/Resource/Texture/images.png", "testTexture");
-	LoadImage("../../src/Resource/Texture/testAnimation.png", "testAnimation");
+	LoadImage("../src/Resource/Texture/images.png", "testTexture");
+	LoadImage("../src/Resource/Texture/testAnimation.png", "testAnimation");
 }
 
 void AssetManager::Unload()

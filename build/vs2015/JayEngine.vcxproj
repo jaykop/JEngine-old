@@ -39,7 +39,12 @@
     <ClCompile Include="..\..\src\JayEngine\ObjectContainer.cpp" />
     <ClCompile Include="..\..\src\JayEngine\ObjectFactory.cpp" />
     <ClCompile Include="..\..\src\JayEngine\PhysicsSystem.cpp" />
-    <ClCompile Include="..\..\src\JayEngine\Platform_win32.cpp" />
+    <ClCompile Include="..\..\src\JayEngine\Platform_win32.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\src\JayEngine\SoundSystem.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Shader.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Sprite.cpp" />
@@ -120,26 +125,26 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -164,32 +169,40 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)..\..\bin\x86\</OutDir>
-    <IntDir>$(SolutionDir)..\..\temp\x86\</IntDir>
+    <OutDir>$(SolutionDir)..\..\lib\JayEngine\x86\</OutDir>
+    <IntDir>$(SolutionDir)..\..\temp\JayEngine\x86\</IntDir>
     <TargetName>JayEngine</TargetName>
-    <ExecutablePath>$(SolutionDir)..\..\include\JayEngine;$(SolutionDir)..\..\include;$(SolutionDir)..\..\external\imgui;$(SolutionDir)..\..\external;$(SolutionDir)..\..\external\lodePNG;$(ExecutablePath)</ExecutablePath>
+    <ExecutablePath>$(VC_ExecutablePath_x86);$(WindowsSDK_ExecutablePath);$(VS_ExecutablePath);$(MSBuild_ExecutablePath);$(SystemRoot)\SysWow64;$(FxCopDir);$(PATH);</ExecutablePath>
     <LibraryPath>$(SolutionDir)..\..\lib\GL\x86;$(SolutionDir)..\..\lib\SDL2\x86;$(LibraryPath)</LibraryPath>
+    <TargetExt>.lib</TargetExt>
+    <IncludePath>$(SolutionDir)..\..\include\JayEngine;$(SolutionDir)..\..\include;$(SolutionDir)..\..\external\imgui;$(SolutionDir)..\..\external;$(SolutionDir)..\..\external\lodePNG;$(ExecutablePath);$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)..\..\bin\x86\</OutDir>
-    <IntDir>$(SolutionDir)..\..\temp\x86\</IntDir>
+    <OutDir>$(SolutionDir)..\..\lib\JayEngine\x86\</OutDir>
+    <IntDir>$(SolutionDir)..\..\temp\JayEngine\x86\</IntDir>
     <TargetName>JayEngine</TargetName>
-    <ExecutablePath>$(SolutionDir)..\..\include\JayEngine;$(SolutionDir)..\..\include;$(SolutionDir)..\..\external\imgui;$(SolutionDir)..\..\external;$(SolutionDir)..\..\external\lodePNG;$(ExecutablePath)</ExecutablePath>
+    <ExecutablePath>$(VC_ExecutablePath_x86);$(WindowsSDK_ExecutablePath);$(VS_ExecutablePath);$(MSBuild_ExecutablePath);$(SystemRoot)\SysWow64;$(FxCopDir);$(PATH);</ExecutablePath>
     <LibraryPath>$(SolutionDir)..\..\lib\GL\x86;$(SolutionDir)..\..\lib\SDL2\x86;$(LibraryPath)</LibraryPath>
+    <TargetExt>.lib</TargetExt>
+    <IncludePath>$(SolutionDir)..\..\include\JayEngine;$(SolutionDir)..\..\include;$(SolutionDir)..\..\external\imgui;$(SolutionDir)..\..\external;$(SolutionDir)..\..\external\lodePNG;$(ExecutablePath);$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)..\..\bin\x64\</OutDir>
-    <IntDir>$(SolutionDir)..\..\temp\x64\</IntDir>
-    <ExecutablePath>$(SolutionDir)..\..\include\JayEngine;$(SolutionDir)..\..\include;$(SolutionDir)..\..\external\imgui;$(SolutionDir)..\..\external;$(SolutionDir)..\..\external\lodePNG;$(ExecutablePath)</ExecutablePath>
+    <OutDir>$(SolutionDir)..\..\lib\JayEngine\x64\</OutDir>
+    <IntDir>$(SolutionDir)..\..\temp\JayEngine\x64\</IntDir>
+    <ExecutablePath>$(VC_ExecutablePath_x64);$(WindowsSDK_ExecutablePath);$(VS_ExecutablePath);$(MSBuild_ExecutablePath);$(FxCopDir);$(PATH);</ExecutablePath>
     <LibraryPath>$(SolutionDir)..\..\lib\GL\x64;$(SolutionDir)..\..\lib\SDL2\x64;$(LibraryPath)</LibraryPath>
     <TargetName>JayEngine</TargetName>
+    <TargetExt>.lib</TargetExt>
+    <IncludePath>$(SolutionDir)..\..\include\JayEngine;$(SolutionDir)..\..\include;$(SolutionDir)..\..\external\imgui;$(SolutionDir)..\..\external;$(SolutionDir)..\..\external\lodePNG;$(ExecutablePath);$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)..\..\bin\x64\</OutDir>
-    <IntDir>$(SolutionDir)..\..\temp\x64\</IntDir>
-    <ExecutablePath>$(SolutionDir)..\..\include\JayEngine;$(SolutionDir)..\..\include;$(SolutionDir)..\..\external\imgui;$(SolutionDir)..\..\external;$(SolutionDir)..\..\external\lodePNG;$(ExecutablePath)</ExecutablePath>
+    <OutDir>$(SolutionDir)..\..\lib\JayEngine\x64\</OutDir>
+    <IntDir>$(SolutionDir)..\..\temp\JayEngine\x64\</IntDir>
+    <ExecutablePath>$(VC_ExecutablePath_x64);$(WindowsSDK_ExecutablePath);$(VS_ExecutablePath);$(MSBuild_ExecutablePath);$(FxCopDir);$(PATH);</ExecutablePath>
     <LibraryPath>$(SolutionDir)..\..\lib\GL\x64;$(SolutionDir)..\..\lib\SDL2\x64;$(LibraryPath)</LibraryPath>
     <TargetName>JayEngine</TargetName>
+    <TargetExt>.lib</TargetExt>
+    <IncludePath>$(SolutionDir)..\..\include\JayEngine;$(SolutionDir)..\..\include;$(SolutionDir)..\..\external\imgui;$(SolutionDir)..\..\external;$(SolutionDir)..\..\external\lodePNG;$(ExecutablePath);$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -204,6 +217,10 @@
       <SubSystem>Windows</SubSystem>
       <AdditionalDependencies>opengl32.lib;glew32.lib;SDL2.lib;SDL2main.lib;glu32.lib</AdditionalDependencies>
     </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\..\lib\GL\x86;$(SolutionDir)..\..\lib\SDL2\x86;$(SolutionDir)..\..\lib\JayEngine\x86;$(LibraryPath)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;opengl32.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -218,6 +235,10 @@
       <SubSystem>Windows</SubSystem>
       <AdditionalDependencies>opengl32.lib;glew32.lib;SDL2.lib;SDL2main.lib;glu32.lib</AdditionalDependencies>
     </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\..\lib\GL\x64;$(SolutionDir)..\..\lib\SDL2\x64;$(SolutionDir)..\..\lib\JayEngine\x64;$(LibraryPath)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;opengl32.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -236,6 +257,10 @@
       <SubSystem>Windows</SubSystem>
       <AdditionalDependencies>opengl32.lib;glew32.lib;SDL2.lib;SDL2main.lib;glu32.lib</AdditionalDependencies>
     </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\..\lib\GL\x86;$(SolutionDir)..\..\lib\SDL2\x86;$(SolutionDir)..\..\lib\JayEngine\x86;$(LibraryPath)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;opengl32.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -254,6 +279,10 @@
       <SubSystem>Windows</SubSystem>
       <AdditionalDependencies>opengl32.lib;glew32.lib;SDL2.lib;SDL2main.lib;glu32.lib</AdditionalDependencies>
     </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\..\lib\GL\x64;$(SolutionDir)..\..\lib\SDL2\x64;$(SolutionDir)..\..\lib\JayEngine\x64;$(LibraryPath)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;opengl32.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
