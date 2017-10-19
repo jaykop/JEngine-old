@@ -31,6 +31,8 @@
     <ClCompile Include="..\..\src\JayEngine\GLManager.cpp" />
     <ClCompile Include="..\..\src\JayEngine\GraphicSystem.cpp" />
     <ClCompile Include="..\..\src\JayEngine\ImguiManager.cpp" />
+    <ClCompile Include="..\..\src\JayEngine\iniReader.cpp" />
+    <ClCompile Include="..\..\src\JayEngine\iniWritter.cpp" />
     <ClCompile Include="..\..\src\JayEngine\InputHandler.cpp" />
     <ClCompile Include="..\..\src\JayEngine\MathUtils.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Matrix2x2.cpp" />
@@ -39,14 +41,15 @@
     <ClCompile Include="..\..\src\JayEngine\ObjectContainer.cpp" />
     <ClCompile Include="..\..\src\JayEngine\ObjectFactory.cpp" />
     <ClCompile Include="..\..\src\JayEngine\PhysicsSystem.cpp" />
+    <ClCompile Include="..\..\src\JayEngine\PickingRay.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Platform_win32.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\..\src\JayEngine\SoundSystem.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Shader.cpp" />
+    <ClCompile Include="..\..\src\JayEngine\SoundSystem.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Sprite.cpp" />
     <ClCompile Include="..\..\src\JayEngine\State.cpp" />
     <ClCompile Include="..\..\src\JayEngine\StateManager.cpp" />
@@ -80,6 +83,8 @@
     <ClInclude Include="..\..\include\JayEngine\GLManager.h" />
     <ClInclude Include="..\..\include\JayEngine\GraphicSystem.h" />
     <ClInclude Include="..\..\include\JayEngine\ImguiManager.h" />
+    <ClInclude Include="..\..\include\JayEngine\iniReader.h" />
+    <ClInclude Include="..\..\include\JayEngine\iniWritter.h" />
     <ClInclude Include="..\..\include\JayEngine\InputHandler.h" />
     <ClInclude Include="..\..\include\JayEngine\Macro.h" />
     <ClInclude Include="..\..\include\JayEngine\MathUtils.h" />
@@ -89,6 +94,7 @@
     <ClInclude Include="..\..\include\JayEngine\ObjectContainer.h" />
     <ClInclude Include="..\..\include\JayEngine\ObjectFactory.h" />
     <ClInclude Include="..\..\include\JayEngine\PhysicsSystem.h" />
+    <ClInclude Include="..\..\include\JayEngine\PickingRay.h" />
     <ClInclude Include="..\..\include\JayEngine\Shader.hpp" />
     <ClInclude Include="..\..\include\JayEngine\SoundSystem.h" />
     <ClInclude Include="..\..\include\JayEngine\Sprite.h" />

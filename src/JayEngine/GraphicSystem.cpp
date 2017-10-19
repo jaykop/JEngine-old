@@ -1,5 +1,6 @@
 #include <algorithm>
 #include "Sprite.h"
+#include "Shader.hpp"
 #include "Texture.h"
 #include "Camera.h"
 #include "GLManager.h"
@@ -12,9 +13,9 @@ NS_JE_BEGIN
 
 GraphicSystem::GraphicSystem()
 	:System(), m_pTransformStorage(nullptr), m_pMainCamera(nullptr),
-	m_backgroundColor(vec4::ZERO), m_colorStorage(vec4::ZERO),
-	m_fovy(45.f), m_zNear(.1f), m_zFar(1000.f), m_mode(MODE_2D),
-	m_orthoFirst(false), m_width(Application::GetData().m_width),
+	m_fovy(45.f), m_zNear(.1f), m_zFar(1000.f), m_mode(MODE_3D),
+	m_backgroundColor(vec4::ZERO), m_orthoFirst(false),
+	m_width(Application::GetData().m_width),
 	m_height(Application::GetData().m_height)
 {
 	m_aspect = float(m_width) / float(m_height);
@@ -25,7 +26,6 @@ GraphicSystem::GraphicSystem()
 
 	m_perspective = mat4::Perspective(m_fovy, m_aspect, m_zNear, m_zFar);
 	m_orthogonal = mat4::Orthogonal(m_left, m_right, m_bottom, m_top, m_zNear, m_zFar);
-	
 }
 
 void GraphicSystem::Load()
@@ -34,7 +34,6 @@ void GraphicSystem::Load()
 
 void GraphicSystem::Init()
 {
-	InitCamera();
 }
 
 void GraphicSystem::Update(float /*dt*/)
@@ -81,7 +80,11 @@ void GraphicSystem::RemoveSprite(Sprite* _sprite)
 
 void GraphicSystem::Pipeline(Sprite* _sprite)
 {
-	// Here check it the sprite is
+	//glEnable(GL_DEPTH_TEST);
+	// Use normal shader
+	GLManager::m_shader[GLManager::SHADER_NORMAL].Use();
+
+	// Here check if the sprite is
 	// either outside the screen or not
 	TransformPipeline(_sprite);
 
@@ -91,7 +94,9 @@ void GraphicSystem::Pipeline(Sprite* _sprite)
 		MappingPipeline(_sprite);
 		AnimationPipeline(_sprite);
 
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		//glDrawArrays(GL_TRIANGLES, 0, 36);
+		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	}
 }
 
@@ -101,34 +106,45 @@ void GraphicSystem::TransformPipeline(Sprite * _sprite)
 	m_pTransformStorage = _sprite->m_transform;
 
 	// Send transform info to shader
-	glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_TRANSLATE), 1, GL_FALSE,
-		&mat4::Translate(m_pTransformStorage->m_position).m_member[0][0]);
-	glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_SCALE), 1, GL_FALSE,
-		&mat4::Scale(m_pTransformStorage->m_scale).m_member[0][0]);
+	GLManager::m_shader[GLManager::SHADER_NORMAL].SetMatrix(
+		GLManager::m_uniform[GLManager::UNIFORM_TRANSLATE], 
+		mat4::Translate(m_pTransformStorage->m_position));
+
+	GLManager::m_shader[GLManager::SHADER_NORMAL].SetMatrix(
+		GLManager::m_uniform[GLManager::UNIFORM_SCALE],
+		mat4::Scale(m_pTransformStorage->m_scale));
 
 	if (m_mode == MODE_2D)
-		glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_ROTATE), 1, GL_FALSE,
-			&mat4::Rotate(m_pTransformStorage->m_rotation, vec3::UNIT_Z).m_member[0][0]);
-
+		GLManager::m_shader[GLManager::SHADER_NORMAL].SetMatrix(
+			GLManager::m_uniform[GLManager::UNIFORM_ROTATE],
+			mat4::Rotate(m_pTransformStorage->m_rotation, vec3::UNIT_Z));
+	
 	// TODO
 	// else 3d rotation
+	else
+		GLManager::m_shader[GLManager::SHADER_NORMAL].SetMatrix(
+			GLManager::m_uniform[GLManager::UNIFORM_ROTATE],
+			mat4::Rotate(m_pTransformStorage->m_rotation, vec3::UNIT_X));
 
 	// Send camera info to shader
 	m_viewport = mat4::Camera(m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
-	glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_CAMERA), 1, GL_FALSE,
-		&m_viewport.m_member[0][0]);
-
+	GLManager::m_shader[GLManager::SHADER_NORMAL].SetMatrix(
+		GLManager::m_uniform[GLManager::UNIFORM_CAMERA],
+		m_viewport);
+	
 	// Send projection info to shader
 	if (_sprite->m_projection == Sprite::PERSPECTIVE) {
-		glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_PROJECTION), 1, GL_FALSE,
-			&m_perspective.m_member[0][0]);
+		GLManager::m_shader[GLManager::SHADER_NORMAL].SetMatrix(
+			GLManager::m_uniform[GLManager::UNIFORM_PROJECTION],
+			m_perspective);
 
 		//m_inside = ;
 	}
 
 	else {
-		glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_PROJECTION), 1, GL_FALSE,
-			&m_orthogonal.m_member[0][0]);
+		GLManager::m_shader[GLManager::SHADER_NORMAL].SetMatrix(
+			GLManager::m_uniform[GLManager::UNIFORM_PROJECTION],
+			m_orthogonal);
 
 		//m_inside = ;
 	}
@@ -142,15 +158,16 @@ void GraphicSystem::TransformPipeline(Sprite * _sprite)
 
 void GraphicSystem::MappingPipeline(Sprite * _sprite)
 {
-	// Send color info to shader
-	m_colorStorage = _sprite->m_color;
-
-	glUniform4f(GLManager::GetUniform(GLManager::UNIFORM_COLOR),
-		m_colorStorage.x, m_colorStorage.y, m_colorStorage.z, m_colorStorage.w);
-
 	glBindTexture(GL_TEXTURE_2D, _sprite->GetCurrentTexutre()->GetId());
+	
+	// Send color info to shader
+	GLManager::m_shader[GLManager::SHADER_NORMAL].SetVector4(
+		GLManager::m_uniform[GLManager::UNIFORM_COLOR],
+		_sprite->m_color);
 
-	glUniform1i(GLManager::GetUniform(GLManager::UNIFORM_FLIP), true);
+	GLManager::m_shader[GLManager::SHADER_NORMAL].SetBool(
+		GLManager::m_uniform[GLManager::UNIFORM_FLIP],
+		_sprite->m_flip);
 }
 
 void GraphicSystem::AnimationPipeline(Sprite * _sprite)
@@ -176,10 +193,18 @@ void GraphicSystem::AnimationPipeline(Sprite * _sprite)
 		}
 	}
 
-	glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_ANI_SCALE), 1, GL_FALSE,
-		&(mat4::Scale(vec3(_sprite->m_realFrame, 1.f))).m_member[0][0]);
-	glUniformMatrix4fv(GLManager::GetUniform(GLManager::UNIFORM_ANI_TRANSLATE), 1, GL_FALSE,
-		&(mat4::Translate(vec3(_sprite->m_curretFrame))).m_member[0][0]);
+	GLManager::m_shader[GLManager::SHADER_NORMAL].SetMatrix(
+		GLManager::m_uniform[GLManager::UNIFORM_ANI_SCALE],
+		mat4::Scale(vec3(_sprite->m_realFrame, 1.f)));
+
+	GLManager::m_shader[GLManager::SHADER_NORMAL].SetMatrix(
+		GLManager::m_uniform[GLManager::UNIFORM_ANI_TRANSLATE],
+		mat4::Translate(vec3(_sprite->m_curretFrame)));
+}
+
+void GraphicSystem::SetBackgroundColor(float _r, float _g, float _b, float _a)
+{
+	m_backgroundColor.Set(_r, _g, _b, _a);
 }
 
 void GraphicSystem::SetBackgroundColor(const vec4& _color)
@@ -190,11 +215,6 @@ void GraphicSystem::SetBackgroundColor(const vec4& _color)
 const vec4& GraphicSystem::GetBackgroundColor() const
 {
 	return m_backgroundColor;
-}
-
-void GraphicSystem::InitCamera()
-{
-	
 }
 
 void GraphicSystem::SetMainCamera(Camera* _camera)

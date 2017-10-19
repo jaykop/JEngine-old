@@ -16,7 +16,7 @@ class Transform : public Component
 
 public:
 
-	vec3 m_position, m_scale;
+	vec3 m_position, m_scale, m_rotation3D;
 	float m_rotation;
 	Edge m_edges;
 

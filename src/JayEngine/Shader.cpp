@@ -5,8 +5,6 @@
 
 NS_JE_BEGIN
 
-GLuint Shader::m_programId = 0;
-
 void Shader::LoadShader(
 	const char* _vertex_file_path, 
 	const char* _fragment_file_path) {
@@ -142,6 +140,31 @@ void Shader::LoadShader(
 
 	else 
 		JE_DEBUG_PRINT("Shader directory is not valid...\n");
+}
+
+void Shader::Use()
+{
+	glUseProgram(m_programId);
+}
+
+void Shader::ConnectUniform(GLint& _uniform, const char * _name)
+{
+	_uniform = glGetUniformLocation(m_programId, _name);
+}
+
+void Shader::SetMatrix(GLint& _uniform, const mat4& _matrix)
+{
+	glUniformMatrix4fv(_uniform, 1, GL_FALSE, &_matrix.m_member[0][0]);
+}
+
+void Shader::SetVector4(GLint& _uniform, const vec4& _vector)
+{
+	glUniform4f(_uniform, _vector.x, _vector.y, _vector.z, _vector.w);
+}
+
+void Shader::SetBool(GLint& _uniform, bool _bool)
+{
+	glUniform1i(_uniform, _bool);
 }
 
 NS_JE_END

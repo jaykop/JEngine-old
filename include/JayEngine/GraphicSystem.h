@@ -24,8 +24,9 @@ public:
 	void	SetMainCamera(Camera* _camera);
 	Camera* GetMainCamera();
 
-	void		SetBackgroundColor(const vec4& _color);
 	const vec4& GetBackgroundColor() const;
+	void		SetBackgroundColor(const vec4& _color);
+	void		SetBackgroundColor(float _r, float _g, float _b, float _a);
 
 private:
 
@@ -41,8 +42,6 @@ private:
 	void Unload() override;
 
 	// Helper functions
-	void InitCamera();
-
 	void AddSprite(Sprite* _sprite);
 	void RemoveSprite(Sprite* _sprite);
 
@@ -66,7 +65,7 @@ private:
 	int		m_width, m_height;
 	bool	m_orthoFirst, m_inside;
 	mat4	m_animation, m_perspective, m_orthogonal, m_viewport;
-	vec4	m_colorStorage, m_backgroundColor;
+	vec4	m_backgroundColor;
 	float	m_fovy, m_aspect, m_zNear, m_zFar;
 	float	m_left, m_right, m_top, m_bottom;
 

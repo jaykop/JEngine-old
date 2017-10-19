@@ -33,10 +33,11 @@ void State::Init()
 	JE_DEBUG_PRINT("Initializing %s...\n", m_name.c_str());
 	SystemManager::Init();
 
+	// TODO
 	/************************* Test Code... **************************/
 	ObjectFactory::CreateObject("camera");
 	ObjectFactory::GetCreatedObject()->AddComponent<Camera>();
-	ObjectFactory::GetCreatedObject()->GetComponent<Camera>()->m_position = vec3(0 ,0, 300);
+	ObjectFactory::GetCreatedObject()->GetComponent<Camera>()->m_position = vec3(50, 50, 100);
 	SystemManager::GetGraphicSystem()->SetMainCamera(
 		ObjectFactory::GetCreatedObject()->GetComponent<Camera>());
 	ObjectFactory::AddCreatedObject(m_objContainer);
@@ -46,12 +47,13 @@ void State::Init()
 	ObjectFactory::GetCreatedObject()->AddComponent<Sprite>();
 	ObjectFactory::AddCreatedObject(m_objContainer);
 
-	m_objContainer->GetObject("test")->GetComponent<Transform>()->m_position.Set(100, 100, 1);
+	m_objContainer->GetObject("test")->GetComponent<Transform>()->m_position.Set(0, 0, 1);
 	m_objContainer->GetObject("test")->GetComponent<Transform>()->m_rotation = 0;
 	m_objContainer->GetObject("test")->GetComponent<Transform>()->m_scale.Set(30.f, 30.f, 0.f);
-	m_objContainer->GetObject("test")->GetComponent<Sprite>()->m_color.Set(1.f, 1.f, 0.f, 1.f);
-	m_objContainer->GetObject("test")->GetComponent<Sprite>()->AddTexture("testTexture");
-	m_objContainer->GetObject("test")->GetComponent<Sprite>()->m_projection = Sprite::ORTHOGONAL;
+	m_objContainer->GetObject("test")->GetComponent<Sprite>()->m_color.Set(1.f, 0.5f, 0.3f, 1.f);
+	m_objContainer->GetObject("test")->GetComponent<Sprite>()->m_color*=(vec4(1,1,1,1));
+	m_objContainer->GetObject("test")->GetComponent<Sprite>()->AddTexture("rect");
+	m_objContainer->GetObject("test")->GetComponent<Sprite>()->m_projection = Sprite::PERSPECTIVE;
 
 	//ObjectFactory::CreateObject("test1");
 	//ObjectFactory::GetCreatedObject()->AddComponent<Transform>();
@@ -78,14 +80,16 @@ void State::Init()
 	//ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->SetAnimationSpeed(10.f);
 	//ObjectFactory::AddCreatedObject(m_objContainer);
 
-	SystemManager::GetGraphicSystem()->SetBackgroundColor(vec4(1,0,0,1));
+	SystemManager::GetGraphicSystem()->SetBackgroundColor(.3f, .3f, .3f, .3f);
 }
 
 void State::Update(float _dt)
 {
 	//JE_DEBUG_PRINT("Updating %s...\n", m_name.c_str());
+	m_objContainer->GetObject("test")->GetComponent<Transform>()->m_rotation += _dt;
 	SystemManager::Update(_dt);
 
+	// TODO
 	/*************************** Temp state test key ******************************/
 	if (InputHandler::KeyTriggered(JE_1))
 		StateManager::SetNextState("testState1");

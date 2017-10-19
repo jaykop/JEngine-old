@@ -73,9 +73,6 @@
     <ClCompile Include="..\..\src\JayEngine\Platform_win32.cpp">
       <Filter>Core\Platform</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JayEngine\Shader.cpp">
-      <Filter>System\Graphic</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\JayEngine\Sprite.cpp">
       <Filter>System\Graphic</Filter>
     </ClCompile>
@@ -105,6 +102,18 @@
     </ClCompile>
     <ClCompile Include="..\..\src\JayEngine\ObjectFactory.cpp">
       <Filter>Core\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\PickingRay.cpp">
+      <Filter>Core\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\iniReader.cpp">
+      <Filter>Utils\ini</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\iniWritter.cpp">
+      <Filter>Utils\ini</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\Shader.cpp">
+      <Filter>System\Graphic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -201,9 +210,6 @@
     <ClInclude Include="..\..\include\imgui\stb_textedit.h">
       <Filter>Utils\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JayEngine\Shader.hpp">
-      <Filter>System\Graphic</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\JayEngine\Sprite.h">
       <Filter>System\Graphic</Filter>
     </ClInclude>
@@ -230,6 +236,18 @@
     </ClInclude>
     <ClInclude Include="..\..\include\JayEngine\ObjectFactory.h">
       <Filter>Core\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\PickingRay.h">
+      <Filter>Core\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\iniReader.h">
+      <Filter>Utils\ini</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\iniWritter.h">
+      <Filter>Utils\ini</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\Shader.hpp">
+      <Filter>System\Graphic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -289,6 +307,9 @@
     </Filter>
     <Filter Include="Utils\lodePNG">
       <UniqueIdentifier>{bc410694-fe95-44ed-9f15-422bf2106700}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\ini">
+      <UniqueIdentifier>{a5d74d3c-d5ed-413e-8fdd-17b7d356c29e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
