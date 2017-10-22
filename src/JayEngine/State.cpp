@@ -47,11 +47,10 @@ void State::Init()
 	ObjectFactory::GetCreatedObject()->AddComponent<Sprite>();
 	ObjectFactory::AddCreatedObject(m_objContainer);
 
-	m_objContainer->GetObject("test")->GetComponent<Transform>()->m_position.Set(0, 0, 1);
+	m_objContainer->GetObject("test")->GetComponent<Transform>()->m_position.Set(0, 0, 0);
 	m_objContainer->GetObject("test")->GetComponent<Transform>()->m_rotation = 0;
-	m_objContainer->GetObject("test")->GetComponent<Transform>()->m_scale.Set(30.f, 30.f, 0.f);
+	m_objContainer->GetObject("test")->GetComponent<Transform>()->m_scale.Set(30.f, 30.f, 30.f);
 	m_objContainer->GetObject("test")->GetComponent<Sprite>()->m_color.Set(1.f, 0.5f, 0.3f, 1.f);
-	m_objContainer->GetObject("test")->GetComponent<Sprite>()->m_color*=(vec4(1,1,1,1));
 	m_objContainer->GetObject("test")->GetComponent<Sprite>()->AddTexture("rect");
 	m_objContainer->GetObject("test")->GetComponent<Sprite>()->m_projection = Sprite::PERSPECTIVE;
 

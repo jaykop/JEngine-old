@@ -25,7 +25,7 @@ class GLManager {
 		UNIFORM_ANI_TRANSLATE, UNIFORM_ANI_SCALE,
 
 		// Vector uniform
-		UNIFORM_COLOR,
+		UNIFORM_COLOR, UNIFORM_LIGHT_COLOR, UNIFORM_LIGHT_POSITION,
 
 		// Boolean uniform
 		UNIFORM_FLIP,
@@ -67,12 +67,12 @@ private:
 
 	// Private member variables
 	static DrawMode m_mode;
-	static GLuint	m_vbo, m_vao, m_ebo, m_light_vao;
+	static GLuint	m_vao, m_vbo, m_vbo3D, m_ebo, m_ebo3D, m_light_vao;
 	static Shader	m_shader[SHADER_END];
 	static GLint	m_uniform[UNIFORM_END];
 
 	static const float	s_vertices[20];
-	static const float	s_vertices3D[40]; 
+	static const float	s_vertices3D[64]; 
 
 	static const int	s_indices[6];
 	static const int	s_indices3D[36];

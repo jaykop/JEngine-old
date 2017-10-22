@@ -1,13 +1,17 @@
 #version 330 core
 
-// uniform vectors
-uniform vec4 v4_sampleColor;
-uniform vec4 v4_lightColor;
+in vec4 lightColor;
+in vec4 objectColor;
 
 out vec4 FragColor;
 
 void main()
 {
 	//vec4 finalColor = .xyz;
-	FragColor = (v4_sampleColor*v4_lightColor);
+	float ambientStrength = 0.1;
+	
+	vec4 ambient = ambientStrength*lightColor;
+	
+	vec4 result = lightColor ;
+	FragColor = result;
 }

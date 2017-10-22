@@ -80,7 +80,6 @@ void GraphicSystem::RemoveSprite(Sprite* _sprite)
 
 void GraphicSystem::Pipeline(Sprite* _sprite)
 {
-	//glEnable(GL_DEPTH_TEST);
 	// Use normal shader
 	GLManager::m_shader[GLManager::SHADER_NORMAL].Use();
 
@@ -94,7 +93,7 @@ void GraphicSystem::Pipeline(Sprite* _sprite)
 		MappingPipeline(_sprite);
 		AnimationPipeline(_sprite);
 
-		//glDrawArrays(GL_TRIANGLES, 0, 36);
+		//glDrawArrays(GL_TRIANGLES, 0, 6);
 		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	}
@@ -124,7 +123,7 @@ void GraphicSystem::TransformPipeline(Sprite * _sprite)
 	else
 		GLManager::m_shader[GLManager::SHADER_NORMAL].SetMatrix(
 			GLManager::m_uniform[GLManager::UNIFORM_ROTATE],
-			mat4::Rotate(m_pTransformStorage->m_rotation, vec3::UNIT_X));
+			mat4::Rotate(m_pTransformStorage->m_rotation, vec3::UNIT_Y));
 
 	// Send camera info to shader
 	m_viewport = mat4::Camera(m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
@@ -154,6 +153,61 @@ void GraphicSystem::TransformPipeline(Sprite * _sprite)
 
 	else
 		_sprite->m_culled = false;
+
+
+	//// TODO
+	//// Send transform info to shader
+	//m_pTransformStorage = _sprite->m_transform;
+
+	//// Send transform info to shader
+	//GLManager::m_shader[GLManager::SHADER_LIGHTING].SetMatrix(
+	//	GLManager::m_uniform[GLManager::UNIFORM_TRANSLATE_LIGHT],
+	//	mat4::Translate(m_pTransformStorage->m_position));
+
+	//GLManager::m_shader[GLManager::SHADER_LIGHTING].SetMatrix(
+	//	GLManager::m_uniform[GLManager::UNIFORM_SCALE_LIGHT],
+	//	mat4::Scale(m_pTransformStorage->m_scale));
+
+	//if (m_mode == MODE_2D)
+	//	GLManager::m_shader[GLManager::SHADER_LIGHTING].SetMatrix(
+	//		GLManager::m_uniform[GLManager::UNIFORM_ROTATE_LIGHT],
+	//		mat4::Rotate(m_pTransformStorage->m_rotation, vec3::UNIT_Z));
+
+	//// TODO
+	//// else 3d rotation
+	//else
+	//	GLManager::m_shader[GLManager::SHADER_LIGHTING].SetMatrix(
+	//		GLManager::m_uniform[GLManager::UNIFORM_ROTATE_LIGHT],
+	//		mat4::Rotate(m_pTransformStorage->m_rotation, vec3::UNIT_Y));
+
+	//// Send camera info to shader
+	//m_viewport = mat4::Camera(m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
+	//GLManager::m_shader[GLManager::SHADER_LIGHTING].SetMatrix(
+	//	GLManager::m_uniform[GLManager::UNIFORM_CAMERA_LIGHT],
+	//	m_viewport);
+
+	//// Send projection info to shader
+	//if (_sprite->m_projection == Sprite::PERSPECTIVE) {
+	//	GLManager::m_shader[GLManager::SHADER_LIGHTING].SetMatrix(
+	//		GLManager::m_uniform[GLManager::UNIFORM_PROJECTION_LIGHT],
+	//		m_perspective);
+
+	//	//m_inside = ;
+	//}
+
+	//else {
+	//	GLManager::m_shader[GLManager::SHADER_LIGHTING].SetMatrix(
+	//		GLManager::m_uniform[GLManager::UNIFORM_PROJECTION_LIGHT],
+	//		m_orthogonal);
+
+	//	//m_inside = ;
+	//}
+
+	//if (m_inside)
+	//	_sprite->m_culled = true;
+
+	//else
+	//	_sprite->m_culled = false;
 }
 
 void GraphicSystem::MappingPipeline(Sprite * _sprite)
@@ -168,6 +222,23 @@ void GraphicSystem::MappingPipeline(Sprite * _sprite)
 	GLManager::m_shader[GLManager::SHADER_NORMAL].SetBool(
 		GLManager::m_uniform[GLManager::UNIFORM_FLIP],
 		_sprite->m_flip);
+
+	GLManager::m_shader[GLManager::SHADER_NORMAL].SetVector4(
+		GLManager::m_uniform[GLManager::UNIFORM_LIGHT_COLOR],
+		vec4::ONE);
+
+	GLManager::m_shader[GLManager::SHADER_NORMAL].SetVector3(
+		GLManager::m_uniform[GLManager::UNIFORM_LIGHT_POSITION],
+		vec3(5, 5, 5));
+
+	//// TODO
+	//GLManager::m_shader[GLManager::SHADER_LIGHTING].SetVector4(
+	//	GLManager::m_uniform[GLManager::UNIFORM_COLOR_OBJECT],
+	//	_sprite->m_color);
+
+	//GLManager::m_shader[GLManager::SHADER_LIGHTING].SetVector4(
+	//	GLManager::m_uniform[GLManager::UNIFORM_COLOR_LIGHT],
+	//	vec4::ONE);
 }
 
 void GraphicSystem::AnimationPipeline(Sprite * _sprite)
