@@ -3,7 +3,7 @@
 #include "SystemManager.h"
 #include "GraphicSystem.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 Camera::Camera(Object* _owner)
 	: Component(_owner),
@@ -13,5 +13,5 @@ Camera::Camera(Object* _owner)
 	SystemManager::GetGraphicSystem()->AddCamera(this);
 }
 
-NS_JE_END
+JE_END
 

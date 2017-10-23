@@ -2,7 +2,7 @@
 #include <string>
 #include "Macro.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 class State {
 
@@ -33,4 +33,4 @@ private:
 	ObjectContainer*	m_objContainer;
 };
 
-NS_JE_END
+JE_END

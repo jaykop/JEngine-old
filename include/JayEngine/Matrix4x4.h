@@ -24,7 +24,7 @@ Custom Matrix looks like this...
 #include "Vector3.h"
 #include "Vector4.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 // Matrix 4x4 template class
 class Matrix4x4
@@ -98,4 +98,4 @@ private:
 
 typedef Matrix4x4 mat4;
 
-NS_JE_END
+JE_END

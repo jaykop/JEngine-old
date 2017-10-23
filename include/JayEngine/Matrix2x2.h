@@ -21,7 +21,7 @@ Custom Matrix looks like this...
 #include "Vector2.h"
 #include <iostream>
 
-NS_JE_BEGIN
+JE_BEGIN
 
 //! Matrix2x2 struct
 struct Matrix2x2
@@ -69,4 +69,4 @@ struct Matrix2x2
 
 typedef Matrix2x2 mat2;
 
-NS_JE_END
+JE_END

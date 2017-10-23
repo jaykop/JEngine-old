@@ -4,7 +4,7 @@
 #include "GraphicSystem.h"
 #include "SystemManager.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 Sprite::Sprite(Object* _owner)
 	:Component(_owner), m_color(vec4::ONE),m_projection(PERSPECTIVE), 
@@ -113,5 +113,5 @@ Sprite::~Sprite()
 	SystemManager::GetGraphicSystem()->RemoveSprite(this);
 }
 
-NS_JE_END
+JE_END
 

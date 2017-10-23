@@ -4,7 +4,7 @@
 #include "Macro.h"
 #include "Vector3.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 enum JE_KEY {
 
@@ -76,7 +76,7 @@ enum JE_KEY {
 	JE_MOUSE_LEFT, JE_MOUSE_RIGHT, JE_MOUSE_MIDDLE,
 	JE_MOUSE_WHEEL_UP, JE_MOUSE_WHEEL_DOWN,
 
-	JE_END
+	JE_KEY_END
 };
 
 class InputHandler {
@@ -115,4 +115,4 @@ private:
 	static KeyMap	m_keys, m_triggerList;
 };
 
-NS_JE_END
+JE_END

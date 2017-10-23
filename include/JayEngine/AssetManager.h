@@ -3,7 +3,7 @@
 #include <vector>
 #include <unordered_map>
 
-NS_JE_BEGIN
+JE_BEGIN
 
 class Audio;
 class State;
@@ -52,4 +52,4 @@ private:
 
 };
 
-NS_JE_END
+JE_END

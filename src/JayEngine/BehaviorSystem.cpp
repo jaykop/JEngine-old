@@ -1,6 +1,6 @@
 #include "BehaviorSystem.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 BehaviorSystem::BehaviorSystem()
 	:System()
@@ -27,4 +27,4 @@ void BehaviorSystem::Unload()
 {
 }
 
-NS_JE_END
+JE_END

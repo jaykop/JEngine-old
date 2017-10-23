@@ -1,7 +1,7 @@
 #pragma once
 #include "Macro.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 class System {
 
@@ -24,4 +24,4 @@ private:
 	void operator=(const System& /*_copy*/) {};
 };
 
-NS_JE_END
+JE_END

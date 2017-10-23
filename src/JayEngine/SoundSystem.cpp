@@ -1,6 +1,6 @@
 #include "SoundSystem.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 SoundSystem::SoundSystem()
 	:System()
@@ -27,4 +27,4 @@ void SoundSystem::Unload()
 {
 }
 
-NS_JE_END
+JE_END

@@ -17,7 +17,7 @@ Contains Application's class and member functions
 #include <string>
 #include "SDL2\SDL.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 //////////////////////////////////////////////////////////////////////////
 // Main application class
@@ -62,4 +62,4 @@ private:
 	static SDL_Surface*		m_pSurface; // SDL screen surface
 };
 
-NS_JE_END
+JE_END

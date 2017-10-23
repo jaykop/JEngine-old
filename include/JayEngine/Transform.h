@@ -2,7 +2,7 @@
 #include "Vector3.h"
 #include "Component.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 class Transform : public Component
 {
@@ -29,4 +29,4 @@ private:
 
 };
 
-NS_JE_END
+JE_END

@@ -4,7 +4,7 @@
 #include "SoundSystem.h"
 #include "BehaviorSystem.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 //////////////////////////////////////////////////////////////////////////
 // static variables
@@ -183,4 +183,4 @@ void SystemManager::Systems::Unload()
 	m_pBehaviorSystem->Unload();
 }
 
-NS_JE_END
+JE_END

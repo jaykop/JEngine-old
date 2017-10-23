@@ -16,7 +16,7 @@ Contains vector3's template class and member function
 #include "Vector3.h"
 #include "MathUtils.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 //////////////////////////////////////////////////////////////////////////
 // static variables
@@ -809,4 +809,4 @@ float GetDegree(const Vector3 & a, const Vector3 & b)
 	return result < 0 ? 360 + result : result;
 }
 
-NS_JE_END
+JE_END

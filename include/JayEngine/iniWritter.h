@@ -15,7 +15,7 @@ All content (C) 2016 DigiPen (USA) Corporation, all rights reserved.
 #pragma once
 #include "Macro.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 //#include "../Math/MathUtils.h"
 
@@ -43,4 +43,4 @@ private:
 
 };
 
-NS_JE_END
+JE_END

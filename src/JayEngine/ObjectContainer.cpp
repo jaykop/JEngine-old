@@ -2,7 +2,7 @@
 #include "ObjectContainer.h"
 #include "ComponentManager.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 ObjectContainer::~ObjectContainer()
 {
@@ -69,5 +69,5 @@ void ObjectContainer::ClearObjectMap()
 	m_objectMap.clear();
 }
 
-NS_JE_END
+JE_END
 

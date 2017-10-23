@@ -6,7 +6,7 @@
 #include "ImguiManager.h"
 #include "AssetManager.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 //////////////////////////////////////////////////////////////////////////
 // static variables
@@ -75,7 +75,9 @@ void StateManager::Update(SDL_Event& _event)
 			SDL_GL_SwapWindow(pWindow);
 
 			// Update imgui renderer
-			//ImguiManager::Update();
+			#ifdef JE_SUPPORT_IMGUI
+			ImguiManager::Update();
+			#endif
 		}
 	}
 
@@ -314,6 +316,6 @@ void StateManager::ClearStates()
 	m_states.clear();
 }
 
-NS_JE_END
+JE_END
 
 

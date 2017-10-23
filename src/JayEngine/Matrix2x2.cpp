@@ -18,7 +18,7 @@ Custom Matrix looks like this...
 
 #include "Matrix2x2.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 /******************************************************************************/
 /*!
@@ -410,4 +410,4 @@ std::ostream& operator<<(std::ostream& _os, const Matrix2x2& _contents)
 	return _os;
 }
 
-NS_JE_END
+JE_END

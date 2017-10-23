@@ -1,7 +1,7 @@
 #include "Object.h"
 #include "ComponentManager.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 template<typename ComponentType>
 inline void Object::AddComponent()
@@ -52,4 +52,4 @@ inline bool Object::HasComponent()
 	}
 }
 
-NS_JE_END
+JE_END

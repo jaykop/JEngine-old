@@ -6,7 +6,7 @@
 #include "Macro.h"
 #include "Shader.hpp"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 class GLManager {
 
@@ -73,11 +73,14 @@ private:
 	static Shader	m_shader[SHADER_END];
 	static GLint	m_uniform[UNIFORM_END];
 
-	static const float	m_vertices[20];
-	static const float	m_vertices3D[192]; 
-
-	static const int	m_indices[6];
+	static const float	m_vertices[32];
+	static const int	m_indices[6]; 
+	
+#ifdef JE_SUPPORT_3D
+	static const float	m_vertices3D[192];
 	static const int	m_indices3D[36];
+#endif
+
 };
 
-NS_JE_END
+JE_END

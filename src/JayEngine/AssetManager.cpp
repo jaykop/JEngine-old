@@ -1,11 +1,10 @@
 #include "GL\glew.h"
 #include "lodepng.h"
 #include "State.h"
-#include "Texture.h"
 #include "Application.h"
 #include "AssetManager.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 // Declare static member variables
 AssetManager::AudioMap		AssetManager::m_audioMap;
@@ -127,4 +126,4 @@ void AssetManager::LoadArchetype(const char *_path, const char *_archetypeKey)
 	// load archetpye assets
 }
 
-NS_JE_END
+JE_END

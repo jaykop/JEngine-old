@@ -1,7 +1,7 @@
 #pragma once
 #include "Macro.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 class Object;
 class ComponentManager {
@@ -18,7 +18,7 @@ private:
 
 };
 
-NS_JE_END
+JE_END
 
 #include "ComponentManager.inl"
 

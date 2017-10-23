@@ -13,7 +13,7 @@ Contains Vector2's class and member function
 
 #include "Vector2.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 //////////////////////////////////////////////////////////////////////////
 // static variables
@@ -541,4 +541,4 @@ std::ostream& operator<<(std::ostream& _os, const Vector2& _constents)
 	return _os;
 }
 
-NS_JE_END
+JE_END

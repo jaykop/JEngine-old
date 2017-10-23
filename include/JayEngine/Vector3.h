@@ -16,7 +16,7 @@ Contains Vector3's template class
 #include "Macro.h"
 #include <iostream>
 
-NS_JE_BEGIN
+JE_BEGIN
 
 // Vector3 template class
 class Vector3
@@ -107,4 +107,4 @@ private:
 
 typedef Vector3 vec3;
 
-NS_JE_END
+JE_END

@@ -2,7 +2,7 @@
 #include "ObjectFactory.h"
 #include "ObjectContainer.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 //////////////////////////////////////////////////////////////////////////
 // static variables
@@ -45,4 +45,4 @@ void ObjectFactory::AddCreatedObject(ObjectContainer* _container)
 	++m_registerNumber;
 }
 
-NS_JE_END
+JE_END

@@ -13,7 +13,7 @@ Contains Vector4's template class and member function
 /******************************************************************************/
 #include "Vector4.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 //////////////////////////////////////////////////////////////////////////
 // static variables
@@ -593,4 +593,4 @@ bool Vector4::operator!=(const Vector4& _rhs) const
 	return true;
 }
 
-NS_JE_END
+JE_END

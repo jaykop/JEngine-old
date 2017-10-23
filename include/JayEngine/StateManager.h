@@ -3,7 +3,7 @@
 #include "Timer.h"
 #include "SDL2\SDL.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 class State;
 typedef std::vector<State*> States;
@@ -57,4 +57,4 @@ private:
 
 };
 
-NS_JE_END
+JE_END

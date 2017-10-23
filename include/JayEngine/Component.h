@@ -2,7 +2,7 @@
 #include "Macro.h"
 #include "Object.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 class Object;
 class Component {
@@ -28,4 +28,4 @@ private:
 
 };
 
-NS_JE_END
+JE_END

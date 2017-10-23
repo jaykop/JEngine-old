@@ -17,7 +17,7 @@ All content (C) 2016 DigiPen (USA) Corporation, all rights reserved.
 #include <atlstr.h>
 #include "iniWritter.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 /******************************************************************************/
 /*!
@@ -120,4 +120,4 @@ void iniWritter::WriteString(char *section, char* key, const char* DefaultString
 //	WritePrivateProfileString(section, key, value, m_fileName);
 //}
 
-NS_JE_END
+JE_END

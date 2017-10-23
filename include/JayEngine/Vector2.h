@@ -15,7 +15,7 @@ Contains Vector2's class
 #include "Macro.h"
 #include <iostream>
 
-NS_JE_BEGIN
+JE_BEGIN
 
 // vector2 struct
 struct Vector2
@@ -81,4 +81,4 @@ struct Vector2
 
 typedef Vector2 vec2;
 
-NS_JE_END
+JE_END

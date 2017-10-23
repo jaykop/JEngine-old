@@ -1,7 +1,7 @@
 #include <cstdio>
 #include "GLManager.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 //////////////////////////////////////////////////////////////////////////
 // static variables
@@ -16,11 +16,11 @@ GLManager::DrawMode GLManager::m_mode = DrawMode::DRAW_FILL;
 
 const float GLManager::m_vertices [] = 
 {
-	// position				// uv		
-	-.5f,	.5f,	0.f,	0.f, 0.f,	// top left	
-	.5f,	.5f,	0.f,	1.f, 0.f,	// top right
-	.5f,	-.5f,	0.f,	1.f, 1.f,	// bottom right
-	-.5f,	-.5f,	0.f,	0.f, 1.f	// bottom left
+	// position				// uv		// normals
+	-.5f,	.5f,	0.f,	0.f, 0.f,	0.0f,  0.0f, 1.0f,	// top left	
+	.5f,	.5f,	0.f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,	// top right
+	.5f,	-.5f,	0.f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,	// bottom right
+	-.5f,	-.5f,	0.f,	0.f, 1.f,	0.0f,  0.0f, 1.0f	// bottom left
 };
 
 const int GLManager::m_indices [] = 
@@ -36,6 +36,7 @@ const int GLManager::m_indices [] =
 	2, 0, 1		// second triangle
 };
 
+#ifdef JE_SUPPORT_3D
 const float GLManager::m_vertices3D[] = {
 
 	//// position				// uv		// normals
@@ -154,6 +155,7 @@ const int GLManager::m_indices3D [] = {
 	20 ,22, 23,	// first triangle
 	22, 20, 21	// second triangle
 };
+#endif
 
 //////////////////////////////////////////////////////////////////////////
 // GLManager functio bodies
@@ -205,13 +207,18 @@ void GLManager::InitGLEnvironment()
 	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
 	JE_DEBUG_PRINT("Maximum nr of vertex attributes supported: %d\n", nrAttributes);
 
+	// Set how to draw
+	SetDrawMode(m_mode);
+
 	// Active blend function
 	glEnable(GL_BLEND); 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+#ifdef JE_SUPPORT_3D
 	//TODO
 	glEnable(GL_LESS);
 	glEnable(GL_DEPTH_TEST);
+#endif
 
 	// Texture attribute setting
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
@@ -286,7 +293,11 @@ void GLManager::SetVbo()
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 
 	// Now we can copy vertex data to this vbo
+#ifdef JE_SUPPORT_3D
 	glBufferData(GL_ARRAY_BUFFER, sizeof(m_vertices3D), m_vertices3D, GL_STATIC_DRAW);
+#else
+	glBufferData(GL_ARRAY_BUFFER, sizeof(m_vertices), m_vertices, GL_STATIC_DRAW);
+#endif
 }
 
 void GLManager::SetVA()
@@ -313,8 +324,13 @@ void GLManager::SetEbo()
 	// Just like vbo...
 	glGenBuffers(1, &m_ebo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+
+#ifdef JE_SUPPORT_3D
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(m_indices3D), m_indices3D, GL_STATIC_DRAW);
+#else
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(m_indices), m_indices, GL_STATIC_DRAW);
+#endif
 }
 
-NS_JE_END
+JE_END
 

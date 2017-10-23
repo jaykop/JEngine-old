@@ -4,7 +4,7 @@
 #include "Vector4.h"
 #include "Matrix4x4.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 class Shader {
 
@@ -32,4 +32,4 @@ private:
 	GLuint m_programId;
 };
 
-NS_JE_END
+JE_END

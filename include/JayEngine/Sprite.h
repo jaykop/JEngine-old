@@ -4,7 +4,7 @@
 #include "Vector4.h"
 #include "Component.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 class Object;
 class Texture;
@@ -65,4 +65,4 @@ private:
 
 };
 
-NS_JE_END
+JE_END

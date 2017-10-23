@@ -2,7 +2,7 @@
 #include <stack>
 #include "Macro.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 class SoundSystem;
 class GraphicSystem;
@@ -75,4 +75,4 @@ private:
 	static SystemStack	m_pauseStack;
 };
 
-NS_JE_END
+JE_END

@@ -4,7 +4,7 @@
 #include "ObjectContainer.h"
 #include "ComponentManager.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 Object::Object(const char* _name)
 	:m_name(_name), m_active(true), m_pParent(nullptr),
@@ -142,4 +142,4 @@ void Object::ClearChildren()
 }
 
 
-NS_JE_END
+JE_END

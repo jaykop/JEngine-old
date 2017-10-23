@@ -4,12 +4,20 @@
 #include "Vector4.h"
 #include "Matrix4x4.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 class Transform;
 
 class GraphicSystem : public System
 {
+
+#ifdef JE_SUPPORT_3D
+	friend class Light;
+	friend class Model;
+	typedef std::vector<Light*> Lights;
+	typedef std::vector<Model*> Models;
+#endif
+
 	friend class Sprite;
 	friend class Camera;
 	friend class SystemManager;
@@ -17,8 +25,6 @@ class GraphicSystem : public System
 	typedef std::vector<Sprite*> Sprites;
 	typedef std::vector<Camera*> Cameras;
 	
-	enum GraphicMode { MODE_2D, MODE_3D };
-
 public:
 
 	void	SetMainCamera(Camera* _camera);
@@ -56,7 +62,6 @@ private:
 	void GLMousePosition();
 
 	// Member variables
-	GraphicMode m_mode;
 	Sprites		m_sprites;
 	Cameras		m_cameras;
 	Camera*		m_pMainCamera;
@@ -77,6 +82,11 @@ private:
 		private:
 			bool m_orthoFirst;
 	};
+
+#ifdef JE_SUPPORT_3D
+	Sprites		m_lights;
+	Models		m_models;
+#endif
 };
 
-NS_JE_END
+JE_END

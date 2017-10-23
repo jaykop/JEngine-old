@@ -1,7 +1,6 @@
 #include <algorithm>
 #include "Sprite.h"
 #include "Shader.hpp"
-#include "Texture.h"
 #include "Camera.h"
 #include "GLManager.h"
 #include "GraphicSystem.h"
@@ -9,11 +8,15 @@
 #include "Application.h"
 #include "InputHandler.h"
 
-NS_JE_BEGIN
+#ifdef JE_SUPPORT_3D
+#include "Model.h"
+#endif
+
+JE_BEGIN
 
 GraphicSystem::GraphicSystem()
 	:System(), m_pTransformStorage(nullptr), m_pMainCamera(nullptr),
-	m_fovy(45.f), m_zNear(.1f), m_zFar(1000.f), m_mode(MODE_3D),
+	m_fovy(45.f), m_zNear(.1f), m_zFar(1000.f),
 	m_backgroundColor(vec4::ZERO), m_orthoFirst(false),
 	m_width(Application::GetData().m_width),
 	m_height(Application::GetData().m_height)
@@ -113,18 +116,10 @@ void GraphicSystem::TransformPipeline(Sprite * _sprite)
 		GLManager::m_uniform[GLManager::UNIFORM_SCALE],
 		mat4::Scale(m_pTransformStorage->m_scale));
 
-	if (m_mode == MODE_2D)
-		GLManager::m_shader[GLManager::SHADER_NORMAL].SetMatrix(
-			GLManager::m_uniform[GLManager::UNIFORM_ROTATE],
-			mat4::Rotate(m_pTransformStorage->m_rotation, vec3::UNIT_Z));
-	
-	// TODO
-	// else 3d rotation
-	else
-		GLManager::m_shader[GLManager::SHADER_NORMAL].SetMatrix(
-			GLManager::m_uniform[GLManager::UNIFORM_ROTATE],
-			mat4::Rotate(m_pTransformStorage->m_rotation, 
-				m_pTransformStorage->m_rotation3D));
+	GLManager::m_shader[GLManager::SHADER_NORMAL].SetMatrix(
+		GLManager::m_uniform[GLManager::UNIFORM_ROTATE],
+		mat4::Rotate(m_pTransformStorage->m_rotation, 
+			m_pTransformStorage->m_rotation3D));
 
 	// Send camera info to shader
 	m_viewport = mat4::Camera(m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
@@ -234,7 +229,7 @@ void GraphicSystem::MappingPipeline(Sprite * _sprite)
 
 	GLManager::m_shader[GLManager::SHADER_NORMAL].SetVector3(
 		GLManager::m_uniform[GLManager::UNIFORM_CAMERA_POSITION],
-		m_pMainCamera->m_position);
+		/*m_pMainCamera->m_position*/vec3(0,0,5));
 	
 
 	//// TODO
@@ -367,5 +362,5 @@ void GraphicSystem::GLMousePosition() {
 
 }
 
-NS_JE_END
+JE_END
 

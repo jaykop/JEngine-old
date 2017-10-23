@@ -1,6 +1,6 @@
 #include "ComponentManager.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 template<typename ComponentType>
 inline ComponentType* ComponentManager::CreateComponent(Object* _pOwner)
@@ -24,4 +24,4 @@ inline void ComponentManager::RemoveComponent(ComponentType* _pComponent)
 		JE_DEBUG_PRINT("Already deleted\n");
 }
 
-NS_JE_END
+JE_END

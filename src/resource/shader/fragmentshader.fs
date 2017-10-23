@@ -31,7 +31,7 @@ void main() {
 	float specularStrength = 0.5;
 	vec3 viewDirection = normalize(v3_outCameraPosition - v3_outFragmentPosition);
 	vec3 reflectedDirection = reflect(-lightDirection, norm);
-	float spec = pow(max(dot(viewDirection, reflectedDirection), 0.0), 256);
+	float spec = pow(max(dot(viewDirection, reflectedDirection), 0.0), 32);
 	vec4 specular = spec * specularStrength * v4_outLightColor;
 	
 	// Final light

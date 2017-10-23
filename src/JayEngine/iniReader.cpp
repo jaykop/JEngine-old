@@ -16,7 +16,7 @@ All content (C) 2016 DigiPen (USA) Corporation, all rights reserved.
 #include <Windows.h>
 #include "iniReader.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 /******************************************************************************/
 /*!
@@ -192,4 +192,4 @@ char* iniReader::ReadString(char *section, char* key)
 //	return vec4Result;
 //}
 
-NS_JE_END
+JE_END

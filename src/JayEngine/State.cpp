@@ -14,7 +14,7 @@
 #include "Vector3.h"
 #include "GraphicSystem.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 State::State(const char* _name)
 	:m_pLastStage(nullptr)
@@ -38,47 +38,48 @@ void State::Init()
 	/************************* Test Code... **************************/
 	ObjectFactory::CreateObject("camera");
 	ObjectFactory::GetCreatedObject()->AddComponent<Camera>();
-	ObjectFactory::GetCreatedObject()->GetComponent<Camera>()->m_position = vec3(50, 50, 50);
+	ObjectFactory::GetCreatedObject()->GetComponent<Camera>()->m_position = vec3(0, 0, 50);
 	SystemManager::GetGraphicSystem()->SetMainCamera(
 		ObjectFactory::GetCreatedObject()->GetComponent<Camera>());
 	ObjectFactory::AddCreatedObject(m_objContainer);
 
+#ifdef JE_SUPPORT_3D
 	ObjectFactory::CreateObject("test");
 	ObjectFactory::GetCreatedObject()->AddComponent<Transform>();
 	ObjectFactory::GetCreatedObject()->AddComponent<Sprite>();
+	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_position.Set(0, 0, 0);
+	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_rotation = 0;
+	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_scale.Set(30.f, 30.f, 30.f);
+	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->m_color.Set(1.f, 0.5f, 0.3f, 1.f);
+	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->AddTexture("uvtemplate");
+	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->m_projection = Sprite::PERSPECTIVE;
+	ObjectFactory::AddCreatedObject(m_objContainer);
+#else
+
+	ObjectFactory::CreateObject("test1");
+	ObjectFactory::GetCreatedObject()->AddComponent<Transform>();
+	ObjectFactory::GetCreatedObject()->AddComponent<Sprite>();
+	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_position.Set(10, 10, 2);
+	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_rotation = 0;
+	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_scale.Set(30.f, 30.f, 0.f);
+	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->m_color.Set(1.f, 1.f, 0.f, 1.f);
+	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->AddTexture("testTexture");/*
+	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->m_projection = Sprite::PERSPECTIVE;*/
 	ObjectFactory::AddCreatedObject(m_objContainer);
 
-	m_objContainer->GetObject("test")->GetComponent<Transform>()->m_position.Set(0, 0, 0);
-	m_objContainer->GetObject("test")->GetComponent<Transform>()->m_rotation = 0;
-	m_objContainer->GetObject("test")->GetComponent<Transform>()->m_scale.Set(30.f, 30.f, 30.f);
-	m_objContainer->GetObject("test")->GetComponent<Sprite>()->m_color.Set(1.f, 0.5f, 0.3f, 1.f);
-	m_objContainer->GetObject("test")->GetComponent<Sprite>()->AddTexture("uvtemplate");
-	m_objContainer->GetObject("test")->GetComponent<Sprite>()->m_projection = Sprite::PERSPECTIVE;
-
-	//ObjectFactory::CreateObject("test1");
-	//ObjectFactory::GetCreatedObject()->AddComponent<Transform>();
-	//ObjectFactory::GetCreatedObject()->AddComponent<Sprite>();
-	//ObjectFactory::AddCreatedObject(m_objContainer);
-
-	//m_objContainer->GetObject("test1")->GetComponent<Transform>()->m_position.Set(10, 10, 2);
-	//m_objContainer->GetObject("test1")->GetComponent<Transform>()->m_rotation = 0;
-	//m_objContainer->GetObject("test1")->GetComponent<Transform>()->m_scale.Set(30.f, 30.f, 0.f);
-	//m_objContainer->GetObject("test1")->GetComponent<Sprite>()->m_color.Set(1.f, 1.f, 0.f, 1.f);
-	//m_objContainer->GetObject("test1")->GetComponent<Sprite>()->AddTexture("testTexture");
-	//m_objContainer->GetObject("test1")->GetComponent<Sprite>()->m_projection = Sprite::PERSPECTIVE;
-
-	//ObjectFactory::CreateObject("test2");
-	//ObjectFactory::GetCreatedObject()->AddComponent<Transform>();
-	//ObjectFactory::GetCreatedObject()->AddComponent<Sprite>();
-	//ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_position.Set(-10, -10, 0);
-	//ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_rotation = 0;
-	//ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_scale.Set(30.f, 30.f, 0.f);
-	//ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->m_color.Set(1.f, 1.f, 1.f, 1.f);
-	//ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->AddTexture("testAnimation");
-	//ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->ActiveAnimation(true);
-	//ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->SetAnimationFrame(8);
-	//ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->SetAnimationSpeed(10.f);
-	//ObjectFactory::AddCreatedObject(m_objContainer);
+	ObjectFactory::CreateObject("test2");
+	ObjectFactory::GetCreatedObject()->AddComponent<Transform>();
+	ObjectFactory::GetCreatedObject()->AddComponent<Sprite>();
+	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_position.Set(-10, -10, 0);
+	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_rotation = 0;
+	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_scale.Set(30.f, 30.f, 0.f);
+	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->m_color.Set(1.f, 1.f, 1.f, 1.f);
+	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->AddTexture("testAnimation");
+	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->ActiveAnimation(true);
+	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->SetAnimationFrame(8);
+	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->SetAnimationSpeed(10.f);
+	ObjectFactory::AddCreatedObject(m_objContainer);
+#endif
 
 	SystemManager::GetGraphicSystem()->SetBackgroundColor(.3f, .3f, .3f, .3f);
 }
@@ -86,7 +87,24 @@ void State::Init()
 void State::Update(float _dt)
 {
 	//JE_DEBUG_PRINT("Updating %s...\n", m_name.c_str());
+	
+	Object* obj = m_objContainer->GetObject("camera");
+	Camera* camera = obj->GetComponent<Camera>();
+
 	SystemManager::Update(_dt);
+	static float move= 10.f*_dt;
+
+	if (InputHandler::KeyTriggered(JE_W))
+	camera->m_position.y += move;
+
+	if (InputHandler::KeyTriggered(JE_D))
+		camera->m_position.y -= move;
+	
+	if (InputHandler::KeyTriggered(JE_D))
+		camera->m_position.x += move;
+	
+	if (InputHandler::KeyTriggered(JE_A))
+		camera->m_position.x -= move;
 
 	/*************************** Temp state test key ******************************/
 	if (InputHandler::KeyTriggered(JE_1))
@@ -149,5 +167,5 @@ void State::ClearObjectContainer()
 	}
 }
 
-NS_JE_END
+JE_END
 

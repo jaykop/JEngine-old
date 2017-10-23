@@ -82,9 +82,6 @@
     <ClCompile Include="..\..\src\JayEngine\Camera.cpp">
       <Filter>System\Graphic</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JayEngine\Texture.cpp">
-      <Filter>System\Graphic</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\JayEngine\AssetManager.cpp">
       <Filter>Core\AssetManager</Filter>
     </ClCompile>
@@ -103,9 +100,6 @@
     <ClCompile Include="..\..\src\JayEngine\ObjectFactory.cpp">
       <Filter>Core\Object</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JayEngine\PickingRay.cpp">
-      <Filter>Core\Input</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\JayEngine\iniReader.cpp">
       <Filter>Utils\ini</Filter>
     </ClCompile>
@@ -113,6 +107,15 @@
       <Filter>Utils\ini</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\JayEngine\Shader.cpp">
+      <Filter>System\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\Light.cpp">
+      <Filter>System\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\Model.cpp">
+      <Filter>System\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\Mesh.cpp">
       <Filter>System\Graphic</Filter>
     </ClCompile>
   </ItemGroup>
@@ -219,9 +222,6 @@
     <ClInclude Include="..\..\include\JayEngine\Camera.h">
       <Filter>System\Graphic</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JayEngine\Texture.h">
-      <Filter>System\Graphic</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\JayEngine\AssetManager.h">
       <Filter>Core\AssetManager</Filter>
     </ClInclude>
@@ -237,9 +237,6 @@
     <ClInclude Include="..\..\include\JayEngine\ObjectFactory.h">
       <Filter>Core\Object</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JayEngine\PickingRay.h">
-      <Filter>Core\Input</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\JayEngine\iniReader.h">
       <Filter>Utils\ini</Filter>
     </ClInclude>
@@ -247,6 +244,15 @@
       <Filter>Utils\ini</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\JayEngine\Shader.hpp">
+      <Filter>System\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\Light.h">
+      <Filter>System\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\Model.h">
+      <Filter>System\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\Mesh.h">
       <Filter>System\Graphic</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,10 +1,13 @@
 #pragma once
 #include "Macro.h"
+
+#ifdef IMGUI
+
 #include "SDL2\SDL.h"
 
 struct SDL_Window;
 
-NS_JE_BEGIN
+JE_BEGIN
 
 class ImguiManager {
 
@@ -24,4 +27,6 @@ private:
 	static SDL_Window* m_pWindow;
 };
 
-NS_JE_END
+JE_END
+
+#endif

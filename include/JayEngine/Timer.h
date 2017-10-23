@@ -1,7 +1,7 @@
 #pragma once
 #include "Macro.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 class Timer {
 
@@ -22,4 +22,4 @@ private:
 
 };
 
-NS_JE_END
+JE_END

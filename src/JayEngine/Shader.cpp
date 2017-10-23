@@ -3,7 +3,7 @@
 #include <fstream>
 #include "Shader.hpp"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 void Shader::LoadShader(
 	const char* _vertex_file_path, 
@@ -172,4 +172,4 @@ void Shader::SetBool(GLint& _uniform, bool _bool)
 	glUniform1i(_uniform, _bool);
 }
 
-NS_JE_END
+JE_END

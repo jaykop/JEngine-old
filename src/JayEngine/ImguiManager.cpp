@@ -1,10 +1,12 @@
+#include "ImguiManager.h"
+
+#ifdef IMGUI
+
 #include "imgui.h"
 #include "imgui_impl_sdl_gl3.h"
 #include "GL/glew.h"
-#include "SDL2\SDL.h"
-#include "ImguiManager.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 SDL_Window* ImguiManager::m_pWindow = nullptr;
 
@@ -64,5 +66,6 @@ void ImguiManager::Close()
 	ImGui_ImplSdlGL3_Shutdown();
 }
 
-NS_JE_END
+JE_END
 
+#endif 

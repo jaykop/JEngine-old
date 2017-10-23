@@ -4,7 +4,7 @@
 #include "StateManager.h"
 #include "ImguiManager.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 //////////////////////////////////////////////////////////////////////////
 // static variables
@@ -54,7 +54,9 @@ void Application::Update()
 		GLManager::initSDL_GL();						// Init gl
 
 		/**************** imgui **************/
-		//ImguiManager::Init(m_pWindow);				// init imgui
+		#ifdef JE_SUPPORT_IMGUI
+		ImguiManager::Init(m_pWindow);				// init imgui
+		#endif
 
 		//Get window surface
 		m_pSurface = SDL_GetWindowSurface(m_pWindow);
@@ -88,9 +90,11 @@ void Application::Close()
 	StateManager::Close();
 	StateManager::Unload();
 
+	#ifdef JE_SUPPORT_IMGUI
 	// Close imgui manager
-	//ImguiManager::Close();
-
+	ImguiManager::Close();
+	#endif 
+	
 	// Destroy
 	SDL_GL_DeleteContext(m_pContext);
 
@@ -116,4 +120,4 @@ Application::InitData& Application::GetData()
 	return m_pData;
 }
 
-NS_JE_END
+JE_END

@@ -4,7 +4,7 @@
 #include <iostream>
 #include <unordered_map>
 
-NS_JE_BEGIN
+JE_BEGIN
 
 class	Object;
 class	Component;
@@ -68,6 +68,6 @@ private:
 	ObjectContainer*	m_pOBC;
 };
 
-NS_JE_END
+JE_END
 
 #include "Object.inl"

@@ -22,7 +22,7 @@ Custom Matrix looks like this...
 #include "MathUtils.h"
 #include "Matrix4x4.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 /******************************************************************************/
 /*!
@@ -865,4 +865,4 @@ Matrix4x4 Matrix4x4::Rotate(float _degree, const Vector3& _vec)
 	return Result;
 }
 
-NS_JE_END
+JE_END

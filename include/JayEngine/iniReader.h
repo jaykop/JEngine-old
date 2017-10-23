@@ -16,7 +16,7 @@ All content (C) 2016 DigiPen (USA) Corporation, all rights reserved.
 #include "Macro.h"
 //#include "../Math/MathUtils.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 //! iniReader class
 class iniReader
 {
@@ -42,4 +42,4 @@ private:
 
 };
 
-NS_JE_END
+JE_END

@@ -1,7 +1,7 @@
 #pragma once
 #include "System.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 class SoundSystem : public System
 {
@@ -25,4 +25,4 @@ private:
 
 };
 
-NS_JE_END
+JE_END

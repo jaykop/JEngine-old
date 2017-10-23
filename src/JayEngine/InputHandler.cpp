@@ -1,6 +1,6 @@
 #include "InputHandler.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 //////////////////////////////////////////////////////////////////////////
 // static variables
@@ -51,7 +51,7 @@ void InputHandler::MouseDown()
 InputHandler::InputHandler()
 {
 	// Refresh all keys' status
-	for (unsigned i = 0; i < JE_END; ++i) 
+	for (unsigned i = 0; i < JE_KEY_END; ++i)
 		m_triggerList[i] = m_keys[i] = false;
 }
 
@@ -320,4 +320,4 @@ void InputHandler::Update(SDL_Event* _event)
 	}
 }
 
-NS_JE_END
+JE_END

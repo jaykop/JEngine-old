@@ -1,7 +1,7 @@
 #include "Transform.h"
 #include "PhysicsSystem.h"
 
-NS_JE_BEGIN
+JE_BEGIN
 
 PhysicsSystem::PhysicsSystem()
 	:System()
@@ -49,4 +49,4 @@ void PhysicsSystem::UpdateEdges(Transform *_transform)
 
 }
 
-NS_JE_END
+JE_END
