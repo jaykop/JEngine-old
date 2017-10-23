@@ -14,7 +14,7 @@ Shader GLManager::m_shader[];
 GLint GLManager::m_uniform[];
 GLManager::DrawMode GLManager::m_mode = DrawMode::DRAW_FILL;
 
-const float GLManager::s_vertices [] = 
+const float GLManager::m_vertices [] = 
 {
 	// position				// uv		
 	-.5f,	.5f,	0.f,	0.f, 0.f,	// top left	
@@ -23,7 +23,7 @@ const float GLManager::s_vertices [] =
 	-.5f,	-.5f,	0.f,	0.f, 1.f	// bottom left
 };
 
-const int GLManager::s_indices [] = 
+const int GLManager::m_indices [] = 
 {
 	/***************/
 	/*  *   second */
@@ -36,21 +36,63 @@ const int GLManager::s_indices [] =
 	2, 0, 1		// second triangle
 };
 
-const float GLManager::s_vertices3D[] = {
+const float GLManager::m_vertices3D[] = {
 
+	//// position				// uv		// normals
+	//-.5f,	.5f,	-.5f,	0.f, 0.f,	.57f,	.57f,	-.57f,	// back top left	
+	//.5f,	.5f,	-.5f,	1.f, 0.f,	-.57f,	.57f,	-.57f,	// back top right
+	//.5f,	-.5f,	-.5f,	1.f, 1.f,	-.57f,	-.57f,	-.57f,	// back bottom right
+	//-.5f,	-.5f,	-.5f,	0.f, 1.f,	.57f,	-.57f,	-.57f,	// back bottom left
+	//
+	//-.5f,	.5f,	.5f,	0.f, 0.f,	.57f,	.57f,	.57f,	// front top left
+	//.5f,	.5f,	.5f,	1.f, 0.f,	-.57f,	.57f,	.57f,	// front top right
+	//.5f,	-.5f,	.5f,	1.f, 1.f,	-.57f,	-.57f,	.57f,	// front bottom right
+	//-.5f,	-.5f,	.5f,	0.f, 1.f,	.57f,	-.57f, .57f		// front bottom left
+
+	// front
 	// position				// uv		// normals
-	-.5f,	.5f,	-.5f,	0.f, 0.f,	.57f,	.57f,	-.57f,		// back top left	
-	.5f,	.5f,	-.5f,	1.f, 0.f,	-.57f,	.57f,	-.57f,		// back top right
-	.5f,	-.5f,	-.5f,	1.f, 1.f,	-.57f,	-.57f,	-.57f,		// back bottom right
-	-.5f,	-.5f,	-.5f,	0.f, 1.f,	.57f,	-.57f,	-.57f,		// back bottom left
+	-.5f,	.5f,	.5f,	.25f, .25f,	0.0f,  0.0f, 1.0f,		// top left	
+	.5f,	.5f,	.5f,	.5f, .25f,	0.0f,  0.0f, 1.0f,		// top right
+	.5f,	-.5f,	.5f,	.5f, .5f,	0.0f,  0.0f, 1.0f,		// bottom right
+	-.5f,	-.5f,	.5f,	.25f, .5f,	0.0f,  0.0f, 1.0f,		// bottom left
+		
+	// back
+	// position				// uv		// normals
+	.5f,	.5f,	-.5f,	.75f, .25f,	0.0f,  0.0f, -1.0f,		// top left	
+	-.5f,	.5f,	-.5f,	1.f, .25f,	0.0f,  0.0f, -1.0f,		// top right
+	-.5f,	-.5f,	-.5f,	1.f, .5f,	0.0f,  0.0f, -1.0f,		// bottom right
+	.5f,	-.5f,	-.5f,	.75f, .5f,	0.0f,  0.0f, -1.0f,		// bottom left
+	
+	// left
+	// position				// uv		// normals
+	-.5f,	.5f,	-.5f,	0.f, .25f,	-1.0f,  0.0f,  0.0f,	// top left	
+	-.5f,	.5f,	.5f,	.25f, .25f,	-1.0f,  0.0f,  0.0f,	// top right
+	-.5f,	-.5f,	.5f,	.25f, .5f,	-1.0f,  0.0f,  0.0f,	// bottom right
+	-.5f,	-.5f,	-.5f,	0.f, .5f,	-1.0f,  0.0f,  0.0f,	// bottom left
+	
+	// right
+	// position				// uv		// normals
+	.5f,	.5f,	.5f,	.5f, .25f,	1.0f,  0.0f,  0.0f,		// top left	
+	.5f,	.5f,	-.5f,	.75f, .25f,	1.0f,  0.0f,  0.0f,		// top right
+	.5f,	-.5f,	-.5f,	.75f, .5f,	1.0f,  0.0f,  0.0f,		// bottom right
+	.5f,	-.5f,	.5f,	.5f, .5f,	1.0f,  0.0f,  0.0f,		// bottom left
+	
+	// down
+	// position				// uv		// normals
+	-.5f,	-.5f,	.5f,	.25f, .5f,	0.0f, -1.0f,  0.0f,		// top left	
+	.5f,	-.5f,	.5f,	.5f, .5f,	0.0f, -1.0f,  0.0f,		// top right
+	.5f,	-.5f,	-.5f,	.5f, .75f,	0.0f, -1.0f,  0.0f,		// bottom right
+	-.5f,	-.5f,	-.5f,	.25f, .75f,	0.0f, -1.0f,  0.0f,		// bottom left
 
-	-.5f,	.5f,	.5f,	0.f, 0.f,	.57f,	.57f,	.57f,		// front top left
-	.5f,	.5f,	.5f,	1.f, 0.f,	-.57f,	.57f,	.57f,		// front top right
-	.5f,	-.5f,	.5f,	1.f, 1.f,	-.57f,	-.57f,	.57f,		// front bottom right
-	-.5f,	-.5f,	.5f,	0.f, 1.f,	.57f,	-.57f, .57f		// front bottom left
+	// up
+	// position				// uv		// normals
+	-.5f,	.5f,	-.5f,	.25f, 0.f,	0.0f,  1.0f,  0.0f,		// top left	
+	.5f,	.5f,	-.5f,	.5f, 0.f,	0.0f,  1.0f,  0.0f,		// top right
+	.5f,	.5f,	.5f,	.5f, .25f,	0.0f,  1.0f,  0.0f,		// bottom right
+	-.5f,	.5f,	.5f,	.25f, .25f,	0.0f,  1.0f,  0.0f		// bottom left
 };
 
-const int GLManager::s_indices3D [] = {
+const int GLManager::m_indices3D [] = {
 
 //				 4					5
 //				  ****************
@@ -64,29 +106,53 @@ const int GLManager::s_indices3D [] = {
 //		/***************/*
 //		3				2
 
+	//// front
+	//0 ,2, 3,	// first triangle
+	//2, 0, 1,	// second triangle
+
+	//// back
+	//4 ,6, 7,	// first triangle
+	//6, 4, 5,	// second triangle
+
+	//// up
+	//4 ,1, 0,	// first triangle
+	//1, 4, 5,	// second triangle
+
+	//// down
+	//3 ,6, 7,	// first triangle
+	//6, 3, 2,	// second triangle
+
+	//// left
+	//4 ,3, 7,	// first triangle
+	//3, 4, 0,	// second triangle
+
+	//// right
+	//1 ,6, 2,	// first triangle
+	//6, 1, 5	// second triangle
+
 	// front
-	0 ,2, 3,	// first triangle
+	0, 2, 3,	// first triangle
 	2, 0, 1,	// second triangle
 
 	// back
-	4 ,6, 7,	// first triangle
-	6, 4, 5,	// second triangle
-
-	// up
-	4 ,1, 0,	// first triangle
-	1, 4, 5,	// second triangle
-
-	// down
-	3 ,6, 7,	// first triangle
-	6, 3, 2,	// second triangle
+	5, 7, 6,	// first triangle
+	7, 5, 4,	// second triangle
 
 	// left
-	4 ,3, 7,	// first triangle
-	3, 4, 0,	// second triangle
-
+	8, 10, 11,	// first triangle
+	10, 8, 9,	// second triangle
+				
 	// right
-	1 ,6, 2,	// first triangle
-	6, 1, 5		// second triangle
+	12, 14, 15,	// first triangle
+	14, 12, 13,	// second triangle
+
+	// down
+	16, 18, 19,	// first triangle
+	18, 16, 17,	// second triangle
+
+	// up
+	20 ,22, 23,	// first triangle
+	22, 20, 21	// second triangle
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -143,6 +209,10 @@ void GLManager::InitGLEnvironment()
 	glEnable(GL_BLEND); 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+	//TODO
+	glEnable(GL_LESS);
+	glEnable(GL_DEPTH_TEST);
+
 	// Texture attribute setting
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
@@ -180,6 +250,7 @@ void GLManager::RegisterUniform()
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_COLOR], "v4_color");
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_COLOR], "v4_lightColor");
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_POSITION], "v3_lightPosition");
+	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_CAMERA_POSITION], "v3_cameraPosition");
 	
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_FLIP], "boolean_flip");
 
@@ -215,7 +286,7 @@ void GLManager::SetVbo()
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 
 	// Now we can copy vertex data to this vbo
-	glBufferData(GL_ARRAY_BUFFER, sizeof(s_vertices3D), s_vertices3D, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(m_vertices3D), m_vertices3D, GL_STATIC_DRAW);
 }
 
 void GLManager::SetVA()
@@ -229,8 +300,8 @@ void GLManager::SetVA()
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
-	// text coordinate position
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
+	// normals of vertices
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
 	glEnableVertexAttribArray(2);
 
 	// TODO
@@ -242,7 +313,7 @@ void GLManager::SetEbo()
 	// Just like vbo...
 	glGenBuffers(1, &m_ebo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(s_indices3D), s_indices3D, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(m_indices3D), m_indices3D, GL_STATIC_DRAW);
 }
 
 NS_JE_END

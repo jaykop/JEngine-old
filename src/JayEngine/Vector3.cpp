@@ -483,7 +483,7 @@ bool Vector3::IsOne() const
 \return result
 */
 /******************************************************************************/
-Vector3& Vector3::Normalize(void)
+void Vector3::Normalize(void)
 {
 		// If this is not zero,
 		if (!IsZero())
@@ -492,8 +492,6 @@ Vector3& Vector3::Normalize(void)
 		// Unless.
 		else
 			JE_DEBUG_PRINT("Cannot devide by 0.\n");
-
-		return *this;
 }
 
 Vector3 Vector3::GetNormalize() const
@@ -533,7 +531,7 @@ float Vector3::LengthSqrt() const
 \return result
 */
 /******************************************************************************/
-Vector3& Vector3::Absolute()
+void Vector3::Absolute()
 {
 	if (x < 0)
 		x = -x;
@@ -541,8 +539,6 @@ Vector3& Vector3::Absolute()
 		y = -y;
 	if (z < 0)
 		z = -z;
-
-	return *this;
 }
 
 Vector3 Vector3::GetAbsolute() const
@@ -567,23 +563,19 @@ Vector3 Vector3::GetAbsolute() const
 \return point
 */
 /******************************************************************************/
-Vector3 Vector3::Rotation(float angle, const Vector3& pivot)
+void Vector3::Rotation(float angle, const Vector3& pivot)
 {
-	Vector3 point(*this);
-
 	float s = sinf(Math::DegToRad(angle));
 	float c = cosf(Math::DegToRad(angle));
 
-	point.x -= pivot.x;
-	point.y -= pivot.y;
+	x -= pivot.x;
+	y -= pivot.y;
 
-	float new_x = point.x * c - point.y * s;
-	float new_y = point.x * s + point.y * c;
+	float new_x = x * c - y * s;
+	float new_y = x * s + y * c;
 
-	point.x = new_x + pivot.x;
-	point.y = new_y + pivot.y;
-
-	return point;
+	x = new_x + pivot.x;
+	y = new_y + pivot.y;
 }
 
 /******************************************************************************/
@@ -593,14 +585,12 @@ Vector3 Vector3::Rotation(float angle, const Vector3& pivot)
 \return reflected
 */
 /******************************************************************************/
-Vector3 Vector3::Reflection(const Vector3&  _rhs)
+void Vector3::Reflection(const Vector3&  _rhs)
 {
 	Vector3 reflected;
 	Vector3 norm = _rhs.GetNormalize();
 	
-	reflected = (*this) - 2 * ((*this).DotProduct(norm)) * norm;
-
-	return reflected;
+	(*this) = (*this) - 2 * ((*this).DotProduct(norm)) * norm;
 }
 
 /******************************************************************************/
@@ -666,14 +656,14 @@ float Vector3::DistanceToLine(const Vector3 & point, const Vector3 & line_start,
 \return result
 */
 /******************************************************************************/
-Vector3 Vector3::Rotation(float _angle)
+void Vector3::Rotation(float _angle)
 {
-	Vector3 result;
+	Vector3 result(*this);
 
 	result.x = x * cosf(Math::DegToRad(_angle)) - y * sinf(Math::DegToRad(_angle));
 	result.y = x * sinf(Math::DegToRad(_angle)) + y * cosf(Math::DegToRad(_angle));
 
-	return result;
+	*this = result;
 }
 
 /******************************************************************************/

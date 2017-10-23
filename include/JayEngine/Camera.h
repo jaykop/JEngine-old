@@ -13,7 +13,6 @@ class Camera : public Component
 public:
 
 	vec3 m_position, m_up, m_target;
-	float m_rotation;
 
 private:
 

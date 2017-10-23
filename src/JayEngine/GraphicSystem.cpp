@@ -93,7 +93,7 @@ void GraphicSystem::Pipeline(Sprite* _sprite)
 		MappingPipeline(_sprite);
 		AnimationPipeline(_sprite);
 
-		//glDrawArrays(GL_TRIANGLES, 0, 6);
+		//glDrawArrays(GL_TRIANGLES, 0, 36);
 		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	}
@@ -123,7 +123,8 @@ void GraphicSystem::TransformPipeline(Sprite * _sprite)
 	else
 		GLManager::m_shader[GLManager::SHADER_NORMAL].SetMatrix(
 			GLManager::m_uniform[GLManager::UNIFORM_ROTATE],
-			mat4::Rotate(m_pTransformStorage->m_rotation, vec3::UNIT_Y));
+			mat4::Rotate(m_pTransformStorage->m_rotation, 
+				m_pTransformStorage->m_rotation3D));
 
 	// Send camera info to shader
 	m_viewport = mat4::Camera(m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
@@ -212,7 +213,7 @@ void GraphicSystem::TransformPipeline(Sprite * _sprite)
 
 void GraphicSystem::MappingPipeline(Sprite * _sprite)
 {
-	glBindTexture(GL_TEXTURE_2D, _sprite->GetCurrentTexutre()->GetId());
+	glBindTexture(GL_TEXTURE_2D, _sprite->GetCurrentTexutre());
 	
 	// Send color info to shader
 	GLManager::m_shader[GLManager::SHADER_NORMAL].SetVector4(
@@ -229,7 +230,12 @@ void GraphicSystem::MappingPipeline(Sprite * _sprite)
 
 	GLManager::m_shader[GLManager::SHADER_NORMAL].SetVector3(
 		GLManager::m_uniform[GLManager::UNIFORM_LIGHT_POSITION],
-		vec3(5, 5, 5));
+		m_pMainCamera->m_position);
+
+	GLManager::m_shader[GLManager::SHADER_NORMAL].SetVector3(
+		GLManager::m_uniform[GLManager::UNIFORM_CAMERA_POSITION],
+		m_pMainCamera->m_position);
+	
 
 	//// TODO
 	//GLManager::m_shader[GLManager::SHADER_LIGHTING].SetVector4(

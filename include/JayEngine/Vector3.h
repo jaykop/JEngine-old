@@ -63,13 +63,13 @@ public:
 	float		LengthSqrt() const;
 	float		DotProduct(const Vector3& _rhs);
 	Vector3		CrossProduct(const Vector3& _rhs);
-	Vector3&	Normalize();
+	void		Normalize();
 	Vector3		GetNormalize() const;
-	Vector3		Reflection(const Vector3& _rhs);
-	Vector3&	Absolute();
+	void		Reflection(const Vector3& _rhs);
+	void		Absolute();
 	Vector3		GetAbsolute() const;
-	Vector3		Rotation(float _angle, const Vector3& _pivot);
-	Vector3		Rotation(float _angle);
+	void		Rotation(float _angle, const Vector3& _pivot);
+	void		Rotation(float _angle);
 	float		GetAngle(const Vector3& _other);
 
 	// Friend Functions

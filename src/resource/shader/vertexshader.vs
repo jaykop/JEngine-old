@@ -18,17 +18,19 @@ uniform mat4 m4_animation;
 uniform vec4 v4_color;
 uniform vec4 v4_lightColor;
 uniform vec3 v3_lightPosition;
+uniform vec3 v3_cameraPosition;
 
 // uniform boolean
 uniform bool boolean_flip;
 
 // out variables
-out		vec4 v4_outColor;
-out		vec2 v2_outTexCoord;
-out		vec3 v3_outNormal;
-out		vec4 v4_outLightColor;
-out		vec3 v3_outLightPosition;
-out		vec3 v3_outFragmentPosition;
+out	vec4 v4_outColor;
+out	vec2 v2_outTexCoord;
+out	vec3 v3_outNormal;
+out	vec4 v4_outLightColor;
+out	vec3 v3_outLightPosition;
+out	vec3 v3_outFragmentPosition;
+out	vec3 v3_outCameraPosition;
 
 void main(){
 
@@ -36,15 +38,23 @@ void main(){
 	mat4 model =  m4_scale * m4_rotate * m4_translate;
 	mat4 mvp = transpose(m4_projection) * transpose(m4_viewport) * transpose(model);
 	
-	v3_outFragmentPosition = vec3((model) * vec4(position, 1));
+	vec4 newPosition = vec4(position, 1);
+	gl_Position = mvp * newPosition;
 	
+	// Color mapping
 	v4_outColor = v4_color;
+	
+	// Lighing attributes
+	v3_outFragmentPosition = vec3(model * newPosition);
+	
 	v4_outLightColor = v4_lightColor;
 	v3_outLightPosition = v3_lightPosition;
-	v3_outNormal = normal;
+	v3_outNormal = mat3(transpose(inverse(model))) * normal;
 	
-	gl_Position = mvp * vec4(position, 1);
+	v3_outCameraPosition = v3_cameraPosition;
 	
+	
+	// Texture mapping
 	mat4 animation = m4_aniScale * m4_aniTranslate;
 	vec4 newTexCoord = transpose(animation) * vec4(uvPosition, 0, 1);
 	

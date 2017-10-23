@@ -11,6 +11,7 @@
 #include "InputHandler.h"
 #include "ObjectFactory.h"
 #include "Matrix4x4.h"
+#include "Vector3.h"
 #include "GraphicSystem.h"
 
 NS_JE_BEGIN
@@ -37,7 +38,7 @@ void State::Init()
 	/************************* Test Code... **************************/
 	ObjectFactory::CreateObject("camera");
 	ObjectFactory::GetCreatedObject()->AddComponent<Camera>();
-	ObjectFactory::GetCreatedObject()->GetComponent<Camera>()->m_position = vec3(50, 50, 100);
+	ObjectFactory::GetCreatedObject()->GetComponent<Camera>()->m_position = vec3(50, 50, 50);
 	SystemManager::GetGraphicSystem()->SetMainCamera(
 		ObjectFactory::GetCreatedObject()->GetComponent<Camera>());
 	ObjectFactory::AddCreatedObject(m_objContainer);
@@ -51,7 +52,7 @@ void State::Init()
 	m_objContainer->GetObject("test")->GetComponent<Transform>()->m_rotation = 0;
 	m_objContainer->GetObject("test")->GetComponent<Transform>()->m_scale.Set(30.f, 30.f, 30.f);
 	m_objContainer->GetObject("test")->GetComponent<Sprite>()->m_color.Set(1.f, 0.5f, 0.3f, 1.f);
-	m_objContainer->GetObject("test")->GetComponent<Sprite>()->AddTexture("rect");
+	m_objContainer->GetObject("test")->GetComponent<Sprite>()->AddTexture("uvtemplate");
 	m_objContainer->GetObject("test")->GetComponent<Sprite>()->m_projection = Sprite::PERSPECTIVE;
 
 	//ObjectFactory::CreateObject("test1");
@@ -85,10 +86,8 @@ void State::Init()
 void State::Update(float _dt)
 {
 	//JE_DEBUG_PRINT("Updating %s...\n", m_name.c_str());
-	m_objContainer->GetObject("test")->GetComponent<Transform>()->m_rotation += _dt;
 	SystemManager::Update(_dt);
 
-	// TODO
 	/*************************** Temp state test key ******************************/
 	if (InputHandler::KeyTriggered(JE_1))
 		StateManager::SetNextState("testState1");
@@ -108,11 +107,8 @@ void State::Update(float _dt)
 	if (InputHandler::KeyTriggered(JE_6))
 		StateManager::ResumeAndNext("testState3");
 
-	if (InputHandler::KeyTriggered(JE_MOUSE_LEFT)) {
+	if (InputHandler::KeyTriggered(JE_MOUSE_LEFT)) 
 		JE_DEBUG_PRINT("Left Mouse\n");
-		m_objContainer->GetObject("test")->GetComponent<Transform>()->m_position 
-			= InputHandler::m_orthoPosition;
-	}
 
 	if (InputHandler::KeyTriggered(JE_MOUSE_RIGHT))
 		JE_DEBUG_PRINT("Right Mouse\n");

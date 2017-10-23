@@ -17,7 +17,7 @@ class AssetManager {
 	typedef std::vector<unsigned char>					Image;
 	typedef std::unordered_map<std::string, Audio*>		AudioMap;
 	typedef std::unordered_map<std::string, State*>		StateMap;
-	typedef std::unordered_map<std::string, Texture*>	TextureMap;
+	typedef std::unordered_map<std::string, unsigned>	TextureMap;
 	typedef std::unordered_map<std::string, Archetype*>	ArchetypeMap;
 
 public:
@@ -29,7 +29,7 @@ public:
 
 	static State*		GetState(const char* _key);
 	static Audio*		GetAudio(const char* _key);
-	static Texture*		GetTexture(const char* _key);
+	static unsigned		GetTexture(const char* _key);
 	static Archetype*	GetArchetype(const char* _key);
 
 private:

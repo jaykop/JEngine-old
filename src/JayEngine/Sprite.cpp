@@ -8,7 +8,7 @@ NS_JE_BEGIN
 
 Sprite::Sprite(Object* _owner)
 	:Component(_owner), m_color(vec4::ONE),m_projection(PERSPECTIVE), 
-	m_mainTex(nullptr), m_curretFrame(0.f), m_animationSpeed(0.f), 
+	m_mainTex(0), m_curretFrame(0.f), m_animationSpeed(0.f), 
 	m_animationFrames(1), m_animationFixFrame(1), m_realSpeed(0.f), 
 	m_realFrame(1.f), m_activeAnimation(false), m_transform(nullptr),
 	m_flip(false), m_culled(false)
@@ -66,7 +66,7 @@ void Sprite::AddTexture(const char *_key)
 		JE_DEBUG_PRINT("Found exsiting name of texture: %s.\n", _key);
 
 	else {
-		Texture* newTexture = AssetManager::GetTexture(_key);
+		unsigned newTexture = AssetManager::GetTexture(_key);
 
 		if (!m_textureMap.size())
 			m_mainTex = newTexture;
@@ -87,19 +87,19 @@ void Sprite::SetCurrentTexutre(const char *_key)
 	m_mainTex = GetTexutre(_key);
 }
 
-Texture* Sprite::GetCurrentTexutre()
+unsigned Sprite::GetCurrentTexutre()
 {
 	return m_mainTex;
 }
 
-Texture* Sprite::GetTexutre(const char *_key)
+unsigned Sprite::GetTexutre(const char *_key)
 {
 	auto found = m_textureMap.find(_key);
 	if (found != m_textureMap.end())
 		return found->second;
 
 	JE_DEBUG_PRINT("Cannot find such name of texture: %s.\n", _key);
-	return nullptr;
+	return 0;
 }
 
 //Transform * Sprite::GetTransform()

@@ -25,7 +25,9 @@ class GLManager {
 		UNIFORM_ANI_TRANSLATE, UNIFORM_ANI_SCALE,
 
 		// Vector uniform
-		UNIFORM_COLOR, UNIFORM_LIGHT_COLOR, UNIFORM_LIGHT_POSITION,
+		UNIFORM_COLOR,
+		UNIFORM_LIGHT_COLOR, UNIFORM_LIGHT_POSITION,
+		UNIFORM_CAMERA_POSITION,
 
 		// Boolean uniform
 		UNIFORM_FLIP,
@@ -71,11 +73,11 @@ private:
 	static Shader	m_shader[SHADER_END];
 	static GLint	m_uniform[UNIFORM_END];
 
-	static const float	s_vertices[20];
-	static const float	s_vertices3D[64]; 
+	static const float	m_vertices[20];
+	static const float	m_vertices3D[192]; 
 
-	static const int	s_indices[6];
-	static const int	s_indices3D[36];
+	static const int	m_indices[6];
+	static const int	m_indices3D[36];
 };
 
 NS_JE_END

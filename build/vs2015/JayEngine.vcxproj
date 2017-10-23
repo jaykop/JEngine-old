@@ -54,7 +54,12 @@
     <ClCompile Include="..\..\src\JayEngine\State.cpp" />
     <ClCompile Include="..\..\src\JayEngine\StateManager.cpp" />
     <ClCompile Include="..\..\src\JayEngine\SystemManager.cpp" />
-    <ClCompile Include="..\..\src\JayEngine\Texture.cpp" />
+    <ClCompile Include="..\..\src\JayEngine\Texture.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\src\JayEngine\Timer.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Transform.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Vector2.cpp" />
@@ -102,7 +107,12 @@
     <ClInclude Include="..\..\include\JayEngine\StateManager.h" />
     <ClInclude Include="..\..\include\JayEngine\System.h" />
     <ClInclude Include="..\..\include\JayEngine\SystemManager.h" />
-    <ClInclude Include="..\..\include\JayEngine\Texture.h" />
+    <ClInclude Include="..\..\include\JayEngine\Texture.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\..\include\JayEngine\Timer.h" />
     <ClInclude Include="..\..\include\JayEngine\Transform.h" />
     <ClInclude Include="..\..\include\JayEngine\Vector2.h" />

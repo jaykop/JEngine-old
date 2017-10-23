@@ -17,7 +17,8 @@ void AssetManager::Load()
 {
 	LoadImage("../src/resource/texture/rect.png", "rect");
 	LoadImage("../src/resource/texture/circle.png", "circle");
-	LoadImage("../src/resource/texture/images.png", "testTexture");
+	LoadImage("../src/resource/texture/images.png", "testTexture"); 
+	LoadImage("../src/resource/texture/uvtemplate.png", "uvtemplate");
 	LoadImage("../src/resource/texture/testAnimation.png", "testAnimation");
 }
 
@@ -32,12 +33,7 @@ void AssetManager::Unload()
 	//}
 
 	// Clear texture map
-	for (auto texture : m_textureMap) {
-		if (texture.second) {
-			delete texture.second;
-			texture.second = nullptr;
-		}
-	}
+	m_textureMap.clear();
 
 	//// Clear archetype map
 	//for (auto archetype : m_archetypeMap) {
@@ -68,14 +64,14 @@ Audio* AssetManager::GetAudio(const char *_key)
 	return nullptr;
 }
 
-Texture* AssetManager::GetTexture(const char *_key)
+unsigned AssetManager::GetTexture(const char *_key)
 {
 	auto found = m_textureMap.find(_key);
 	if (found != m_textureMap.end())
 		return found->second;
 
 	JE_DEBUG_PRINT("Cannot find such name of texture resource: %s.\n", _key);
-	return nullptr;
+	return 0;
 }
 
 Archetype* AssetManager::GetArchetype(const char *_key)
@@ -102,7 +98,7 @@ void AssetManager::LoadAudio(const char *_path, const char *_audioKey)
 
 void AssetManager::LoadImage(const char *_path, const char *_textureKey)
 {
-	Texture		*newImage = new Texture;
+	unsigned	newImage;
 	Image		image;
 	unsigned	width, height;
 	unsigned	error = lodepng::decode(image, width, height, _path);
@@ -112,8 +108,8 @@ void AssetManager::LoadImage(const char *_path, const char *_textureKey)
 
 	// Enable the texture for OpenGL.
 	glEnable(GL_TEXTURE_2D);
-	glGenTextures(1, &newImage->m_texId);
-	glBindTexture(GL_TEXTURE_2D, newImage->m_texId);
+	glGenTextures(1, &newImage);
+	glBindTexture(GL_TEXTURE_2D, newImage);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0,
 		GL_RGBA, GL_UNSIGNED_BYTE, &image[0]);
 

@@ -12,9 +12,10 @@ class Transform;
 class Sprite : public Component
 {
 	// Keyword Definitions
+	friend class	AssetManager;
 	friend class	GraphicSystem;
 	friend class	ComponentManager;
-	typedef			std::unordered_map<std::string, Texture*>	TextureMap;
+	typedef			std::unordered_map<std::string, unsigned>	TextureMap;
 
 public:
 	
@@ -31,8 +32,8 @@ public:
 	void		AddTexture(const char* _key);
 	void		RemoveTexture(const char* _key);
 	void		SetCurrentTexutre(const char* _key);
-	Texture*	GetCurrentTexutre();
-	Texture*	GetTexutre(const char* _key);
+	unsigned	GetCurrentTexutre();
+	unsigned	GetTexutre(const char* _key);
 	//Transform*	GetTransform();
 
 	bool		m_flip;
@@ -58,7 +59,7 @@ private:
 	float	m_curretFrame;
 	float	m_animationSpeed;
 
-	Texture		*m_mainTex;
+	unsigned	m_mainTex;
 	TextureMap	m_textureMap;
 	Transform	*m_transform;
 
