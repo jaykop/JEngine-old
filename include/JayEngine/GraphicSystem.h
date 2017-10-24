@@ -11,17 +11,12 @@ class Transform;
 class GraphicSystem : public System
 {
 
-#ifdef JE_SUPPORT_3D
 	friend class Light;
-	friend class Model;
-	typedef std::vector<Light*> Lights;
-	typedef std::vector<Model*> Models;
-#endif
-
 	friend class Sprite;
 	friend class Camera;
 	friend class SystemManager;
 
+	typedef std::vector<Light*> Lights;
 	typedef std::vector<Sprite*> Sprites;
 	typedef std::vector<Camera*> Cameras;
 	
@@ -54,6 +49,10 @@ private:
 	void AddCamera(Camera* _camera);
 	void RemoveCamera(Camera* _camera);
 
+	void AddLight(Light* _light);
+	void RemoveLight(Light* _light);
+
+	void Pipeline(Light* _light);
 	void Pipeline(Sprite* _sprite);
 	void TransformPipeline(Sprite* _sprite);
 	void MappingPipeline(Sprite* _sprite);
@@ -62,13 +61,14 @@ private:
 	void GLMousePosition();
 
 	// Member variables
+	Lights		m_lights;
 	Sprites		m_sprites;
 	Cameras		m_cameras;
 	Camera*		m_pMainCamera;
 	Transform*	m_pTransformStorage;
 	
 	int		m_width, m_height;
-	bool	m_orthoFirst, m_inside;
+	bool	m_orthoFirst, m_inside, m_isLight;
 	mat4	m_animation, m_perspective, m_orthogonal, m_viewport;
 	vec4	m_backgroundColor;
 	float	m_fovy, m_aspect, m_zNear, m_zFar;
@@ -84,8 +84,12 @@ private:
 	};
 
 #ifdef JE_SUPPORT_3D
-	Sprites		m_lights;
+	friend class Model;
+	typedef std::vector<Model*> Models;
 	Models		m_models;
+
+	void AddModel(Model* _model);
+	void RemoveModel(Model* _model);
 #endif
 };
 

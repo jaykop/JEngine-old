@@ -7,6 +7,7 @@
 #include "Transform.h"
 #include "Application.h"
 #include "InputHandler.h"
+#include "Light.h"
 
 #ifdef JE_SUPPORT_3D
 #include "Model.h"
@@ -16,7 +17,7 @@ JE_BEGIN
 
 GraphicSystem::GraphicSystem()
 	:System(), m_pTransformStorage(nullptr), m_pMainCamera(nullptr),
-	m_fovy(45.f), m_zNear(.1f), m_zFar(1000.f),
+	m_fovy(45.f), m_zNear(.1f), m_zFar(1000.f), m_isLight(false),
 	m_backgroundColor(vec4::ZERO), m_orthoFirst(false),
 	m_width(Application::GetData().m_width),
 	m_height(Application::GetData().m_height)
@@ -47,7 +48,16 @@ void GraphicSystem::Update(float /*dt*/)
 	// Sort sprites by sprite's z position
 	std::sort(m_sprites.begin(), m_sprites.end(), compareOrder(m_orthoFirst));
 
-	// Update sprites
+	// Update sprites and lights
+	m_isLight = m_lights.empty() ? false : true ;
+
+	GLManager::m_shader[GLManager::SHADER_NORMAL].SetBool(
+		GLManager::m_uniform[GLManager::UNIFORM_IS_LIGHT], m_isLight);
+
+	if (m_isLight) 
+		for (auto light : m_lights)
+			Pipeline(light);
+
 	for (auto sprite : m_sprites)
 		Pipeline(sprite);
 
@@ -81,6 +91,21 @@ void GraphicSystem::RemoveSprite(Sprite* _sprite)
 	}
 }
 
+void GraphicSystem::Pipeline(Light* _light)
+{
+	GLManager::m_shader[GLManager::SHADER_NORMAL].SetVector4(
+		GLManager::m_uniform[GLManager::UNIFORM_LIGHT_COLOR],
+		_light->m_color);
+
+	GLManager::m_shader[GLManager::SHADER_NORMAL].SetVector3(
+		GLManager::m_uniform[GLManager::UNIFORM_LIGHT_POSITION],
+		_light->m_transform->m_position);
+
+	GLManager::m_shader[GLManager::SHADER_NORMAL].SetVector3(
+		GLManager::m_uniform[GLManager::UNIFORM_CAMERA_POSITION],
+		m_pMainCamera->m_position);
+}
+
 void GraphicSystem::Pipeline(Sprite* _sprite)
 {
 	// Use normal shader
@@ -97,8 +122,8 @@ void GraphicSystem::Pipeline(Sprite* _sprite)
 		AnimationPipeline(_sprite);
 
 		//glDrawArrays(GL_TRIANGLES, 0, 36);
-		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		//glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	}
 }
 
@@ -219,17 +244,7 @@ void GraphicSystem::MappingPipeline(Sprite * _sprite)
 		GLManager::m_uniform[GLManager::UNIFORM_FLIP],
 		_sprite->m_flip);
 
-	GLManager::m_shader[GLManager::SHADER_NORMAL].SetVector4(
-		GLManager::m_uniform[GLManager::UNIFORM_LIGHT_COLOR],
-		vec4::ONE);
 
-	GLManager::m_shader[GLManager::SHADER_NORMAL].SetVector3(
-		GLManager::m_uniform[GLManager::UNIFORM_LIGHT_POSITION],
-		m_pMainCamera->m_position);
-
-	GLManager::m_shader[GLManager::SHADER_NORMAL].SetVector3(
-		GLManager::m_uniform[GLManager::UNIFORM_CAMERA_POSITION],
-		/*m_pMainCamera->m_position*/vec3(0,0,5));
 	
 
 	//// TODO
@@ -315,6 +330,22 @@ void GraphicSystem::RemoveCamera(Camera* _camera)
 	}
 }
 
+void GraphicSystem::AddLight(Light * _light)
+{
+	m_lights.push_back(_light);
+}
+
+void GraphicSystem::RemoveLight(Light * _light)
+{
+	for (Lights::iterator it = m_lights.begin();
+		it != m_lights.end(); ++it) {
+		if ((*it)->m_ownerId == _light->m_ownerId) {
+			m_lights.erase(it);
+			break;
+		}
+	}
+}
+
 bool GraphicSystem::compareOrder::operator()(Sprite * _leftSpt, Sprite * _rightSpt)
 {
 	Transform* left = _leftSpt->m_transform;
@@ -361,6 +392,27 @@ void GraphicSystem::GLMousePosition() {
 	InputHandler::m_perspPosition *= new_w2;
 
 }
+
+#ifdef JE_SUPPORT_3D
+
+void GraphicSystem::AddModel(Model * _model)
+{
+	m_models.push_back(_model);
+
+}
+
+void GraphicSystem::RemoveModel(Model * _model)
+{
+	for (Models::iterator it = m_models.begin();
+		it != m_models.end(); ++it) {
+		if ((*it)->m_ownerId == _model->m_ownerId) {
+			m_models.erase(it);
+			break;
+		}
+	}
+}
+
+#endif
 
 JE_END
 

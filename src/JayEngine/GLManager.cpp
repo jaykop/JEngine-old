@@ -260,7 +260,8 @@ void GLManager::RegisterUniform()
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_CAMERA_POSITION], "v3_cameraPosition");
 	
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_FLIP], "boolean_flip");
-
+	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_IS_LIGHT], "boolean_light");
+	
 	//m_shader[SHADER_LIGHTING].ConnectUniform(m_uniform[UNIFORM_TRANSLATE_LIGHT], "m4_translate");
 	//m_shader[SHADER_LIGHTING].ConnectUniform(m_uniform[UNIFORM_SCALE_LIGHT], "m4_scale");
 	//m_shader[SHADER_LIGHTING].ConnectUniform(m_uniform[UNIFORM_ROTATE_LIGHT], "m4_rotate");

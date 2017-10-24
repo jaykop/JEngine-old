@@ -30,7 +30,7 @@ class GLManager {
 		UNIFORM_CAMERA_POSITION,
 
 		// Boolean uniform
-		UNIFORM_FLIP,
+		UNIFORM_FLIP, UNIFORM_IS_LIGHT,
 
 		// Lighting shader
 		// Martix uniform
@@ -62,10 +62,10 @@ private:
 	static void SetVA();
 	static void SetEbo();
 
-	static bool		initSDL_GL();
-	static void		CloseSDL_GL();
-	static void		RegisterUniform();
-	static void		InitGLEnvironment();
+	static bool	initSDL_GL();
+	static void	CloseSDL_GL();
+	static void	RegisterUniform();
+	static void	InitGLEnvironment();
 
 	// Private member variables
 	static DrawMode m_mode;

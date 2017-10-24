@@ -22,6 +22,7 @@ uniform vec3 v3_cameraPosition;
 
 // uniform boolean
 uniform bool boolean_flip;
+uniform bool boolean_light;
 
 // out variables
 out	vec4 v4_outColor;
@@ -31,6 +32,7 @@ out	vec4 v4_outLightColor;
 out	vec3 v3_outLightPosition;
 out	vec3 v3_outFragmentPosition;
 out	vec3 v3_outCameraPosition;
+//out bool boolean_outLight;
 
 void main(){
 
@@ -44,15 +46,17 @@ void main(){
 	// Color mapping
 	v4_outColor = v4_color;
 	
-	// Lighing attributes
-	v3_outFragmentPosition = vec3(model * newPosition);
+	//boolean_outLight = boolean_light;
+	if (boolean_light) {
+		// Lighing attributes
+		v3_outFragmentPosition = vec3(model * newPosition);
 	
-	v4_outLightColor = v4_lightColor;
-	v3_outLightPosition = v3_lightPosition;
-	v3_outNormal = mat3(transpose(inverse(model))) * normal;
+		v4_outLightColor = v4_lightColor;
+		v3_outLightPosition = v3_lightPosition;
+		v3_outNormal = mat3(transpose(inverse(model))) * normal;
 	
-	v3_outCameraPosition = v3_cameraPosition;
-	
+		v3_outCameraPosition = v3_cameraPosition;
+	}
 	
 	// Texture mapping
 	mat4 animation = m4_aniScale * m4_aniTranslate;

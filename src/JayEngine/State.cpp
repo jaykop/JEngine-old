@@ -13,6 +13,7 @@
 #include "Matrix4x4.h"
 #include "Vector3.h"
 #include "GraphicSystem.h"
+#include "Light.h"
 
 JE_BEGIN
 
@@ -43,6 +44,12 @@ void State::Init()
 		ObjectFactory::GetCreatedObject()->GetComponent<Camera>());
 	ObjectFactory::AddCreatedObject(m_objContainer);
 
+	ObjectFactory::CreateObject("light");
+	ObjectFactory::GetCreatedObject()->AddComponent<Transform>();
+	ObjectFactory::GetCreatedObject()->AddComponent<Light>();
+	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_position.Set(0, 0, 5);
+	ObjectFactory::AddCreatedObject(m_objContainer);
+
 #ifdef JE_SUPPORT_3D
 	ObjectFactory::CreateObject("test");
 	ObjectFactory::GetCreatedObject()->AddComponent<Transform>();
@@ -63,8 +70,7 @@ void State::Init()
 	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_rotation = 0;
 	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_scale.Set(30.f, 30.f, 0.f);
 	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->m_color.Set(1.f, 1.f, 0.f, 1.f);
-	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->AddTexture("testTexture");/*
-	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->m_projection = Sprite::PERSPECTIVE;*/
+	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->AddTexture("testTexture");
 	ObjectFactory::AddCreatedObject(m_objContainer);
 
 	ObjectFactory::CreateObject("test2");
