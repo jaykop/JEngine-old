@@ -32,13 +32,8 @@ class GLManager {
 		// Boolean uniform
 		UNIFORM_FLIP, UNIFORM_IS_LIGHT,
 
-		// Lighting shader
-		// Martix uniform
-		UNIFORM_TRANSLATE_LIGHT, UNIFORM_SCALE_LIGHT, UNIFORM_ROTATE_LIGHT,
-		UNIFORM_CAMERA_LIGHT, UNIFORM_PROJECTION_LIGHT,
-
-		// Vector uniform	// TODO : Delete this
-		UNIFORM_COLOR_LIGHT, UNIFORM_COLOR_OBJECT,
+		// Float uniform
+		UNIFORM_LIGHT_AMBIENT, UNIFORM_LIGHT_SPECULAR,
 
 		// Last enum
 		UNIFORM_END

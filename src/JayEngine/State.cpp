@@ -39,7 +39,7 @@ void State::Init()
 	/************************* Test Code... **************************/
 	ObjectFactory::CreateObject("camera");
 	ObjectFactory::GetCreatedObject()->AddComponent<Camera>();
-	ObjectFactory::GetCreatedObject()->GetComponent<Camera>()->m_position = vec3(0, 0, 50);
+	ObjectFactory::GetCreatedObject()->GetComponent<Camera>()->m_position.Set(0, 0, 50);
 	SystemManager::GetGraphicSystem()->SetMainCamera(
 		ObjectFactory::GetCreatedObject()->GetComponent<Camera>());
 	ObjectFactory::AddCreatedObject(m_objContainer);
@@ -47,7 +47,10 @@ void State::Init()
 	ObjectFactory::CreateObject("light");
 	ObjectFactory::GetCreatedObject()->AddComponent<Transform>();
 	ObjectFactory::GetCreatedObject()->AddComponent<Light>();
-	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_position.Set(0, 0, 5);
+	ObjectFactory::GetCreatedObject()->GetComponent<Light>()->m_ambientStrength = .5f;
+	ObjectFactory::GetCreatedObject()->GetComponent<Light>()->m_specularStrength = .5f;
+	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_position.Set(0, 0, 18);
+	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_scale.Set(30, 30, 0.f);
 	ObjectFactory::AddCreatedObject(m_objContainer);
 
 #ifdef JE_SUPPORT_3D
@@ -66,25 +69,25 @@ void State::Init()
 	ObjectFactory::CreateObject("test1");
 	ObjectFactory::GetCreatedObject()->AddComponent<Transform>();
 	ObjectFactory::GetCreatedObject()->AddComponent<Sprite>();
-	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_position.Set(10, 10, 2);
+	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_position.Set(0, 0, 2);
 	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_rotation = 0;
-	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_scale.Set(30.f, 30.f, 0.f);
+	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_scale.Set(30.f, 30.f, 1.f);
 	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->m_color.Set(1.f, 1.f, 0.f, 1.f);
 	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->AddTexture("testTexture");
 	ObjectFactory::AddCreatedObject(m_objContainer);
 
-	ObjectFactory::CreateObject("test2");
-	ObjectFactory::GetCreatedObject()->AddComponent<Transform>();
-	ObjectFactory::GetCreatedObject()->AddComponent<Sprite>();
-	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_position.Set(-10, -10, 0);
-	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_rotation = 0;
-	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_scale.Set(30.f, 30.f, 0.f);
-	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->m_color.Set(1.f, 1.f, 1.f, 1.f);
-	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->AddTexture("testAnimation");
-	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->ActiveAnimation(true);
-	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->SetAnimationFrame(8);
-	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->SetAnimationSpeed(10.f);
-	ObjectFactory::AddCreatedObject(m_objContainer);
+	//ObjectFactory::CreateObject("test2");
+	//ObjectFactory::GetCreatedObject()->AddComponent<Transform>();
+	//ObjectFactory::GetCreatedObject()->AddComponent<Sprite>();
+	//ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_position.Set(-10, -10, 0);
+	//ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_rotation = 0;
+	//ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_scale.Set(30.f, 30.f, 0.f);
+	//ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->m_color.Set(1.f, 1.f, 1.f, 1.f);
+	//ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->AddTexture("testAnimation");
+	//ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->ActiveAnimation(true);
+	//ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->SetAnimationFrame(8);
+	//ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->SetAnimationSpeed(10.f);
+	//ObjectFactory::AddCreatedObject(m_objContainer);
 #endif
 
 	SystemManager::GetGraphicSystem()->SetBackgroundColor(.3f, .3f, .3f, .3f);
@@ -94,23 +97,26 @@ void State::Update(float _dt)
 {
 	//JE_DEBUG_PRINT("Updating %s...\n", m_name.c_str());
 	
-	Object* obj = m_objContainer->GetObject("camera");
-	Camera* camera = obj->GetComponent<Camera>();
+	//Object* obj = m_objContainer->GetObject("camera");
+	//Camera* camera = SystemManager::GetGraphicSystem()->GetMainCamera();
+	Transform* light = m_objContainer->GetObject("light")->GetComponent<Transform>();
 
 	SystemManager::Update(_dt);
-	static float move= 10.f*_dt;
+	float move = _dt * 0.1f;
 
-	if (InputHandler::KeyTriggered(JE_W))
-	camera->m_position.y += move;
+	if (InputHandler::KeyPressed(JE_W))
+		light->m_position.z += move;
 
-	if (InputHandler::KeyTriggered(JE_D))
-		camera->m_position.y -= move;
+	if (InputHandler::KeyPressed(JE_S))
+		light->m_position.z -= move;
 	
-	if (InputHandler::KeyTriggered(JE_D))
-		camera->m_position.x += move;
+	if (InputHandler::KeyPressed(JE_D))
+		light->m_position.x += move;
 	
-	if (InputHandler::KeyTriggered(JE_A))
-		camera->m_position.x -= move;
+	if (InputHandler::KeyPressed(JE_A))
+		light->m_position.x -= move;
+
+	std::cout << light->m_position << std::endl;
 
 	/*************************** Temp state test key ******************************/
 	if (InputHandler::KeyTriggered(JE_1))

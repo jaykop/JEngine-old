@@ -14,8 +14,10 @@ in	vec3 v3_outCameraPosition;
 // out variables
 out	vec4 v4_fragColor;
 
-uniform sampler2D myTexture;
-uniform bool boolean_light;
+uniform bool 		boolean_light;
+uniform float		float_ambient;
+uniform float		float_specular;
+uniform sampler2D 	myTexture;
 
 void main() {
 
@@ -26,8 +28,8 @@ void main() {
 	
 	if (boolean_light) {
 		// Ambient light
-		float ambientStrength = 0.1;
-		vec4 ambient = v4_outLightColor * ambientStrength;
+		//float ambientStrength = 0.1;
+		vec4 ambient = v4_outLightColor * float_ambient;
 	
 		// Diffuse light
 		vec3 norm = normalize(v3_outNormal);
@@ -36,11 +38,11 @@ void main() {
 		vec4 diffuse = diff * v4_outLightColor;
 	
 		// Specular light
-		float specularStrength = 0.5;
+		//float specularStrength = 1.0;
 		vec3 viewDirection = normalize(v3_outCameraPosition - v3_outFragmentPosition);
 		vec3 reflectedDirection = reflect(-lightDirection, norm);
-		float spec = pow(max(dot(viewDirection, reflectedDirection), 0.0), 32);
-		vec4 specular = spec * specularStrength * v4_outLightColor;
+		float spec = pow(max(dot(viewDirection, reflectedDirection), 0.0), 256);
+		vec4 specular = spec * v4_outLightColor * float_specular;
 	
 		// Final light
 		light = ambient + diffuse + specular;

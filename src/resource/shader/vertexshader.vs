@@ -32,7 +32,6 @@ out	vec4 v4_outLightColor;
 out	vec3 v3_outLightPosition;
 out	vec3 v3_outFragmentPosition;
 out	vec3 v3_outCameraPosition;
-//out bool boolean_outLight;
 
 void main(){
 
@@ -46,7 +45,6 @@ void main(){
 	// Color mapping
 	v4_outColor = v4_color;
 	
-	//boolean_outLight = boolean_light;
 	if (boolean_light) {
 		// Lighing attributes
 		v3_outFragmentPosition = vec3(model * newPosition);

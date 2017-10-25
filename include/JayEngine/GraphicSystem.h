@@ -4,6 +4,10 @@
 #include "Vector4.h"
 #include "Matrix4x4.h"
 
+#ifndef JE_SUPPORT_3D
+#include "Vector3.h"
+#endif
+
 JE_BEGIN
 
 class Transform;
@@ -90,6 +94,8 @@ private:
 
 	void AddModel(Model* _model);
 	void RemoveModel(Model* _model);
+#else
+	vec3 m_target2D;
 #endif
 };
 

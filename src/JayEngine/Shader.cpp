@@ -147,6 +147,11 @@ void Shader::Use()
 	glUseProgram(m_programId);
 }
 
+void Shader::SetFloat(GLint & _uniform, float _float)
+{
+	glUniform1f(_uniform, _float);
+}
+
 void Shader::ConnectUniform(GLint& _uniform, const char * _name)
 {
 	_uniform = glGetUniformLocation(m_programId, _name);

@@ -186,10 +186,6 @@ bool GLManager::initSDL_GL()
 			"../src/resource/shader/vertexshader.vs",
 			"../src/resource/shader/fragmentshader.fs");
 
-		//m_shader[SHADER_LIGHTING].LoadShader(
-		//	"../src/resource/shader/lighting.vs",
-		//	"../src/resource/shader/lighting.fs");
-
 		RegisterUniform();
 	}
 
@@ -261,14 +257,9 @@ void GLManager::RegisterUniform()
 	
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_FLIP], "boolean_flip");
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_IS_LIGHT], "boolean_light");
-	
-	//m_shader[SHADER_LIGHTING].ConnectUniform(m_uniform[UNIFORM_TRANSLATE_LIGHT], "m4_translate");
-	//m_shader[SHADER_LIGHTING].ConnectUniform(m_uniform[UNIFORM_SCALE_LIGHT], "m4_scale");
-	//m_shader[SHADER_LIGHTING].ConnectUniform(m_uniform[UNIFORM_ROTATE_LIGHT], "m4_rotate");
-	//m_shader[SHADER_LIGHTING].ConnectUniform(m_uniform[UNIFORM_CAMERA_LIGHT], "m4_viewport");
-	//m_shader[SHADER_LIGHTING].ConnectUniform(m_uniform[UNIFORM_PROJECTION_LIGHT], "m4_projection");
-	//m_shader[SHADER_LIGHTING].ConnectUniform(m_uniform[UNIFORM_COLOR_LIGHT], "v4_lightColor");
-	//m_shader[SHADER_LIGHTING].ConnectUniform(m_uniform[UNIFORM_COLOR_OBJECT], "v4_objectColor");
+
+	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_AMBIENT], "float_ambient");
+	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_SPECULAR], "float_specular ");
 
 }
 

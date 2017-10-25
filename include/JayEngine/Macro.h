@@ -27,7 +27,7 @@ Contains Engine's generic macros
 #endif //__cplusplus
 
 // Debug printing
-#define JE_DO_PRINT
+//#define JE_DO_PRINT
 #if defined(_DEBUG) && defined(JE_DO_PRINT)
 #include <cstdio>
 #define JE_DEBUG_PRINT(...) printf(__VA_ARGS__)
@@ -36,7 +36,7 @@ Contains Engine's generic macros
 #endif // defined(_DEBUG) && defined(JE_DO_PRINT)
 
 // Activate 3d features
-// #define JE_SUPPORT_3D
+//#define JE_SUPPORT_3D
 
 // Activate imgui features
 // #define JE_SUPPORT_IMGUI

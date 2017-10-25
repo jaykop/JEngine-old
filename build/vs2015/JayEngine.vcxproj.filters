@@ -305,9 +305,6 @@
     <Filter Include="Utils\imgui">
       <UniqueIdentifier>{d3baf318-43c8-4edd-9dd9-7a0a4905cea1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Platform">
-      <UniqueIdentifier>{488e267d-18b4-431f-a9bf-4f8439a29a29}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\AssetManager">
       <UniqueIdentifier>{0a986e7c-bd4e-42f0-8103-e990ccdb45db}</UniqueIdentifier>
     </Filter>
@@ -316,6 +313,9 @@
     </Filter>
     <Filter Include="Utils\ini">
       <UniqueIdentifier>{a5d74d3c-d5ed-413e-8fdd-17b7d356c29e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Platform">
+      <UniqueIdentifier>{488e267d-18b4-431f-a9bf-4f8439a29a29}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -18,6 +18,7 @@ private:
 		const char* _fragment_file_path);
 	
 	void Use();
+	void SetFloat(GLint& _uniform, float _float);
 	void ConnectUniform(GLint& _uniform, const char* _name);
 	void SetMatrix(GLint& _uniform, const mat4& _matrix);
 	void SetVector4(GLint& _uniform, const vec4& _vector);
