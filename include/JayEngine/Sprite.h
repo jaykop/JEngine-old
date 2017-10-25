@@ -7,11 +7,12 @@
 JE_BEGIN
 
 class Object;
-class Texture;
+class Material; 
 class Transform;
 class Sprite : public Component
 {
 	// Keyword Definitions
+	friend class	Material;
 	friend class	AssetManager;
 	friend class	GraphicSystem;
 	friend class	ComponentManager;
@@ -53,7 +54,7 @@ private:
 	Timer	m_timer;
 	int		m_animationFrames;
 	int		m_animationFixFrame;
-	bool	m_activeAnimation;
+	bool	m_activeAnimation, m_hasMaterial;
 	float	m_realSpeed;
 	float	m_realFrame;
 	float	m_curretFrame;
@@ -62,6 +63,7 @@ private:
 	unsigned	m_mainTex;
 	TextureMap	m_textureMap;
 	Transform	*m_transform;
+	Material	*m_material;
 
 };
 

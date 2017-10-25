@@ -17,25 +17,45 @@ class GLManager {
 	enum ShaderType {SHADER_NORMAL, SHADER_LIGHTING, SHADER_END};
 	enum UniformType {
 
-		// Normal shader
+		/******************** Normal shader ********************/
+		//////////////////////
 		// Martix uniform
+		//////////////////////
 		UNIFORM_TRANSLATE, UNIFORM_SCALE, UNIFORM_ROTATE,
 		UNIFORM_CAMERA, UNIFORM_PROJECTION,
-
 		UNIFORM_ANI_TRANSLATE, UNIFORM_ANI_SCALE,
 
+		//////////////////////
 		// Vector uniform
+		//////////////////////
 		UNIFORM_COLOR,
-		UNIFORM_LIGHT_COLOR, UNIFORM_LIGHT_POSITION,
+
+		// Ligthing attributes
+		UNIFORM_LIGHT_POSITION,
+		UNIFORM_LIGHT_COLOR, UNIFORM_LIGHT_AMBIENT,
+		UNIFORM_LIGHT_DIFFUSE, UNIFORM_LIGHT_SPECULAR,
+
+		// Material attributes
+		UNIFORM_MATERIAL_AMBIENT, UNIFORM_MATERIAL_DIFFUSE,
+		UNIFORM_MATERIAL_SPECULAR,
+
+		// Others...
 		UNIFORM_CAMERA_POSITION,
 
+		//////////////////////
 		// Boolean uniform
-		UNIFORM_FLIP, UNIFORM_IS_LIGHT,
+		//////////////////////
+		UNIFORM_FLIP,		// animation attributes
+		UNIFORM_IS_LIGHT,	// light attributes
 
+		//////////////////////
 		// Float uniform
-		UNIFORM_LIGHT_AMBIENT, UNIFORM_LIGHT_SPECULAR,
+		//////////////////////
+		UNIFORM_MATERIAL_SHININESS,	// material attributes
 
+		//////////////////////
 		// Last enum
+		//////////////////////
 		UNIFORM_END
 	};
 

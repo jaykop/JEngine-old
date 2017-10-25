@@ -183,8 +183,12 @@ bool GLManager::initSDL_GL()
 
 		// Do shader stuff
 		m_shader[SHADER_NORMAL].LoadShader(
-			"../src/resource/shader/vertexshader.vs",
-			"../src/resource/shader/fragmentshader.fs");
+			"../src/resource/shader/normal.vs",
+			"../src/resource/shader/normal.fs");
+
+		//m_shader[SHADER_LIGHTING].LoadShader(
+		//	"../src/resource/shader/lighting.vs",
+		//	"../src/resource/shader/lighting.fs");
 
 		RegisterUniform();
 	}
@@ -252,15 +256,20 @@ void GLManager::RegisterUniform()
 
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_COLOR], "v4_color");
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_COLOR], "v4_lightColor");
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_POSITION], "v3_lightPosition");
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_CAMERA_POSITION], "v3_cameraPosition");
 	
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_FLIP], "boolean_flip");
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_IS_LIGHT], "boolean_light");
 
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_AMBIENT], "float_ambient");
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_SPECULAR], "float_specular ");
+	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_MATERIAL_AMBIENT], "material.m_ambient");
+	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_MATERIAL_DIFFUSE], "material.m_diffuse");
+	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_MATERIAL_SPECULAR], "material.m_specular");
+	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_MATERIAL_SHININESS], "material.m_shininess");
 
+	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_AMBIENT], "light.m_ambient");
+	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_DIFFUSE], "light.m_diffuse");
+	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_SPECULAR], "light.m_specular");
+	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_POSITION], "light.m_position");
 }
 
 void GLManager::SetVao()

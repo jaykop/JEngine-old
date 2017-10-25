@@ -8,6 +8,7 @@
 #include "Application.h"
 #include "InputHandler.h"
 #include "Light.h"
+#include "Material.h"
 
 #ifdef JE_SUPPORT_3D
 #include "Model.h"
@@ -97,13 +98,19 @@ void GraphicSystem::RemoveSprite(Sprite* _sprite)
 
 void GraphicSystem::Pipeline(Light* _light)
 {
-	GLManager::m_shader[GLManager::SHADER_NORMAL].SetFloat(
-		GLManager::m_uniform[GLManager::UNIFORM_LIGHT_AMBIENT],
-		_light->m_ambientStrength);
+	//GLManager::m_shader[GLManager::SHADER_LIGHTING].Use();
 
-	GLManager::m_shader[GLManager::SHADER_NORMAL].SetFloat(
+	GLManager::m_shader[GLManager::SHADER_NORMAL].SetVector4(
+		GLManager::m_uniform[GLManager::UNIFORM_LIGHT_AMBIENT],
+		_light->m_ambient);
+
+	GLManager::m_shader[GLManager::SHADER_NORMAL].SetVector4(
 		GLManager::m_uniform[GLManager::UNIFORM_LIGHT_SPECULAR],
-		_light->m_specularStrength);
+		_light->m_specular);
+
+	GLManager::m_shader[GLManager::SHADER_NORMAL].SetVector4(
+		GLManager::m_uniform[GLManager::UNIFORM_LIGHT_DIFFUSE],
+		_light->m_diffuse);
 
 	GLManager::m_shader[GLManager::SHADER_NORMAL].SetVector4(
 		GLManager::m_uniform[GLManager::UNIFORM_LIGHT_COLOR],
@@ -111,7 +118,7 @@ void GraphicSystem::Pipeline(Light* _light)
 
 	GLManager::m_shader[GLManager::SHADER_NORMAL].SetVector3(
 		GLManager::m_uniform[GLManager::UNIFORM_LIGHT_POSITION],
-		_light->m_transform->m_position);
+		_light->m_position);
 
 	GLManager::m_shader[GLManager::SHADER_NORMAL].SetVector3(
 		GLManager::m_uniform[GLManager::UNIFORM_CAMERA_POSITION],
@@ -213,6 +220,26 @@ void GraphicSystem::MappingPipeline(Sprite * _sprite)
 	GLManager::m_shader[GLManager::SHADER_NORMAL].SetBool(
 		GLManager::m_uniform[GLManager::UNIFORM_FLIP],
 		_sprite->m_flip);
+
+	// Send material info to shader
+	if (_sprite->m_hasMaterial) {
+		Material* material = _sprite->m_material;
+		GLManager::m_shader[GLManager::SHADER_NORMAL].SetVector4(
+			GLManager::m_uniform[GLManager::UNIFORM_MATERIAL_AMBIENT],
+			material->m_ambient);
+
+		GLManager::m_shader[GLManager::SHADER_NORMAL].SetVector4(
+			GLManager::m_uniform[GLManager::UNIFORM_MATERIAL_SPECULAR],
+			material->m_specular);
+
+		GLManager::m_shader[GLManager::SHADER_NORMAL].SetVector4(
+			GLManager::m_uniform[GLManager::UNIFORM_MATERIAL_DIFFUSE],
+			material->m_diffuse);
+
+		GLManager::m_shader[GLManager::SHADER_NORMAL].SetFloat(
+			GLManager::m_uniform[GLManager::UNIFORM_MATERIAL_SHININESS],
+			material->m_shininess);
+	}
 }
 
 void GraphicSystem::AnimationPipeline(Sprite * _sprite)

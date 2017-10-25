@@ -11,7 +11,7 @@ Sprite::Sprite(Object* _owner)
 	m_mainTex(0), m_curretFrame(0.f), m_animationSpeed(0.f), 
 	m_animationFrames(1), m_animationFixFrame(1), m_realSpeed(0.f), 
 	m_realFrame(1.f), m_activeAnimation(false), m_transform(nullptr),
-	m_flip(false), m_culled(false)
+	m_flip(false), m_culled(false), m_material(nullptr), m_hasMaterial(false)
 {
 	SystemManager::GetGraphicSystem()->AddSprite(this);
 	if (m_pOwner->GetComponent<Transform>())

@@ -1,11 +1,11 @@
 #pragma once
 #include "Macro.h"
 #include "Component.h"
+#include "Vector3.h"
 #include "Vector4.h"
 
 JE_BEGIN
 
-class Transform;
 class Light : public Component
 {
 
@@ -14,10 +14,8 @@ class Light : public Component
 
 public:
 
-	float		m_ambientStrength;
-	float		m_specularStrength;
-	vec4		m_color;
-	Transform*	m_transform;
+	vec3		m_position;
+	vec4		m_ambient, m_specular, m_diffuse, m_color;
 
 private:
 

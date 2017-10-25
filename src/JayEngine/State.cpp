@@ -14,6 +14,7 @@
 #include "Vector3.h"
 #include "GraphicSystem.h"
 #include "Light.h"
+#include "Material.h"
 
 JE_BEGIN
 
@@ -45,12 +46,10 @@ void State::Init()
 	ObjectFactory::AddCreatedObject(m_objContainer);
 
 	ObjectFactory::CreateObject("light");
-	ObjectFactory::GetCreatedObject()->AddComponent<Transform>();
 	ObjectFactory::GetCreatedObject()->AddComponent<Light>();
-	ObjectFactory::GetCreatedObject()->GetComponent<Light>()->m_ambientStrength = .5f;
-	ObjectFactory::GetCreatedObject()->GetComponent<Light>()->m_specularStrength = .5f;
-	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_position.Set(0, 0, 18);
-	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_scale.Set(30, 30, 0.f);
+	ObjectFactory::GetCreatedObject()->GetComponent<Light>()->m_ambient.Set(.1f, .1f, .1f, 1.f);
+	ObjectFactory::GetCreatedObject()->GetComponent<Light>()->m_specular.Set(.5f, .5f, .5f, 1.f);
+	ObjectFactory::GetCreatedObject()->GetComponent<Light>()->m_position.Set(0, 0, 1);
 	ObjectFactory::AddCreatedObject(m_objContainer);
 
 #ifdef JE_SUPPORT_3D
@@ -69,6 +68,9 @@ void State::Init()
 	ObjectFactory::CreateObject("test1");
 	ObjectFactory::GetCreatedObject()->AddComponent<Transform>();
 	ObjectFactory::GetCreatedObject()->AddComponent<Sprite>();
+	ObjectFactory::GetCreatedObject()->AddComponent<Material>();
+	ObjectFactory::GetCreatedObject()->GetComponent<Material>()->m_ambient.Set(.1f, .1f, .1f, 1.f);
+	ObjectFactory::GetCreatedObject()->GetComponent<Material>()->m_specular.Set(.5f, .5f, .5f, 1.f);
 	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_position.Set(0, 0, 2);
 	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_rotation = 0;
 	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_scale.Set(30.f, 30.f, 1.f);
@@ -97,9 +99,7 @@ void State::Update(float _dt)
 {
 	//JE_DEBUG_PRINT("Updating %s...\n", m_name.c_str());
 	
-	//Object* obj = m_objContainer->GetObject("camera");
-	//Camera* camera = SystemManager::GetGraphicSystem()->GetMainCamera();
-	Transform* light = m_objContainer->GetObject("light")->GetComponent<Transform>();
+	Light* light = m_objContainer->GetObject("light")->GetComponent<Light>();
 
 	SystemManager::Update(_dt);
 	float move = _dt * 0.1f;
@@ -116,7 +116,7 @@ void State::Update(float _dt)
 	if (InputHandler::KeyPressed(JE_A))
 		light->m_position.x -= move;
 
-	std::cout << light->m_position << std::endl;
+	//std::cout << light->m_position << std::endl;
 
 	/*************************** Temp state test key ******************************/
 	if (InputHandler::KeyTriggered(JE_1))

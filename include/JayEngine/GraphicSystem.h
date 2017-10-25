@@ -23,7 +23,7 @@ class GraphicSystem : public System
 	typedef std::vector<Light*> Lights;
 	typedef std::vector<Sprite*> Sprites;
 	typedef std::vector<Camera*> Cameras;
-	
+
 public:
 
 	void	SetMainCamera(Camera* _camera);

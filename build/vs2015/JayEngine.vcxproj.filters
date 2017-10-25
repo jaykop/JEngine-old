@@ -118,6 +118,9 @@
     <ClCompile Include="..\..\src\JayEngine\Mesh.cpp">
       <Filter>System\Graphic</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\Material.cpp">
+      <Filter>System\Graphic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\JayEngine\Application.h">
@@ -253,6 +256,9 @@
       <Filter>System\Graphic</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\JayEngine\Mesh.h">
+      <Filter>System\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\Material.h">
       <Filter>System\Graphic</Filter>
     </ClInclude>
   </ItemGroup>
