@@ -186,9 +186,9 @@ bool GLManager::initSDL_GL()
 			"../src/resource/shader/normal.vs",
 			"../src/resource/shader/normal.fs");
 
-		//m_shader[SHADER_LIGHTING].LoadShader(
-		//	"../src/resource/shader/lighting.vs",
-		//	"../src/resource/shader/lighting.fs");
+		m_shader[SHADER_LIGHTING].LoadShader(
+			"../src/resource/shader/lighting.vs",
+			"../src/resource/shader/lighting.fs");
 
 		RegisterUniform();
 	}
@@ -215,9 +215,10 @@ void GLManager::InitGLEnvironment()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 #ifdef JE_SUPPORT_3D
-	//TODO
+
 	glEnable(GL_LESS);
 	glEnable(GL_DEPTH_TEST);
+
 #endif
 
 	// Texture attribute setting

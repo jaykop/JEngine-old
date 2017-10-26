@@ -40,7 +40,11 @@ void State::Init()
 	/************************* Test Code... **************************/
 	ObjectFactory::CreateObject("camera");
 	ObjectFactory::GetCreatedObject()->AddComponent<Camera>();
+#ifdef JE_SUPPORT_3D
+	ObjectFactory::GetCreatedObject()->GetComponent<Camera>()->m_position.Set(50, 50, 50);
+#else
 	ObjectFactory::GetCreatedObject()->GetComponent<Camera>()->m_position.Set(0, 0, 50);
+#endif
 	SystemManager::GetGraphicSystem()->SetMainCamera(
 		ObjectFactory::GetCreatedObject()->GetComponent<Camera>());
 	ObjectFactory::AddCreatedObject(m_objContainer);
@@ -52,19 +56,6 @@ void State::Init()
 	ObjectFactory::GetCreatedObject()->GetComponent<Light>()->m_position.Set(0, 0, 1);
 	ObjectFactory::AddCreatedObject(m_objContainer);
 
-#ifdef JE_SUPPORT_3D
-	ObjectFactory::CreateObject("test");
-	ObjectFactory::GetCreatedObject()->AddComponent<Transform>();
-	ObjectFactory::GetCreatedObject()->AddComponent<Sprite>();
-	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_position.Set(0, 0, 0);
-	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_rotation = 0;
-	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_scale.Set(30.f, 30.f, 30.f);
-	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->m_color.Set(1.f, 0.5f, 0.3f, 1.f);
-	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->AddTexture("uvtemplate");
-	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->m_projection = Sprite::PERSPECTIVE;
-	ObjectFactory::AddCreatedObject(m_objContainer);
-#else
-
 	ObjectFactory::CreateObject("test1");
 	ObjectFactory::GetCreatedObject()->AddComponent<Transform>();
 	ObjectFactory::GetCreatedObject()->AddComponent<Sprite>();
@@ -72,26 +63,35 @@ void State::Init()
 	ObjectFactory::GetCreatedObject()->GetComponent<Material>()->m_ambient.Set(.1f, .1f, .1f, 1.f);
 	ObjectFactory::GetCreatedObject()->GetComponent<Material>()->m_specular.Set(.5f, .5f, .5f, 1.f);
 	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_position.Set(0, 0, 2);
-	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_rotation = 0;
+	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->m_color.Set(1.f, 1.f, 1.f, 1.f);
+
+#ifdef JE_SUPPORT_3D
+
+	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_scale.Set(30.f, 30.f, 30.f);
+	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->AddTexture("uvtemplate");
+
+#else
+
 	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_scale.Set(30.f, 30.f, 1.f);
-	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->m_color.Set(1.f, 1.f, 0.f, 1.f);
 	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->AddTexture("testTexture");
-	ObjectFactory::AddCreatedObject(m_objContainer);
+	
 
 	//ObjectFactory::CreateObject("test2");
 	//ObjectFactory::GetCreatedObject()->AddComponent<Transform>();
 	//ObjectFactory::GetCreatedObject()->AddComponent<Sprite>();
-	//ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_position.Set(-10, -10, 0);
-	//ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_rotation = 0;
-	//ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_scale.Set(30.f, 30.f, 0.f);
+	//ObjectFactory::GetCreatedObject()->AddComponent<Material>();
+	//ObjectFactory::GetCreatedObject()->GetComponent<Material>()->m_ambient.Set(.1f, .1f, .1f, 1.f);
+	//ObjectFactory::GetCreatedObject()->GetComponent<Material>()->m_specular.Set(.5f, .5f, .5f, 1.f);
+	//ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_position.Set(10, 10, 2);
 	//ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->m_color.Set(1.f, 1.f, 1.f, 1.f);
+	//ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_scale.Set(30.f, 30.f, 1.f);
 	//ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->AddTexture("testAnimation");
 	//ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->ActiveAnimation(true);
 	//ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->SetAnimationFrame(8);
 	//ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->SetAnimationSpeed(10.f);
 	//ObjectFactory::AddCreatedObject(m_objContainer);
 #endif
-
+	ObjectFactory::AddCreatedObject(m_objContainer);
 	SystemManager::GetGraphicSystem()->SetBackgroundColor(.3f, .3f, .3f, .3f);
 }
 
