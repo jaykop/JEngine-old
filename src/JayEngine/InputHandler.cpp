@@ -5,12 +5,12 @@ JE_BEGIN
 //////////////////////////////////////////////////////////////////////////
 // static variables
 //////////////////////////////////////////////////////////////////////////
-bool					InputHandler::m_keyPressed = false;
-bool					InputHandler::m_mousePressed = false;
-vec3					InputHandler::m_rawPosition = vec3::ZERO;
-vec3					InputHandler::m_orthoPosition = vec3::ZERO;
-vec3					InputHandler::m_perspPosition = vec3::ZERO;
-InputHandler::KeyMap	InputHandler::m_keys, InputHandler::m_triggerList;
+bool			INPUT::m_keyPressed = false;
+bool			INPUT::m_mousePressed = false;
+vec3			INPUT::m_rawPosition = vec3::ZERO;
+vec3			INPUT::m_orthoPosition = vec3::ZERO;
+vec3			INPUT::m_perspPosition = vec3::ZERO;
+INPUT::KeyMap	INPUT::m_keys, INPUT::m_triggerList;
 
 bool InputHandler::KeyPressed(JE_KEY _pressed)
 {

@@ -14,17 +14,15 @@ bool		ObjectFactory::m_added = true;
 void ObjectFactory::CreateObject(const char* _name)
 {
 	// If there is ex-created and non-added object 
-	// to the list in advance, remove it
-	if (!m_added) {
-		delete m_pLastMade;
-		m_pLastMade = nullptr;
-	}
+	// give user warning
+	if (!m_added)
+		JE_DEBUG_PRINT("There is a already created but not added object.\n");
 
-	else
+	// unless just make new object
+	else {
 		m_added = false;
-
-	// Make new object
-	m_pLastMade = new Object(_name);
+		m_pLastMade = new Object(_name);
+	}
 }
 
 Object* ObjectFactory::GetCreatedObject()

@@ -50,6 +50,7 @@ public:
 private:
 
 	// Locked functions
+	Application() {}; 
 	~Application() {};
 	Application(const Application& /*app*/) {};
 	void operator=(const Application& /*app*/) {};
@@ -61,5 +62,7 @@ private:
 	static SDL_GLContext	m_pContext;	// SDL GL context
 	static SDL_Surface*		m_pSurface; // SDL screen surface
 };
+
+typedef Application APP;
 
 JE_END

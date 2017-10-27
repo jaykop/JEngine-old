@@ -7,10 +7,10 @@
 JE_BEGIN
 
 // Declare static member variables
-AssetManager::AudioMap		AssetManager::m_audioMap;
-AssetManager::StateMap		AssetManager::m_stateMap;
-AssetManager::TextureMap	AssetManager::m_textureMap;
-AssetManager::ArchetypeMap	AssetManager::m_archetypeMap;
+ASSET::AudioMap		ASSET::m_audioMap;
+ASSET::StateMap		ASSET::m_stateMap;
+ASSET::TextureMap	ASSET::m_textureMap;
+ASSET::ArchetypeMap	ASSET::m_archetypeMap;
 
 void AssetManager::Load()
 {

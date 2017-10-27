@@ -46,6 +46,9 @@ public:
 	template <typename ComponentType>
 	inline bool				HasComponent();
 
+	template <typename ComponentType>
+	inline void				RemoveComponent();
+
 private:
 
 	Object() {};

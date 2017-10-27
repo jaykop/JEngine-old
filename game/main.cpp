@@ -30,10 +30,10 @@ int main(int argc, char* args[]) {
 	JE_UNUSED_PARAM(argc);
 	JE_UNUSED_PARAM(args);
 
-	if (Application::Initialize())
-		Application::Update();
+	if (APP::Initialize())
+		APP::Update();
 
-	Application::Close();
+	APP::Close();
 
 	DEBUG_DESTROY_CONSOLE();
 

@@ -115,4 +115,6 @@ private:
 	static KeyMap	m_keys, m_triggerList;
 };
 
+typedef InputHandler INPUT;
+
 JE_END

@@ -9,11 +9,11 @@ JE_BEGIN
 //////////////////////////////////////////////////////////////////////////
 // static variables
 //////////////////////////////////////////////////////////////////////////
-SDL_Event				Application::m_pEvent;
-SDL_Window*				Application::m_pWindow = nullptr;
-SDL_Surface*			Application::m_pSurface = nullptr;
-SDL_GLContext			Application::m_pContext = nullptr;
-Application::InitData	Application::m_pData = { "demo", false, 800, 600 };
+SDL_Event		APP::m_pEvent;
+SDL_Window*		APP::m_pWindow = nullptr;
+SDL_Surface*	APP::m_pSurface = nullptr;
+SDL_GLContext	APP::m_pContext = nullptr;
+APP::InitData	APP::m_pData = { "demo", false, 800, 600 };
 
 Application::Application(const InitData& _data)
 {
@@ -51,11 +51,11 @@ void Application::Update()
 		
 		/*************** OpenGL **************/
 		m_pContext = SDL_GL_CreateContext(m_pWindow);	// Get GL context
-		GLManager::initSDL_GL();						// Init gl
+		GLM::initSDL_GL();						// Init gl
 
 		/**************** imgui **************/
 		#ifdef JE_SUPPORT_IMGUI
-		ImguiManager::Init(m_pWindow);				// init imgui
+		IMGUI::Init(m_pWindow);				// init imgui
 		#endif
 
 		//Get window surface
@@ -65,21 +65,21 @@ void Application::Update()
 		SDL_FillRect(m_pSurface, nullptr, SDL_MapRGB(m_pSurface->format, 0xFF, 0xFF, 0xFF));
 
 		// Load and init State manager
-		StateManager::Load();
-		StateManager::Init();
+		STATE::Load();
+		STATE::Init();
 
 		// Update the surface
-		while (StateManager::GetStatus()
-			!= StateManager::StateStatus::S_QUIT) {
+		while (STATE::GetStatus()
+			!= STATE::StateStatus::S_QUIT) {
 			
 			// Update state manager
-			StateManager::Update(m_pEvent);
+			STATE::Update(m_pEvent);
 		
 			// Update sdl window
 			SDL_UpdateWindowSurface(m_pWindow);
 
-		}	// while (StateManager::GetStatus()
-			// != StateManager::StateStatus::S_QUIT) {
+		}	// while (STATE::GetStatus()
+			// != STATE::StateStatus::S_QUIT) {
 
 	} // else {
 }
@@ -87,12 +87,12 @@ void Application::Update()
 void Application::Close()
 {
 	// Close and Unload the state manager
-	StateManager::Close();
-	StateManager::Unload();
+	STATE::Close();
+	STATE::Unload();
 
 	#ifdef JE_SUPPORT_IMGUI
 	// Close imgui manager
-	ImguiManager::Close();
+	IMGUI::Close();
 	#endif 
 	
 	// Destroy

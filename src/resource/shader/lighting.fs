@@ -1,17 +1,8 @@
 #version 330 core
 
-in vec4 lightColor;
-in vec4 objectColor;
-
-out vec4 FragColor;
+out	vec4 v4_fragColor;
 
 void main()
 {
-	//vec4 finalColor = .xyz;
-	float ambientStrength = 0.1;
-	
-	vec4 ambient = ambientStrength*lightColor;
-	
-	vec4 result = lightColor ;
-	FragColor = result;
+	v4_fragColor = vec4(1.0,1.0,1.0,1.0);
 }

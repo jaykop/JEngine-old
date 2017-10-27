@@ -56,6 +56,15 @@ class GLManager {
 		//////////////////////
 		// Last enum
 		//////////////////////
+
+		/******************** Normal shader ********************/
+		//////////////////////
+		// Martix uniform
+		//////////////////////
+		UNIFORM_LIGHT_TRANSLATE, UNIFORM_LIGHT_SCALE, 
+		UNIFORM_LIGHT_ROTATE,
+		UNIFORM_LIGHT_CAMERA, UNIFORM_LIGHT_PROJECTION,
+
 		UNIFORM_END
 	};
 
@@ -84,7 +93,8 @@ private:
 
 	// Private member variables
 	static DrawMode m_mode;
-	static GLuint	m_vao, m_vbo, m_vbo3D, m_ebo, m_ebo3D, m_light_vao;
+	static GLuint	m_vao, m_vbo, m_vbo3D, m_ebo, m_ebo3D,
+		m_light_vao;
 	static Shader	m_shader[SHADER_END];
 	static GLint	m_uniform[UNIFORM_END];
 
@@ -92,10 +102,14 @@ private:
 	static const int	m_indices[6]; 
 	
 #ifdef JE_SUPPORT_3D
+
 	static const float	m_vertices3D[192];
 	static const int	m_indices3D[36];
+
 #endif
 
 };
+
+typedef GLManager GLM;
 
 JE_END

@@ -57,4 +57,6 @@ private:
 
 };
 
+typedef StateManager STATE;
+
 JE_END

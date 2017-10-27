@@ -178,17 +178,25 @@ bool GLManager::initSDL_GL()
 		SetVA();	// Set vertex attributes pointers
 		SetEbo();	// Set indices
 
+		// Generate vertex array object(VAO)
+		glGenVertexArrays(1, &m_light_vao);
+		// Bind Vertex Array Object
+		glBindVertexArray(m_light_vao);
+		glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+		SetVA();	// Set vertex attributes pointers
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+
 		// Do gl stuff
 		InitGLEnvironment();
 
 		// Do shader stuff
-		m_shader[SHADER_NORMAL].LoadShader(
-			"../src/resource/shader/normal.vs",
-			"../src/resource/shader/normal.fs");
-
 		m_shader[SHADER_LIGHTING].LoadShader(
 			"../src/resource/shader/lighting.vs",
 			"../src/resource/shader/lighting.fs");
+
+		m_shader[SHADER_NORMAL].LoadShader(
+			"../src/resource/shader/normal.vs",
+			"../src/resource/shader/normal.fs");
 
 		RegisterUniform();
 	}
@@ -267,16 +275,21 @@ void GLManager::RegisterUniform()
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_MATERIAL_SPECULAR], "material.m_specular");
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_MATERIAL_SHININESS], "material.m_shininess");
 
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_AMBIENT], "light.m_ambient");
+	// m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_AMBIENT], "light.m_ambient");
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_DIFFUSE], "light.m_diffuse");
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_SPECULAR], "light.m_specular");
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_POSITION], "light.m_position");
+
+	m_shader[SHADER_LIGHTING].ConnectUniform(m_uniform[UNIFORM_LIGHT_TRANSLATE], "m4_translate");
+	m_shader[SHADER_LIGHTING].ConnectUniform(m_uniform[UNIFORM_LIGHT_SCALE], "m4_scale");
+	m_shader[SHADER_LIGHTING].ConnectUniform(m_uniform[UNIFORM_LIGHT_ROTATE], "m4_rotate");
+	m_shader[SHADER_LIGHTING].ConnectUniform(m_uniform[UNIFORM_LIGHT_CAMERA], "m4_viewport");
+	m_shader[SHADER_LIGHTING].ConnectUniform(m_uniform[UNIFORM_LIGHT_PROJECTION], "m4_projection");
 }
 
 void GLManager::SetVao()
 {
-	// TODO
-	//glActiveTexture(GL_TEXTURE0);
+	glActiveTexture(GL_TEXTURE0);
 
 	// Generate vertex array object(VAO)
 	glGenVertexArrays(1, &m_vao);

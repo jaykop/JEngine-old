@@ -26,4 +26,6 @@ private:
 
 };
 
+typedef ObjectFactory FACTORY;
+
 JE_END

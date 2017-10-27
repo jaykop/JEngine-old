@@ -4,8 +4,10 @@
 // structs
 ////////////////////////////
 struct Material{
-	vec4 m_ambient;		// Reflected color
-	vec4 m_diffuse;		// Desired obj's color
+	//vec4 m_ambient;		// Reflected color
+	//vec4 m_diffuse;		// Desired obj's color
+	
+	sampler2D m_diffuse;
 	vec4 m_specular;	// specular highlighted color
 	float m_shininess;	// impacts the specular light
 };
@@ -53,14 +55,17 @@ void LightingEffect(inout vec4 _light);
 ////////////////////////////
 void main() {
 
-	vec4 defaultLight = vec4(1,1,1,1);
+	vec4 finalTexture = vec4(1,1,1,1);
 	
 	// If there are some lights...
 	// Implement light attributes
 	if (boolean_light)
-		LightingEffect(defaultLight);
+		LightingEffect(finalTexture);
+		
+	else
+		finalTexture = texture(Texture, v2_outTexCoord);
 	
-	v4_fragColor = defaultLight * v4_outColor * texture(Texture, v2_outTexCoord);
+	v4_fragColor = finalTexture * v4_outColor;
 
 }
 
@@ -70,13 +75,13 @@ void main() {
 void LightingEffect(inout vec4 _light) {
 
 	// Ambient light
-	vec4 ambient = light.m_ambient * material.m_ambient; 
+	vec4 ambient = light.m_ambient * texture(material.m_diffuse, v2_outTexCoord); //material.m_ambient; 
 	
 	// Diffuse light
 	vec3 norm = normalize(v3_outNormal);
 	vec3 lightDirection = normalize(light.m_position - v3_outFragmentPosition);
 	float diff = max(dot(norm, lightDirection), 0.0);
-	vec4 diffuse = light.m_diffuse * (diff * material.m_diffuse);
+	vec4 diffuse = light.m_diffuse * (diff * texture(material.m_diffuse, v2_outTexCoord)); //material.m_diffuse);
 	
 	// Specular light
 	vec3 viewDirection = normalize(v3_outCameraPosition - v3_outFragmentPosition);

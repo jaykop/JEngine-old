@@ -52,4 +52,6 @@ private:
 
 };
 
+typedef AssetManager ASSET;
+
 JE_END

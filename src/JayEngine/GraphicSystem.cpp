@@ -56,8 +56,8 @@ void GraphicSystem::Update(float /*dt*/)
 	// Update sprites and lights
 	m_isLight = m_lights.empty() ? false : true ;
 
-	GLManager::m_shader[GLManager::SHADER_NORMAL].SetBool(
-		GLManager::m_uniform[GLManager::UNIFORM_IS_LIGHT], m_isLight);
+	GLM::m_shader[GLM::SHADER_NORMAL].SetBool(
+		GLM::m_uniform[GLM::UNIFORM_IS_LIGHT], m_isLight);
 
 	if (m_isLight) 
 		for (auto light : m_lights)
@@ -98,37 +98,68 @@ void GraphicSystem::RemoveSprite(Sprite* _sprite)
 
 void GraphicSystem::Pipeline(Light* _light)
 {
-	//GLManager::m_shader[GLManager::SHADER_LIGHTING].Use();
+	GLM::m_shader[GLM::SHADER_NORMAL].Use();
 
-	GLManager::m_shader[GLManager::SHADER_NORMAL].SetVector4(
-		GLManager::m_uniform[GLManager::UNIFORM_LIGHT_AMBIENT],
+	GLM::m_shader[GLM::SHADER_NORMAL].SetVector4(
+		GLM::m_uniform[GLM::UNIFORM_LIGHT_AMBIENT],
 		_light->m_ambient);
 
-	GLManager::m_shader[GLManager::SHADER_NORMAL].SetVector4(
-		GLManager::m_uniform[GLManager::UNIFORM_LIGHT_SPECULAR],
+	GLM::m_shader[GLM::SHADER_NORMAL].SetVector4(
+		GLM::m_uniform[GLM::UNIFORM_LIGHT_SPECULAR],
 		_light->m_specular);
 
-	GLManager::m_shader[GLManager::SHADER_NORMAL].SetVector4(
-		GLManager::m_uniform[GLManager::UNIFORM_LIGHT_DIFFUSE],
+	GLM::m_shader[GLM::SHADER_NORMAL].SetVector4(
+		GLM::m_uniform[GLM::UNIFORM_LIGHT_DIFFUSE],
 		_light->m_diffuse);
 
-	GLManager::m_shader[GLManager::SHADER_NORMAL].SetVector4(
-		GLManager::m_uniform[GLManager::UNIFORM_LIGHT_COLOR],
+	GLM::m_shader[GLM::SHADER_NORMAL].SetVector4(
+		GLM::m_uniform[GLM::UNIFORM_LIGHT_COLOR],
 		_light->m_color);
 
-	GLManager::m_shader[GLManager::SHADER_NORMAL].SetVector3(
-		GLManager::m_uniform[GLManager::UNIFORM_LIGHT_POSITION],
+	GLM::m_shader[GLM::SHADER_NORMAL].SetVector3(
+		GLM::m_uniform[GLM::UNIFORM_LIGHT_POSITION],
 		_light->m_position);
 
-	GLManager::m_shader[GLManager::SHADER_NORMAL].SetVector3(
-		GLManager::m_uniform[GLManager::UNIFORM_CAMERA_POSITION],
+	GLM::m_shader[GLM::SHADER_NORMAL].SetVector3(
+		GLM::m_uniform[GLM::UNIFORM_CAMERA_POSITION],
 		m_pMainCamera->m_position);
+
+	GLM::m_shader[GLM::SHADER_LIGHTING].Use();
+
+	GLM::m_shader[GLM::SHADER_LIGHTING].SetMatrix(
+		GLM::m_uniform[GLM::UNIFORM_LIGHT_TRANSLATE],
+		mat4::Translate(_light->m_position));
+
+	GLM::m_shader[GLM::SHADER_LIGHTING].SetMatrix(
+		GLM::m_uniform[GLM::UNIFORM_LIGHT_SCALE],
+		mat4::Scale(vec3(10.f, 10.f, 10.f)));
+
+	GLM::m_shader[GLM::SHADER_LIGHTING].SetMatrix(
+		GLM::m_uniform[GLM::UNIFORM_LIGHT_ROTATE],
+		mat4::Rotate(0.f, vec3(0.f, 1.f, 0.f)));
+
+	m_viewport = mat4::Camera(
+		m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
+	GLM::m_shader[GLM::SHADER_LIGHTING].SetMatrix(
+		GLM::m_uniform[GLM::UNIFORM_LIGHT_CAMERA],
+		m_viewport);
+
+	GLM::m_shader[GLM::SHADER_LIGHTING].SetMatrix(
+		GLM::m_uniform[GLM::UNIFORM_LIGHT_PROJECTION],
+		m_perspective);
+
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GLM::m_light_ebo);
+#ifdef JE_SUPPORT_3D
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+#else
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+#endif
 }
 
 void GraphicSystem::Pipeline(Sprite* _sprite)
 {
 	// Use normal shader
-	GLManager::m_shader[GLManager::SHADER_NORMAL].Use();
+	GLM::m_shader[GLM::SHADER_NORMAL].Use();
 
 	// Here check if the sprite is
 	// either outside the screen or not
@@ -139,6 +170,8 @@ void GraphicSystem::Pipeline(Sprite* _sprite)
 	
 		MappingPipeline(_sprite);
 		AnimationPipeline(_sprite);
+
+		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GLM::m_ebo);
 #ifdef JE_SUPPORT_3D
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 #else
@@ -153,16 +186,16 @@ void GraphicSystem::TransformPipeline(Sprite * _sprite)
 	m_pTransformStorage = _sprite->m_transform;
 
 	// Send transform info to shader
-	GLManager::m_shader[GLManager::SHADER_NORMAL].SetMatrix(
-		GLManager::m_uniform[GLManager::UNIFORM_TRANSLATE], 
+	GLM::m_shader[GLM::SHADER_NORMAL].SetMatrix(
+		GLM::m_uniform[GLM::UNIFORM_TRANSLATE], 
 		mat4::Translate(m_pTransformStorage->m_position));
 
-	GLManager::m_shader[GLManager::SHADER_NORMAL].SetMatrix(
-		GLManager::m_uniform[GLManager::UNIFORM_SCALE],
+	GLM::m_shader[GLM::SHADER_NORMAL].SetMatrix(
+		GLM::m_uniform[GLM::UNIFORM_SCALE],
 		mat4::Scale(m_pTransformStorage->m_scale));
 
-	GLManager::m_shader[GLManager::SHADER_NORMAL].SetMatrix(
-		GLManager::m_uniform[GLManager::UNIFORM_ROTATE],
+	GLM::m_shader[GLM::SHADER_NORMAL].SetMatrix(
+		GLM::m_uniform[GLM::UNIFORM_ROTATE],
 		mat4::Rotate(m_pTransformStorage->m_rotation, 
 			m_pTransformStorage->m_rotation3D));
 
@@ -170,8 +203,8 @@ void GraphicSystem::TransformPipeline(Sprite * _sprite)
 #ifdef JE_SUPPORT_3D
 	m_viewport = mat4::Camera(
 		m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
-	GLManager::m_shader[GLManager::SHADER_NORMAL].SetMatrix(
-		GLManager::m_uniform[GLManager::UNIFORM_CAMERA],
+	GLM::m_shader[GLM::SHADER_NORMAL].SetMatrix(
+		GLM::m_uniform[GLM::UNIFORM_CAMERA],
 		m_viewport);
 #else
 	m_target2D.x = m_pMainCamera->m_position.x;
@@ -179,23 +212,23 @@ void GraphicSystem::TransformPipeline(Sprite * _sprite)
 
 	m_viewport = mat4::Camera(
 		m_pMainCamera->m_position, m_target2D, m_pMainCamera->m_up);
-	GLManager::m_shader[GLManager::SHADER_NORMAL].SetMatrix(
-		GLManager::m_uniform[GLManager::UNIFORM_CAMERA],
+	GLM::m_shader[GLM::SHADER_NORMAL].SetMatrix(
+		GLM::m_uniform[GLM::UNIFORM_CAMERA],
 		m_viewport);
 #endif
 
 	// Send projection info to shader
 	if (_sprite->m_projection == Sprite::PERSPECTIVE) {
-		GLManager::m_shader[GLManager::SHADER_NORMAL].SetMatrix(
-			GLManager::m_uniform[GLManager::UNIFORM_PROJECTION],
+		GLM::m_shader[GLM::SHADER_NORMAL].SetMatrix(
+			GLM::m_uniform[GLM::UNIFORM_PROJECTION],
 			m_perspective);
 
 		//m_inside = ;
 	}
 
 	else {
-		GLManager::m_shader[GLManager::SHADER_NORMAL].SetMatrix(
-			GLManager::m_uniform[GLManager::UNIFORM_PROJECTION],
+		GLM::m_shader[GLM::SHADER_NORMAL].SetMatrix(
+			GLM::m_uniform[GLM::UNIFORM_PROJECTION],
 			m_orthogonal);
 
 		//m_inside = ;
@@ -213,31 +246,39 @@ void GraphicSystem::MappingPipeline(Sprite * _sprite)
 	glBindTexture(GL_TEXTURE_2D, _sprite->GetCurrentTexutre());
 	
 	// Send color info to shader
-	GLManager::m_shader[GLManager::SHADER_NORMAL].SetVector4(
-		GLManager::m_uniform[GLManager::UNIFORM_COLOR],
+	GLM::m_shader[GLM::SHADER_NORMAL].SetVector4(
+		GLM::m_uniform[GLM::UNIFORM_COLOR],
 		_sprite->m_color);
 
-	GLManager::m_shader[GLManager::SHADER_NORMAL].SetBool(
-		GLManager::m_uniform[GLManager::UNIFORM_FLIP],
+	GLM::m_shader[GLM::SHADER_NORMAL].SetBool(
+		GLM::m_uniform[GLM::UNIFORM_FLIP],
 		_sprite->m_flip);
 
 	// Send material info to shader
 	if (_sprite->m_hasMaterial) {
 		Material* material = _sprite->m_material;
-		GLManager::m_shader[GLManager::SHADER_NORMAL].SetVector4(
-			GLManager::m_uniform[GLManager::UNIFORM_MATERIAL_AMBIENT],
-			material->m_ambient);
+		//GLM::m_shader[GLM::SHADER_NORMAL].SetVector4(
+		//	GLM::m_uniform[GLM::UNIFORM_MATERIAL_AMBIENT],
+		//	material->m_ambient);
 
-		GLManager::m_shader[GLManager::SHADER_NORMAL].SetVector4(
-			GLManager::m_uniform[GLManager::UNIFORM_MATERIAL_SPECULAR],
+		//GLM::m_shader[GLM::SHADER_NORMAL].SetVector4(
+		//	GLM::m_uniform[GLM::UNIFORM_MATERIAL_SPECULAR],
+		//	material->m_specular);
+
+		//GLM::m_shader[GLM::SHADER_NORMAL].SetVector4(
+		//	GLM::m_uniform[GLM::UNIFORM_MATERIAL_DIFFUSE],
+		//	material->m_diffuse);
+
+		GLM::m_shader[GLM::SHADER_NORMAL].SetInt(
+			GLM::m_uniform[GLM::UNIFORM_MATERIAL_SPECULAR],
 			material->m_specular);
 
-		GLManager::m_shader[GLManager::SHADER_NORMAL].SetVector4(
-			GLManager::m_uniform[GLManager::UNIFORM_MATERIAL_DIFFUSE],
+		GLM::m_shader[GLM::SHADER_NORMAL].SetInt(
+			GLM::m_uniform[GLM::UNIFORM_MATERIAL_DIFFUSE],
 			material->m_diffuse);
 
-		GLManager::m_shader[GLManager::SHADER_NORMAL].SetFloat(
-			GLManager::m_uniform[GLManager::UNIFORM_MATERIAL_SHININESS],
+		GLM::m_shader[GLM::SHADER_NORMAL].SetFloat(
+			GLM::m_uniform[GLM::UNIFORM_MATERIAL_SHININESS],
 			material->m_shininess);
 	}
 }
@@ -265,12 +306,12 @@ void GraphicSystem::AnimationPipeline(Sprite * _sprite)
 		}
 	}
 
-	GLManager::m_shader[GLManager::SHADER_NORMAL].SetMatrix(
-		GLManager::m_uniform[GLManager::UNIFORM_ANI_SCALE],
+	GLM::m_shader[GLM::SHADER_NORMAL].SetMatrix(
+		GLM::m_uniform[GLM::UNIFORM_ANI_SCALE],
 		mat4::Scale(vec3(_sprite->m_realFrame, 1.f)));
 
-	GLManager::m_shader[GLManager::SHADER_NORMAL].SetMatrix(
-		GLManager::m_uniform[GLManager::UNIFORM_ANI_TRANSLATE],
+	GLM::m_shader[GLM::SHADER_NORMAL].SetMatrix(
+		GLM::m_uniform[GLM::UNIFORM_ANI_TRANSLATE],
 		mat4::Translate(vec3(_sprite->m_curretFrame)));
 }
 

@@ -95,10 +95,10 @@ void SendToFrag(vec4 _position, vec4 _texCoord, mat4 _model) {
 	// Lighting attributes
 	if (boolean_light) {
 		// Lighing attributes
-		v3_outFragmentPosition = vec3(_model * _position);
+		v3_outFragmentPosition = vec3(transpose(_model) * _position);
 	
 		v4_outLightColor = v4_lightColor;
-		v3_outNormal = mat3(transpose(inverse(_model))) * normal;
+		v3_outNormal = mat3(inverse(_model)) * normal;
 	
 		v3_outCameraPosition = v3_cameraPosition;
 	}

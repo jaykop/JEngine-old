@@ -14,7 +14,9 @@ class Material : public Component {
 
 public:
 
-	vec4 m_ambient, m_diffuse, m_specular;
+	// old attribute of light...
+	/*vec4 m_ambient, m_diffuse, m_specular;*/
+	int m_diffuse, m_specular;
 	float m_shininess;
 
 private:

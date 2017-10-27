@@ -177,4 +177,9 @@ void Shader::SetBool(GLint& _uniform, bool _bool)
 	glUniform1i(_uniform, _bool);
 }
 
+void Shader::SetInt(GLint & _uniform, int _int)
+{
+	glUniform1d(_uniform, _int);
+}
+
 JE_END

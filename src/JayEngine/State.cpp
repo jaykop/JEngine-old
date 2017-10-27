@@ -28,71 +28,58 @@ void State::Load()
 {
 	JE_DEBUG_PRINT("Loading %s...\n", m_name.c_str());
 	m_objContainer = new ObjectContainer; 
-	SystemManager::Load();
+	SYSTEM::Load();
 }
 
 void State::Init()
 {
 	JE_DEBUG_PRINT("Initializing %s...\n", m_name.c_str());
-	SystemManager::Init();
+	SYSTEM::Init();
 
 	// TODO
 	/************************* Test Code... **************************/
-	ObjectFactory::CreateObject("camera");
-	ObjectFactory::GetCreatedObject()->AddComponent<Camera>();
+	FACTORY::CreateObject("camera");
+	FACTORY::GetCreatedObject()->AddComponent<Camera>();
 #ifdef JE_SUPPORT_3D
-	ObjectFactory::GetCreatedObject()->GetComponent<Camera>()->m_position.Set(50, 50, 50);
+	FACTORY::GetCreatedObject()->GetComponent<Camera>()->m_position.Set(0, 0, 50);
 #else
-	ObjectFactory::GetCreatedObject()->GetComponent<Camera>()->m_position.Set(0, 0, 50);
+	FACTORY::GetCreatedObject()->GetComponent<Camera>()->m_position.Set(0, 0, 50);
 #endif
-	SystemManager::GetGraphicSystem()->SetMainCamera(
-		ObjectFactory::GetCreatedObject()->GetComponent<Camera>());
-	ObjectFactory::AddCreatedObject(m_objContainer);
+	SYSTEM::GetGraphicSystem()->SetMainCamera(
+		FACTORY::GetCreatedObject()->GetComponent<Camera>());
+	FACTORY::AddCreatedObject(m_objContainer);
 
-	ObjectFactory::CreateObject("light");
-	ObjectFactory::GetCreatedObject()->AddComponent<Light>();
-	ObjectFactory::GetCreatedObject()->GetComponent<Light>()->m_ambient.Set(.1f, .1f, .1f, 1.f);
-	ObjectFactory::GetCreatedObject()->GetComponent<Light>()->m_specular.Set(.5f, .5f, .5f, 1.f);
-	ObjectFactory::GetCreatedObject()->GetComponent<Light>()->m_position.Set(0, 0, 1);
-	ObjectFactory::AddCreatedObject(m_objContainer);
+	FACTORY::CreateObject("light");
+	FACTORY::GetCreatedObject()->AddComponent<Light>();
+	FACTORY::GetCreatedObject()->GetComponent<Light>()->m_ambient.Set(.2f, .2f, .2f, 1.f);
+	FACTORY::GetCreatedObject()->GetComponent<Light>()->m_specular.Set(1.f, 1.f, 1.f, 1.f);
+	FACTORY::GetCreatedObject()->GetComponent<Light>()->m_diffuse.Set(.5f, .5f, .5f, 1.f);
+	FACTORY::GetCreatedObject()->GetComponent<Light>()->m_position.Set(0, 0, 25 );
+	FACTORY::AddCreatedObject(m_objContainer);
 
-	ObjectFactory::CreateObject("test1");
-	ObjectFactory::GetCreatedObject()->AddComponent<Transform>();
-	ObjectFactory::GetCreatedObject()->AddComponent<Sprite>();
-	ObjectFactory::GetCreatedObject()->AddComponent<Material>();
-	ObjectFactory::GetCreatedObject()->GetComponent<Material>()->m_ambient.Set(.1f, .1f, .1f, 1.f);
-	ObjectFactory::GetCreatedObject()->GetComponent<Material>()->m_specular.Set(.5f, .5f, .5f, 1.f);
-	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_position.Set(0, 0, 2);
-	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->m_color.Set(1.f, 1.f, 1.f, 1.f);
+	FACTORY::CreateObject("test1");
+	FACTORY::GetCreatedObject()->AddComponent<Transform>();
+	FACTORY::GetCreatedObject()->AddComponent<Sprite>();
+	FACTORY::GetCreatedObject()->AddComponent<Material>();
+	FACTORY::GetCreatedObject()->GetComponent<Material>()->m_diffuse = 0;
+	FACTORY::GetCreatedObject()->GetComponent<Transform>()->m_position.Set(30, 0, -50);
+	FACTORY::GetCreatedObject()->GetComponent<Sprite>()->m_color.Set(1.f, 1.f, 1.f, 1.f);
+	FACTORY::GetCreatedObject()->GetComponent<Transform>()->m_scale.Set(30.f, 30.f, 30.f);
+	FACTORY::GetCreatedObject()->GetComponent<Sprite>()->AddTexture("uvtemplate");
+	FACTORY::AddCreatedObject(m_objContainer);
 
-#ifdef JE_SUPPORT_3D
+	FACTORY::CreateObject("test2");
+	FACTORY::GetCreatedObject()->AddComponent<Transform>();
+	FACTORY::GetCreatedObject()->AddComponent<Sprite>();
+	FACTORY::GetCreatedObject()->AddComponent<Material>();
+	FACTORY::GetCreatedObject()->GetComponent<Material>()->m_diffuse = 100;
+	FACTORY::GetCreatedObject()->GetComponent<Transform>()->m_position.Set(-30, 0, -50);
+	FACTORY::GetCreatedObject()->GetComponent<Sprite>()->m_color.Set(1.f, 1.f, 1.f, 1.f);
+	FACTORY::GetCreatedObject()->GetComponent<Transform>()->m_scale.Set(30.f, 30.f, 30.f);
+	FACTORY::GetCreatedObject()->GetComponent<Sprite>()->AddTexture("uvtemplate");
+	FACTORY::AddCreatedObject(m_objContainer);
 
-	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_scale.Set(30.f, 30.f, 30.f);
-	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->AddTexture("uvtemplate");
-
-#else
-
-	ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_scale.Set(30.f, 30.f, 1.f);
-	ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->AddTexture("testTexture");
-	
-
-	//ObjectFactory::CreateObject("test2");
-	//ObjectFactory::GetCreatedObject()->AddComponent<Transform>();
-	//ObjectFactory::GetCreatedObject()->AddComponent<Sprite>();
-	//ObjectFactory::GetCreatedObject()->AddComponent<Material>();
-	//ObjectFactory::GetCreatedObject()->GetComponent<Material>()->m_ambient.Set(.1f, .1f, .1f, 1.f);
-	//ObjectFactory::GetCreatedObject()->GetComponent<Material>()->m_specular.Set(.5f, .5f, .5f, 1.f);
-	//ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_position.Set(10, 10, 2);
-	//ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->m_color.Set(1.f, 1.f, 1.f, 1.f);
-	//ObjectFactory::GetCreatedObject()->GetComponent<Transform>()->m_scale.Set(30.f, 30.f, 1.f);
-	//ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->AddTexture("testAnimation");
-	//ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->ActiveAnimation(true);
-	//ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->SetAnimationFrame(8);
-	//ObjectFactory::GetCreatedObject()->GetComponent<Sprite>()->SetAnimationSpeed(10.f);
-	//ObjectFactory::AddCreatedObject(m_objContainer);
-#endif
-	ObjectFactory::AddCreatedObject(m_objContainer);
-	SystemManager::GetGraphicSystem()->SetBackgroundColor(.3f, .3f, .3f, .3f);
+	SYSTEM::GetGraphicSystem()->SetBackgroundColor(.3f, .3f, .3f, .3f);
 }
 
 void State::Update(float _dt)
@@ -101,74 +88,72 @@ void State::Update(float _dt)
 	
 	Light* light = m_objContainer->GetObject("light")->GetComponent<Light>();
 
-	SystemManager::Update(_dt);
-	float move = _dt * 0.1f;
+	SYSTEM::Update(_dt);
+	float move = _dt * 0.5f;
 
-	if (InputHandler::KeyPressed(JE_W))
-		light->m_position.z += move;
-
-	if (InputHandler::KeyPressed(JE_S))
+	if (INPUT::KeyPressed(JE_W))
 		light->m_position.z -= move;
+
+	if (INPUT::KeyPressed(JE_S))
+		light->m_position.z += move;
 	
-	if (InputHandler::KeyPressed(JE_D))
+	if (INPUT::KeyPressed(JE_D))
 		light->m_position.x += move;
 	
-	if (InputHandler::KeyPressed(JE_A))
+	if (INPUT::KeyPressed(JE_A))
 		light->m_position.x -= move;
 
-	//std::cout << light->m_position << std::endl;
-
 	/*************************** Temp state test key ******************************/
-	if (InputHandler::KeyTriggered(JE_1))
-		StateManager::SetNextState("testState1");
+	if (INPUT::KeyTriggered(JE_1))
+		STATE::SetNextState("testState1");
 
-	if (InputHandler::KeyTriggered(JE_2))
-		StateManager::SetNextState("testState2");
+	if (INPUT::KeyTriggered(JE_2))
+		STATE::SetNextState("testState2");
 
-	if (InputHandler::KeyTriggered(JE_3))
-		StateManager::SetNextState("testState3");
+	if (INPUT::KeyTriggered(JE_3))
+		STATE::SetNextState("testState3");
 
-	if (InputHandler::KeyTriggered(JE_4))
-		StateManager::Pause("PauseState");
+	if (INPUT::KeyTriggered(JE_4))
+		STATE::Pause("PauseState");
 
-	if (InputHandler::KeyTriggered(JE_5))
-		StateManager::Resume();
+	if (INPUT::KeyTriggered(JE_5))
+		STATE::Resume();
 
-	if (InputHandler::KeyTriggered(JE_6))
-		StateManager::ResumeAndNext("testState3");
+	if (INPUT::KeyTriggered(JE_6))
+		STATE::ResumeAndNext("testState3");
 
-	if (InputHandler::KeyTriggered(JE_MOUSE_LEFT)) 
+	if (INPUT::KeyTriggered(JE_MOUSE_LEFT)) 
 		JE_DEBUG_PRINT("Left Mouse\n");
 
-	if (InputHandler::KeyTriggered(JE_MOUSE_RIGHT))
+	if (INPUT::KeyTriggered(JE_MOUSE_RIGHT))
 		JE_DEBUG_PRINT("Right Mouse\n");
 
-	if (InputHandler::KeyTriggered(JE_MOUSE_MIDDLE))
+	if (INPUT::KeyTriggered(JE_MOUSE_MIDDLE))
 		JE_DEBUG_PRINT("Middle Mouse\n");
 
-	if (InputHandler::KeyPressed(JE_MOUSE_WHEEL_DOWN))
+	if (INPUT::KeyPressed(JE_MOUSE_WHEEL_DOWN))
 		JE_DEBUG_PRINT("Mouse Wheel Down\n");
 
-	if (InputHandler::KeyPressed(JE_MOUSE_WHEEL_UP))
+	if (INPUT::KeyPressed(JE_MOUSE_WHEEL_UP))
 		JE_DEBUG_PRINT("Mouse Wheel Up\n");
 
-	if (InputHandler::KeyPressed(JE_ESC)) {
+	if (INPUT::KeyPressed(JE_ESC)) {
 		JE_DEBUG_PRINT("Quit\n");
-		StateManager::Quit();
+		STATE::Quit();
 	}
 }
 
 void State::Close()
 {
 	JE_DEBUG_PRINT("Closing %s...\n", m_name.c_str());
-	SystemManager::Close();
+	SYSTEM::Close();
 }
 
 void State::Unload()
 {
 	JE_DEBUG_PRINT("Unloading %s...\n", m_name.c_str());
 	ClearObjectContainer();
-	SystemManager::Unload();
+	SYSTEM::Unload();
 }
 
 void State::ClearObjectContainer()

@@ -9,7 +9,6 @@ class GraphicSystem;
 class PhysicsSystem;
 class BehaviorSystem;
 
-
 class SystemManager {
 
 	class Systems {
@@ -74,5 +73,7 @@ private:
 
 	static SystemStack	m_pauseStack;
 };
+
+typedef SystemManager SYSTEM;
 
 JE_END

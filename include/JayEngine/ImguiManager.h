@@ -27,6 +27,8 @@ private:
 	static SDL_Window* m_pWindow;
 };
 
+typedef ImguiManager IMGUI;
+
 JE_END
 
 #endif

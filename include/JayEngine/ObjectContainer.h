@@ -21,11 +21,24 @@ public:
 	bool		HasObject(const char* _name);
 
 	template <typename ComponentType>
+	inline void				AddComponentToObject(const char* _name);
+
+	template <typename ComponentType>
+	inline ComponentType*	GetComponentofObject(const char* _name);
+
+	template <typename ComponentType>
+	inline bool				HasComponentofObject(const char* _name);
+
+	template <typename ComponentType>
+	inline void				RemoveComponentofObject(const char* _name);
+
+
+	template <typename ComponentType>
 	inline ObjectMap GetObjects();
 
 private:
 
-	~ObjectContainer();
+	~ObjectContainer() {};
 	ObjectContainer() {};
 	ObjectContainer(const ObjectContainer& /*_copy*/) {};
 	void operator=(const ObjectContainer& /*_copy*/) {};

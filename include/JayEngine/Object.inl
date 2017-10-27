@@ -53,4 +53,10 @@ inline bool Object::HasComponent()
 	}
 }
 
+template<typename ComponentType>
+inline void Object::RemoveComponent()
+{
+	;
+}
+
 JE_END
