@@ -1,5 +1,4 @@
 temp/
-bin/
 *.db
 *.suo
 *.user
@@ -10,4 +9,4 @@ bin/
 *.pdb
 *.obj
 *.log
-
+*.ilk

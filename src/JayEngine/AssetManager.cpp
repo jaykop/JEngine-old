@@ -3,6 +3,7 @@
 #include "State.h"
 #include "Application.h"
 #include "AssetManager.h"
+#include "JsonParser.h"
 
 JE_BEGIN
 
@@ -14,11 +15,26 @@ ASSET::ArchetypeMap	ASSET::m_archetypeMap;
 
 void AssetManager::Load()
 {
-	LoadImage("../src/resource/texture/rect.png", "rect");
-	LoadImage("../src/resource/texture/circle.png", "circle");
-	LoadImage("../src/resource/texture/images.png", "testTexture"); 
-	LoadImage("../src/resource/texture/uvtemplate.png", "uvtemplate");
-	LoadImage("../src/resource/texture/testAnimation.png", "testAnimation");
+	// TODO
+	JSON::ReadFile("../src/resource/register/state.json");
+	for (auto it = JSON::GetDocument().MemberBegin();
+		it != JSON::GetDocument().MemberEnd(); ++it) {
+		LoadImage(it->value.GetString(), it->name.GetString());
+	}
+	//LoadState("../src/resource/state/state1.json", "test");
+
+	// Load images
+	JSON::ReadFile("../src/resource/register/asset.json");
+	for (auto it = JSON::GetDocument().MemberBegin();
+		it != JSON::GetDocument().MemberEnd(); ++it) {
+		LoadImage(it->value.GetString(), it->name.GetString());
+	}
+
+	//LoadImage("../src/resource/texture/rect.png", "rect");
+	//LoadImage("../src/resource/texture/circle.png", "circle");
+	//LoadImage("../src/resource/texture/images.png", "testTexture"); 
+	//LoadImage("../src/resource/texture/uvtemplate.png", "uvtemplate");
+	//LoadImage("../src/resource/texture/testAnimation.png", "testAnimation");
 }
 
 void AssetManager::Unload()
@@ -83,13 +99,13 @@ Archetype* AssetManager::GetArchetype(const char *_key)
 	return nullptr;
 }
 
-void AssetManager::LoadState(const char *_path, const char *_stateKey)
+void AssetManager::LoadState(const char* /*_path*/, const char* /*_stateKey*/)
 {
 	// TODO
 	// load state assets
 }
 
-void AssetManager::LoadAudio(const char *_path, const char *_audioKey)
+void AssetManager::LoadAudio(const char* /*_path*/, const char* /*_audioKey*/)
 {
 	// TODO
 	// load audio assets
@@ -120,7 +136,7 @@ void AssetManager::LoadImage(const char *_path, const char *_textureKey)
 	
 }
 
-void AssetManager::LoadArchetype(const char *_path, const char *_archetypeKey)
+void AssetManager::LoadArchetype(const char* /*_path*/, const char* /*_archetypeKey*/)
 {
 	// TODO
 	// load archetpye assets

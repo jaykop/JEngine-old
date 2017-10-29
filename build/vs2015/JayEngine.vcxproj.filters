@@ -121,6 +121,9 @@
     <ClCompile Include="..\..\src\JayEngine\Material.cpp">
       <Filter>System\Graphic</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\JsonParser.cpp">
+      <Filter>Utils\Json</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\JayEngine\Application.h">
@@ -261,6 +264,9 @@
     <ClInclude Include="..\..\include\JayEngine\Material.h">
       <Filter>System\Graphic</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\JsonParser.h">
+      <Filter>Utils\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -322,6 +328,9 @@
     </Filter>
     <Filter Include="Core\Platform">
       <UniqueIdentifier>{488e267d-18b4-431f-a9bf-4f8439a29a29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Json">
+      <UniqueIdentifier>{8d54e481-e8a4-485e-875d-8df16b54c62a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

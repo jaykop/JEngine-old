@@ -2,7 +2,9 @@
 #include "SDL2\SDL_opengl.h"
 #include "Application.h"
 #include "StateManager.h"
+#include "AssetManager.h"
 #include "ImguiManager.h"
+#include "JsonParser.h"
 
 JE_BEGIN
 
@@ -15,13 +17,10 @@ SDL_Surface*	APP::m_pSurface = nullptr;
 SDL_GLContext	APP::m_pContext = nullptr;
 APP::InitData	APP::m_pData = { "demo", false, 800, 600 };
 
-Application::Application(const InitData& _data)
+bool Application::Initialize(const InitData& _data)
 {
 	m_pData = _data;
-}
 
-bool Application::Initialize()
-{
 	// Call opengl 3.2
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
@@ -64,8 +63,11 @@ void Application::Update()
 		//Fill the surface white
 		SDL_FillRect(m_pSurface, nullptr, SDL_MapRGB(m_pSurface->format, 0xFF, 0xFF, 0xFF));
 
+		// Load assets by asset manager
+		ASSET::Load();
+
 		// Load and init State manager
-		STATE::Load();
+		//STATE::Load();
 		STATE::Init();
 
 		// Update the surface
@@ -86,9 +88,11 @@ void Application::Update()
 
 void Application::Close()
 {
+	ASSET::Unload();
+
 	// Close and Unload the state manager
 	STATE::Close();
-	STATE::Unload();
+	//STATE::Unload();
 
 	#ifdef JE_SUPPORT_IMGUI
 	// Close imgui manager

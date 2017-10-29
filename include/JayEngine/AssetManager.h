@@ -13,6 +13,7 @@ class Archetype;
 class AssetManager {
 
 	// Keyword Definitions
+	friend class Application;
 	friend class StateManager;
 	typedef std::vector<unsigned char>					Image;
 	typedef std::unordered_map<std::string, Audio*>		AudioMap;

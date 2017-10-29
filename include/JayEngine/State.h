@@ -29,7 +29,7 @@ private:
 
 	State*				m_pLastStage;
 	bool				m_paused;
-	std::string			m_name;
+	std::string			m_name, m_loadDirectory;
 	ObjectContainer*	m_objContainer;
 };
 

@@ -13,12 +13,15 @@ Contains Process' main flow
 
 #include "Macro.h"
 #include "Debug.h"
+#include "JsonParser.h"
 #include "Application.h"
 
 #pragma comment(lib, "sdl2")
 #pragma comment(lib, "sdl2main")
 
 USING_NS_JE;
+
+bool SetInitData(APP::InitData& _data);
 
 int main(int argc, char* args[]) {
 
@@ -30,7 +33,14 @@ int main(int argc, char* args[]) {
 	JE_UNUSED_PARAM(argc);
 	JE_UNUSED_PARAM(args);
 
-	if (APP::Initialize())
+	// Check init data
+	APP::InitData data;
+	if (SetInitData(data)) {
+		JE_DEBUG_PRINT("Wrong init data!\n");
+		return -1;
+	}
+
+	if (APP::Initialize(data))
 		APP::Update();
 
 	APP::Close();
@@ -39,4 +49,25 @@ int main(int argc, char* args[]) {
 
 	return 0;
 
+}
+
+bool SetInitData(APP::InitData& _data) {
+
+	JSON::ReadFile("../src/resource/initData.json");
+
+	if (JSON::GetDocument()["Title"].IsString()
+		&& JSON::GetDocument()["Fullscreen"].IsBool()
+		&& JSON::GetDocument()["Width"].IsInt()
+		&& JSON::GetDocument()["Height"].IsInt()) {
+
+		_data.m_title.assign(JSON::GetDocument()["Title"].GetString());
+		_data.m_isFullScreen = JSON::GetDocument()["Fullscreen"].GetBool();
+		_data.m_width = JSON::GetDocument()["Width"].GetInt();
+		_data.m_height = JSON::GetDocument()["Height"].GetInt();
+	
+		return true;
+	}
+
+	else
+		return false;
 }

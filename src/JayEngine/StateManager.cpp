@@ -23,7 +23,7 @@ State						*StateManager::m_pCurrent = nullptr,
 //////////////////////////////////////////////////////////////////////////
 void StateManager::Load()
 {
-	AssetManager::Load();
+	
 }
 
 void StateManager::Init()

@@ -37,9 +37,7 @@ public:
 		int			m_height;		// Height size
 	};
 
-	Application(const InitData& _data);
-	
-	static bool	Initialize();
+	static bool	Initialize(const InitData& _data);
 	static void	Update();
 	static void	Close();
 

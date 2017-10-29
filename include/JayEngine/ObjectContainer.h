@@ -38,7 +38,7 @@ public:
 
 private:
 
-	~ObjectContainer() {};
+	~ObjectContainer();
 	ObjectContainer() {};
 	ObjectContainer(const ObjectContainer& /*_copy*/) {};
 	void operator=(const ObjectContainer& /*_copy*/) {};

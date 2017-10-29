@@ -1,0 +1,20 @@
+{
+	//"Font" : [
+	
+	//	{"directory" : "../src/resource/font/Font.ttf"}
+	//],
+	
+	//"Sound" : [
+	
+	//{"key" : "select", "directory" : "../src/resource/sound/select.ogg"}
+	//],
+	
+	"Texture" : [
+
+		{"key" : "rect", 			"directory" : "../src/resource/texture/rect.png"},
+		{"key" : "circle", 			"directory" : "../src/resource/texture/circle.png"},
+		{"key" : "testTexture", 	"directory" : "../src/resource/texture/images.png"},
+		{"key" : "uvtemplate", 		"directory" : "../src/resource/texture/uvtemplate.png"},
+		{"key" : "testAnimation", 	"directory" : "../src/resource/texture/testAnimation.png"}
+	]
+}

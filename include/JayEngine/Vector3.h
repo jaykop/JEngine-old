@@ -18,7 +18,7 @@ Contains Vector3's template class
 
 JE_BEGIN
 
-// Vector3 template class
+// Vector3 class
 class Vector3
 {
 public:
@@ -71,6 +71,9 @@ public:
 	void		Rotation(float _angle, const Vector3& _pivot);
 	void		Rotation(float _angle);
 	float		GetAngle(const Vector3& _other);
+	Vector3		GetRotated(float _angle, const Vector3& _pivot);
+	float		GetDistance(const Vector3& _rhs);
+	float		DistanceToLine(const Vector3& _lineStart, const Vector3& _lineEnd);
 
 	// Friend Functions
 	friend Vector3 operator+(float _constant, const Vector3& _rhs);
@@ -85,11 +88,6 @@ public:
 	static const Vector3 UNIT_Z;
 
 	// Static functions
-	static Vector3 GetRotated(const Vector3& point, float angle, const Vector3& pivot);
-	static float GetDegree(const Vector3& a, const Vector3& b);
-	static float GetDistance(const Vector3& a, const Vector3& b);
-	static float DistanceToLine(const Vector3& point, const Vector3& line_start, const Vector3& line_end);
-
 	static Vector3  GetIntersection(
 		const Vector3& line1_start, const Vector3& line1_end,
 		const Vector3& line2_start, const Vector3& line2_end);
