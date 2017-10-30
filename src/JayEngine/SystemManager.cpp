@@ -145,10 +145,10 @@ void SystemManager::Systems::Unbind()
 
 void SystemManager::Systems::Load()
 {
+	m_pBehaviorSystem->Load();
 	m_pSoundSystem->Load();
 	m_pGraphicSystem->Load();
 	m_pPhysicsSystem->Load();
-	m_pBehaviorSystem->Load();
 }
 
 void SystemManager::Systems::Init()

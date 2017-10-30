@@ -8,6 +8,7 @@ class State {
 
 	friend class StateManager;
 	friend class AssetManager;
+	friend class BehaviorSystem;
 	friend class ObjectContainer;
 
 public:

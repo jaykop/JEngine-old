@@ -37,6 +37,8 @@ public:
 	void	SetActive(bool _active);
 	bool	GetActive(void) const;
 
+	ComponentMap& GetComponentMap();
+
 	template <typename ComponentType>
 	inline void				AddComponent();
 

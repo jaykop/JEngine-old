@@ -1,7 +1,10 @@
 #pragma once
 #include "System.h"
-
+#include <unordered_map>
 JE_BEGIN
+
+class Object;
+typedef std::unordered_map<std::string, Object*> ObjectMap;
 
 class BehaviorSystem : public System
 {
@@ -21,6 +24,8 @@ private:
 	void Update(float dt) override;
 	void Close() override;
 	void Unload() override;
+
+	ObjectMap* m_pObjectMap;
 
 };
 

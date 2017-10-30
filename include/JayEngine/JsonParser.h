@@ -1,6 +1,6 @@
 #pragma once
 #include "Macro.h"
-#include "rapidjson\/document.h"
+#include "rapidjson/document.h"
 
 JE_BEGIN
 
@@ -10,6 +10,9 @@ public:
 
 	static void ReadFile(const char* _dir);
 	static const rapidjson::Document& GetDocument();
+
+	static void LoadObjects();
+	static void LoadComponents(const rapidjson::Value& _data);
 
 private:
 

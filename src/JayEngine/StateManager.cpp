@@ -21,21 +21,8 @@ State						*StateManager::m_pCurrent = nullptr,
 //////////////////////////////////////////////////////////////////////////
 // funciton bodues
 //////////////////////////////////////////////////////////////////////////
-void StateManager::Load()
-{
-	
-}
-
 void StateManager::Init()
 {
-	//TODO
-	// Making new state
-	StateManager::PushState("testState1");
-	StateManager::PushState("testState2");
-	StateManager::PushState("testState3");
-	StateManager::PushState("PauseState");
-	StateManager::SetStartingState("testState1");
-
 	// Allocate systems in advance
 	SystemManager::Bind();
 }
@@ -121,11 +108,6 @@ void StateManager::Close()
 	ClearStates();
 }
 
-void StateManager::Unload()
-{
-	AssetManager::Unload();
-}
-
 void StateManager::ChangeState()
 {
 	// Load and init agein
@@ -166,16 +148,16 @@ void StateManager::ChangeState()
 		m_status = S_NONE;
 }
 
-void StateManager::PushState(const char* _stateName)
+void StateManager::PushState(const char* _path, const char* _stateName)
 {
 	bool sameOne = false;
 	for (auto it = m_states.begin();
-		it != m_states.end(); ++it)
-	{
+		it != m_states.end(); ++it) {
 		// If there is already same one,
 		// mark toggle
 		if (!strcmp((*it)->m_name.c_str(), _stateName)) {
 			sameOne = true;
+			JE_DEBUG_PRINT("Same state exist already!\n");
 			break;
 		}
 	}	
@@ -185,15 +167,13 @@ void StateManager::PushState(const char* _stateName)
 
 		// Make new one
 		State* newState = new State(_stateName);
+		newState->m_loadDirectory.assign(_path);
 
 		// Push to the vector
 		m_states.push_back(newState);
+		if (m_states.size() == 1)
+			SetStartingState(_stateName);
 	}
-
-	// If there is same state already,
-	// do not make anything
-	else
-		JE_DEBUG_PRINT("Same state exist already!\n");
 }
 
 void StateManager::PopState(const char* _stateName)

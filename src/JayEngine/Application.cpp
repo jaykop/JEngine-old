@@ -43,31 +43,29 @@ void Application::Update()
 	m_pWindow = SDL_CreateWindow(m_pData.m_title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 		m_pData.m_width, m_pData.m_height, SDL_WINDOW_OPENGL);
 
-	if (m_pWindow == nullptr) 
+	if (!m_pWindow) 
 		JE_DEBUG_PRINT("Window could not be created! SDL_Error: %s\n", SDL_GetError());
 
 	else {
 		
 		/*************** OpenGL **************/
-		m_pContext = SDL_GL_CreateContext(m_pWindow);	// Get GL context
-		GLM::initSDL_GL();						// Init gl
+		m_pContext = SDL_GL_CreateContext(m_pWindow);
+		GLM::initSDL_GL();
 
 		/**************** imgui **************/
 		#ifdef JE_SUPPORT_IMGUI
-		IMGUI::Init(m_pWindow);				// init imgui
+		IMGUI::Init(m_pWindow);	
 		#endif
 
-		//Get window surface
+		// Get window surface
 		m_pSurface = SDL_GetWindowSurface(m_pWindow);
 
-		//Fill the surface white
+		// Fill the surface white
 		SDL_FillRect(m_pSurface, nullptr, SDL_MapRGB(m_pSurface->format, 0xFF, 0xFF, 0xFF));
 
 		// Load assets by asset manager
+		// and init State manager
 		ASSET::Load();
-
-		// Load and init State manager
-		//STATE::Load();
 		STATE::Init();
 
 		// Update the surface
@@ -88,11 +86,10 @@ void Application::Update()
 
 void Application::Close()
 {
-	ASSET::Unload();
-
-	// Close and Unload the state manager
+	// Close and Unload 
+	// the state manager and asset manager
 	STATE::Close();
-	//STATE::Unload();
+	ASSET::Unload();
 
 	#ifdef JE_SUPPORT_IMGUI
 	// Close imgui manager

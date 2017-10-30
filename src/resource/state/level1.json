@@ -1,0 +1,18 @@
+{
+
+	"Background" : [ 0.3, 0.3, 0.3, 0.3 ],
+	"Object" : [
+		{
+			"Name" : "sampleObject",
+			"Component" : [
+			{
+				"Type": "Transform",
+				"values": {
+					"Position": [ 325, -250, -10 ],
+					"Scale": [ 100, 50, 0 ]
+				}
+			}
+			]
+		}
+	]
+}

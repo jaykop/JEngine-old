@@ -1,6 +1,6 @@
 {
 	"Title" : "demo",
-	"FullScreen" : false,
+	"Fullscreen" : false,
 	"Width" : 800,
 	"Height" : 600	
 }

@@ -4,10 +4,24 @@
     <Filter Include="Main">
       <UniqueIdentifier>{078bf11c-f18e-4b6e-9780-65d88a24e23d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameLogic">
+      <UniqueIdentifier>{e965b01d-a41b-42b1-91ef-951493c18f6a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="SampleLogic.cpp">
+      <Filter>GameLogic</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SampleLogic.h">
+      <Filter>GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentHreader.h">
+      <Filter>GameLogic</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,14 +1,4 @@
 {
-	//"Font" : [
-	
-	//	{"directory" : "../src/resource/font/Font.ttf"}
-	//],
-	
-	//"Sound" : [
-	
-	//{"key" : "select", "directory" : "../src/resource/sound/select.ogg"}
-	//],
-	
 	"Texture" : [
 
 		{"key" : "rect", 			"directory" : "../src/resource/texture/rect.png"},

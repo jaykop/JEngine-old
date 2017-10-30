@@ -11,6 +11,7 @@ typedef std::vector<State*> States;
 class StateManager {
 
 	friend class Application;
+	friend class AssetManager;
 	enum StateStatus {
 		S_NONE, S_PAUSE, S_RESUME, S_CHANGE, S_RESUME_AND_CHANGE, S_QUIT
 	};
@@ -37,13 +38,11 @@ private:
 	void operator=(const StateManager& /*_copy*/) {};
 
 	// Private member functions
-	static void Load();
 	static void Init();
 	static void Update(SDL_Event& _event);
 	static void Close();
-	static void Unload();
 
-	static void PushState(const char* _stateName);
+	static void PushState(const char* _path, const char* _stateName);
 	static void PopState(const char* _stateName);
 
 	static void ChangeState();

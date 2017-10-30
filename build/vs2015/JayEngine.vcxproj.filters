@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="..\..\src\JayEngine\Application.cpp">
-      <Filter>Core\App</Filter>
+      <Filter>Core\Application</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\JayEngine\Debug.cpp">
       <Filter>Utils\Debug</Filter>
@@ -127,7 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\JayEngine\Application.h">
-      <Filter>Core\App</Filter>
+      <Filter>Core\Application</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\JayEngine\Debug.h">
       <Filter>Utils\Debug</Filter>
@@ -278,9 +278,6 @@
     <Filter Include="System">
       <UniqueIdentifier>{00fdd4bc-6e55-45e4-a3ac-63f8facc319b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\App">
-      <UniqueIdentifier>{bcdcc18d-cf0a-4400-81ef-d3c87c86c656}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Utils\Debug">
       <UniqueIdentifier>{83ee4304-9c1f-47e7-aa89-ba3255915d28}</UniqueIdentifier>
     </Filter>
@@ -331,6 +328,9 @@
     </Filter>
     <Filter Include="Utils\Json">
       <UniqueIdentifier>{8d54e481-e8a4-485e-875d-8df16b54c62a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Application">
+      <UniqueIdentifier>{bcdcc18d-cf0a-4400-81ef-d3c87c86c656}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -17,9 +17,11 @@ public:
 
 	void		RemoveObject(const char* _name);
 	Object*		GetObject(const char* _name);
-	ObjectMap*	GetObjectMap();
+	ObjectMap&	GetObjectMap();
 	bool		HasObject(const char* _name);
 
+	// TODO
+	// Implement these functions
 	template <typename ComponentType>
 	inline void				AddComponentToObject(const char* _name);
 

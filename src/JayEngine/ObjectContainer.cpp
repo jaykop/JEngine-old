@@ -20,7 +20,7 @@ void ObjectContainer::RemoveObject(const char* _name)
 	}
 
 	else
-		JE_DEBUG_PRINT("No such object\n");
+		JE_DEBUG_PRINT("No such object.\n");
 }
 
 Object* ObjectContainer::GetObject(const char * _name)
@@ -33,14 +33,14 @@ Object* ObjectContainer::GetObject(const char * _name)
 		return (*toRemove).second;
 
 	else {
-		JE_DEBUG_PRINT("No such object\n");
+		JE_DEBUG_PRINT("No such object.\n");
 		return nullptr;
 	}
 }
 
-ObjectMap* ObjectContainer::GetObjectMap()
+ObjectMap& ObjectContainer::GetObjectMap()
 {
-	return &m_objectMap;
+	return m_objectMap;
 }
 
 bool ObjectContainer::HasObject(const char* _name)

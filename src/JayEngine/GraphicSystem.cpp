@@ -9,6 +9,7 @@
 #include "InputHandler.h"
 #include "Light.h"
 #include "Material.h"
+#include "JsonParser.h"
 
 #ifdef JE_SUPPORT_3D
 #include "Model.h"
@@ -39,6 +40,14 @@ GraphicSystem::GraphicSystem()
 
 void GraphicSystem::Load()
 {
+	const rapidjson::Value& color = JSON::GetDocument()["Background"];
+	std::cout << color.IsArray() << std::endl;
+	m_backgroundColor.Set(
+		color[0].GetFloat(),
+		color[1].GetFloat(),
+		color[2].GetFloat(),
+		color[3].GetFloat()
+	);
 }
 
 void GraphicSystem::Init()

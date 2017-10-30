@@ -35,7 +35,7 @@ int main(int argc, char* args[]) {
 
 	// Check init data
 	APP::InitData data;
-	if (SetInitData(data)) {
+	if (!SetInitData(data)) {
 		JE_DEBUG_PRINT("Wrong init data!\n");
 		return -1;
 	}
@@ -55,15 +55,18 @@ bool SetInitData(APP::InitData& _data) {
 
 	JSON::ReadFile("../src/resource/initData.json");
 
-	if (JSON::GetDocument()["Title"].IsString()
-		&& JSON::GetDocument()["Fullscreen"].IsBool()
-		&& JSON::GetDocument()["Width"].IsInt()
-		&& JSON::GetDocument()["Height"].IsInt()) {
+	const rapidjson::Value& title = JSON::GetDocument()["Title"];
+	const rapidjson::Value& fullscreen = JSON::GetDocument()["Fullscreen"];
+	const rapidjson::Value& width = JSON::GetDocument()["Width"];
+	const rapidjson::Value& height = JSON::GetDocument()["Height"];
 
-		_data.m_title.assign(JSON::GetDocument()["Title"].GetString());
-		_data.m_isFullScreen = JSON::GetDocument()["Fullscreen"].GetBool();
-		_data.m_width = JSON::GetDocument()["Width"].GetInt();
-		_data.m_height = JSON::GetDocument()["Height"].GetInt();
+	if (title.IsString() && fullscreen.IsBool()
+		&& width.IsInt() && height.IsInt()) {
+
+		_data.m_title.assign(title.GetString());
+		_data.m_isFullScreen = fullscreen.GetBool();
+		_data.m_width = width.GetInt();
+		_data.m_height = height.GetInt();
 	
 		return true;
 	}

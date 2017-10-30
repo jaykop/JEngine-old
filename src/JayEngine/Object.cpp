@@ -123,6 +123,11 @@ bool Object::GetActive(void) const
 	return m_active;
 }
 
+ComponentMap& Object::GetComponentMap()
+{
+	return m_componentMap;
+}
+
 void Object::ClearComponents()
 {
 	// Clear all components in the list

@@ -4,6 +4,7 @@
 #include "Application.h"
 #include "AssetManager.h"
 #include "JsonParser.h"
+#include "StateManager.h"
 
 JE_BEGIN
 
@@ -15,26 +16,17 @@ ASSET::ArchetypeMap	ASSET::m_archetypeMap;
 
 void AssetManager::Load()
 {
-	// TODO
+	// Load states
 	JSON::ReadFile("../src/resource/register/state.json");
-	for (auto it = JSON::GetDocument().MemberBegin();
-		it != JSON::GetDocument().MemberEnd(); ++it) {
-		LoadImage(it->value.GetString(), it->name.GetString());
-	}
-	//LoadState("../src/resource/state/state1.json", "test");
+	const rapidjson::Value& states = JSON::GetDocument()["State"];
+	for (rapidjson::SizeType i = 0; i < states.Size(); ++i) 
+		STATE::PushState(states[i]["directory"].GetString(), states[i]["key"].GetString());
 
 	// Load images
 	JSON::ReadFile("../src/resource/register/asset.json");
-	for (auto it = JSON::GetDocument().MemberBegin();
-		it != JSON::GetDocument().MemberEnd(); ++it) {
-		LoadImage(it->value.GetString(), it->name.GetString());
-	}
-
-	//LoadImage("../src/resource/texture/rect.png", "rect");
-	//LoadImage("../src/resource/texture/circle.png", "circle");
-	//LoadImage("../src/resource/texture/images.png", "testTexture"); 
-	//LoadImage("../src/resource/texture/uvtemplate.png", "uvtemplate");
-	//LoadImage("../src/resource/texture/testAnimation.png", "testAnimation");
+	const rapidjson::Value& textures = JSON::GetDocument()["Texture"];
+	for (rapidjson::SizeType i = 0; i < textures.Size(); ++i) 
+		LoadImage(textures[i]["directory"].GetString(), textures[i]["key"].GetString());
 }
 
 void AssetManager::Unload()
@@ -99,11 +91,10 @@ Archetype* AssetManager::GetArchetype(const char *_key)
 	return nullptr;
 }
 
-void AssetManager::LoadState(const char* /*_path*/, const char* /*_stateKey*/)
-{
-	// TODO
-	// load state assets
-}
+//void AssetManager::LoadState(const char* _path, const char* _stateKey)
+//{
+//	STATE::PushState(_path, _stateKey);
+//}
 
 void AssetManager::LoadAudio(const char* /*_path*/, const char* /*_audioKey*/)
 {
