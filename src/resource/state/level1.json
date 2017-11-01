@@ -7,7 +7,7 @@
 			"Component" : [
 			{
 				"Type": "Transform",
-				"values": {
+				"Values": {
 					"Position": [ 325, -250, -10 ],
 					"Scale": [ 100, 50, 0 ]
 				}

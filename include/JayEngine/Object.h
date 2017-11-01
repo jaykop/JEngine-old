@@ -15,6 +15,7 @@ class Object {
 
 public:
 
+	friend class JsonParser;
 	friend class ObjectFactory;
 	friend class ObjectContainer;
 
@@ -39,16 +40,16 @@ public:
 
 	ComponentMap& GetComponentMap();
 
-	template <typename ComponentType>
+	template<typename ComponentType>
 	inline void				AddComponent();
 
 	template <typename ComponentType>
 	inline ComponentType*	GetComponent();
 
-	template <typename ComponentType>
+	template<typename ComponentType>
 	inline bool				HasComponent();
 
-	template <typename ComponentType>
+	template<typename ComponentType>
 	inline void				RemoveComponent();
 
 private:
@@ -62,6 +63,11 @@ private:
 	
 	void ClearComponents();
 	void ClearChildren();
+
+	void		AddComponent(const char * _componentName);
+	Component*	GetComponent(const char * _componentName);
+	bool		HasComponent(const char* _componentName) const;
+	void		RemoveComponent(const char* _componentName);
 
 	unsigned			m_id;
 	bool				m_active;

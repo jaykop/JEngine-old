@@ -100,12 +100,6 @@
     <ClCompile Include="..\..\src\JayEngine\ObjectFactory.cpp">
       <Filter>Core\Object</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JayEngine\iniReader.cpp">
-      <Filter>Utils\ini</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\JayEngine\iniWritter.cpp">
-      <Filter>Utils\ini</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\JayEngine\Shader.cpp">
       <Filter>System\Graphic</Filter>
     </ClCompile>
@@ -123,6 +117,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\JayEngine\JsonParser.cpp">
       <Filter>Utils\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\ComponentManager.cpp">
+      <Filter>Core\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -243,12 +240,6 @@
     <ClInclude Include="..\..\include\JayEngine\ObjectFactory.h">
       <Filter>Core\Object</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JayEngine\iniReader.h">
-      <Filter>Utils\ini</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JayEngine\iniWritter.h">
-      <Filter>Utils\ini</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\JayEngine\Shader.hpp">
       <Filter>System\Graphic</Filter>
     </ClInclude>
@@ -266,6 +257,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\JayEngine\JsonParser.h">
       <Filter>Utils\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\ComponentBuilder.h">
+      <Filter>Core\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -336,9 +330,6 @@
   <ItemGroup>
     <None Include="..\..\include\JayEngine\Object.inl">
       <Filter>Core\Object</Filter>
-    </None>
-    <None Include="..\..\include\JayEngine\ComponentManager.inl">
-      <Filter>Core\Component</Filter>
     </None>
     <None Include="..\..\include\JayEngine\ObjectContainer.inl">
       <Filter>Core\Object</Filter>

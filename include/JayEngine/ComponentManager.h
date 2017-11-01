@@ -1,24 +1,32 @@
 #pragma once
 #include "Macro.h"
+#include <unordered_map>
 
 JE_BEGIN
 
+class ComponentBuilder;
+typedef std::unordered_map<std::string, ComponentBuilder*> BuilderMap;
+
 class Object;
+class Component;
 class ComponentManager {
 
 public:
 
-	template <typename ComponentType>
-	static inline ComponentType* CreateComponent(Object* _pOwner);
+	static Component*	CreateComponent(
+		const char* _componentName, Object* _pOwner);
 
-	template <typename ComponentType>
-	static inline void RemoveComponent(ComponentType* _pComponent);
+	static void			RegisterBuilder(
+		const char* _componentName, ComponentBuilder* _pBuilder);
+
+	static void			ClearBuilders();
 
 private:
+
+	static BuilderMap m_builderMap;
 
 };
 
 JE_END
 
-#include "ComponentManager.inl"
 

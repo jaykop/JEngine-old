@@ -20,7 +20,13 @@
     <ClInclude Include="SampleLogic.h">
       <Filter>GameLogic</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentHreader.h">
+    <ClInclude Include="ComponentRegister.h">
+      <Filter>GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentHeaders.h">
+      <Filter>GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogicHeader.h">
       <Filter>GameLogic</Filter>
     </ClInclude>
   </ItemGroup>

@@ -48,7 +48,7 @@ void Object::AddChild(Object* _child)
 
 	// Unless...
 	else
-		JE_DEBUG_PRINT("Existing child\n");
+		JE_DEBUG_PRINT("Existing child.\n");
 }
 
 void Object::RemoveChild(const char* _name)
@@ -63,7 +63,7 @@ void Object::RemoveChild(const char* _name)
 	}
 		
 	else 
-		JE_DEBUG_PRINT("No such object\n");
+		JE_DEBUG_PRINT("No such object.\n");
 }
 
 Object* Object::GetChild(const char* _name)
@@ -77,7 +77,7 @@ Object* Object::GetChild(const char* _name)
 
 	// Unless...
 	else {
-		JE_DEBUG_PRINT("No such object\n");
+		JE_DEBUG_PRINT("No such object.\n");
 		return nullptr;
 	}
 }
@@ -93,7 +93,7 @@ bool Object::HasChild(const char* _name)
 
 	// Unless...
 	else {
-		JE_DEBUG_PRINT("No such object\n");
+		JE_DEBUG_PRINT("No such object.\n");
 		return false;
 	}
 }
@@ -146,5 +146,64 @@ void Object::ClearChildren()
 		m_pOBC->RemoveObject(child.second->GetName().c_str());
 }
 
+void Object::AddComponent(const char* _componentName)
+{
+	auto found = m_componentMap.find(_componentName);
+
+	// Found nothing exsting component type
+	// Insert new component to the list
+	if (found == m_componentMap.end())
+		m_componentMap.insert(
+			ComponentMap::value_type(_componentName,
+				ComponentManager::CreateComponent(_componentName, this)
+			));
+
+	else
+		JE_DEBUG_PRINT("Cannot add identical component again!\n");
+}
+
+Component* Object::GetComponent(const char* _componentName)
+{
+	// Find if there is the one
+	auto found = m_componentMap.find(_componentName);
+
+	// If there is return it
+	if (found != m_componentMap.end())
+		return found->second;
+
+	else {
+		JE_DEBUG_PRINT("No such component\n");
+		return nullptr;
+	}
+}
+
+bool Object::HasComponent(const char* _componentName) const
+{
+	// Find if there is the one
+	auto found = m_componentMap.find(_componentName);
+
+	// If there is return it
+	if (found != m_componentMap.end())
+		return true;
+
+	else {
+		JE_DEBUG_PRINT("No such component.\n");
+		return false;
+	}
+}
+
+void Object::RemoveComponent(const char* _componentName)
+{
+	// Find if there is the one
+	auto found = m_componentMap.find(_componentName);
+
+	// If there is, remove it
+	if (found != m_componentMap.end())
+		delete found->second;
+
+	else 
+		JE_DEBUG_PRINT("No such component.\n");
+	
+}
 
 JE_END

@@ -1,4 +1,3 @@
-#include <iostream>
 #include "Object.h"
 #include "ComponentManager.h"
 
@@ -24,7 +23,7 @@ inline void Object::AddComponent()
 template<typename ComponentType>
 inline ComponentType* Object::GetComponent()
 {
-	// Find if there is the once
+	// Find if there is the one
 	auto found = m_componentMap.find(typeid(ComponentType).name());
 
 	// If there is return it
@@ -40,7 +39,7 @@ inline ComponentType* Object::GetComponent()
 template<typename ComponentType>
 inline bool Object::HasComponent()
 {
-	// Find if there is the once
+	// Find if there is the one
 	auto found = m_componentMap.find(typeid(ComponentType).name());
 
 	// If there is return it
@@ -56,7 +55,15 @@ inline bool Object::HasComponent()
 template<typename ComponentType>
 inline void Object::RemoveComponent()
 {
-	;
+	// Find if there is the one
+	auto found = m_componentMap.find(typeid(ComponentType).name());
+
+	// If there is, remove it
+	if (found != m_componentMap.end())
+		delete found->second;
+
+	else
+		JE_DEBUG_PRINT("No such component.\n");
 }
 
 JE_END

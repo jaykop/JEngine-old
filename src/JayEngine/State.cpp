@@ -19,7 +19,7 @@ void State::Load()
 	JSON::ReadFile(m_loadDirectory.c_str());
 
 	// TODO
-	//JSON::LoadObjects();
+	JSON::LoadObjects();
 	SYSTEM::Load();
 }
 

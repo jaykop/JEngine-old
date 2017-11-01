@@ -8,13 +8,13 @@ JE_BEGIN
 
 BehaviorSystem::BehaviorSystem()
 	:System()
-{
-	m_pObjectMap = 
-		&STATE::GetCurrentState()->m_objContainer->GetObjectMap();
-}
+{}
 
 void BehaviorSystem::Load()
 {
+	m_pObjectMap =
+		&STATE::GetCurrentState()->m_objContainer->GetObjectMap();
+
 	// TODO
 	//for (auto obj = m_pObjectMap->begin();
 	//	obj != m_pObjectMap->end(); ++obj) {

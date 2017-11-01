@@ -164,7 +164,9 @@
     <ClCompile Include="SampleLogic.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ComponentHreader.h" />
+    <ClInclude Include="ComponentHeaders.h" />
+    <ClInclude Include="ComponentRegister.h" />
+    <ClInclude Include="GameLogicHeader.h" />
     <ClInclude Include="SampleLogic.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

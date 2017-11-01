@@ -27,12 +27,11 @@
     <ClCompile Include="..\..\src\JayEngine\AssetManager.cpp" />
     <ClCompile Include="..\..\src\JayEngine\BehaviorSystem.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Camera.cpp" />
+    <ClCompile Include="..\..\src\JayEngine\ComponentManager.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Debug.cpp" />
     <ClCompile Include="..\..\src\JayEngine\GLManager.cpp" />
     <ClCompile Include="..\..\src\JayEngine\GraphicSystem.cpp" />
     <ClCompile Include="..\..\src\JayEngine\ImguiManager.cpp" />
-    <ClCompile Include="..\..\src\JayEngine\iniReader.cpp" />
-    <ClCompile Include="..\..\src\JayEngine\iniWritter.cpp" />
     <ClCompile Include="..\..\src\JayEngine\InputHandler.cpp" />
     <ClCompile Include="..\..\src\JayEngine\JsonParser.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Light.cpp" />
@@ -91,13 +90,12 @@
     <ClInclude Include="..\..\include\JayEngine\BehaviorSystem.h" />
     <ClInclude Include="..\..\include\JayEngine\Camera.h" />
     <ClInclude Include="..\..\include\JayEngine\Component.h" />
+    <ClInclude Include="..\..\include\JayEngine\ComponentBuilder.h" />
     <ClInclude Include="..\..\include\JayEngine\ComponentManager.h" />
     <ClInclude Include="..\..\include\JayEngine\Debug.h" />
     <ClInclude Include="..\..\include\JayEngine\GLManager.h" />
     <ClInclude Include="..\..\include\JayEngine\GraphicSystem.h" />
     <ClInclude Include="..\..\include\JayEngine\ImguiManager.h" />
-    <ClInclude Include="..\..\include\JayEngine\iniReader.h" />
-    <ClInclude Include="..\..\include\JayEngine\iniWritter.h" />
     <ClInclude Include="..\..\include\JayEngine\InputHandler.h" />
     <ClInclude Include="..\..\include\JayEngine\JsonParser.h" />
     <ClInclude Include="..\..\include\JayEngine\Light.h" />
@@ -141,12 +139,6 @@
     <ClInclude Include="..\..\include\JayEngine\Vector4.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\include\JayEngine\ComponentManager.inl">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </None>
     <None Include="..\..\include\JayEngine\Object.inl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>

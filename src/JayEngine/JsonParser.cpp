@@ -1,9 +1,10 @@
 #include "Object.h"
+#include "Component.h"
 #include "JsonParser.h"
-#include "FileReadStream.h"
-#include "stringbuffer.h"
 #include "ObjectFactory.h"
-#include "../game/ComponentHreader.h"
+
+#include "stringbuffer.h"
+#include "FileReadStream.h"
 
 JE_BEGIN
 
@@ -31,19 +32,30 @@ void JsonParser::LoadObjects()
 	for (rapidjson::SizeType i = 0; i < object.Size(); ++i) {
 
 		const rapidjson::Value& component = object[i]["Component"];
-		FACTORY::CreateObject(component[i]["Name"].GetString());
 
-		for (rapidjson::SizeType j = 0; j < component.Size(); ++j)
-			LoadComponents(component[j]);
+		if (component[i]["Name"].IsString()) {
+			FACTORY::CreateObject(component[i]["Name"].GetString());
+
+			for (rapidjson::SizeType j = 0; j < component.Size(); ++j)
+				LoadComponents(component[j]);
+		}
+
+		else
+			JE_DEBUG_PRINT("Wrong type of object name.\n");
 	}
 }
 
-void JsonParser::LoadComponents(const rapidjson::Value& /*_data*/)
+void JsonParser::LoadComponents(const rapidjson::Value& _data)
 {
-	// TODO
-	//std::string a = _data["Type"].GetString();
-	//if (_data["Type"].IsString())
-	//	;
+	if (_data["Type"].IsString()) {
+		FACTORY::GetCreatedObject()->AddComponent(_data["Type"].GetString());
+		Component* found = 
+			FACTORY::GetCreatedObject()->GetComponent(_data["Type"].GetString());
+		found->Load(_data["Values"]);
+	}
+
+	else
+		JE_DEBUG_PRINT("Wrong type of component name.\n");
 }
 
 JE_END
