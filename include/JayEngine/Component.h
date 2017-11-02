@@ -13,7 +13,7 @@ public:
 	friend class Object;
 	unsigned GetOwnerId() { return m_ownerId; }
 
-	virtual void Load(const rapidjson::Value& _data) = 0;
+	virtual void Load(const RJValue& _data) = 0;
 	virtual void Init() = 0;
 	virtual void Update(float _dt) = 0;
 	virtual void Close() = 0;

@@ -8,13 +8,14 @@ class Component;
 
 class ComponentBuilder {
 
-	friend class ComponentManager;
-
 public:
 
 	virtual Component* CreateComponent(Object* _pOwner) const = 0;
 
-private:
+protected:
+
+	friend class AssetManager;
+	friend class ComponentManager;
 
 	ComponentBuilder() {};
 	~ComponentBuilder() {};

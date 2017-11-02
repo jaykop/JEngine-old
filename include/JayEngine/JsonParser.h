@@ -4,15 +4,18 @@
 
 JE_BEGIN
 
+typedef rapidjson::Value RJValue;
+typedef rapidjson::Document RJDoc;
+
 class JsonParser {
 
 public:
 
 	static void ReadFile(const char* _dir);
-	static const rapidjson::Document& GetDocument();
+	static const RJDoc& GetDocument();
 
 	static void LoadObjects();
-	static void LoadComponents(const rapidjson::Value& _data);
+	static void LoadComponents(const RJValue& _data);
 
 private:
 
@@ -21,7 +24,7 @@ private:
 	JsonParser(const JsonParser& /*_copy*/) {};
 	void operator=(const JsonParser& /*_copy*/) {};
 
-	static  rapidjson::Document m_document;
+	static RJDoc m_document;
 
 };
 

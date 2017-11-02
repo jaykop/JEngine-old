@@ -1,8 +1,27 @@
 #pragma once
 #include "Vector3.h"
 #include "Component.h"
+#include "ComponentBuilder.h"
 
 JE_BEGIN
+
+class TransformBuilder : public ComponentBuilder
+{
+	
+	friend class AssetManager;
+
+public:
+	
+
+private:
+
+	TransformBuilder();
+	~TransformBuilder() {};
+	TransformBuilder(const TransformBuilder& /*_copy*/) {};
+	void operator=(const TransformBuilder& /*_copy*/) {};
+
+	Component* CreateComponent(Object* _pOwner) const override;
+};
 
 class Transform : public Component
 {
@@ -13,6 +32,7 @@ class Transform : public Component
 
 	friend class PhysicsSystem;
 	friend class ComponentManager;
+	friend class TransformBuilder;
 
 public:
 
@@ -26,6 +46,12 @@ private:
 	~Transform() {};
 	Transform(const Transform& /*_copy*/) {};
 	void operator= (const Transform& /*_copy*/) {};
+
+	void Load(const RJValue& _data) override;
+	void Init() override {};
+	void Update(float /*_dt*/) override {};
+	void Close() override {};
+	void Unload() override {};
 
 };
 

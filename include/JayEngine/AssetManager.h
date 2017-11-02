@@ -23,7 +23,9 @@ class AssetManager {
 
 public:
 
-	//static void LoadState(const char* _path, const char* _stateKey);
+	static void RegisterComponent();
+	static void DeleteComponent();
+
 	static void LoadAudio(const char* _path, const char* _audioKey);
 	static void LoadImage(const char* _path, const char* _textureKey);
 	static void LoadArchetype(const char* _path, const char* _archetypeKey);

@@ -1,10 +1,10 @@
 {
 	"Texture" : [
 
-		{"key" : "rect", 			"directory" : "../src/resource/texture/rect.png"},
-		{"key" : "circle", 			"directory" : "../src/resource/texture/circle.png"},
-		{"key" : "testTexture", 	"directory" : "../src/resource/texture/images.png"},
-		{"key" : "uvtemplate", 		"directory" : "../src/resource/texture/uvtemplate.png"},
-		{"key" : "testAnimation", 	"directory" : "../src/resource/texture/testAnimation.png"}
+		{"Key" : "rect", 			"Directory" : "../src/resource/texture/rect.png"},
+		{"Key" : "circle", 			"Directory" : "../src/resource/texture/circle.png"},
+		{"Key" : "testTexture", 	"Directory" : "../src/resource/texture/images.png"},
+		{"Key" : "uvtemplate", 		"Directory" : "../src/resource/texture/uvtemplate.png"},
+		{"Key" : "testAnimation", 	"Directory" : "../src/resource/texture/testAnimation.png"}
 	]
 }

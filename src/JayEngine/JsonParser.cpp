@@ -8,7 +8,7 @@
 
 JE_BEGIN
 
-rapidjson::Document JsonParser::m_document;
+RJDoc JsonParser::m_document;
 
 void JsonParser::ReadFile(const char * _dir)
 {
@@ -20,18 +20,18 @@ void JsonParser::ReadFile(const char * _dir)
 	m_document.ParseStream<0, rapidjson::UTF8<>, rapidjson::FileReadStream>(read);
 }
 
-const rapidjson::Document & JsonParser::GetDocument()
+const RJDoc& JsonParser::GetDocument()
 {
 	return m_document;
 }
 
 void JsonParser::LoadObjects()
 {
-	const rapidjson::Value& object = m_document["Object"];
+	const RJValue& object = m_document["Object"];
 
 	for (rapidjson::SizeType i = 0; i < object.Size(); ++i) {
 
-		const rapidjson::Value& component = object[i]["Component"];
+		const RJValue& component = object[i]["Component"];
 
 		if (component[i]["Name"].IsString()) {
 			FACTORY::CreateObject(component[i]["Name"].GetString());
@@ -45,7 +45,7 @@ void JsonParser::LoadObjects()
 	}
 }
 
-void JsonParser::LoadComponents(const rapidjson::Value& _data)
+void JsonParser::LoadComponents(const RJValue& _data)
 {
 	if (_data["Type"].IsString()) {
 		FACTORY::GetCreatedObject()->AddComponent(_data["Type"].GetString());

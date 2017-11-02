@@ -13,7 +13,7 @@ inline void Object::AddComponent()
 	if (found == m_componentMap.end())
 		m_componentMap.insert(
 			ComponentMap::value_type(typeid(ComponentType).name(),
-				ComponentManager::CreateComponent<ComponentType>(this)
+				COMPONENT::CreateComponent<ComponentType>(this)
 			));
 
 	else

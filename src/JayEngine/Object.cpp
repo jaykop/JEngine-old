@@ -155,7 +155,7 @@ void Object::AddComponent(const char* _componentName)
 	if (found == m_componentMap.end())
 		m_componentMap.insert(
 			ComponentMap::value_type(_componentName,
-				ComponentManager::CreateComponent(_componentName, this)
+				COMPONENT::CreateComponent(_componentName, this)
 			));
 
 	else

@@ -3,7 +3,7 @@
 
 JE_BEGIN
 
-void SampleLogic::Load(const rapidjson::Value & /*_data*/)
+void SampleLogic::Load(const RJValue& /*_data*/)
 {}
 
 void SampleLogic::Init()
@@ -55,5 +55,14 @@ void SampleLogic::Close()
 
 void SampleLogic::Unload()
 {}
+
+SampleLogicBuilder::SampleLogicBuilder()
+	:ComponentBuilder()
+{}
+
+Component* SampleLogicBuilder::CreateComponent(Object* _pOwner) const
+{
+	return new SampleLogic(_pOwner);
+}
 
 JE_END

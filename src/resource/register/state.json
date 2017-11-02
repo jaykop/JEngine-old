@@ -1,5 +1,5 @@
 {
 	"State" : [
-		{"key" : "level1", 	"directory" : "../src/resource/state/level1.json"}
+		{"Key" : "level1", 	"Directory" : "../src/resource/state/level1.json"}
 	]
 }

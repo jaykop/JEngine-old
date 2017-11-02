@@ -40,7 +40,7 @@ GraphicSystem::GraphicSystem()
 
 void GraphicSystem::Load()
 {
-	const rapidjson::Value& color = JSON::GetDocument()["Background"];
+	const RJValue& color = JSON::GetDocument()["Background"];
 	std::cout << color.IsArray() << std::endl;
 	m_backgroundColor.Set(
 		color[0].GetFloat(),

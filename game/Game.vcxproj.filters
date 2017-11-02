@@ -15,12 +15,12 @@
     <ClCompile Include="SampleLogic.cpp">
       <Filter>GameLogic</Filter>
     </ClCompile>
+    <ClCompile Include="ComponentRegister.cpp">
+      <Filter>GameLogic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SampleLogic.h">
-      <Filter>GameLogic</Filter>
-    </ClInclude>
-    <ClInclude Include="ComponentRegister.h">
       <Filter>GameLogic</Filter>
     </ClInclude>
     <ClInclude Include="ComponentHeaders.h">

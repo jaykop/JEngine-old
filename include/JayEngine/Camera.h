@@ -4,6 +4,25 @@
 
 JE_BEGIN
 
+class CameraBuilder : public ComponentBuilder
+{
+
+	friend class AssetManager;
+
+public:
+
+private:
+
+	CameraBuilder();
+	~CameraBuilder() {};
+	CameraBuilder(const CameraBuilder& /*_copy*/) {};
+	void operator=(const CameraBuilder& /*_copy*/) {};
+
+	Component* CreateComponent(Object* _pOwner) const override;
+
+};
+
+
 class Camera : public Component
 {
 

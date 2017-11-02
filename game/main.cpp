@@ -15,6 +15,7 @@ Contains Process' main flow
 #include "Debug.h"
 #include "JsonParser.h"
 #include "Application.h"
+#include "AssetManager.h"
 
 #pragma comment(lib, "sdl2")
 #pragma comment(lib, "sdl2main")
@@ -40,6 +41,7 @@ int main(int argc, char* args[]) {
 		return -1;
 	}
 
+	ASSET::RegisterComponent();
 	if (APP::Initialize(data))
 		APP::Update();
 
@@ -55,10 +57,10 @@ bool SetInitData(APP::InitData& _data) {
 
 	JSON::ReadFile("../src/resource/initData.json");
 
-	const rapidjson::Value& title = JSON::GetDocument()["Title"];
-	const rapidjson::Value& fullscreen = JSON::GetDocument()["Fullscreen"];
-	const rapidjson::Value& width = JSON::GetDocument()["Width"];
-	const rapidjson::Value& height = JSON::GetDocument()["Height"];
+	const RJValue& title = JSON::GetDocument()["Title"];
+	const RJValue& fullscreen = JSON::GetDocument()["Fullscreen"];
+	const RJValue& width = JSON::GetDocument()["Width"];
+	const RJValue& height = JSON::GetDocument()["Height"];
 
 	if (title.IsString() && fullscreen.IsBool()
 		&& width.IsInt() && height.IsInt()) {

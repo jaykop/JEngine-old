@@ -1,10 +1,11 @@
 #include "GL\glew.h"
 #include "lodepng.h"
 #include "State.h"
-#include "Application.h"
 #include "AssetManager.h"
 #include "JsonParser.h"
 #include "StateManager.h"
+#include "ComponentBuilder.h"
+#include "ComponentManager.h"
 
 JE_BEGIN
 
@@ -18,15 +19,15 @@ void AssetManager::Load()
 {
 	// Load states
 	JSON::ReadFile("../src/resource/register/state.json");
-	const rapidjson::Value& states = JSON::GetDocument()["State"];
+	const RJValue& states = JSON::GetDocument()["State"];
 	for (rapidjson::SizeType i = 0; i < states.Size(); ++i) 
-		STATE::PushState(states[i]["directory"].GetString(), states[i]["key"].GetString());
+		STATE::PushState(states[i]["Directory"].GetString(), states[i]["Key"].GetString());
 
 	// Load images
 	JSON::ReadFile("../src/resource/register/asset.json");
-	const rapidjson::Value& textures = JSON::GetDocument()["Texture"];
+	const RJValue& textures = JSON::GetDocument()["Texture"];
 	for (rapidjson::SizeType i = 0; i < textures.Size(); ++i) 
-		LoadImage(textures[i]["directory"].GetString(), textures[i]["key"].GetString());
+		LoadImage(textures[i]["Directory"].GetString(), textures[i]["Key"].GetString());
 }
 
 void AssetManager::Unload()
@@ -49,6 +50,9 @@ void AssetManager::Unload()
 	//		archetype.second = nullptr;
 	//	}
 	//}
+
+	// Clear state map
+	m_stateMap.clear();
 }
 
 State* AssetManager::GetState(const char *_key)
@@ -90,11 +94,6 @@ Archetype* AssetManager::GetArchetype(const char *_key)
 	JE_DEBUG_PRINT("Cannot find such name of archetype resource: %s.\n", _key);
 	return nullptr;
 }
-
-//void AssetManager::LoadState(const char* _path, const char* _stateKey)
-//{
-//	STATE::PushState(_path, _stateKey);
-//}
 
 void AssetManager::LoadAudio(const char* /*_path*/, const char* /*_audioKey*/)
 {
