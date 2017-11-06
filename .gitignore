@@ -1,4 +1,5 @@
 temp/
+build/vs2015/.vs/
 *.db
 *.suo
 *.user
@@ -10,3 +11,4 @@ temp/
 *.obj
 *.log
 *.ilk
+*.ipch
