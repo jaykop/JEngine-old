@@ -13,7 +13,6 @@ Contains Process' main flow
 
 #include "Macro.h"
 #include "Debug.h"
-#include "JsonParser.h"
 #include "Application.h"
 #include "AssetManager.h"
 
@@ -21,8 +20,6 @@ Contains Process' main flow
 #pragma comment(lib, "sdl2main")
 
 USING_NS_JE;
-
-bool SetInitData(APP::InitData& _data);
 
 int main(int argc, char* args[]) {
 
@@ -34,15 +31,8 @@ int main(int argc, char* args[]) {
 	JE_UNUSED_PARAM(argc);
 	JE_UNUSED_PARAM(args);
 
-	// Check init data
-	APP::InitData data;
-	if (!SetInitData(data)) {
-		JE_DEBUG_PRINT("Wrong init data!\n");
-		return -1;
-	}
-
-	ASSET::RegisterComponent();
-	if (APP::Initialize(data))
+	ASSET::RegisterUserAppInfo();
+	if (APP::Initialize())
 		APP::Update();
 
 	APP::Close();
@@ -51,28 +41,4 @@ int main(int argc, char* args[]) {
 
 	return 0;
 
-}
-
-bool SetInitData(APP::InitData& _data) {
-
-	JSON::ReadFile("../src/resource/initData.json");
-
-	const RJValue& title = JSON::GetDocument()["Title"];
-	const RJValue& fullscreen = JSON::GetDocument()["Fullscreen"];
-	const RJValue& width = JSON::GetDocument()["Width"];
-	const RJValue& height = JSON::GetDocument()["Height"];
-
-	if (title.IsString() && fullscreen.IsBool()
-		&& width.IsInt() && height.IsInt()) {
-
-		_data.m_title.assign(title.GetString());
-		_data.m_isFullScreen = fullscreen.GetBool();
-		_data.m_width = width.GetInt();
-		_data.m_height = height.GetInt();
-	
-		return true;
-	}
-
-	else
-		return false;
 }

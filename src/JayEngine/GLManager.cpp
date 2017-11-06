@@ -191,12 +191,12 @@ bool GLManager::initSDL_GL()
 
 		// Do shader stuff
 		m_shader[SHADER_LIGHTING].LoadShader(
-			"../src/resource/shader/lighting.vs",
-			"../src/resource/shader/lighting.fs");
+			"../src/shader/lighting.vs",
+			"../src/shader/lighting.fs");
 
 		m_shader[SHADER_NORMAL].LoadShader(
-			"../src/resource/shader/normal.vs",
-			"../src/resource/shader/normal.fs");
+			"../src/shader/normal.vs",
+			"../src/shader/normal.fs");
 
 		RegisterUniform();
 	}

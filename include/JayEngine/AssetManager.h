@@ -23,8 +23,7 @@ class AssetManager {
 
 public:
 
-	static void RegisterComponent();
-	static void DeleteComponent();
+	static void RegisterUserAppInfo();
 
 	static void LoadAudio(const char* _path, const char* _audioKey);
 	static void LoadImage(const char* _path, const char* _textureKey);
@@ -34,6 +33,9 @@ public:
 	static Audio*		GetAudio(const char* _key);
 	static unsigned		GetTexture(const char* _key);
 	static Archetype*	GetArchetype(const char* _key);
+
+	static std::string m_initDirectory, m_assetDirectory, 
+		m_stateDirectory, m_archeDirectory;
 
 private:
 	

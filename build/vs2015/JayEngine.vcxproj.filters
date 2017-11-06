@@ -261,6 +261,9 @@
     <ClInclude Include="..\..\include\JayEngine\ComponentBuilder.h">
       <Filter>Core\Component</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\BuiltInComponents.h">
+      <Filter>Core\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">

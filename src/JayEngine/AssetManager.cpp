@@ -6,6 +6,7 @@
 #include "StateManager.h"
 #include "ComponentBuilder.h"
 #include "ComponentManager.h"
+#include "BuiltInComponents.h"
 
 JE_BEGIN
 
@@ -14,17 +15,28 @@ ASSET::AudioMap		ASSET::m_audioMap;
 ASSET::StateMap		ASSET::m_stateMap;
 ASSET::TextureMap	ASSET::m_textureMap;
 ASSET::ArchetypeMap	ASSET::m_archetypeMap;
+std::string			ASSET::m_initDirectory;
+std::string			ASSET::m_assetDirectory;
+std::string			ASSET::m_stateDirectory;
+std::string			ASSET::m_archeDirectory;
 
 void AssetManager::Load()
 {
+	// Load built-in components
+	JE_ADD_COMPONENT(Transform);
+	JE_ADD_COMPONENT(Camera);
+	JE_ADD_COMPONENT(Sprite);
+	JE_ADD_COMPONENT(Light);
+	// JE_ADD_COMPONENT(Model);
+
 	// Load states
-	JSON::ReadFile("../src/resource/register/state.json");
+	JSON::ReadFile(ASSET::m_stateDirectory.c_str());
 	const RJValue& states = JSON::GetDocument()["State"];
 	for (rapidjson::SizeType i = 0; i < states.Size(); ++i) 
 		STATE::PushState(states[i]["Directory"].GetString(), states[i]["Key"].GetString());
 
 	// Load images
-	JSON::ReadFile("../src/resource/register/asset.json");
+	JSON::ReadFile(ASSET::m_assetDirectory.c_str());
 	const RJValue& textures = JSON::GetDocument()["Texture"];
 	for (rapidjson::SizeType i = 0; i < textures.Size(); ++i) 
 		LoadImage(textures[i]["Directory"].GetString(), textures[i]["Key"].GetString());
@@ -53,6 +65,8 @@ void AssetManager::Unload()
 
 	// Clear state map
 	m_stateMap.clear();
+
+	COMPONENT::ClearBuilders();
 }
 
 State* AssetManager::GetState(const char *_key)

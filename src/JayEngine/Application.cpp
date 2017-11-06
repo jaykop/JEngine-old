@@ -3,8 +3,11 @@
 #include "Application.h"
 #include "StateManager.h"
 #include "AssetManager.h"
-#include "ImguiManager.h"
 #include "JsonParser.h"
+
+#ifdef JE_SUPPORT_IMGUI
+#include "ImguiManager.h"
+#endif
 
 JE_BEGIN
 
@@ -17,9 +20,29 @@ SDL_Surface*	APP::m_pSurface = nullptr;
 SDL_GLContext	APP::m_pContext = nullptr;
 APP::InitData	APP::m_pData = { "demo", false, 800, 600 };
 
-bool Application::Initialize(const InitData& _data)
+bool Application::Initialize()
 {
-	m_pData = _data;
+	// Assign app init data
+	JSON::ReadFile(ASSET::m_initDirectory.c_str());
+
+	const RJValue& title = JSON::GetDocument()["Title"];
+	const RJValue& fullscreen = JSON::GetDocument()["Fullscreen"];
+	const RJValue& width = JSON::GetDocument()["Width"];
+	const RJValue& height = JSON::GetDocument()["Height"];
+
+	if (title.IsString() && fullscreen.IsBool()
+		&& width.IsInt() && height.IsInt()) {
+
+		m_pData.m_title.assign(title.GetString());
+		m_pData.m_isFullScreen = fullscreen.GetBool();
+		m_pData.m_width = width.GetInt();
+		m_pData.m_height = height.GetInt();
+	}
+
+	else {
+		JE_DEBUG_PRINT("Wrong init data!\n");
+		return false;
+	}
 
 	// Call opengl 3.2
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -57,16 +80,15 @@ void Application::Update()
 		IMGUI::Init(m_pWindow);	
 		#endif
 
+		/**************** Built-in **************/
+		ASSET::Load();	// Load info from json files
+		STATE::Init();	// Bind systems here
+
 		// Get window surface
 		m_pSurface = SDL_GetWindowSurface(m_pWindow);
 
 		// Fill the surface white
 		SDL_FillRect(m_pSurface, nullptr, SDL_MapRGB(m_pSurface->format, 0xFF, 0xFF, 0xFF));
-
-		// Load assets by asset manager
-		// and init State manager
-		ASSET::Load();
-		STATE::Init();
 
 		// Update the surface
 		while (STATE::GetStatus()
@@ -86,10 +108,8 @@ void Application::Update()
 
 void Application::Close()
 {
-	// Close and Unload 
-	// the state manager and asset manager
-	STATE::Close();
-	ASSET::Unload();
+	STATE::Close();		// Remove systems and states
+	ASSET::Unload();	// Clear loaded assets
 
 	#ifdef JE_SUPPORT_IMGUI
 	// Close imgui manager

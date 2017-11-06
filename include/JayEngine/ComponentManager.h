@@ -14,16 +14,16 @@ class ComponentBuilder;
 class ComponentManager {
 
 	friend class Object;
+	friend class AssetManager;
 
 public:
 
 	static void			RegisterBuilder(
 		const char* _componentName, ComponentBuilder* _pBuilder);
-
-	static void			ClearBuilders();
-
+	
 private:
 
+	static void			ClearBuilders();
 	static Component*	CreateComponent(
 		const char* _componentName, Object* _pOwner);
 
