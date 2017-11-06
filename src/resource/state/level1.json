@@ -5,13 +5,10 @@
 		{
 			"Name" : "sampleObject",
 			"Component" : [
-			{
-				"Type": "Transform",
-				"Values": {
-					"Position": [ 325, -250, -10 ],
-					"Scale": [ 100, 50, 0 ]
+				{
+					"Type": "SampleLogic",
+					"Values": {}
 				}
-			}
 			]
 		}
 	]

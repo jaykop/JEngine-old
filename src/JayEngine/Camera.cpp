@@ -13,5 +13,17 @@ Camera::Camera(Object* _owner)
 	SystemManager::GetGraphicSystem()->AddCamera(this);
 }
 
-JE_END
+void Camera::Load(const RJValue& /*_data*/)
+{
+}
 
+CameraBuilder::CameraBuilder()
+	:ComponentBuilder()
+{}
+
+Component* CameraBuilder::CreateComponent(Object* _pOwner) const
+{
+	return new Camera(_pOwner);
+}
+
+JE_END

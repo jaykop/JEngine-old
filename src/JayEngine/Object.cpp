@@ -138,12 +138,15 @@ void Object::ClearComponents()
 			component.second = nullptr;
 		}
 	}
+	m_componentMap.clear();
 }
 
 void Object::ClearChildren()
 {
 	for (auto child : m_childObjs)
 		m_pOBC->RemoveObject(child.second->GetName().c_str());
+
+	m_childObjs.clear();
 }
 
 void Object::AddComponent(const char* _componentName)

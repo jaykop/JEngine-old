@@ -113,5 +113,18 @@ Sprite::~Sprite()
 	SystemManager::GetGraphicSystem()->RemoveSprite(this);
 }
 
+void Sprite::Load(const RJValue& /*_data*/)
+{
+}
+
+SpriteBuilder::SpriteBuilder()
+	:ComponentBuilder()
+{}
+
+Component* SpriteBuilder::CreateComponent(Object* _pOwner) const
+{
+	return new Sprite(_pOwner);
+}
+
 JE_END
 

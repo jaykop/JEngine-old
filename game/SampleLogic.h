@@ -25,6 +25,7 @@ private:
 class SampleLogic : public Component
 {
 	friend class ComponentManager;
+	friend class SampleLogicBuilder;
 
 public:
 
@@ -36,7 +37,7 @@ public:
 
 private:
 
-	SampleLogic() {};
+	SampleLogic(Object* pObject = nullptr);
 	~SampleLogic() {};
 	SampleLogic(const SampleLogic& /*_copy*/) {};
 	void operator=(const SampleLogic& /*_copy*/) {};

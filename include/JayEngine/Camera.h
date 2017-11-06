@@ -1,6 +1,7 @@
 #pragma once
 #include "Vector3.h"
 #include "Component.h"
+#include "ComponentBuilder.h"
 
 JE_BEGIN
 
@@ -28,6 +29,7 @@ class Camera : public Component
 
 	friend class GraphicSystem;
 	friend class ComponentManager;
+	friend class CameraBuilder;
 
 public:
 
@@ -40,6 +42,12 @@ private:
 
 	Camera(const Camera& /*_copy*/) {};
 	void operator=(const Camera& /*_copy*/) {};
+
+	void Load(const RJValue& _data) override;
+	void Init() override {};
+	void Update(float /*_dt*/) override {};
+	void Close() override {};
+	void Unload() override {};
 
 };
 

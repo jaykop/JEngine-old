@@ -3,13 +3,17 @@
 
 JE_BEGIN
 
+SampleLogic::SampleLogic(Object* _pObject)
+	:Component(_pObject)
+{}
+
 void SampleLogic::Load(const RJValue& /*_data*/)
 {}
 
 void SampleLogic::Init()
 {}
 
-void SampleLogic::Update(float _dt)
+void SampleLogic::Update(float /*_dt*/)
 {
 	if (INPUT::KeyTriggered(JE_1))
 		STATE::SetNextState("testState1");

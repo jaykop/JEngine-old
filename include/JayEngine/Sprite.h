@@ -3,8 +3,27 @@
 #include "Timer.h"
 #include "Vector4.h"
 #include "Component.h"
+#include "ComponentBuilder.h"
 
 JE_BEGIN
+
+class SpriteBuilder : public ComponentBuilder
+{
+
+	friend class AssetManager;
+
+public:
+
+private:
+
+	SpriteBuilder();
+	~SpriteBuilder() {};
+	SpriteBuilder(const SpriteBuilder& /*_copy*/) {};
+	void operator=(const SpriteBuilder& /*_copy*/) {};
+
+	Component* CreateComponent(Object* _pOwner) const override;
+
+};
 
 class Object;
 class Material; 
@@ -16,6 +35,7 @@ class Sprite : public Component
 	friend class	AssetManager;
 	friend class	GraphicSystem;
 	friend class	ComponentManager;
+	friend class	SpriteBuilder;
 	typedef			std::unordered_map<std::string, unsigned>	TextureMap;
 
 public:
@@ -48,6 +68,12 @@ private:
 	Sprite(Object* _owner = nullptr);
 	Sprite(const Sprite& /*_copy*/) {};
 	void operator=(const Sprite& /*_copy*/) {};
+
+	void Load(const RJValue& _data) override;
+	void Init() override {};
+	void Update(float /*_dt*/) override {};
+	void Close() override {};
+	void Unload() override {};
 
 	bool m_culled;
 

@@ -4,6 +4,7 @@
 
 JE_BEGIN
 
+class ObjectContainer;
 typedef rapidjson::Value RJValue;
 typedef rapidjson::Document RJDoc;
 
@@ -14,7 +15,7 @@ public:
 	static void ReadFile(const char* _dir);
 	static const RJDoc& GetDocument();
 
-	static void LoadObjects();
+	static void LoadObjects(ObjectContainer* _pOBC);
 	static void LoadComponents(const RJValue& _data);
 
 private:

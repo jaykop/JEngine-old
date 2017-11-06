@@ -3,14 +3,34 @@
 #include "Component.h"
 #include "Vector3.h"
 #include "Vector4.h"
+#include "ComponentBuilder.h"
 
 JE_BEGIN
+
+class LightBuilder : public ComponentBuilder
+{
+
+	friend class AssetManager;
+
+public:
+
+private:
+
+	LightBuilder();
+	~LightBuilder() {};
+	LightBuilder(const LightBuilder& /*_copy*/) {};
+	void operator=(const LightBuilder& /*_copy*/) {};
+
+	Component* CreateComponent(Object* _pOwner) const override;
+
+};
 
 class Light : public Component
 {
 
 	friend class GraphicSystem;
 	friend class ComponentManager;
+	friend class LightBuilder;
 
 public:
 
@@ -23,6 +43,12 @@ private:
 	~Light() {};
 	Light(const Light& /*_copy*/) {};
 	void operator=(const Light& /*_copy*/) {};
+
+	void Load(const RJValue& _data) override;
+	void Init() override {};
+	void Update(float /*_dt*/) override {};
+	void Close() override {};
+	void Unload() override {};
 
 };
 

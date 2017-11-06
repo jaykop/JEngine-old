@@ -2,7 +2,7 @@
 #include "Component.h"
 #include "JsonParser.h"
 #include "ObjectFactory.h"
-
+#include "ObjectContainer.h"
 #include "stringbuffer.h"
 #include "FileReadStream.h"
 
@@ -25,7 +25,7 @@ const RJDoc& JsonParser::GetDocument()
 	return m_document;
 }
 
-void JsonParser::LoadObjects()
+void JsonParser::LoadObjects(ObjectContainer* _pOBC)
 {
 	const RJValue& object = m_document["Object"];
 
@@ -33,11 +33,12 @@ void JsonParser::LoadObjects()
 
 		const RJValue& component = object[i]["Component"];
 
-		if (component[i]["Name"].IsString()) {
-			FACTORY::CreateObject(component[i]["Name"].GetString());
+		if (component[i]["Type"].IsString()) {
+			FACTORY::CreateObject(component[i]["Type"].GetString());
 
 			for (rapidjson::SizeType j = 0; j < component.Size(); ++j)
 				LoadComponents(component[j]);
+			FACTORY::AddCreatedObject(_pOBC);
 		}
 
 		else

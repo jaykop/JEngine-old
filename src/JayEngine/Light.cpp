@@ -13,4 +13,18 @@ Light::Light(Object * _owner)
 	SystemManager::GetGraphicSystem()->AddLight(this);
 }
 
+void Light::Load(const RJValue& /*_data*/)
+{
+}
+
+
+LightBuilder::LightBuilder()
+	:ComponentBuilder()
+{}
+
+Component* LightBuilder::CreateComponent(Object* _pOwner) const
+{
+	return new Light(_pOwner);
+}
+
 JE_END

@@ -4,6 +4,8 @@
 #include "SystemManager.h"
 #include "ObjectContainer.h"
 
+#include "InputHandler.h"
+
 JE_BEGIN
 
 State::State(const char* _name)
@@ -19,7 +21,8 @@ void State::Load()
 	JSON::ReadFile(m_loadDirectory.c_str());
 
 	// TODO
-	JSON::LoadObjects();
+	// Why not move to system
+	JSON::LoadObjects(m_objContainer);
 	SYSTEM::Load();
 }
 
@@ -33,6 +36,12 @@ void State::Update(float _dt)
 {
 	//JE_DEBUG_PRINT("Updating %s...\n", m_name.c_str());
 	SYSTEM::Update(_dt);
+
+	if (INPUT::KeyPressed(JE_ESC)) {
+		JE_DEBUG_PRINT("Quit\n");
+		STATE::Quit();
+	}
+
 }
 
 void State::Close()
@@ -44,13 +53,14 @@ void State::Close()
 void State::Unload()
 {
 	JE_DEBUG_PRINT("Unloading %s...\n", m_name.c_str());
-	ClearObjectContainer();
 	SYSTEM::Unload();
+	ClearObjectContainer();
 }
 
 void State::ClearObjectContainer()
 {
 	if (m_objContainer) {
+		m_objContainer->ClearObjectMap();
 		delete m_objContainer;
 		m_objContainer = nullptr;
 	}

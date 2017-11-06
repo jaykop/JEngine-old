@@ -314,9 +314,6 @@
     <Filter Include="Utils\lodePNG">
       <UniqueIdentifier>{bc410694-fe95-44ed-9f15-422bf2106700}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utils\ini">
-      <UniqueIdentifier>{a5d74d3c-d5ed-413e-8fdd-17b7d356c29e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\Platform">
       <UniqueIdentifier>{488e267d-18b4-431f-a9bf-4f8439a29a29}</UniqueIdentifier>
     </Filter>
