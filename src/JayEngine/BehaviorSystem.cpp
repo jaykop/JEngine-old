@@ -1,5 +1,5 @@
 #include "State.h"
-#include "Component.h"
+#include "UserComponent.h"
 #include "StateManager.h"
 #include "BehaviorSystem.h"
 #include "ObjectContainer.h"
@@ -10,67 +10,54 @@ BehaviorSystem::BehaviorSystem()
 	:System()
 {}
 
+void BehaviorSystem::AddBehavior(UserComponent* _behavior)
+{
+	m_behaviors.push_back(_behavior);
+}
+
+void BehaviorSystem::RemoveBehavior(UserComponent* _behavior)
+{
+	for (Behaviors::iterator it = m_behaviors.begin();
+		it != m_behaviors.end(); ++it) {
+		if ((*it)->m_ownerId == _behavior->m_ownerId) {
+			m_behaviors.erase(it);
+			break;
+		}
+	}
+}
+
 void BehaviorSystem::Load()
 {
-	m_pObjectMap =
-		&STATE::GetCurrentState()->m_objContainer->GetObjectMap();
-
-	// TODO
-	//for (auto obj = m_pObjectMap->begin();
-	//	obj != m_pObjectMap->end(); ++obj) {
-
-	//	for (auto component = obj->second->GetComponentMap().begin();
-	//		component != obj->second->GetComponentMap().end(); ++component){
-	//		component->second->Load();
-	//	}
-	//}
+	// None...
 }
 
 void BehaviorSystem::Init()
 {
-	for (auto obj = m_pObjectMap->begin();
-		obj != m_pObjectMap->end(); ++obj) {
-
-		for (auto component = obj->second->GetComponentMap().begin();
-			component != obj->second->GetComponentMap().end(); ++component) {
-			component->second->Init();
-		}
+	for (auto behavior : m_behaviors){
+		behavior->Init();
 	}
 }
 
 void BehaviorSystem::Update(float _dt)
 {
-	for (auto obj = m_pObjectMap->begin();
-		obj != m_pObjectMap->end(); ++obj) {
-
-		for (auto component = obj->second->GetComponentMap().begin();
-			component != obj->second->GetComponentMap().end(); ++component) {
-			component->second->Update(_dt);
-		}
+	for (auto behavior : m_behaviors) {
+		behavior->Update(_dt);
 	}
 }
 
 void BehaviorSystem::Close()
 {
-	for (auto obj = m_pObjectMap->begin();
-		obj != m_pObjectMap->end(); ++obj) {
-
-		for (auto component = obj->second->GetComponentMap().begin();
-			component != obj->second->GetComponentMap().end(); ++component) {
-			component->second->Close();
-		}
+	for (auto behavior : m_behaviors) {
+		behavior->Close();
 	}
 }
 
 void BehaviorSystem::Unload()
 {
-	for (auto obj = m_pObjectMap->begin();
-		obj != m_pObjectMap->end(); ++obj) {
-
-		for (auto component = obj->second->GetComponentMap().begin();
-			component != obj->second->GetComponentMap().end(); ++component) {
-			component->second->Unload();
-		}
+	// TODO
+	// Is this really necessary?
+	for (auto behavior : m_behaviors) {
+		behavior->Unload();
 	}
 }
 

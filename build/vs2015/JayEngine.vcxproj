@@ -135,6 +135,7 @@
     <ClInclude Include="..\..\include\JayEngine\SystemManager.h" />
     <ClInclude Include="..\..\include\JayEngine\Timer.h" />
     <ClInclude Include="..\..\include\JayEngine\Transform.h" />
+    <ClInclude Include="..\..\include\JayEngine\UserComponent.h" />
     <ClInclude Include="..\..\include\JayEngine\Vector2.h" />
     <ClInclude Include="..\..\include\JayEngine\Vector3.h" />
     <ClInclude Include="..\..\include\JayEngine\Vector4.h" />

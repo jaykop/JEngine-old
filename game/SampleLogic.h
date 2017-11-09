@@ -1,5 +1,5 @@
 #pragma once
-#include "Component.h"
+#include "UserComponent.h"
 #include "ComponentBuilder.h"
 
 JE_BEGIN
@@ -18,22 +18,16 @@ private:
 	SampleLogicBuilder(const SampleLogicBuilder& /*_copy*/) {};
 	void operator=(const SampleLogicBuilder& /*_copy*/) {};
 
-	Component* CreateComponent(Object* _pOwner) const override;
+	UserComponent* CreateComponent(Object* _pOwner) const override;
 
 };
 
-class SampleLogic : public Component
+class SampleLogic : public UserComponent
 {
 	friend class ComponentManager;
 	friend class SampleLogicBuilder;
 
 public:
-
-	void Load(const RJValue& _data) override;
-	void Init() override;
-	void Update(float _dt) override;
-	void Close() override;
-	void Unload() override;
 
 private:
 
@@ -42,6 +36,12 @@ private:
 	SampleLogic(const SampleLogic& /*_copy*/) {};
 	void operator=(const SampleLogic& /*_copy*/) {};
 
+	void Register() override;
+	void Load(CR_RJValue _data) override;
+	void Init() override;
+	void Update(float _dt) override;
+	void Close() override;
+	void Unload() override;
 };
 
 JE_END

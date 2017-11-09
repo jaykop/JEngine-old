@@ -22,6 +22,12 @@ unsigned Object::GetId() const
 	return m_id;
 }
 
+void Object::RegisterComponents()
+{
+	for (auto component : m_componentMap)
+		component.second->Register();
+}
+
 const std::string& Object::GetName(void) const
 {
 	return m_name;

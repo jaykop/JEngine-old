@@ -6,7 +6,11 @@
 #include "StateManager.h"
 #include "ComponentBuilder.h"
 #include "ComponentManager.h"
-#include "BuiltInComponents.h"
+
+// Built-In Component Headers
+#include "GraphicComponents.h"
+#include "PhysicsComponents.h"
+#include "SoundComponents.h"
 
 JE_BEGIN
 
@@ -31,13 +35,13 @@ void AssetManager::Load()
 
 	// Load states
 	JSON::ReadFile(ASSET::m_stateDirectory.c_str());
-	const RJValue& states = JSON::GetDocument()["State"];
+	CR_RJValue states = JSON::GetDocument()["State"];
 	for (rapidjson::SizeType i = 0; i < states.Size(); ++i) 
 		STATE::PushState(states[i]["Directory"].GetString(), states[i]["Key"].GetString());
 
 	// Load images
 	JSON::ReadFile(ASSET::m_assetDirectory.c_str());
-	const RJValue& textures = JSON::GetDocument()["Texture"];
+	CR_RJValue textures = JSON::GetDocument()["Texture"];
 	for (rapidjson::SizeType i = 0; i < textures.Size(); ++i) 
 		LoadImage(textures[i]["Directory"].GetString(), textures[i]["Key"].GetString());
 }

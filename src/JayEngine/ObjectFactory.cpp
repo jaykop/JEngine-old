@@ -38,7 +38,7 @@ void ObjectFactory::AddCreatedObject(ObjectContainer* _container)
 		ObjectMap::value_type(
 			m_pLastMade->m_name, m_pLastMade));
 	m_pLastMade->m_pOBC = _container;
-
+	m_pLastMade->RegisterComponents();
 	m_added = true;
 	++m_registerNumber;
 }

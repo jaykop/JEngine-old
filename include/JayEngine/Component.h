@@ -8,25 +8,27 @@ JE_BEGIN
 class Object;
 class Component {
 
+	friend class Object;
+	friend class JsonParser;
+
 public:
 
-	friend class Object;
 	unsigned GetOwnerId() { return m_ownerId; }
 
-	virtual void Load(const RJValue& _data) = 0;
-	virtual void Init() = 0;
-	virtual void Update(float _dt) = 0;
-	virtual void Close() = 0;
-	virtual void Unload() = 0;
+	virtual void Register() = 0;
 
 protected:
 
-	Component(Object* _owner = nullptr)
-		: m_pOwner(_owner), m_ownerId(_owner->GetId()) {};
+	Component(Object* _owner = nullptr, bool _byUser = false)
+		: m_pOwner(_owner), 
+		m_ownerId(_owner->GetId()), m_byUser(_byUser) {};
 	virtual	~Component() {};
 
-	Object* m_pOwner;
-	unsigned m_ownerId;
+	virtual void Load(CR_RJValue _data) = 0;
+
+	bool		m_byUser;
+	Object*		m_pOwner;
+	unsigned	m_ownerId;
 
 private:
 

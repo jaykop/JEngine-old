@@ -4,10 +4,15 @@
 JE_BEGIN
 
 SampleLogic::SampleLogic(Object* _pObject)
-	:Component(_pObject)
+	:UserComponent(_pObject)
 {}
 
-void SampleLogic::Load(const RJValue& /*_data*/)
+void SampleLogic::Register()
+{
+	SYSTEM::GetBehaviorSystem()->AddBehavior(this);
+}
+
+void SampleLogic::Load(CR_RJValue /*_data*/)
 {}
 
 void SampleLogic::Init()
@@ -64,7 +69,7 @@ SampleLogicBuilder::SampleLogicBuilder()
 	:ComponentBuilder()
 {}
 
-Component* SampleLogicBuilder::CreateComponent(Object* _pOwner) const
+UserComponent* SampleLogicBuilder::CreateComponent(Object* _pOwner) const
 {
 	return new SampleLogic(_pOwner);
 }

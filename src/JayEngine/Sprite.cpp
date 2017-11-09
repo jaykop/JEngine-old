@@ -12,11 +12,7 @@ Sprite::Sprite(Object* _owner)
 	m_animationFrames(1), m_animationFixFrame(1), m_realSpeed(0.f), 
 	m_realFrame(1.f), m_activeAnimation(false), m_transform(nullptr),
 	m_flip(false), m_culled(false), m_material(nullptr), m_hasMaterial(false)
-{
-	SystemManager::GetGraphicSystem()->AddSprite(this);
-	if (m_pOwner->GetComponent<Transform>())
-		m_transform = m_pOwner->GetComponent<Transform>();
-}
+{}
 
 bool Sprite::GetActiveAnimationToggle()
 {
@@ -47,6 +43,13 @@ void Sprite::SetAnimationSpeed(float _speed)
 {
 	m_animationSpeed = _speed;
 	m_realSpeed = 1.f / _speed;
+}
+
+void Sprite::Register()
+{
+	SystemManager::GetGraphicSystem()->AddSprite(this);
+	if (m_pOwner->HasComponent<Transform>())
+		m_transform = m_pOwner->GetComponent<Transform>();
 }
 
 int Sprite::GetAnimationFrame()
@@ -102,19 +105,50 @@ unsigned Sprite::GetTexutre(const char *_key)
 	return 0;
 }
 
-//Transform * Sprite::GetTransform()
-//{
-//	return m_transform;
-//}
-
 Sprite::~Sprite()
 {
 	m_textureMap.clear();
 	SystemManager::GetGraphicSystem()->RemoveSprite(this);
 }
 
-void Sprite::Load(const RJValue& /*_data*/)
+void Sprite::Load(CR_RJValue _data)
 {
+	CR_RJValue flip = _data["Flip"];
+	m_flip = flip.GetBool();
+
+	CR_RJValue color = _data["Color"];
+	m_color.Set(color[0].GetFloat(), color[1].GetFloat(), 
+		color[2].GetFloat(), color[3].GetFloat());
+
+	CR_RJValue projection = _data["Projection"];
+
+	if (!strcmp("Perspective", projection.GetString())) {
+		m_projection = PERSPECTIVE;
+	}
+	
+	else if (!strcmp("Orhtogonal", projection.GetString())) {
+		m_projection = ORTHOGONAL;
+	}
+	
+	CR_RJValue texture = _data["Texture"];
+		AddTexture(texture.GetString());
+
+	if (_data.HasMember("FixAt"))
+	{
+		CR_RJValue fix = _data["FixAt"];
+		FixAnimationFrame(fix.GetInt());
+	}
+	
+	else {
+		CR_RJValue active = _data["Active"];
+		m_activeAnimation = active.GetBool();
+	}
+
+	CR_RJValue frame = _data["Frame"];
+	SetAnimationFrame(frame.GetInt());
+	CR_RJValue speed = _data["Speed"];
+	SetAnimationSpeed(speed.GetFloat());
+
 }
 
 SpriteBuilder::SpriteBuilder()

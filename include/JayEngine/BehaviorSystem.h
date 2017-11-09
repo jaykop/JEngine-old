@@ -1,17 +1,24 @@
 #pragma once
+#include <vector>
 #include "System.h"
-#include <unordered_map>
+
 JE_BEGIN
 
 class Object;
-typedef std::unordered_map<std::string, Object*> ObjectMap;
+class UserComponent;
 
 class BehaviorSystem : public System
 {
+	friend class UserComponent;
 	friend class SystemManager;
 
+	typedef std::vector<UserComponent*> Behaviors;
+
 public:
-	
+
+	void AddBehavior(UserComponent* _behavior);
+	void RemoveBehavior(UserComponent* _behavior);
+
 private:
 
 	BehaviorSystem();
@@ -25,7 +32,7 @@ private:
 	void Close() override;
 	void Unload() override;
 
-	ObjectMap* m_pObjectMap;
+	Behaviors m_behaviors;
 
 };
 

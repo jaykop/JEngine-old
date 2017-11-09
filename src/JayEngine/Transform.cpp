@@ -12,12 +12,12 @@ Transform::Transform(Object* _owner)
 	//SystemManager::GetPhysicsSystem()->AddTransform();
 }
 
-void Transform::Load(const RJValue& _dataz)
+void Transform::Load(CR_RJValue _data)
 {
-	const RJValue& position = _dataz["Position"];
-	const RJValue& scale = _dataz["Scale"];
-	const RJValue& rotation = _dataz["Rotation"];
-	const RJValue& rotation3D = _dataz["Rotation3d"];
+	CR_RJValue position = _data["Position"];
+	CR_RJValue scale = _data["Scale"];
+	CR_RJValue rotation = _data["Rotation"];
+	CR_RJValue rotation3D = _data["Rotation3d"];
 
 	m_position.Set(position[0].GetFloat(), position[1].GetFloat(), position[2].GetFloat());
 	m_scale.Set(scale[0].GetFloat(), scale[1].GetFloat(), scale[2].GetFloat());

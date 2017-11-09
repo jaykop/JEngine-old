@@ -1,19 +1,12 @@
 #include <algorithm>
-#include "Sprite.h"
 #include "Shader.hpp"
-#include "Camera.h"
 #include "GLManager.h"
 #include "GraphicSystem.h"
 #include "Transform.h"
 #include "Application.h"
 #include "InputHandler.h"
-#include "Light.h"
-#include "Material.h"
 #include "JsonParser.h"
-
-#ifdef JE_SUPPORT_3D
-#include "Model.h"
-#endif
+#include "GraphicComponents.h"
 
 JE_BEGIN
 
@@ -40,7 +33,7 @@ GraphicSystem::GraphicSystem()
 
 void GraphicSystem::Load()
 {
-	const RJValue& color = JSON::GetDocument()["Background"];
+	CR_RJValue color = JSON::GetDocument()["Background"];
 	std::cout << color.IsArray() << std::endl;
 	m_backgroundColor.Set(
 		color[0].GetFloat(),

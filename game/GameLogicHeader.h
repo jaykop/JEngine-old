@@ -9,6 +9,8 @@
 #include "ObjectFactory.h"
 #include "ObjectContainer.h"
 #include "AssetManager.h"
+#include "SystemManager.h"
+#include "BehaviorSystem.h"
 
 /////////////////////////////////////////////////////////////////////////
 // Math headers

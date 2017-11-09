@@ -20,23 +20,22 @@ public:
 	ObjectMap&	GetObjectMap();
 	bool		HasObject(const char* _name);
 
-	// TODO
-	// Implement these functions
+	// These functions are able to
+	// connect to objects directly
 	template <typename ComponentType>
-	inline void				AddComponentToObject(const char* _name);
+	inline void				AddComponent(const char* _fromObject);
 
 	template <typename ComponentType>
-	inline ComponentType*	GetComponentofObject(const char* _name);
+	inline ComponentType*	GetComponent(const char* _fromObject);
 
 	template <typename ComponentType>
-	inline bool				HasComponentofObject(const char* _name);
+	inline bool				HasComponen(const char* _fromObject);
 
 	template <typename ComponentType>
-	inline void				RemoveComponentofObject(const char* _name);
-
+	inline void				RemoveComponent(const char* _fromObject);
 
 	template <typename ComponentType>
-	inline ObjectMap GetObjects();
+	inline ObjectMap		GetObjects();
 
 private:
 

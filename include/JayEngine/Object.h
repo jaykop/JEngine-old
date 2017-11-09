@@ -24,6 +24,8 @@ public:
 
 	unsigned GetId() const;
 
+	void RegisterComponents();
+
 	const std::string&	GetName(void) const;
 	void				SetName(const char* _name);
 

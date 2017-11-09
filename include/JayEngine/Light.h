@@ -37,6 +37,8 @@ public:
 	vec3		m_position;
 	vec4		m_ambient, m_specular, m_diffuse, m_color;
 
+	void Register() override;
+
 private:
 
 	Light(Object* _owner = nullptr);
@@ -44,11 +46,7 @@ private:
 	Light(const Light& /*_copy*/) {};
 	void operator=(const Light& /*_copy*/) {};
 
-	void Load(const RJValue& _data) override;
-	void Init() override {};
-	void Update(float /*_dt*/) override {};
-	void Close() override {};
-	void Unload() override {};
+	void Load(CR_RJValue _data) override;
 
 };
 

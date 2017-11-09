@@ -27,11 +27,11 @@ const RJDoc& JsonParser::GetDocument()
 
 void JsonParser::LoadObjects(ObjectContainer* _pOBC)
 {
-	const RJValue& object = m_document["Object"];
+	CR_RJValue object = m_document["Object"];
 
 	for (rapidjson::SizeType i = 0; i < object.Size(); ++i) {
 
-		const RJValue& component = object[i]["Component"];
+		CR_RJValue component = object[i]["Component"];
 
 		if (component[i]["Type"].IsString()) {
 			FACTORY::CreateObject(component[i]["Type"].GetString());
@@ -46,7 +46,7 @@ void JsonParser::LoadObjects(ObjectContainer* _pOBC)
 	}
 }
 
-void JsonParser::LoadComponents(const RJValue& _data)
+void JsonParser::LoadComponents(CR_RJValue _data)
 {
 	if (_data["Type"].IsString()) {
 		FACTORY::GetCreatedObject()->AddComponent(_data["Type"].GetString());

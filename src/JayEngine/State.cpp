@@ -20,8 +20,6 @@ void State::Load()
 	m_objContainer = new ObjectContainer; 
 	JSON::ReadFile(m_loadDirectory.c_str());
 
-	// TODO
-	// Why not move to system
 	JSON::LoadObjects(m_objContainer);
 	SYSTEM::Load();
 }
@@ -36,12 +34,6 @@ void State::Update(float _dt)
 {
 	//JE_DEBUG_PRINT("Updating %s...\n", m_name.c_str());
 	SYSTEM::Update(_dt);
-
-	if (INPUT::KeyPressed(JE_ESC)) {
-		JE_DEBUG_PRINT("Quit\n");
-		STATE::Quit();
-	}
-
 }
 
 void State::Close()

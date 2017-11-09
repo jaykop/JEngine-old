@@ -25,10 +25,10 @@ bool Application::Initialize()
 	// Assign app init data
 	JSON::ReadFile(ASSET::m_initDirectory.c_str());
 
-	const RJValue& title = JSON::GetDocument()["Title"];
-	const RJValue& fullscreen = JSON::GetDocument()["Fullscreen"];
-	const RJValue& width = JSON::GetDocument()["Width"];
-	const RJValue& height = JSON::GetDocument()["Height"];
+	CR_RJValue title = JSON::GetDocument()["Title"];
+	CR_RJValue fullscreen = JSON::GetDocument()["Fullscreen"];
+	CR_RJValue width = JSON::GetDocument()["Width"];
+	CR_RJValue height = JSON::GetDocument()["Height"];
 
 	if (title.IsString() && fullscreen.IsBool()
 		&& width.IsInt() && height.IsInt()) {

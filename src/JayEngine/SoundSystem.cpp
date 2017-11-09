@@ -9,6 +9,8 @@ SoundSystem::SoundSystem()
 
 void SoundSystem::Load()
 {
+	// TODO
+	// Load background music here...
 }
 
 void SoundSystem::Init()

@@ -42,6 +42,8 @@ public:
 	
 	enum	ProjectType { PERSPECTIVE, ORTHOGONAL };
 
+	void Register() override;
+
 	int		GetAnimationFrame();
 	float	GetAnimationSpeed();
 	bool	GetActiveAnimationToggle();
@@ -55,7 +57,6 @@ public:
 	void		SetCurrentTexutre(const char* _key);
 	unsigned	GetCurrentTexutre();
 	unsigned	GetTexutre(const char* _key);
-	//Transform*	GetTransform();
 
 	bool		m_flip;
 	vec4		m_color;
@@ -69,11 +70,7 @@ private:
 	Sprite(const Sprite& /*_copy*/) {};
 	void operator=(const Sprite& /*_copy*/) {};
 
-	void Load(const RJValue& _data) override;
-	void Init() override {};
-	void Update(float /*_dt*/) override {};
-	void Close() override {};
-	void Unload() override {};
+	void Load(CR_RJValue _data) override;
 
 	bool m_culled;
 

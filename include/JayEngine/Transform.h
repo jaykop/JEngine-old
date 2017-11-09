@@ -40,6 +40,7 @@ public:
 	float m_rotation;
 	Edge m_edges;
 
+
 private:
 
 	Transform(Object* _owner = nullptr);
@@ -47,12 +48,8 @@ private:
 	Transform(const Transform& /*_copy*/) {};
 	void operator= (const Transform& /*_copy*/) {};
 
-	void Load(const RJValue& _data) override;
-	void Init() override {};
-	void Update(float /*_dt*/) override {};
-	void Close() override {};
-	void Unload() override {};
-
+	void Load(CR_RJValue _data) override; 
+	void Register() override {};
 };
 
 JE_END

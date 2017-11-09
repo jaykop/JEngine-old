@@ -35,6 +35,8 @@ public:
 
 	vec3 m_position, m_up, m_target;
 
+	void Register() override;
+
 private:
 
 	Camera(Object* _owner = nullptr);
@@ -43,11 +45,7 @@ private:
 	Camera(const Camera& /*_copy*/) {};
 	void operator=(const Camera& /*_copy*/) {};
 
-	void Load(const RJValue& _data) override;
-	void Init() override {};
-	void Update(float /*_dt*/) override {};
-	void Close() override {};
-	void Unload() override {};
+	void Load(CR_RJValue _data) override;
 
 };
 

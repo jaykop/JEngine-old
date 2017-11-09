@@ -5,6 +5,30 @@
 JE_BEGIN
 
 template<typename ComponentType>
+inline void ObjectContainer::AddComponent(const char* _fromObject)
+{
+	GetObject(_fromObject)->AddComponent(typeid(ComponentType).name());
+}
+
+template<typename ComponentType>
+inline ComponentType* ObjectContainer::GetComponent(const char* _fromObject)
+{
+	return GetObject(_fromObject)->GetComponent(typeid(ComponentType).name());
+}
+
+template<typename ComponentType>
+inline bool ObjectContainer::HasComponen(const char* _fromObject)
+{
+	return GetObject(_fromObject)->HasComponent(typeid(ComponentType).name());
+}
+
+template<typename ComponentType>
+inline void ObjectContainer::RemoveComponent(const char* _fromObject)
+{
+	GetObject(_fromObject)->RemoveComponent(typeid(ComponentType).name());
+}
+
+template<typename ComponentType>
 inline ObjectMap ObjectContainer::GetObjects()
 {
 	ObjectMap container;
