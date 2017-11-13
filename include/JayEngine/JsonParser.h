@@ -5,15 +5,16 @@
 JE_BEGIN
 
 class ObjectContainer;
-typedef rapidjson::Value RJValue;
-typedef const RJValue& CR_RJValue;
+typedef const rapidjson::Value& CR_RJValue;
 typedef rapidjson::Document RJDoc;
+typedef const RJDoc& CR_RJDoc;
 
 class JsonParser {
 
 public:
 
 	friend class State;
+	friend class Application;
 	friend class AssetManager;
 
 private:
@@ -24,7 +25,7 @@ private:
 	void operator=(const JsonParser& /*_copy*/) {};
 
 	static void ReadFile(const char* _dir);
-	static const RJDoc& GetDocument();
+	static CR_RJDoc GetDocument();
 
 	static void LoadObjects(ObjectContainer* _pOBC);
 	static void LoadComponents(CR_RJValue _data);

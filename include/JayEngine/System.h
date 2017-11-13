@@ -1,5 +1,6 @@
 #pragma once
 #include "Macro.h"
+#include "JsonParser.h"
 
 JE_BEGIN
 
@@ -9,7 +10,7 @@ public:
 
 protected:
 
-	virtual void Load() = 0;
+	virtual void Load(CR_RJDoc _data) = 0;
 	virtual void Init() = 0;
 	virtual void Update(float dt) = 0;
 	virtual void Close() = 0;

@@ -27,6 +27,7 @@ private:
 	static Component*	CreateComponent(
 		const char* _componentName, Object* _pOwner);
 
+	static std::string m_nameHeader;
 	static BuilderMap m_builderMap;
 
 };

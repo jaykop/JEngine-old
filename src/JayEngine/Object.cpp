@@ -6,6 +6,8 @@
 
 JE_BEGIN
 
+std::string Object::m_nameHeader = "class JEngine::";
+
 Object::Object(const char* _name)
 	:m_name(_name), m_active(true), m_pParent(nullptr),
 	m_id(ObjectFactory::m_registerNumber)
@@ -157,14 +159,15 @@ void Object::ClearChildren()
 
 void Object::AddComponent(const char* _componentName)
 {
-	auto found = m_componentMap.find(_componentName);
+	std::string name = m_nameHeader + _componentName;
+	auto found = m_componentMap.find(name);
 
 	// Found nothing exsting component type
 	// Insert new component to the list
 	if (found == m_componentMap.end())
 		m_componentMap.insert(
-			ComponentMap::value_type(_componentName,
-				COMPONENT::CreateComponent(_componentName, this)
+			ComponentMap::value_type(name,
+				COMPONENT::CreateComponent(name.c_str(), this)
 			));
 
 	else
@@ -174,7 +177,7 @@ void Object::AddComponent(const char* _componentName)
 Component* Object::GetComponent(const char* _componentName)
 {
 	// Find if there is the one
-	auto found = m_componentMap.find(_componentName);
+	auto found = m_componentMap.find(m_nameHeader + _componentName);
 
 	// If there is return it
 	if (found != m_componentMap.end())
@@ -189,7 +192,7 @@ Component* Object::GetComponent(const char* _componentName)
 bool Object::HasComponent(const char* _componentName) const
 {
 	// Find if there is the one
-	auto found = m_componentMap.find(_componentName);
+	auto found = m_componentMap.find(m_nameHeader + _componentName);
 
 	// If there is return it
 	if (found != m_componentMap.end())
@@ -204,7 +207,7 @@ bool Object::HasComponent(const char* _componentName) const
 void Object::RemoveComponent(const char* _componentName)
 {
 	// Find if there is the one
-	auto found = m_componentMap.find(_componentName);
+	auto found = m_componentMap.find(m_nameHeader + _componentName);
 
 	// If there is, remove it
 	if (found != m_componentMap.end())

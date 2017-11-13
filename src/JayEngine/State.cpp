@@ -1,5 +1,4 @@
 #include "State.h"
-#include "JsonParser.h"
 #include "StateManager.h"
 #include "SystemManager.h"
 #include "ObjectContainer.h"
@@ -21,7 +20,7 @@ void State::Load()
 	JSON::ReadFile(m_loadDirectory.c_str());
 
 	JSON::LoadObjects(m_objContainer);
-	SYSTEM::Load();
+	SYSTEM::Load(JSON::GetDocument());
 }
 
 void State::Init()

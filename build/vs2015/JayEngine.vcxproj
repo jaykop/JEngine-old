@@ -23,6 +23,7 @@
     <ClCompile Include="..\..\src\imgui\imgui_demo.cpp" />
     <ClCompile Include="..\..\src\imgui\imgui_draw.cpp" />
     <ClCompile Include="..\..\src\imgui\imgui_impl_sdl_gl3.cpp" />
+    <ClCompile Include="..\..\src\JayEngine\Animation.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Application.cpp" />
     <ClCompile Include="..\..\src\JayEngine\AssetManager.cpp" />
     <ClCompile Include="..\..\src\JayEngine\BehaviorSystem.cpp" />
@@ -39,17 +40,11 @@
     <ClCompile Include="..\..\src\JayEngine\MathUtils.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Matrix2x2.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Matrix4x4.cpp" />
-    <ClCompile Include="..\..\src\JayEngine\Mesh.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="..\..\src\JayEngine\Model.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\src\JayEngine\Object.cpp" />
     <ClCompile Include="..\..\src\JayEngine\ObjectContainer.cpp" />
@@ -61,6 +56,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\Rigidbody.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Shader.cpp" />
     <ClCompile Include="..\..\src\JayEngine\SoundSystem.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Sprite.cpp" />
@@ -85,16 +81,17 @@
     <ClInclude Include="..\..\include\imgui\stb_rect_pack.h" />
     <ClInclude Include="..\..\include\imgui\stb_textedit.h" />
     <ClInclude Include="..\..\include\imgui\stb_truetype.h" />
+    <ClInclude Include="..\..\include\JayEngine\Animation.h" />
     <ClInclude Include="..\..\include\JayEngine\Application.h" />
     <ClInclude Include="..\..\include\JayEngine\AssetManager.h" />
     <ClInclude Include="..\..\include\JayEngine\BehaviorSystem.h" />
-    <ClInclude Include="..\..\include\JayEngine\BuiltInComponents.h" />
     <ClInclude Include="..\..\include\JayEngine\Camera.h" />
     <ClInclude Include="..\..\include\JayEngine\Component.h" />
     <ClInclude Include="..\..\include\JayEngine\ComponentBuilder.h" />
     <ClInclude Include="..\..\include\JayEngine\ComponentManager.h" />
     <ClInclude Include="..\..\include\JayEngine\Debug.h" />
     <ClInclude Include="..\..\include\JayEngine\GLManager.h" />
+    <ClInclude Include="..\..\include\JayEngine\GraphicComponents.h" />
     <ClInclude Include="..\..\include\JayEngine\GraphicSystem.h" />
     <ClInclude Include="..\..\include\JayEngine\ImguiManager.h" />
     <ClInclude Include="..\..\include\JayEngine\InputHandler.h" />
@@ -110,23 +107,20 @@
     <ClInclude Include="..\..\include\JayEngine\MathUtils.h" />
     <ClInclude Include="..\..\include\JayEngine\Matrix2x2.h" />
     <ClInclude Include="..\..\include\JayEngine\Matrix4x4.h" />
-    <ClInclude Include="..\..\include\JayEngine\Mesh.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="..\..\include\JayEngine\Model.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\..\include\JayEngine\Object.h" />
     <ClInclude Include="..\..\include\JayEngine\ObjectContainer.h" />
     <ClInclude Include="..\..\include\JayEngine\ObjectFactory.h" />
+    <ClInclude Include="..\..\include\JayEngine\PhysicsComponents.h" />
     <ClInclude Include="..\..\include\JayEngine\PhysicsSystem.h" />
+    <ClInclude Include="..\..\include\JayEngine\Rigidbody.h" />
     <ClInclude Include="..\..\include\JayEngine\Shader.hpp" />
+    <ClInclude Include="..\..\include\JayEngine\SoundComponents.h" />
     <ClInclude Include="..\..\include\JayEngine\SoundSystem.h" />
     <ClInclude Include="..\..\include\JayEngine\Sprite.h" />
     <ClInclude Include="..\..\include\JayEngine\State.h" />

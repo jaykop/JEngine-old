@@ -17,7 +17,7 @@ private:
 	SoundSystem(const SoundSystem& /*_copy*/) {};
 	void operator=(const SoundSystem& /*_copy*/) {};
 
-	void Load() override;
+	void Load(CR_RJDoc _data) override;
 	void Init() override;
 	void Update(float dt) override;
 	void Close() override;

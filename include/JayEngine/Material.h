@@ -24,8 +24,6 @@ private:
 
 };
 
-class Object;
-class Sprite;
 class Material : public Component {
 
 	friend class MaterialBuilder;

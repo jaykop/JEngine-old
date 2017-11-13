@@ -78,6 +78,8 @@ private:
 	ChildObjects		m_childObjs;
 	ComponentMap		m_componentMap;
 	ObjectContainer*	m_pOBC;
+
+	static std::string m_nameHeader;
 };
 
 JE_END

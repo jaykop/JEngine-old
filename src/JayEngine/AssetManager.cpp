@@ -27,11 +27,17 @@ std::string			ASSET::m_archeDirectory;
 void AssetManager::Load()
 {
 	// Load built-in components
+
+	// Physics components
 	JE_ADD_COMPONENT(Transform);
+
+	// Graphic components
+	JE_ADD_COMPONENT(Model);
 	JE_ADD_COMPONENT(Camera);
 	JE_ADD_COMPONENT(Sprite);
 	JE_ADD_COMPONENT(Light);
-	// JE_ADD_COMPONENT(Model);
+	JE_ADD_COMPONENT(Material);
+	JE_ADD_COMPONENT(Animation);
 
 	// Load states
 	JSON::ReadFile(ASSET::m_stateDirectory.c_str());

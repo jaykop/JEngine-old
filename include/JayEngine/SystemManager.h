@@ -1,6 +1,7 @@
 #pragma once
 #include <stack>
 #include "Macro.h"
+#include "JsonParser.h"
 
 JE_BEGIN
 
@@ -25,7 +26,7 @@ class SystemManager {
 		void Bind();
 		void Unbind();
 
-		void Load();
+		void Load(CR_RJDoc _data);
 		void Init();
 		void Update(float _dt);
 		void Close();
@@ -54,7 +55,7 @@ public:
 
 private:
 
-	static void Load();
+	static void Load(CR_RJDoc _data);
 	static void Init();
 	static void Update(float _dt);
 	static void Close();

@@ -1,26 +1,40 @@
 #pragma once
-#include "Macro.h"
-
-#ifdef JE_SUPPORT_3D
-
-#include "Component.h"
+#include "Sprite.h"
 
 JE_BEGIN
 
-class Model : public Component
+class ModelBuilder : public ComponentBuilder
 {
 
-	friend class GraphicSystem;
+	friend class AssetManager;
 
 public:
 
-
-
 private:
 
+	ModelBuilder();
+	~ModelBuilder() {};
+	ModelBuilder(const ModelBuilder& /*_copy*/) {};
+	void operator=(const ModelBuilder& /*_copy*/) {};
+
+	Component* CreateComponent(Object* _pOwner) const override;
 
 };
 
-JE_END
+class Model : public Sprite
+{
+	friend class GraphicSystem;
+	friend class ComponentManager;
+	friend class ModelBuilder;
 
-#endif
+public:
+
+private:
+
+	Model(Object* pObject = nullptr);
+	~Model() {};
+	Model(const Model& /*_copy*/) {};
+	void operator=(const Model& /*_copy*/) {};
+};
+
+JE_END

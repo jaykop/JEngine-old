@@ -5,7 +5,6 @@
 #include "Transform.h"
 #include "Application.h"
 #include "InputHandler.h"
-#include "JsonParser.h"
 #include "GraphicComponents.h"
 
 JE_BEGIN
@@ -14,8 +13,9 @@ GraphicSystem::GraphicSystem()
 	:System(), m_pTransformStorage(nullptr), m_pMainCamera(nullptr),
 	m_fovy(45.f), m_zNear(.1f), m_zFar(1000.f), m_isLight(false),
 	m_backgroundColor(vec4::ZERO), m_orthoFirst(false),
-	m_width(Application::GetData().m_width),
-	m_height(Application::GetData().m_height)
+	m_width(Application::GetData().m_width), m_hasAnimation(false),
+	m_height(Application::GetData().m_height),
+	m_aniScale(vec3::ZERO), m_aniTranslate(vec3::ZERO)
 {
 	m_aspect = float(m_width) / float(m_height);
 	m_right = m_width * .5f;
@@ -31,20 +31,25 @@ GraphicSystem::GraphicSystem()
 #endif
 }
 
-void GraphicSystem::Load()
+void GraphicSystem::Load(CR_RJDoc _data)
 {
-	CR_RJValue color = JSON::GetDocument()["Background"];
-	std::cout << color.IsArray() << std::endl;
-	m_backgroundColor.Set(
-		color[0].GetFloat(),
-		color[1].GetFloat(),
-		color[2].GetFloat(),
-		color[3].GetFloat()
-	);
+	if (_data.HasMember("Background")) {
+		CR_RJValue color = _data["Background"];
+		m_backgroundColor.Set(
+			color[0].GetFloat(),
+			color[1].GetFloat(),
+			color[2].GetFloat(),
+			color[3].GetFloat()
+		);
+	}
 }
 
 void GraphicSystem::Init()
 {
+	// If there is no preset camera by user,
+	// set the first camera as a main camera.
+	if (!m_pMainCamera)
+		m_pMainCamera = m_cameras[0];
 }
 
 void GraphicSystem::Update(float /*dt*/)
@@ -150,7 +155,6 @@ void GraphicSystem::Pipeline(Light* _light)
 		GLM::m_uniform[GLM::UNIFORM_LIGHT_PROJECTION],
 		m_perspective);
 
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GLM::m_light_ebo);
 #ifdef JE_SUPPORT_3D
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 #else
@@ -167,19 +171,19 @@ void GraphicSystem::Pipeline(Sprite* _sprite)
 	// either outside the screen or not
 	TransformPipeline(_sprite);
 
+	// TODO
 	// It so, not draw
-	if (!_sprite->m_culled) {
+	//if (!_sprite->m_culled) {
 	
-		MappingPipeline(_sprite);
+		MappingPipeline(_sprite, _sprite->m_material);
 		AnimationPipeline(_sprite);
 
-		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GLM::m_ebo);
-#ifdef JE_SUPPORT_3D
-		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-#else
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-#endif
-	}
+		if (_sprite->m_isModel)
+			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+		else
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+	//}
 }
 
 void GraphicSystem::TransformPipeline(Sprite * _sprite)
@@ -236,14 +240,15 @@ void GraphicSystem::TransformPipeline(Sprite * _sprite)
 		//m_inside = ;
 	}
 
-	if (m_inside) 
-		_sprite->m_culled = true;
+	// TODO
+	//if (m_inside) 
+	//	_sprite->m_culled = true;
 
-	else
-		_sprite->m_culled = false;
+	//else
+	//	_sprite->m_culled = false;
 }
 
-void GraphicSystem::MappingPipeline(Sprite * _sprite)
+void GraphicSystem::MappingPipeline(Sprite* _sprite, Material* _material)
 {
 	glBindTexture(GL_TEXTURE_2D, _sprite->GetCurrentTexutre());
 	
@@ -258,63 +263,57 @@ void GraphicSystem::MappingPipeline(Sprite * _sprite)
 
 	// Send material info to shader
 	if (_sprite->m_hasMaterial) {
-		Material* material = _sprite->m_material;
-		//GLM::m_shader[GLM::SHADER_NORMAL].SetVector4(
-		//	GLM::m_uniform[GLM::UNIFORM_MATERIAL_AMBIENT],
-		//	material->m_ambient);
-
-		//GLM::m_shader[GLM::SHADER_NORMAL].SetVector4(
-		//	GLM::m_uniform[GLM::UNIFORM_MATERIAL_SPECULAR],
-		//	material->m_specular);
-
-		//GLM::m_shader[GLM::SHADER_NORMAL].SetVector4(
-		//	GLM::m_uniform[GLM::UNIFORM_MATERIAL_DIFFUSE],
-		//	material->m_diffuse);
 
 		GLM::m_shader[GLM::SHADER_NORMAL].SetInt(
 			GLM::m_uniform[GLM::UNIFORM_MATERIAL_SPECULAR],
-			material->m_specular);
+			_material->m_specular);
 
 		GLM::m_shader[GLM::SHADER_NORMAL].SetInt(
 			GLM::m_uniform[GLM::UNIFORM_MATERIAL_DIFFUSE],
-			material->m_diffuse);
+			_material->m_diffuse);
 
 		GLM::m_shader[GLM::SHADER_NORMAL].SetFloat(
 			GLM::m_uniform[GLM::UNIFORM_MATERIAL_SHININESS],
-			material->m_shininess);
+			_material->m_shininess);
 	}
 }
 
-void GraphicSystem::AnimationPipeline(Sprite * _sprite)
+void GraphicSystem::AnimationPipeline(Sprite* _sprite)
 {
-	if (_sprite->m_activeAnimation) {
+	m_hasAnimation = _sprite->m_hasAnimation;
+	if (m_hasAnimation) {
+		Animation* animation = _sprite->m_animation;
+		if (animation->m_activeAnimation) {
 
-		float realSpeed = _sprite->m_realSpeed;
+			float realSpeed = animation->m_realSpeed;
 
-		if (realSpeed <= _sprite->m_timer.GetTime()) {
+			if (realSpeed <= animation->m_timer.GetTime()) {
 
-			float nextFrame;
-			if (_sprite->m_flip)
-				nextFrame = _sprite->m_curretFrame - _sprite->m_realFrame;
-			else
-				nextFrame = _sprite->m_curretFrame + _sprite->m_realFrame;
-			
-			if (nextFrame >= 1.f)
-				_sprite->m_curretFrame = 0.f;
-			else
-				_sprite->m_curretFrame = nextFrame;
+				float nextFrame;
+				if (_sprite->m_flip)
+					nextFrame = animation->m_curretFrame - animation->m_realFrame;
+				else
+					nextFrame = animation->m_curretFrame + animation->m_realFrame;
 
-			_sprite->m_timer.Start();
+				if (nextFrame >= 1.f)
+					animation->m_curretFrame = 0.f;
+				else
+					animation->m_curretFrame = nextFrame;
+
+				animation->m_timer.Start();
+			}
 		}
+		m_aniScale.Set(animation->m_realFrame, 1.f, 0.f);
+		m_aniTranslate.Set(animation->m_curretFrame, 0.f, 0.f);
 	}
 
 	GLM::m_shader[GLM::SHADER_NORMAL].SetMatrix(
 		GLM::m_uniform[GLM::UNIFORM_ANI_SCALE],
-		mat4::Scale(vec3(_sprite->m_realFrame, 1.f)));
+		mat4::Scale(m_aniScale));
 
 	GLM::m_shader[GLM::SHADER_NORMAL].SetMatrix(
 		GLM::m_uniform[GLM::UNIFORM_ANI_TRANSLATE],
-		mat4::Translate(vec3(_sprite->m_curretFrame)));
+		mat4::Translate(m_aniTranslate));
 }
 
 void GraphicSystem::SetBackgroundColor(float _r, float _g, float _b, float _a)
@@ -420,27 +419,6 @@ void GraphicSystem::GLMousePosition() {
 	InputHandler::m_perspPosition *= new_w2;
 
 }
-
-#ifdef JE_SUPPORT_3D
-
-void GraphicSystem::AddModel(Model * _model)
-{
-	m_models.push_back(_model);
-
-}
-
-void GraphicSystem::RemoveModel(Model * _model)
-{
-	for (Models::iterator it = m_models.begin();
-		it != m_models.end(); ++it) {
-		if ((*it)->m_ownerId == _model->m_ownerId) {
-			m_models.erase(it);
-			break;
-		}
-	}
-}
-
-#endif
 
 JE_END
 

@@ -3,11 +3,9 @@
 // Graphic component headers
 //////////////////////////////////////////////////////////////////////////
 
+#include "Light.h"
+#include "Camera.h"
 #include "Sprite.h"
 #include "Material.h"
-#include "Camera.h"
-#include "Light.h"
-
-#ifdef JE_SUPPORT_3D
+#include "Animation.h"
 #include "Model.h"
-#endif

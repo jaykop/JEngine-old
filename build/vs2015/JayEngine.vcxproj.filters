@@ -106,20 +106,23 @@
     <ClCompile Include="..\..\src\JayEngine\Light.cpp">
       <Filter>System\Graphic</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JayEngine\Model.cpp">
-      <Filter>System\Graphic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\JayEngine\Mesh.cpp">
-      <Filter>System\Graphic</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\JayEngine\Material.cpp">
       <Filter>System\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\ComponentManager.cpp">
+      <Filter>Core\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\Rigidbody.cpp">
+      <Filter>System\Physics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\JayEngine\JsonParser.cpp">
       <Filter>Utils\Json</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JayEngine\ComponentManager.cpp">
-      <Filter>Core\Component</Filter>
+    <ClCompile Include="..\..\src\JayEngine\Animation.cpp">
+      <Filter>System\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\Model.cpp">
+      <Filter>System\Graphic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -246,12 +249,6 @@
     <ClInclude Include="..\..\include\JayEngine\Light.h">
       <Filter>System\Graphic</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JayEngine\Model.h">
-      <Filter>System\Graphic</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JayEngine\Mesh.h">
-      <Filter>System\Graphic</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\JayEngine\Material.h">
       <Filter>System\Graphic</Filter>
     </ClInclude>
@@ -261,11 +258,26 @@
     <ClInclude Include="..\..\include\JayEngine\ComponentBuilder.h">
       <Filter>Core\Component</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JayEngine\BuiltInComponents.h">
-      <Filter>Core\Component</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\JayEngine\UserComponent.h">
       <Filter>System\Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\Rigidbody.h">
+      <Filter>System\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\GraphicComponents.h">
+      <Filter>System\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\PhysicsComponents.h">
+      <Filter>System\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\SoundComponents.h">
+      <Filter>System\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\Animation.h">
+      <Filter>System\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\Model.h">
+      <Filter>System\Graphic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

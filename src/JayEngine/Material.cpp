@@ -1,3 +1,4 @@
+#include "Model.h"
 #include "Object.h"
 #include "Sprite.h"
 #include "Material.h"
@@ -15,19 +16,32 @@ Material::Material(Object* _owner)
 		_owner->GetComponent<Sprite>()->m_hasMaterial = true;
 	}
 
+	else if (_owner->HasComponent<Model>()
+		&& !_owner->GetComponent<Model>()->m_hasMaterial) {
+		_owner->GetComponent<Model>()->m_material = this;
+		_owner->GetComponent<Model>()->m_hasMaterial = true;
+	}
+
 	else
 		JE_DEBUG_PRINT("This object has no sprite componnet!\n");
 }
 
 void Material::Load(CR_RJValue _data)
 {
-	CR_RJValue diffuse = _data["Diffuse"];
-	CR_RJValue specular = _data["Specular"];
-	CR_RJValue shininess = _data["Position"];
+	if (_data.HasMember("Diffuse")) {
+		CR_RJValue diffuse = _data["Diffuse"];
+		m_diffuse = diffuse.GetInt();
+	}
 
-	m_diffuse = diffuse.GetInt();
-	m_specular = specular.GetInt();
-	m_shininess = shininess.GetFloat();
+	if (_data.HasMember("Specular")) {
+		CR_RJValue specular = _data["Specular"];
+		m_specular = specular.GetInt();
+	}
+	
+	if (_data.HasMember("Shininess")) {
+		CR_RJValue shininess = _data["Shininess"];
+		m_shininess = shininess.GetFloat();
+	}
 }
 
 MaterialBuilder::MaterialBuilder()

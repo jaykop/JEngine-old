@@ -3,7 +3,8 @@
 
 JE_BEGIN
 
-BuilderMap ComponentManager::m_builderMap;
+BuilderMap	ComponentManager::m_builderMap;
+std::string ComponentManager::m_nameHeader = "class JEngine::";
 
 Component* ComponentManager::CreateComponent(
 	const char* _componentName, Object* _pOwner)
@@ -26,7 +27,7 @@ void ComponentManager::RegisterBuilder(
 	const char* _componentName, ComponentBuilder* _pBuilder)
 {
 	// Check if either there is a existing component builder 
-	auto found = m_builderMap.find(_componentName);
+	auto found = m_builderMap.find(m_nameHeader + _componentName);
 
 	// If there is existing like that,
 	// don't add new builder
@@ -36,7 +37,7 @@ void ComponentManager::RegisterBuilder(
 	// Unless, add new builder
 	else
 		m_builderMap.insert(
-			BuilderMap::value_type(_componentName, _pBuilder));
+			BuilderMap::value_type(m_nameHeader + _componentName, _pBuilder));
 }
 
 void ComponentManager::ClearBuilders()

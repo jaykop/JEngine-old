@@ -1,15 +1,15 @@
 #pragma once
-#include "Macro.h"
-#include "Timer.h"
 #include "Vector4.h"
 #include "Component.h"
 #include "ComponentBuilder.h"
 
 JE_BEGIN
 
+class Material;
+class Transform;
+class Animation; 
 class SpriteBuilder : public ComponentBuilder
 {
-
 	friend class AssetManager;
 
 public:
@@ -25,17 +25,16 @@ private:
 
 };
 
-class Object;
-class Material; 
-class Transform;
 class Sprite : public Component
 {
 	// Keyword Definitions
 	friend class	Material;
-	friend class	AssetManager;
+	friend class	Animation;
+
+	friend class	ModelBuilder;
+	friend class	SpriteBuilder;
 	friend class	GraphicSystem;
 	friend class	ComponentManager;
-	friend class	SpriteBuilder;
 	typedef			std::unordered_map<std::string, unsigned>	TextureMap;
 
 public:
@@ -44,49 +43,37 @@ public:
 
 	void Register() override;
 
-	int		GetAnimationFrame();
-	float	GetAnimationSpeed();
-	bool	GetActiveAnimationToggle();
-	void	ActiveAnimation(bool _toggle);
-	void	FixAnimationFrame(int _thFrame);
-	void	SetAnimationSpeed(float _speed);
-	void	SetAnimationFrame(int _numOfFrame);
-
 	void		AddTexture(const char* _key);
 	void		RemoveTexture(const char* _key);
 	void		SetCurrentTexutre(const char* _key);
 	unsigned	GetCurrentTexutre();
 	unsigned	GetTexutre(const char* _key);
 
-	bool		m_flip;
+	bool		m_flip, m_isModel;
 	vec4		m_color;
 	ProjectType m_projection;
 
-private:
+protected:
 
-	// Locked constuctors and destructor
 	~Sprite();
 	Sprite(Object* _owner = nullptr);
-	Sprite(const Sprite& /*_copy*/) {};
-	void operator=(const Sprite& /*_copy*/) {};
 
 	void Load(CR_RJValue _data) override;
 
 	bool m_culled;
-
-	Timer	m_timer;
-	int		m_animationFrames;
-	int		m_animationFixFrame;
-	bool	m_activeAnimation, m_hasMaterial;
-	float	m_realSpeed;
-	float	m_realFrame;
-	float	m_curretFrame;
-	float	m_animationSpeed;
+	bool m_hasMaterial, m_hasAnimation;
 
 	unsigned	m_mainTex;
 	TextureMap	m_textureMap;
 	Transform	*m_transform;
 	Material	*m_material;
+	Animation	*m_animation;
+
+private:
+
+	// Locked constuctors and destructor
+	Sprite(const Sprite& /*_copy*/) {};
+	void operator=(const Sprite& /*_copy*/) {};
 
 };
 

@@ -35,9 +35,9 @@ BehaviorSystem* SystemManager::GetBehaviorSystem()
 	return m_systems->m_pBehaviorSystem;
 }
 
-void SystemManager::Load()
+void SystemManager::Load(CR_RJDoc _data)
 {
-	m_systems->Load();
+	m_systems->Load(_data);
 }
 
 void SystemManager::Init()
@@ -143,12 +143,12 @@ void SystemManager::Systems::Unbind()
 	}
 }
 
-void SystemManager::Systems::Load()
+void SystemManager::Systems::Load(CR_RJDoc _data)
 {
-	m_pBehaviorSystem->Load();
-	m_pSoundSystem->Load();
-	m_pGraphicSystem->Load();
-	m_pPhysicsSystem->Load();
+	m_pBehaviorSystem->Load(_data);
+	m_pSoundSystem->Load(_data);
+	m_pGraphicSystem->Load(_data);
+	m_pPhysicsSystem->Load(_data);
 }
 
 void SystemManager::Systems::Init()

@@ -18,13 +18,20 @@ void Camera::Register()
 
 void Camera::Load(CR_RJValue _data)
 {
-	CR_RJValue up = _data["Up"];
-	CR_RJValue target = _data["Target"];
-	CR_RJValue position = _data["Position"];
+	if (_data.HasMember("Up")) {
+		CR_RJValue up = _data["Up"];
+		m_up.Set(up[0].GetFloat(), up[1].GetFloat(), up[2].GetFloat());
+	}
 
-	m_up.Set(up[0].GetFloat(), up[1].GetFloat(), up[2].GetFloat());
-	m_target.Set(target[0].GetFloat(), target[1].GetFloat(), target[2].GetFloat());
-	m_position.Set(position[0].GetFloat(), position[1].GetFloat(), position[2].GetFloat());
+	if (_data.HasMember("Target")) {
+		CR_RJValue target = _data["Target"];
+		m_target.Set(target[0].GetFloat(), target[1].GetFloat(), target[2].GetFloat());
+	}
+
+	if (_data.HasMember("Position")) {
+		CR_RJValue position = _data["Position"];
+		m_position.Set(position[0].GetFloat(), position[1].GetFloat(), position[2].GetFloat());
+	}
 }
 
 CameraBuilder::CameraBuilder()

@@ -8,7 +8,7 @@ struct Material{
 	//vec4 m_diffuse;		// Desired obj's color
 	
 	sampler2D m_diffuse;
-	vec4 m_specular;	// specular highlighted color
+	sampler2D m_specular;	// specular highlighted color
 	float m_shininess;	// impacts the specular light
 };
 
@@ -75,19 +75,19 @@ void main() {
 void LightingEffect(inout vec4 _light) {
 
 	// Ambient light
-	vec4 ambient = light.m_ambient * texture(material.m_diffuse, v2_outTexCoord); //material.m_ambient; 
+	vec4 ambient = light.m_ambient * vec4(texture(material.m_diffuse, v2_outTexCoord)); 
 	
 	// Diffuse light
 	vec3 norm = normalize(v3_outNormal);
 	vec3 lightDirection = normalize(light.m_position - v3_outFragmentPosition);
 	float diff = max(dot(norm, lightDirection), 0.0);
-	vec4 diffuse = light.m_diffuse * (diff * texture(material.m_diffuse, v2_outTexCoord)); //material.m_diffuse);
+	vec4 diffuse = light.m_diffuse * vec4(diff * texture(material.m_diffuse, v2_outTexCoord)); 
 	
 	// Specular light
 	vec3 viewDirection = normalize(v3_outCameraPosition - v3_outFragmentPosition);
 	vec3 reflectedDirection = reflect(-lightDirection, norm);
 	float spec = pow(max(dot(viewDirection, reflectedDirection), 0.0), material.m_shininess);
-	vec4 specular = light.m_specular * (spec * material.m_specular); 
+	vec4 specular = light.m_specular * vec4(spec * texture(material.m_specular, v2_outTexCoord)); 
 	
 	// Final light
 	_light = v4_outLightColor * (ambient + diffuse + specular);

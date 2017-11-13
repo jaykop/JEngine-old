@@ -8,7 +8,7 @@
 
 JE_BEGIN
 
-RJDoc JsonParser::m_document;
+RJDoc		JsonParser::m_document;
 
 void JsonParser::ReadFile(const char * _dir)
 {
@@ -20,7 +20,7 @@ void JsonParser::ReadFile(const char * _dir)
 	m_document.ParseStream<0, rapidjson::UTF8<>, rapidjson::FileReadStream>(read);
 }
 
-const RJDoc& JsonParser::GetDocument()
+CR_RJDoc JsonParser::GetDocument()
 {
 	return m_document;
 }
@@ -31,32 +31,39 @@ void JsonParser::LoadObjects(ObjectContainer* _pOBC)
 
 	for (rapidjson::SizeType i = 0; i < object.Size(); ++i) {
 
-		CR_RJValue component = object[i]["Component"];
+		if (object[i].HasMember("Component")) {
+			CR_RJValue component = object[i]["Component"];
 
-		if (component[i]["Type"].IsString()) {
-			FACTORY::CreateObject(component[i]["Type"].GetString());
+			if (component[0].HasMember("Type")) {
 
-			for (rapidjson::SizeType j = 0; j < component.Size(); ++j)
-				LoadComponents(component[j]);
-			FACTORY::AddCreatedObject(_pOBC);
+				if (component[0]["Type"].IsString()) {
+					FACTORY::CreateObject(component[0]["Type"].GetString());
+
+					for (rapidjson::SizeType j = 0; j < component.Size(); ++j)
+						LoadComponents(component[j]);
+					FACTORY::AddCreatedObject(_pOBC);
+				}
+
+				else // if (component[0]["Type"].IsString()) {
+					JE_DEBUG_PRINT("Wrong type of object name.\n");
+			}
+
+			else // if (component[0].HasMember("Type") && component[0].HasMember("Values")) {
+				JE_DEBUG_PRINT("No component type or values.\n");
 		}
-
-		else
-			JE_DEBUG_PRINT("Wrong type of object name.\n");
+		
+		else // if (object[i].HasMember("Component")) {
+			JE_DEBUG_PRINT("Object without any component!\n");
 	}
 }
 
 void JsonParser::LoadComponents(CR_RJValue _data)
 {
-	if (_data["Type"].IsString()) {
 		FACTORY::GetCreatedObject()->AddComponent(_data["Type"].GetString());
 		Component* found = 
 			FACTORY::GetCreatedObject()->GetComponent(_data["Type"].GetString());
-		found->Load(_data["Values"]);
-	}
-
-	else
-		JE_DEBUG_PRINT("Wrong type of component name.\n");
+		if (_data.HasMember("Values"))
+			found->Load(_data["Values"]);
 }
 
 JE_END

@@ -26,7 +26,7 @@ void BehaviorSystem::RemoveBehavior(UserComponent* _behavior)
 	}
 }
 
-void BehaviorSystem::Load()
+void BehaviorSystem::Load(CR_RJDoc /*_data*/)
 {
 	// None...
 }

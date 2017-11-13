@@ -1,6 +1,6 @@
 {
 
-	"Background" : [ 0.3, 0.3, 0.3, 0.3 ],
+	"Background" : [ 0.7, 0.7, 0.7, 0.7 ],
 	"Object" : [
 		{
 			"Name" : "sampleObject",
@@ -8,6 +8,45 @@
 				{
 					"Type": "SampleLogic",
 					"Values": {}
+				}
+			]
+		},
+		{
+			"Name" : "Camera",
+			"Component" : [
+				{
+					"Type": "Camera",
+					"Values": {"Position" : [50, 50, 50], "Target" : [0, 0, 0],
+						"Up" : [0, 1, 0]}
+				}
+			]
+		},
+		{
+			"Name" : "Light",
+			"Component" : [
+				{
+					"Type": "Light",
+					"Values": {"Position" : [0, 0, 10], "Color" : [1, 1, 1, 1], 
+						"Diffuse" : [0.5, 0.5, 0.5, 0.5], "Specular" : [0.5, 0.5, 0.5, 0.5], 
+						"Ambient" : [0.5, 0.5, 0.5, 0.5]}
+				}
+			]
+		},
+		{
+			"Name" : "Model",
+			"Component" : [
+				{
+					"Type": "Transform",
+					"Values": {"Position" : [0, 0, -50], "Scale" : [50, 50, 50]}
+				},
+				{
+					"Type": "Model",
+					"Values": {"Texture" : "uvtemplate", "Color" : [1, 1, 1, 1],
+						"Projection" : "Perspective"}
+				},
+				{
+					"Type": "Material",
+					"Values": {"Diffuse" : 32, "Specular" : 32, "Shininess" : 1}
 				}
 			]
 		}

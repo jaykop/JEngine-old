@@ -1,21 +1,19 @@
 #pragma once
 #include <vector>
 #include "System.h"
-#include "Vector4.h"
 #include "Matrix4x4.h"
-
-#ifndef JE_SUPPORT_3D
-#include "Vector3.h"
-#endif
 
 JE_BEGIN
 
+class Material;
 class Transform;
+class Animation;
 
 class GraphicSystem : public System
 {
 
 	friend class Light;
+	friend class Model;
 	friend class Sprite;
 	friend class Camera;
 	friend class SystemManager;
@@ -40,7 +38,7 @@ private:
 	GraphicSystem(const GraphicSystem& /*_copy*/) {};
 	void operator=(const GraphicSystem& /*_copy*/) {};
 
-	void Load() override;
+	void Load(CR_RJDoc _data) override;
 	void Init() override;
 	void Update(float dt) override;
 	void Close() override;
@@ -59,8 +57,8 @@ private:
 	void Pipeline(Light* _light);
 	void Pipeline(Sprite* _sprite);
 	void TransformPipeline(Sprite* _sprite);
-	void MappingPipeline(Sprite* _sprite);
 	void AnimationPipeline(Sprite* _sprite);
+	void MappingPipeline(Sprite* _sprite, Material* _material);
 
 	void GLMousePosition();
 
@@ -72,11 +70,16 @@ private:
 	Transform*	m_pTransformStorage;
 	
 	int		m_width, m_height;
-	bool	m_orthoFirst, m_inside, m_isLight;
+	bool	m_orthoFirst, m_inside, m_isLight, m_hasAnimation;
 	mat4	m_animation, m_perspective, m_orthogonal, m_viewport;
 	vec4	m_backgroundColor;
+	vec3	m_aniScale, m_aniTranslate;
 	float	m_fovy, m_aspect, m_zNear, m_zFar;
 	float	m_left, m_right, m_top, m_bottom;
+
+#ifndef JE_SUPPORT_3D
+	vec3 m_target2D;
+#endif
 
 	struct compareOrder {
 		
@@ -87,16 +90,6 @@ private:
 			bool m_orthoFirst;
 	};
 
-#ifdef JE_SUPPORT_3D
-	friend class Model;
-	typedef std::vector<Model*> Models;
-	Models		m_models;
-
-	void AddModel(Model* _model);
-	void RemoveModel(Model* _model);
-#else
-	vec3 m_target2D;
-#endif
 };
 
 JE_END

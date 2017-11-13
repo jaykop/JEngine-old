@@ -45,8 +45,8 @@ class GLManager {
 		//////////////////////
 		// Boolean uniform
 		//////////////////////
-		UNIFORM_FLIP,		// animation attributes
-		UNIFORM_IS_LIGHT,	// light attributes
+		UNIFORM_FLIP,			// animation attributes
+		UNIFORM_IS_LIGHT,		// light attributes
 
 		//////////////////////
 		// Float uniform

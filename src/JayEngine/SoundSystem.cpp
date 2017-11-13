@@ -7,7 +7,7 @@ SoundSystem::SoundSystem()
 {
 }
 
-void SoundSystem::Load()
+void SoundSystem::Load(CR_RJDoc /*_data*/)
 {
 	// TODO
 	// Load background music here...

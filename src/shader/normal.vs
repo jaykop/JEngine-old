@@ -74,9 +74,10 @@ void Transforming(vec4 _position, mat4 _model) {
 
 void Mapping(vec4 _position, inout vec4 _texCoord) {
 	
-	// Texture mapping
+	// Animation mapping
 	mat4 animation = m4_aniScale * m4_aniTranslate;
 	_texCoord = transpose(animation) * vec4(uvPosition, 0, 1);
+
 	
 	// Check flipping
 	if (boolean_flip)

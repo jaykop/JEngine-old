@@ -18,17 +18,30 @@ void Light::Register()
 
 void Light::Load(CR_RJValue _data)
 {
-	CR_RJValue color = _data["Color"];
-	CR_RJValue ambient = _data["Ambient"];
-	CR_RJValue diffuse = _data["Diffuse"];
-	CR_RJValue specular = _data["Specular"];
-	CR_RJValue position = _data["Position"];
+	if (_data.HasMember("Color")) {
+		CR_RJValue color = _data["Color"];
+		m_color.Set(color[0].GetFloat(), color[1].GetFloat(), color[2].GetFloat(), color[3].GetFloat());
+	}
 
-	m_position.Set(position[0].GetFloat(), position[1].GetFloat(), position[2].GetFloat());
-	m_color.Set(color[0].GetFloat(), color[1].GetFloat(), color[2].GetFloat(), color[3].GetFloat());
-	m_ambient.Set(ambient[0].GetFloat(), ambient[1].GetFloat(), ambient[2].GetFloat(), ambient[3].GetFloat());
-	m_diffuse.Set(diffuse[0].GetFloat(), diffuse[1].GetFloat(), diffuse[2].GetFloat(), diffuse[3].GetFloat());
-	m_specular.Set(specular[0].GetFloat(), specular[1].GetFloat(), specular[2].GetFloat(), specular[3].GetFloat());
+	if (_data.HasMember("Ambient")) {
+		CR_RJValue ambient = _data["Ambient"];
+		m_ambient.Set(ambient[0].GetFloat(), ambient[1].GetFloat(), ambient[2].GetFloat(), ambient[3].GetFloat());
+	}
+	
+	if (_data.HasMember("Diffuse")) {
+		CR_RJValue diffuse = _data["Diffuse"];
+		m_diffuse.Set(diffuse[0].GetFloat(), diffuse[1].GetFloat(), diffuse[2].GetFloat(), diffuse[3].GetFloat());
+	}
+	
+	if (_data.HasMember("Specular")) {
+		CR_RJValue specular = _data["Specular"];
+		m_specular.Set(specular[0].GetFloat(), specular[1].GetFloat(), specular[2].GetFloat(), specular[3].GetFloat());
+	}
+	
+	if (_data.HasMember("Position")) {
+		CR_RJValue position = _data["Position"];
+		m_position.Set(position[0].GetFloat(), position[1].GetFloat(), position[2].GetFloat());
+	}
 }
 
 
