@@ -10,6 +10,7 @@ JE_BEGIN
 
 class GLManager {
 
+	friend class Shader;
 	friend class Application;
 	friend class GraphicSystem;
 

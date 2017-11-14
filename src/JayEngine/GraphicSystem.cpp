@@ -307,6 +307,11 @@ void GraphicSystem::AnimationPipeline(Sprite* _sprite)
 		m_aniTranslate.Set(animation->m_curretFrame, 0.f, 0.f);
 	}
 
+	else {
+		m_aniScale.Set(1,1,0);
+		m_aniTranslate.Set(0,0,0);
+	}
+
 	GLM::m_shader[GLM::SHADER_NORMAL].SetMatrix(
 		GLM::m_uniform[GLM::UNIFORM_ANI_SCALE],
 		mat4::Scale(m_aniScale));

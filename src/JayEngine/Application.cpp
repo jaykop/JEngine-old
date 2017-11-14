@@ -110,6 +110,7 @@ void Application::Close()
 {
 	STATE::Close();		// Remove systems and states
 	ASSET::Unload();	// Clear loaded assets
+	GLM::CloseSDL_GL();
 
 	#ifdef JE_SUPPORT_IMGUI
 	// Close imgui manager
