@@ -56,6 +56,7 @@ private:
 
 	void Pipeline(Light* _light);
 	void Pipeline(Sprite* _sprite);
+	void LightingPipeline();
 	void TransformPipeline(Sprite* _sprite);
 	void AnimationPipeline(Sprite* _sprite);
 	void MappingPipeline(Sprite* _sprite, Material* _material);

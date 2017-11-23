@@ -49,6 +49,7 @@
     <ClCompile Include="..\..\src\JayEngine\Object.cpp" />
     <ClCompile Include="..\..\src\JayEngine\ObjectContainer.cpp" />
     <ClCompile Include="..\..\src\JayEngine\ObjectFactory.cpp" />
+    <ClCompile Include="..\..\src\JayEngine\Particle.cpp" />
     <ClCompile Include="..\..\src\JayEngine\PhysicsSystem.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Platform_win32.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -116,6 +117,7 @@
     <ClInclude Include="..\..\include\JayEngine\Object.h" />
     <ClInclude Include="..\..\include\JayEngine\ObjectContainer.h" />
     <ClInclude Include="..\..\include\JayEngine\ObjectFactory.h" />
+    <ClInclude Include="..\..\include\JayEngine\Particle.h" />
     <ClInclude Include="..\..\include\JayEngine\PhysicsComponents.h" />
     <ClInclude Include="..\..\include\JayEngine\PhysicsSystem.h" />
     <ClInclude Include="..\..\include\JayEngine\Rigidbody.h" />

@@ -24,6 +24,7 @@ private:
 	void SetVector4(GLint& _uniform, const vec4& _vector);
 	void SetVector3(GLint& _uniform, const vec3& _vector);
 	void SetBool(GLint& _uniform, bool _bool);
+	void SetEnum(GLint& _uniform, int _int);
 	void SetInt(GLint& _uniform, int _int);
 
 	Shader() {};

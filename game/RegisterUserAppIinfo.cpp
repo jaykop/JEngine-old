@@ -6,6 +6,7 @@
 // customize component headers
 //////////////////////////////////////////////////////////////////////////
 #include "SampleLogic.h"
+#include "ControlLight.h"
 
 JE_BEGIN
 
@@ -19,6 +20,7 @@ void AssetManager::RegisterUserAppInfo()
 
 	// Load customized components
 	JE_ADD_COMPONENT(SampleLogic);
+	JE_ADD_COMPONENT(ControlLight);
 
 }
 

@@ -31,30 +31,35 @@ void JsonParser::LoadObjects(ObjectContainer* _pOBC)
 
 	for (rapidjson::SizeType i = 0; i < object.Size(); ++i) {
 
-		if (object[i].HasMember("Component")) {
-			CR_RJValue component = object[i]["Component"];
+		// Check either if object's name
+		if (object[i]["Name"].IsString()) {
+			FACTORY::CreateObject(object[i]["Name"].GetString());
 
-			if (component[0].HasMember("Type")) {
+			// Check either if object has any component
+			if (object[i].HasMember("Component")) {
+				CR_RJValue component = object[i]["Component"];
 
-				if (component[0]["Type"].IsString()) {
-					FACTORY::CreateObject(component[0]["Type"].GetString());
+				// Check either if components have correct type
+				for (rapidjson::SizeType j = 0; j < component.Size(); ++j) {
 
-					for (rapidjson::SizeType j = 0; j < component.Size(); ++j)
+					if (component[j].HasMember("Type"))
 						LoadComponents(component[j]);
-					FACTORY::AddCreatedObject(_pOBC);
-				}
+					else
+						JE_DEBUG_PRINT("Wrong component type or values.\n");
 
-				else // if (component[0]["Type"].IsString()) {
-					JE_DEBUG_PRINT("Wrong type of object name.\n");
-			}
+				} // for (rapidjson::SizeType j = 0; j < component.Size(); ++j) {
+			} // if (object[i].HasMember("Component")) {
 
-			else // if (component[0].HasMember("Type") && component[0].HasMember("Values")) {
-				JE_DEBUG_PRINT("No component type or values.\n");
-		}
-		
-		else // if (object[i].HasMember("Component")) {
-			JE_DEBUG_PRINT("Object without any component!\n");
-	}
+			else
+				JE_DEBUG_PRINT("No component in object.\n");
+
+			FACTORY::AddCreatedObject(_pOBC);
+		} // if (object[i]["Name"].IsString()) {
+
+		else // if (object[i]["Name"].IsString()) {
+			JE_DEBUG_PRINT("Wrong type of object name.\n");
+
+	} // for (rapidjson::SizeType i = 0; i < object.Size(); ++i) {
 }
 
 void JsonParser::LoadComponents(CR_RJValue _data)

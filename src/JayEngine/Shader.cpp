@@ -147,7 +147,7 @@ void Shader::Use()
 	glUseProgram(m_programId);
 }
 
-void Shader::SetFloat(GLint & _uniform, float _float)
+void Shader::SetFloat(GLint& _uniform, float _float)
 {
 	glUniform1f(_uniform, _float);
 }
@@ -167,7 +167,7 @@ void Shader::SetVector4(GLint& _uniform, const vec4& _vector)
 	glUniform4f(_uniform, _vector.x, _vector.y, _vector.z, _vector.w);
 }
 
-void Shader::SetVector3(GLint & _uniform, const vec3 & _vector)
+void Shader::SetVector3(GLint& _uniform, const vec3 & _vector)
 {
 	glUniform3f(_uniform, _vector.x, _vector.y, _vector.z);
 }
@@ -175,6 +175,11 @@ void Shader::SetVector3(GLint & _uniform, const vec3 & _vector)
 void Shader::SetBool(GLint& _uniform, bool _bool)
 {
 	glUniform1i(_uniform, _bool);
+}
+
+void Shader::SetEnum(GLint & _uniform, int _int)
+{
+	glUniform1i(_uniform, _int);
 }
 
 void Shader::SetInt(GLint & _uniform, int _int)

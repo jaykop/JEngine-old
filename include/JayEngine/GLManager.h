@@ -32,9 +32,10 @@ class GLManager {
 		UNIFORM_COLOR,
 
 		// Ligthing attributes
-		UNIFORM_LIGHT_POSITION,
+		UNIFORM_LIGHT_POSITION, UNIFORM_LIGHT_DIRECTION,
 		UNIFORM_LIGHT_COLOR, UNIFORM_LIGHT_AMBIENT,
 		UNIFORM_LIGHT_DIFFUSE, UNIFORM_LIGHT_SPECULAR,
+		
 
 		// Material attributes
 		UNIFORM_MATERIAL_AMBIENT, UNIFORM_MATERIAL_DIFFUSE,
@@ -52,13 +53,20 @@ class GLManager {
 		//////////////////////
 		// Float uniform
 		//////////////////////
-		UNIFORM_MATERIAL_SHININESS,	// material attributes
+		// material attributes
+		UNIFORM_MATERIAL_SHININESS,	
+
+		// Ligthing attributes
+		UNIFORM_LIGHT_CONST, 
+		UNIFORM_LIGHT_LINEAR, UNIFORM_LIGHT_QUAD,
+		UNIFORM_LIGHT_CUTOFF, UNIFORM_LIGHT_OUTERCUTOFF,
 
 		//////////////////////
-		// Last enum
+		// Enum uniform
 		//////////////////////
+		UNIFORM_LIGHT_TYPE,
 
-		/******************** Normal shader ********************/
+		/******************** Light shader ********************/
 		//////////////////////
 		// Martix uniform
 		//////////////////////

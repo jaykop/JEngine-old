@@ -254,7 +254,7 @@ void GLManager::SetDrawMode(DrawMode _mode)
 
 void GLManager::RegisterUniform()
 {
-	// For normal shader
+	/******************** normal shader ********************/
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_TRANSLATE], "m4_translate");
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_SCALE], "m4_scale");
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_ROTATE], "m4_rotate");
@@ -275,11 +275,19 @@ void GLManager::RegisterUniform()
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_MATERIAL_SPECULAR], "material.m_specular");
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_MATERIAL_SHININESS], "material.m_shininess");
 
-	// m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_AMBIENT], "light.m_ambient");
+	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_TYPE], "light.m_type");
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_DIFFUSE], "light.m_diffuse");
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_SPECULAR], "light.m_specular");
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_POSITION], "light.m_position");
+	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_DIRECTION], "light.m_direction");
 
+	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_CONST], "light.m_constant");
+	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_LINEAR], "light.m_linear");
+	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_QUAD], "light.m_quadratic");
+	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_CUTOFF], "light.m_cutOff");
+	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_OUTERCUTOFF], "light.m_outerCutOff");
+	
+	/******************** Light shader ********************/
 	m_shader[SHADER_LIGHTING].ConnectUniform(m_uniform[UNIFORM_LIGHT_TRANSLATE], "m4_translate");
 	m_shader[SHADER_LIGHTING].ConnectUniform(m_uniform[UNIFORM_LIGHT_SCALE], "m4_scale");
 	m_shader[SHADER_LIGHTING].ConnectUniform(m_uniform[UNIFORM_LIGHT_ROTATE], "m4_rotate");

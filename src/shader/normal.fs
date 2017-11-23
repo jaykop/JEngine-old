@@ -4,19 +4,27 @@
 // structs
 ////////////////////////////
 struct Material{
-	//vec4 m_ambient;		// Reflected color
-	//vec4 m_diffuse;		// Desired obj's color
-	
 	sampler2D m_diffuse;
 	sampler2D m_specular;	// specular highlighted color
-	float m_shininess;	// impacts the specular light
+	float m_shininess;		// impacts the specular light
 };
 
 struct Light {
+
+	int m_type;
 	vec3 m_position;
+	vec3 m_direction;
+	
 	vec4 m_ambient;
 	vec4 m_diffuse;
 	vec4 m_specular;
+	
+	float m_constant;
+	float m_linear;
+	float m_quadratic;
+	
+	float m_cutOff;
+	float m_outerCutOff;
 };
 
 ////////////////////////////
@@ -73,23 +81,63 @@ void main() {
 // function bodies
 ////////////////////////////
 void LightingEffect(inout vec4 _light) {
+		
+	vec3 	lightDirection;
+	float 	attenuation = 1.f;
+	vec3 	gap = light.m_position - v3_outFragmentPosition;
+	float 	theta = 0.f;
+	
+	// Driectional light
+	if (light.m_type == 1)
+		lightDirection = normalize(-light.m_direction);
 
-	// Ambient light
-	vec4 ambient = light.m_ambient * vec4(texture(material.m_diffuse, v2_outTexCoord)); 
+	else {
+		lightDirection = normalize(gap);
 	
-	// Diffuse light
-	vec3 norm = normalize(v3_outNormal);
-	vec3 lightDirection = normalize(light.m_position - v3_outFragmentPosition);
-	float diff = max(dot(norm, lightDirection), 0.0);
-	vec4 diffuse = light.m_diffuse * vec4(diff * texture(material.m_diffuse, v2_outTexCoord)); 
+		// Spotlight
+		if (light.m_type == 2) {
+			theta = dot(lightDirection, normalize(-light.m_direction));
+		}
+		
+		// Pointlight
+		else if (light.m_type == 3) {
+			float distance = length(gap);
+			attenuation = 1.0 / (light.m_constant + light.m_linear * distance + light.m_quadratic * (distance * distance));
+		}
+	}	
 	
-	// Specular light
-	vec3 viewDirection = normalize(v3_outCameraPosition - v3_outFragmentPosition);
-	vec3 reflectedDirection = reflect(-lightDirection, norm);
-	float spec = pow(max(dot(viewDirection, reflectedDirection), 0.0), material.m_shininess);
-	vec4 specular = light.m_specular * vec4(spec * texture(material.m_specular, v2_outTexCoord)); 
+	//if (light.m_type == 2 
+	//&& theta <= light.m_cutOff) {
+	//	_light = light.m_ambient * vec4(texture(material.m_diffuse, v2_outTexCoord)); 
+	//}
 	
-	// Final light
-	_light = v4_outLightColor * (ambient + diffuse + specular);
+	//else {
+		// Ambient light
+		vec4 ambient = light.m_ambient * vec4(texture(material.m_diffuse, v2_outTexCoord)); 
+	
+		// Diffuse light
+		vec3 norm = normalize(v3_outNormal);
+	
+		float diff = max(dot(norm, lightDirection), 0.0);
+		vec4 diffuse = light.m_diffuse * vec4(diff * texture(material.m_diffuse, v2_outTexCoord)); 
+	
+		// Specular light
+		vec3 viewDirection = normalize(v3_outCameraPosition - v3_outFragmentPosition);
+		vec3 reflectedDirection = reflect(-lightDirection, norm);
+		float spec = pow(max(dot(viewDirection, reflectedDirection), 0.0), material.m_shininess);
+		vec4 specular = light.m_specular * vec4(spec * texture(material.m_specular, v2_outTexCoord)); 
+	
+		// Smooth spotlight
+		if (light.m_type == 2) {
+			float epsilon = light.m_cutOff - light.m_outerCutOff;
+			float intensity = clamp((theta - light.m_outerCutOff) / epsilon, 0.0, 1.0);
+			diffuse *= intensity;
+			specular *= intensity;
+		}
+	
+		// Final light
+		_light = v4_outLightColor * ((ambient + diffuse + specular) * attenuation);
+	//}
+
 	_light.w = 1.0;
 }

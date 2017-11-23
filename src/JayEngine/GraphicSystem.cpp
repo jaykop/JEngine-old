@@ -6,6 +6,7 @@
 #include "Application.h"
 #include "InputHandler.h"
 #include "GraphicComponents.h"
+#include "MathUtils.h"
 
 JE_BEGIN
 
@@ -105,32 +106,6 @@ void GraphicSystem::RemoveSprite(Sprite* _sprite)
 
 void GraphicSystem::Pipeline(Light* _light)
 {
-	GLM::m_shader[GLM::SHADER_NORMAL].Use();
-
-	GLM::m_shader[GLM::SHADER_NORMAL].SetVector4(
-		GLM::m_uniform[GLM::UNIFORM_LIGHT_AMBIENT],
-		_light->m_ambient);
-
-	GLM::m_shader[GLM::SHADER_NORMAL].SetVector4(
-		GLM::m_uniform[GLM::UNIFORM_LIGHT_SPECULAR],
-		_light->m_specular);
-
-	GLM::m_shader[GLM::SHADER_NORMAL].SetVector4(
-		GLM::m_uniform[GLM::UNIFORM_LIGHT_DIFFUSE],
-		_light->m_diffuse);
-
-	GLM::m_shader[GLM::SHADER_NORMAL].SetVector4(
-		GLM::m_uniform[GLM::UNIFORM_LIGHT_COLOR],
-		_light->m_color);
-
-	GLM::m_shader[GLM::SHADER_NORMAL].SetVector3(
-		GLM::m_uniform[GLM::UNIFORM_LIGHT_POSITION],
-		_light->m_position);
-
-	GLM::m_shader[GLM::SHADER_NORMAL].SetVector3(
-		GLM::m_uniform[GLM::UNIFORM_CAMERA_POSITION],
-		m_pMainCamera->m_position);
-
 	GLM::m_shader[GLM::SHADER_LIGHTING].Use();
 
 	GLM::m_shader[GLM::SHADER_LIGHTING].SetMatrix(
@@ -174,16 +149,72 @@ void GraphicSystem::Pipeline(Sprite* _sprite)
 	// TODO
 	// It so, not draw
 	//if (!_sprite->m_culled) {
-	
-		MappingPipeline(_sprite, _sprite->m_material);
-		AnimationPipeline(_sprite);
 
-		if (_sprite->m_isModel)
-			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-		else
-			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	if (m_isLight)
+		LightingPipeline();
+	MappingPipeline(_sprite, _sprite->m_material);
+	AnimationPipeline(_sprite);
+	
+	if (_sprite->m_isModel)
+		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+	else
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 	//}
+}
+
+void GraphicSystem::LightingPipeline()
+{
+	for (auto _light : m_lights) {
+		GLM::m_shader[GLM::SHADER_NORMAL].SetVector4(
+			GLM::m_uniform[GLM::UNIFORM_LIGHT_AMBIENT],
+			_light->m_ambient);
+
+		GLM::m_shader[GLM::SHADER_NORMAL].SetVector4(
+			GLM::m_uniform[GLM::UNIFORM_LIGHT_SPECULAR],
+			_light->m_specular);
+
+		GLM::m_shader[GLM::SHADER_NORMAL].SetVector4(
+			GLM::m_uniform[GLM::UNIFORM_LIGHT_DIFFUSE],
+			_light->m_diffuse);
+
+		GLM::m_shader[GLM::SHADER_NORMAL].SetVector4(
+			GLM::m_uniform[GLM::UNIFORM_LIGHT_COLOR],
+			_light->m_color);
+
+		GLM::m_shader[GLM::SHADER_NORMAL].SetEnum(
+			GLM::m_uniform[GLM::UNIFORM_LIGHT_TYPE],
+			_light->m_type);
+
+		GLM::m_shader[GLM::SHADER_NORMAL].SetVector3(
+			GLM::m_uniform[GLM::UNIFORM_LIGHT_DIRECTION],
+			_light->m_direction);
+
+		GLM::m_shader[GLM::SHADER_NORMAL].SetFloat(
+			GLM::m_uniform[GLM::UNIFORM_LIGHT_CONST],
+			_light->m_constant);
+
+		GLM::m_shader[GLM::SHADER_NORMAL].SetFloat(
+			GLM::m_uniform[GLM::UNIFORM_LIGHT_LINEAR],
+			_light->m_linear);
+
+		GLM::m_shader[GLM::SHADER_NORMAL].SetFloat(
+			GLM::m_uniform[GLM::UNIFORM_LIGHT_QUAD],
+			_light->m_quadratic);
+
+		GLM::m_shader[GLM::SHADER_NORMAL].SetVector3(
+			GLM::m_uniform[GLM::UNIFORM_LIGHT_POSITION],
+			_light->m_position);
+
+		GLM::m_shader[GLM::SHADER_NORMAL].SetFloat(
+			GLM::m_uniform[GLM::UNIFORM_LIGHT_CUTOFF],
+			cosf(Math::DegToRad(_light->m_cutOff)));
+
+		GLM::m_shader[GLM::SHADER_NORMAL].SetFloat(
+			GLM::m_uniform[GLM::UNIFORM_LIGHT_OUTERCUTOFF],
+			cosf(Math::DegToRad(_light->m_outerCutOff)));
+	}
 }
 
 void GraphicSystem::TransformPipeline(Sprite * _sprite)

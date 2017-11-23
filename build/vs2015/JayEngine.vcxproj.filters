@@ -124,6 +124,9 @@
     <ClCompile Include="..\..\src\JayEngine\Model.cpp">
       <Filter>System\Graphic</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\Particle.cpp">
+      <Filter>System\Graphic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\JayEngine\Application.h">
@@ -277,6 +280,9 @@
       <Filter>System\Graphic</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\JayEngine\Model.h">
+      <Filter>System\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\Particle.h">
       <Filter>System\Graphic</Filter>
     </ClInclude>
   </ItemGroup>
