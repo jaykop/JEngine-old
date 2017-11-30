@@ -56,7 +56,7 @@ public:
 protected:
 
 	~Sprite();
-	Sprite(Object* _owner = nullptr);
+	Sprite(Object* _owner);
 
 	void Load(CR_RJValue _data) override;
 
@@ -72,8 +72,9 @@ protected:
 private:
 
 	// Locked constuctors and destructor
-	Sprite(const Sprite& /*_copy*/) {};
-	void operator=(const Sprite& /*_copy*/) {};
+	Sprite() = delete;
+	Sprite(const Sprite& /*_copy*/) = delete;
+	void operator=(const Sprite& /*_copy*/) = delete;
 
 };
 

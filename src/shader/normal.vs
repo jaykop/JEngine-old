@@ -1,5 +1,7 @@
 #version 330 core
 
+#define MAX_ARRAY 128
+
 layout (location = 0) in vec3 position;
 layout (location = 1) in vec2 uvPosition;
 layout (location = 2) in vec3 normal;
@@ -79,7 +81,6 @@ void Mapping(vec4 _position, inout vec4 _texCoord) {
 	mat4 animation = m4_aniScale * m4_aniTranslate;
 	_texCoord = transpose(animation) * vec4(uvPosition, 0, 1);
 
-	
 	// Check flipping
 	if (boolean_flip)
 		_texCoord.x = -_texCoord.x;

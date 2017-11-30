@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <string>
 #include "GLManager.h"
 
 JE_BEGIN
@@ -13,6 +14,7 @@ GLuint GLManager::m_light_vao = 0;
 Shader GLManager::m_shader[];
 GLint GLManager::m_uniform[];
 GLManager::DrawMode GLManager::m_mode = DrawMode::DRAW_FILL;
+unsigned GLManager::m_glArraySize = 128;
 
 const float GLManager::m_vertices [] = 
 {
@@ -264,7 +266,6 @@ void GLManager::RegisterUniform()
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_ANI_SCALE], "m4_aniScale");
 
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_COLOR], "v4_color");
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_COLOR], "v4_lightColor");
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_CAMERA_POSITION], "v3_cameraPosition");
 	
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_FLIP], "boolean_flip");
@@ -275,18 +276,27 @@ void GLManager::RegisterUniform()
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_MATERIAL_SPECULAR], "material.m_specular");
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_MATERIAL_SHININESS], "material.m_shininess");
 
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_TYPE], "light.m_type");
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_DIFFUSE], "light.m_diffuse");
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_SPECULAR], "light.m_specular");
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_POSITION], "light.m_position");
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_DIRECTION], "light.m_direction");
+	for (int i = 0; i < m_glArraySize; ++i) {
 
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_CONST], "light.m_constant");
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_LINEAR], "light.m_linear");
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_QUAD], "light.m_quadratic");
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_CUTOFF], "light.m_cutOff");
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_OUTERCUTOFF], "light.m_outerCutOff");
-	
+		std::string index = std::to_string(i);
+
+		std::string color = "v4_lightColor[" + index + "]";
+		std::string light = "light[" + index + "].";
+
+		m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_COLOR], color.c_str());
+		m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_TYPE], light.append("m_type").c_str());
+		m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_DIFFUSE], light.append("m_diffuse").c_str());
+		m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_SPECULAR], light.append("m_specular").c_str());
+		m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_POSITION], light.append("m_position").c_str());
+		m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_DIRECTION], light.append("m_direction").c_str());
+
+		m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_CONST], light.append("m_constant").c_str());
+		m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_LINEAR], light.append("m_linear").c_str());
+		m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_QUAD], light.append("m_quadratic").c_str());
+		m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_CUTOFF], light.append("m_cutOff").c_str());
+		m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_OUTERCUTOFF], light.append("m_outerCutOff").c_str());
+	}
+
 	/******************** Light shader ********************/
 	m_shader[SHADER_LIGHTING].ConnectUniform(m_uniform[UNIFORM_LIGHT_TRANSLATE], "m4_translate");
 	m_shader[SHADER_LIGHTING].ConnectUniform(m_uniform[UNIFORM_LIGHT_SCALE], "m4_scale");

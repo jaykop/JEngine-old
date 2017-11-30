@@ -39,11 +39,12 @@ public:
 
 private:
 
-	Camera(Object* _owner = nullptr);
+	Camera(Object* _owner);
 	~Camera() {};
 
-	Camera(const Camera& /*_copy*/) {};
-	void operator=(const Camera& /*_copy*/) {};
+	Camera() = delete;
+	Camera(const Camera& /*_copy*/) = delete;
+	void operator=(const Camera& /*_copy*/) = delete;
 
 	void Load(CR_RJValue _data) override;
 

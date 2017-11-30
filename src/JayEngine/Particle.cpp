@@ -10,7 +10,7 @@ void Emitter::Load(CR_RJValue _data)
 {
 }
 
-Component * EmitterBuilder::CreateComponent(Object * _pOwner) const
+Component* EmitterBuilder::CreateComponent(Object * _pOwner) const
 {
 	return nullptr;
 }

@@ -4,6 +4,7 @@
 
 JE_BEGIN
 
+class Particle;
 class EmitterBuilder : public ComponentBuilder
 {
 
@@ -22,11 +23,12 @@ private:
 
 };
 
+using Particles = std::vector<Particle*>;
 
 class Emitter : public Sprite 
 {
 
-	enum ParticleType {};
+	enum ParticleType {PT_NORMAL};
 
 public:
 
@@ -38,16 +40,19 @@ public:
 private:
 
 	struct Particle {
+		vec4 m_color;
 
 	};
 
-	Emitter(Object* _owner = nullptr);
+	Emitter(Object* _owner);
 	~Emitter() {};
-	Emitter(const Emitter& /*_copy*/) {};
-	void operator=(const Emitter& /*_copy*/) {};
-
 	void Load(CR_RJValue _data) override;
 
+	Emitter() = delete;
+	Emitter(const Emitter& /*_copy*/) = delete;
+	void operator=(const Emitter& /*_copy*/) = delete;
+
+	Particles m_particles;
 };
 
 JE_END

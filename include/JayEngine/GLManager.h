@@ -101,6 +101,7 @@ private:
 	static void	InitGLEnvironment();
 
 	// Private member variables
+	static unsigned m_glArraySize;
 	static DrawMode m_mode;
 	static GLuint	m_vao, m_vbo, m_vbo3D, m_ebo, m_ebo3D,
 		m_light_vao;

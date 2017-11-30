@@ -1,5 +1,7 @@
 #version 330 core
 
+#define MAX_ARRAY 128
+
 ////////////////////////////
 // structs
 ////////////////////////////
@@ -106,38 +108,30 @@ void LightingEffect(inout vec4 _light) {
 		}
 	}	
 	
-	//if (light.m_type == 2 
-	//&& theta <= light.m_cutOff) {
-	//	_light = light.m_ambient * vec4(texture(material.m_diffuse, v2_outTexCoord)); 
-	//}
+	// Ambient light
+	vec4 ambient = light.m_ambient * vec4(texture(material.m_diffuse, v2_outTexCoord)); 
 	
-	//else {
-		// Ambient light
-		vec4 ambient = light.m_ambient * vec4(texture(material.m_diffuse, v2_outTexCoord)); 
+	// Diffuse light
+	vec3 norm = normalize(v3_outNormal);
 	
-		// Diffuse light
-		vec3 norm = normalize(v3_outNormal);
+	float diff = max(dot(norm, lightDirection), 0.0);
+	vec4 diffuse = light.m_diffuse * vec4(diff * texture(material.m_diffuse, v2_outTexCoord)); 
 	
-		float diff = max(dot(norm, lightDirection), 0.0);
-		vec4 diffuse = light.m_diffuse * vec4(diff * texture(material.m_diffuse, v2_outTexCoord)); 
+	// Specular light
+	vec3 viewDirection = normalize(v3_outCameraPosition - v3_outFragmentPosition);
+	vec3 reflectedDirection = reflect(-lightDirection, norm);
+	float spec = pow(max(dot(viewDirection, reflectedDirection), 0.0), material.m_shininess);
+	vec4 specular = light.m_specular * vec4(spec * texture(material.m_specular, v2_outTexCoord)); 
 	
-		// Specular light
-		vec3 viewDirection = normalize(v3_outCameraPosition - v3_outFragmentPosition);
-		vec3 reflectedDirection = reflect(-lightDirection, norm);
-		float spec = pow(max(dot(viewDirection, reflectedDirection), 0.0), material.m_shininess);
-		vec4 specular = light.m_specular * vec4(spec * texture(material.m_specular, v2_outTexCoord)); 
+	// Smooth spotlight
+	if (light.m_type == 2) {
+		float epsilon = light.m_cutOff - light.m_outerCutOff;
+		float intensity = clamp((theta - light.m_outerCutOff) / epsilon, 0.0, 1.0);
+		diffuse *= intensity;
+		specular *= intensity;
+	}
 	
-		// Smooth spotlight
-		if (light.m_type == 2) {
-			float epsilon = light.m_cutOff - light.m_outerCutOff;
-			float intensity = clamp((theta - light.m_outerCutOff) / epsilon, 0.0, 1.0);
-			diffuse *= intensity;
-			specular *= intensity;
-		}
-	
-		// Final light
-		_light = v4_outLightColor * ((ambient + diffuse + specular) * attenuation);
-	//}
-
+	// Final light
+	_light = v4_outLightColor * ((ambient + diffuse + specular) * attenuation);
 	_light.w = 1.0;
 }

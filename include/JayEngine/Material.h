@@ -37,10 +37,12 @@ public:
 
 private:
 
-	Material(Object* _owner = nullptr);
+	Material(Object* _owner);
 	~Material() {};
-	Material(const Material& /*_copy*/) {};
-	void operator= (const Material& /*_copy*/) {};
+
+	Material() = delete;
+	Material(const Material& /*_copy*/) = delete;
+	void operator= (const Material& /*_copy*/) = delete;
 
 	void Load(CR_RJValue _data) override;
 	void Register() override {};

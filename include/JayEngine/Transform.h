@@ -43,13 +43,15 @@ public:
 
 private:
 
-	Transform(Object* _owner = nullptr);
+	Transform(Object* _owner);
 	~Transform() {};
-	Transform(const Transform& /*_copy*/) {};
-	void operator= (const Transform& /*_copy*/) {};
-
-	void Load(CR_RJValue _data) override; 
+	void Load(CR_RJValue _data) override;
 	void Register() override {};
+
+	Transform() = delete;
+	Transform(const Transform& /*_copy*/) = delete;
+	void operator= (const Transform& /*_copy*/) = delete;
+
 };
 
 JE_END

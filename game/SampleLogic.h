@@ -31,10 +31,8 @@ public:
 
 private:
 
-	SampleLogic(Object* pObject = nullptr);
+	SampleLogic(Object* pObject);
 	~SampleLogic() {};
-	SampleLogic(const SampleLogic& /*_copy*/) {};
-	void operator=(const SampleLogic& /*_copy*/) {};
 
 	void Register() override;
 	void Load(CR_RJValue _data) override;

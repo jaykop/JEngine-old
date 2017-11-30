@@ -44,9 +44,11 @@ private:
 
 	// Locked constuctors and destructor
 	~Animation() {};
-	Animation(Object* _owner = nullptr);
-	Animation(const Animation& /*_copy*/) {};
-	void operator=(const Animation& /*_copy*/) {};
+	Animation(Object* _owner);
+
+	Animation() = delete;
+	Animation(const Animation& /*_copy*/) = delete;
+	void operator=(const Animation& /*_copy*/) = delete;
 
 	void Load(CR_RJValue _data) override;
 	void Register() override {};

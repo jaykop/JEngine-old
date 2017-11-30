@@ -177,12 +177,12 @@ void Shader::SetBool(GLint& _uniform, bool _bool)
 	glUniform1i(_uniform, _bool);
 }
 
-void Shader::SetEnum(GLint & _uniform, int _int)
+void Shader::SetEnum(GLint& _uniform, int _int)
 {
 	glUniform1i(_uniform, _int);
 }
 
-void Shader::SetInt(GLint & _uniform, int _int)
+void Shader::SetInt(GLint& _uniform, int _int)
 {
 	glUniform1d(_uniform, _int);
 }

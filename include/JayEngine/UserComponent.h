@@ -22,8 +22,9 @@ protected:
 
 private:
 
-	UserComponent(const UserComponent& /*_copy*/) {};
-	void operator=(const UserComponent& /*_copy*/) {};
+	UserComponent() = delete;
+	UserComponent(const UserComponent& /*_copy*/) = delete;
+	void operator=(const UserComponent& /*_copy*/) = delete;
 };
 
 JE_END

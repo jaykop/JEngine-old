@@ -32,10 +32,8 @@ public:
 
 private:
 
-	ControlLight(Object* pObject = nullptr);
+	ControlLight(Object* pObject);
 	~ControlLight() {};
-	ControlLight(const ControlLight& /*_copy*/) {};
-	void operator=(const ControlLight& /*_copy*/) {};
 
 	void Register() override;
 	void Load(CR_RJValue _data) override;

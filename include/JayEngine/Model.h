@@ -31,10 +31,12 @@ public:
 
 private:
 
-	Model(Object* pObject = nullptr);
+	Model(Object* pObject);
 	~Model() {};
-	Model(const Model& /*_copy*/) {};
-	void operator=(const Model& /*_copy*/) {};
+
+	Model() = delete;
+	Model(const Model& /*_copy*/) = delete;
+	void operator=(const Model& /*_copy*/) = delete;
 };
 
 JE_END

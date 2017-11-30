@@ -45,10 +45,12 @@ public:
 
 private:
 
-	Light(Object* _owner = nullptr);
+	Light(Object* _owner);
 	~Light() {};
-	Light(const Light& /*_copy*/) {};
-	void operator=(const Light& /*_copy*/) {};
+
+	Light() = delete;
+	Light(const Light& /*_copy*/) = delete;
+	void operator=(const Light& /*_copy*/) = delete;
 
 	void Load(CR_RJValue _data) override;
 

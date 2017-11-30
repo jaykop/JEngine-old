@@ -18,7 +18,7 @@ public:
 
 protected:
 
-	Component(Object* _owner = nullptr, bool _byUser = false)
+	Component(Object* _owner, bool _byUser = false)
 		: m_pOwner(_owner), 
 		m_ownerId(_owner->GetId()), m_byUser(_byUser) {};
 	virtual	~Component() {};
@@ -31,8 +31,9 @@ protected:
 
 private:
 
-	Component(const Component& /*_copy*/) {};
-	void operator=(const Component& /*_copy*/) {};
+	Component() = delete;
+	Component(const Component& /*_copy*/) = delete;
+	void operator=(const Component& /*_copy*/) = delete;
 
 };
 

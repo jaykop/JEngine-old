@@ -6,7 +6,7 @@
 JE_BEGIN
 
 Animation::Animation(Object* _owner)
-	: m_curretFrame(0.f), m_animationSpeed(0.f),
+	: Component(_owner), m_curretFrame(0.f), m_animationSpeed(0.f),
 	m_animationFrames(1), m_animationFixFrame(1), m_realSpeed(0.f),
 	m_realFrame(1.f), m_activeAnimation(false)
 {	
