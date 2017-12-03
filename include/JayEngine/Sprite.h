@@ -2,12 +2,14 @@
 #include "Vector4.h"
 #include "Component.h"
 #include "ComponentBuilder.h"
+#include "VisualEffect.h"
 
 JE_BEGIN
 
 class Material;
 class Transform;
 class Animation; 
+
 class SpriteBuilder : public ComponentBuilder
 {
 	friend class AssetManager;
@@ -35,13 +37,18 @@ class Sprite : public Component
 	friend class	SpriteBuilder;
 	friend class	GraphicSystem;
 	friend class	ComponentManager;
-	typedef			std::unordered_map<std::string, unsigned>	TextureMap;
+
+	using Effects		= std::unordered_map<VisualEffect::VEType, VisualEffect*>;
+	using TextureMap	= std::unordered_map<std::string, unsigned>;
 
 public:
 	
-	enum	ProjectType { PERSPECTIVE, ORTHOGONAL };
+	enum ProjectType { PERSPECTIVE, ORTHOGONAL };
 
 	void Register() override;
+
+	void		AddEffect(VisualEffect::VEType type);
+	void		RemoveEffect(VisualEffect::VEType type);
 
 	void		AddTexture(const char* _key);
 	void		RemoveTexture(const char* _key);
@@ -63,11 +70,14 @@ protected:
 	bool m_culled;
 	bool m_hasMaterial, m_hasAnimation;
 
+	Effects m_effects;
+
 	unsigned	m_mainTex;
 	TextureMap	m_textureMap;
 	Transform	*m_transform;
 	Material	*m_material;
 	Animation	*m_animation;
+
 
 private:
 
@@ -79,3 +89,7 @@ private:
 };
 
 JE_END
+
+// TODO 
+// Remove later
+// #include "Sprite.inl"

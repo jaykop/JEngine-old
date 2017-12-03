@@ -276,7 +276,12 @@ void GLManager::RegisterUniform()
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_MATERIAL_SPECULAR], "material.m_specular");
 	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_MATERIAL_SHININESS], "material.m_shininess");
 
-	for (int i = 0; i < m_glArraySize; ++i) {
+	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_EFFECT_BLUR], "e_blur");
+	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_EFFECT_MANIP], "e_manip");
+	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_EFFECT_SOBEL], "e_sobel");
+	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_EFFECT_INVERSE], "e_inverse");
+
+	for (unsigned i = 0; i < m_glArraySize; ++i) {
 
 		std::string index = std::to_string(i);
 

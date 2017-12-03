@@ -64,16 +64,10 @@ void GraphicSystem::Update(float /*dt*/)
 	// Update sprites and lights
 	m_isLight = m_lights.empty() ? false : true ;
 
-	GLM::m_shader[GLM::SHADER_NORMAL].SetBool(
-		GLM::m_uniform[GLM::UNIFORM_IS_LIGHT], m_isLight);
-
 	if (m_isLight) 
-		for (auto light : m_lights)
-			Pipeline(light);
-
-	for (auto sprite : m_sprites)
-		Pipeline(sprite);
-
+		LightPipeline();
+	
+	SpritePipeline();
 	GLMousePosition();
 }
 
@@ -104,64 +98,80 @@ void GraphicSystem::RemoveSprite(Sprite* _sprite)
 	}
 }
 
-void GraphicSystem::Pipeline(Light* _light)
+void GraphicSystem::LightPipeline()
 {
-	GLM::m_shader[GLM::SHADER_LIGHTING].Use();
+	// Inform that there are lights
+	GLM::m_shader[GLM::SHADER_NORMAL].SetBool(
+		GLM::m_uniform[GLM::UNIFORM_IS_LIGHT], m_isLight);
 
-	GLM::m_shader[GLM::SHADER_LIGHTING].SetMatrix(
-		GLM::m_uniform[GLM::UNIFORM_LIGHT_TRANSLATE],
-		mat4::Translate(_light->m_position));
+	for (auto light : m_lights) {
+		GLM::m_shader[GLM::SHADER_LIGHTING].Use();
 
-	GLM::m_shader[GLM::SHADER_LIGHTING].SetMatrix(
-		GLM::m_uniform[GLM::UNIFORM_LIGHT_SCALE],
-		mat4::Scale(vec3(10.f, 10.f, 10.f)));
+		GLM::m_shader[GLM::SHADER_LIGHTING].SetMatrix(
+			GLM::m_uniform[GLM::UNIFORM_LIGHT_TRANSLATE],
+			mat4::Translate(light->m_position));
 
-	GLM::m_shader[GLM::SHADER_LIGHTING].SetMatrix(
-		GLM::m_uniform[GLM::UNIFORM_LIGHT_ROTATE],
-		mat4::Rotate(0.f, vec3(0.f, 1.f, 0.f)));
+		GLM::m_shader[GLM::SHADER_LIGHTING].SetMatrix(
+			GLM::m_uniform[GLM::UNIFORM_LIGHT_SCALE],
+			mat4::Scale(vec3(10.f, 10.f, 10.f)));
 
-	m_viewport = mat4::Camera(
-		m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
-	GLM::m_shader[GLM::SHADER_LIGHTING].SetMatrix(
-		GLM::m_uniform[GLM::UNIFORM_LIGHT_CAMERA],
-		m_viewport);
+		GLM::m_shader[GLM::SHADER_LIGHTING].SetMatrix(
+			GLM::m_uniform[GLM::UNIFORM_LIGHT_ROTATE],
+			mat4::Rotate(0.f, vec3(0.f, 1.f, 0.f)));
 
-	GLM::m_shader[GLM::SHADER_LIGHTING].SetMatrix(
-		GLM::m_uniform[GLM::UNIFORM_LIGHT_PROJECTION],
-		m_perspective);
+		m_viewport = mat4::Camera(
+			m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
+		GLM::m_shader[GLM::SHADER_LIGHTING].SetMatrix(
+			GLM::m_uniform[GLM::UNIFORM_LIGHT_CAMERA],
+			m_viewport);
+
+		GLM::m_shader[GLM::SHADER_LIGHTING].SetMatrix(
+			GLM::m_uniform[GLM::UNIFORM_LIGHT_PROJECTION],
+			m_perspective);
 
 #ifdef JE_SUPPORT_3D
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 #else
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 #endif
+	}
 }
 
-void GraphicSystem::Pipeline(Sprite* _sprite)
+void GraphicSystem::SpritePipeline()
 {
-	// Use normal shader
-	GLM::m_shader[GLM::SHADER_NORMAL].Use();
+	for (auto sprite : m_sprites) {
+		// Use normal shader
+		GLM::m_shader[GLM::SHADER_NORMAL].Use();
 
-	// Here check if the sprite is
-	// either outside the screen or not
-	TransformPipeline(_sprite);
+		// Here check if the sprite is
+		// either outside the screen or not
+		TransformPipeline(sprite);
 
-	// TODO
-	// It so, not draw
-	//if (!_sprite->m_culled) {
+		// TODO
+		// It so, not draw
+		//if (!_sprite->m_culled) {
 
-	if (m_isLight)
-		LightingPipeline();
-	MappingPipeline(_sprite, _sprite->m_material);
-	AnimationPipeline(_sprite);
-	
-	if (_sprite->m_isModel)
-		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+		// TODO
+		// Particle
+		//if ();
 
-	else
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		MappingPipeline(sprite, sprite->m_material);
+		AnimationPipeline(sprite);
 
-	//}
+		if (m_isLight)
+			LightPipeline();
+
+		if (!sprite->m_effects.empty())
+			EffectsPipeline(sprite);
+
+		if (sprite->m_isModel)
+			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+		else
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+		//}
+	}
 }
 
 void GraphicSystem::LightingPipeline()
@@ -309,6 +319,46 @@ void GraphicSystem::MappingPipeline(Sprite* _sprite, Material* _material)
 	}
 }
 
+void GraphicSystem::EffectsPipeline(Sprite * _sprite)
+{
+	// Send visual effect info to shader
+
+	for (auto effect : _sprite->m_effects) {
+		if (effect.second->m_active) {
+
+			VisualEffect::VEType type = effect.second->m_type;
+
+			switch (type) {
+
+			case VisualEffect::VEType::VS_BLUR:
+				GLM::m_shader[GLM::SHADER_NORMAL].SetEnum(
+					GLM::m_uniform[GLM::UNIFORM_EFFECT_BLUR],
+					type);
+				break;
+
+			case VisualEffect::VEType::VS_INVERSE:
+				GLM::m_shader[GLM::SHADER_NORMAL].SetEnum(
+					GLM::m_uniform[GLM::UNIFORM_EFFECT_INVERSE],
+					type);
+				break;
+
+			case VisualEffect::VEType::VS_MANIPULATION:
+				GLM::m_shader[GLM::SHADER_NORMAL].SetEnum(
+					GLM::m_uniform[GLM::UNIFORM_EFFECT_MANIP],
+					type);
+				break;
+
+			case VisualEffect::VEType::VS_SOBEL:
+				GLM::m_shader[GLM::SHADER_NORMAL].SetEnum(
+					GLM::m_uniform[GLM::UNIFORM_EFFECT_SOBEL],
+					type);
+				break;
+
+			} // switch (type) {
+		} // if (effect.second->m_active) {
+	} // for (auto effect : _sprite->m_effects) {
+}
+
 void GraphicSystem::AnimationPipeline(Sprite* _sprite)
 {
 	m_hasAnimation = _sprite->m_hasAnimation;
@@ -332,11 +382,13 @@ void GraphicSystem::AnimationPipeline(Sprite* _sprite)
 					animation->m_curretFrame = nextFrame;
 
 				animation->m_timer.Start();
-			}
-		}
+			} // if (realSpeed <= animation->m_timer.GetTime()) {
+		} // if (animation->m_activeAnimation) {
+
 		m_aniScale.Set(animation->m_realFrame, 1.f, 0.f);
 		m_aniTranslate.Set(animation->m_curretFrame, 0.f, 0.f);
-	}
+
+	} // if (m_hasAnimation) {
 
 	else {
 		m_aniScale.Set(1,1,0);

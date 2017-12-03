@@ -127,6 +127,12 @@
     <ClCompile Include="..\..\src\JayEngine\Particle.cpp">
       <Filter>System\Graphic</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\Random.cpp">
+      <Filter>Utils\Random</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\VisualEffect.cpp">
+      <Filter>System\Graphic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\JayEngine\Application.h">
@@ -285,6 +291,12 @@
     <ClInclude Include="..\..\include\JayEngine\Particle.h">
       <Filter>System\Graphic</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\Random.h">
+      <Filter>Utils\Random</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JayEngine\VisualEffect.h">
+      <Filter>System\Graphic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -347,6 +359,9 @@
     <Filter Include="Core\Application">
       <UniqueIdentifier>{bcdcc18d-cf0a-4400-81ef-d3c87c86c656}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils\Random">
+      <UniqueIdentifier>{6a918703-53ff-4d4b-8d5a-fa833ae3c51f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\include\JayEngine\Object.inl">
@@ -354,6 +369,9 @@
     </None>
     <None Include="..\..\include\JayEngine\ObjectContainer.inl">
       <Filter>Core\Object</Filter>
+    </None>
+    <None Include="..\..\include\JayEngine\Sprite.inl">
+      <Filter>System\Graphic</Filter>
     </None>
   </ItemGroup>
 </Project>

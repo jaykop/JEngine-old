@@ -66,6 +66,9 @@ class GLManager {
 		//////////////////////
 		UNIFORM_LIGHT_TYPE,
 
+		UNIFORM_EFFECT_BLUR, UNIFORM_EFFECT_MANIP,
+		UNIFORM_EFFECT_SOBEL, UNIFORM_EFFECT_INVERSE,
+
 		/******************** Light shader ********************/
 		//////////////////////
 		// Martix uniform
@@ -84,10 +87,10 @@ public:
 private:
 
 	// Locked functions
-	GLManager() {};
-	~GLManager() {};
-	GLManager(const GLManager& /*app*/) {};
-	void operator=(const GLManager& /*app*/) {};
+	GLManager() = delete;
+	~GLManager() = delete;
+	GLManager(const GLManager& _copy) = delete;
+	void operator=(const GLManager& _copy) = delete;
 
 	// Private member functions
 	static void SetVbo();

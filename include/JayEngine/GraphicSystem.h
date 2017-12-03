@@ -35,8 +35,8 @@ private:
 
 	GraphicSystem();
 	~GraphicSystem() {};
-	GraphicSystem(const GraphicSystem& /*_copy*/) {};
-	void operator=(const GraphicSystem& /*_copy*/) {};
+	GraphicSystem(const GraphicSystem& _copy) = delete;
+	void operator=(const GraphicSystem& _copy) = delete;
 
 	void Load(CR_RJDoc _data) override;
 	void Init() override;
@@ -54,12 +54,15 @@ private:
 	void AddLight(Light* _light);
 	void RemoveLight(Light* _light);
 
-	void Pipeline(Light* _light);
-	void Pipeline(Sprite* _sprite);
 	void LightingPipeline();
+	void LightPipeline();
+
+	void SpritePipeline();
 	void TransformPipeline(Sprite* _sprite);
 	void AnimationPipeline(Sprite* _sprite);
 	void MappingPipeline(Sprite* _sprite, Material* _material);
+
+	void EffectsPipeline(Sprite* _sprite);
 
 	void GLMousePosition();
 

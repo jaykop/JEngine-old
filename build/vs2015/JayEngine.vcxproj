@@ -57,6 +57,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\..\src\JayEngine\Random.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Rigidbody.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Shader.cpp" />
     <ClCompile Include="..\..\src\JayEngine\SoundSystem.cpp" />
@@ -69,6 +70,7 @@
     <ClCompile Include="..\..\src\JayEngine\Vector2.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Vector3.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Vector4.cpp" />
+    <ClCompile Include="..\..\src\JayEngine\VisualEffect.cpp" />
     <ClCompile Include="..\..\src\lodePNG\lodepng.cpp" />
     <ClCompile Include="..\..\src\lodePNG\lodepng_util.cpp" />
   </ItemGroup>
@@ -120,6 +122,7 @@
     <ClInclude Include="..\..\include\JayEngine\Particle.h" />
     <ClInclude Include="..\..\include\JayEngine\PhysicsComponents.h" />
     <ClInclude Include="..\..\include\JayEngine\PhysicsSystem.h" />
+    <ClInclude Include="..\..\include\JayEngine\Random.h" />
     <ClInclude Include="..\..\include\JayEngine\Rigidbody.h" />
     <ClInclude Include="..\..\include\JayEngine\Shader.hpp" />
     <ClInclude Include="..\..\include\JayEngine\SoundComponents.h" />
@@ -135,6 +138,7 @@
     <ClInclude Include="..\..\include\JayEngine\Vector2.h" />
     <ClInclude Include="..\..\include\JayEngine\Vector3.h" />
     <ClInclude Include="..\..\include\JayEngine\Vector4.h" />
+    <ClInclude Include="..\..\include\JayEngine\VisualEffect.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\include\JayEngine\Object.inl">
@@ -144,6 +148,12 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </None>
     <None Include="..\..\include\JayEngine\ObjectContainer.inl" />
+    <None Include="..\..\include\JayEngine\Sprite.inl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </None>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C395ED3A-CA17-4FD0-ADE9-4D7231D0677C}</ProjectGuid>

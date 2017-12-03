@@ -9,3 +9,4 @@
 #include "Material.h"
 #include "Animation.h"
 #include "Model.h"
+#include "Particle.h"

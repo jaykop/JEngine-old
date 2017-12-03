@@ -3,6 +3,11 @@
 #include "Macro.h"
 #include <unordered_map>
 
+// TODO
+// Implement type_info 
+// #include <typeinfo>
+// typedef std::unordered_map<std::type_info, Component*>	ComponentMap;
+
 JE_BEGIN
 
 class	Object;

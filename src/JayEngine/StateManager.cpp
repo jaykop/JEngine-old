@@ -157,7 +157,7 @@ void StateManager::PushState(const char* _path, const char* _stateName)
 		// mark toggle
 		if (!strcmp((*it)->m_name.c_str(), _stateName)) {
 			sameOne = true;
-			JE_DEBUG_PRINT("Same state exist already!\n");
+			JE_DEBUG_PRINT("Same state exists already!\n");
 			break;
 		}
 	}	

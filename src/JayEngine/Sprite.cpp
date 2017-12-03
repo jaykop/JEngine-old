@@ -19,6 +19,29 @@ void Sprite::Register()
 		m_transform = m_pOwner->GetComponent<Transform>();
 }
 
+void Sprite::AddEffect(VisualEffect::VEType type)
+{
+	auto found = m_effects.find(type);
+	if (found != m_effects.end())
+		JE_DEBUG_PRINT("Same effect exists already!\n");
+
+	else
+		m_effects.insert(Effects::value_type(type, new VisualEffect(this, type)));
+}
+
+void Sprite::RemoveEffect(VisualEffect::VEType type)
+{
+	auto found = m_effects.find(type);
+	if (found == m_effects.end())
+		JE_DEBUG_PRINT("No such effect in the list.\n");
+
+	else {
+		delete found->second;
+		found->second = nullptr;
+		m_effects.erase(found);
+	}
+}
+
 void Sprite::AddTexture(const char *_key)
 {
 	auto found = m_textureMap.find(_key);
@@ -64,8 +87,17 @@ unsigned Sprite::GetTexutre(const char *_key)
 
 Sprite::~Sprite()
 {
+	// Remove textures
 	m_textureMap.clear();
 	SystemManager::GetGraphicSystem()->RemoveSprite(this);
+
+	// Remove effects
+	for (auto effect : m_effects) {
+		delete effect.second;
+		effect.second = nullptr;
+	}
+
+	m_effects.clear();
 }
 
 void Sprite::Load(CR_RJValue _data)
