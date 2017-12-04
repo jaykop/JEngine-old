@@ -82,7 +82,7 @@ enum JE_KEY {
 class InputHandler {
 
 	friend class StateManager;
-	typedef std::map<unsigned, bool> KeyMap;
+	using KeyMap = std::map<unsigned, bool> ;
 
 public:
 	
@@ -115,6 +115,6 @@ private:
 	static KeyMap	m_keys, m_triggerList;
 };
 
-typedef InputHandler INPUT;
+using INPUT = InputHandler;
 
 JE_END

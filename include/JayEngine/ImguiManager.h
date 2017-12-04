@@ -21,13 +21,13 @@ private:
 
 	ImguiManager() {};
 	~ImguiManager() {};
-	ImguiManager(const ImguiManager& /*_copy*/) {};
-	void operator=(const ImguiManager& /*_copy*/) {};
+	ImguiManager(const ImguiManager& /*_copy*/) = delete;
+	void operator=(const ImguiManager& /*_copy*/) = delete;
 
 	static SDL_Window* m_pWindow;
 };
 
-typedef ImguiManager IMGUI;
+using IMGUI = ImguiManager;
 
 JE_END
 

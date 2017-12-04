@@ -3,8 +3,8 @@
 #include "GL/glew.h"
 #define GLEW_STATIC
 
+#include <vector>
 #include "Macro.h"
-#include "Shader.hpp"
 
 JE_BEGIN
 
@@ -13,6 +13,8 @@ class GLManager {
 	friend class Shader;
 	friend class Application;
 	friend class GraphicSystem;
+
+	using Shaders = std::vector<Shader*>;
 
 	enum DrawMode { DRAW_DOT, DRAW_LINE, DRAW_FILL };
 	enum ShaderType {SHADER_NORMAL, SHADER_LIGHTING, SHADER_END};
@@ -86,12 +88,6 @@ public:
 
 private:
 
-	// Locked functions
-	GLManager() = delete;
-	~GLManager() = delete;
-	GLManager(const GLManager& _copy) = delete;
-	void operator=(const GLManager& _copy) = delete;
-
 	// Private member functions
 	static void SetVbo();
 	static void SetVao();
@@ -102,27 +98,27 @@ private:
 	static void	CloseSDL_GL();
 	static void	RegisterUniform();
 	static void	InitGLEnvironment();
+	static void InitShaders();
 
 	// Private member variables
 	static unsigned m_glArraySize;
 	static DrawMode m_mode;
 	static GLuint	m_vao, m_vbo, m_vbo3D, m_ebo, m_ebo3D,
 		m_light_vao;
-	static Shader	m_shader[SHADER_END];
+	static Shaders	m_shaders;
 	static GLint	m_uniform[UNIFORM_END];
 
-	static const float	m_vertices[32];
-	static const int	m_indices[6]; 
-	
-#ifdef JE_SUPPORT_3D
+	static const float	m_vertices[192];
+	static const int	m_indices[36];
 
-	static const float	m_vertices3D[192];
-	static const int	m_indices3D[36];
-
-#endif
+	// Locked functions
+	GLManager() = delete;
+	~GLManager() = delete;
+	GLManager(const GLManager& /*_copy*/) = delete;
+	void operator=(const GLManager& /*_copy*/) = delete;
 
 };
 
-typedef GLManager GLM;
+using GLM = GLManager;
 
 JE_END

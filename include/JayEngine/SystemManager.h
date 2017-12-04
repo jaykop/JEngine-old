@@ -42,7 +42,7 @@ class SystemManager {
 	friend class State;
 	friend class StateManager;
 
-	typedef std::stack<Systems*> SystemStack;
+	using SystemStack = std::stack<Systems*> ;
 
 public:
 
@@ -69,12 +69,12 @@ private:
 
 	SystemManager();
 	~SystemManager() {};
-	SystemManager(const SystemManager& /*_copy*/) {};
-	void operator=(const SystemManager& /*_copy*/) {};
+	SystemManager(const SystemManager& /*_copy*/) = delete;
+	void operator=(const SystemManager& /*_copy*/) = delete;
 
 	static SystemStack	m_pauseStack;
 };
 
-typedef SystemManager SYSTEM;
+using SYSTEM = SystemManager;
 
 JE_END

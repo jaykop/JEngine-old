@@ -19,8 +19,8 @@ protected:
 
 	ComponentBuilder() {};
 	~ComponentBuilder() {};
-	ComponentBuilder(const ComponentBuilder& /*_copy*/) {};
-	void operator=(const ComponentBuilder& /*_copy*/) {};
+	ComponentBuilder(const ComponentBuilder& /*_copy*/) = delete;
+	void operator=(const ComponentBuilder& /*_copy*/) = delete;
 
 };
 

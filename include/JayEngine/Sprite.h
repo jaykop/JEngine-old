@@ -9,6 +9,7 @@ JE_BEGIN
 class Material;
 class Transform;
 class Animation; 
+class VisualEffect;
 
 class SpriteBuilder : public ComponentBuilder
 {
@@ -20,8 +21,8 @@ private:
 
 	SpriteBuilder();
 	~SpriteBuilder() {};
-	SpriteBuilder(const SpriteBuilder& /*_copy*/) {};
-	void operator=(const SpriteBuilder& /*_copy*/) {};
+	SpriteBuilder(const SpriteBuilder& /*_copy*/) = delete;
+	void operator=(const SpriteBuilder& /*_copy*/) = delete;
 
 	Component* CreateComponent(Object* _pOwner) const override;
 
@@ -47,16 +48,27 @@ public:
 
 	void Register() override;
 
-	void		AddEffect(VisualEffect::VEType type);
-	void		RemoveEffect(VisualEffect::VEType type);
-
 	void		AddTexture(const char* _key);
 	void		RemoveTexture(const char* _key);
 	void		SetCurrentTexutre(const char* _key);
 	unsigned	GetCurrentTexutre();
 	unsigned	GetTexutre(const char* _key);
 
-	bool		m_flip, m_isModel;
+	template <class EffectType>
+	void		AddEffect();
+
+	template <class EffectType>
+	EffectType*	GetEffect();
+
+	template <class EffectType>
+	void		RemoveEffect();
+
+	template <class EffectType>
+	bool		HasEffect();
+
+	void		ConvertVEType();
+
+	bool		m_flip;
 	vec4		m_color;
 	ProjectType m_projection;
 
@@ -90,6 +102,3 @@ private:
 
 JE_END
 
-// TODO 
-// Remove later
-// #include "Sprite.inl"

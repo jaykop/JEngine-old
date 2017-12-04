@@ -6,7 +6,7 @@
 JE_BEGIN
 
 class State;
-typedef std::vector<State*> States;
+using States = std::vector<State*>;
 
 class StateManager {
 
@@ -34,8 +34,8 @@ private:
 	// Locked contsturctord and destructor
 	StateManager() {};
 	~StateManager() {};
-	StateManager(const StateManager& /*_copy*/) {};
-	void operator=(const StateManager& /*_copy*/) {};
+	StateManager(const StateManager& /*_copy*/) = delete;
+	void operator=(const StateManager& /*_copy*/) = delete;
 
 	// Private member functions
 	static void Init();
@@ -56,6 +56,6 @@ private:
 
 };
 
-typedef StateManager STATE;
+using STATE = StateManager;
 
 JE_END

@@ -85,6 +85,6 @@ private:
 	
 };
 
-typedef Vector4 vec4;
+using vec4 = Vector4;
 
 JE_END

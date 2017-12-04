@@ -18,8 +18,8 @@ private:
 
 	LightBuilder();
 	~LightBuilder() {};
-	LightBuilder(const LightBuilder& /*_copy*/) {};
-	void operator=(const LightBuilder& /*_copy*/) {};
+	LightBuilder(const LightBuilder& /*_copy*/) = delete;
+	void operator=(const LightBuilder& /*_copy*/) = delete;
 
 	Component* CreateComponent(Object* _pOwner) const override;
 

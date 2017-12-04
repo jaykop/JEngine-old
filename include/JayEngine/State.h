@@ -17,8 +17,8 @@ private:
 
 	State(const char* _name);
 	~State() {};
-	State(const State& /*_copy*/) {};
-	void operator=(const State& /*_copy*/) {};
+	State(const State& /*_copy*/) = delete;
+	void operator=(const State& /*_copy*/) = delete;
 
 	void Load();
 	void Init();

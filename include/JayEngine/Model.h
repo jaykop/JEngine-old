@@ -14,8 +14,8 @@ private:
 
 	ModelBuilder();
 	~ModelBuilder() {};
-	ModelBuilder(const ModelBuilder& /*_copy*/) {};
-	void operator=(const ModelBuilder& /*_copy*/) {};
+	ModelBuilder(const ModelBuilder& /*_copy*/) = delete;
+	void operator=(const ModelBuilder& /*_copy*/) = delete;
 
 	Component* CreateComponent(Object* _pOwner) const override;
 

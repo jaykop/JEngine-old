@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <string>
 #include "GLManager.h"
+#include "Shader.hpp"
 
 JE_BEGIN
 
@@ -11,75 +12,41 @@ GLuint GLManager::m_vao = 0;
 GLuint GLManager::m_vbo = 0;
 GLuint GLManager::m_ebo = 0;
 GLuint GLManager::m_light_vao = 0;
-Shader GLManager::m_shader[];
 GLint GLManager::m_uniform[];
+GLManager::Shaders GLManager::m_shaders;
 GLManager::DrawMode GLManager::m_mode = DrawMode::DRAW_FILL;
 unsigned GLManager::m_glArraySize = 128;
 
 const float GLManager::m_vertices [] = 
 {
-	// position				// uv		// normals
-	-.5f,	.5f,	0.f,	0.f, 0.f,	0.0f,  0.0f, 1.0f,	// top left	
-	.5f,	.5f,	0.f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,	// top right
-	.5f,	-.5f,	0.f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,	// bottom right
-	-.5f,	-.5f,	0.f,	0.f, 1.f,	0.0f,  0.0f, 1.0f	// bottom left
-};
-
-const int GLManager::m_indices [] = 
-{
-	/***************/
-	/*  *   second */
-	/*     *       */
-	/*        *    */
-	/*  first    * */
-	/***************/
-
-	0 ,2, 3,	// first triangle
-	2, 0, 1		// second triangle
-};
-
-#ifdef JE_SUPPORT_3D
-const float GLManager::m_vertices3D[] = {
-
-	//// position				// uv		// normals
-	//-.5f,	.5f,	-.5f,	0.f, 0.f,	.57f,	.57f,	-.57f,	// back top left	
-	//.5f,	.5f,	-.5f,	1.f, 0.f,	-.57f,	.57f,	-.57f,	// back top right
-	//.5f,	-.5f,	-.5f,	1.f, 1.f,	-.57f,	-.57f,	-.57f,	// back bottom right
-	//-.5f,	-.5f,	-.5f,	0.f, 1.f,	.57f,	-.57f,	-.57f,	// back bottom left
-	//
-	//-.5f,	.5f,	.5f,	0.f, 0.f,	.57f,	.57f,	.57f,	// front top left
-	//.5f,	.5f,	.5f,	1.f, 0.f,	-.57f,	.57f,	.57f,	// front top right
-	//.5f,	-.5f,	.5f,	1.f, 1.f,	-.57f,	-.57f,	.57f,	// front bottom right
-	//-.5f,	-.5f,	.5f,	0.f, 1.f,	.57f,	-.57f, .57f		// front bottom left
-
 	// front
 	// position				// uv		// normals
 	-.5f,	.5f,	.5f,	.25f, .25f,	0.0f,  0.0f, 1.0f,		// top left	
 	.5f,	.5f,	.5f,	.5f, .25f,	0.0f,  0.0f, 1.0f,		// top right
 	.5f,	-.5f,	.5f,	.5f, .5f,	0.0f,  0.0f, 1.0f,		// bottom right
 	-.5f,	-.5f,	.5f,	.25f, .5f,	0.0f,  0.0f, 1.0f,		// bottom left
-		
+
 	// back
 	// position				// uv		// normals
 	.5f,	.5f,	-.5f,	.75f, .25f,	0.0f,  0.0f, -1.0f,		// top left	
 	-.5f,	.5f,	-.5f,	1.f, .25f,	0.0f,  0.0f, -1.0f,		// top right
 	-.5f,	-.5f,	-.5f,	1.f, .5f,	0.0f,  0.0f, -1.0f,		// bottom right
 	.5f,	-.5f,	-.5f,	.75f, .5f,	0.0f,  0.0f, -1.0f,		// bottom left
-	
+
 	// left
 	// position				// uv		// normals
 	-.5f,	.5f,	-.5f,	0.f, .25f,	-1.0f,  0.0f,  0.0f,	// top left	
 	-.5f,	.5f,	.5f,	.25f, .25f,	-1.0f,  0.0f,  0.0f,	// top right
 	-.5f,	-.5f,	.5f,	.25f, .5f,	-1.0f,  0.0f,  0.0f,	// bottom right
 	-.5f,	-.5f,	-.5f,	0.f, .5f,	-1.0f,  0.0f,  0.0f,	// bottom left
-	
+
 	// right
 	// position				// uv		// normals
 	.5f,	.5f,	.5f,	.5f, .25f,	1.0f,  0.0f,  0.0f,		// top left	
 	.5f,	.5f,	-.5f,	.75f, .25f,	1.0f,  0.0f,  0.0f,		// top right
 	.5f,	-.5f,	-.5f,	.75f, .5f,	1.0f,  0.0f,  0.0f,		// bottom right
 	.5f,	-.5f,	.5f,	.5f, .5f,	1.0f,  0.0f,  0.0f,		// bottom left
-	
+
 	// down
 	// position				// uv		// normals
 	-.5f,	-.5f,	.5f,	.25f, .5f,	0.0f, -1.0f,  0.0f,		// top left	
@@ -95,43 +62,19 @@ const float GLManager::m_vertices3D[] = {
 	-.5f,	.5f,	.5f,	.25f, .25f,	0.0f,  1.0f,  0.0f		// bottom left
 };
 
-const int GLManager::m_indices3D [] = {
-
-//				 4					5
-//				  ****************
-//			  *				 *	 */
-//		0 *				 *		 */
-//		/***************/ 1		 */
-//		/*  *   second */		 */
-//		/*     *       */		 */
-//		/*        *    */		 */ 6
-//		/*  first    * */	 *
-//		/***************/*
-//		3				2
-
-	//// front
-	//0 ,2, 3,	// first triangle
-	//2, 0, 1,	// second triangle
-
-	//// back
-	//4 ,6, 7,	// first triangle
-	//6, 4, 5,	// second triangle
-
-	//// up
-	//4 ,1, 0,	// first triangle
-	//1, 4, 5,	// second triangle
-
-	//// down
-	//3 ,6, 7,	// first triangle
-	//6, 3, 2,	// second triangle
-
-	//// left
-	//4 ,3, 7,	// first triangle
-	//3, 4, 0,	// second triangle
-
-	//// right
-	//1 ,6, 2,	// first triangle
-	//6, 1, 5	// second triangle
+const int GLManager::m_indices [] = 
+{
+	//				 4					5
+	//				  ****************
+	//			  *				 *	 */
+	//		0 *				 *		 */
+	//		/***************/ 1		 */
+	//		/*  *   second */		 */
+	//		/*     *       */		 */
+	//		/*        *    */		 */ 6
+	//		/*  first    * */	 *
+	//		/***************/*
+	//		3				2
 
 	// front
 	0, 2, 3,	// first triangle
@@ -144,7 +87,7 @@ const int GLManager::m_indices3D [] = {
 	// left
 	8, 10, 11,	// first triangle
 	10, 8, 9,	// second triangle
-				
+
 	// right
 	12, 14, 15,	// first triangle
 	14, 12, 13,	// second triangle
@@ -157,7 +100,6 @@ const int GLManager::m_indices3D [] = {
 	20 ,22, 23,	// first triangle
 	22, 20, 21	// second triangle
 };
-#endif
 
 //////////////////////////////////////////////////////////////////////////
 // GLManager functio bodies
@@ -190,16 +132,7 @@ bool GLManager::initSDL_GL()
 
 		// Do gl stuff
 		InitGLEnvironment();
-
-		// Do shader stuff
-		m_shader[SHADER_LIGHTING].LoadShader(
-			"../src/shader/lighting.vs",
-			"../src/shader/lighting.fs");
-
-		m_shader[SHADER_NORMAL].LoadShader(
-			"../src/shader/normal.vs",
-			"../src/shader/normal.fs");
-
+		InitShaders();
 		RegisterUniform();
 	}
 
@@ -208,6 +141,13 @@ bool GLManager::initSDL_GL()
 
 void GLManager::CloseSDL_GL()
 {
+	// Clear shaders
+	for (auto shader : m_shaders) {
+		delete shader;
+		shader = nullptr;
+	}
+
+	m_shaders.clear();
 }
 
 void GLManager::InitGLEnvironment()
@@ -223,17 +163,27 @@ void GLManager::InitGLEnvironment()
 	// Active blend function
 	glEnable(GL_BLEND); 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-#ifdef JE_SUPPORT_3D
-
 	glEnable(GL_LESS);
 	glEnable(GL_DEPTH_TEST);
-
-#endif
 
 	// Texture attribute setting
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+}
+
+void GLManager::InitShaders() 
+{
+	// Do shader stuff
+	for (unsigned i = 0; i < SHADER_END; ++i) 
+		m_shaders.push_back(new Shader);
+
+	m_shaders[SHADER_LIGHTING]->LoadShader(
+		"../src/shader/lighting.vs",
+		"../src/shader/lighting.fs");
+
+	m_shaders[SHADER_NORMAL]->LoadShader(
+		"../src/shader/normal.vs",
+		"../src/shader/normal.fs");
 }
 
 void GLManager::SetDrawMode(DrawMode _mode)
@@ -257,29 +207,29 @@ void GLManager::SetDrawMode(DrawMode _mode)
 void GLManager::RegisterUniform()
 {
 	/******************** normal shader ********************/
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_TRANSLATE], "m4_translate");
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_SCALE], "m4_scale");
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_ROTATE], "m4_rotate");
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_CAMERA], "m4_viewport");
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_PROJECTION], "m4_projection");
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_ANI_TRANSLATE], "m4_aniTranslate");
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_ANI_SCALE], "m4_aniScale");
+	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_TRANSLATE, "m4_translate");
+	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_SCALE, "m4_scale");
+	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_ROTATE, "m4_rotate");
+	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_CAMERA, "m4_viewport");
+	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_PROJECTION, "m4_projection");
+	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_ANI_TRANSLATE, "m4_aniTranslate");
+	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_ANI_SCALE, "m4_aniScale");
 
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_COLOR], "v4_color");
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_CAMERA_POSITION], "v3_cameraPosition");
+	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_COLOR, "v4_color");
+	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_CAMERA_POSITION, "v3_cameraPosition");
 	
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_FLIP], "boolean_flip");
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_IS_LIGHT], "boolean_light");
+	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_FLIP, "boolean_flip");
+	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_IS_LIGHT, "boolean_light");
 
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_MATERIAL_AMBIENT], "material.m_ambient");
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_MATERIAL_DIFFUSE], "material.m_diffuse");
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_MATERIAL_SPECULAR], "material.m_specular");
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_MATERIAL_SHININESS], "material.m_shininess");
+	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_MATERIAL_AMBIENT, "material.m_ambient");
+	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_MATERIAL_DIFFUSE, "material.m_diffuse");
+	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_MATERIAL_SPECULAR, "material.m_specular");
+	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_MATERIAL_SHININESS, "material.m_shininess");
 
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_EFFECT_BLUR], "e_blur");
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_EFFECT_MANIP], "e_manip");
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_EFFECT_SOBEL], "e_sobel");
-	m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_EFFECT_INVERSE], "e_inverse");
+	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_EFFECT_BLUR, "e_blur");
+	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_EFFECT_MANIP, "e_manip");
+	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_EFFECT_SOBEL, "e_sobel");
+	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_EFFECT_INVERSE, "e_inverse");
 
 	for (unsigned i = 0; i < m_glArraySize; ++i) {
 
@@ -288,26 +238,26 @@ void GLManager::RegisterUniform()
 		std::string color = "v4_lightColor[" + index + "]";
 		std::string light = "light[" + index + "].";
 
-		m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_COLOR], color.c_str());
-		m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_TYPE], light.append("m_type").c_str());
-		m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_DIFFUSE], light.append("m_diffuse").c_str());
-		m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_SPECULAR], light.append("m_specular").c_str());
-		m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_POSITION], light.append("m_position").c_str());
-		m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_DIRECTION], light.append("m_direction").c_str());
+		m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_LIGHT_COLOR, color.c_str());
+		m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_LIGHT_TYPE, light.append("m_type").c_str());
+		m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_LIGHT_DIFFUSE, light.append("m_diffuse").c_str());
+		m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_LIGHT_SPECULAR, light.append("m_specular").c_str());
+		m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_LIGHT_POSITION, light.append("m_position").c_str());
+		m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_LIGHT_DIRECTION, light.append("m_direction").c_str());
 
-		m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_CONST], light.append("m_constant").c_str());
-		m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_LINEAR], light.append("m_linear").c_str());
-		m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_QUAD], light.append("m_quadratic").c_str());
-		m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_CUTOFF], light.append("m_cutOff").c_str());
-		m_shader[SHADER_NORMAL].ConnectUniform(m_uniform[UNIFORM_LIGHT_OUTERCUTOFF], light.append("m_outerCutOff").c_str());
+		m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_LIGHT_CONST, light.append("m_constant").c_str());
+		m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_LIGHT_LINEAR, light.append("m_linear").c_str());
+		m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_LIGHT_QUAD, light.append("m_quadratic").c_str());
+		m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_LIGHT_CUTOFF, light.append("m_cutOff").c_str());
+		m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_LIGHT_OUTERCUTOFF, light.append("m_outerCutOff").c_str());
 	}
 
 	/******************** Light shader ********************/
-	m_shader[SHADER_LIGHTING].ConnectUniform(m_uniform[UNIFORM_LIGHT_TRANSLATE], "m4_translate");
-	m_shader[SHADER_LIGHTING].ConnectUniform(m_uniform[UNIFORM_LIGHT_SCALE], "m4_scale");
-	m_shader[SHADER_LIGHTING].ConnectUniform(m_uniform[UNIFORM_LIGHT_ROTATE], "m4_rotate");
-	m_shader[SHADER_LIGHTING].ConnectUniform(m_uniform[UNIFORM_LIGHT_CAMERA], "m4_viewport");
-	m_shader[SHADER_LIGHTING].ConnectUniform(m_uniform[UNIFORM_LIGHT_PROJECTION], "m4_projection");
+	m_shaders[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_TRANSLATE, "m4_translate");
+	m_shaders[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_SCALE, "m4_scale");
+	m_shaders[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_ROTATE, "m4_rotate");
+	m_shaders[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_CAMERA, "m4_viewport");
+	m_shaders[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_PROJECTION, "m4_projection");
 }
 
 void GLManager::SetVao()
@@ -331,11 +281,7 @@ void GLManager::SetVbo()
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 
 	// Now we can copy vertex data to this vbo
-#ifdef JE_SUPPORT_3D
-	glBufferData(GL_ARRAY_BUFFER, sizeof(m_vertices3D), m_vertices3D, GL_STATIC_DRAW);
-#else
 	glBufferData(GL_ARRAY_BUFFER, sizeof(m_vertices), m_vertices, GL_STATIC_DRAW);
-#endif
 }
 
 void GLManager::SetVA()
@@ -362,12 +308,8 @@ void GLManager::SetEbo()
 	// Just like vbo...
 	glGenBuffers(1, &m_ebo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-
-#ifdef JE_SUPPORT_3D
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(m_indices3D), m_indices3D, GL_STATIC_DRAW);
-#else
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(m_indices), m_indices, GL_STATIC_DRAW);
-#endif
+
 }
 
 JE_END

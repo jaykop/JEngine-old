@@ -17,8 +17,8 @@ private:
 
 	MaterialBuilder();
 	~MaterialBuilder() {};
-	MaterialBuilder(const MaterialBuilder& /*_copy*/) {};
-	void operator=(const MaterialBuilder& /*_copy*/) {};
+	MaterialBuilder(const MaterialBuilder& /*_copy*/) = delete;
+	void operator=(const MaterialBuilder& /*_copy*/) = delete;
 
 	Component* CreateComponent(Object* _pOwner) const override;
 

@@ -61,6 +61,6 @@ private:
 	static SDL_Surface*		m_pSurface; // SDL screen surface
 };
 
-typedef Application APP;
+using APP = Application;
 
 JE_END

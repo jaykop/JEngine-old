@@ -18,9 +18,9 @@ class GraphicSystem : public System
 	friend class Camera;
 	friend class SystemManager;
 
-	typedef std::vector<Light*> Lights;
-	typedef std::vector<Sprite*> Sprites;
-	typedef std::vector<Camera*> Cameras;
+	using Lights = std::vector<Light*>;
+	using Sprites = std::vector<Sprite*>;
+	using Cameras = std::vector<Camera*>;
 
 public:
 
@@ -35,8 +35,6 @@ private:
 
 	GraphicSystem();
 	~GraphicSystem() {};
-	GraphicSystem(const GraphicSystem& _copy) = delete;
-	void operator=(const GraphicSystem& _copy) = delete;
 
 	void Load(CR_RJDoc _data) override;
 	void Init() override;
@@ -81,10 +79,6 @@ private:
 	float	m_fovy, m_aspect, m_zNear, m_zFar;
 	float	m_left, m_right, m_top, m_bottom;
 
-#ifndef JE_SUPPORT_3D
-	vec3 m_target2D;
-#endif
-
 	struct compareOrder {
 		
 		compareOrder(bool _orthoFirst) { m_orthoFirst = _orthoFirst; }
@@ -94,6 +88,8 @@ private:
 			bool m_orthoFirst;
 	};
 
+	GraphicSystem(const GraphicSystem& /*_copy*/) = delete;
+	void operator=(const GraphicSystem& /*_copy*/) = delete;
 };
 
 JE_END

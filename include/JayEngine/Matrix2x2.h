@@ -67,6 +67,6 @@ struct Matrix2x2
 	float m_member[2][2];
 };
 
-typedef Matrix2x2 mat2;
+using mat2 = Matrix2x2;
 
 JE_END

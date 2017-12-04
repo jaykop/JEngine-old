@@ -17,8 +17,8 @@ private:
 
 	~ObjectFactory() {};
 	ObjectFactory() {};
-	ObjectFactory(const ObjectFactory& /*_copy*/) {};
-	void operator=(const ObjectFactory& /*_copy*/) {};
+	ObjectFactory(const ObjectFactory& /*_copy*/) = delete;
+	void operator=(const ObjectFactory& /*_copy*/) = delete;
 
 	static bool			m_added;
 	static unsigned		m_registerNumber;
@@ -26,6 +26,6 @@ private:
 
 };
 
-typedef ObjectFactory FACTORY;
+using FACTORY = ObjectFactory;
 
 JE_END

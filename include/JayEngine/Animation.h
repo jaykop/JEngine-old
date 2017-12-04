@@ -16,8 +16,8 @@ private:
 
 	AnimationBuilder();
 	~AnimationBuilder() {};
-	AnimationBuilder(const AnimationBuilder& /*_copy*/) {};
-	void operator=(const AnimationBuilder& /*_copy*/) {};
+	AnimationBuilder(const AnimationBuilder& /*_copy*/) = delete;
+	void operator=(const AnimationBuilder& /*_copy*/) = delete;
 
 	Component* CreateComponent(Object* _pOwner) const override;
 

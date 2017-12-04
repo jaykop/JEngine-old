@@ -5,7 +5,7 @@
 JE_BEGIN
 
 class ComponentBuilder;
-typedef std::unordered_map<std::string, ComponentBuilder*> BuilderMap;
+using BuilderMap = std::unordered_map<std::string, ComponentBuilder*> ;
 
 class Object;
 class Component;
@@ -32,7 +32,7 @@ private:
 
 };
 
-typedef ComponentManager COMPONENT;
+using COMPONENT = ComponentManager;
 
 JE_END
 

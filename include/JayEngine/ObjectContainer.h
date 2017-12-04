@@ -5,7 +5,7 @@
 JE_BEGIN
 
 class Object;
-typedef std::unordered_map<std::string, Object*> ObjectMap;
+using ObjectMap = std::unordered_map<std::string, Object*>;
 
 class ObjectContainer {
 
@@ -23,7 +23,7 @@ public:
 	// These functions are able to
 	// connect to objects directly
 	template <typename ComponentType>
-	inline void				AddComponent(const char* _fromObject);
+	inline void				AddComponent(const char* _toObject);
 
 	template <typename ComponentType>
 	inline ComponentType*	GetComponent(const char* _fromObject);
@@ -41,8 +41,8 @@ private:
 
 	~ObjectContainer();
 	ObjectContainer() {};
-	ObjectContainer(const ObjectContainer& /*_copy*/) {};
-	void operator=(const ObjectContainer& /*_copy*/) {};
+	ObjectContainer(const ObjectContainer& /*_copy*/) = delete;
+	void operator=(const ObjectContainer& /*_copy*/) = delete;
 
 	void		ClearObjectMap();
 

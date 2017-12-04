@@ -15,8 +15,8 @@ public:
 
 private:
 
-	Timer(const Timer& /*_cpoy*/) {};
-	void operator=(const Timer& /*_cpoy*/) {};
+	Timer(const Timer& /*_cpoy*/) = delete;
+	void operator=(const Timer& /*_cpoy*/) = delete;
 
 	float m_time;
 

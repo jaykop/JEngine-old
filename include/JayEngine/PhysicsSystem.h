@@ -10,8 +10,8 @@ class PhysicsSystem : public System
 {
 	friend class SystemManager;
 
-	typedef std::vector<Transform*> Transforms;
-	typedef std::vector<Rigidbody*> Rigidbodies;
+	using Transforms	= std::vector<Transform*>;
+	using Rigidbodies	= std::vector<Rigidbody*>;
 
 public:
 	
@@ -19,8 +19,8 @@ private:
 
 	PhysicsSystem();
 	~PhysicsSystem() {};
-	PhysicsSystem(const PhysicsSystem& /*_copy*/) {};
-	void operator=(const PhysicsSystem& /*_copy*/) {};
+	PhysicsSystem(const PhysicsSystem& /*_copy*/) = delete;
+	void operator=(const PhysicsSystem& /*_copy*/) = delete;
 
 	void Load(CR_RJDoc _data) override;
 	void Init() override;

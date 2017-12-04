@@ -22,8 +22,8 @@ private:
 	static std::mt19937	m_randomObject;
 
 	Random() = delete;
-	Random(const Random& _copy) = delete;
-	void operator=(const Random& _copy) = delete;
+	Random(const Random& /*_copy*/) = delete;
+	void operator=(const Random& /*_copy*/) = delete;
 
 };
 

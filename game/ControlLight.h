@@ -16,8 +16,8 @@ private:
 
 	ControlLightBuilder();
 	~ControlLightBuilder() {};
-	ControlLightBuilder(const ControlLightBuilder& /*_copy*/) {};
-	void operator=(const ControlLightBuilder& /*_copy*/) {};
+	ControlLightBuilder(const ControlLightBuilder& _copy) = delete;
+	void operator=(const ControlLightBuilder& _copy) = delete;
 
 	UserComponent* CreateComponent(Object* _pOwner) const override;
 

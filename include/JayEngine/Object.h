@@ -1,20 +1,20 @@
 #pragma once
 
-#include "Macro.h"
-#include <unordered_map>
-
 // TODO
 // Implement type_info 
 // #include <typeinfo>
 // typedef std::unordered_map<std::type_info, Component*>	ComponentMap;
 
+#include "Macro.h"
+#include <unordered_map>
+
 JE_BEGIN
 
-class	Object;
-class	Component;
+class Object;
+class Component;
 
-typedef std::unordered_map<std::string, Object*> ChildObjects;
-typedef std::unordered_map<std::string, Component*>	ComponentMap;
+using ChildObjects = std::unordered_map<std::string, Object*>;
+using ComponentMap = std::unordered_map<std::string, Component*>;
 
 class Object {
 
@@ -61,10 +61,6 @@ public:
 
 private:
 
-	Object() {};
-	Object(const Object& /*_copy*/) {};
-	void operator=(const Object& /*_copy*/) {};
-
 	// Member function
 	void SetParent(Object* _pObject); 
 	
@@ -85,6 +81,11 @@ private:
 	ObjectContainer*	m_pOBC;
 
 	static std::string m_nameHeader;
+
+	Object() = delete;
+	Object(const Object& /*_copy*/) = delete;
+	void operator=(const Object& /*_copy*/) = delete;
+
 };
 
 JE_END

@@ -8,8 +8,8 @@ JE_BEGIN
 
 Sprite::Sprite(Object* _owner)
 	:Component(_owner), m_color(vec4::ONE),m_projection(PERSPECTIVE), 
-	m_mainTex(0),m_transform(nullptr), m_isModel(false),
-	m_flip(false), m_culled(false), m_material(nullptr), m_hasMaterial(false)
+	m_mainTex(0),m_transform(nullptr), m_flip(false), m_culled(false), 
+	m_material(nullptr), m_hasMaterial(false)
 {}
 
 void Sprite::Register()
@@ -17,29 +17,6 @@ void Sprite::Register()
 	SystemManager::GetGraphicSystem()->AddSprite(this);
 	if (m_pOwner->HasComponent<Transform>())
 		m_transform = m_pOwner->GetComponent<Transform>();
-}
-
-void Sprite::AddEffect(VisualEffect::VEType type)
-{
-	auto found = m_effects.find(type);
-	if (found != m_effects.end())
-		JE_DEBUG_PRINT("Same effect exists already!\n");
-
-	else
-		m_effects.insert(Effects::value_type(type, new VisualEffect(this, type)));
-}
-
-void Sprite::RemoveEffect(VisualEffect::VEType type)
-{
-	auto found = m_effects.find(type);
-	if (found == m_effects.end())
-		JE_DEBUG_PRINT("No such effect in the list.\n");
-
-	else {
-		delete found->second;
-		found->second = nullptr;
-		m_effects.erase(found);
-	}
 }
 
 void Sprite::AddTexture(const char *_key)

@@ -12,7 +12,7 @@ class BehaviorSystem : public System
 	friend class UserComponent;
 	friend class SystemManager;
 
-	typedef std::vector<UserComponent*> Behaviors;
+	using Behaviors = std::vector<UserComponent*> ;
 
 public:
 
@@ -23,8 +23,8 @@ private:
 
 	BehaviorSystem();
 	~BehaviorSystem() {};
-	BehaviorSystem(const BehaviorSystem& /*_copy*/) {};
-	void operator=(const BehaviorSystem& /*_copy*/) {};
+	BehaviorSystem(const BehaviorSystem& /*_copy*/) = delete;
+	void operator=(const BehaviorSystem& /*_copy*/) = delete;
 
 	void Load(CR_RJDoc _data) override;
 	void Init() override;

@@ -96,6 +96,6 @@ private:
 
 };
 
-typedef Matrix4x4 mat4;
+using mat4 = Matrix4x4;
 
 JE_END

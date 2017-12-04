@@ -21,8 +21,8 @@ protected:
 
 private:
 
-	System(const System& /*_copy*/) {};
-	void operator=(const System& /*_copy*/) {};
+	System(const System& /*_copy*/) = delete;
+	void operator=(const System& /*_copy*/) = delete;
 };
 
 JE_END

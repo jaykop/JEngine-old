@@ -15,8 +15,8 @@ private:
 
 	EmitterBuilder();
 	~EmitterBuilder() {};
-	EmitterBuilder(const EmitterBuilder& /*_copy*/) {};
-	void operator=(const EmitterBuilder& /*_copy*/) {};
+	EmitterBuilder(const EmitterBuilder& /*_copy*/) = delete;
+	void operator=(const EmitterBuilder& /*_copy*/) = delete;
 
 	Component* CreateComponent(Object* _pOwner) const override;
 

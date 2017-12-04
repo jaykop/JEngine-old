@@ -103,6 +103,6 @@ private:
 	
 };
 
-typedef Vector3 vec3;
+using vec3 = Vector3;
 
 JE_END

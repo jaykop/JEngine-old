@@ -35,9 +35,6 @@ Contains Engine's generic macros
 #define JE_DEBUG_PRINT(...)	JE_UNUSED_PARAM(__VA_ARGS__)
 #endif // defined(_DEBUG) && defined(JE_DO_PRINT)
 
-// Activate 3d features
-#define JE_SUPPORT_3D
-
 // Activate imgui features
 // #define JE_SUPPORT_IMGUI
 

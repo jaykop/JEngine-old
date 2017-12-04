@@ -16,8 +16,8 @@ private:
 
 	CameraBuilder();
 	~CameraBuilder() {};
-	CameraBuilder(const CameraBuilder& /*_copy*/) {};
-	void operator=(const CameraBuilder& /*_copy*/) {};
+	CameraBuilder(const CameraBuilder& /*_copy*/) = delete;
+	void operator=(const CameraBuilder& /*_copy*/) = delete;
 
 	Component* CreateComponent(Object* _pOwner) const override;
 

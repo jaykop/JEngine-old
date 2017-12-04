@@ -79,6 +79,6 @@ struct Vector2
 	float x, y;
 };
 
-typedef Vector2 vec2;
+using vec2 = Vector2;
 
 JE_END

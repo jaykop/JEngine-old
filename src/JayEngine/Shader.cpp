@@ -147,44 +147,88 @@ void Shader::Use()
 	glUseProgram(m_programId);
 }
 
-void Shader::SetFloat(GLint& _uniform, float _float)
+void Shader::SetFloat(GLManager::UniformType _uniform, float _float)
 {
-	glUniform1f(_uniform, _float);
+	glUniform1f(GLManager::m_uniform[_uniform], _float);
 }
 
-void Shader::ConnectUniform(GLint& _uniform, const char * _name)
+void Shader::ConnectUniform(GLManager::UniformType _uniform, const char * _name)
 {
-	_uniform = glGetUniformLocation(m_programId, _name);
+	GLManager::m_uniform[_uniform]
+		= glGetUniformLocation(m_programId, _name);
 }
 
-void Shader::SetMatrix(GLint& _uniform, const mat4& _matrix)
+void Shader::SetMatrix(GLManager::UniformType _uniform, const mat4& _matrix)
 {
-	glUniformMatrix4fv(_uniform, 1, GL_FALSE, &_matrix.m_member[0][0]);
+	glUniformMatrix4fv(GLManager::m_uniform[_uniform], 
+		1, GL_FALSE, &_matrix.m_member[0][0]);
 }
 
-void Shader::SetVector4(GLint& _uniform, const vec4& _vector)
+void Shader::SetVector4(GLManager::UniformType _uniform, const vec4& _vector)
 {
-	glUniform4f(_uniform, _vector.x, _vector.y, _vector.z, _vector.w);
+	glUniform4f(GLManager::m_uniform[_uniform], 
+		_vector.x, _vector.y, _vector.z, _vector.w);
 }
 
-void Shader::SetVector3(GLint& _uniform, const vec3 & _vector)
+void Shader::SetVector3(GLManager::UniformType _uniform, const vec3 & _vector)
 {
-	glUniform3f(_uniform, _vector.x, _vector.y, _vector.z);
+	glUniform3f(GLManager::m_uniform[_uniform], 
+		_vector.x, _vector.y, _vector.z);
 }
 
-void Shader::SetBool(GLint& _uniform, bool _bool)
+void Shader::SetBool(GLManager::UniformType _uniform, bool _bool)
 {
-	glUniform1i(_uniform, _bool);
+	glUniform1i(GLManager::m_uniform[_uniform], _bool);
 }
 
-void Shader::SetEnum(GLint& _uniform, int _int)
+void Shader::SetEnum(GLManager::UniformType _uniform, int _int)
 {
-	glUniform1i(_uniform, _int);
+	glUniform1i(GLManager::m_uniform[_uniform], _int);
 }
 
-void Shader::SetInt(GLint& _uniform, int _int)
+void Shader::SetInt(GLManager::UniformType _uniform, int _int)
 {
-	glUniform1d(_uniform, _int);
+	glUniform1d(GLManager::m_uniform[_uniform], _int);
 }
+
+//void Shader::SetFloat(GLint& _uniform, float _float)
+//{
+//	glUniform1f(_uniform, _float);
+//}
+//
+//void Shader::ConnectUniform(GLint& _uniform, const char * _name)
+//{
+//	_uniform = glGetUniformLocation(m_programId, _name);
+//}
+//
+//void Shader::SetMatrix(GLint& _uniform, const mat4& _matrix)
+//{
+//	glUniformMatrix4fv(_uniform, 1, GL_FALSE, &_matrix.m_member[0][0]);
+//}
+//
+//void Shader::SetVector4(GLint& _uniform, const vec4& _vector)
+//{
+//	glUniform4f(_uniform, _vector.x, _vector.y, _vector.z, _vector.w);
+//}
+//
+//void Shader::SetVector3(GLint& _uniform, const vec3 & _vector)
+//{
+//	glUniform3f(_uniform, _vector.x, _vector.y, _vector.z);
+//}
+//
+//void Shader::SetBool(GLint& _uniform, bool _bool)
+//{
+//	glUniform1i(_uniform, _bool);
+//}
+//
+//void Shader::SetEnum(GLint& _uniform, int _int)
+//{
+//	glUniform1i(_uniform, _int);
+//}
+//
+//void Shader::SetInt(GLint& _uniform, int _int)
+//{
+//	glUniform1d(_uniform, _int);
+//}
 
 JE_END

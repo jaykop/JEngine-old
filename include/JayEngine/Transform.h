@@ -17,8 +17,8 @@ private:
 
 	TransformBuilder();
 	~TransformBuilder() {};
-	TransformBuilder(const TransformBuilder& /*_copy*/) {};
-	void operator=(const TransformBuilder& /*_copy*/) {};
+	TransformBuilder(const TransformBuilder& /*_copy*/) = delete;
+	void operator=(const TransformBuilder& /*_copy*/) = delete;
 
 	Component* CreateComponent(Object* _pOwner) const override;
 };

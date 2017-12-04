@@ -5,9 +5,9 @@
 JE_BEGIN
 
 class ObjectContainer;
-typedef const rapidjson::Value& CR_RJValue;
-typedef rapidjson::Document RJDoc;
-typedef const RJDoc& CR_RJDoc;
+using CR_RJValue	= const rapidjson::Value&;
+using RJDoc			= rapidjson::Document;
+using CR_RJDoc		= const RJDoc&;
 
 class JsonParser {
 
@@ -21,8 +21,8 @@ private:
 
 	JsonParser() {};
 	~JsonParser() {};
-	JsonParser(const JsonParser& /*_copy*/) {};
-	void operator=(const JsonParser& /*_copy*/) {};
+	JsonParser(const JsonParser& /*_copy*/) = delete;
+	void operator=(const JsonParser& /*_copy*/) = delete;
 
 	static void ReadFile(const char* _dir);
 	static CR_RJDoc GetDocument();
@@ -34,6 +34,6 @@ private:
 
 };
 
-typedef JsonParser JSON;
+using JSON = JsonParser;
 
 JE_END

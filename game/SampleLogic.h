@@ -15,8 +15,8 @@ private:
 
 	SampleLogicBuilder();
 	~SampleLogicBuilder() {};
-	SampleLogicBuilder(const SampleLogicBuilder& /*_copy*/) {};
-	void operator=(const SampleLogicBuilder& /*_copy*/) {};
+	SampleLogicBuilder(const SampleLogicBuilder& _copy) = delete;
+	void operator=(const SampleLogicBuilder& _copy) = delete;
 
 	UserComponent* CreateComponent(Object* _pOwner) const override;
 

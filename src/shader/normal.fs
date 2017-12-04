@@ -29,6 +29,11 @@ struct Light {
 	float m_outerCutOff;
 };
 
+struct Effect {
+	int m_blur;
+	int 
+};
+
 ////////////////////////////
 // in variables
 ////////////////////////////
@@ -54,6 +59,7 @@ uniform float		float_specular;
 uniform sampler2D 	Texture;
 uniform Material 	material;
 uniform Light		light;
+uniform 
 
 ////////////////////////////
 // function declarations

@@ -15,11 +15,12 @@ class AssetManager {
 	// Keyword Definitions
 	friend class Application;
 	friend class StateManager;
-	typedef std::vector<unsigned char>					Image;
-	typedef std::unordered_map<std::string, Audio*>		AudioMap;
-	typedef std::unordered_map<std::string, State*>		StateMap;
-	typedef std::unordered_map<std::string, unsigned>	TextureMap;
-	typedef std::unordered_map<std::string, Archetype*>	ArchetypeMap;
+
+	using Image =			std::vector<unsigned char>;
+	using AudioMap =		std::unordered_map<std::string, Audio*>;
+	using StateMap =		std::unordered_map<std::string, State*>;
+	using TextureMap =		std::unordered_map<std::string, unsigned>;
+	using ArchetypeMap =	std::unordered_map<std::string, Archetype*>;
 
 public:
 
@@ -42,8 +43,8 @@ private:
 	// Locked constructors and destructor
 	AssetManager() {};
 	~AssetManager() {};
-	AssetManager(const AssetManager& /*_copy*/) {};
-	void operator=(const AssetManager& /*_copy*/) {};
+	AssetManager(const AssetManager& /*_copy*/) = delete;
+	void operator=(const AssetManager& /*_copy*/) = delete;
 
 	// Private member functions
 	static void Load();
@@ -57,6 +58,6 @@ private:
 
 };
 
-typedef AssetManager ASSET;
+using ASSET = AssetManager;
 
 JE_END
