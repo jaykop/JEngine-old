@@ -370,9 +370,6 @@
     <None Include="..\..\include\JayEngine\ObjectContainer.inl">
       <Filter>Core\Object</Filter>
     </None>
-    <None Include="..\..\include\JayEngine\Shader.inl">
-      <Filter>System\Graphic</Filter>
-    </None>
     <None Include="..\..\include\JayEngine\Sprite.inl">
       <Filter>System\Graphic</Filter>
     </None>

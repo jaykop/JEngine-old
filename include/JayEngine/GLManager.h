@@ -68,8 +68,8 @@ class GLManager {
 		//////////////////////
 		UNIFORM_LIGHT_TYPE,
 
-		UNIFORM_EFFECT_BLUR, UNIFORM_EFFECT_MANIP,
-		UNIFORM_EFFECT_SOBEL, UNIFORM_EFFECT_INVERSE,
+		UNIFORM_EFFECT_TYPE,
+		UNIFORM_EFFECT_BLUR_SIZE, UNIFORM_EFFECT_BLUR_AMOUNT,
 
 		/******************** Light shader ********************/
 		//////////////////////

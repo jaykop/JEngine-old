@@ -29,11 +29,6 @@ struct Light {
 	float m_outerCutOff;
 };
 
-struct Effect {
-	int m_blur;
-	int 
-};
-
 ////////////////////////////
 // in variables
 ////////////////////////////
@@ -59,12 +54,15 @@ uniform float		float_specular;
 uniform sampler2D 	Texture;
 uniform Material 	material;
 uniform Light		light;
-uniform 
+uniform int			effectType;
+uniform vec2		v2_blurSize;
+uniform vec2		v2_blurAmount;
 
 ////////////////////////////
 // function declarations
 ////////////////////////////
 void LightingEffect(inout vec4 _light);
+void VisualEffect(inout vec4 _color);
 
 ////////////////////////////
 // entry point
@@ -75,6 +73,12 @@ void main() {
 	
 	// If there are some lights...
 	// Implement light attributes
+	
+	// TODO
+	// Suppose to be polished...
+	if (effectType != 0)
+		VisualEffect(finalTexture);
+	
 	if (boolean_light)
 		LightingEffect(finalTexture);
 		
@@ -140,4 +144,40 @@ void LightingEffect(inout vec4 _light) {
 	// Final light
 	_light = v4_outLightColor * ((ambient + diffuse + specular) * attenuation);
 	_light.w = 1.0;
+}
+
+
+void VisualEffect(inout vec4 _color){
+
+	if (effectType == 1) {
+		
+		int x_range = int(v2_blurAmount.x / 2.0);
+		int y_range = int(v2_blurAmount.y / 2.0);
+		
+		vec4 sum = vec4(0,0,0,0);
+		for (int x = -x_range ; x <= x_range ; x++)
+			for(int y = -y_range ; y <= y_range ; y++){
+				sum += texture(Texture, 
+					vec2(v2_outTexCoord.x + x * v2_blurSize.x, 
+						v2_outTexCoord.y + y * v2_blurSize.y)) 
+						/ (v2_blurAmount.x * v2_blurAmount.y);
+			}
+			
+		_color = sum;
+	}
+	
+	else if (effectType == 2){
+		_color = vec4(1,1,1,1) - _color;
+		_color.w = 1.f;
+	}
+	
+	else if (effectType == 3 )
+	{
+		;
+	}
+	
+	else if (effectType == 4)
+	{
+		;
+	}
 }

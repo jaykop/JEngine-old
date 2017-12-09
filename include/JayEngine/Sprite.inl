@@ -1,16 +1,13 @@
 #pragma once
-#include <type_info>
 #include "Sprite.h"
 
 JE_BEGIN
 
 template<class EffectType>
-inline void Sprite::AddEffect()
-{
-	VisualEffect::VEType veType;
-	auto type = typeid(EffectType);
+inline void Sprite::AddEffect() {
 
-	ConvertVEType(type, veType);
+	VisualEffect::VEType veType;
+	ConvertVEType(typeid(EffectType).name(), veType);
 
 	auto found = m_effects.find(veType);
 	if (found != m_effects.end())
@@ -19,17 +16,15 @@ inline void Sprite::AddEffect()
 	else {
 		m_effects.insert(
 			Effects::value_type(veType,
-				new VisualEffect(this, )));
+				new EffectType(this, veType)));
 	}
 }
 
 template<class EffectType>
-inline EffectType* Sprite::GetEffect()
-{
-	VisualEffect::VEType veType;
-	auto type = typeid(EffectType);
+inline EffectType* Sprite::GetEffect() {
 
-	ConvertVEType(type, veType);
+	VisualEffect::VEType veType;
+	ConvertVEType(typeid(EffectType).name(), veType);
 
 	auto found = m_effects.find(veType);
 	if (found != m_effects.end())
@@ -42,11 +37,10 @@ inline EffectType* Sprite::GetEffect()
 }
 
 template<class EffectType>
-inline void Sprite::RemoveEffect()
-{
+inline void Sprite::RemoveEffect() {
+
 	VisualEffect::VEType veType;
-	auto type = typeid(EffectType);
-	ConvertVEType(type, veType);
+	ConvertVEType(typeid(EffectType).name(), veType);
 
 	auto found = m_effects.find(type);
 	if (found == m_effects.end())
@@ -60,12 +54,10 @@ inline void Sprite::RemoveEffect()
 }
 
 template<class EffectType>
-inline bool Sprite::HasEffect()
-{
-	VisualEffect::VEType veType;
-	auto type = typeid(EffectType);
+inline bool Sprite::HasEffect() {
 
-	ConvertVEType(type, veType);
+	VisualEffect::VEType veType;
+	ConvertVEType(typeid(EffectType).name(), veType);
 
 	auto found = m_effects.find(veType);
 	if (found != m_effects.end())
@@ -74,25 +66,6 @@ inline bool Sprite::HasEffect()
 	else {
 		JE_DEBUG_PRINT("No such effect in the list.\n");
 		return false;
-	}
-}
-
-void Sprite::ConvertVEType(std::type_info& _type, VisualEffect::VEType& _veType)
-{
-	switch (_type) {
-
-	case typeid(Blur) :
-		_veType = VisualEffect::VEType::VE_BLUR;
-		break;
-	case typeid(Sobel) :
-		_veType = VisualEffect::VEType::VE_SOBEL;
-		break;
-	case typeid(Inverse) :
-		_veType = VisualEffect::VEType::VE_INVERSE;
-		break;
-	case typeid(Manipulation) :
-		_veType = VisualEffect::VEType::VE_MANIPULATION;
-		break;
 	}
 }
 

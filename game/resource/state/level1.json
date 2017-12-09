@@ -32,7 +32,7 @@
 				{
 					"Type": "Model",
 					"Values": {"Texture" : "uvtemplate", "Color" : [1, 1, 1, 1],
-						"Projection" : "Perspective"}
+						"Projection" : "Perspective", "Effect" : ["Blur"]}
 				},
 				{
 					"Type": "Material",

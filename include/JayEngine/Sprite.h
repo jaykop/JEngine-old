@@ -66,7 +66,7 @@ public:
 	template <class EffectType>
 	bool		HasEffect();
 
-	void		ConvertVEType();
+	void		ConvertVEType(const char* _name, VisualEffect::VEType& _veType);
 
 	bool		m_flip;
 	vec4		m_color;
@@ -80,7 +80,7 @@ protected:
 	void Load(CR_RJValue _data) override;
 
 	bool m_culled;
-	bool m_hasMaterial, m_hasAnimation;
+	bool m_hasMaterial, m_hasAnimation, m_isEmitter;
 
 	Effects m_effects;
 
@@ -102,3 +102,4 @@ private:
 
 JE_END
 
+#include "Sprite.inl"

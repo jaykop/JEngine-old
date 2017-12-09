@@ -308,27 +308,36 @@ void GraphicSystem::EffectsPipeline(Sprite *_sprite)
 
 			switch (type) {
 
-			case VisualEffect::VEType::VE_BLUR:
+			case VisualEffect::VEType::VE_BLUR: {
 				GLM::m_shaders[GLM::SHADER_NORMAL]->SetEnum(
-					GLM::UNIFORM_EFFECT_BLUR,
+					GLM::UNIFORM_EFFECT_TYPE,
 					type);
-				break;
 
+				Blur* blur = static_cast<Blur*>(effect.second);
+
+				GLM::m_shaders[GLM::SHADER_NORMAL]->SetVector2(
+					GLM::UNIFORM_EFFECT_BLUR_SIZE, blur->m_size.x, blur->m_size.y);
+
+				GLM::m_shaders[GLM::SHADER_NORMAL]->SetVector2(
+					GLM::UNIFORM_EFFECT_BLUR_AMOUNT, blur->m_amount.x, blur->m_amount.y);
+
+				break;
+			}
 			case VisualEffect::VEType::VE_INVERSE:
 				GLM::m_shaders[GLM::SHADER_NORMAL]->SetEnum(
-					GLM::UNIFORM_EFFECT_INVERSE,
+					GLM::UNIFORM_EFFECT_TYPE,
 					type);
 				break;
 
 			case VisualEffect::VEType::VE_MANIPULATION:
 				GLM::m_shaders[GLM::SHADER_NORMAL]->SetEnum(
-					GLM::UNIFORM_EFFECT_MANIP,
+					GLM::UNIFORM_EFFECT_TYPE,
 					type);
 				break;
 
 			case VisualEffect::VEType::VE_SOBEL:
 				GLM::m_shaders[GLM::SHADER_NORMAL]->SetEnum(
-					GLM::UNIFORM_EFFECT_SOBEL,
+					GLM::UNIFORM_EFFECT_TYPE,
 					type);
 				break;
 

@@ -9,7 +9,7 @@ JE_BEGIN
 Sprite::Sprite(Object* _owner)
 	:Component(_owner), m_color(vec4::ONE),m_projection(PERSPECTIVE), 
 	m_mainTex(0),m_transform(nullptr), m_flip(false), m_culled(false), 
-	m_material(nullptr), m_hasMaterial(false)
+	m_material(nullptr), m_hasMaterial(false), m_isEmitter(false)
 {}
 
 void Sprite::Register()
@@ -106,6 +106,37 @@ void Sprite::Load(CR_RJValue _data)
 		CR_RJValue texture = _data["Texture"];
 		AddTexture(texture.GetString());
 	}
+
+	if (_data.HasMember("Effect")) {
+		CR_RJValue effect = _data["Effect"];
+
+		for (unsigned i = 0; i < effect.Size(); ++i) {
+			if (!strcmp(effect[i].GetString(), "Blur"))
+				AddEffect<Blur>();
+			else if (!strcmp(effect[i].GetString(), "Manipulation"))
+				AddEffect<Manipulation>();
+			else if (!strcmp(effect[i].GetString(), "Inverse"))
+				AddEffect<Inverse>();
+			else if (!strcmp(effect[i].GetString(), "Sobel"))
+				AddEffect<Sobel>();
+		}
+	}
+}
+
+void Sprite::ConvertVEType(const char* _name, VisualEffect::VEType& _veType)
+{
+	std::string additional("class JEngine::");
+	std::string blur = additional + "Blur", inv = additional + "Sobel", 
+		sobel = additional + "Sobel", manip = additional + "Sobel";
+
+	if (!strcmp(_name, blur.c_str()))
+		_veType = VisualEffect::VEType::VE_BLUR;
+	else if (!strcmp(_name, sobel.c_str()))
+		_veType = VisualEffect::VEType::VE_SOBEL;
+	else if (!strcmp(_name, inv.c_str()))
+		_veType = VisualEffect::VEType::VE_INVERSE;
+	else if (!strcmp(_name, manip.c_str()))
+		_veType = VisualEffect::VEType::VE_MANIPULATION;
 }
 
 SpriteBuilder::SpriteBuilder()

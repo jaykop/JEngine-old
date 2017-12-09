@@ -28,7 +28,8 @@ inline ComponentType* Object::GetComponent()
 
 	// If there is return it
 	if (found != m_componentMap.end())
-		return dynamic_cast<ComponentType*>(found->second);
+		// dynamic_cast
+		return static_cast<ComponentType*>(found->second);
 
 	else {
 		JE_DEBUG_PRINT("No such component\n");

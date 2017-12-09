@@ -176,6 +176,11 @@ void Shader::SetVector3(GLManager::UniformType _uniform, const vec3 & _vector)
 		_vector.x, _vector.y, _vector.z);
 }
 
+void Shader::SetVector2(GLManager::UniformType _uniform, float x, float y)
+{
+	glUniform2f(GLManager::m_uniform[_uniform], x, y);
+}
+
 void Shader::SetBool(GLManager::UniformType _uniform, bool _bool)
 {
 	glUniform1i(GLManager::m_uniform[_uniform], _bool);

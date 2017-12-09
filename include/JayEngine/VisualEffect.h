@@ -1,5 +1,6 @@
 #pragma once
 #include "Macro.h"
+#include "Vector2.h"
 
 JE_BEGIN
 
@@ -15,7 +16,7 @@ class VisualEffect
 
 public:
 
-	enum VEType { VE_BLUR, VE_SOBEL, VE_MANIPULATION, VE_INVERSE };
+	enum VEType { VE_NONE, VE_BLUR, VE_SOBEL, VE_MANIPULATION, VE_INVERSE };
 	bool m_active;
 
 protected:
@@ -38,8 +39,11 @@ private:
 //////////////////////////////////////////////////////////////////////////
 class Blur : public VisualEffect
 {
-
+	friend class Sprite;
 public:
+
+	vec2 m_amount;
+	vec2 m_size;
 
 private:
 
@@ -55,7 +59,7 @@ private:
 //////////////////////////////////////////////////////////////////////////
 class Sobel : public VisualEffect
 {
-
+	friend class Sprite;
 public:
 
 private:
@@ -72,7 +76,7 @@ private:
 //////////////////////////////////////////////////////////////////////////
 class Manipulation : public VisualEffect
 {
-
+	friend class Sprite;
 public:
 
 private:
@@ -89,7 +93,7 @@ private:
 //////////////////////////////////////////////////////////////////////////
 class Inverse : public VisualEffect 
 {
-
+	friend class Sprite;
 public:
 
 private:
