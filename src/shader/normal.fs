@@ -49,14 +49,13 @@ out	vec4 v4_fragColor;
 // uniform variables
 ////////////////////////////
 uniform bool 		boolean_light;
-uniform float		float_ambient;
-uniform float		float_specular;
 uniform sampler2D 	Texture;
 uniform Material 	material;
 uniform Light		light;
-uniform int			effectType;
-uniform vec2		v2_blurSize;
-uniform vec2		v2_blurAmount;
+uniform int			enum_effectType;
+uniform float		float_blurSize;
+uniform float		float_blurAmount;
+uniform float		float_sobelAmount;
 
 ////////////////////////////
 // function declarations
@@ -69,23 +68,25 @@ void VisualEffect(inout vec4 _color);
 ////////////////////////////
 void main() {
 
-	vec4 finalTexture = vec4(1,1,1,1);
+	vec4 finalTexture = v4_outColor;
 	
-	// If there are some lights...
-	// Implement light attributes
-	
-	// TODO
-	// Suppose to be polished...
-	if (effectType != 0)
-		VisualEffect(finalTexture);
-	
-	if (boolean_light)
-		LightingEffect(finalTexture);
+	// Any effect?
+	if ((enum_effectType != 0) || boolean_light) {
 		
-	else
-		finalTexture = texture(Texture, v2_outTexCoord);
+		// Impose visual effect here...
+		if (enum_effectType != 0)
+			VisualEffect(finalTexture);
 	
-	v4_fragColor = finalTexture * v4_outColor;
+		// Implement light attributes
+		if (boolean_light)
+			LightingEffect(finalTexture);
+	}
+	
+	// Unless..
+	else
+		finalTexture = texture(Texture, v2_outTexCoord)* v4_outColor;
+	
+	v4_fragColor = finalTexture;
 
 }
 
@@ -99,7 +100,7 @@ void LightingEffect(inout vec4 _light) {
 	vec3 	gap = light.m_position - v3_outFragmentPosition;
 	float 	theta = 0.f;
 	
-	// Driectional light
+	// Directional light
 	if (light.m_type == 1)
 		lightDirection = normalize(-light.m_direction);
 
@@ -149,35 +150,45 @@ void LightingEffect(inout vec4 _light) {
 
 void VisualEffect(inout vec4 _color){
 
-	if (effectType == 1) {
+	// Blur effect
+	if (enum_effectType == 1) {
 		
-		int x_range = int(v2_blurAmount.x / 2.0);
-		int y_range = int(v2_blurAmount.y / 2.0);
+		int x_range = int(float_blurSize / 2.0);
+		int y_range = int(float_blurSize / 2.0);
 		
 		vec4 sum = vec4(0,0,0,0);
 		for (int x = -x_range ; x <= x_range ; x++)
 			for(int y = -y_range ; y <= y_range ; y++){
 				sum += texture(Texture, 
-					vec2(v2_outTexCoord.x + x * v2_blurSize.x, 
-						v2_outTexCoord.y + y * v2_blurSize.y)) 
-						/ (v2_blurAmount.x * v2_blurAmount.y);
+					vec2(v2_outTexCoord.x + x * (1 / float_blurAmount), 
+						v2_outTexCoord.y + y * (1 / float_blurAmount))) 
+						/ (float_blurSize * float_blurSize);
 			}
 			
 		_color = sum;
 	}
 	
-	else if (effectType == 2){
-		_color = vec4(1,1,1,1) - _color;
-		_color.w = 1.f;
+	// Sobel effect
+	else if (enum_effectType == 2){
+		vec4 top         = texture(Texture, vec2(v2_outTexCoord.x, v2_outTexCoord.y + 5.0 / float_sobelAmount));
+		vec4 bottom      = texture(Texture, vec2(v2_outTexCoord.x, v2_outTexCoord.y - 5.0 / float_sobelAmount));
+		vec4 left        = texture(Texture, vec2(v2_outTexCoord.x - 5.0 / float_sobelAmount, v2_outTexCoord.y));
+		vec4 right       = texture(Texture, vec2(v2_outTexCoord.x + 5.0 / float_sobelAmount, v2_outTexCoord.y));
+		vec4 topLeft     = texture(Texture, vec2(v2_outTexCoord.x - 5.0 / float_sobelAmount, v2_outTexCoord.y + 5.0 / float_sobelAmount));
+		vec4 topRight    = texture(Texture, vec2(v2_outTexCoord.x + 5.0 / float_sobelAmount, v2_outTexCoord.y + 5.0 / float_sobelAmount));
+		vec4 bottomLeft  = texture(Texture, vec2(v2_outTexCoord.x - 5.0 / float_sobelAmount, v2_outTexCoord.y - 5.0 / float_sobelAmount));
+		vec4 bottomRight = texture(Texture, vec2(v2_outTexCoord.x + 5.0 / float_sobelAmount, v2_outTexCoord.y - 5.0 / float_sobelAmount));
+		vec4 sx = -topLeft - 2 * left - bottomLeft + topRight   + 2 * right  + bottomRight;
+		vec4 sy = -topLeft - 2 * top  - topRight   + bottomLeft + 2 * bottom + bottomRight;
+		_color = sqrt(sx * sx + sy * sy);
 	}
 	
-	else if (effectType == 3 )
+	// Inverse effect
+	else if (enum_effectType == 3)
 	{
-		;
-	}
-	
-	else if (effectType == 4)
-	{
-		;
+		vec4 inversed = vec4(1,1,1,1) - _color;
+		inversed.w = 1.f;
+		
+		_color = inversed;
 	}
 }

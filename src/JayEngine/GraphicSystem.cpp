@@ -300,8 +300,12 @@ void GraphicSystem::MappingPipeline(Sprite* _sprite, Material* _material)
 void GraphicSystem::EffectsPipeline(Sprite *_sprite)
 {
 	// Send visual effect info to shader
-
+	float effectsSize = float(_sprite->m_effects.size());
 	for (auto effect : _sprite->m_effects) {
+
+		GLM::m_shaders[GLM::SHADER_NORMAL]->SetFloat(
+			GLM::UNIFORM_EFFECT_BLUR_SIZE, effectsSize);
+
 		if (effect.second->m_active) {
 
 			VisualEffect::VEType type = effect.second->m_type;
@@ -310,37 +314,37 @@ void GraphicSystem::EffectsPipeline(Sprite *_sprite)
 
 			case VisualEffect::VEType::VE_BLUR: {
 				GLM::m_shaders[GLM::SHADER_NORMAL]->SetEnum(
-					GLM::UNIFORM_EFFECT_TYPE,
-					type);
+					GLM::UNIFORM_EFFECT_TYPE, type);
 
 				Blur* blur = static_cast<Blur*>(effect.second);
 
-				GLM::m_shaders[GLM::SHADER_NORMAL]->SetVector2(
-					GLM::UNIFORM_EFFECT_BLUR_SIZE, blur->m_size.x, blur->m_size.y);
+				GLM::m_shaders[GLM::SHADER_NORMAL]->SetFloat(
+					GLM::UNIFORM_EFFECT_BLUR_SIZE, blur->m_size);
 
-				GLM::m_shaders[GLM::SHADER_NORMAL]->SetVector2(
-					GLM::UNIFORM_EFFECT_BLUR_AMOUNT, blur->m_amount.x, blur->m_amount.y);
+				GLM::m_shaders[GLM::SHADER_NORMAL]->SetFloat(
+					GLM::UNIFORM_EFFECT_BLUR_AMOUNT, blur->m_amount);
 
 				break;
 			}
-			case VisualEffect::VEType::VE_INVERSE:
+			case VisualEffect::VEType::VE_SOBEL: {
 				GLM::m_shaders[GLM::SHADER_NORMAL]->SetEnum(
-					GLM::UNIFORM_EFFECT_TYPE,
-					type);
-				break;
+					GLM::UNIFORM_EFFECT_TYPE, type);
 
-			case VisualEffect::VEType::VE_MANIPULATION:
+				Sobel* sobel = static_cast<Sobel*>(effect.second);
+
+				GLM::m_shaders[GLM::SHADER_NORMAL]->SetFloat(
+					GLM::UNIFORM_EFFECT_SOBEL, sobel->m_amount);
+
+				break;
+			}
+			case VisualEffect::VEType::VE_INVERSE: {
 				GLM::m_shaders[GLM::SHADER_NORMAL]->SetEnum(
-					GLM::UNIFORM_EFFECT_TYPE,
-					type);
-				break;
+					GLM::UNIFORM_EFFECT_TYPE, type);
 
-			case VisualEffect::VEType::VE_SOBEL:
-				GLM::m_shaders[GLM::SHADER_NORMAL]->SetEnum(
-					GLM::UNIFORM_EFFECT_TYPE,
-					type);
-				break;
+				// Everything will be operated on shader.
 
+				break;
+			}
 			} // switch (type) {
 		} // if (effect.second->m_active) {
 	} // for (auto effect : _sprite->m_effects) {

@@ -226,9 +226,10 @@ void GLManager::RegisterUniform()
 	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_MATERIAL_SPECULAR, "material.m_specular");
 	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_MATERIAL_SHININESS, "material.m_shininess");
 
-	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_EFFECT_TYPE, "effectType");
-	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_EFFECT_BLUR_SIZE, "v2_blurSize");
-	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_EFFECT_BLUR_AMOUNT, "v2_blurAmount");
+	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_EFFECT_TYPE, "enum_effectType");
+	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_EFFECT_BLUR_SIZE, "float_blurSize");
+	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_EFFECT_BLUR_AMOUNT, "float_blurAmount");
+	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_EFFECT_SOBEL, "float_sobelAmount");
 
 	for (unsigned i = 0; i < m_glArraySize; ++i) {
 

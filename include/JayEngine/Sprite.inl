@@ -28,7 +28,7 @@ inline EffectType* Sprite::GetEffect() {
 
 	auto found = m_effects.find(veType);
 	if (found != m_effects.end())
-		return static_cast<EffectType>(found->second);
+		return static_cast<EffectType*>(found->second);
 
 	else {
 		JE_DEBUG_PRINT("No such effect in the list.\n");

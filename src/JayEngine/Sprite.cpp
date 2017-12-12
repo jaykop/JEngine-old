@@ -107,27 +107,52 @@ void Sprite::Load(CR_RJValue _data)
 		AddTexture(texture.GetString());
 	}
 
-	if (_data.HasMember("Effect")) {
-		CR_RJValue effect = _data["Effect"];
-
-		for (unsigned i = 0; i < effect.Size(); ++i) {
-			if (!strcmp(effect[i].GetString(), "Blur"))
-				AddEffect<Blur>();
-			else if (!strcmp(effect[i].GetString(), "Manipulation"))
-				AddEffect<Manipulation>();
-			else if (!strcmp(effect[i].GetString(), "Inverse"))
-				AddEffect<Inverse>();
-			else if (!strcmp(effect[i].GetString(), "Sobel"))
-				AddEffect<Sobel>();
+	if (_data.HasMember("Blur")) {
+		CR_RJValue effect = _data["Blur"];
+		auto found = m_effects.find(VisualEffect::VE_BLUR);
+		if (found == m_effects.end()) {
+			AddEffect<Blur>();
+			Blur* blur = GetEffect<Blur>();
+			blur->m_size = effect[0].GetFloat();
+			blur->m_amount = effect[1].GetFloat();
 		}
+
+		else
+			JE_DEBUG_PRINT("Same effect in the list!\n");
+	}
+
+	if (_data.HasMember("Sobel")) {
+		CR_RJValue amount = _data["Sobel"];
+		auto found = m_effects.find(VisualEffect::VE_SOBEL);
+		if (found == m_effects.end()) {
+			AddEffect<Sobel>();
+			Sobel* sobel = GetEffect<Sobel>();
+			sobel->m_amount = amount.GetFloat();
+		}
+
+		else
+			JE_DEBUG_PRINT("Same effect in the list!\n");
+	}
+
+	if (_data.HasMember("Inverse")) {
+		CR_RJValue effect = _data["Inverse"];
+		auto found = m_effects.find(VisualEffect::VE_INVERSE);
+		if (found == m_effects.end()) {
+			AddEffect<Inverse>();
+			Inverse *inverse = GetEffect<Inverse>();
+			inverse->m_active = effect.GetBool();
+		}
+
+		else
+			JE_DEBUG_PRINT("Same effect in the list!\n");
 	}
 }
 
 void Sprite::ConvertVEType(const char* _name, VisualEffect::VEType& _veType)
 {
 	std::string additional("class JEngine::");
-	std::string blur = additional + "Blur", inv = additional + "Sobel", 
-		sobel = additional + "Sobel", manip = additional + "Sobel";
+	std::string blur = additional + "Blur", inv = additional + "Inverse",
+		sobel = additional + "Sobel";
 
 	if (!strcmp(_name, blur.c_str()))
 		_veType = VisualEffect::VEType::VE_BLUR;
@@ -135,8 +160,6 @@ void Sprite::ConvertVEType(const char* _name, VisualEffect::VEType& _veType)
 		_veType = VisualEffect::VEType::VE_SOBEL;
 	else if (!strcmp(_name, inv.c_str()))
 		_veType = VisualEffect::VEType::VE_INVERSE;
-	else if (!strcmp(_name, manip.c_str()))
-		_veType = VisualEffect::VEType::VE_MANIPULATION;
 }
 
 SpriteBuilder::SpriteBuilder()
