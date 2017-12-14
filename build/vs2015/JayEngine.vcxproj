@@ -51,12 +51,6 @@
     <ClCompile Include="..\..\src\JayEngine\ObjectFactory.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Particle.cpp" />
     <ClCompile Include="..\..\src\JayEngine\PhysicsSystem.cpp" />
-    <ClCompile Include="..\..\src\JayEngine\Platform_win32.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="..\..\src\JayEngine\Random.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Rigidbody.cpp" />
     <ClCompile Include="..\..\src\JayEngine\Shader.cpp" />

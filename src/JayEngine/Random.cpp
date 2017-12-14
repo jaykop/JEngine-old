@@ -10,7 +10,7 @@ void Random::PlantSeed()
 
 	if (!planted) {
 		auto currentTime = std::chrono::system_clock::now();
-		auto duration = currentTime.time_since_epoch();;
+		auto duration = currentTime.time_since_epoch();
 		unsigned milliseconds = static_cast<unsigned>(std::chrono::duration_cast<std::chrono::milliseconds>(duration).count());
 		m_randomObject = std::mt19937(milliseconds);
 		planted = true;

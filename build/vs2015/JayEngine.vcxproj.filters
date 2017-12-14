@@ -70,9 +70,6 @@
     <ClCompile Include="..\..\src\JayEngine\ImguiManager.cpp">
       <Filter>Utils\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JayEngine\Platform_win32.cpp">
-      <Filter>Core\Platform</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\JayEngine\Sprite.cpp">
       <Filter>System\Graphic</Filter>
     </ClCompile>
@@ -349,9 +346,6 @@
     </Filter>
     <Filter Include="Utils\lodePNG">
       <UniqueIdentifier>{bc410694-fe95-44ed-9f15-422bf2106700}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Platform">
-      <UniqueIdentifier>{488e267d-18b4-431f-a9bf-4f8439a29a29}</UniqueIdentifier>
     </Filter>
     <Filter Include="Utils\Json">
       <UniqueIdentifier>{8d54e481-e8a4-485e-875d-8df16b54c62a}</UniqueIdentifier>

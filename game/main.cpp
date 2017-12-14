@@ -11,7 +11,6 @@ Contains Process' main flow
 */
 /******************************************************************************/
 
-#include "Macro.h"
 #include "Debug.h"
 #include "Application.h"
 #include "AssetManager.h"
@@ -31,12 +30,16 @@ int main(int argc, char* args[]) {
 	JE_UNUSED_PARAM(argc);
 	JE_UNUSED_PARAM(args);
 
-	ASSET::RegisterUserAppInfo();
+	// Load assets
+	ASSET::RegisterAssets();
+	
+	// Open application
 	if (APP::Initialize())
 		APP::Update();
 
 	APP::Close();
 
+	// Delete console
 	DEBUG_DESTROY_CONSOLE();
 
 	return 0;

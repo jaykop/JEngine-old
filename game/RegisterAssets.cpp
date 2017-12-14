@@ -10,7 +10,7 @@
 
 JE_BEGIN
 
-void AssetManager::RegisterUserAppInfo()
+void AssetManager::RegisterAssets()
 {
 	// Set directories
 	ASSET::m_initDirectory.assign("resource/register/initData.json");

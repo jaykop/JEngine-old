@@ -24,7 +24,7 @@ class AssetManager {
 
 public:
 
-	static void RegisterUserAppInfo();
+	static void RegisterAssets();
 
 	static void LoadAudio(const char* _path, const char* _audioKey);
 	static void LoadImage(const char* _path, const char* _textureKey);

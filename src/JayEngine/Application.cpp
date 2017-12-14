@@ -4,6 +4,7 @@
 #include "StateManager.h"
 #include "AssetManager.h"
 #include "JsonParser.h"
+#include "Random.h"
 
 #ifdef JE_SUPPORT_IMGUI
 #include "ImguiManager.h"
@@ -70,7 +71,10 @@ void Application::Update()
 		JE_DEBUG_PRINT("Window could not be created! SDL_Error: %s\n", SDL_GetError());
 
 	else {
-		
+
+		/*************** Random **************/
+		Random::PlantSeed();
+
 		/*************** OpenGL **************/
 		m_pContext = SDL_GL_CreateContext(m_pWindow);
 		GLM::initSDL_GL();

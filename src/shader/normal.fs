@@ -68,7 +68,7 @@ void VisualEffect(inout vec4 _color);
 ////////////////////////////
 void main() {
 
-	vec4 finalTexture = v4_outColor;
+	vec4 finalTexture = texture(Texture, v2_outTexCoord)* v4_outColor;
 	
 	// Any effect?
 	if ((enum_effectType != 0) || boolean_light) {
@@ -83,8 +83,8 @@ void main() {
 	}
 	
 	// Unless..
-	else
-		finalTexture = texture(Texture, v2_outTexCoord)* v4_outColor;
+	//else
+	//	finalTexture = ;
 	
 	v4_fragColor = finalTexture;
 
