@@ -5,6 +5,7 @@
 
 JE_BEGIN
 
+class Emitter;
 class Material;
 class Transform;
 class Animation;
@@ -16,6 +17,7 @@ class GraphicSystem : public System
 	friend class Model;
 	friend class Sprite;
 	friend class Camera;
+	friend class Emitter;
 	friend class SystemManager;
 
 	using Lights = std::vector<Light*>;
@@ -55,10 +57,13 @@ private:
 	void LightingPipeline();
 	void LightPipeline();
 
-	void SpritePipeline();
+	void SpritePipeline(float _dt);
 	void TransformPipeline(Sprite* _sprite);
 	void AnimationPipeline(Sprite* _sprite);
 	void MappingPipeline(Sprite* _sprite, Material* _material);
+
+	void ParticlePipeline(Emitter* _emitter, float _dt);
+	void NormalUpdate(Emitter* _emitter, float _dt);
 
 	void EffectsPipeline(Sprite* _sprite);
 

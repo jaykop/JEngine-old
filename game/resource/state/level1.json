@@ -16,27 +16,21 @@
 			"Component" : [
 				{
 					"Type": "Camera",
-					"Values": {"Position" : [50, 50, 50], "Target" : [0, 0, 0],
+					"Values": {"Position" : [0, 0, 50], "Target" : [0, 0, 0],
 						"Up" : [0, 1, 0]}
 				}
 			]
 		},
-
 		{
 			"Name" : "Model",
 			"Component" : [
 				{
 					"Type": "Transform",
-					"Values": {"Position" : [0, 0, -50], "Scale" : [50, 50, 50]}
+					"Values": {"Position" : [0, 0, 0], "Scale" : [5, 5, 5]}
 				},
 				{
-					"Type": "Model",
-					"Values": {"Texture" : "uvtemplate", "Color" : [0.23, 0.654, 0.38, 1],
-						"Projection" : "Perspective",   "Blur" : [9, 300] }
-				},
-				{
-					"Type": "Material",
-					"Values": {"Diffuse" : 32, "Specular" : 32, "Shininess" : 32}
+					"Type": "Emitter",
+					"Values": {"Texture" : "particle", "Color" : [1, 1, 1, 1], "Projection" : "Perspective", "Life" : 1.0, "Velocity" : [10, 10, 0], "Quantity" : 50, "Direction" : [-1, 1, 0]}
 				}
 			]
 		}

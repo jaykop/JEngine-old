@@ -32,13 +32,17 @@ class Emitter : public Sprite
 
 	class Particle {
 
+		friend class GraphicSystem;
 		friend class Emitter;
 
 	public:
 
-		vec4 m_color;
-		vec3 m_position;
+		float	m_life;
+		vec3	m_color;
+		vec3	m_position;
+		vec3	m_direction;
 
+		void		Refresh();
 		void		SetTexture(const char* _key);
 		unsigned	GetTexture();
 		
@@ -60,8 +64,8 @@ class Emitter : public Sprite
 public:
 
 	ParticleType	m_type;
-	vec4			m_startColor, m_endColor;
-	vec3			m_direction, m_velocity, m_position;
+	vec3			m_startColor, m_endColor;
+	vec3			m_direction, m_velocity;
 	float			m_life;
 
 	void Register() override;
@@ -72,8 +76,6 @@ private:
 	~Emitter();
 
 	void Load(CR_RJValue _data) override;
-	void Update(float _dt);
-	void NormalUpdate(float _dt);
 	void SetQuantity(unsigned _quantity);
 	void Refresh(Particle* _particle);
 

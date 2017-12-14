@@ -7,7 +7,7 @@ JE_BEGIN
 Transform::Transform(Object* _owner)
 	:Component(_owner), 
 	m_position(vec3::ZERO), m_scale(vec3::ZERO), 
-	m_rotation(0.f), m_rotation3D(vec3::UNIT_Z)
+	m_rotation(0.f), m_rotationAxis(vec3::UNIT_Z)
 {
 	//SystemManager::GetPhysicsSystem()->AddTransform();
 }
@@ -31,7 +31,7 @@ void Transform::Load(CR_RJValue _data)
 
 	if (_data.HasMember("Rotation3d")) {
 		CR_RJValue rotation3D = _data["Rotation3d"];
-		m_rotation3D.Set(rotation3D[0].GetFloat(), rotation3D[1].GetFloat(), rotation3D[2].GetFloat());
+		m_rotationAxis.Set(rotation3D[0].GetFloat(), rotation3D[1].GetFloat(), rotation3D[2].GetFloat());
 	}
 }
 

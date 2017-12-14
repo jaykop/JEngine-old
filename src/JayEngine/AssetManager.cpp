@@ -35,6 +35,7 @@ void AssetManager::Load()
 	JE_ADD_COMPONENT(Model);
 	JE_ADD_COMPONENT(Camera);
 	JE_ADD_COMPONENT(Sprite);
+	JE_ADD_COMPONENT(Emitter);
 	JE_ADD_COMPONENT(Light);
 	JE_ADD_COMPONENT(Material);
 	JE_ADD_COMPONENT(Animation);

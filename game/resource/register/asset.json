@@ -5,6 +5,7 @@
 		{"Key" : "circle", 			"Directory" : "resource/texture/circle.png"},
 		{"Key" : "testTexture", 	"Directory" : "resource/texture/images.png"},
 		{"Key" : "uvtemplate", 		"Directory" : "resource/texture/uvtemplate.png"},
+		{"Key" : "particle", 		"Directory" : "resource/texture/particle.png"},
 		{"Key" : "testAnimation", 	"Directory" : "resource/texture/testAnimation.png"}
 	]
 }

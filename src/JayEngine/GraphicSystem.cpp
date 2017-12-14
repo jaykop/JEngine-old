@@ -50,7 +50,7 @@ void GraphicSystem::Init()
 		m_pMainCamera = m_cameras[0];
 }
 
-void GraphicSystem::Update(float /*dt*/)
+void GraphicSystem::Update(float _dt)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(m_backgroundColor.x, m_backgroundColor.y, m_backgroundColor.z, m_backgroundColor.w);
@@ -64,7 +64,7 @@ void GraphicSystem::Update(float /*dt*/)
 	if (m_isLight) 
 		LightPipeline();
 	
-	SpritePipeline();
+	SpritePipeline(_dt);
 	GLMousePosition();
 }
 
@@ -130,36 +130,129 @@ void GraphicSystem::LightPipeline()
 	}
 }
 
-void GraphicSystem::SpritePipeline()
+void GraphicSystem::SpritePipeline(float _dt)
 {
 	for (auto sprite : m_sprites) {
 		// Use normal shader
 		GLM::m_shaders[GLM::SHADER_NORMAL]->Use();
 
-		// Here check if the sprite is
-		// either outside the screen or not
-		TransformPipeline(sprite);
+		// Emitter
+		if (sprite->m_isEmitter) {
+			ParticlePipeline(
+				static_cast<Emitter*>(sprite), _dt);
+		}
 
-		// TODO
-		// It so, not draw
-		//if (!_sprite->m_culled) {
+		else {
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		// TODO
-		// Particle
-		//if ();
+			// Here check if the sprite is
+			// either outside the screen or not
+			TransformPipeline(sprite);
 
-		MappingPipeline(sprite, sprite->m_material);
-		AnimationPipeline(sprite);
+			// TODO
+			// It so, not draw
+			//if (!_sprite->m_culled) {
 
-		if (m_isLight)
-			LightPipeline();
+			MappingPipeline(sprite, sprite->m_material);
+			AnimationPipeline(sprite);
 
-		if (!sprite->m_effects.empty())
-			EffectsPipeline(sprite);
+			if (m_isLight)
+				LightPipeline();
+
+			if (!sprite->m_effects.empty())
+				EffectsPipeline(sprite);
+
+			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+		}
+	}
+}
+
+void GraphicSystem::ParticlePipeline(Emitter* _emitter, float _dt)
+{
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+
+	switch (_emitter->m_type) {
+
+	case Emitter::ParticleType::PT_NORMAL:
+	default:
+		NormalUpdate(_emitter, _dt);
+		break;
+	}
+}
+
+void GraphicSystem::NormalUpdate(Emitter* _emitter, float _dt)
+{
+	static vec3		direction, velocity;
+	static float	offset;
+	static vec4		color;
+
+	offset				= _dt * _emitter->m_life;
+	direction			= _emitter->m_direction;
+	velocity			= _emitter->m_velocity;
+	m_pTransformStorage = _emitter->m_transform;
+
+	for (auto particle : _emitter->m_particles) {
+
+		particle->m_position += _dt * particle->m_direction;
+		particle->m_position.z = 0.f;
+		//particle->m_color -= ;
+		particle->m_life -= _dt * offset;
+
+		if (particle->m_life < 0.f)
+			particle->Refresh();
+
+		// Send transform info to shader
+		GLM::m_shaders[GLM::SHADER_NORMAL]->SetMatrix(
+			GLM::UNIFORM_TRANSLATE,
+			mat4::Translate(particle->m_position));
+
+		GLM::m_shaders[GLM::SHADER_NORMAL]->SetMatrix(
+			GLM::UNIFORM_SCALE,
+			mat4::Scale(m_pTransformStorage->m_scale));
+
+		GLM::m_shaders[GLM::SHADER_NORMAL]->SetMatrix(
+			GLM::UNIFORM_ROTATE,
+			mat4::Rotate(m_pTransformStorage->m_rotation,
+				m_pTransformStorage->m_rotationAxis));
+
+		// Send camera info to shader
+		m_viewport = mat4::Camera(
+			m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
+		GLM::m_shaders[GLM::SHADER_NORMAL]->SetMatrix(
+			GLM::UNIFORM_CAMERA,
+			m_viewport);
+
+		// Send projection info to shader
+		if (_emitter->m_projection == Sprite::PERSPECTIVE) {
+			GLM::m_shaders[GLM::SHADER_NORMAL]->SetMatrix(
+				GLM::UNIFORM_PROJECTION,
+				m_perspective);
+		}
+
+		else {
+			GLM::m_shaders[GLM::SHADER_NORMAL]->SetMatrix(
+				GLM::UNIFORM_PROJECTION,
+				m_orthogonal);
+		}
+
+		glBindTexture(GL_TEXTURE_2D, _emitter->GetCurrentTexutre());
+
+		// Send color info to shader
+		color.Set(particle->m_color.x, particle->m_color.y, particle->m_color.z,
+			particle->m_life);
+		GLM::m_shaders[GLM::SHADER_NORMAL]->SetVector4(
+			GLM::UNIFORM_COLOR,
+			color);
+
+		GLM::m_shaders[GLM::SHADER_NORMAL]->SetMatrix(
+			GLM::UNIFORM_ANI_SCALE,
+			mat4::Scale(vec3::ONE));
+
+		GLM::m_shaders[GLM::SHADER_NORMAL]->SetMatrix(
+			GLM::UNIFORM_ANI_TRANSLATE,
+			mat4::Translate(vec3::ZERO));
 
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
-		//}
 	}
 }
 
@@ -233,7 +326,7 @@ void GraphicSystem::TransformPipeline(Sprite * _sprite)
 	GLM::m_shaders[GLM::SHADER_NORMAL]->SetMatrix(
 		GLM::UNIFORM_ROTATE,
 		mat4::Rotate(m_pTransformStorage->m_rotation, 
-			m_pTransformStorage->m_rotation3D));
+			m_pTransformStorage->m_rotationAxis));
 
 	// Send camera info to shader
 	m_viewport = mat4::Camera(
