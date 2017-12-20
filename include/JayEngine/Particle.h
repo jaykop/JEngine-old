@@ -38,20 +38,15 @@ class Emitter : public Sprite
 	public:
 
 		float	m_life;
-		vec3	m_color;
-		vec3	m_position;
-		vec3	m_direction;
+		vec3	m_color, m_position, m_direction;
 
-		void		Refresh();
-		void		SetTexture(const char* _key);
-		unsigned	GetTexture();
+		void	Refresh();
 		
 	private:
 
 		Particle(Emitter* _emitter);
 		~Particle() {};
 		Emitter* m_emitter;
-		unsigned m_texture;
 
 		Particle() = delete;
 		Particle(const Particle& /*_copy*/) = delete;
@@ -63,9 +58,9 @@ class Emitter : public Sprite
 
 public:
 
+	bool			m_active;
 	ParticleType	m_type;
-	vec3			m_startColor, m_endColor;
-	vec3			m_direction, m_velocity;
+	vec3			m_startColor, m_endColor, m_direction, m_velocity;
 	float			m_life;
 
 	void Register() override;

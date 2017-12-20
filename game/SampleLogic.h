@@ -40,6 +40,8 @@ private:
 	void Update(float _dt) override;
 	void Close() override;
 	void Unload() override;
+
+	Object* particle;
 };
 
 JE_END

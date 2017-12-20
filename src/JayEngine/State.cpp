@@ -16,7 +16,7 @@ State::State(const char* _name)
 void State::Load()
 {
 	JE_DEBUG_PRINT("Loading %s...\n", m_name.c_str());
-	m_objContainer = new ObjectContainer; 
+	STATE::m_pOBC = m_objContainer = new ObjectContainer;
 	JSON::ReadFile(m_loadDirectory.c_str());
 
 	JSON::LoadObjects(m_objContainer);

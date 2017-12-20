@@ -58,7 +58,7 @@ public:
 	bool		IsZero() const;
 	bool		IsOne() const;
 	float		Length() const;
-	float		LengthSqrt() const;
+	float		LengthSq() const;
 	float		DotProduct(const Vector4& _rhs);
 	Vector4&	Normalize();
 	Vector4		GetNormalize() const;

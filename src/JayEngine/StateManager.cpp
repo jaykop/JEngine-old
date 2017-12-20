@@ -14,6 +14,7 @@ JE_BEGIN
 Timer						StateManager::m_timer;
 States						StateManager::m_states;
 StateManager::StateStatus	StateManager::m_status = S_CHANGE;
+ObjectContainer				*StateManager::m_pOBC = nullptr;
 State						*StateManager::m_pCurrent = nullptr, 
 							*StateManager::m_pNext = nullptr, 
 							*StateManager::m_pPause = nullptr;
@@ -134,12 +135,14 @@ void StateManager::ChangeState()
 	else if (m_status == S_RESUME) {
 		State* release = m_pCurrent;
 		m_pCurrent = m_pNext = m_pCurrent->m_pLastStage;
+		m_pOBC = m_pCurrent->m_objContainer;
 		release->m_pLastStage = nullptr;
 	}
 
 	// Resume and change
 	else if (m_status == S_RESUME_AND_CHANGE) {
 		m_pCurrent = m_pCurrent->m_pLastStage;
+		m_pOBC = m_pCurrent->m_objContainer;
 		m_status = S_CHANGE;
 	}
 

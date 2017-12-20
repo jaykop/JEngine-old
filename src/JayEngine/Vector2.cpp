@@ -120,7 +120,7 @@ Vector2::Vector2(const Vector2& _copy)
 /******************************************************************************/
 bool Vector2::operator<(const Vector2& _rhs) const
 {
-	return this->LengthSqrt() < _rhs.LengthSqrt();
+	return this->LengthSq() < _rhs.LengthSq();
 }
 
 /******************************************************************************/
@@ -405,10 +405,10 @@ Vector2 Vector2::operator/(float _constant) const
 /******************************************************************************/
 float Vector2::Length() const
 {
-	return sqrt(LengthSqrt());
+	return sqrt(LengthSq());
 }
 
-float Vector2::LengthSqrt() const
+float Vector2::LengthSq() const
 {
 	return x*x + y*y;
 }

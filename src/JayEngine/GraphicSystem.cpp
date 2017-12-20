@@ -142,6 +142,7 @@ void GraphicSystem::SpritePipeline(float _dt)
 				static_cast<Emitter*>(sprite), _dt);
 		}
 
+		// Normal models
 		else {
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -169,90 +170,108 @@ void GraphicSystem::SpritePipeline(float _dt)
 
 void GraphicSystem::ParticlePipeline(Emitter* _emitter, float _dt)
 {
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+	// Check emitter's active toggle
+	if (_emitter->m_active) {
 
-	switch (_emitter->m_type) {
+		glEnable(GL_BLEND);					// 
+		glDepthMask(GL_FALSE);				// Ignore depth buffer writing
+		//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
-	case Emitter::ParticleType::PT_NORMAL:
-	default:
-		NormalUpdate(_emitter, _dt);
-		break;
+		switch (_emitter->m_type) {
+
+		case Emitter::ParticleType::PT_NORMAL:
+		default:
+			NormalUpdate(_emitter, _dt);
+			break;
+		}
+		glDepthMask(GL_TRUE);
+		glDisable(GL_BLEND);
 	}
 }
 
 void GraphicSystem::NormalUpdate(Emitter* _emitter, float _dt)
 {
-	static vec3		direction, velocity;
-	static float	offset;
+	static vec3		velocity, colorDiff;
+	static float	doubleDt, lifeDt;
 	static vec4		color;
+	static unsigned texture;
 
-	offset				= _dt * _emitter->m_life;
-	direction			= _emitter->m_direction;
-	velocity			= _emitter->m_velocity;
-	m_pTransformStorage = _emitter->m_transform;
+	m_pTransformStorage	 = _emitter->m_transform;
+	texture				 = _emitter->m_mainTex;
+	doubleDt			 = _dt * _dt;
+	velocity			 = _dt * _emitter->m_velocity;
+	lifeDt				 = doubleDt * _emitter->m_life;
+	colorDiff			 = doubleDt * (_emitter->m_endColor - _emitter->m_startColor);
 
 	for (auto particle : _emitter->m_particles) {
 
-		particle->m_position += _dt * particle->m_direction;
-		particle->m_position.z = 0.f;
-		//particle->m_color -= ;
-		particle->m_life -= _dt * offset;
+		particle->m_life -= lifeDt;
 
 		if (particle->m_life < 0.f)
 			particle->Refresh();
 
-		// Send transform info to shader
-		GLM::m_shaders[GLM::SHADER_NORMAL]->SetMatrix(
-			GLM::UNIFORM_TRANSLATE,
-			mat4::Translate(particle->m_position));
-
-		GLM::m_shaders[GLM::SHADER_NORMAL]->SetMatrix(
-			GLM::UNIFORM_SCALE,
-			mat4::Scale(m_pTransformStorage->m_scale));
-
-		GLM::m_shaders[GLM::SHADER_NORMAL]->SetMatrix(
-			GLM::UNIFORM_ROTATE,
-			mat4::Rotate(m_pTransformStorage->m_rotation,
-				m_pTransformStorage->m_rotationAxis));
-
-		// Send camera info to shader
-		m_viewport = mat4::Camera(
-			m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
-		GLM::m_shaders[GLM::SHADER_NORMAL]->SetMatrix(
-			GLM::UNIFORM_CAMERA,
-			m_viewport);
-
-		// Send projection info to shader
-		if (_emitter->m_projection == Sprite::PERSPECTIVE) {
-			GLM::m_shaders[GLM::SHADER_NORMAL]->SetMatrix(
-				GLM::UNIFORM_PROJECTION,
-				m_perspective);
-		}
-
 		else {
+			particle->m_position	+= particle->m_direction * velocity;
+			particle->m_color		+= colorDiff;
+
+			// Send transform info to shader
 			GLM::m_shaders[GLM::SHADER_NORMAL]->SetMatrix(
-				GLM::UNIFORM_PROJECTION,
-				m_orthogonal);
+				GLM::UNIFORM_TRANSLATE,
+				mat4::Translate(particle->m_position));
+
+			GLM::m_shaders[GLM::SHADER_NORMAL]->SetMatrix(
+				GLM::UNIFORM_SCALE,
+				mat4::Scale(m_pTransformStorage->m_scale));
+
+			GLM::m_shaders[GLM::SHADER_NORMAL]->SetMatrix(
+				GLM::UNIFORM_ROTATE,
+				mat4::Rotate(m_pTransformStorage->m_rotation,
+					m_pTransformStorage->m_rotationAxis));
+
+			// Send camera info to shader
+			m_viewport = mat4::Camera(
+				m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
+			GLM::m_shaders[GLM::SHADER_NORMAL]->SetMatrix(
+				GLM::UNIFORM_CAMERA,
+				m_viewport);
+
+			// Send projection info to shader
+			if (_emitter->m_projection == Sprite::PERSPECTIVE) {
+				GLM::m_shaders[GLM::SHADER_NORMAL]->SetMatrix(
+					GLM::UNIFORM_PROJECTION,
+					m_perspective);
+			}
+
+			else {
+				GLM::m_shaders[GLM::SHADER_NORMAL]->SetMatrix(
+					GLM::UNIFORM_PROJECTION,
+					m_orthogonal);
+			}
+
+			glBindTexture(GL_TEXTURE_2D, texture);
+
+			// Send color info to shader
+			color.Set(particle->m_color.x, particle->m_color.y, particle->m_color.z,
+				particle->m_life);
+			GLM::m_shaders[GLM::SHADER_NORMAL]->SetVector4(
+				GLM::UNIFORM_COLOR,
+				color);
+
+			GLM::m_shaders[GLM::SHADER_NORMAL]->SetMatrix(
+				GLM::UNIFORM_ANI_SCALE,
+				mat4::Scale(vec3::ONE));
+
+			GLM::m_shaders[GLM::SHADER_NORMAL]->SetMatrix(
+				GLM::UNIFORM_ANI_TRANSLATE,
+				mat4::Translate(vec3::ZERO));
+
+			glBindBuffer(GL_ARRAY_BUFFER, GLM::m_vbo);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(GLM::m_vertices2d), GLM::m_vertices2d, GL_STATIC_DRAW);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GLM::m_ebo);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLM::m_indices2d), GLM::m_indices2d, GL_STATIC_DRAW);
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		}
-
-		glBindTexture(GL_TEXTURE_2D, _emitter->GetCurrentTexutre());
-
-		// Send color info to shader
-		color.Set(particle->m_color.x, particle->m_color.y, particle->m_color.z,
-			particle->m_life);
-		GLM::m_shaders[GLM::SHADER_NORMAL]->SetVector4(
-			GLM::UNIFORM_COLOR,
-			color);
-
-		GLM::m_shaders[GLM::SHADER_NORMAL]->SetMatrix(
-			GLM::UNIFORM_ANI_SCALE,
-			mat4::Scale(vec3::ONE));
-
-		GLM::m_shaders[GLM::SHADER_NORMAL]->SetMatrix(
-			GLM::UNIFORM_ANI_TRANSLATE,
-			mat4::Translate(vec3::ZERO));
-
-		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	}
 }
 
@@ -340,24 +359,13 @@ void GraphicSystem::TransformPipeline(Sprite * _sprite)
 		GLM::m_shaders[GLM::SHADER_NORMAL]->SetMatrix(
 			GLM::UNIFORM_PROJECTION,
 			m_perspective);
-
-		//m_inside = ;
 	}
 
 	else {
 		GLM::m_shaders[GLM::SHADER_NORMAL]->SetMatrix(
 			GLM::UNIFORM_PROJECTION,
 			m_orthogonal);
-
-		//m_inside = ;
 	}
-
-	// TODO
-	//if (m_inside) 
-	//	_sprite->m_culled = true;
-
-	//else
-	//	_sprite->m_culled = false;
 }
 
 void GraphicSystem::MappingPipeline(Sprite* _sprite, Material* _material)

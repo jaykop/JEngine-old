@@ -37,7 +37,7 @@ Vector3::~Vector3(void)
 
 bool Vector3::operator<(const Vector3 & _rhs) const
 {
-	return this->LengthSqrt() < _rhs.LengthSqrt();
+	return this->LengthSq() < _rhs.LengthSq();
 }
 
 /******************************************************************************/
@@ -517,10 +517,10 @@ Vector3 Vector3::GetNormalize() const
 /******************************************************************************/
 float Vector3::Length(void) const
 {
-	return sqrt(LengthSqrt());
+	return sqrt(LengthSq());
 }
 
-float Vector3::LengthSqrt() const
+float Vector3::LengthSq() const
 {
 	return x*x + y*y + z*z;
 }
@@ -609,7 +609,7 @@ float Vector3::GetAngle(const Vector3& _other)
 
 float Vector3::GetDistance(const Vector3& _rhs)
 {
-	return ((*this)- _rhs).LengthSqrt();
+	return ((*this)- _rhs).LengthSq();
 }
 
 /******************************************************************************/

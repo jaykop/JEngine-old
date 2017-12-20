@@ -17,6 +17,23 @@ GLManager::Shaders GLManager::m_shaders;
 GLManager::DrawMode GLManager::m_mode = DrawMode::DRAW_FILL;
 unsigned GLManager::m_glArraySize = 128;
 
+const float GLManager::m_vertices2d[] = {
+	// position				// uv		// normals
+	-.5f,	.5f,	0.f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,		// top left	
+	.5f,	.5f,	0.f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,		// top right
+	.5f,	-.5f,	0.f,	0.f, 1.f,	0.0f,  0.0f, 1.0f,		// bottom right
+	-.5f,	-.5f,	0.f,	0.f, 0.f,	0.0f,  0.0f, 1.0f,		// bottom left
+};
+
+const unsigned GLManager::m_indices2d[] = {
+	// front
+	0, 2, 3,	// first triangle
+	2, 0, 1		// second triangle
+};
+
+const float GLManager::m_verticesParticle[] = {0};
+const unsigned GLManager::m_indicesParticle[] = {0};
+
 const float GLManager::m_vertices [] = 
 {
 	// front
@@ -62,7 +79,7 @@ const float GLManager::m_vertices [] =
 	-.5f,	.5f,	.5f,	.25f, .25f,	0.0f,  1.0f,  0.0f		// bottom left
 };
 
-const int GLManager::m_indices [] = 
+const unsigned GLManager::m_indices [] =
 {
 	//				 4					5
 	//				  ****************

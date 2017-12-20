@@ -1,6 +1,8 @@
 #include "SampleLogic.h"
 #include "GameLogicHeader.h"
 
+#include "Particle.h"
+
 JE_BEGIN
 
 SampleLogic::SampleLogic(Object* _pObject)
@@ -16,10 +18,17 @@ void SampleLogic::Load(CR_RJValue /*_data*/)
 {}
 
 void SampleLogic::Init()
-{}
+{
+	particle = STATE::m_pOBC->GetObject("Particle");
+}
 
 void SampleLogic::Update(float /*_dt*/)
 {
+	if (INPUT::KeyTriggered(JE_A)) {
+		particle->GetComponent<Emitter>()->m_active
+			= !particle->GetComponent<Emitter>()->m_active;
+	}
+
 	if (INPUT::KeyTriggered(JE_1))
 		STATE::SetNextState("testState1");
 

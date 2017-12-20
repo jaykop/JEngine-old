@@ -60,7 +60,7 @@ public:
 	bool		IsZero() const;
 	bool		IsOne() const;
 	float		Length() const;
-	float		LengthSqrt() const;
+	float		LengthSq() const;
 	float		DotProduct(const Vector3& _rhs);
 	Vector3		CrossProduct(const Vector3& _rhs);
 	void		Normalize();

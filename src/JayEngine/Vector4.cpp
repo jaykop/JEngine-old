@@ -83,7 +83,7 @@ Vector4& Vector4::operator-(void)
 /******************************************************************************/
 bool Vector4::operator<(const Vector4& _rhs) const
 {
-	return this->LengthSqrt() < _rhs.LengthSqrt();
+	return this->LengthSq() < _rhs.LengthSq();
 }
 
 Vector4 Vector4::operator+(const Vector4& _rhs) const
@@ -555,10 +555,10 @@ Vector4 Vector4::GetAbsolute() const
 /******************************************************************************/
 float Vector4::Length(void) const
 {
-	return sqrt(LengthSqrt());
+	return sqrt(LengthSq());
 }
 
-float Vector4::LengthSqrt() const
+float Vector4::LengthSq() const
 {
 	return x*x + y*y + z*z + w*w;
 }

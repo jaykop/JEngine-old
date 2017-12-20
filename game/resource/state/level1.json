@@ -1,16 +1,7 @@
 {
 
-	"Background" : [ 0.7, 0.7, 0.7, 0.7 ],
+	"Background" : [ 0.0, 0.0, 0.0, 0.0 ],
 	"Object" : [
-		{
-			"Name" : "sampleObject",
-			"Component" : [
-				{
-					"Type": "SampleLogic",
-					"Values": {}
-				}
-			]
-		},
 		{
 			"Name" : "Camera",
 			"Component" : [
@@ -22,7 +13,7 @@
 			]
 		},
 		{
-			"Name" : "Model",
+			"Name" : "Particle",
 			"Component" : [
 				{
 					"Type": "Transform",
@@ -30,7 +21,16 @@
 				},
 				{
 					"Type": "Emitter",
-					"Values": {"Texture" : "particle", "Color" : [1, 1, 1, 1], "Projection" : "Perspective", "Life" : 1.0, "Velocity" : [10, 10, 0], "Quantity" : 50, "Direction" : [-1, 1, 0]}
+					"Values": {"Texture" : "particle", "Color" : [1, 1, 1, 1], "Projection" : "Perspective", "Life" : 3.0, "Velocity" : [0.1, 0.1, 0], "Quantity" : 100, "Direction" : [-1, 1, 0], "StartColor" : [1, 1, 1], "EndColor" : [0, 0, 1]}
+				}
+			]
+		},
+		{
+			"Name" : "sampleObject",
+			"Component" : [
+				{
+					"Type": "SampleLogic",
+					"Values": {}
 				}
 			]
 		}

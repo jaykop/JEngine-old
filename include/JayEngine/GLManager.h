@@ -104,13 +104,12 @@ private:
 	// Private member variables
 	static unsigned m_glArraySize;
 	static DrawMode m_mode;
-	static GLuint	m_vao, m_vbo, m_vbo3D, m_ebo, m_ebo3D,
-		m_light_vao;
+	static GLuint	m_vao, m_vbo, m_ebo, m_light_vao;
 	static Shaders	m_shaders;
 	static GLint	m_uniform[UNIFORM_END];
 
-	static const float	m_vertices[192];
-	static const int	m_indices[36];
+	static const float	m_vertices[192], m_vertices2d[32], m_verticesParticle[12];
+	static const unsigned	m_indices[36], m_indices2d[6], m_indicesParticle[];
 
 	// Locked functions
 	GLManager() = delete;

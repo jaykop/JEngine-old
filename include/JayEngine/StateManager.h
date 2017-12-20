@@ -6,6 +6,7 @@
 JE_BEGIN
 
 class State;
+class ObjectContainer;
 using States = std::vector<State*>;
 
 class StateManager {
@@ -28,6 +29,8 @@ public:
 	static StateStatus	GetStatus(void);
 	static State*		GetCurrentState(void);
 	static State*		GetState(const char* _stateName);
+
+	static ObjectContainer* m_pOBC;
 
 private:
 

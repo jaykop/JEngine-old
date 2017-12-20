@@ -8,14 +8,14 @@
 JE_BEGIN
 
 Emitter::Particle::Particle(Emitter* _emitter)
-	: m_emitter(_emitter), 	m_texture(0), m_direction(vec3::ZERO)
+	: m_emitter(_emitter), m_direction(vec3::ZERO)
 {
+	m_life		= Random::GetRandomFloat(0.f, m_emitter->m_life);
+	m_position	= m_emitter->m_pOwner->GetComponent<Transform>()->m_position;
 	m_direction = Random::GetRandVec3(m_emitter->m_direction.x,
 		m_emitter->m_direction.y);
-	m_position	= _emitter->m_pOwner->GetComponent<Transform>()->m_position;
-	m_color.Set(_emitter->m_color.x,
-		_emitter->m_color.y,
-		_emitter->m_color.z);
+	m_direction.z = 0.f;
+	m_color.Set(m_emitter->m_startColor);
 }
 
 void Emitter::Particle::Refresh()
@@ -23,24 +23,16 @@ void Emitter::Particle::Refresh()
 	m_direction = Random::GetRandVec3(
 		m_emitter->m_direction.x,
 		m_emitter->m_direction.y); 
+	m_direction.z = 0.f;
 	m_position	= m_emitter->m_transform->m_position;
-	m_life		= m_emitter->m_life;
-}
-
-void Emitter::Particle::SetTexture(const char* _key)
-{
-	m_texture = AssetManager::GetTexture(_key);
-}
-
-unsigned Emitter::Particle::GetTexture() 
-{
-	return m_texture;
+	m_life		= Random::GetRandomFloat(0.f, m_emitter->m_life);
+	m_color.Set(m_emitter->m_startColor);
 }
 
 Emitter::Emitter(Object* _owner)
 	:Sprite(_owner), m_startColor(vec3::ONE),
 	m_endColor(vec3::ZERO), m_life(1.f), m_type(PT_NORMAL),
-	m_direction(vec3::ZERO), m_velocity(vec3::ZERO)
+	m_direction(vec3::ZERO), m_velocity(vec3::ZERO), m_active(true)
 {
 	m_isEmitter = true;
 }
@@ -63,6 +55,9 @@ void Emitter::Register()
 
 void Emitter::Load(CR_RJValue _data)
 {
+	if (_data.HasMember("Active"))
+		m_active = _data["Active"].GetBool();
+
 	if (_data.HasMember("Projection")) {
 		CR_RJValue projection = _data["Projection"];
 
@@ -92,7 +87,7 @@ void Emitter::Load(CR_RJValue _data)
 
 	if (_data.HasMember("EndColor")) {
 		CR_RJValue endColor = _data["EndColor"];
-		m_startColor.Set(endColor[0].GetFloat(),
+		m_endColor.Set(endColor[0].GetFloat(),
 			endColor[1].GetFloat(),
 			endColor[2].GetFloat());
 	}

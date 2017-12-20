@@ -26,11 +26,11 @@ void ObjectContainer::RemoveObject(const char* _name)
 Object* ObjectContainer::GetObject(const char * _name)
 {
 	// Find the one to remove
-	auto toRemove = m_objectMap.find(_name);
+	auto faound = m_objectMap.find(_name);
 
 	// If found the one
-	if (toRemove != m_objectMap.end())
-		return (*toRemove).second;
+	if (faound != m_objectMap.end())
+		return (*faound).second;
 
 	else {
 		JE_DEBUG_PRINT("No such object.\n");

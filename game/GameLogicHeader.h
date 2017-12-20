@@ -5,6 +5,7 @@
 //////////////////////////////////////////////////////////////////////////
 #include "InputHandler.h"
 #include "StateManager.h"
+#include "State.h"
 #include "ObjectFactory.h"
 #include "ObjectContainer.h"
 #include "AssetManager.h"

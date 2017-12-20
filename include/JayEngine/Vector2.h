@@ -56,7 +56,7 @@ struct Vector2
 	bool		IsZero() const;
 	bool		IsOne() const;
 	float		Length() const;
-	float		LengthSqrt() const;
+	float		LengthSq() const;
 	float		DotProduct(const Vector2& _rhs);
 	Vector2		CrossProduct(const Vector2& _rhs);
 	Vector2&	Normalize();
