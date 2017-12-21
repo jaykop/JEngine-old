@@ -95,9 +95,9 @@ public:
 private:
 
 	InputHandler();
-	~InputHandler() {};
-	InputHandler(const InputHandler& /*_handle*/) {};
-	void operator=(const InputHandler& /*_handle*/) {};
+	~InputHandler() = delete;
+	InputHandler(const InputHandler& _handle) = delete;
+	void operator=(const InputHandler& _handle) = delete;
 
 	// Keyboard
 	static void KeyUp();

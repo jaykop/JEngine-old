@@ -108,8 +108,8 @@ private:
 	static Shaders	m_shaders;
 	static GLint	m_uniform[UNIFORM_END];
 
-	static const float	m_vertices[192], m_vertices2d[32], m_verticesParticle[12];
-	static const unsigned	m_indices[36], m_indices2d[6], m_indicesParticle[];
+	static const float		m_vertices[192], m_vertices2d[32], m_verticesParticle[96];
+	static const unsigned	m_indices[36], m_indices2d[6], m_indicesParticle[18];
 
 	// Locked functions
 	GLManager() = delete;

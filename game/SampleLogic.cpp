@@ -1,7 +1,9 @@
 #include "SampleLogic.h"
 #include "GameLogicHeader.h"
 
+#include "Camera.h"
 #include "Particle.h"
+#include "GraphicSystem.h"
 
 JE_BEGIN
 
@@ -20,10 +22,14 @@ void SampleLogic::Load(CR_RJValue /*_data*/)
 void SampleLogic::Init()
 {
 	particle = STATE::m_pOBC->GetObject("Particle");
+	m_moveSpeed = 150.f;
 }
 
-void SampleLogic::Update(float /*_dt*/)
+void SampleLogic::Update(float _dt)
 {
+	static float newDt = 0;
+	newDt = _dt * m_moveSpeed;
+
 	if (INPUT::KeyTriggered(JE_A)) {
 		particle->GetComponent<Emitter>()->m_active
 			= !particle->GetComponent<Emitter>()->m_active;
@@ -56,11 +62,15 @@ void SampleLogic::Update(float /*_dt*/)
 	if (INPUT::KeyTriggered(JE_MOUSE_MIDDLE))
 		JE_DEBUG_PRINT("Middle Mouse\n");
 
-	if (INPUT::KeyPressed(JE_MOUSE_WHEEL_DOWN))
+	if (INPUT::KeyPressed(JE_MOUSE_WHEEL_DOWN)) {
+		SYSTEM::GetGraphicSystem()->GetMainCamera()->m_position.z -= newDt;
 		JE_DEBUG_PRINT("Mouse Wheel Down\n");
+	}
 
-	if (INPUT::KeyPressed(JE_MOUSE_WHEEL_UP))
+	if (INPUT::KeyPressed(JE_MOUSE_WHEEL_UP)) {
+		SYSTEM::GetGraphicSystem()->GetMainCamera()->m_position.z += newDt;
 		JE_DEBUG_PRINT("Mouse Wheel Up\n");
+	}
 
 	if (INPUT::KeyPressed(JE_ESC)) {
 		JE_DEBUG_PRINT("Quit\n");

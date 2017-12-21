@@ -45,7 +45,7 @@ void StateManager::Update(SDL_Event& _event)
 		|| m_status == S_NONE) {		// State updating loop
 
 		//Get input by input handler
-		InputHandler::Update(&_event);
+		INPUT::Update(&_event);
 
 		// Update state manager
 		m_pCurrent->Update(s_dt);

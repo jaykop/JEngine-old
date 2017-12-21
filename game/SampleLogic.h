@@ -42,6 +42,7 @@ private:
 	void Unload() override;
 
 	Object* particle;
+	float	m_moveSpeed;
 };
 
 JE_END

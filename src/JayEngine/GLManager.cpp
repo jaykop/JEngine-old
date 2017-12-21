@@ -22,7 +22,7 @@ const float GLManager::m_vertices2d[] = {
 	-.5f,	.5f,	0.f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,		// top left	
 	.5f,	.5f,	0.f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,		// top right
 	.5f,	-.5f,	0.f,	0.f, 1.f,	0.0f,  0.0f, 1.0f,		// bottom right
-	-.5f,	-.5f,	0.f,	0.f, 0.f,	0.0f,  0.0f, 1.0f,		// bottom left
+	-.5f,	-.5f,	0.f,	0.f, 0.f,	0.0f,  0.0f, 1.0f		// bottom left
 };
 
 const unsigned GLManager::m_indices2d[] = {
@@ -31,8 +31,40 @@ const unsigned GLManager::m_indices2d[] = {
 	2, 0, 1		// second triangle
 };
 
-const float GLManager::m_verticesParticle[] = {0};
-const unsigned GLManager::m_indicesParticle[] = {0};
+const float GLManager::m_verticesParticle[] = {
+
+	// position				// uv		// normals
+	-.5f,	.5f,	0.f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,		// top left	
+	.5f,	.5f,	0.f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,		// top right
+	.5f,	-.5f,	0.f,	0.f, 1.f,	0.0f,  0.0f, 1.0f,		// bottom right
+	-.5f,	-.5f,	0.f,	0.f, 0.f,	0.0f,  0.0f, 1.0f,		// bottom left
+
+	// position				// uv		// normals
+	0.f,	.5f,	.5f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,		// top left	
+	0.f,	.5f,	-.5f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,		// top right
+	0.f,	-.5f,	-.5f,	0.f, 1.f,	0.0f,  0.0f, 1.0f,		// bottom right
+	0.f,	-.5f,	.5f,	0.f, 0.f,	0.0f,  0.0f, 1.0f,		// bottom left
+
+	// position				// uv		// normals
+	-.5f,	0.f,	-.5f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,		// top left	
+	.5f,	0.f,	-.5f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,		// top right
+	.5f,	0.f,	.5f,	0.f, 1.f,	0.0f,  0.0f, 1.0f,		// bottom right
+	-.5f,	0.f,	.5f,	0.f, 0.f,	0.0f,  0.0f, 1.0f,		// bottom left
+
+};
+const unsigned GLManager::m_indicesParticle[] = {
+	// front
+	0, 2, 3,	// first triangle
+	2, 0, 1,	// second triangle
+
+	// back
+	5, 7, 6,	// first triangle
+	7, 5, 4,	// second triangle
+
+	// left
+	8, 10, 11,	// first triangle
+	10, 8, 9	// second triangle
+};
 
 const float GLManager::m_vertices [] = 
 {

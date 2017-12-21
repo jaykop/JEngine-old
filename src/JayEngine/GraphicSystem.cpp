@@ -163,7 +163,11 @@ void GraphicSystem::SpritePipeline(float _dt)
 			if (!sprite->m_effects.empty())
 				EffectsPipeline(sprite);
 
-			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+			glBindBuffer(GL_ARRAY_BUFFER, GLM::m_vbo);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(GLM::m_vertices), GLM::m_vertices, GL_STATIC_DRAW);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GLM::m_ebo);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLM::m_indices), GLM::m_indices, GL_STATIC_DRAW);
+			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0); 
 		}
 	}
 }
@@ -267,10 +271,10 @@ void GraphicSystem::NormalUpdate(Emitter* _emitter, float _dt)
 				mat4::Translate(vec3::ZERO));
 
 			glBindBuffer(GL_ARRAY_BUFFER, GLM::m_vbo);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(GLM::m_vertices2d), GLM::m_vertices2d, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(GLM::m_verticesParticle), GLM::m_verticesParticle, GL_STATIC_DRAW);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GLM::m_ebo);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLM::m_indices2d), GLM::m_indices2d, GL_STATIC_DRAW);
-			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLM::m_indicesParticle), GLM::m_indicesParticle, GL_STATIC_DRAW);
+			glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, 0);
 		}
 	}
 }

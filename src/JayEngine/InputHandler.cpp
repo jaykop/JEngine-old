@@ -73,21 +73,31 @@ JE_KEY InputHandler::KeyTranslator(SDL_Event* _event)
 		break;
 	}
 
-	// TODO: MOUSE WHEEL BUBG
-	//switch (_event->wheel.direction) {
+	switch (_event->wheel.direction) {
 
-	//case SDL_MOUSEWHEEL_NORMAL:
-	//	
-	//	if (_event->wheel.y > 0) {
-	//		return JE_MOUSE_WHEEL_UP;
-	//	}
+	case SDL_MOUSEWHEEL_NORMAL:
+		
+		if (_event->wheel.y == 1.f) {
+			_event->wheel.y = 0;
+			return JE_MOUSE_WHEEL_UP;
+		}
 
-	//	else if (_event->wheel.y < 0) {
-	//		return JE_MOUSE_WHEEL_DOWN;
-	//	}
+		else if (_event->wheel.y == -1.f) {
+			_event->wheel.y = 0;
+			return JE_MOUSE_WHEEL_DOWN;
+		}
 
-	//	break;
-	//}
+		// Refresh the keys
+		else {
+			m_triggerList[JE_MOUSE_WHEEL_UP]
+				= m_triggerList[JE_MOUSE_WHEEL_DOWN]
+				= m_keys[JE_MOUSE_WHEEL_UP]
+				= m_keys[JE_MOUSE_WHEEL_DOWN] = false;
+			return JE_NONE;
+		}
+
+		break;
+	}
 
 	// Keyboard translator
 	switch (_event->key.keysym.sym) {
@@ -285,7 +295,7 @@ JE_KEY InputHandler::KeyTranslator(SDL_Event* _event)
 }
 
 void InputHandler::Update(SDL_Event* _event)
-{
+{	
 	switch (_event->type)
 	{
 		// Keyboard
@@ -315,7 +325,11 @@ void InputHandler::Update(SDL_Event* _event)
 		break;
 	
 	case SDL_MOUSEWHEEL:
-		m_keys[KeyTranslator(_event)] = true;
+		m_triggerList[KeyTranslator(_event)] 
+			= m_keys[KeyTranslator(_event)] = true;
+		break;
+
+	default:
 		break;
 	}
 }
