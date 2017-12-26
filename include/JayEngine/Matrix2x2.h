@@ -64,7 +64,7 @@ struct Matrix2x2
 	friend Matrix2x2		operator*(float _constant, const Matrix2x2& rhs);
 	friend std::ostream&	operator<<(std::ostream& _os, const Matrix2x2& _contents);
 
-	float m_member[2][2];
+	float m[2][2];
 };
 
 using mat2 = Matrix2x2;

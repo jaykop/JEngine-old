@@ -38,7 +38,7 @@ Matrix2x2::Matrix2x2(float _element)
 {
 	for (int i = 0; i < 2; ++i)
 	for (int j = 0; j < 2; ++j)
-		m_member[i][j] = _element;
+		m[i][j] = _element;
 }
 
 /******************************************************************************/
@@ -53,10 +53,10 @@ Matrix2x2::Matrix2x2(float _element)
 Matrix2x2::Matrix2x2(float _member1, float _member2,
 	float _member3, float _member4)
 {
-	m_member[0][0] = _member1;
-	m_member[0][1] = _member2;
-	m_member[1][0] = _member3;
-	m_member[1][1] = _member4;
+	m[0][0] = _member1;
+	m[0][1] = _member2;
+	m[1][0] = _member3;
+	m[1][1] = _member4;
 }
 
 /******************************************************************************/
@@ -71,7 +71,7 @@ Matrix2x2::Matrix2x2(const Matrix2x2& _rhs)
 	{
 		for (int i = 0; i < 2; ++i)
 		for (int j = 0; j < 2; ++j)
-			m_member[i][j] = _rhs.m_member[i][j];
+			m[i][j] = _rhs.m[i][j];
 	}
 }
 
@@ -88,7 +88,7 @@ Matrix2x2& Matrix2x2::operator=(const Matrix2x2& _rhs)
 	{
 		for (int i = 0; i < 2; ++i)
 		for (int j = 0; j < 2; ++j)
-			m_member[i][j] = _rhs.m_member[i][j];
+			m[i][j] = _rhs.m[i][j];
 	}
 
 	return *this;
@@ -104,7 +104,7 @@ Matrix2x2& Matrix2x2::operator - (void)
 {
 	for (int i = 0; i < 2; ++i)
 	for (int j = 0; j < 2; ++j)
-		m_member[i][j] = -m_member[i][j];
+		m[i][j] = -m[i][j];
 
 	return *this;
 }
@@ -122,7 +122,7 @@ Matrix2x2 Matrix2x2::operator+(const Matrix2x2& _rhs) const
 
 	for (int i = 0; i < 2; ++i)
 	for (int j = 0; j < 2; ++j)
-		result.m_member[i][j] = m_member[i][j] + _rhs.m_member[i][j];
+		result.m[i][j] = m[i][j] + _rhs.m[i][j];
 
 	return result;
 }
@@ -138,10 +138,10 @@ Matrix2x2 Matrix2x2::operator*(const Matrix2x2& _rhs) const
 {
 	Matrix2x2 result;
 
-	result.m_member[0][0] = m_member[0][0] * _rhs.m_member[0][0] + m_member[1][0] * _rhs.m_member[0][1];
-	result.m_member[0][1] = m_member[0][0] * _rhs.m_member[0][1] + m_member[0][1] * _rhs.m_member[1][1];
-	result.m_member[1][0] = m_member[1][0] * _rhs.m_member[0][0] + m_member[1][1] * _rhs.m_member[1][0];
-	result.m_member[1][1] = m_member[1][0] * _rhs.m_member[0][1] + m_member[1][1] * _rhs.m_member[1][1];
+	result.m[0][0] = m[0][0] * _rhs.m[0][0] + m[1][0] * _rhs.m[0][1];
+	result.m[0][1] = m[0][0] * _rhs.m[0][1] + m[0][1] * _rhs.m[1][1];
+	result.m[1][0] = m[1][0] * _rhs.m[0][0] + m[1][1] * _rhs.m[1][0];
+	result.m[1][1] = m[1][0] * _rhs.m[0][1] + m[1][1] * _rhs.m[1][1];
 
 	return result;
 }
@@ -157,8 +157,8 @@ Vector2 Matrix2x2::operator*(const Vector2& _rhs) const
 {
 	Vector2 result;
 
-	result.x = m_member[0][0] * _rhs.x + m_member[0][1] * _rhs.y ;
-	result.y = m_member[1][0] * _rhs.x + m_member[1][1] * _rhs.y ;
+	result.x = m[0][0] * _rhs.x + m[0][1] * _rhs.y ;
+	result.y = m[1][0] * _rhs.x + m[1][1] * _rhs.y ;
 
 	return result;
 }
@@ -176,7 +176,7 @@ Matrix2x2 Matrix2x2::operator-(const Matrix2x2& _rhs) const
 
 	for (int i = 0; i < 2; ++i)
 	for (int j = 0; j < 2; ++j)
-		result.m_member[i][j] = m_member[i][j] - _rhs.m_member[i][j];
+		result.m[i][j] = m[i][j] - _rhs.m[i][j];
 
 	return result;
 }
@@ -194,7 +194,7 @@ Matrix2x2 Matrix2x2::operator+(float _constant) const
 
 	for (int i = 0; i < 2; ++i)
 	for (int j = 0; j < 2; ++j)
-		result.m_member[i][j] = m_member[i][j] + _constant;
+		result.m[i][j] = m[i][j] + _constant;
 
 	return result;
 }
@@ -212,7 +212,7 @@ Matrix2x2 Matrix2x2::operator-(float _constant) const
 
 	for (int i = 0; i < 2; ++i)
 	for (int j = 0; j < 2; ++j)
-		result.m_member[i][j] = m_member[i][j] - _constant;
+		result.m[i][j] = m[i][j] - _constant;
 
 	return result;
 }
@@ -230,7 +230,7 @@ Matrix2x2 Matrix2x2::operator*(float _constant) const
 
 	for (int i = 0; i < 2; ++i)
 	for (int j = 0; j < 2; ++j)
-		result.m_member[i][j] = m_member[i][j] * _constant;
+		result.m[i][j] = m[i][j] * _constant;
 
 	return result;
 }
@@ -248,7 +248,7 @@ Matrix2x2 Matrix2x2::operator/(float _constant) const
 
 	for (int i = 0; i < 2; ++i)
 	for (int j = 0; j < 2; ++j)
-		result.m_member[i][j] = m_member[i][j] / _constant;
+		result.m[i][j] = m[i][j] / _constant;
 
 	return result;
 }
@@ -257,9 +257,9 @@ Matrix2x2 Matrix2x2::GetTranspose(void) const
 {
 	Matrix2x2 result(*this);
 
-	float temp = result.m_member[0][1];
-	result.m_member[0][1] = result.m_member[1][0];
-	result.m_member[1][0] = temp;
+	float temp = result.m[0][1];
+	result.m[0][1] = result.m[1][0];
+	result.m[1][0] = temp;
 
 	return result;
 }
@@ -272,9 +272,9 @@ Matrix2x2 Matrix2x2::GetTranspose(void) const
 /******************************************************************************/
 Matrix2x2& Matrix2x2::Transpose(void)
 {
-	float temp = m_member[0][1];
-	m_member[0][1] = m_member[1][0];
-	m_member[1][0] = temp;
+	float temp = m[0][1];
+	m[0][1] = m[1][0];
+	m[1][0] = temp;
 
 	return *this;
 }
@@ -284,16 +284,16 @@ Matrix2x2 Matrix2x2::GetInverse() const
 	Matrix2x2 result(*this);
 
 	// Get ad - bc
-	float deter = result.m_member[0][0] * result.m_member[1][1]
-		- result.m_member[1][0]* result.m_member[0][1];
+	float deter = result.m[0][0] * result.m[1][1]
+		- result.m[1][0]* result.m[0][1];
 
 	// If determine is not 0,
 	if (deter) {
-		float temp = result.m_member[1][1];
-		result.m_member[1][1] = result.m_member[0][0];
-		result.m_member[0][0] = temp;
-		result.m_member[0][1] = -result.m_member[0][1];
-		result.m_member[1][0] = -result.m_member[1][0];
+		float temp = result.m[1][1];
+		result.m[1][1] = result.m[0][0];
+		result.m[0][0] = temp;
+		result.m[0][1] = -result.m[0][1];
+		result.m[1][0] = -result.m[1][0];
 		result = result / deter;
 
 	}
@@ -308,16 +308,16 @@ Matrix2x2 Matrix2x2::GetInverse() const
 Matrix2x2& Matrix2x2::Inverse()
 {
 	// Get ad - bc
-	float deter = m_member[0][0] * m_member[1][1]
-		- m_member[1][0] * m_member[0][1];
+	float deter = m[0][0] * m[1][1]
+		- m[1][0] * m[0][1];
 
 	// If determine is not 0,
 	if (deter) {
-		float temp = m_member[1][1];
-		m_member[1][1] = m_member[0][0];
-		m_member[0][0] = temp;
-		m_member[0][1] = -m_member[0][1];
-		m_member[1][0] = -m_member[1][0];
+		float temp = m[1][1];
+		m[1][1] = m[0][0];
+		m[0][0] = temp;
+		m[0][1] = -m[0][1];
+		m[1][0] = -m[1][0];
 		(*this) = (*this) / deter;
 
 	}
@@ -335,25 +335,25 @@ Matrix2x2& Matrix2x2::Inverse()
 /******************************************************************************/
 void Matrix2x2::SetIdentity(void) 
 {
-	m_member[0][0] = 1;
-	m_member[0][1] = 0;
-	m_member[1][0] = 0;
-	m_member[1][1] = 1;
+	m[0][0] = 1;
+	m[0][1] = 0;
+	m[1][0] = 0;
+	m[1][1] = 1;
 }
 
 void Matrix2x2::Set(float _member1, float _member2, float _member3, float _member4)
 {
-	m_member[0][0] = _member1;
-	m_member[0][1] = _member2;
-	m_member[1][0] = _member3;
-	m_member[1][1] = _member4;
+	m[0][0] = _member1;
+	m[0][1] = _member2;
+	m[1][0] = _member3;
+	m[1][1] = _member4;
 }
 
 void Matrix2x2::SetZero()
 {
 	for (int i = 0; i < 2; ++i)
 		for (int j = 0; j < 2; ++j)
-			m_member[i][j] = 0.f;
+			m[i][j] = 0.f;
 }
 
 /******************************************************************************/
@@ -402,7 +402,7 @@ std::ostream& operator<<(std::ostream& _os, const Matrix2x2& _contents)
 		for (int j = 0; j < 2; ++j)
 		{
 			_os.setf(std::ios_base::showpoint);
-			_os << _contents.m_member[i][j] << " ";
+			_os << _contents.m[i][j] << " ";
 		}
 		_os << "]\n";
 	}

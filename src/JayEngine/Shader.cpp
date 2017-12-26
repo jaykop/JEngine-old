@@ -161,7 +161,7 @@ void Shader::ConnectUniform(GLManager::UniformType _uniform, const char * _name)
 void Shader::SetMatrix(GLManager::UniformType _uniform, const mat4& _matrix)
 {
 	glUniformMatrix4fv(GLManager::m_uniform[_uniform], 
-		1, GL_FALSE, &_matrix.m_member[0][0]);
+		1, GL_FALSE, &_matrix.m[0][0]);
 }
 
 void Shader::SetVector4(GLManager::UniformType _uniform, const vec4& _vector)
@@ -208,7 +208,7 @@ void Shader::SetInt(GLManager::UniformType _uniform, int _int)
 //
 //void Shader::SetMatrix(GLint& _uniform, const mat4& _matrix)
 //{
-//	glUniformMatrix4fv(_uniform, 1, GL_FALSE, &_matrix.m_member[0][0]);
+//	glUniformMatrix4fv(_uniform, 1, GL_FALSE, &_matrix.m[0][0]);
 //}
 //
 //void Shader::SetVector4(GLint& _uniform, const vec4& _vector)

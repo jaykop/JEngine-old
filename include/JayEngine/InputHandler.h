@@ -90,6 +90,8 @@ public:
 	static bool KeyPressed(JE_KEY _pressed);
 	static bool KeyTriggered(JE_KEY _trigger);
 
+	static void Ray(const vec3& _position, const vec3& _direction);
+
 	static vec3 m_orthoPosition, m_perspPosition, m_rawPosition;
 
 private:
@@ -111,7 +113,7 @@ private:
 
 	static JE_KEY	KeyTranslator(SDL_Event* _event);
 
-	static bool		m_keyPressed, m_mousePressed;
+	static bool		m_keyPressed, m_mousePressed, m_wheelMoved;
 	static KeyMap	m_keys, m_triggerList;
 };
 

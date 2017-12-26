@@ -733,7 +733,7 @@ Vector3 Vector3::GetRotated(float angle, const Vector3& pivot)
 \return Vector3
 */
 /******************************************************************************/
-Vector3  GetIntersection(
+Vector3  GetSegmentIntersection(
 	const Vector3& line1_start, const Vector3& line1_end,
 	const Vector3& line2_start, const Vector3& line2_end)
 {
@@ -765,7 +765,7 @@ Vector3  GetIntersection(
 \return bool
 */
 /******************************************************************************/
-bool IsIntersected(
+bool IsSegmentIntersection(
 	const Vector3& line1_start, const Vector3& line1_end,
 	const Vector3& line2_start, const Vector3& line2_end)
 {

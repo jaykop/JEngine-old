@@ -2,6 +2,8 @@
 #include "UserComponent.h"
 #include "ComponentBuilder.h"
 
+#include "Vector3.h"
+
 JE_BEGIN
 
 class SampleLogicBuilder : public ComponentBuilder
@@ -43,6 +45,8 @@ private:
 
 	Object* particle;
 	float	m_moveSpeed;
+	bool	released;
+	vec3	start, current;
 };
 
 JE_END

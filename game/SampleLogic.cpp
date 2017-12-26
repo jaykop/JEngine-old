@@ -23,10 +23,12 @@ void SampleLogic::Init()
 {
 	particle = STATE::m_pOBC->GetObject("Particle");
 	m_moveSpeed = 150.f;
+	released = true;
 }
 
 void SampleLogic::Update(float _dt)
 {
+
 	static float newDt = 0;
 	newDt = _dt * m_moveSpeed;
 
@@ -53,11 +55,24 @@ void SampleLogic::Update(float _dt)
 	if (INPUT::KeyTriggered(JE_6))
 		STATE::ResumeAndNext("testState3");
 
-	if (INPUT::KeyTriggered(JE_MOUSE_LEFT))
-		JE_DEBUG_PRINT("Left Mouse\n");
+	if (INPUT::KeyPressed(JE_MOUSE_LEFT)) {
+		if (released) {
+			start = INPUT::m_rawPosition;
+			released = false;
+		}
 
-	if (INPUT::KeyTriggered(JE_MOUSE_RIGHT))
-		JE_DEBUG_PRINT("Right Mouse\n");
+		//current = INPUT::m_rawPosition;
+		//float angle_x, angle_y; //= start.GetAngle(current);
+
+		//JE_DEBUG_PRINT("Angle: x - %f, y - %f\n", angle_x, angle_y);
+	}
+
+	else
+		released = true;
+
+	if (INPUT::KeyTriggered(JE_MOUSE_RIGHT)) {
+		;
+	}
 
 	if (INPUT::KeyTriggered(JE_MOUSE_MIDDLE))
 		JE_DEBUG_PRINT("Middle Mouse\n");

@@ -583,24 +583,27 @@ bool GraphicSystem::compareOrder::operator()(Sprite * _leftSpt, Sprite * _rightS
 void GraphicSystem::GLMousePosition() {
 
 	// Do unprojection by viewport and proejction matrix
-	vec4 in;
+	static vec4 in, orthoPos, perspPos;
+	static mat4 ortho, perspective;
+	static float orthoOffset, perspOffset;
+
 	in.x = (2.f * (InputHandler::m_rawPosition.x / m_width)) - 1.f;
 	in.y = 1.f - (2.f* (InputHandler::m_rawPosition.y / m_height));
 	in.w = in.z = 1.f;
 	
-	mat4 ortho = m_orthogonal * m_viewport;
+	ortho = m_orthogonal * m_viewport;
 	ortho.Inverse();
-	vec4 orthoPos = ortho * in;
-	float new_w1 = 1.f / orthoPos.w;
+	orthoPos = ortho * in;
+	orthoOffset = 1.f / orthoPos.w;
 	InputHandler::m_orthoPosition.Set(orthoPos.x, orthoPos.y, orthoPos.z);
-	InputHandler::m_orthoPosition *= new_w1;
+	InputHandler::m_orthoPosition *= orthoOffset;
 
-	mat4 perspective = m_perspective * m_viewport;
+	perspective = m_perspective * m_viewport;
 	perspective.Inverse();
-	vec4 perspPos = perspective * in;
-	float new_w2 = 1.f / perspPos.w;
+	perspPos = perspective * in;
+	perspOffset = 1.f / perspPos.w;
 	InputHandler::m_perspPosition.Set(perspPos.x, perspPos.y, perspPos.z);
-	InputHandler::m_perspPosition *= new_w2;
+	InputHandler::m_perspPosition *= perspOffset;
 
 }
 

@@ -90,7 +90,7 @@ public:
 	friend Matrix4x4		operator*(float constant, const Matrix4x4& rhs);
 	friend std::ostream&	operator<<(std::ostream& os, const Matrix4x4& contents);
 
-	float m_member[4][4];
+	float m[4][4];
 
 private:
 

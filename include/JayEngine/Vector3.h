@@ -88,13 +88,21 @@ public:
 	static const Vector3 UNIT_Z;
 
 	// Static functions
-	static Vector3  GetIntersection(
+	static Vector3  GetSegmentIntersection(
 		const Vector3& line1_start, const Vector3& line1_end,
 		const Vector3& line2_start, const Vector3& line2_end);
 
-	static bool IsIntersected(
+	static bool		IsSegmentIntersection(
 		const Vector3& line1_start, const Vector3& line1_end,
 		const Vector3& line2_start, const Vector3& line2_end);
+
+	static Vector3	GetRayIntersection(
+		const Vector3& _position, const Vector3& _direction,
+		const Vector3& _lineStart, const Vector3& _lineEnd);
+
+	static bool		IsRayIntersection(
+		const Vector3& _position,const Vector3& _direction,
+		const Vector3& _lineStart, const Vector3& _lineEnd);
 
 	// Memver variables
 	float x, y, z;

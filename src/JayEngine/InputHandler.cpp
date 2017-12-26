@@ -7,6 +7,7 @@ JE_BEGIN
 //////////////////////////////////////////////////////////////////////////
 bool			INPUT::m_keyPressed = false;
 bool			INPUT::m_mousePressed = false;
+bool			INPUT::m_wheelMoved = false;
 vec3			INPUT::m_rawPosition = vec3::ZERO;
 vec3			INPUT::m_orthoPosition = vec3::ZERO;
 vec3			INPUT::m_perspPosition = vec3::ZERO;
@@ -70,32 +71,6 @@ JE_KEY InputHandler::KeyTranslator(SDL_Event* _event)
 
 	case SDL_BUTTON_MIDDLE:
 		return JE_MOUSE_MIDDLE;
-		break;
-	}
-
-	switch (_event->wheel.direction) {
-
-	case SDL_MOUSEWHEEL_NORMAL:
-		
-		if (_event->wheel.y == 1.f) {
-			_event->wheel.y = 0;
-			return JE_MOUSE_WHEEL_UP;
-		}
-
-		else if (_event->wheel.y == -1.f) {
-			_event->wheel.y = 0;
-			return JE_MOUSE_WHEEL_DOWN;
-		}
-
-		// Refresh the keys
-		else {
-			m_triggerList[JE_MOUSE_WHEEL_UP]
-				= m_triggerList[JE_MOUSE_WHEEL_DOWN]
-				= m_keys[JE_MOUSE_WHEEL_UP]
-				= m_keys[JE_MOUSE_WHEEL_DOWN] = false;
-			return JE_NONE;
-		}
-
 		break;
 	}
 
@@ -296,6 +271,13 @@ JE_KEY InputHandler::KeyTranslator(SDL_Event* _event)
 
 void InputHandler::Update(SDL_Event* _event)
 {	
+	// Refresh the mouse wheel toggles
+	if (m_wheelMoved)
+		m_keys[JE_MOUSE_WHEEL_DOWN]
+			= m_keys[JE_MOUSE_WHEEL_UP]
+			= m_wheelMoved = false;
+
+	// Handle input events
 	switch (_event->type)
 	{
 		// Keyboard
@@ -323,15 +305,37 @@ void InputHandler::Update(SDL_Event* _event)
 	case SDL_MOUSEMOTION:
 		m_rawPosition = vec3(float(_event->motion.x), float(_event->motion.y));
 		break;
-	
-	case SDL_MOUSEWHEEL:
-		m_triggerList[KeyTranslator(_event)] 
-			= m_keys[KeyTranslator(_event)] = true;
-		break;
 
+	case SDL_WINDOWEVENT:
+	case SDL_TEXTEDITING:
 	default:
 		break;
 	}
+
+	// Handle mouse wheels
+	switch (_event->wheel.direction) {
+
+	case SDL_MOUSEWHEEL_NORMAL:
+
+		if (_event->wheel.y > 0) {
+			_event->wheel.y = 0;
+			m_wheelMoved = true;
+			m_triggerList[JE_MOUSE_WHEEL_UP]
+				= m_keys[JE_MOUSE_WHEEL_UP] = true;
+		}
+
+		else if (_event->wheel.y < 0) {
+			_event->wheel.y = 0;
+			m_wheelMoved = true;
+			m_triggerList[JE_MOUSE_WHEEL_DOWN]
+				= m_keys[JE_MOUSE_WHEEL_DOWN] = true;
+		}
+	}
+}
+
+void InputHandler::Ray(const vec3& _position, const vec3& _direction)
+{
+	;
 }
 
 JE_END
