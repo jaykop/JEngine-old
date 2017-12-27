@@ -28,7 +28,7 @@ class Emitter : public Sprite
 	friend class EmitterBuilder;
 	friend class GraphicSystem;
 
-	enum ParticleType {PT_NORMAL};
+	enum ParticleType {PT_NORMAL, PT_EXLPODE, PT_RAIN, PT_SMOG};
 
 	class Particle {
 

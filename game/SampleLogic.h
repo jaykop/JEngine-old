@@ -24,6 +24,7 @@ private:
 
 };
 
+class Camera;
 class SampleLogic : public UserComponent
 {
 	friend class ComponentManager;
@@ -44,9 +45,10 @@ private:
 	void Unload() override;
 
 	Object* particle;
-	float	m_moveSpeed;
+	float	m_moveSpeed, m_widthSq;
 	bool	released;
-	vec3	start, current;
+	vec3	start, current, cameraPos;
+	Camera* m_camera; 
 };
 
 JE_END

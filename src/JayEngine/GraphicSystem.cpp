@@ -79,6 +79,17 @@ void GraphicSystem::Unload()
 	
 }
 
+void GraphicSystem::Render(const unsigned _vbo, const unsigned _ebo,
+	const float _vertices[], const unsigned _indices[], 
+	const int _verticesSize, const int _indicesSize, const int _elementSize)
+{
+	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+	glBufferData(GL_ARRAY_BUFFER, _verticesSize, _vertices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, _indicesSize, _indices, GL_STATIC_DRAW);
+	glDrawElements(GL_TRIANGLES, _elementSize, GL_UNSIGNED_INT, 0);
+}
+
 void GraphicSystem::AddSprite(Sprite* _sprite)
 {
 	m_sprites.push_back(_sprite);
@@ -126,7 +137,9 @@ void GraphicSystem::LightPipeline()
 			GLM::UNIFORM_LIGHT_PROJECTION,
 			m_perspective);
 
-		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+		Render(GLM::m_vbo, GLM::m_ebo,
+			GLM::m_vertices, GLM::m_indices,
+			sizeof(GLM::m_vertices), sizeof(GLM::m_indices), GLM::m_cube);
 	}
 }
 
@@ -163,11 +176,11 @@ void GraphicSystem::SpritePipeline(float _dt)
 			if (!sprite->m_effects.empty())
 				EffectsPipeline(sprite);
 
-			glBindBuffer(GL_ARRAY_BUFFER, GLM::m_vbo);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(GLM::m_vertices), GLM::m_vertices, GL_STATIC_DRAW);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GLM::m_ebo);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLM::m_indices), GLM::m_indices, GL_STATIC_DRAW);
-			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0); 
+			// TODO
+			// Just render cube for now...
+			Render(GLM::m_vbo, GLM::m_ebo, 
+				GLM::m_vertices, GLM::m_indices, 
+				sizeof(GLM::m_vertices), sizeof(GLM::m_indices), GLM::m_cube);
 		}
 	}
 }
@@ -177,21 +190,44 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, float _dt)
 	// Check emitter's active toggle
 	if (_emitter->m_active) {
 
-		glEnable(GL_BLEND);					// 
+		glEnable(GL_BLEND);					// Enable blend 
 		glDepthMask(GL_FALSE);				// Ignore depth buffer writing
-		//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
 		switch (_emitter->m_type) {
+
+		case Emitter::ParticleType::PT_SMOG:
+			SmogUpdate(_emitter, _dt);
+			break;
+
+		case Emitter::ParticleType::PT_RAIN:
+			RainUpdate(_emitter, _dt);
+			break;
+
+		case Emitter::ParticleType::PT_EXLPODE:
+			ExplosionUpdate(_emitter, _dt);
+			break;
 
 		case Emitter::ParticleType::PT_NORMAL:
 		default:
 			NormalUpdate(_emitter, _dt);
 			break;
 		}
-		glDepthMask(GL_TRUE);
-		glDisable(GL_BLEND);
+		glDepthMask(GL_TRUE);	// Enable depth buffer writing
+		glDisable(GL_BLEND);	// Disable blend
 	}
+}
+
+void GraphicSystem::ExplosionUpdate(Emitter* _emitter, float _dt)
+{
+}
+
+void GraphicSystem::RainUpdate(Emitter* _emitter, float _dt)
+{
+}
+
+void GraphicSystem::SmogUpdate(Emitter* _emitter, float _dt)
+{
 }
 
 void GraphicSystem::NormalUpdate(Emitter* _emitter, float _dt)
@@ -270,11 +306,9 @@ void GraphicSystem::NormalUpdate(Emitter* _emitter, float _dt)
 				GLM::UNIFORM_ANI_TRANSLATE,
 				mat4::Translate(vec3::ZERO));
 
-			glBindBuffer(GL_ARRAY_BUFFER, GLM::m_vbo);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(GLM::m_verticesParticle), GLM::m_verticesParticle, GL_STATIC_DRAW);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GLM::m_ebo);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLM::m_indicesParticle), GLM::m_indicesParticle, GL_STATIC_DRAW);
-			glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, 0);
+			Render(GLM::m_vbo, GLM::m_ebo,
+				GLM::m_verticesParticle, GLM::m_indicesParticle,
+				sizeof(GLM::m_verticesParticle), sizeof(GLM::m_indicesParticle), GLM::m_particle);
 		}
 	}
 }
@@ -513,6 +547,16 @@ void GraphicSystem::SetBackgroundColor(const vec4& _color)
 const vec4& GraphicSystem::GetBackgroundColor() const
 {
 	return m_backgroundColor;
+}
+
+int GraphicSystem::GetWidth() const
+{
+	return m_width;
+}
+
+int	GraphicSystem::GetHeight() const
+{
+	return m_height;
 }
 
 void GraphicSystem::SetMainCamera(Camera* _camera)

@@ -3,6 +3,7 @@
 
 #include "Camera.h"
 #include "Particle.h"
+#include "Vector4.h"
 #include "GraphicSystem.h"
 
 JE_BEGIN
@@ -24,11 +25,14 @@ void SampleLogic::Init()
 	particle = STATE::m_pOBC->GetObject("Particle");
 	m_moveSpeed = 150.f;
 	released = true;
+	m_camera = STATE::m_pOBC->GetObject("Camera")->GetComponent<Camera>();
+	float width = float(SYSTEM::GetGraphicSystem()->GetWidth());
+	m_widthSq = width*width;
 }
 
 void SampleLogic::Update(float _dt)
 {
-
+	cameraPos = m_camera->m_position;
 	static float newDt = 0;
 	newDt = _dt * m_moveSpeed;
 
@@ -56,15 +60,28 @@ void SampleLogic::Update(float _dt)
 		STATE::ResumeAndNext("testState3");
 
 	if (INPUT::KeyPressed(JE_MOUSE_LEFT)) {
-		if (released) {
-			start = INPUT::m_rawPosition;
-			released = false;
-		}
+		//if (released) {
+		//	start = INPUT::m_orthoPosition;
+		//	released = false;
+		//}
 
-		//current = INPUT::m_rawPosition;
-		//float angle_x, angle_y; //= start.GetAngle(current);
+		//current = INPUT::m_orthoPosition;
 
-		//JE_DEBUG_PRINT("Angle: x - %f, y - %f\n", angle_x, angle_y);
+		//float startX_sq = start.x * start.x / m_widthSq, r_sq = cameraPos.z * cameraPos.z,
+		//	currentX_sq = current.x * current.x / m_widthSq;
+
+		//float y1 = sqrt(r_sq - startX_sq),
+		//	y2 = sqrt(r_sq - currentX_sq);
+
+		//static vec3 v1, v2, pos;
+		//v1.Set(start.x, y1, 0.f);
+		//v2.Set(current.x, y2, 0.f);
+		//float angle = v2.GetAngle(v1);
+		//pos = v1.GetRotated(angle, vec3::ZERO);
+		//JE_DEBUG_PRINT("Angle: %f\n", angle);
+		//m_camera->m_position.Set(pos.x, 0.f, pos.y);
+
+		//JE_DEBUG_PRINT("x: %f, x: %f, x: %f\n", pos.x, pos.y, pos.z);
 	}
 
 	else

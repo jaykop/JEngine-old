@@ -90,11 +90,6 @@ public:
 private:
 
 	// Private member functions
-	static void SetVbo();
-	static void SetVao();
-	static void SetVA();
-	static void SetEbo();
-
 	static bool	initSDL_GL();
 	static void	CloseSDL_GL();
 	static void	RegisterUniform();
@@ -104,12 +99,14 @@ private:
 	// Private member variables
 	static unsigned m_glArraySize;
 	static DrawMode m_mode;
-	static GLuint	m_vao, m_vbo, m_ebo, m_light_vao;
+	static GLuint	m_vao, m_vbo, m_ebo;
 	static Shaders	m_shaders;
 	static GLint	m_uniform[UNIFORM_END];
 
+	// Basic indices and vertices sets
 	static const float		m_vertices[192], m_vertices2d[32], m_verticesParticle[96];
 	static const unsigned	m_indices[36], m_indices2d[6], m_indicesParticle[18];
+	static const int		m_cube, m_rect, m_particle;
 
 	// Locked functions
 	GLManager() = delete;

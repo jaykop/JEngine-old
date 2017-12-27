@@ -11,11 +11,13 @@ JE_BEGIN
 GLuint GLManager::m_vao = 0;
 GLuint GLManager::m_vbo = 0;
 GLuint GLManager::m_ebo = 0;
-GLuint GLManager::m_light_vao = 0;
 GLint GLManager::m_uniform[];
 GLManager::Shaders GLManager::m_shaders;
 GLManager::DrawMode GLManager::m_mode = DrawMode::DRAW_FILL;
 unsigned GLManager::m_glArraySize = 128;
+const int GLManager::m_cube = 36;
+const int GLManager::m_rect = 6;
+const int GLManager::m_particle = 18;
 
 const float GLManager::m_vertices2d[] = {
 	// position				// uv		// normals
@@ -166,18 +168,6 @@ bool GLManager::initSDL_GL()
 
 	// Unless
 	else {
-		SetVao();	// Generate vertex array object
-		SetVbo();	// Generate vertex buffuer object
-		SetVA();	// Set vertex attributes pointers
-		SetEbo();	// Set indices
-
-		// Generate vertex array object(VAO)
-		glGenVertexArrays(1, &m_light_vao);
-		// Bind Vertex Array Object
-		glBindVertexArray(m_light_vao);
-		glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-		SetVA();	// Set vertex attributes pointers
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
 
 		// Do gl stuff
 		InitGLEnvironment();
@@ -201,6 +191,32 @@ void GLManager::CloseSDL_GL()
 
 void GLManager::InitGLEnvironment()
 {
+	glActiveTexture(GL_TEXTURE0);
+
+	// Generate vertex array object(VAO)
+	glGenVertexArrays(1, &m_vao);
+	glBindVertexArray(m_vao);
+
+	// Generate vertex buffer object(VBO)
+	glGenBuffers(1, &m_vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+
+	// Interpret vertex attributes data (s_vertices)
+	// vertex position
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	// text coordinate position
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+
+	// normals of vertices
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
+	glEnableVertexAttribArray(2);
+
+	glGenBuffers(1, &m_ebo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+
 	// Show how much attributes are available
 	int nrAttributes;
 	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
@@ -307,58 +323,6 @@ void GLManager::RegisterUniform()
 	m_shaders[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_ROTATE, "m4_rotate");
 	m_shaders[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_CAMERA, "m4_viewport");
 	m_shaders[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_PROJECTION, "m4_projection");
-}
-
-void GLManager::SetVao()
-{
-	glActiveTexture(GL_TEXTURE0);
-
-	// Generate vertex array object(VAO)
-	glGenVertexArrays(1, &m_vao);
-
-	// Bind Vertex Array Object
-	glBindVertexArray(m_vao);
-
-}
-
-void GLManager::SetVbo()
-{
-	// Generate vertex buffer object(VBO)
-	glGenBuffers(1, &m_vbo);
-
-	// Set vbo active
-	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-
-	// Now we can copy vertex data to this vbo
-	glBufferData(GL_ARRAY_BUFFER, sizeof(m_vertices), m_vertices, GL_STATIC_DRAW);
-}
-
-void GLManager::SetVA()
-{
-	// Interpret vertex attributes data (s_vertices)
-	// vertex position
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	// text coordinate position
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-
-	// normals of vertices
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
-	glEnableVertexAttribArray(2);
-
-	// TODO
-	// maybe more...
-}
-
-void GLManager::SetEbo()
-{
-	// Just like vbo...
-	glGenBuffers(1, &m_ebo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(m_indices), m_indices, GL_STATIC_DRAW);
-
 }
 
 JE_END

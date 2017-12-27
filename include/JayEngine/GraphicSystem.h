@@ -26,6 +26,8 @@ class GraphicSystem : public System
 
 public:
 
+	int		GetWidth() const;
+	int		GetHeight() const;
 	void	SetMainCamera(Camera* _camera);
 	Camera* GetMainCamera();
 
@@ -64,9 +66,15 @@ private:
 
 	void ParticlePipeline(Emitter* _emitter, float _dt);
 	void NormalUpdate(Emitter* _emitter, float _dt);
+	void ExplosionUpdate(Emitter *_emitter, float _dt);
+	void RainUpdate(Emitter *_emitter, float _dt);
+	void SmogUpdate(Emitter *_emitter, float _dt);
 
 	void EffectsPipeline(Sprite* _sprite);
 
+	void Render(const unsigned _vbo, const unsigned _ebo,
+		const float _vertices[], const unsigned _indices[],
+		const int _verticesSize, const int _indicesSize, const int _elementSize);
 	void GLMousePosition();
 
 	// Member variables
