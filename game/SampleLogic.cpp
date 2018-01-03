@@ -36,10 +36,10 @@ void SampleLogic::Update(float _dt)
 	static float newDt = 0;
 	newDt = _dt * m_moveSpeed;
 
-	if (INPUT::KeyTriggered(JE_A)) {
-		particle->GetComponent<Emitter>()->m_active
-			= !particle->GetComponent<Emitter>()->m_active;
-	}
+	//if (INPUT::KeyTriggered(JE_A)) {
+	//	particle->GetComponent<Emitter>()->m_active
+	//		= !particle->GetComponent<Emitter>()->m_active;
+	//}
 
 	if (INPUT::KeyTriggered(JE_1))
 		STATE::SetNextState("testState1");
@@ -59,7 +59,7 @@ void SampleLogic::Update(float _dt)
 	if (INPUT::KeyTriggered(JE_6))
 		STATE::ResumeAndNext("testState3");
 
-	if (INPUT::KeyPressed(JE_MOUSE_LEFT)) {
+	//if (INPUT::KeyPressed(JE_MOUSE_LEFT)) {
 		//if (released) {
 		//	start = INPUT::m_orthoPosition;
 		//	released = false;
@@ -82,14 +82,14 @@ void SampleLogic::Update(float _dt)
 		//m_camera->m_position.Set(pos.x, 0.f, pos.y);
 
 		//JE_DEBUG_PRINT("x: %f, x: %f, x: %f\n", pos.x, pos.y, pos.z);
-	}
+	//}
 
-	else
-		released = true;
+	//else
+	//	released = true;
 
-	if (INPUT::KeyTriggered(JE_MOUSE_RIGHT)) {
-		;
-	}
+	//if (INPUT::KeyTriggered(JE_MOUSE_RIGHT)) {
+	//	;
+	//}
 
 	if (INPUT::KeyTriggered(JE_MOUSE_MIDDLE))
 		JE_DEBUG_PRINT("Middle Mouse\n");

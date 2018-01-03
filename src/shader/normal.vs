@@ -7,7 +7,7 @@ layout (location = 1) in vec2 uvPosition;
 layout (location = 2) in vec3 normal;
 
 ////////////////////////////
-// uniform matrixs
+// uniform variables
 ////////////////////////////
 uniform mat4 m4_translate;
 uniform mat4 m4_scale;
@@ -17,30 +17,18 @@ uniform mat4 m4_projection;
 
 uniform mat4 m4_aniScale;
 uniform mat4 m4_aniTranslate;
-uniform mat4 m4_animation;
 
-////////////////////////////
-// uniform vectors
-////////////////////////////
-uniform vec4 v4_color;
-uniform vec4 v4_lightColor;
-uniform vec3 v3_cameraPosition;
+uniform vec4 v4_lightColor[MAX_ARRAY];
 
-////////////////////////////
-// uniform boolean
-////////////////////////////
-uniform bool boolean_flip;
-uniform bool boolean_light;
+uniform bool	boolean_flip;
+uniform bool 	boolean_light;
 
 ////////////////////////////
 // out variables
 ////////////////////////////
-out	vec4 v4_outColor;
 out	vec2 v2_outTexCoord;
 out	vec3 v3_outNormal;
-out	vec4 v4_outLightColor;
 out	vec3 v3_outFragmentPosition;
-out	vec3 v3_outCameraPosition;
 
 ////////////////////////////
 // fucntion declarations
@@ -89,20 +77,15 @@ void Mapping(vec4 _position, inout vec4 _texCoord) {
 
 void SendToFrag(vec4 _position, vec4 _texCoord, mat4 _model) {
 	
-	// Color
-	v4_outColor = v4_color;
-	
 	// Texture coordinate
 	v2_outTexCoord = _texCoord.xy;
 	
 	// Lighting attributes
 	if (boolean_light) {
+	
 		// Lighing attributes
 		v3_outFragmentPosition = vec3(transpose(_model) * _position);
 	
-		v4_outLightColor = v4_lightColor;
 		v3_outNormal = mat3(inverse(_model)) * normal;
-	
-		v3_outCameraPosition = v3_cameraPosition;
 	}
 }

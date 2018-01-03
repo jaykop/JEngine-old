@@ -15,12 +15,18 @@ Contains Process' main flow
 #include "Application.h"
 #include "AssetManager.h"
 
+// TODO
+// Pyhton script later...
+//#include "Python.h"
+
 #pragma comment(lib, "sdl2")
 #pragma comment(lib, "sdl2main")
 
 USING_NS_JE;
 
 int main(int argc, char* args[]) {
+
+	//wchar_t *program = 
 
 	// Make console and check memory leak
 	DEBUG_LEAK_CHECKS(-1);

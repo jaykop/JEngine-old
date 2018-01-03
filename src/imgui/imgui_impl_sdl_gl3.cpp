@@ -10,10 +10,10 @@
 #include "imgui_impl_sdl_gl3.h"
 
 // SDL,GLEW
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_syswm.h"
+#include "SDL.h"
+#include "SDL_syswm.h"
 
-#include "gL/glew.h"
+#include "glew.h"
 #define GLEW_STATIC
 
 // Data
