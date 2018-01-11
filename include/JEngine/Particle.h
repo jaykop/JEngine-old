@@ -28,7 +28,7 @@ class Emitter : public Sprite
 	friend class EmitterBuilder;
 	friend class GraphicSystem;
 
-	enum ParticleType {PT_NORMAL, PT_EXLPODE, PT_RAIN, PT_SMOG};
+	enum ParticleType {PT_NORMAL, PT_EXPLODE, PT_RAIN, PT_SMOG};
 
 	class Particle {
 
@@ -37,10 +37,15 @@ class Emitter : public Sprite
 
 	public:
 
-		float	m_life;
+		float	m_life, m_rotation, m_rotateDiff;
 		vec3	m_color, m_position, m_direction;
+		bool	m_standBy;
+		
+		// TODO
+		// Transform* m_transform;
 
 		void	Refresh();
+		void	RainRefresh();
 		
 	private:
 
@@ -60,10 +65,15 @@ public:
 
 	bool			m_active;
 	ParticleType	m_type;
-	vec3			m_startColor, m_endColor, m_direction, m_velocity;
-	float			m_life;
+	vec3			m_direction, m_velocity, m_range;
+	unsigned		m_count, m_size;
+	float			m_life, *m_particleSize;
 
 	void Register() override;
+
+	void ManualRefresh();
+	void SetQuantity(unsigned _quantity);
+	void SetColors(const vec3& _start, const vec3& _end);
 
 private:
 
@@ -71,10 +81,11 @@ private:
 	~Emitter();
 
 	void Load(CR_RJValue _data) override;
-	void SetQuantity(unsigned _quantity);
 	void Refresh(Particle* _particle);
 
-	Particles m_particles;
+	Particles	m_particles; 
+	vec3		m_startColor, m_endColor, m_colorDiff;
+	bool		m_changeColor;
 
 	Emitter() = delete;
 	Emitter(const Emitter& /*_copy*/) = delete;

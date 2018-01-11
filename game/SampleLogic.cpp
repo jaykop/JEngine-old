@@ -42,22 +42,22 @@ void SampleLogic::Update(float _dt)
 	//}
 
 	if (INPUT::KeyTriggered(JE_1))
-		STATE::SetNextState("testState1");
+		STATE::SetNextState("level1");
 
 	if (INPUT::KeyTriggered(JE_2))
-		STATE::SetNextState("testState2");
+		STATE::SetNextState("level2");
 
 	if (INPUT::KeyTriggered(JE_3))
-		STATE::SetNextState("testState3");
+		STATE::SetNextState("level3");
 
-	if (INPUT::KeyTriggered(JE_4))
-		STATE::Pause("PauseState");
+	//if (INPUT::KeyTriggered(JE_4))
+	//		STATE::Pause("PauseState");
 
-	if (INPUT::KeyTriggered(JE_5))
-		STATE::Resume();
+	//if (INPUT::KeyTriggered(JE_5))
+	//		STATE::Resume();
 
-	if (INPUT::KeyTriggered(JE_6))
-		STATE::ResumeAndNext("testState3");
+	//if (INPUT::KeyTriggered(JE_6))
+	//	STATE::ResumeAndNext("testState3");
 
 	//if (INPUT::KeyPressed(JE_MOUSE_LEFT)) {
 		//if (released) {
@@ -91,18 +91,18 @@ void SampleLogic::Update(float _dt)
 	//	;
 	//}
 
-	if (INPUT::KeyTriggered(JE_MOUSE_MIDDLE))
-		JE_DEBUG_PRINT("Middle Mouse\n");
+	//if (INPUT::KeyTriggered(JE_MOUSE_MIDDLE))
+	//	JE_DEBUG_PRINT("Middle Mouse\n");
 
-	if (INPUT::KeyPressed(JE_MOUSE_WHEEL_DOWN)) {
-		SYSTEM::GetGraphicSystem()->GetMainCamera()->m_position.z -= newDt;
-		JE_DEBUG_PRINT("Mouse Wheel Down\n");
-	}
+	//if (INPUT::KeyPressed(JE_MOUSE_WHEEL_DOWN)) {
+	//	SYSTEM::GetGraphicSystem()->GetMainCamera()->m_position.z -= newDt;
+	//	JE_DEBUG_PRINT("Mouse Wheel Down\n");
+	//}
 
-	if (INPUT::KeyPressed(JE_MOUSE_WHEEL_UP)) {
-		SYSTEM::GetGraphicSystem()->GetMainCamera()->m_position.z += newDt;
-		JE_DEBUG_PRINT("Mouse Wheel Up\n");
-	}
+	//if (INPUT::KeyPressed(JE_MOUSE_WHEEL_UP)) {
+	//	SYSTEM::GetGraphicSystem()->GetMainCamera()->m_position.z += newDt;
+	//	JE_DEBUG_PRINT("Mouse Wheel Up\n");
+	//}
 
 	if (INPUT::KeyPressed(JE_ESC)) {
 		JE_DEBUG_PRINT("Quit\n");

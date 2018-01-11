@@ -5,10 +5,12 @@
 
 JE_BEGIN
 
-class Emitter;
+class Shader;
 class Material;
 class Transform;
 class Animation;
+
+enum ProjectType { PERSPECTIVE, ORTHOGONAL };
 
 class GraphicSystem : public System
 {
@@ -31,9 +33,9 @@ public:
 	void	SetMainCamera(Camera* _camera);
 	Camera* GetMainCamera();
 
-	const vec4& GetBackgroundColor() const;
-	void		SetBackgroundColor(const vec4& _color);
-	void		SetBackgroundColor(float _r, float _g, float _b, float _a);
+	CR_vec4	GetBackgroundColor() const;
+	void	SetBackgroundColor(CR_vec4 _color);
+	void	SetBackgroundColor(float _r, float _g, float _b, float _a);
 
 private:
 
@@ -56,25 +58,30 @@ private:
 	void AddLight(Light* _light);
 	void RemoveLight(Light* _light);
 
-	void LightingPipeline();
-	void LightPipeline();
+	void SetMVPAttributes(CR_vec3 _position, CR_vec3 _scale, 
+		CR_vec3 _rotationAxis, float _rotationDeg,
+		Camera* _camera, ProjectType _projection);
+	void SetMapAttributes(CR_vec4 _color, 
+		CR_vec3 _aniScale, CR_vec3 _aniTranslate,
+		bool _flip = false);
 
-	void SpritePipeline(float _dt);
-	void TransformPipeline(Sprite* _sprite);
-	void AnimationPipeline(Sprite* _sprite);
-	void MappingPipeline(Sprite* _sprite, Material* _material);
+	void LightSourcePipeline();
+	void NormalPipeline(float _dt);
+
+	void SpritePipeline(Sprite * _sprite);
+	void MappingPipeline(Sprite* _sprite);
+	void LightingEffectPipeline(Material* _material);
 
 	void ParticlePipeline(Emitter* _emitter, float _dt);
-	void NormalUpdate(Emitter* _emitter, float _dt);
-	void ExplosionUpdate(Emitter *_emitter, float _dt);
-	void RainUpdate(Emitter *_emitter, float _dt);
-	void SmogUpdate(Emitter *_emitter, float _dt);
-
 	void EffectsPipeline(Sprite* _sprite);
 
 	void Render(const unsigned _vbo, const unsigned _ebo,
 		const float _vertices[], const unsigned _indices[],
 		const int _verticesSize, const int _indicesSize, const int _elementSize);
+	void RenderParticle(const unsigned _vbo, const unsigned _ebo,
+		const float _vertices[], const unsigned _indices[], const int _verticesSize,
+		const int _indicesSize, const int _elementSize, const int _particleSize, float *_particleSizeData);
+
 	void GLMousePosition();
 
 	// Member variables
@@ -82,11 +89,10 @@ private:
 	Sprites		m_sprites;
 	Cameras		m_cameras;
 	Camera*		m_pMainCamera;
-	Transform*	m_pTransformStorage;
 	
 	int		m_width, m_height;
-	bool	m_orthoFirst, m_inside, m_isLight, m_hasAnimation;
-	mat4	m_animation, m_perspective, m_orthogonal, m_viewport;
+	bool	m_orthoFirst, m_inside, m_isLight;
+	mat4	m_perspective, m_orthogonal, m_viewport;
 	vec4	m_backgroundColor;
 	vec3	m_aniScale, m_aniTranslate;
 	float	m_fovy, m_aspect, m_zNear, m_zFar;

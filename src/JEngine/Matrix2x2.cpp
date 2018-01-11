@@ -65,7 +65,7 @@ Matrix2x2::Matrix2x2(float _member1, float _member2,
 \param _rhs - to be copied
 */
 /******************************************************************************/
-Matrix2x2::Matrix2x2(const Matrix2x2& _rhs)
+Matrix2x2::Matrix2x2(const mat2& _rhs)
 {
 	if (this != &_rhs)
 	{
@@ -82,7 +82,7 @@ Matrix2x2::Matrix2x2(const Matrix2x2& _rhs)
 \return *this
 */
 /******************************************************************************/
-Matrix2x2& Matrix2x2::operator=(const Matrix2x2& _rhs)
+Matrix2x2& Matrix2x2::operator=(const mat2& _rhs)
 {
 	if (this != &_rhs)
 	{
@@ -116,7 +116,7 @@ Matrix2x2& Matrix2x2::operator - (void)
 \return result
 */
 /******************************************************************************/
-Matrix2x2 Matrix2x2::operator+(const Matrix2x2& _rhs) const
+Matrix2x2 Matrix2x2::operator+(const mat2& _rhs) const
 {
 	Matrix2x2 result;
 
@@ -134,7 +134,7 @@ Matrix2x2 Matrix2x2::operator+(const Matrix2x2& _rhs) const
 \return result
 */
 /******************************************************************************/
-Matrix2x2 Matrix2x2::operator*(const Matrix2x2& _rhs) const
+Matrix2x2 Matrix2x2::operator*(const mat2& _rhs) const
 {
 	Matrix2x2 result;
 
@@ -153,7 +153,7 @@ Matrix2x2 Matrix2x2::operator*(const Matrix2x2& _rhs) const
 \return result
 */
 /******************************************************************************/
-Vector2 Matrix2x2::operator*(const Vector2& _rhs) const
+Vector2 Matrix2x2::operator*(const vec2& _rhs) const
 {
 	Vector2 result;
 
@@ -170,7 +170,7 @@ Vector2 Matrix2x2::operator*(const Vector2& _rhs) const
 \return result
 */
 /******************************************************************************/
-Matrix2x2 Matrix2x2::operator-(const Matrix2x2& _rhs) const
+Matrix2x2 Matrix2x2::operator-(const mat2& _rhs) const
 {
 	Matrix2x2 result;
 
@@ -364,7 +364,7 @@ void Matrix2x2::SetZero()
 \return result
 */
 /******************************************************************************/
-Matrix2x2 operator+(float _constant, const Matrix2x2& _rhs)
+Matrix2x2 operator+(float _constant, const mat2& _rhs)
 {
 	Matrix2x2 result;
 	result = _rhs + _constant;
@@ -379,7 +379,7 @@ Matrix2x2 operator+(float _constant, const Matrix2x2& _rhs)
 \return result
 */
 /******************************************************************************/
-Matrix2x2 operator*(float _constant, const Matrix2x2& _rhs)
+Matrix2x2 operator*(float _constant, const mat2& _rhs)
 {
 	Matrix2x2 result;
 	result = _rhs * _constant;
@@ -394,7 +394,7 @@ Matrix2x2 operator*(float _constant, const Matrix2x2& _rhs)
 \return os
 */
 /******************************************************************************/
-std::ostream& operator<<(std::ostream& _os, const Matrix2x2& _contents)
+std::ostream& operator<<(std::ostream& _os, const mat2& _contents)
 {
 	for (int i = 0; i < 2; ++i)
 	{

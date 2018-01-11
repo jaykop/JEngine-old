@@ -170,7 +170,7 @@ void Shader::SetVector4(GLManager::UniformType _uniform, const vec4& _vector)
 		_vector.x, _vector.y, _vector.z, _vector.w);
 }
 
-void Shader::SetVector3(GLManager::UniformType _uniform, const vec3 & _vector)
+void Shader::SetVector3(GLManager::UniformType _uniform, const vec3& _vector)
 {
 	glUniform3f(GLManager::m_uniform[_uniform], 
 		_vector.x, _vector.y, _vector.z);
@@ -202,7 +202,7 @@ void Shader::SetVector4(const char* _name, const vec4& _vector)
 		_vector.x, _vector.y, _vector.z, _vector.w);
 }
 
-void Shader::SetVector3(const char* _name, const vec3 & _vector)
+void Shader::SetVector3(const char* _name, const vec3& _vector)
 {
 	glUniform3f(glGetUniformLocation(m_programId, _name),
 		_vector.x, _vector.y, _vector.z);

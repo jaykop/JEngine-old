@@ -1,4 +1,4 @@
-#version 330 core
+#version 410 core
 
 #define MAX_ARRAY 128
 
@@ -56,6 +56,7 @@ uniform float		float_blurSize;
 uniform float		float_blurAmount;
 uniform float		float_sobelAmount;
 uniform int 		int_lightSize;
+uniform bool		boolean_hideParticle;
 
 ////////////////////////////
 // function declarations
@@ -70,24 +71,28 @@ void main() {
 
 	vec4 finalTexture = vec4(0,0,0,0);
 	
-	// Any effect?
-	if ((enum_effectType != 0) || boolean_light) {
+	if (boolean_hideParticle)
+		v4_fragColor = finalTexture;
+	
+	else {
+		// Any effect?
+		if ((enum_effectType != 0) || boolean_light) {
+			
+			// Impose visual effect here...
+			if (enum_effectType != 0)
+				VisualEffect(finalTexture);
 		
-		// Impose visual effect here...
-		if (enum_effectType != 0)
-			VisualEffect(finalTexture);
-	
-		// Implement light attributes
-		if (boolean_light)
-			LightingEffect(finalTexture);
+			// Implement light attributes
+			if (boolean_light)
+				LightingEffect(finalTexture);
+		}
+		
+		// Unless..
+		else
+			finalTexture = texture(Texture, v2_outTexCoord)* v4_color;
+		
+		v4_fragColor = finalTexture;
 	}
-	
-	// Unless..
-	else
-		finalTexture = texture(Texture, v2_outTexCoord)* v4_color;
-	
-	v4_fragColor = finalTexture;
-
 }
 
 ////////////////////////////
@@ -95,8 +100,9 @@ void main() {
 ////////////////////////////
 void LightingEffect(inout vec4 _color) {
 	
-	int index = 0;
-	while (index < MAX_ARRAY) {
+	// TODO
+	// Dynamic loops
+	for (int index = 0; index < 1; ++index) {
 	
 		vec3 	lightDirection;
 		float 	attenuation = 1.f;
@@ -147,12 +153,6 @@ void LightingEffect(inout vec4 _color) {
 		
 		// Final light
 		_color += v4_lightColor[index] * ((ambient + diffuse + specular) * attenuation);
-		index++;
-		
-		// Get out of the loop
-		// when index reaches to the limiation 
-		if (index == int_lightSize)
-			break;
 	}
 	
 	// Refresh alpha value

@@ -238,6 +238,7 @@
     <ClCompile Include="..\..\src\JEngine\ComponentManager.cpp" />
     <ClCompile Include="..\..\src\JEngine\Debug.cpp" />
     <ClCompile Include="..\..\src\JEngine\GLManager.cpp" />
+    <ClCompile Include="..\..\src\JEngine\GraphicPipelines.cpp" />
     <ClCompile Include="..\..\src\JEngine\GraphicSystem.cpp" />
     <ClCompile Include="..\..\src\JEngine\ImguiManager.cpp" />
     <ClCompile Include="..\..\src\JEngine\InputHandler.cpp" />

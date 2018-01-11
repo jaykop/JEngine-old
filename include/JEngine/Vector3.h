@@ -112,5 +112,6 @@ private:
 };
 
 using vec3 = Vector3;
+using CR_vec3 = const vec3&;
 
 JE_END

@@ -41,7 +41,7 @@ struct Matrix2x2
 
 	Matrix2x2	operator+(const Matrix2x2& _rhs) const;
 	Matrix2x2	operator*(const Matrix2x2& rhs) const;
-	Vector2		operator*(const Vector2& rhs) const;
+	Vector2		operator*(const vec2& rhs) const;
 	Matrix2x2	operator-(const Matrix2x2& rhs) const;
 
 	Matrix2x2	operator+(float _constant) const;
@@ -68,5 +68,6 @@ struct Matrix2x2
 };
 
 using mat2 = Matrix2x2;
+using CR_mat2 = const mat2&;
 
 JE_END

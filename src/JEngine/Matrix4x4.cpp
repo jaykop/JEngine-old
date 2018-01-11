@@ -49,7 +49,7 @@ Matrix4x4::Matrix4x4(float element)
 \brief - Matrix4x4 Copy Constructor
 */
 /******************************************************************************/
-Matrix4x4::Matrix4x4(const Matrix4x4& rhs)
+Matrix4x4::Matrix4x4(const mat4& rhs)
 {
 	if (this != &rhs)
 	{
@@ -92,7 +92,7 @@ Matrix4x4::Matrix4x4(float _member1, float _member2, float _member3, float _memb
 \return *this
 */
 /******************************************************************************/
-Matrix4x4& Matrix4x4::operator = (const Matrix4x4& rhs)
+Matrix4x4& Matrix4x4::operator = (const mat4& rhs)
 {
 	if (this != &rhs)
 	{
@@ -119,19 +119,19 @@ Matrix4x4& Matrix4x4::operator-(void)
 	return *this;
 }
 
-void Matrix4x4::operator+=(const Matrix4x4& rhs)
+void Matrix4x4::operator+=(const mat4& rhs)
 {
 	for (int i = 0; i < 4; ++i)
 		for (int j = 0; j < 4; ++j)
 			m[i][j] += rhs.m[i][j];
 }
 
-void Matrix4x4::operator*=(const Matrix4x4& rhs)
+void Matrix4x4::operator*=(const mat4& rhs)
 {
 	(*this) = (*this)*rhs;
 }
 
-void Matrix4x4::operator-=(const Matrix4x4 & rhs)
+void Matrix4x4::operator-=(const mat4& rhs)
 {
 	for (int i = 0; i < 4; ++i)
 		for (int j = 0; j < 4; ++j)
@@ -167,7 +167,7 @@ void Matrix4x4::operator/=(float constant)
 				m[i][j] /= constant;
 
 	else
-		JE_DEBUG_PRINT("Cannot devide by 0.\n");
+		JE_DEBUG_PRINT("Cannot devide by 0.(Mat4)\n");
 }
 
 /******************************************************************************/
@@ -177,7 +177,7 @@ void Matrix4x4::operator/=(float constant)
 \return result
 */
 /******************************************************************************/
-Matrix4x4 Matrix4x4::operator + (const Matrix4x4& rhs) const
+Matrix4x4 Matrix4x4::operator + (const mat4& rhs) const
 {
 	Matrix4x4 result(*this);
 
@@ -213,7 +213,7 @@ Matrix4x4 Matrix4x4::operator + (float constant) const
 \return result
 */
 /******************************************************************************/
-Matrix4x4 Matrix4x4::operator - (const Matrix4x4& rhs) const
+Matrix4x4 Matrix4x4::operator - (const mat4& rhs) const
 {
 	Matrix4x4 result(*this);
 
@@ -267,7 +267,7 @@ Matrix4x4 Matrix4x4::operator * (float constant) const
 \return result
 */
 /******************************************************************************/
-Matrix4x4 Matrix4x4::operator*(const Matrix4x4& rhs) const
+Matrix4x4 Matrix4x4::operator*(const mat4& rhs) const
 {
 	Matrix4x4 result;
 
@@ -301,7 +301,7 @@ Matrix4x4 Matrix4x4::operator*(const Matrix4x4& rhs) const
 \return result
 */
 /******************************************************************************/
-Vector4 Matrix4x4::operator*(const Vector4& rhs) const
+Vector4 Matrix4x4::operator*(const vec4& rhs) const
 {
 	Vector4 result;
 
@@ -388,7 +388,7 @@ void Matrix4x4::SetZero()
 \return result
 */
 /******************************************************************************/
-Matrix4x4 operator+(float constant, const Matrix4x4& rhs)
+Matrix4x4 operator+(float constant, const mat4& rhs)
 {
 	Matrix4x4 result;
 
@@ -405,7 +405,7 @@ Matrix4x4 operator+(float constant, const Matrix4x4& rhs)
 \return result
 */
 /******************************************************************************/
-Matrix4x4 operator*(float constant, const Matrix4x4& rhs)
+Matrix4x4 operator*(float constant, const mat4& rhs)
 {
 	Matrix4x4 result;
 	result = rhs * constant;
@@ -420,7 +420,7 @@ Matrix4x4 operator*(float constant, const Matrix4x4& rhs)
 \return os
 */
 /******************************************************************************/
-std::ostream& operator<<(std::ostream& os, const Matrix4x4& contents)
+std::ostream& operator<<(std::ostream& os, const mat4& contents)
 {
 	for (int i = 0; i < 4; ++i)	// row
 	{
@@ -731,7 +731,7 @@ Matrix4x4& Matrix4x4::Inverse()
 
 	// No inverse in this case
 	if (det == 0) {
-		JE_DEBUG_PRINT("Cannot devide by 0.\n");
+		JE_DEBUG_PRINT("Cannot devide by 0.(Mat4)\n");
 		return *this;
 	}
 
@@ -811,7 +811,7 @@ Matrix4x4 Matrix4x4::Camera(const Vector3 _eye, const Vector3 _target, const Vec
 }
 
 
-Matrix4x4 Matrix4x4::Translate(const Vector3& _vec)
+Matrix4x4 Matrix4x4::Translate(const vec3& _vec)
 {
 	Matrix4x4 Result;
 	Result.SetIdentity();
@@ -824,7 +824,7 @@ Matrix4x4 Matrix4x4::Translate(const Vector3& _vec)
 }
 
 
-Matrix4x4 Matrix4x4::Scale(const Vector3& _vec)
+Matrix4x4 Matrix4x4::Scale(const vec3& _vec)
 {
 	Matrix4x4 Result;
 
@@ -836,7 +836,7 @@ Matrix4x4 Matrix4x4::Scale(const Vector3& _vec)
 	return Result;
 }
 
-Matrix4x4 Matrix4x4::Rotate(float _degree, const Vector3& _vec)
+Matrix4x4 Matrix4x4::Rotate(float _degree, const vec3& _vec)
 {
 	Matrix4x4 Result;
 

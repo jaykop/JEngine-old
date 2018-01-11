@@ -46,7 +46,7 @@ Vector4::Vector4(float _x, float _y, float _z, float _w)
 	:x(_x), y(_y), z(_z), w(_w)
 {}
 
-Vector4::Vector4(const Vector4& _copy)
+Vector4::Vector4(const vec4& _copy)
 {
 	if (this != &_copy)
 	{
@@ -81,12 +81,12 @@ Vector4& Vector4::operator-(void)
 \return result
 */
 /******************************************************************************/
-bool Vector4::operator<(const Vector4& _rhs) const
+bool Vector4::operator<(const vec4& _rhs) const
 {
 	return this->LengthSq() < _rhs.LengthSq();
 }
 
-Vector4 Vector4::operator+(const Vector4& _rhs) const
+Vector4 Vector4::operator+(const vec4& _rhs) const
 {
 	Vector4 result;
 
@@ -124,7 +124,7 @@ Vector4 Vector4::operator+(float _constant) const
 \return result
 */
 /******************************************************************************/
-Vector4 Vector4::operator-(const Vector4& _rhs) const
+Vector4 Vector4::operator-(const vec4& _rhs) const
 {
 	Vector4 result;
 
@@ -174,7 +174,7 @@ Vector4 Vector4::operator*(float _constant) const
 	return result;
 }
 
-Vector4 Vector4::operator*(const Vector4& _rhs) const
+Vector4 Vector4::operator*(const vec4& _rhs) const
 {
 	Vector4 result;
 
@@ -208,12 +208,12 @@ Vector4 Vector4::operator / (float _constant) const
 
 	// Unless.
 	else
-		JE_DEBUG_PRINT("Cannot devide by 0.\n");
+		JE_DEBUG_PRINT("Cannot devide by 0.(Vec4)\n");
 
 	return result;
 }
 
-Vector4& Vector4::operator=(const Vector4& _rhs)
+Vector4& Vector4::operator=(const vec4& _rhs)
 {
 	if (this != &_rhs)
 	{
@@ -234,7 +234,7 @@ Vector4& Vector4::operator=(const Vector4& _rhs)
 \return result
 */
 /******************************************************************************/
-Vector4 operator+(float _constant, const Vector4& _rhs)
+Vector4 operator+(float _constant, const vec4& _rhs)
 {
 	Vector4 result;
 
@@ -251,7 +251,7 @@ Vector4 operator+(float _constant, const Vector4& _rhs)
 \return result
 */
 /******************************************************************************/
-Vector4 operator*(float _constant, const Vector4& _rhs)
+Vector4 operator*(float _constant, const vec4& _rhs)
 {
 	Vector4 result;
 
@@ -268,7 +268,7 @@ Vector4 operator*(float _constant, const Vector4& _rhs)
 \return os
 */
 /******************************************************************************/
-std::ostream& operator<<(std::ostream& os, const Vector4& contents)
+std::ostream& operator<<(std::ostream& os, const vec4& contents)
 {
 	os << "Vector4[ " << contents.x << ", " << contents.y << ", " << contents.z << ", " << contents.w << " ]";
 	return os;
@@ -281,7 +281,7 @@ std::ostream& operator<<(std::ostream& os, const Vector4& contents)
 \return x * _rhs.x + y * _rhs.y + z * _rhs.z + w * _rhs.w;
 */
 /******************************************************************************/
-float Vector4::DotProduct(const Vector4& _rhs)
+float Vector4::DotProduct(const vec4& _rhs)
 {
 	return x * _rhs.x + y * _rhs.y + z * _rhs.z + w * _rhs.w;
 }
@@ -293,7 +293,7 @@ float Vector4::DotProduct(const Vector4& _rhs)
 \return *this
 */
 /******************************************************************************/
-Vector4& Vector4::operator+=(const Vector4& _rhs)
+Vector4& Vector4::operator+=(const vec4& _rhs)
 {
 	x += _rhs.x;
 	y += _rhs.y;
@@ -327,7 +327,7 @@ Vector4& Vector4::operator+=(float _constant)
 \return *this
 */
 /******************************************************************************/
-Vector4& Vector4::operator-=(const Vector4& _rhs)
+Vector4& Vector4::operator-=(const vec4& _rhs)
 {
 	x -= _rhs.x;
 	y -= _rhs.y;
@@ -354,7 +354,7 @@ Vector4& Vector4::operator-=(float _constant)
 	return *this;
 }
 
-Vector4& Vector4::operator*=(const Vector4& _rhs)
+Vector4& Vector4::operator*=(const vec4& _rhs)
 {
 	x *= _rhs.x;
 	y *= _rhs.y;
@@ -393,12 +393,12 @@ Vector4& Vector4::operator/=(float _constant)
 
 	// Unless.
 	else
-		JE_DEBUG_PRINT("Cannot devide by 0.\n");
+		JE_DEBUG_PRINT("Cannot devide by 0.(Vec4)\n");
 
 	return *this;
 }
 
-void Vector4::Set(const Vector4 & _copy)
+void Vector4::Set(const vec4& _copy)
 {
 	x = _copy.x;
 	y = _copy.y;
@@ -491,7 +491,7 @@ Vector4& Vector4::Normalize(void)
 
 	// Unless.
 	else
-		JE_DEBUG_PRINT("Cannot devide by 0.\n");
+		JE_DEBUG_PRINT("Cannot devide by 0.(Vec4)\n");
 
 	return *this;
 }
@@ -506,7 +506,7 @@ Vector4 Vector4::GetNormalize() const
 
 	// Unless.
 	else
-		JE_DEBUG_PRINT("Cannot devide by 0.\n");
+		JE_DEBUG_PRINT("Cannot devide by 0.(Vec4)\n");
 
 	return result;
 }
@@ -570,7 +570,7 @@ float Vector4::LengthSq() const
 \return bool
 */
 /******************************************************************************/
-bool Vector4::operator==(const Vector4& _rhs) const
+bool Vector4::operator==(const vec4& _rhs) const
 {
 	if (x != _rhs.x || y != _rhs.y || z != _rhs.z || w != _rhs.w)
 		return false;
@@ -585,7 +585,7 @@ bool Vector4::operator==(const Vector4& _rhs) const
 \return bool
 */
 /******************************************************************************/
-bool Vector4::operator!=(const Vector4& _rhs) const
+bool Vector4::operator!=(const vec4& _rhs) const
 {
 	if ((*this) == _rhs)
 		return false;

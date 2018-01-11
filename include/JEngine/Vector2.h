@@ -80,5 +80,6 @@ struct Vector2
 };
 
 using vec2 = Vector2;
+using CR_vec2 = const vec2&;
 
 JE_END

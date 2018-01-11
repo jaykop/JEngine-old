@@ -45,6 +45,7 @@ class GLManager {
 		//////////////////////
 		UNIFORM_FLIP,			// animation attributes
 		UNIFORM_IS_LIGHT,		// light attributes
+		UNIFORM_HIDE_PARTICLE,	// hide particle
 
 		//////////////////////
 		// Float uniform
@@ -88,7 +89,7 @@ private:
 	// Private member variables
 	static unsigned		m_glArrayMax;
 	static DrawMode		m_mode;
-	static GLuint		m_vao, m_vbo, m_ebo;
+	static GLuint		m_vao, m_vbo, m_ebo, m_lightVao, m_particleVbo;
 	static Shaders		m_shaders;
 	static GLint		m_uniform[UNIFORM_END];
 

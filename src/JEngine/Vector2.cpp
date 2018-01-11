@@ -31,7 +31,7 @@ const Vector2 Vector2::UNIT_Y(0.f, 1.f);
 Vector2::~Vector2()
 {}
 
-void Vector2::Set(const Vector2& _copy)
+void Vector2::Set(const vec2& _copy)
 {
 	x = _copy.x;
 	y = _copy.y;
@@ -102,7 +102,7 @@ Vector2::Vector2(float _x, float _y)
 \param _copy - vector2 to be copied
 */
 /******************************************************************************/
-Vector2::Vector2(const Vector2& _copy)
+Vector2::Vector2(const vec2& _copy)
 {
 	if (this !=&_copy)
 	{
@@ -118,7 +118,7 @@ Vector2::Vector2(const Vector2& _copy)
 \return bool
 */
 /******************************************************************************/
-bool Vector2::operator<(const Vector2& _rhs) const
+bool Vector2::operator<(const vec2& _rhs) const
 {
 	return this->LengthSq() < _rhs.LengthSq();
 }
@@ -130,7 +130,7 @@ bool Vector2::operator<(const Vector2& _rhs) const
 \return bool
 */
 /******************************************************************************/
-bool Vector2::operator==(const Vector2& _rhs) const
+bool Vector2::operator==(const vec2& _rhs) const
 {
 	return (x == _rhs.x && y == _rhs.y);
 }
@@ -142,7 +142,7 @@ bool Vector2::operator==(const Vector2& _rhs) const
 \return bool
 */
 /******************************************************************************/
-bool Vector2::operator!=(const Vector2& _rhs) const
+bool Vector2::operator!=(const vec2& _rhs) const
 {
 	return (x != _rhs.x || y != _rhs.y);
 }
@@ -154,7 +154,7 @@ bool Vector2::operator!=(const Vector2& _rhs) const
 \return *this
 */
 /******************************************************************************/
-Vector2& Vector2::operator=(const Vector2& _rhs)
+Vector2& Vector2::operator=(const vec2& _rhs)
 {
 	if (this !=&_rhs)
 	{
@@ -187,7 +187,7 @@ Vector2& Vector2::operator-(void)
 \return *this
 */
 /******************************************************************************/
-Vector2& Vector2::operator+=(const Vector2& _rhs)
+Vector2& Vector2::operator+=(const vec2& _rhs)
 {
 	x += _rhs.x;
 	y += _rhs.y;
@@ -217,7 +217,7 @@ Vector2& Vector2::operator+=(float _constant)
 \return *this
 */
 /******************************************************************************/
-Vector2& Vector2::operator-=(const Vector2& _rhs)
+Vector2& Vector2::operator-=(const vec2& _rhs)
 {
 	x -= _rhs.x;
 	y -= _rhs.y;
@@ -240,7 +240,7 @@ Vector2& Vector2::operator-=(float _constant)
 	return *this;
 }
 
-Vector2& Vector2::operator*=(const Vector2& _rhs)
+Vector2& Vector2::operator*=(const vec2& _rhs)
 {
 	x *= _rhs.x;
 	y *= _rhs.y;
@@ -273,7 +273,7 @@ Vector2& Vector2::operator/=(float _constant)
 
 	// Unless.
 	else
-		JE_DEBUG_PRINT("Cannot devide by 0.\n");
+		JE_DEBUG_PRINT("Cannot devide by 0.(Vec2)\n");
 
 	return *this;
 }
@@ -302,7 +302,7 @@ Vector2 Vector2::operator+(float _constant) const
 \return result
 */
 /******************************************************************************/
-Vector2 Vector2::operator+(const Vector2& _rhs) const
+Vector2 Vector2::operator+(const vec2& _rhs) const
 {
 	Vector2 result;
 
@@ -336,7 +336,7 @@ Vector2 Vector2::operator-(float _constant) const
 \return result
 */
 /******************************************************************************/
-Vector2 Vector2::operator-(const Vector2& _rhs) const
+Vector2 Vector2::operator-(const vec2& _rhs) const
 {
 	Vector2 result;
 
@@ -363,7 +363,7 @@ Vector2 Vector2::operator*(float _constant) const
 	return result;
 }
 
-Vector2 Vector2::operator*(const Vector2& _rhs) const
+Vector2 Vector2::operator*(const vec2& _rhs) const
 {
 	Vector2 result;
 
@@ -392,7 +392,7 @@ Vector2 Vector2::operator/(float _constant) const
 
 	// Unless.
 	else
-		JE_DEBUG_PRINT("Cannot devide by 0.\n");
+		JE_DEBUG_PRINT("Cannot devide by 0.(Vec2)\n");
 
 	return result;
 }
@@ -420,7 +420,7 @@ float Vector2::LengthSq() const
 \return x * _rhs.x + y * _rhs.y;
 */
 /******************************************************************************/
-float Vector2::DotProduct(const Vector2& _rhs)
+float Vector2::DotProduct(const vec2& _rhs)
 {
 	return x * _rhs.x + y * _rhs.y;
 }
@@ -432,7 +432,7 @@ float Vector2::DotProduct(const Vector2& _rhs)
 \return x * x * _rhs.y - y * _rhs.x;
 */
 /******************************************************************************/
-Vector2 Vector2::CrossProduct(const Vector2& _rhs)
+Vector2 Vector2::CrossProduct(const vec2& _rhs)
 {
 	return x * _rhs.y - y * _rhs.x;
 }
@@ -451,7 +451,7 @@ Vector2& Vector2::Normalize(void)
 
 	// Unless.
 	else
-		JE_DEBUG_PRINT("Cannot devide by 0.\n");
+		JE_DEBUG_PRINT("Cannot devide by 0.(Vec2)\n");
 
 	return *this;
 }
@@ -466,7 +466,7 @@ Vector2 Vector2::GetNormalize() const
 
 	// Unless.
 	else
-		JE_DEBUG_PRINT("Cannot devide by 0.\n");
+		JE_DEBUG_PRINT("Cannot devide by 0.(Vec2)\n");
 
 	return result;
 }
@@ -501,7 +501,7 @@ Vector2 Vector2::GetAbsolute() const
 \return result
 */
 /******************************************************************************/
-Vector2 operator+(float _constant, const Vector2& _rhs)
+Vector2 operator+(float _constant, const vec2& _rhs)
 {
 	Vector2 result;
 
@@ -518,7 +518,7 @@ Vector2 operator+(float _constant, const Vector2& _rhs)
 \return result
 */
 /******************************************************************************/
-Vector2 operator*(float _constant, const Vector2& _rhs)
+Vector2 operator*(float _constant, const vec2& _rhs)
 {
 	Vector2 result;
 
@@ -535,7 +535,7 @@ Vector2 operator*(float _constant, const Vector2& _rhs)
 \return _os
 */
 /******************************************************************************/
-std::ostream& operator<<(std::ostream& _os, const Vector2& _constents)
+std::ostream& operator<<(std::ostream& _os, const vec2& _constents)
 {
 	_os << "Vector2[ " << _constents.x << ", " << _constents.y << " ]";
 	return _os;

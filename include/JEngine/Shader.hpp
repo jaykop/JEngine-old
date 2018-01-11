@@ -32,8 +32,8 @@ private:
 	void SetInt(GLManager::UniformType _uniform, int _int);
 
 	// By const character
-	void SetVector4(const char * _name, const vec4 & _vector);
-	void SetVector3(const char * _name, const vec3 & _vector);
+	void SetVector4(const char * _name, const vec4& _vector);
+	void SetVector3(const char * _name, const vec3& _vector);
 	void SetInt(const char * _name, int _int);
 	void SetFloat(const char * _name, float _float);
 	void SetEnum(const char * _name, int _int);

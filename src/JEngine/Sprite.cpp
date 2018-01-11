@@ -1,7 +1,6 @@
 #include "Sprite.h"
 #include "Transform.h"
 #include "AssetManager.h"
-#include "GraphicSystem.h"
 #include "SystemManager.h"
 
 JE_BEGIN

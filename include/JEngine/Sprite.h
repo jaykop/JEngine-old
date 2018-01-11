@@ -4,6 +4,9 @@
 #include "ComponentBuilder.h"
 #include "VisualEffect.h"
 
+// For enum ProjectType
+#include "GraphicSystem.h"
+
 JE_BEGIN
 
 class Material;
@@ -43,8 +46,6 @@ class Sprite : public Component
 	using TextureMap	= std::unordered_map<std::string, unsigned>;
 
 public:
-	
-	enum ProjectType { PERSPECTIVE, ORTHOGONAL };
 
 	void Register() override;
 

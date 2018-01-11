@@ -11,22 +11,25 @@
 						"Up" : [0, 1, 0]}
 				}
 			]
-		},
+		},		
 		{
-			"Name" : "Particle",
+			"Name" : "Light1",
 			"Component" : [
 				{
-					"Type": "Transform",
-					"Values": {"Position" : [0, 0, 50], "Scale" : [5, 5, 5]}
+					"Type": "Light",
+					"Values": {"Type" : "Spot", "Position" : [0, 0, -50],
+						"Color" : [1, 1, 1, 1], "Direction" : [0, 0, 1],
+						"Diffuse" : [1, 1, 1, 1], "Specular" : [1, 1, 1, 1], 
+						"Ambient" : [1, 1, 1, 1], "Constant" : 1.0,
+						"Linear" : 0.009, "Quadratic" : 0.0032, 
+						"CutOff" : 12.5, "OuterCutOff" : 17.5}
 				},
 				{
-					"Type": "Emitter",
-					"Values": {"Texture" : "particle", "Color" : [1, 1, 1, 1], "Projection" : "Perspective", 
-						"Life" : 3.0, "Velocity" : [0.1, 0.1, 0], "Quantity" : 100, "Direction" : [-1, 1, 0], 
-						"StartColor" : [1, 1, 1], "EndColor" : [0, 0, 1]}
+					"Type": "ControlLight",
+					"Values": {}
 				}
 			]
-		},		
+		},	
 		{
 			"Name" : "Light2",
 			"Component" : [

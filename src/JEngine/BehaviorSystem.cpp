@@ -59,6 +59,8 @@ void BehaviorSystem::Unload()
 	for (auto behavior : m_behaviors) {
 		behavior->Unload();
 	}
+
+	m_behaviors.clear();
 }
 
 JE_END

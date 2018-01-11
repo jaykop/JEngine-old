@@ -55,7 +55,7 @@ public:
 	void operator*=(float constant);
 	void operator/=(float constant);
 
-	Vector4	  operator*(const Vector4& rhs) const;
+	Vector4	  operator*(const vec4& rhs) const;
 	Matrix4x4 operator+(const Matrix4x4& rhs) const;
 	Matrix4x4 operator*(const Matrix4x4& rhs) const;
 	Matrix4x4 operator-(const Matrix4x4& rhs) const;
@@ -78,9 +78,9 @@ public:
 	void		SetZero();
 
 	// To use graphic...
-	static Matrix4x4 Translate(const Vector3& vec);
-	static Matrix4x4 Scale(const Vector3& vec);
-	static Matrix4x4 Rotate(float degree, const Vector3& vec);
+	static Matrix4x4 Translate(const vec3& vec);
+	static Matrix4x4 Scale(const vec3& vec);
+	static Matrix4x4 Rotate(float degree, const vec3& vec);
 	static Matrix4x4 Perspective(float fovy, float aspect, float zNear, float zFar);
 	static Matrix4x4 Orthogonal(float left, float right, float bottom, float top, float zNear, float zFar);
 	static Matrix4x4 Camera(const Vector3 eye, const Vector3 center, const Vector3 up);
@@ -97,5 +97,6 @@ private:
 };
 
 using mat4 = Matrix4x4;
+using CR_mat4 = const mat4&;
 
 JE_END

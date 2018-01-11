@@ -11,6 +11,8 @@ JE_BEGIN
 GLuint GLManager::m_vao = 0;
 GLuint GLManager::m_vbo = 0;
 GLuint GLManager::m_ebo = 0;
+GLuint GLManager::m_lightVao = 0;
+GLuint GLManager::m_particleVbo = 0;
 GLint GLManager::m_uniform[];
 GLManager::Shaders GLManager::m_shaders;
 GLManager::DrawMode GLManager::m_mode = DrawMode::DRAW_FILL;
@@ -200,7 +202,7 @@ void GLManager::InitGLEnvironment()
 	// Generate vertex buffer object(VBO)
 	glGenBuffers(1, &m_vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(m_vertices), m_vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(m_vertices), m_vertices, GL_STATIC_DRAW);
 
 	// Interpret vertex attributes data (s_vertices)
 	// vertex position
@@ -217,7 +219,13 @@ void GLManager::InitGLEnvironment()
 
 	glGenBuffers(1, &m_ebo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(m_indices), m_indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(m_indices), m_indices, GL_STATIC_DRAW);
+
+	// Generate buffur for particle
+	glGenBuffers(1, &m_particleVbo);
+	glBindBuffer(GL_ARRAY_BUFFER, m_particleVbo);
+	// Initialize with empty (NULL) buffer : it will be updated later, each frame.
+	glBufferData(GL_ARRAY_BUFFER, 1000 * sizeof(m_verticesParticle), NULL, GL_STREAM_DRAW);
 
 	// Show how much attributes are available
 	int nrAttributes;
@@ -301,6 +309,8 @@ void GLManager::RegisterUniform()
 	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_EFFECT_BLUR_SIZE, "float_blurSize");
 	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_EFFECT_BLUR_AMOUNT, "float_blurAmount");
 	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_EFFECT_SOBEL, "float_sobelAmount");
+
+	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_HIDE_PARTICLE, "boolean_hideParticle");
 
 	/******************** Light shader ********************/
 	m_shaders[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_TRANSLATE, "m4_translate");

@@ -8,7 +8,8 @@
 JE_BEGIN
 
 Emitter::Particle::Particle(Emitter* _emitter)
-	: m_emitter(_emitter), m_direction(vec3::ZERO)
+	: m_emitter(_emitter), m_direction(vec3::ZERO), 
+	m_rotation(0.f), m_rotateDiff(0.f), m_standBy(true)
 {
 	m_life		= Random::GetRandomFloat(0.f, m_emitter->m_life);
 	m_position	= m_emitter->m_pOwner->GetComponent<Transform>()->m_position;
@@ -20,19 +21,50 @@ Emitter::Particle::Particle(Emitter* _emitter)
 
 void Emitter::Particle::Refresh()
 {
+	m_standBy = false;
+
 	m_direction = Random::GetRandVec3(
 		m_emitter->m_direction.x,
 		m_emitter->m_direction.y); 
-	m_direction.z = 0.f;
+	
+	//m_direction.z = 0.f; // For2d
+
 	m_position	= m_emitter->m_transform->m_position;
 	m_life		= Random::GetRandomFloat(0.f, m_emitter->m_life);
 	m_color.Set(m_emitter->m_startColor);
 }
 
+void Emitter::Particle::RainRefresh()
+{
+	m_standBy = false;
+
+	//m_direction = Random::GetRandVec3(
+	//	m_emitter->m_direction.x,
+	//	m_emitter->m_direction.y);
+	m_direction.y = -1;// Random::GetRandomFloat(0.f, -1.f);
+	//m_direction.z = 0.f;
+	static vec3 pos, range;
+	static float rotate;
+	
+	range		= m_emitter->m_range;
+	pos			= m_emitter->m_transform->m_position;
+	rotate		= m_emitter->m_transform->m_rotation;
+	m_rotateDiff = Random::GetRandomFloat(-rotate, rotate);
+	m_position.x = Random::GetRandomFloat(pos.x - range.x, pos.x + range.x);
+	m_position.y = Random::GetRandomFloat(pos.y - range.y, pos.y + range.y);
+	m_position.z = Random::GetRandomFloat(pos.z - range.z, pos.z + range.z);
+
+	//m_position = m_emitter->m_transform->m_position;
+	m_life = Random::GetRandomFloat(0.f, m_emitter->m_life);
+	m_color.Set(m_emitter->m_startColor);
+}
+
 Emitter::Emitter(Object* _owner)
-	:Sprite(_owner), m_startColor(vec3::ONE),
+	:Sprite(_owner), m_startColor(vec3::ONE), m_changeColor(true),
 	m_endColor(vec3::ZERO), m_life(1.f), m_type(PT_NORMAL),
-	m_direction(vec3::ZERO), m_velocity(vec3::ZERO), m_active(true)
+	m_direction(vec3::ZERO), m_velocity(vec3::ZERO), m_active(true),
+	m_range(vec3::ZERO), m_count(0), m_size(0), m_colorDiff(vec3::ZERO),
+	m_particleSize(nullptr)
 {
 	m_isEmitter = true;
 }
@@ -44,13 +76,22 @@ Emitter::~Emitter()
 		delete particle;
 		particle = nullptr;
 	}
+
+	delete[] m_particleSize;
 }
 
 void Emitter::Register()
 {
 	SystemManager::GetGraphicSystem()->AddSprite(this);
-	if (m_pOwner->HasComponent<Transform>())
+	if (m_pOwner->HasComponent<Transform>()) 
 		m_transform = m_pOwner->GetComponent<Transform>();
+}
+
+void Emitter::ManualRefresh()
+{
+	m_count = 0;
+	for (auto particle : m_particles)
+		particle->Refresh();
 }
 
 void Emitter::Load(CR_RJValue _data)
@@ -78,18 +119,21 @@ void Emitter::Load(CR_RJValue _data)
 	if (_data.HasMember("Life")) 
 		m_life = _data["Life"].GetFloat();
 
-	if (_data.HasMember("StartColor")) {
-		CR_RJValue startColor = _data["StartColor"];
+	if (_data.HasMember("StartColor") 
+		&& _data.HasMember("EndColor")) {
+
+		CR_RJValue startColor = _data["StartColor"],
+			endColor = _data["EndColor"];
+
 		m_startColor.Set(startColor[0].GetFloat(),
 			startColor[1].GetFloat(),
 			startColor[2].GetFloat());
-	}
 
-	if (_data.HasMember("EndColor")) {
-		CR_RJValue endColor = _data["EndColor"];
 		m_endColor.Set(endColor[0].GetFloat(),
 			endColor[1].GetFloat(),
 			endColor[2].GetFloat());
+
+		SetColors(m_startColor, m_endColor);
 	}
 
 	if (_data.HasMember("Type")) {
@@ -97,6 +141,17 @@ void Emitter::Load(CR_RJValue _data)
 		
 		if (!strcmp(type.GetString(), "Normal"))
 			m_type = PT_NORMAL;
+		else if (!strcmp(type.GetString(), "Rain"))
+			m_type = PT_RAIN;
+		else if (!strcmp(type.GetString(), "Explosion"))
+			m_type = PT_EXPLODE;
+	}
+
+	if (_data.HasMember("Range")) {
+		CR_RJValue range = _data["Range"];
+		m_range.Set(range[0].GetFloat(),
+			range[1].GetFloat(),
+			range[2].GetFloat());
 	}
 
 	if (_data.HasMember("Direction")) {
@@ -119,12 +174,28 @@ void Emitter::Load(CR_RJValue _data)
 
 void Emitter::SetQuantity(unsigned _quantity)
 {
-	if (m_particles.empty())
+	if (m_particles.empty()) {
 		for (unsigned i = 0; i < _quantity; ++i)
 			m_particles.push_back(new Particle(this));
+		m_size = _quantity;
+		m_particleSize = new float[m_size * 96];
+	}
 
 	else
 		JE_DEBUG_PRINT("Already allocated.\n");
+}
+
+void Emitter::SetColors(const vec3& _start, const vec3& _end)
+{
+	m_startColor = _start, m_endColor = _end;
+	m_colorDiff = (m_endColor - m_startColor) / m_life;
+
+	// If the idff is zero, no need to add diff
+	if (m_colorDiff == vec3::ZERO)
+		m_changeColor = false;
+
+	else
+		m_changeColor = true;
 }
 
 void Emitter::Refresh(Particle *_particle)

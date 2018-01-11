@@ -86,5 +86,6 @@ private:
 };
 
 using vec4 = Vector4;
+using CR_vec4 = const vec4&;
 
 JE_END
