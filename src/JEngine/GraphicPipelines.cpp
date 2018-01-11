@@ -114,6 +114,10 @@ void GraphicSystem::LightSourcePipeline()
 				GLM::UNIFORM_LIGHT_PROJECTION,
 				m_perspective);
 
+			GLM::m_shaders[GLM::SHADER_LIGHTING]->SetVector4(
+				GLM::UNIFORM_LIGHT_COLOR,
+				light->m_color);
+
 			//glBindVertexArray(GLM::m_lightVao);
 			Render(GLM::m_vbo, GLM::m_ebo,
 				GLM::m_vertices, GLM::m_indices,
@@ -434,7 +438,7 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, float _dt)
 			}
 		}
 
-		RenderParticle(GLM::m_particleVbo, GLM::m_ebo,
+		RenderParticle(GLM::m_particleVbo, GLM::m_particleEbo,
 			GLM::m_verticesParticle, GLM::m_indicesParticle,
 			sizeof(GLM::m_verticesParticle), sizeof(GLM::m_indicesParticle), GLM::m_particle, _emitter->m_size, _emitter->m_particleSize);
 

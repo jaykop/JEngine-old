@@ -91,27 +91,37 @@ void GraphicSystem::RenderParticle(const unsigned _vbo, const unsigned _ebo,
 	const float _vertices[], const unsigned _indices[], const int _verticesSize, 
 	const int _indicesSize, const int _elementSize, const int _particleSize, float *_particleSizeData)
 {
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-	glVertexAttribDivisor(0, 1);
-
-	// text coordinate position
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-	glVertexAttribDivisor(1, 1);
-
-	// normals of vertices
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
-	glEnableVertexAttribArray(2);
-	glVertexAttribDivisor(2, 1);
-
 	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-	glBufferData(GL_ARRAY_BUFFER, _particleSize * _verticesSize, NULL, GL_STREAM_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 1000 * _verticesSize, NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details.
 	glBufferSubData(GL_ARRAY_BUFFER, 0, _particleSize * _verticesSize, _particleSizeData);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, _indicesSize, _indices, GL_STATIC_DRAW);
-	//glDrawArraysInstanced(GL_TRIANGLES, 0, _verticesSize, _particleSize);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, _particleSize *_indicesSize, _indices, GL_STATIC_DRAW);
+
+	//// 1rst attribute buffer : vertices
+	//glEnableVertexAttribArray(0);
+	//glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+
+	//// 2nd attribute buffer : positions of particles' centers
+	//glEnableVertexAttribArray(1);
+	//glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+	//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+
+	//// 3rd attribute buffer : particles' colors
+	//glEnableVertexAttribArray(2);
+	//glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+	//glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
+
+	//glVertexAttribDivisor(0, 0); // particles vertices : always reuse the same 4 vertices -> 0
+	//glVertexAttribDivisor(1, 1); // positions : one per quad (its center)                 -> 1
+	//glVertexAttribDivisor(2, 1); // color : one per quad                                  -> 1
+
 	glDrawElementsInstanced(GL_TRIANGLES, _elementSize, GL_UNSIGNED_INT, 0, _particleSize);
+	//glDrawArraysInstanced(GL_TRIANGLES, 0, _verticesSize, _particleSize);
+
+	//glDisableVertexAttribArray(0);
+	//glDisableVertexAttribArray(1);
+	//glDisableVertexAttribArray(2);
 }
 
 void GraphicSystem::AddSprite(Sprite* _sprite)

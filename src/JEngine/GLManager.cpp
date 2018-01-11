@@ -11,7 +11,8 @@ JE_BEGIN
 GLuint GLManager::m_vao = 0;
 GLuint GLManager::m_vbo = 0;
 GLuint GLManager::m_ebo = 0;
-GLuint GLManager::m_lightVao = 0;
+GLuint GLManager::m_particleEbo = 0;
+//GLuint GLManager::m_lightVao = 0;
 GLuint GLManager::m_particleVbo = 0;
 GLint GLManager::m_uniform[];
 GLManager::Shaders GLManager::m_shaders;
@@ -227,6 +228,23 @@ void GLManager::InitGLEnvironment()
 	// Initialize with empty (NULL) buffer : it will be updated later, each frame.
 	glBufferData(GL_ARRAY_BUFFER, 1000 * sizeof(m_verticesParticle), NULL, GL_STREAM_DRAW);
 
+	//// Interpret vertex attributes data (s_vertices)
+	//// vertex position
+	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	//glEnableVertexAttribArray(0);
+
+	//// text coordinate position
+	//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	//glEnableVertexAttribArray(1);
+
+	//// normals of vertices
+	//glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
+	//glEnableVertexAttribArray(2);
+
+	glGenBuffers(1, &m_particleEbo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_particleEbo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(m_indicesParticle), m_indicesParticle, GL_STATIC_DRAW);
+
 	// Show how much attributes are available
 	int nrAttributes;
 	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
@@ -318,6 +336,8 @@ void GLManager::RegisterUniform()
 	m_shaders[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_ROTATE, "m4_rotate");
 	m_shaders[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_CAMERA, "m4_viewport");
 	m_shaders[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_PROJECTION, "m4_projection");
+	m_shaders[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_COLOR, "vec4_color");
+	
 }
 
 JE_END

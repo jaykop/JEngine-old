@@ -69,6 +69,7 @@ class GLManager {
 		UNIFORM_LIGHT_TRANSLATE, UNIFORM_LIGHT_SCALE, 
 		UNIFORM_LIGHT_ROTATE,
 		UNIFORM_LIGHT_CAMERA, UNIFORM_LIGHT_PROJECTION,
+		UNIFORM_LIGHT_COLOR,
 
 		UNIFORM_END
 	};
@@ -89,7 +90,7 @@ private:
 	// Private member variables
 	static unsigned		m_glArrayMax;
 	static DrawMode		m_mode;
-	static GLuint		m_vao, m_vbo, m_ebo, m_lightVao, m_particleVbo;
+	static GLuint		m_vao, m_vbo, m_ebo, /*m_lightVao,*/ m_particleVbo, m_particleEbo;
 	static Shaders		m_shaders;
 	static GLint		m_uniform[UNIFORM_END];
 
