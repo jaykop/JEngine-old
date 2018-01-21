@@ -23,7 +23,7 @@ void ControlLight::Init()
 		m_light = m_pOwner->GetComponent<Light>();
 }
 
-void ControlLight::Update(float _dt)
+void ControlLight::Update(const float _dt)
 {
 	float speed = 1.f * _dt;
 	if (INPUT::KeyPressed(JE_A))

@@ -167,7 +167,7 @@ void Matrix4x4::operator/=(float constant)
 				m[i][j] /= constant;
 
 	else
-		JE_DEBUG_PRINT("Cannot devide by 0.(Mat4)\n");
+		JE_DEBUG_PRINT("*Matrix4x4: Cannot devide by 0.\n");
 }
 
 /******************************************************************************/
@@ -731,7 +731,7 @@ Matrix4x4& Matrix4x4::Inverse()
 
 	// No inverse in this case
 	if (det == 0) {
-		JE_DEBUG_PRINT("Cannot devide by 0.(Mat4)\n");
+		JE_DEBUG_PRINT("*Matrix4x4: Cannot devide by 0.\n");
 		return *this;
 	}
 

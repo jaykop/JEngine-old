@@ -18,7 +18,7 @@ Animation::Animation(Object* _owner)
 	}
 
 	else
-		JE_DEBUG_PRINT("This object has no sprite componnet!\n");
+		JE_DEBUG_PRINT("*Animation: This object has no sprite componnet - %s\n", _owner->GetName().c_str());
 }
 
 void Animation::Load(CR_RJValue _data)

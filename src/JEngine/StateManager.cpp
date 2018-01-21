@@ -160,7 +160,7 @@ void StateManager::PushState(const char* _path, const char* _stateName)
 		// mark toggle
 		if (!strcmp((*it)->m_name.c_str(), _stateName)) {
 			sameOne = true;
-			JE_DEBUG_PRINT("Same state exists already!\n");
+			JE_DEBUG_PRINT("*StateManager: Existing state - %s\n", _stateName);
 			break;
 		}
 	}	
@@ -230,7 +230,7 @@ void StateManager::SetNextState(const char* _stateName)
 
 				// Current state is the state
 				if (m_pCurrent == it)
-					JE_DEBUG_PRINT("Same state!\n");
+					JE_DEBUG_PRINT("*StateManager: As same as current state - %s\n", _stateName);
 
 				// Found the state
 				else {
@@ -243,11 +243,11 @@ void StateManager::SetNextState(const char* _stateName)
 		}
 
 		if (!found)
-			JE_DEBUG_PRINT("No such state!\n");
+			JE_DEBUG_PRINT("*StateManager: No such name of enrolled state - %s\n", _stateName);
 	}
 
 	else
-		JE_DEBUG_PRINT("Cannot move on paused situation!\n");
+		JE_DEBUG_PRINT("*StateManager: Cannot move on paused status.\n");
 }
 
 void StateManager::Pause(const char* _nextState)
@@ -264,7 +264,7 @@ void StateManager::Resume()
 		m_status = S_RESUME;
 
 	else
-		JE_DEBUG_PRINT("Cannot resume!\n");
+		JE_DEBUG_PRINT("*StateManager: No state to resume.\n");
 }
 
 void StateManager::ResumeAndNext(const char* _nextState)
@@ -286,7 +286,7 @@ State* StateManager::GetState(const char* _stateName)
 			return it;
 
 	// If there is no,
-	JE_DEBUG_PRINT("No such state!\n");
+	JE_DEBUG_PRINT("*StateManager: No such name of enrolled state - %s\n", _stateName);
 	return nullptr;
 }
 

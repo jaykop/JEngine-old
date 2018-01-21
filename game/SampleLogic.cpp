@@ -30,7 +30,7 @@ void SampleLogic::Init()
 	m_widthSq = width*width;
 }
 
-void SampleLogic::Update(float _dt)
+void SampleLogic::Update(const float _dt)
 {
 	cameraPos = m_camera->m_position;
 	static float newDt = 0;

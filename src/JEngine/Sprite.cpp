@@ -22,7 +22,7 @@ void Sprite::AddTexture(const char *_key)
 {
 	auto found = m_textureMap.find(_key);
 	if (found != m_textureMap.end())
-		JE_DEBUG_PRINT("Found exsiting name of texture: %s.\n", _key);
+		JE_DEBUG_PRINT("*Sprite: Existing texture - %s.\n", _key);
 
 	else {
 		unsigned newTexture = AssetManager::GetTexture(_key);
@@ -57,7 +57,7 @@ unsigned Sprite::GetTexutre(const char *_key)
 	if (found != m_textureMap.end())
 		return found->second;
 
-	JE_DEBUG_PRINT("Cannot find such name of texture: %s.\n", _key);
+	JE_DEBUG_PRINT("*Sprite: No such name of enrolled texture - %s.\n", _key);
 	return 0;
 }
 
@@ -117,7 +117,7 @@ void Sprite::Load(CR_RJValue _data)
 		}
 
 		else
-			JE_DEBUG_PRINT("Same effect in the list!\n");
+			JE_DEBUG_PRINT("*Sprite: Existing effet - Blur\n");
 	}
 
 	if (_data.HasMember("Sobel")) {
@@ -130,7 +130,7 @@ void Sprite::Load(CR_RJValue _data)
 		}
 
 		else
-			JE_DEBUG_PRINT("Same effect in the list!\n");
+			JE_DEBUG_PRINT("*Sprite: Existing effet - Sobel\n");
 	}
 
 	if (_data.HasMember("Inverse")) {
@@ -143,7 +143,7 @@ void Sprite::Load(CR_RJValue _data)
 		}
 
 		else
-			JE_DEBUG_PRINT("Same effect in the list!\n");
+			JE_DEBUG_PRINT("*Sprite: Existing effet - Inverse\n");
 	}
 }
 

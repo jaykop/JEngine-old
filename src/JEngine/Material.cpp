@@ -23,7 +23,7 @@ Material::Material(Object* _owner)
 	}
 
 	else
-		JE_DEBUG_PRINT("This object has no sprite componnet!\n");
+		JE_DEBUG_PRINT("*Material : This object has no sprite componnet - %s\n", _owner->GetName().c_str());
 }
 
 void Material::Load(CR_RJValue _data)

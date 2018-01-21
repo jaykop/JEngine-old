@@ -39,7 +39,7 @@ void Shader::LoadShader(
 		}	// if (vertexShaderStream.is_open()) {
 
 		else {
-			JE_DEBUG_PRINT("Impossible to open %s\n", _vertex_file_path);
+			JE_DEBUG_PRINT("*Shader: Wrong vertext shader path - %s\n", _vertex_file_path);
 			vsToggle = false;
 
 		}	// else {
@@ -58,7 +58,7 @@ void Shader::LoadShader(
 			}	// if (fragmentShaderStream.is_open()) {
 
 			else {
-				JE_DEBUG_PRINT("Impossible to open %s\n", _fragment_file_path);
+				JE_DEBUG_PRINT("*Shader: Wrong fragment shader path - %s\n", _fragment_file_path);
 				fsToggle = false;
 
 			}	// else {
@@ -69,7 +69,7 @@ void Shader::LoadShader(
 		if (vsToggle && fsToggle) {
 
 			// Complie vertex shader
-			JE_DEBUG_PRINT("Compiling shader: %s\n", _vertex_file_path);
+			JE_DEBUG_PRINT("*Shader: Compiling vertex shader... - %s\n", _vertex_file_path);
 			char const* vertexSourcePointer = vertexShaderCode.c_str();
 			glShaderSource(vertexShaderId, 1, &vertexSourcePointer, NULL);
 			glCompileShader(vertexShaderId);
@@ -81,12 +81,12 @@ void Shader::LoadShader(
 			if (infoLogLength > 0) {
 				std::vector<char> VertexShaderErrorMessage(infoLogLength + 1);
 				glGetShaderInfoLog(vertexShaderId, infoLogLength, NULL, &VertexShaderErrorMessage[0]);
-				JE_DEBUG_PRINT("%4s\n", &VertexShaderErrorMessage[0]);
+				JE_DEBUG_PRINT("*Shader: %4s\n", &VertexShaderErrorMessage[0]);
 
 			}	// if (infoLogLength > 0) {
 
 			// Complie fragment shader
-			JE_DEBUG_PRINT("Compiling shader: %s\n", _fragment_file_path);
+			JE_DEBUG_PRINT("*Shader: Compiling fragment shader... - %s\n", _fragment_file_path);
 
 			// Get shader string
 			char const* fragmentSourcePointer = fragmentShaderCode.c_str();
@@ -101,12 +101,12 @@ void Shader::LoadShader(
 			if (infoLogLength > 0) {
 				std::vector<char> FragShaderErrorMessage(infoLogLength + 1);
 				glGetShaderInfoLog(fragmentShaderId, infoLogLength, NULL, &FragShaderErrorMessage[0]);
-				JE_DEBUG_PRINT("%4s\n", &FragShaderErrorMessage[0]);
+				JE_DEBUG_PRINT("*Shader: %4s\n", &FragShaderErrorMessage[0]);
 
 			}	// if (infoLogLength > 0) {
 
 			// Link the program
-			JE_DEBUG_PRINT("Linking program...\n");
+			JE_DEBUG_PRINT("*Shader: Linking program...\n");
 			m_programId = glCreateProgram();
 
 			// Combine two shaders into the program
@@ -122,7 +122,7 @@ void Shader::LoadShader(
 			if (infoLogLength > 0) {
 				std::vector<char> ProgramErrorMessage(infoLogLength + 1);
 				glGetShaderInfoLog(m_programId, infoLogLength, NULL, &ProgramErrorMessage[0]);
-				JE_DEBUG_PRINT("%4s\n", &ProgramErrorMessage[0]);
+				JE_DEBUG_PRINT("*Shader: %4s\n", &ProgramErrorMessage[0]);
 
 			}	// if (infoLogLength > 0) {
 
@@ -139,7 +139,7 @@ void Shader::LoadShader(
 	}	// if (_vertex_file_path && _fragment_file_path) {
 
 	else 
-		JE_DEBUG_PRINT("Shader directory is not valid...\n");
+		JE_DEBUG_PRINT("*Shader: Wrong shader path.\n");
 }
 
 void Shader::Use()
@@ -194,6 +194,11 @@ void Shader::SetEnum(GLManager::UniformType _uniform, int _int)
 void Shader::SetInt(GLManager::UniformType _uniform, int _int)
 {
 	glUniform1d(GLManager::m_uniform[_uniform], _int);
+}
+
+void Shader::SetBool(const char* _name, bool _bool)
+{
+	glUniform1i(glGetUniformLocation(m_programId, _name), _bool);
 }
 
 void Shader::SetVector4(const char* _name, const vec4& _vector)

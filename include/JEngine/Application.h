@@ -54,7 +54,7 @@ private:
 	void operator=(const Application& /*app*/) {};
 
 	// Private variables
-	static InitData			m_pData;	// Window config
+	static InitData			m_Data;		// Window config
 	static SDL_Window*		m_pWindow;	// SDL window
 	static SDL_Event		m_pEvent;	// SDL Event
 	static SDL_GLContext	m_pContext;	// SDL GL context

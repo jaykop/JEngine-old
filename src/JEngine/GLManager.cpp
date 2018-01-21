@@ -8,19 +8,30 @@ JE_BEGIN
 //////////////////////////////////////////////////////////////////////////
 // static variables
 //////////////////////////////////////////////////////////////////////////
-GLuint GLManager::m_vao = 0;
-GLuint GLManager::m_vbo = 0;
-GLuint GLManager::m_ebo = 0;
-GLuint GLManager::m_particleEbo = 0;
-//GLuint GLManager::m_lightVao = 0;
-GLuint GLManager::m_particleVbo = 0;
-GLint GLManager::m_uniform[];
-GLManager::Shaders GLManager::m_shaders;
+float				GLManager::m_width = 0;
+float				GLManager::m_height = 0;
+GLint				GLManager::m_uniform[];
+GLuint				GLManager::m_vao = 0;
+GLuint				GLManager::m_vbo = 0;
+GLuint				GLManager::m_ebo = 0;
+GLuint				GLManager::m_lightVao = 0;
+//GLuint				GLManager::m_depthBuf = 0;
+//GLuint				GLManager::m_colorTex = 0;
+//GLuint				GLManager::m_normalTex = 0;
+//GLuint				GLManager::m_deferredFBO = 0;
+//GLuint				GLManager::m_positionTex = 0;
+GLuint				GLManager::m_passIndex[];
+GLuint				GLManager::m_particleEbo = 0;
+GLuint				GLManager::m_particleVao = 0;
+GLuint				GLManager::m_particleVbo = 0;
+GLuint				GLManager::m_particleColor = 0;
+GLuint				GLManager::m_particlePosition = 0;
+const int			GLManager::m_rect = 6;
+const int			GLManager::m_cube = 36;
+const int			GLManager::m_particle = 18;
+//const unsigned		GLManager::m_glArrayMax = 128;
+GLManager::Shaders	GLManager::m_shader;
 GLManager::DrawMode GLManager::m_mode = DrawMode::DRAW_FILL;
-unsigned GLManager::m_glArrayMax = 128;
-const int GLManager::m_cube = 36;
-const int GLManager::m_rect = 6;
-const int GLManager::m_particle = 18;
 
 const float GLManager::m_vertices2d[] = {
 	// position				// uv		// normals
@@ -158,24 +169,35 @@ const unsigned GLManager::m_indices [] =
 //////////////////////////////////////////////////////////////////////////
 // GLManager functio bodies
 //////////////////////////////////////////////////////////////////////////
-bool GLManager::initSDL_GL()
+bool GLManager::initSDL_GL(float _width, float _height)
 {
 	// force GLEW to use a modern OpenGL method
 	glewExperimental = GL_TRUE;
 
 	//Before using shader, initialize glew.
 	if (glewInit() != GLEW_OK) {
-		fprintf(stderr, "Failed to initialize GLEW\n");
+		fprintf(stderr, "*GLManager: Failed to initialize GLEW\n");
 		return false;
 	}
 
 	// Unless
 	else {
 
+		// Set wdith and heught
+		m_width		= _width;
+		m_height	= _height;
+
 		// Do gl stuff
+		ShowGLVersion();
+		InitVBO();
+		//InitFBO();
 		InitGLEnvironment();
 		InitShaders();
 		RegisterUniform();
+
+		//m_passIndex[0] = glGetSubroutineIndex(m_shader[SHADER_NORMAL]->m_programId, GL_FRAGMENT_SHADER, "pass1");
+		//m_passIndex[1] = glGetSubroutineIndex(m_shader[SHADER_NORMAL]->m_programId, GL_FRAGMENT_SHADER, "pass2");
+
 	}
 
 	return true;
@@ -184,15 +206,15 @@ bool GLManager::initSDL_GL()
 void GLManager::CloseSDL_GL()
 {
 	// Clear shaders
-	for (auto shader : m_shaders) {
+	for (auto shader : m_shader) {
 		delete shader;
 		shader = nullptr;
 	}
 
-	m_shaders.clear();
+	m_shader.clear();
 }
 
-void GLManager::InitGLEnvironment()
+void GLManager::InitVBO()
 {
 	glActiveTexture(GL_TEXTURE0);
 
@@ -222,33 +244,40 @@ void GLManager::InitGLEnvironment()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(m_indices), m_indices, GL_STATIC_DRAW);
 
-	// Generate buffur for particle
+	// TODO
+	// Particle
+	// Generate vertex array object for particle(VAO)
+	glGenVertexArrays(1, &m_particleVao);
+	glBindVertexArray(m_particleVao);
+
 	glGenBuffers(1, &m_particleVbo);
 	glBindBuffer(GL_ARRAY_BUFFER, m_particleVbo);
-	// Initialize with empty (NULL) buffer : it will be updated later, each frame.
-	glBufferData(GL_ARRAY_BUFFER, 1000 * sizeof(m_verticesParticle), NULL, GL_STREAM_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(m_verticesParticle), m_verticesParticle, GL_STATIC_DRAW);
 
-	//// Interpret vertex attributes data (s_vertices)
-	//// vertex position
-	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-	//glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+	//glVertexAttribDivisor(0, 1);
 
-	//// text coordinate position
-	//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-	//glEnableVertexAttribArray(1);
+	// text coordinate position
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+	//glVertexAttribDivisor(1, 1);
 
-	//// normals of vertices
-	//glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
-	//glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
+	glEnableVertexAttribArray(2);
+	//glVertexAttribDivisor(2, 1);
 
 	glGenBuffers(1, &m_particleEbo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_particleEbo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(m_indicesParticle), m_indicesParticle, GL_STATIC_DRAW);
+}
 
+void GLManager::InitGLEnvironment()
+{
 	// Show how much attributes are available
 	int nrAttributes;
 	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
-	JE_DEBUG_PRINT("Maximum nr of vertex attributes supported: %d\n", nrAttributes);
+	JE_DEBUG_PRINT("*GLManager: Maximum nr of vertex attributes supported - %d\n", nrAttributes);
 
 	// Set how to draw
 	SetDrawMode(m_mode);
@@ -271,15 +300,19 @@ void GLManager::InitShaders()
 {
 	// Do shader stuff
 	for (unsigned i = 0; i < SHADER_END; ++i) 
-		m_shaders.push_back(new Shader);
+		m_shader.push_back(new Shader);
 
-	m_shaders[SHADER_LIGHTING]->LoadShader(
+	m_shader[SHADER_LIGHTING]->LoadShader(
 		"../src/shader/lighting.vs",
 		"../src/shader/lighting.fs");
 
-	m_shaders[SHADER_NORMAL]->LoadShader(
+	m_shader[SHADER_NORMAL]->LoadShader(
 		"../src/shader/normal.vs",
 		"../src/shader/normal.fs");
+
+	m_shader[SHADER_PARTICLE]->LoadShader(
+		"../src/shader/particle.vs",
+		"../src/shader/particle.fs");
 }
 
 void GLManager::SetDrawMode(DrawMode _mode)
@@ -303,42 +336,107 @@ void GLManager::SetDrawMode(DrawMode _mode)
 void GLManager::RegisterUniform()
 {
 	/******************** normal shader ********************/
-	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_TRANSLATE, "m4_translate");
-	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_SCALE, "m4_scale");
-	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_ROTATE, "m4_rotate");
-	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_CAMERA, "m4_viewport");
-	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_PROJECTION, "m4_projection");
-	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_ANI_TRANSLATE, "m4_aniTranslate");
-	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_ANI_SCALE, "m4_aniScale");
+	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_TRANSLATE, "m4_translate");
+	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_SCALE, "m4_scale");
+	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_ROTATE, "m4_rotate");
+	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_CAMERA, "m4_viewport");
+	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_PROJECTION, "m4_projection");
+	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_ANI_TRANSLATE, "m4_aniTranslate");
+	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_ANI_SCALE, "m4_aniScale");
 
-	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_COLOR, "v4_color");
-	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_CAMERA_POSITION, "v3_cameraPosition");
+	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_COLOR, "v4_color");
+	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_CAMERA_POSITION, "v3_cameraPosition");
 	
-	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_FLIP, "boolean_flip");
-	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_IS_LIGHT, "boolean_light");
-	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_LIGHT_SIZE, "int_lightSize");
+	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_FLIP, "boolean_flip");
+	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_IS_LIGHT, "boolean_light");
+	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_LIGHT_SIZE, "int_lightSize");
 
-	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_MATERIAL_AMBIENT, "material.m_ambient");
-	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_MATERIAL_DIFFUSE, "material.m_diffuse");
-	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_MATERIAL_SPECULAR, "material.m_specular");
-	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_MATERIAL_SHININESS, "material.m_shininess");
+	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_MATERIAL_AMBIENT, "material.m_ambient");
+	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_MATERIAL_DIFFUSE, "material.m_diffuse");
+	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_MATERIAL_SPECULAR, "material.m_specular");
+	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_MATERIAL_SHININESS, "material.m_shininess");
 
-	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_EFFECT_TYPE, "enum_effectType");
-	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_EFFECT_BLUR_SIZE, "float_blurSize");
-	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_EFFECT_BLUR_AMOUNT, "float_blurAmount");
-	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_EFFECT_SOBEL, "float_sobelAmount");
+	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_EFFECT_TYPE, "enum_effectType");
+	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_EFFECT_BLUR_SIZE, "float_blurSize");
+	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_EFFECT_BLUR_AMOUNT, "float_blurAmount");
+	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_EFFECT_SOBEL, "float_sobelAmount");
 
-	m_shaders[SHADER_NORMAL]->ConnectUniform(UNIFORM_HIDE_PARTICLE, "boolean_hideParticle");
+	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_PARTICLE_HIDE, "boolean_hideParticle");
 
 	/******************** Light shader ********************/
-	m_shaders[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_TRANSLATE, "m4_translate");
-	m_shaders[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_SCALE, "m4_scale");
-	m_shaders[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_ROTATE, "m4_rotate");
-	m_shaders[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_CAMERA, "m4_viewport");
-	m_shaders[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_PROJECTION, "m4_projection");
-	m_shaders[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_COLOR, "vec4_color");
-	
+	m_shader[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_TRANSLATE, "m4_translate");
+	m_shader[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_SCALE, "m4_scale");
+	m_shader[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_ROTATE, "m4_rotate");
+	m_shader[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_CAMERA, "m4_viewport");
+	m_shader[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_PROJECTION, "m4_projection");
+	m_shader[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_COLOR, "v4_color");
+
+	/******************** Particle shader ********************/
+	m_shader[SHADER_PARTICLE]->ConnectUniform(UNIFORM_PARTICLE_COLOR, "v4_color");
+	m_shader[SHADER_PARTICLE]->ConnectUniform(UNIFORM_PARTICLE_TRANSLATE, "m4_translate");
+	m_shader[SHADER_PARTICLE]->ConnectUniform(UNIFORM_PARTICLE_SCALE, "m4_scale");
+	m_shader[SHADER_PARTICLE]->ConnectUniform(UNIFORM_PARTICLE_ROTATE, "m4_rotate");
+	m_shader[SHADER_PARTICLE]->ConnectUniform(UNIFORM_PARTICLE_CAMERA, "m4_viewport");
+	m_shader[SHADER_PARTICLE]->ConnectUniform(UNIFORM_PARTICLE_PROJECTION, "m4_projection");
+	m_shader[SHADER_PARTICLE]->ConnectUniform(UNIFORM_PARTICLE_TIME, "float_time");
+	m_shader[SHADER_PARTICLE]->ConnectUniform(UNIFORM_PARTICLE_LIFETIME, "float_lifeTime");
+
 }
+
+void GLManager::ShowGLVersion()
+{
+	const GLubyte *renderer = glGetString(GL_RENDERER);
+	const GLubyte *vendor = glGetString(GL_VENDOR);
+	const GLubyte *version = glGetString(GL_VERSION);
+	const GLubyte *glslVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
+
+	JE_DEBUG_PRINT("*GLManager: GL Vendor - %s\n", vendor);
+	JE_DEBUG_PRINT("*GLManager: GL Renderer - %s\n", renderer);
+	JE_DEBUG_PRINT("*GLManager: GL Version - %s\n", version);
+	JE_DEBUG_PRINT("*GLManager: GLSL Version - %s\n", glslVersion);
+}
+
+//void GLManager::CreateGBufferTex(GLenum _texUnit, GLenum _format, GLuint &_texid) {
+//	glActiveTexture(_texUnit);
+//	glGenTextures(1, &_texid);
+//	glBindTexture(GL_TEXTURE_2D, _texid);
+//
+//	glTexStorage2D(GL_TEXTURE_2D, 1, _format, GLsizei(m_width), GLsizei(m_height));
+//
+//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
+//}
+
+//void GLManager::InitFBO()
+//{
+//	// Create and bind the FBO
+//	glGenFramebuffers(1, &m_deferredFBO);
+//	glBindFramebuffer(GL_FRAMEBUFFER, m_deferredFBO);
+//
+//	// The depth buffer
+//	glGenRenderbuffers(1, &m_depthBuf);
+//	glBindRenderbuffer(GL_RENDERBUFFER, m_depthBuf);
+//	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, m_width, m_height);
+//
+//	// Create the textures for position, normal and color
+//	CreateGBufferTex(GL_TEXTURE0, GL_RGB32F, m_positionTex);	// Position
+//	CreateGBufferTex(GL_TEXTURE1, GL_RGB32F, m_normalTex);		// Normal
+//	CreateGBufferTex(GL_TEXTURE2, GL_RGB8, m_colorTex);			// Color
+//
+//	// Attach the textures to the framebuffer
+//	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_depthBuf);
+//	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_positionTex, 0);
+//	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_normalTex, 0);
+//	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, m_colorTex, 0);
+//
+//	GLenum drawBuffers[] = { GL_NONE, GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1,
+//		GL_COLOR_ATTACHMENT2 };
+//	glDrawBuffers(4, drawBuffers);
+//
+//	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+//
+//}
 
 JE_END
 

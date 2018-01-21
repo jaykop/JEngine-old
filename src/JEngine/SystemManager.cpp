@@ -45,7 +45,7 @@ void SystemManager::Init()
 	m_systems->Init();
 }
 
-void SystemManager::Update(float _dt)
+void SystemManager::Update(const float _dt)
 {
 	m_systems->Update(_dt);
 }
@@ -159,7 +159,7 @@ void SystemManager::Systems::Init()
 	m_pBehaviorSystem->Init();
 }
 
-void SystemManager::Systems::Update(float _dt)
+void SystemManager::Systems::Update(const float _dt)
 {
 	m_pGraphicSystem->Update(_dt);
 	m_pPhysicsSystem->Update(_dt);

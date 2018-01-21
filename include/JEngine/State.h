@@ -22,7 +22,7 @@ private:
 
 	void Load();
 	void Init();
-	void Update(float _dt);
+	void Update(const float _dt);
 	void Close();
 	void Unload();
 

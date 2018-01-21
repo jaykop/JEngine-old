@@ -27,6 +27,8 @@ struct Light {
 	
 	float m_cutOff;
 	float m_outerCutOff;
+	
+	bool m_offset;
 };
 
 ////////////////////////////
@@ -78,13 +80,13 @@ void main() {
 		// Any effect?
 		if ((enum_effectType != 0) || boolean_light) {
 			
-			// Impose visual effect here...
-			if (enum_effectType != 0)
-				VisualEffect(finalTexture);
-		
 			// Implement light attributes
 			if (boolean_light)
 				LightingEffect(finalTexture);
+				
+			// Impose visual effect here...
+			if (enum_effectType != 0)
+				VisualEffect(finalTexture);
 		}
 		
 		// Unless..
@@ -99,20 +101,19 @@ void main() {
 // function bodies
 ////////////////////////////
 void LightingEffect(inout vec4 _color) {
-	
+
 	// TODO
-	// Dynamic loops
-	for (int index = 0; index < 1; ++index) {
+	// Dynamic light loop...
+	for (int index = 0; index < 2; ++index) {
 	
 		vec3 	lightDirection;
 		float 	attenuation = 1.f;
 		vec3 	gap = light[index].m_position - v3_outFragmentPosition;
 		float 	theta = 0.f;
-	
+		
 		// Directional light
 		if (light[index].m_type == 1)
 			lightDirection = normalize(-light[index].m_direction);
-
 		else {
 			lightDirection = normalize(gap);
 		
@@ -150,10 +151,11 @@ void LightingEffect(inout vec4 _color) {
 			diffuse *= intensity;
 			specular *= intensity;
 		}
-		
+			
 		// Final light
 		_color += v4_lightColor[index] * ((ambient + diffuse + specular) * attenuation);
-	}
+		
+	} //for (int index = 0; index < 32; ++index) {
 	
 	// Refresh alpha value
 	_color.w = 1.0;

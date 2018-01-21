@@ -58,29 +58,20 @@ private:
 	void AddLight(Light* _light);
 	void RemoveLight(Light* _light);
 
-	void SetMVPAttributes(CR_vec3 _position, CR_vec3 _scale, 
-		CR_vec3 _rotationAxis, float _rotationDeg,
-		Camera* _camera, ProjectType _projection);
-	void SetMapAttributes(CR_vec4 _color, 
-		CR_vec3 _aniScale, CR_vec3 _aniTranslate,
-		bool _flip = false);
-
 	void LightSourcePipeline();
-	void NormalPipeline(float _dt);
+	void NormalPipeline(const float _dt);
 
 	void SpritePipeline(Sprite * _sprite);
 	void MappingPipeline(Sprite* _sprite);
 	void LightingEffectPipeline(Material* _material);
 
-	void ParticlePipeline(Emitter* _emitter, float _dt);
+	void ParticlePipeline(Emitter* _emitter, const float _dt);
 	void EffectsPipeline(Sprite* _sprite);
 
-	void Render(const unsigned _vbo, const unsigned _ebo,
+	void Render(const unsigned _vao, const unsigned _vbo, const unsigned _ebo,
 		const float _vertices[], const unsigned _indices[],
 		const int _verticesSize, const int _indicesSize, const int _elementSize);
-	void RenderParticle(const unsigned _vbo, const unsigned _ebo,
-		const float _vertices[], const unsigned _indices[], const int _verticesSize,
-		const int _indicesSize, const int _elementSize, const int _particleSize, float *_particleSizeData);
+	void RenderParticle(const int _particleSize, float *_positionData, float *_colorData);
 
 	void GLMousePosition();
 

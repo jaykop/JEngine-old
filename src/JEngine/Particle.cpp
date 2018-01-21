@@ -1,4 +1,5 @@
 #include "Particle.h"
+#include "GLManager.h"
 #include "AssetManager.h"
 #include "Transform.h"
 #include "GraphicSystem.h"
@@ -6,6 +7,8 @@
 #include "Random.h"
 
 JE_BEGIN
+
+const unsigned Emitter::m_maxSize = 1000;
 
 Emitter::Particle::Particle(Emitter* _emitter)
 	: m_emitter(_emitter), m_direction(vec3::ZERO), 
@@ -64,27 +67,33 @@ Emitter::Emitter(Object* _owner)
 	m_endColor(vec3::ZERO), m_life(1.f), m_type(PT_NORMAL),
 	m_direction(vec3::ZERO), m_velocity(vec3::ZERO), m_active(true),
 	m_range(vec3::ZERO), m_count(0), m_size(0), m_colorDiff(vec3::ZERO),
-	m_particleSize(nullptr)
+	m_colorData(nullptr), m_positionData(nullptr)
 {
 	m_isEmitter = true;
 }
 
 Emitter::~Emitter() 
 {
+
+	delete[] m_colorData; 
+	delete[] m_positionData;
+
 	// Clear particles
 	for (auto particle : m_particles) {
 		delete particle;
 		particle = nullptr;
 	}
 
-	delete[] m_particleSize;
 }
 
 void Emitter::Register()
 {
 	SystemManager::GetGraphicSystem()->AddSprite(this);
-	if (m_pOwner->HasComponent<Transform>()) 
+	if (m_pOwner->HasComponent<Transform>()) {
 		m_transform = m_pOwner->GetComponent<Transform>();
+
+		SetEmitter();
+	}
 }
 
 void Emitter::ManualRefresh()
@@ -175,14 +184,19 @@ void Emitter::Load(CR_RJValue _data)
 void Emitter::SetQuantity(unsigned _quantity)
 {
 	if (m_particles.empty()) {
+
+		if (m_maxSize < _quantity) {
+			_quantity = m_maxSize;
+			JE_DEBUG_PRINT("*Emitter: The quantity of particle must be less than 1000.\n");
+		}
+
 		for (unsigned i = 0; i < _quantity; ++i)
 			m_particles.push_back(new Particle(this));
 		m_size = _quantity;
-		m_particleSize = new float[m_size * 96];
 	}
 
 	else
-		JE_DEBUG_PRINT("Already allocated.\n");
+		JE_DEBUG_PRINT("*Emitter: Already allocated.\n");
 }
 
 void Emitter::SetColors(const vec3& _start, const vec3& _end)
@@ -205,6 +219,36 @@ void Emitter::Refresh(Particle *_particle)
 
 }
 
+void Emitter::SetEmitter()
+{
+	m_positionData = new float[3 * m_size];
+	m_colorData = new float[4 * m_size];
+
+	glGenVertexArrays(1, &m_vao);
+
+	glGenBuffers(1, &m_center);
+	glBindBuffer(GL_ARRAY_BUFFER, m_center);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLM::m_verticesParticle), GLM::m_verticesParticle, GL_STATIC_DRAW);
+	
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
+	glEnableVertexAttribArray(2);
+
+	glGenBuffers(1, &m_position);
+	glBindBuffer(GL_ARRAY_BUFFER, m_position);
+	glBufferData(GL_ARRAY_BUFFER, m_size * 3 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
+
+	glGenBuffers(1, &m_color);
+	glBindBuffer(GL_ARRAY_BUFFER, m_color);
+	glBufferData(GL_ARRAY_BUFFER, m_size * 4 * sizeof(GLfloat), NULL, GL_STREAM_DRAW);
+
+}
+
 EmitterBuilder::EmitterBuilder()
 	:ComponentBuilder()
 {}
@@ -213,6 +257,5 @@ Component* EmitterBuilder::CreateComponent(Object * _pOwner) const
 {
 	return new Emitter(_pOwner);
 }
-
 
 JE_END

@@ -47,6 +47,7 @@ private:
 	void operator=(const AssetManager& /*_copy*/) = delete;
 
 	// Private member functions
+	static void LoadBuiltInComponents();
 	static void Load();
 	static void Unload();
 

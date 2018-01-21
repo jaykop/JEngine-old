@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "glew.h"
 #include "Sprite.h"
 #include "Vector3.h"
 
@@ -67,7 +68,7 @@ public:
 	ParticleType	m_type;
 	vec3			m_direction, m_velocity, m_range;
 	unsigned		m_count, m_size;
-	float			m_life, *m_particleSize;
+	float			m_life;
 
 	void Register() override;
 
@@ -81,15 +82,22 @@ private:
 	~Emitter();
 
 	void Load(CR_RJValue _data) override;
+	void SetEmitter();
 	void Refresh(Particle* _particle);
 
 	Particles	m_particles; 
 	vec3		m_startColor, m_endColor, m_colorDiff;
 	bool		m_changeColor;
 
+	GLuint		m_velVbo, m_timeVbo, m_positionBuf;
+	GLuint		m_vao, m_center, m_position, m_color;
+	float		*m_positionData, *m_colorData;
+
 	Emitter() = delete;
 	Emitter(const Emitter& /*_copy*/) = delete;
 	void operator=(const Emitter& /*_copy*/) = delete;
+
+	const static unsigned m_maxSize;
 
 };
 

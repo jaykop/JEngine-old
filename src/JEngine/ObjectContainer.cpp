@@ -20,7 +20,7 @@ void ObjectContainer::RemoveObject(const char* _name)
 	}
 
 	else
-		JE_DEBUG_PRINT("No such object.\n");
+		JE_DEBUG_PRINT("*ObjectContainer: No such name of enrolled object - %s\n", _name);
 }
 
 Object* ObjectContainer::GetObject(const char * _name)
@@ -33,7 +33,7 @@ Object* ObjectContainer::GetObject(const char * _name)
 		return (*faound).second;
 
 	else {
-		JE_DEBUG_PRINT("No such object.\n");
+		JE_DEBUG_PRINT("*ObjectContainer: No such name of enrolled object - %s\n", _name);
 		return nullptr;
 	}
 }

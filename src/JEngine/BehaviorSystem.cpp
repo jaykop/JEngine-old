@@ -38,7 +38,7 @@ void BehaviorSystem::Init()
 	}
 }
 
-void BehaviorSystem::Update(float _dt)
+void BehaviorSystem::Update(const float _dt)
 {
 	for (auto behavior : m_behaviors) {
 		behavior->Update(_dt);

@@ -11,13 +11,14 @@ JE_BEGIN
 class GLManager {
 
 	friend class Shader;
+	friend class Emitter;
 	friend class Application;
 	friend class GraphicSystem;
 
 	using Shaders = std::vector<Shader*>;
 
 	enum DrawMode { DRAW_DOT, DRAW_LINE, DRAW_FILL };
-	enum ShaderType {SHADER_NORMAL, SHADER_LIGHTING, SHADER_END};
+	enum ShaderType {SHADER_NORMAL, SHADER_LIGHTING, SHADER_PARTICLE, SHADER_END};
 	enum UniformType {
 
 		/******************** Normal shader ********************/
@@ -45,7 +46,6 @@ class GLManager {
 		//////////////////////
 		UNIFORM_FLIP,			// animation attributes
 		UNIFORM_IS_LIGHT,		// light attributes
-		UNIFORM_HIDE_PARTICLE,	// hide particle
 
 		//////////////////////
 		// Float uniform
@@ -71,6 +71,16 @@ class GLManager {
 		UNIFORM_LIGHT_CAMERA, UNIFORM_LIGHT_PROJECTION,
 		UNIFORM_LIGHT_COLOR,
 
+		/******************** Particle shader ********************/
+		UNIFORM_PARTICLE_TRANSLATE, UNIFORM_PARTICLE_SCALE,
+		UNIFORM_PARTICLE_ROTATE, UNIFORM_PARTICLE_CAMERA,
+		UNIFORM_PARTICLE_PROJECTION,
+		
+		UNIFORM_PARTICLE_COLOR,
+		UNIFORM_PARTICLE_HIDE,			// hide particle
+
+		UNIFORM_PARTICLE_LIFETIME, UNIFORM_PARTICLE_TIME,
+
 		UNIFORM_END
 	};
 
@@ -81,20 +91,28 @@ public:
 private:
 
 	// Private member functions
-	static bool	initSDL_GL();
+	static bool	initSDL_GL(float _width, float _height);
 	static void	CloseSDL_GL();
 	static void	RegisterUniform();
+	//static void CreateGBufferTex(GLenum _texUnit, GLenum _format, GLuint & _texid);
 	static void	InitGLEnvironment();
+	static void InitVBO();
+	//static void InitFBO();
 	static void InitShaders();
+	static void ShowGLVersion();
 
 	// Private member variables
-	static unsigned		m_glArrayMax;
+	static float		m_width, m_height;
+	static Shaders		m_shader;
 	static DrawMode		m_mode;
-	static GLuint		m_vao, m_vbo, m_ebo, /*m_lightVao,*/ m_particleVbo, m_particleEbo;
-	static Shaders		m_shaders;
 	static GLint		m_uniform[UNIFORM_END];
+	static GLuint		m_passIndex[2];
+	static GLuint		m_vao, m_vbo, m_ebo, m_particleVao, m_lightVao,
+		m_particleVbo, m_particleEbo, m_particlePosition, m_particleColor;
+	//static GLuint		m_deferredFBO, m_positionTex, m_normalTex, m_colorTex, m_depthBuf;
 
 	// Basic indices and vertices sets
+	//static const unsigned	m_glArrayMax;
 	static const float		m_vertices[192], m_vertices2d[32], m_verticesParticle[96];
 	static const unsigned	m_indices[36], m_indices2d[6], m_indicesParticle[18];
 	static const int		m_cube, m_rect, m_particle;

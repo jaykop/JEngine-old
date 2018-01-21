@@ -7,11 +7,12 @@ template<class EffectType>
 inline void Sprite::AddEffect() {
 
 	VisualEffect::VEType veType;
-	ConvertVEType(typeid(EffectType).name(), veType);
+	const char* effectName = typeid(EffectType).name();
+	ConvertVEType(effectName, veType);
 
 	auto found = m_effects.find(veType);
 	if (found != m_effects.end())
-		JE_DEBUG_PRINT("Same effect exists already!\n");
+		JE_DEBUG_PRINT("*Sprite: Existing effet - %s\n", effectName);
 
 	else {
 		m_effects.insert(
@@ -24,14 +25,15 @@ template<class EffectType>
 inline EffectType* Sprite::GetEffect() {
 
 	VisualEffect::VEType veType;
-	ConvertVEType(typeid(EffectType).name(), veType);
+	const char* effectName = typeid(EffectType).name();
+	ConvertVEType(effectName, veType);
 
 	auto found = m_effects.find(veType);
 	if (found != m_effects.end())
 		return static_cast<EffectType*>(found->second);
 
 	else {
-		JE_DEBUG_PRINT("No such effect in the list.\n");
+		JE_DEBUG_PRINT("*Sprite: No such name of enrolled effect - %s\n", effectName);
 		return nullptr;
 	}
 }
@@ -40,11 +42,12 @@ template<class EffectType>
 inline void Sprite::RemoveEffect() {
 
 	VisualEffect::VEType veType;
-	ConvertVEType(typeid(EffectType).name(), veType);
+	const char* effectName = typeid(EffectType).name();
+	ConvertVEType(effectName, veType);
 
 	auto found = m_effects.find(type);
 	if (found == m_effects.end())
-		JE_DEBUG_PRINT("No such effect in the list.\n");
+		JE_DEBUG_PRINT("*Sprite: No such name of enrolled effect - %s\n", effectName);
 
 	else {
 		delete found->second;
@@ -57,14 +60,15 @@ template<class EffectType>
 inline bool Sprite::HasEffect() {
 
 	VisualEffect::VEType veType;
-	ConvertVEType(typeid(EffectType).name(), veType);
+	const char* effectName = typeid(EffectType).name();
+	ConvertVEType(effectName, veType);
 
 	auto found = m_effects.find(veType);
 	if (found != m_effects.end())
 		return true;
 
 	else {
-		JE_DEBUG_PRINT("No such effect in the list.\n");
+		JE_DEBUG_PRINT("*Sprite: No such name of enrolled effect - %s\n", effectName);
 		return false;
 	}
 }

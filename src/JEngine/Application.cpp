@@ -19,7 +19,7 @@ SDL_Event		APP::m_pEvent;
 SDL_Window*		APP::m_pWindow = nullptr;
 SDL_Surface*	APP::m_pSurface = nullptr;
 SDL_GLContext	APP::m_pContext = nullptr;
-APP::InitData	APP::m_pData = { "demo", false, 800, 600 };
+APP::InitData	APP::m_Data = { "demo", false, 800, 600 };
 
 bool Application::Initialize()
 {
@@ -34,14 +34,14 @@ bool Application::Initialize()
 	if (title.IsString() && fullscreen.IsBool()
 		&& width.IsInt() && height.IsInt()) {
 
-		m_pData.m_title.assign(title.GetString());
-		m_pData.m_isFullScreen = fullscreen.GetBool();
-		m_pData.m_width = width.GetInt();
-		m_pData.m_height = height.GetInt();
+		m_Data.m_title.assign(title.GetString());
+		m_Data.m_isFullScreen = fullscreen.GetBool();
+		m_Data.m_width = width.GetInt();
+		m_Data.m_height = height.GetInt();
 	}
 
 	else {
-		JE_DEBUG_PRINT("Wrong init data!\n");
+		JE_DEBUG_PRINT("*Application: Wrong init data.\n");
 		return false;
 	}
 
@@ -54,7 +54,7 @@ bool Application::Initialize()
 	// Check right init
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
 		// Print error message
-		JE_DEBUG_PRINT("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+		JE_DEBUG_PRINT("*Application: SDL could not initialize! SDL_Error - %s\n", SDL_GetError());
 		return false;
 	}
 
@@ -67,12 +67,12 @@ void Application::Update()
 	SDL_GetCurrentDisplayMode(0, &current);
 
 	//Create window
-	m_pWindow = SDL_CreateWindow(m_pData.m_title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-		m_pData.m_width, m_pData.m_height, SDL_WINDOW_OPENGL);
+	m_pWindow = SDL_CreateWindow(m_Data.m_title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+		m_Data.m_width, m_Data.m_height, SDL_WINDOW_OPENGL);
 
 
 	if (!m_pWindow) 
-		JE_DEBUG_PRINT("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+		JE_DEBUG_PRINT("*Application: Window could not be created! SDL_Error - %s\n", SDL_GetError());
 
 	else {
 		
@@ -81,7 +81,7 @@ void Application::Update()
 
 		/*************** OpenGL **************/
 		m_pContext = SDL_GL_CreateContext(m_pWindow);
-		GLM::initSDL_GL();
+		GLM::initSDL_GL(float(m_Data.m_width), float(m_Data.m_height));
 
 		/**************** imgui **************/
 		#ifdef JE_SUPPORT_IMGUI
@@ -147,7 +147,7 @@ SDL_Surface* Application::GetSurface()
 
 Application::InitData& Application::GetData()
 {
-	return m_pData;
+	return m_Data;
 }
 
 JE_END

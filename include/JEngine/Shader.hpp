@@ -32,6 +32,7 @@ private:
 	void SetInt(GLManager::UniformType _uniform, int _int);
 
 	// By const character
+	void SetBool(const char* _name, bool _bool);
 	void SetVector4(const char * _name, const vec4& _vector);
 	void SetVector3(const char * _name, const vec3& _vector);
 	void SetInt(const char * _name, int _int);

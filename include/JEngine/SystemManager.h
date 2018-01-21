@@ -28,7 +28,7 @@ class SystemManager {
 
 		void Load(CR_RJDoc _data);
 		void Init();
-		void Update(float _dt);
+		void Update(const float _dt);
 		void Close();
 		void Unload();
 
@@ -57,7 +57,7 @@ private:
 
 	static void Load(CR_RJDoc _data);
 	static void Init();
-	static void Update(float _dt);
+	static void Update(const float _dt);
 	static void Close();
 	static void Unload();
 
