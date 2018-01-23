@@ -39,7 +39,7 @@ public:
 
 private:
 
-	Camera(Object* _owner);
+	Camera(Object* _pOwner);
 	~Camera() {};
 
 	Camera() = delete;

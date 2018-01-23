@@ -19,7 +19,7 @@ void BehaviorSystem::RemoveBehavior(UserComponent* _behavior)
 {
 	for (Behaviors::iterator it = m_behaviors.begin();
 		it != m_behaviors.end(); ++it) {
-		if ((*it)->m_ownerId == _behavior->m_ownerId) {
+		if ((*it)->m_pOwnerId == _behavior->m_pOwnerId) {
 			m_behaviors.erase(it);
 			break;
 		}

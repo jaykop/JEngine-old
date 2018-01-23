@@ -16,8 +16,8 @@ public:
 
 protected:
 
-	UserComponent(Object* _owner = nullptr)
-		: Component(_owner, true) {};
+	UserComponent(Object* _pOwner = nullptr)
+		: Component(_pOwner, true) {};
 	virtual	~UserComponent() {};
 
 private:

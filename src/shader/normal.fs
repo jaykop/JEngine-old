@@ -71,7 +71,7 @@ void VisualEffect(inout vec4 _color);
 ////////////////////////////
 void main() {
 
-	vec4 finalTexture = vec4(0,0,0,0);
+	vec4 finalTexture = vec4(0,0,0,1);
 	
 	if (boolean_hideParticle)
 		v4_fragColor = finalTexture;
@@ -93,8 +93,8 @@ void main() {
 		else
 			finalTexture = texture(Texture, v2_outTexCoord)* v4_color;
 		
-		v4_fragColor = finalTexture;
 	}
+	v4_fragColor = finalTexture;
 }
 
 ////////////////////////////
@@ -104,7 +104,7 @@ void LightingEffect(inout vec4 _color) {
 
 	// TODO
 	// Dynamic light loop...
-	for (int index = 0; index < 2; ++index) {
+	for (uint index = 0; index < 1; ++index) {
 	
 		vec3 	lightDirection;
 		float 	attenuation = 1.f;
@@ -153,9 +153,8 @@ void LightingEffect(inout vec4 _color) {
 		}
 			
 		// Final light
-		_color += v4_lightColor[index] * ((ambient + diffuse + specular) * attenuation);
-		
-	} //for (int index = 0; index < 32; ++index) {
+		_color += v4_lightColor[index];// * ((ambient + diffuse + specular) * attenuation);
+	} 
 	
 	// Refresh alpha value
 	_color.w = 1.0;

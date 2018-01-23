@@ -44,7 +44,7 @@ private:
 
 	// Locked constuctors and destructor
 	~Animation() {};
-	Animation(Object* _owner);
+	Animation(Object* _pOwner);
 
 	Animation() = delete;
 	Animation(const Animation& /*_copy*/) = delete;

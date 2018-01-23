@@ -59,6 +59,7 @@ private:
 	static SDL_Event		m_pEvent;	// SDL Event
 	static SDL_GLContext	m_pContext;	// SDL GL context
 	static SDL_Surface*		m_pSurface; // SDL screen surface
+	static int				m_buffers, m_samples;
 };
 
 using APP = Application;

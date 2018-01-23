@@ -5,30 +5,30 @@ JE_BEGIN
 //////////////////////////////////////////////////////////////////////////
 // VisualEffect class
 //////////////////////////////////////////////////////////////////////////
-VisualEffect::VisualEffect(Sprite* _ownerSprite, VEType type)
-	:m_pSprite(_ownerSprite), m_active(true), m_type(type)
+VisualEffect::VisualEffect(Sprite* _pOwnerSprite, VEType type)
+	:m_pSprite(_pOwnerSprite), m_active(true), m_type(type)
 {}
 
 //////////////////////////////////////////////////////////////////////////
 // Blur class
 //////////////////////////////////////////////////////////////////////////
-Blur::Blur(Sprite* _ownerSprite, VEType type) 
-	:VisualEffect(_ownerSprite, type),
+Blur::Blur(Sprite* _pOwnerSprite, VEType type) 
+	:VisualEffect(_pOwnerSprite, type),
 	m_size(0.f), m_amount(0.f)
 {}
 
 //////////////////////////////////////////////////////////////////////////
 // Sobel class
 //////////////////////////////////////////////////////////////////////////
-Sobel::Sobel(Sprite* _ownerSprite, VEType type)
-	:VisualEffect(_ownerSprite, type), m_amount(0.f)
+Sobel::Sobel(Sprite* _pOwnerSprite, VEType type)
+	:VisualEffect(_pOwnerSprite, type), m_amount(0.f)
 {}
 
 //////////////////////////////////////////////////////////////////////////
 // Inverse class
 //////////////////////////////////////////////////////////////////////////
-Inverse::Inverse(Sprite* _ownerSprite, VEType type)
-	:VisualEffect(_ownerSprite, type)
+Inverse::Inverse(Sprite* _pOwnerSprite, VEType type)
+	:VisualEffect(_pOwnerSprite, type)
 {}
 
 JE_END

@@ -4,8 +4,8 @@
 
 JE_BEGIN
 
-Transform::Transform(Object* _owner)
-	:Component(_owner), 
+Transform::Transform(Object* _pOwner)
+	:Component(_pOwner), 
 	m_position(vec3::ZERO), m_scale(vec3::ZERO), 
 	m_rotation(0.f), m_rotationAxis(vec3::UNIT_Z)
 {

@@ -48,6 +48,21 @@ vec4 Random::GetRandVec4(float _min, float _max)
 		GetRandomFloat(_min, _max));
 }
 
+vec3 Random::GetRandVec3(float _x, float _y, float _z)
+{
+	return vec3(GetRandomFloat(-_x, _x),
+		GetRandomFloat(-_y, _y),
+		GetRandomFloat(-_z, _z));
+}
+
+vec4 Random::GetRandVec4(float _x, float _y, float _z, float _w)
+{
+	return vec4(GetRandomFloat(-_x, _x),
+		GetRandomFloat(-_y, _y),
+		GetRandomFloat(-_z, _z),
+		GetRandomFloat(-_w, _w));
+}
+
 float Random::GetRandomFloat(float _min, float _max) 
 {
 	std::uniform_real_distribution<float>	floatRand(_min, _max);

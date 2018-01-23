@@ -5,25 +5,25 @@
 
 JE_BEGIN
 
-Material::Material(Object* _owner)
-	:Component(_owner), m_diffuse(0), 
+Material::Material(Object* _pOwner)
+	:Component(_pOwner), m_diffuse(0), 
 	m_specular(0), m_shininess(1.f)
 {
 	// Connect to sprite's pointer
-	if (_owner->HasComponent<Sprite>()
-		&& !_owner->GetComponent<Sprite>()->m_hasMaterial) {
-		_owner->GetComponent<Sprite>()->m_material = this;
-		_owner->GetComponent<Sprite>()->m_hasMaterial = true;
+	if (_pOwner->HasComponent<Sprite>()
+		&& !_pOwner->GetComponent<Sprite>()->m_hasMaterial) {
+		_pOwner->GetComponent<Sprite>()->m_material = this;
+		_pOwner->GetComponent<Sprite>()->m_hasMaterial = true;
 	}
 
-	else if (_owner->HasComponent<Model>()
-		&& !_owner->GetComponent<Model>()->m_hasMaterial) {
-		_owner->GetComponent<Model>()->m_material = this;
-		_owner->GetComponent<Model>()->m_hasMaterial = true;
+	else if (_pOwner->HasComponent<Model>()
+		&& !_pOwner->GetComponent<Model>()->m_hasMaterial) {
+		_pOwner->GetComponent<Model>()->m_material = this;
+		_pOwner->GetComponent<Model>()->m_hasMaterial = true;
 	}
 
 	else
-		JE_DEBUG_PRINT("*Material : This object has no sprite componnet - %s\n", _owner->GetName().c_str());
+		JE_DEBUG_PRINT("*Material : This object has no sprite componnet - %s\n", _pOwner->GetName().c_str());
 }
 
 void Material::Load(CR_RJValue _data)

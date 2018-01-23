@@ -37,7 +37,7 @@ public:
 
 private:
 
-	Material(Object* _owner);
+	Material(Object* _pOwner);
 	~Material() {};
 
 	Material() = delete;

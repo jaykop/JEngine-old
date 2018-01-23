@@ -15,6 +15,8 @@ JE_BEGIN
 //////////////////////////////////////////////////////////////////////////
 // static variables
 //////////////////////////////////////////////////////////////////////////
+int				APP::m_samples = 0;
+int				APP::m_buffers = 0;
 SDL_Event		APP::m_pEvent;
 SDL_Window*		APP::m_pWindow = nullptr;
 SDL_Surface*	APP::m_pSurface = nullptr;
@@ -45,12 +47,6 @@ bool Application::Initialize()
 		return false;
 	}
 
-	// Call opengl 3.2
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
-
 	// Check right init
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
 		// Print error message
@@ -58,11 +54,21 @@ bool Application::Initialize()
 		return false;
 	}
 
+	// Call opengl 4.1
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
+	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
+
 	return true;
 }
 
 void Application::Update()
 {	
+	//SDL_SetVideoMode();
 	SDL_DisplayMode current;
 	SDL_GetCurrentDisplayMode(0, &current);
 
@@ -70,6 +76,8 @@ void Application::Update()
 	m_pWindow = SDL_CreateWindow(m_Data.m_title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 		m_Data.m_width, m_Data.m_height, SDL_WINDOW_OPENGL);
 
+	// Window flag
+	SDL_SetWindowFullscreen(m_pWindow, m_Data.m_isFullScreen);
 
 	if (!m_pWindow) 
 		JE_DEBUG_PRINT("*Application: Window could not be created! SDL_Error - %s\n", SDL_GetError());

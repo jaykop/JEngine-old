@@ -16,6 +16,8 @@ public:
 	static bool		GetRandBoolean(float _probabilityOfTrue);
 	static vec3		GetRandVec3(float  _min, float _max);
 	static vec4		GetRandVec4(float  _min, float  _max);
+	static vec3		GetRandVec3(float _x, float _y, float _z);
+	static vec4		GetRandVec4(float _x, float _y, float _z, float _w);
 
 private:
 	

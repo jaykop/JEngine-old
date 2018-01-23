@@ -37,6 +37,8 @@ public:
 	void	SetBackgroundColor(CR_vec4 _color);
 	void	SetBackgroundColor(float _r, float _g, float _b, float _a);
 
+	bool	m_Is2d;
+
 private:
 
 	GraphicSystem();
@@ -68,10 +70,7 @@ private:
 	void ParticlePipeline(Emitter* _emitter, const float _dt);
 	void EffectsPipeline(Sprite* _sprite);
 
-	void Render(const unsigned _vao, const unsigned _vbo, const unsigned _ebo,
-		const float _vertices[], const unsigned _indices[],
-		const int _verticesSize, const int _indicesSize, const int _elementSize);
-	void RenderParticle(const int _particleSize, float *_positionData, float *_colorData);
+	void Render(const unsigned &_vao, const int _elementSize);
 
 	void GLMousePosition();
 
@@ -82,7 +81,7 @@ private:
 	Camera*		m_pMainCamera;
 	
 	int		m_width, m_height;
-	bool	m_orthoFirst, m_inside, m_isLight;
+	bool	m_orthoFirst, m_inside, m_IsLight;
 	mat4	m_perspective, m_orthogonal, m_viewport;
 	vec4	m_backgroundColor;
 	vec3	m_aniScale, m_aniTranslate;

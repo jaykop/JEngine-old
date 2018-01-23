@@ -2,8 +2,8 @@
 
 JE_BEGIN
 
-Model::Model(Object* _owner)
-	:Sprite(_owner)
+Model::Model(Object* _pOwner)
+	:Sprite(_pOwner)
 {}
 
 ModelBuilder::ModelBuilder()

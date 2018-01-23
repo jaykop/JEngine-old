@@ -19,6 +19,7 @@ class GLManager {
 
 	enum DrawMode { DRAW_DOT, DRAW_LINE, DRAW_FILL };
 	enum ShaderType {SHADER_NORMAL, SHADER_LIGHTING, SHADER_PARTICLE, SHADER_END};
+	enum ShapeType { SHAPE_POINT, SHAPE_PLANE, SHAPE_PARTICLE, SHAPE_CUBE, SHAPE_END};
 	enum UniformType {
 
 		/******************** Normal shader ********************/
@@ -100,6 +101,9 @@ private:
 	//static void InitFBO();
 	static void InitShaders();
 	static void ShowGLVersion();
+	static void SetVAO(GLuint &_vao, GLuint &_vbo, GLuint &_ebo,
+		const unsigned _verticeSize, const unsigned _elementSize,
+		const float _vertices[], const unsigned _elements[]);
 
 	// Private member variables
 	static float		m_width, m_height;
@@ -107,15 +111,15 @@ private:
 	static DrawMode		m_mode;
 	static GLint		m_uniform[UNIFORM_END];
 	static GLuint		m_passIndex[2];
-	static GLuint		m_vao, m_vbo, m_ebo, m_particleVao, m_lightVao,
-		m_particleVbo, m_particleEbo, m_particlePosition, m_particleColor;
+	static GLuint		m_vao[SHAPE_END], m_vbo[SHAPE_END], m_ebo[SHAPE_END],
+		m_particlePosition, m_particleColor;
 	//static GLuint		m_deferredFBO, m_positionTex, m_normalTex, m_colorTex, m_depthBuf;
 
 	// Basic indices and vertices sets
 	//static const unsigned	m_glArrayMax;
-	static const float		m_vertices[192], m_vertices2d[32], m_verticesParticle[96];
-	static const unsigned	m_indices[36], m_indices2d[6], m_indicesParticle[18];
-	static const int		m_cube, m_rect, m_particle;
+	static const float		m_verticesPoint[8], m_verticesPlane[32], m_verticesParticle[96], m_verticesCube[192];
+	static const unsigned	m_indicesPoint[1], m_indicesPlane[6], m_indicesParticle[18], m_indicesCube[36], 
+		m_elementSize[SHAPE_END], m_vertexSize[SHAPE_END];
 
 	// Locked functions
 	GLManager() = delete;

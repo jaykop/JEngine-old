@@ -14,13 +14,13 @@ JE_BEGIN
 void GraphicSystem::LightSourcePipeline()
 {
 	// Update sprites and lights
-	m_isLight = m_lights.empty() ? false : true;
+	m_IsLight = m_lights.empty() ? false : true;
 	
 	// Inform that there are lights
 	GLM::m_shader[GLM::SHADER_NORMAL]->Use();
 
 	GLM::m_shader[GLM::SHADER_NORMAL]->SetBool(
-		GLM::UNIFORM_IS_LIGHT, m_isLight);
+		GLM::UNIFORM_IS_LIGHT, m_IsLight);
 
 	static int s_lightSize;
 
@@ -30,7 +30,7 @@ void GraphicSystem::LightSourcePipeline()
 	GLM::m_shader[GLM::SHADER_NORMAL]->SetInt(
 		GLM::UNIFORM_LIGHT_SIZE, s_lightSize);
 
-	if (m_isLight) {
+	if (m_IsLight) {
 
 		static vec3 s_lightScale(10.f, 10.f, 10.f), s_lightUp(0, 1, 0);
 		static float s_lightDeg = 0.f;
@@ -65,9 +65,8 @@ void GraphicSystem::LightSourcePipeline()
 				light->m_color);
 
 			//glBindVertexArray(GLM::m_lightVao);
-			Render(GLM::m_lightVao, GLM::m_vbo, GLM::m_ebo,
-				GLM::m_vertices, GLM::m_indices,
-				sizeof(GLM::m_vertices), sizeof(GLM::m_indices), GLM::m_cube);
+			Render(GLM::m_vao[GLM::SHAPE_CUBE], GLM::m_elementSize[GLM::SHAPE_CUBE]);
+
 		} // for (auto light : m_lights) {
 	} // if (m_isLight) {
 }
@@ -91,8 +90,10 @@ void GraphicSystem::NormalPipeline(const float _dt)
 
 void GraphicSystem::SpritePipeline(Sprite *_sprite)
 {
-	// Here check if the sprite is
-	// either outside the screen or not
+	glEnable(GL_BLEND);
+	//glEnable(GL_POLYGON_SMOOTH);
+	//glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	static Transform* s_pTransform;
 	s_pTransform = _sprite->m_transform;
@@ -149,14 +150,13 @@ void GraphicSystem::SpritePipeline(Sprite *_sprite)
 	if (!_sprite->m_effects.empty())
 		EffectsPipeline(_sprite);
 
-	if (_sprite->m_hasMaterial && m_isLight)
+	if (_sprite->m_hasMaterial && m_IsLight)
 		LightingEffectPipeline(_sprite->m_material);
 
 	// TODO
 	// Just render cube for now...
-	Render(GLM::m_vao, GLM::m_vbo, GLM::m_ebo,
-		GLM::m_vertices, GLM::m_indices,
-		sizeof(GLM::m_vertices), sizeof(GLM::m_indices), GLM::m_cube);
+	Render(GLM::m_vao[GLM::SHAPE_CUBE], GLM::m_elementSize[GLM::SHAPE_CUBE]);
+	glDisable(GL_BLEND);
 }
 
 void GraphicSystem::MappingPipeline(Sprite* _sprite)
@@ -327,17 +327,23 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 	// Check emitter's active toggle
 	if (_emitter->m_active) {
 
-		GLM::m_shader[GLM::SHADER_PARTICLE]->Use();
+		//glDisable(GL_LIGHTING);
+		glEnable(GL_BLEND);					// Enable blend 
+		glDepthMask(GL_FALSE);				// Ignore depth buffer writing
+		//glDisable(GL_DEPTH_TEST);
+		//glBlendFunc(GL_ONE, GL_ONE);
+		//glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+		//glBlendFunc(GL_ONE, GL_SRC_ALPHA);
+		//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		static vec3		s_velocity, s_colorDiff, s_position;
-		static float	s_doubleDt;
-		static bool		s_changeColor;
-		static vec4		s_color;
-		static unsigned s_texture, s_count;
-		static Transform* s_pTransform;
-		static Emitter::ParticleType s_type;
+		static vec3						s_velocity, s_colorDiff;
+		static float					s_doubleDt;
+		static bool						s_changeColor;
+		static vec4						s_color;
+		static unsigned					s_texture;
+		static Transform*				s_pTransform;
+		static Emitter::ParticleType	s_type;
 
-		s_count = 0;
 		s_changeColor = _emitter->m_changeColor;
 		s_type = _emitter->m_type;
 		s_pTransform = _emitter->m_transform;
@@ -345,160 +351,66 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 		s_doubleDt = _dt * _dt;
 		s_velocity = _dt * _emitter->m_velocity;
 		s_colorDiff = s_doubleDt * _emitter->m_colorDiff;
-		s_color.Set(_emitter->m_startColor.x, _emitter->m_startColor.y,
-			_emitter->m_startColor.z, 1.f);
 
-		// Send transform info to shader
-		GLM::m_shader[GLM::SHADER_PARTICLE]->SetMatrix(
-			GLM::UNIFORM_PARTICLE_TRANSLATE, mat4::Translate(s_pTransform->m_position));
-
-		GLM::m_shader[GLM::SHADER_PARTICLE]->SetMatrix(
-			GLM::UNIFORM_PARTICLE_SCALE, mat4::Scale(s_pTransform->m_scale));
-
-		GLM::m_shader[GLM::SHADER_PARTICLE]->SetMatrix(
-			GLM::UNIFORM_PARTICLE_ROTATE, mat4::Rotate(s_pTransform->m_rotation, s_pTransform->m_rotationAxis));
-
-		// Send camera info to shader
-		m_viewport = mat4::Camera(
-			m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
-
-		GLM::m_shader[GLM::SHADER_PARTICLE]->SetMatrix(
-			GLM::UNIFORM_PARTICLE_CAMERA, m_viewport);
-
-		// Send projection info to shader
-		if (_emitter->m_projection == PERSPECTIVE)
-			GLM::m_shader[GLM::SHADER_PARTICLE]->SetMatrix(
-				GLM::UNIFORM_PARTICLE_PROJECTION, m_perspective);
-		else
-			GLM::m_shader[GLM::SHADER_PARTICLE]->SetMatrix(
-				GLM::UNIFORM_PARTICLE_PROJECTION, m_orthogonal);
-
-		glBindTexture(GL_TEXTURE_2D, s_texture);
-
-		// Send color info to shader
-		GLM::m_shader[GLM::SHADER_PARTICLE]->SetVector4(
-			GLM::UNIFORM_PARTICLE_COLOR, s_color);
+		GLM::m_shader[GLM::SHADER_PARTICLE]->Use();
 
 		for (auto particle : _emitter->m_particles) {
 
-			if (particle->m_life < 0.f) {
-				if (s_type == Emitter::PT_NORMAL)
-					particle->Refresh();
-				else if(s_type == Emitter::PT_RAIN)
-					particle->RainRefresh();
-				//TODO
-				// Smog Type
-			}
+			if (particle->m_life < 0.f)
+				particle->Refresh();
 
-			//else {
+			else {
 
 				particle->m_life -= s_doubleDt;
 				particle->m_position += particle->m_direction * s_velocity;
-				s_position = particle->m_position;
+				particle->m_rotation += particle->m_rotateDiff;
 
-				static int s_posStride, s_colorStride;
-				
-				s_posStride = 3 * s_count;
-				s_colorStride = 4 * s_count;
+				if (s_changeColor)
+					particle->m_color += s_colorDiff;
 
-				_emitter->m_positionData[s_posStride] = s_position.x;
-				_emitter->m_positionData[s_posStride + 1] = s_position.y;
-				_emitter->m_positionData[s_posStride + 2] = s_position.z;
+				s_color.Set(particle->m_color.x, particle->m_color.y, particle->m_color.z,
+					particle->m_life);
 
-				//if (s_changeColor) {
-				//	particle->m_color += s_colorDiff;
-					s_color.Set(particle->m_color.x, particle->m_color.y, particle->m_color.z,
-						particle->m_life);
+				// Send transform info to shader
+				GLM::m_shader[GLM::SHADER_PARTICLE]->SetMatrix(
+					GLM::UNIFORM_PARTICLE_TRANSLATE, mat4::Translate(particle->m_position));
 
-				//}
-				//else
-				//	s_color.w = particle->m_life;
+				GLM::m_shader[GLM::SHADER_PARTICLE]->SetMatrix(
+					GLM::UNIFORM_PARTICLE_SCALE, mat4::Scale(s_pTransform->m_scale));
 
-				//_emitter->m_colorData[s_colorStride] = s_color.x;
-				_emitter->m_colorData[s_colorStride + 1] = s_color.y;
-				_emitter->m_colorData[s_colorStride + 2] = s_color.z;
-				_emitter->m_colorData[s_colorStride + 3] = s_color.w;
+				GLM::m_shader[GLM::SHADER_PARTICLE]->SetMatrix(
+					GLM::UNIFORM_PARTICLE_ROTATE, mat4::Rotate(particle->m_rotation, s_pTransform->m_rotationAxis));
 
+				// Send camera info to shader
+				m_viewport = mat4::Camera(
+					m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
 
-				/*if (s_type != Emitter::PT_EXPLODE)
-					GLM::m_shader[GLM::SHADER_PARTICLE]->SetBool(
-						GLM::UNIFORM_PARTICLE_HIDE, particle->m_standBy);
+				GLM::m_shader[GLM::SHADER_PARTICLE]->SetMatrix(
+					GLM::UNIFORM_PARTICLE_CAMERA, m_viewport);
 
-				else {
-					GLM::m_shader[GLM::SHADER_PARTICLE]->SetBool(
-						GLM::UNIFORM_PARTICLE_HIDE, false);
+				// Send projection info to shader
+				if (_emitter->m_projection == PERSPECTIVE)
+					GLM::m_shader[GLM::SHADER_PARTICLE]->SetMatrix(
+						GLM::UNIFORM_PARTICLE_PROJECTION, m_perspective);
+				else
+					GLM::m_shader[GLM::SHADER_PARTICLE]->SetMatrix(
+						GLM::UNIFORM_PARTICLE_PROJECTION, m_orthogonal);
 
-					if (particle->m_life <= 0.f) {
-						_emitter->m_count++;
-						if (_emitter->m_size == _emitter->m_count)
-							_emitter->m_active = false;
-					}
-				}*/
+				glBindTexture(GL_TEXTURE_2D, s_texture);
 
-				s_count++;
+				// Send color info to shader
+				GLM::m_shader[GLM::SHADER_PARTICLE]->SetVector4(
+					GLM::UNIFORM_PARTICLE_COLOR, s_color);
+			}
 
-				//glBindVertexArray(GLM::m_vao);
-				/*Render(GLM::m_vbo, GLM::m_ebo,
-					GLM::m_verticesParticle, GLM::m_indicesParticle,
-					sizeof(GLM::m_verticesParticle), sizeof(GLM::m_indicesParticle), GLM::m_particle);*/
-			//}
+			Render(GLM::m_vao[GLM::SHAPE_POINT], GLM::m_elementSize[GLM::SHAPE_POINT]);
+			//Render(GLM::m_vao[GLM::SHAPE_PARTICLE], GLM::m_elementSize[GLM::SHAPE_PARTICLE]);
+			//Render(GLM::m_vao[GLM::SHAPE_CUBE], GLM::m_elementSize[GLM::SHAPE_CUBE]);
 		}
 
-		glEnable(GL_BLEND);					// Enable blend 
-		glDepthMask(GL_FALSE);				// Ignore depth buffer writing
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-
-		glBindVertexArray(_emitter->m_vao);
-
-		glBindBuffer(GL_ARRAY_BUFFER, _emitter->m_position);
-		glBufferData(GL_ARRAY_BUFFER, _emitter->m_size * 3 * sizeof(GLfloat), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details.
-		glBufferSubData(GL_ARRAY_BUFFER, 0, _emitter->m_size * sizeof(GLfloat) * 3, _emitter->m_positionData);
-
-		glBindBuffer(GL_ARRAY_BUFFER, _emitter->m_color);
-		glBufferData(GL_ARRAY_BUFFER, _emitter->m_size * 4 * sizeof(GLubyte), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details.
-		glBufferSubData(GL_ARRAY_BUFFER, 0, _emitter->m_size * sizeof(GLubyte) * 4, _emitter->m_colorData);
-
-		// 1rst attribute buffer : vertices
-		glEnableVertexAttribArray(0);
-		glBindBuffer(GL_ARRAY_BUFFER, GLM::m_particleVbo);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(0);
-
-		// text coordinate position
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-		glEnableVertexAttribArray(1);
-
-		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
-		glEnableVertexAttribArray(2);
-
-		// 2nd attribute buffer : positions of particles' centers
-		glEnableVertexAttribArray(3);
-		glBindBuffer(GL_ARRAY_BUFFER, _emitter->m_position);
-		glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
-		// 3rd attribute buffer : particles' colors
-		glEnableVertexAttribArray(4);
-		glBindBuffer(GL_ARRAY_BUFFER, _emitter->m_color);
-		glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
-		glVertexAttribDivisor(0, 0);
-		glVertexAttribDivisor(1, 0); 
-		glVertexAttribDivisor(2, 0); 
-		glVertexAttribDivisor(3, 1); 
-		glVertexAttribDivisor(4, 1); 
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GLM::m_particleEbo);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLM::m_indicesParticle), GLM::m_indicesParticle, GL_STATIC_DRAW);
-		glDrawElementsInstanced(GL_TRIANGLES, GLM::m_particle, GL_UNSIGNED_INT, 0, _emitter->m_size);
-
-		//glDisableVertexAttribArray(0);
-		//glDisableVertexAttribArray(1);
-		//glDisableVertexAttribArray(2);
-		//glDisableVertexAttribArray(3);
-		//glDisableVertexAttribArray(4);
-		
-		glDepthMask(GL_TRUE);
-		glDisable(GL_BLEND);
+		//glEnable(GL_DEPTH_TEST);
+		glDepthMask(GL_TRUE);	// Enable depth buffer writing
+		glDisable(GL_BLEND);	// Disable blend
 	}
 }
 

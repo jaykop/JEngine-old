@@ -4,8 +4,8 @@
 
 JE_BEGIN
 
-Light::Light(Object * _owner)
-	:Component(_owner), m_color(vec4::ONE),
+Light::Light(Object * _pOwner)
+	:Component(_pOwner), m_color(vec4::ONE),
 	m_ambient(vec4::ONE), m_diffuse(vec4::ONE),
 	m_specular(vec4::ONE), m_position(vec3(0.f, 0.f, 1.f)),
 	m_direction(vec3::ZERO), m_constant(0.f), m_linear(0.f),

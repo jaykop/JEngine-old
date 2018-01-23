@@ -20,7 +20,7 @@ public:
 
 protected:
 
-	VisualEffect(Sprite* _ownerSprite, VEType type);
+	VisualEffect(Sprite* _pOwnerSprite, VEType type);
 
 	Sprite* m_pSprite;
 	VEType	m_type;
@@ -45,7 +45,7 @@ public:
 
 private:
 
-	Blur(Sprite* _ownerSprite, VEType type);
+	Blur(Sprite* _pOwnerSprite, VEType type);
 
 	Blur() = delete;
 	Blur(const Blur& /*_copy*/) = delete;
@@ -64,7 +64,7 @@ public:
 
 private:
 
-	Sobel(Sprite* _ownerSprite, VEType type);
+	Sobel(Sprite* _pOwnerSprite, VEType type);
 
 	Sobel() = delete;
 	Sobel(const Sobel& /*_copy*/) = delete;
@@ -81,7 +81,7 @@ public:
 
 private:
 
-	Inverse(Sprite* _ownerSprite, VEType type);
+	Inverse(Sprite* _pOwnerSprite, VEType type);
 
 	Inverse() = delete;
 	Inverse(const Inverse& /*_copy*/) = delete;

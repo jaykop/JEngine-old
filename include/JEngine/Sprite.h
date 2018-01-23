@@ -76,7 +76,7 @@ public:
 protected:
 
 	~Sprite();
-	Sprite(Object* _owner);
+	Sprite(Object* _pOwner);
 
 	void Load(CR_RJValue _data) override;
 

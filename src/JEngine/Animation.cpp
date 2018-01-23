@@ -5,20 +5,20 @@
 
 JE_BEGIN
 
-Animation::Animation(Object* _owner)
-	: Component(_owner), m_curretFrame(0.f), m_animationSpeed(0.f),
+Animation::Animation(Object* _pOwner)
+	: Component(_pOwner), m_curretFrame(0.f), m_animationSpeed(0.f),
 	m_animationFrames(1), m_animationFixFrame(1), m_realSpeed(0.f),
 	m_realFrame(1.f), m_activeAnimation(false)
 {	
 	// Connect to sprite's pointer
-	if (_owner->HasComponent<Sprite>()
-		&& !_owner->GetComponent<Sprite>()->m_hasAnimation) {
-		_owner->GetComponent<Sprite>()->m_animation = this;
-		_owner->GetComponent<Sprite>()->m_hasAnimation = true;
+	if (_pOwner->HasComponent<Sprite>()
+		&& !_pOwner->GetComponent<Sprite>()->m_hasAnimation) {
+		_pOwner->GetComponent<Sprite>()->m_animation = this;
+		_pOwner->GetComponent<Sprite>()->m_hasAnimation = true;
 	}
 
 	else
-		JE_DEBUG_PRINT("*Animation: This object has no sprite componnet - %s\n", _owner->GetName().c_str());
+		JE_DEBUG_PRINT("*Animation: This object has no sprite componnet - %s\n", _pOwner->GetName().c_str());
 }
 
 void Animation::Load(CR_RJValue _data)

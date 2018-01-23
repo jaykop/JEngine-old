@@ -43,7 +43,7 @@ public:
 
 private:
 
-	Transform(Object* _owner);
+	Transform(Object* _pOwner);
 	~Transform() {};
 	void Load(CR_RJValue _data) override;
 	void Register() override {};

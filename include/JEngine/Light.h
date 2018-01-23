@@ -50,7 +50,7 @@ public:
 
 private:
 
-	Light(Object* _owner);
+	Light(Object* _pOwner);
 	~Light() {};
 
 	Light() = delete;

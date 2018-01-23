@@ -5,8 +5,8 @@
 
 JE_BEGIN
 
-Sprite::Sprite(Object* _owner)
-	:Component(_owner), m_color(vec4::ONE),m_projection(PERSPECTIVE), 
+Sprite::Sprite(Object* _pOwner)
+	:Component(_pOwner), m_color(vec4::ONE),m_projection(PERSPECTIVE), 
 	m_mainTex(0),m_transform(nullptr), m_flip(false), m_culled(false), 
 	m_material(nullptr), m_hasMaterial(false), m_isEmitter(false)
 {}

@@ -12,8 +12,8 @@ JE_BEGIN
 
 GraphicSystem::GraphicSystem()
 	:System(), m_pMainCamera(nullptr),
-	m_fovy(45.f), m_zNear(.1f), m_zFar(1000.f), m_isLight(false),
-	m_backgroundColor(vec4::ZERO), m_orthoFirst(false),
+	m_fovy(45.f), m_zNear(.1f), m_zFar(1000.f), m_IsLight(false),
+	m_backgroundColor(vec4::ZERO), m_orthoFirst(false), m_Is2d(false),
 	m_width(Application::GetData().m_width), m_height(Application::GetData().m_height),
 	m_aniScale(vec3::ZERO), m_aniTranslate(vec3::ZERO), m_viewport(mat4())
 {
@@ -76,85 +76,42 @@ void GraphicSystem::Unload()
 	m_cameras.clear();
 }
 
-void GraphicSystem::Render(const unsigned _vao, const unsigned _vbo, const unsigned _ebo,
-	const float _vertices[], const unsigned _indices[], 
-	const int _verticesSize, const int _indicesSize, const int _elementSize)
+void GraphicSystem::Render(const unsigned &_vao, const int _elementSize)
 {
+	//Start alias mode
+	/*switch (gMode)
+	{
+	case ALIAS_ALIASED:
+		glDisable(GL_LINE_SMOOTH);
+		glDisable(GL_POLYGON_SMOOTH);
+		glDisable(GL_MULTISAMPLE);
+		break;
+
+	case ALIAS_ANTIALIASED:
+		glEnable(GL_LINE_SMOOTH);
+		glEnable(GL_POLYGON_SMOOTH);
+		glDisable(GL_MULTISAMPLE);
+		break;
+
+	case ALIAS_MULTISAMPLE:
+		glDisable(GL_LINE_SMOOTH);
+		glDisable(GL_POLYGON_SMOOTH);
+		glEnable(GL_MULTISAMPLE);
+		break;
+	}*/
 	// Send transform info to shader
 	glBindVertexArray(_vao);
 
-	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-	glBufferData(GL_ARRAY_BUFFER, _verticesSize, _vertices, GL_STATIC_DRAW);
-	
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
+	glEnable(GL_LINE_SMOOTH);
+	glEnable(GL_POLYGON_SMOOTH);
+	//glDisable(GL_MULTISAMPLE);
 
-	// text coordinate position
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-
-	// normals of vertices
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
-	glEnableVertexAttribArray(2);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, _indicesSize, _indices, GL_STATIC_DRAW);
 	glDrawElements(GL_TRIANGLES, _elementSize, GL_UNSIGNED_INT, 0);
-}
 
-void GraphicSystem::RenderParticle(const int _particleSize, float *_positionData, float *_colorData)
-{
-	static unsigned s_maxSize = 1000;// _emitter->m_maxSize;
-	 
-	glEnable(GL_BLEND);					// Enable blend 
-	glDepthMask(GL_FALSE);				// Ignore depth buffer writing
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//glPointSize(10);
+	//glEnable(GL_POINT_SMOOTH);
+	//glDrawElements(GL_POINT, _elementSize, GL_UNSIGNED_INT, 0);
 
-	//glBindBuffer(GL_ARRAY_BUFFER, GLM::m_particlePosition);
-	//glBufferData(GL_ARRAY_BUFFER, s_maxSize * 3 * sizeof(GLfloat), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details.
-	//glBufferSubData(GL_ARRAY_BUFFER, 0, _particleSize * sizeof(GLfloat) * 3, _positionData);
-
-	//glBindBuffer(GL_ARRAY_BUFFER, GLM::m_particleColor);
-	//glBufferData(GL_ARRAY_BUFFER, s_maxSize * 4 * sizeof(GLubyte), NULL, GL_STREAM_DRAW); // Buffer orphaning, a common way to improve streaming perf. See above link for details.
-	//glBufferSubData(GL_ARRAY_BUFFER, 0, _particleSize * sizeof(GLubyte) * 4, _colorData);
-
-	//// 1rst attribute buffer : vertices
-	//glEnableVertexAttribArray(0);
-	//glBindBuffer(GL_ARRAY_BUFFER, GLM::m_particleVbo); 
-	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-
-	//glEnableVertexAttribArray(1);
-	//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-
-	//// 2nd attribute buffer : positions of particles' centers
-	//glEnableVertexAttribArray(2);
-	//glBindBuffer(GL_ARRAY_BUFFER, GLM::m_particlePosition);
-	//glVertexAttribPointer(
-	//	2,                                // attribute. No particular reason for 1, but must match the layout in the shader.
-	//	3,                                // size : x + y + z + size => 4
-	//	GL_FLOAT,                         // type
-	//	GL_FALSE,                         // normalized?
-	//	0,                                // stride
-	//	(void*)0                          // array buffer offset
-	//);
-
-	//// 3rd attribute buffer : particles' colors
-	//glEnableVertexAttribArray(3);
-	//glBindBuffer(GL_ARRAY_BUFFER, GLM::m_particleColor);
-	//glVertexAttribPointer(
-	//	3,                                // attribute. No particular reason for 1, but must match the layout in the shader.
-	//	4,                                // size : r + g + b + a => 4
-	//	GL_UNSIGNED_BYTE,                 // type
-	//	GL_TRUE,                          // normalized?    *** YES, this means that the unsigned char[4] will be accessible with a vec4 (floats) in the shader ***
-	//	0,                                // stride
-	//	(void*)0                          // array buffer offset
-	//);
-
-	glDrawArraysInstanced(GL_TRIANGLES, 0, 4, _particleSize);
-
-	glDepthMask(GL_TRUE);	// Enable depth buffer writing
-	glDisable(GL_BLEND);	// Disable blend
 }
 
 void GraphicSystem::AddSprite(Sprite* _sprite)
@@ -166,7 +123,7 @@ void GraphicSystem::RemoveSprite(Sprite* _sprite)
 {
 	for (Sprites::iterator it = m_sprites.begin();
 		it != m_sprites.end(); ++it) {
-		if ((*it)->m_ownerId == _sprite->m_ownerId) {
+		if ((*it)->m_pOwnerId == _sprite->m_pOwnerId) {
 			m_sprites.erase(it);
 			break;
 		}
@@ -219,7 +176,7 @@ void GraphicSystem::RemoveCamera(Camera* _camera)
 {	
 	for (Cameras::iterator it = m_cameras.begin();
 		it != m_cameras.end(); ++it) {
-		if ((*it)->m_ownerId == _camera->m_ownerId) {
+		if ((*it)->m_pOwnerId == _camera->m_pOwnerId) {
 			m_cameras.erase(it);
 			break;
 		}
@@ -235,7 +192,7 @@ void GraphicSystem::RemoveLight(Light * _light)
 {
 	for (Lights::iterator it = m_lights.begin();
 		it != m_lights.end(); ++it) {
-		if ((*it)->m_ownerId == _light->m_ownerId) {
+		if ((*it)->m_pOwnerId == _light->m_pOwnerId) {
 			m_lights.erase(it);
 			break;
 		}

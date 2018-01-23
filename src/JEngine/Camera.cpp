@@ -5,8 +5,8 @@
 
 JE_BEGIN
 
-Camera::Camera(Object* _owner)
-	: Component(_owner),
+Camera::Camera(Object* _pOwner)
+	: Component(_pOwner),
 	m_position(vec3::ZERO), m_up(vec3::UNIT_Y),
 	m_target(vec3::ZERO)
 {}
