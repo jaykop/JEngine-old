@@ -15,15 +15,15 @@ class VisualEffect
 
 public:
 
-	enum VEType { VE_NONE, VE_BLUR, VE_SOBEL, VE_INVERSE };
+	enum VisualEffectType { VISUALEFFECT_NONE, VISUALEFFECT_BLUR, VISUALEFFECT_SOBEL, VISUALEFFECT_INVERSE };
 	bool m_active;
 
 protected:
 
-	VisualEffect(Sprite* _pOwnerSprite, VEType type);
+	VisualEffect(Sprite* _pOwnerSprite, VisualEffectType type);
 
-	Sprite* m_pSprite;
-	VEType	m_type;
+	Sprite*				m_pSprite;
+	VisualEffectType	m_type;
 
 private:
 
@@ -45,7 +45,7 @@ public:
 
 private:
 
-	Blur(Sprite* _pOwnerSprite, VEType type);
+	Blur(Sprite* _pOwnerSprite, VisualEffectType type);
 
 	Blur() = delete;
 	Blur(const Blur& /*_copy*/) = delete;
@@ -64,7 +64,7 @@ public:
 
 private:
 
-	Sobel(Sprite* _pOwnerSprite, VEType type);
+	Sobel(Sprite* _pOwnerSprite, VisualEffectType type);
 
 	Sobel() = delete;
 	Sobel(const Sobel& /*_copy*/) = delete;
@@ -81,7 +81,7 @@ public:
 
 private:
 
-	Inverse(Sprite* _pOwnerSprite, VEType type);
+	Inverse(Sprite* _pOwnerSprite, VisualEffectType type);
 
 	Inverse() = delete;
 	Inverse(const Inverse& /*_copy*/) = delete;

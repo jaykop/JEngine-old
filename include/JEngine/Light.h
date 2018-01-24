@@ -31,7 +31,7 @@ private:
 class Light : public Component
 {
 
-	enum LightType {NORMALLIGHT, DIRECTIONALLIGHT, SPOTLIGHT, POINTLIGHT};
+	enum LightType  {NORMALLIGHT, DIRECTIONALLIGHT, SPOTLIGHT, POINTLIGHT};
 
 	friend class GraphicSystem;
 	friend class ComponentManager;

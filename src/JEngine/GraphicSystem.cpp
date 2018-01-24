@@ -15,7 +15,7 @@ GraphicSystem::GraphicSystem()
 	m_fovy(45.f), m_zNear(.1f), m_zFar(1000.f), m_IsLight(false),
 	m_backgroundColor(vec4::ZERO), m_orthoFirst(false), m_Is2d(false),
 	m_width(Application::GetData().m_width), m_height(Application::GetData().m_height),
-	m_aniScale(vec3::ZERO), m_aniTranslate(vec3::ZERO), m_viewport(mat4())
+	m_aniScale(vec3::ZERO), m_aniTranslate(vec3::ZERO), m_viewport(mat4()), m_aliasMode(ALIAS_ALIASED)
 {
 	m_aspect = float(m_width) / float(m_height);
 	m_right = m_width * .5f;
@@ -47,21 +47,65 @@ void GraphicSystem::Init()
 	// set the first camera as a main camera.
 	if (!m_pMainCamera)
 		m_pMainCamera = m_cameras[0];
+
 }
 
 void GraphicSystem::Update(const float _dt)
 {
+	//Start alias mode
+	switch (m_aliasMode)
+	{
+	case ALIAS_ALIASED:
+		glDisable(GL_LINE_SMOOTH);
+		glDisable(GL_POINT_SMOOTH);
+		glDisable(GL_POLYGON_SMOOTH);
+		glDisable(GL_MULTISAMPLE);
+		break;
+
+	case ALIAS_ANTIALIASED:
+		glEnable(GL_LINE_SMOOTH);
+		glEnable(GL_POINT_SMOOTH);
+		glEnable(GL_POLYGON_SMOOTH);
+		glDisable(GL_MULTISAMPLE);
+		break;
+
+	case ALIAS_MULTISAMPLE:
+		glDisable(GL_LINE_SMOOTH); 
+		glDisable(GL_POINT_SMOOTH);
+		glDisable(GL_POLYGON_SMOOTH);
+		glEnable(GL_MULTISAMPLE);
+		break;
+	}
+	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(m_backgroundColor.x, m_backgroundColor.y, m_backgroundColor.z, m_backgroundColor.w);
 
 	// Sort sprites by sprite's z position
 	std::sort(m_sprites.begin(), m_sprites.end(), compareOrder(m_orthoFirst));
 
+	// Update main camera attributes
+	m_viewport = mat4::Camera(
+		m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
+
 	LightSourcePipeline();
 	NormalPipeline(_dt);
 	
 	// TODO
 	// GLMousePosition();
+
+	// TODO
+	//End alias mode
+	switch (m_aliasMode)
+	{
+	case ALIAS_ANTIALIASED:
+		glDisable(GL_LINE_SMOOTH);
+		glDisable(GL_POLYGON_SMOOTH);
+		break;
+
+	case ALIAS_MULTISAMPLE:
+		glDisable(GL_MULTISAMPLE);
+		break;
+	}
 }
 
 void GraphicSystem::Close()
@@ -76,42 +120,10 @@ void GraphicSystem::Unload()
 	m_cameras.clear();
 }
 
-void GraphicSystem::Render(const unsigned &_vao, const int _elementSize)
+void GraphicSystem::Render(const unsigned &_vao, const int _elementSize, unsigned _mode)
 {
-	//Start alias mode
-	/*switch (gMode)
-	{
-	case ALIAS_ALIASED:
-		glDisable(GL_LINE_SMOOTH);
-		glDisable(GL_POLYGON_SMOOTH);
-		glDisable(GL_MULTISAMPLE);
-		break;
-
-	case ALIAS_ANTIALIASED:
-		glEnable(GL_LINE_SMOOTH);
-		glEnable(GL_POLYGON_SMOOTH);
-		glDisable(GL_MULTISAMPLE);
-		break;
-
-	case ALIAS_MULTISAMPLE:
-		glDisable(GL_LINE_SMOOTH);
-		glDisable(GL_POLYGON_SMOOTH);
-		glEnable(GL_MULTISAMPLE);
-		break;
-	}*/
-	// Send transform info to shader
 	glBindVertexArray(_vao);
-
-	glEnable(GL_LINE_SMOOTH);
-	glEnable(GL_POLYGON_SMOOTH);
-	//glDisable(GL_MULTISAMPLE);
-
-	glDrawElements(GL_TRIANGLES, _elementSize, GL_UNSIGNED_INT, 0);
-
-	//glPointSize(10);
-	//glEnable(GL_POINT_SMOOTH);
-	//glDrawElements(GL_POINT, _elementSize, GL_UNSIGNED_INT, 0);
-
+	glDrawElements(_mode, _elementSize, GL_UNSIGNED_INT, 0);
 }
 
 void GraphicSystem::AddSprite(Sprite* _sprite)
@@ -206,12 +218,12 @@ bool GraphicSystem::compareOrder::operator()(Sprite * _leftSpt, Sprite * _rightS
 
 	if (m_orthoFirst) {
 
-		if (_leftSpt->m_projection == PERSPECTIVE
-			&& _rightSpt->m_projection == ORTHOGONAL)
+		if (_leftSpt->m_projection == PROJECTION_PERSPECTIVE
+			&& _rightSpt->m_projection == PROJECTION_ORTHOGONAL)
 			return false;
 
-		else if (_leftSpt->m_projection == ORTHOGONAL
-			&& _rightSpt->m_projection == PERSPECTIVE)
+		else if (_leftSpt->m_projection == PROJECTION_ORTHOGONAL
+			&& _rightSpt->m_projection == PROJECTION_PERSPECTIVE)
 			return true;
 
 		else

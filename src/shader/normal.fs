@@ -1,6 +1,16 @@
 #version 410 core
 
-#define MAX_ARRAY 128
+////////////////////////////
+// const variables
+////////////////////////////
+const int MAX_ARRAY			= 128;
+const int LIGHT_DIRECTIONAL	= 1;
+const int LIGHT_SPOTLIGHT	= 2;
+const int LIGHT_POINTLIGHT	= 3;
+const int EFFECT_NONE		= 0;
+const int EFFECT_BLUR		= 1;
+const int EFFECT_SOBEL		= 2;
+const int EFFECT_INVERSE	= 3;
 
 ////////////////////////////
 // structs
@@ -71,21 +81,22 @@ void VisualEffect(inout vec4 _color);
 ////////////////////////////
 void main() {
 
-	vec4 finalTexture = vec4(0,0,0,1);
+	vec4 finalTexture = vec4(0,0,0,0);
 	
 	if (boolean_hideParticle)
 		v4_fragColor = finalTexture;
 	
 	else {
 		// Any effect?
-		if ((enum_effectType != 0) || boolean_light) {
+		if ((enum_effectType != EFFECT_NONE) 
+			|| boolean_light) {
 			
 			// Implement light attributes
 			if (boolean_light)
 				LightingEffect(finalTexture);
 				
 			// Impose visual effect here...
-			if (enum_effectType != 0)
+			if (enum_effectType != EFFECT_NONE)
 				VisualEffect(finalTexture);
 		}
 		
@@ -104,7 +115,7 @@ void LightingEffect(inout vec4 _color) {
 
 	// TODO
 	// Dynamic light loop...
-	for (uint index = 0; index < 1; ++index) {
+	for (int index = 0; index < 2; ++index) {
 	
 		vec3 	lightDirection;
 		float 	attenuation = 1.f;
@@ -112,18 +123,18 @@ void LightingEffect(inout vec4 _color) {
 		float 	theta = 0.f;
 		
 		// Directional light
-		if (light[index].m_type == 1)
+		if (light[index].m_type == LIGHT_DIRECTIONAL)
 			lightDirection = normalize(-light[index].m_direction);
 		else {
 			lightDirection = normalize(gap);
 		
 			// Spotlight
-			if (light[index].m_type == 2) {
+			if (light[index].m_type == LIGHT_SPOTLIGHT) {
 				theta = dot(lightDirection, normalize(-light[index].m_direction));
 			}
 			
 			// Pointlight
-			else if (light[index].m_type == 3) {
+			else if (light[index].m_type == LIGHT_POINTLIGHT) {
 				float distance = length(gap);
 				attenuation = 1.0 / (light[index].m_constant + light[index].m_linear * distance + light[index].m_quadratic * (distance * distance));
 			}
@@ -145,15 +156,15 @@ void LightingEffect(inout vec4 _color) {
 		vec4 specular = light[index].m_specular * vec4(spec * texture(material.m_specular, v2_outTexCoord)); 
 		
 		// Smooth spotlight
-		if (light[index].m_type == 2) {
+		if (light[index].m_type == LIGHT_SPOTLIGHT) {
 			float epsilon = light[index].m_cutOff - light[index].m_outerCutOff;
 			float intensity = clamp((theta - light[index].m_outerCutOff) / epsilon, 0.0, 1.0);
 			diffuse *= intensity;
 			specular *= intensity;
 		}
 			
-		// Final light
-		_color += v4_lightColor[index];// * ((ambient + diffuse + specular) * attenuation);
+		// Add all light effects
+		_color += v4_lightColor[index] * ((ambient + diffuse + specular) * attenuation);
 	} 
 	
 	// Refresh alpha value
@@ -164,7 +175,7 @@ void LightingEffect(inout vec4 _color) {
 void VisualEffect(inout vec4 _color){
 
 	// Blur effect
-	if (enum_effectType == 1) {
+	if (enum_effectType == EFFECT_BLUR) {
 		
 		int x_range = int(float_blurSize / 2.0);
 		int y_range = int(float_blurSize / 2.0);
@@ -182,7 +193,7 @@ void VisualEffect(inout vec4 _color){
 	}
 	
 	// Sobel effect
-	else if (enum_effectType == 2){
+	else if (enum_effectType == EFFECT_SOBEL){
 		vec4 top         = texture(Texture, vec2(v2_outTexCoord.x, v2_outTexCoord.y + 5.0 / float_sobelAmount));
 		vec4 bottom      = texture(Texture, vec2(v2_outTexCoord.x, v2_outTexCoord.y - 5.0 / float_sobelAmount));
 		vec4 left        = texture(Texture, vec2(v2_outTexCoord.x - 5.0 / float_sobelAmount, v2_outTexCoord.y));
@@ -197,7 +208,7 @@ void VisualEffect(inout vec4 _color){
 	}
 	
 	// Inverse effect
-	else if (enum_effectType == 3)
+	else if (enum_effectType == EFFECT_INVERSE)
 	{
 		vec4 inversed = vec4(1,1,1,1) - _color;
 		inversed.w = 1.f;

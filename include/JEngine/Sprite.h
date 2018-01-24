@@ -42,7 +42,7 @@ class Sprite : public Component
 	friend class	GraphicSystem;
 	friend class	ComponentManager;
 
-	using Effects		= std::unordered_map<VisualEffect::VEType, VisualEffect*>;
+	using Effects		= std::unordered_map<VisualEffect::VisualEffectType, VisualEffect*>;
 	using TextureMap	= std::unordered_map<std::string, unsigned>;
 
 public:
@@ -67,7 +67,7 @@ public:
 	template <class EffectType>
 	bool		HasEffect();
 
-	void		ConvertVEType(const char* _name, VisualEffect::VEType& _veType);
+	void		ConvertVisualEffectType(const char* _name, VisualEffect::VisualEffectType& _VisualEffectType);
 
 	bool		m_flip;
 	vec4		m_color;

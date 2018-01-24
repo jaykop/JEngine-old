@@ -6,7 +6,7 @@
 
 JE_BEGIN
 
-enum JE_KEY {
+enum JE_KEY  {
 
 	// Locked useless keys for a sec
 	/*	JE_EXCLAIM = SDLK_EXCLAIM ,

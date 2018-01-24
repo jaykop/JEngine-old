@@ -152,6 +152,11 @@ void Shader::SetFloat(GLManager::UniformType _uniform, float _float)
 	glUniform1f(GLManager::m_uniform[_uniform], _float);
 }
 
+void Shader::SetuInt(GLManager::UniformType _uniform, unsigned _uInt)
+{
+	glUniform1ui(GLManager::m_uniform[_uniform], _uInt);
+}
+
 void Shader::ConnectUniform(GLManager::UniformType _uniform, const char * _name)
 {
 	GLManager::m_uniform[_uniform]
@@ -186,9 +191,9 @@ void Shader::SetBool(GLManager::UniformType _uniform, bool _bool)
 	glUniform1i(GLManager::m_uniform[_uniform], _bool);
 }
 
-void Shader::SetEnum(GLManager::UniformType _uniform, int _int)
+void Shader::SetEnum(GLManager::UniformType _uniform, int _enum)
 {
-	glUniform1i(GLManager::m_uniform[_uniform], _int);
+	glUniform1i(GLManager::m_uniform[_uniform], _enum);
 }
 
 void Shader::SetInt(GLManager::UniformType _uniform, int _int)
@@ -199,6 +204,11 @@ void Shader::SetInt(GLManager::UniformType _uniform, int _int)
 void Shader::SetBool(const char* _name, bool _bool)
 {
 	glUniform1i(glGetUniformLocation(m_programId, _name), _bool);
+}
+
+void Shader::SetuInt(const char * _name, unsigned _uInt)
+{
+	glUniform1ui(glGetUniformLocation(m_programId, _name), _uInt);
 }
 
 void Shader::SetVector4(const char* _name, const vec4& _vector)
@@ -223,9 +233,9 @@ void Shader::SetFloat(const char* _name, float _float)
 	glUniform1f(glGetUniformLocation(m_programId, _name), _float);
 }
 
-void Shader::SetEnum(const char* _name, int _int)
+void Shader::SetEnum(const char* _name, int _enum)
 {
-	glUniform1i(glGetUniformLocation(m_programId, _name), _int);
+	glUniform1i(glGetUniformLocation(m_programId, _name), _enum);
 }
 
 JE_END

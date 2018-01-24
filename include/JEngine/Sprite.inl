@@ -6,29 +6,29 @@ JE_BEGIN
 template<class EffectType>
 inline void Sprite::AddEffect() {
 
-	VisualEffect::VEType veType;
+	VisualEffect::VisualEffectType VisualEffectType;
 	const char* effectName = typeid(EffectType).name();
-	ConvertVEType(effectName, veType);
+	ConvertVisualEffectType(effectName, VisualEffectType);
 
-	auto found = m_effects.find(veType);
+	auto found = m_effects.find(VisualEffectType);
 	if (found != m_effects.end())
 		JE_DEBUG_PRINT("*Sprite: Existing effet - %s\n", effectName);
 
 	else {
 		m_effects.insert(
-			Effects::value_type(veType,
-				new EffectType(this, veType)));
+			Effects::value_type(VisualEffectType,
+				new EffectType(this, VisualEffectType)));
 	}
 }
 
 template<class EffectType>
 inline EffectType* Sprite::GetEffect() {
 
-	VisualEffect::VEType veType;
+	VisualEffect::VisualEffectType VisualEffectType;
 	const char* effectName = typeid(EffectType).name();
-	ConvertVEType(effectName, veType);
+	ConvertVisualEffectType(effectName, VisualEffectType);
 
-	auto found = m_effects.find(veType);
+	auto found = m_effects.find(VisualEffectType);
 	if (found != m_effects.end())
 		return static_cast<EffectType*>(found->second);
 
@@ -41,9 +41,9 @@ inline EffectType* Sprite::GetEffect() {
 template<class EffectType>
 inline void Sprite::RemoveEffect() {
 
-	VisualEffect::VEType veType;
+	VisualEffect::VisualEffectType VisualEffectType;
 	const char* effectName = typeid(EffectType).name();
-	ConvertVEType(effectName, veType);
+	ConvertVisualEffectType(effectName, VisualEffectType);
 
 	auto found = m_effects.find(type);
 	if (found == m_effects.end())
@@ -59,11 +59,11 @@ inline void Sprite::RemoveEffect() {
 template<class EffectType>
 inline bool Sprite::HasEffect() {
 
-	VisualEffect::VEType veType;
+	VisualEffect::VisualEffectType VisualEffectType;
 	const char* effectName = typeid(EffectType).name();
-	ConvertVEType(effectName, veType);
+	ConvertVisualEffectType(effectName, VisualEffectType);
 
-	auto found = m_effects.find(veType);
+	auto found = m_effects.find(VisualEffectType);
 	if (found != m_effects.end())
 		return true;
 

@@ -10,7 +10,7 @@ Light::Light(Object * _pOwner)
 	m_specular(vec4::ONE), m_position(vec3(0.f, 0.f, 1.f)),
 	m_direction(vec3::ZERO), m_constant(0.f), m_linear(0.f),
 	m_quadratic(0.f), m_cutOff(0.f), m_outerCutOff(0.f),
-	m_projection(PERSPECTIVE)
+	m_projection(PROJECTION_PERSPECTIVE)
 {}
 
 void Light::Register()

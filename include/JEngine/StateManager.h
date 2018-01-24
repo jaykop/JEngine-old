@@ -13,9 +13,8 @@ class StateManager {
 
 	friend class Application;
 	friend class AssetManager;
-	enum StateStatus {
-		S_NONE, S_PAUSE, S_RESUME, S_CHANGE, S_RESUME_AND_CHANGE, S_QUIT
-	};
+	enum StateStatus  {
+		S_NONE, S_PAUSE, S_RESUME, S_CHANGE, S_RESUME_AND_CHANGE, S_QUIT };
 
 public:
 

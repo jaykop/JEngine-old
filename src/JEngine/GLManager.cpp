@@ -246,7 +246,7 @@ void GLManager::InitGLEnvironment()
 	SetDrawMode(m_mode);
 
 	// Set depth 
-	//glEnable(GL_LEQUAL);
+	glEnable(GL_LEQUAL);
 	glEnable(GL_DEPTH_TEST);
 	
 	//Set blending
@@ -254,8 +254,10 @@ void GLManager::InitGLEnvironment()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	//Set antialiasing/multisampling
+	glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
 	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 	glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+	glDisable(GL_POINT_SMOOTH);
 	glDisable(GL_LINE_SMOOTH);
 	glDisable(GL_POLYGON_SMOOTH);
 	glDisable(GL_MULTISAMPLE);
@@ -287,7 +289,7 @@ void GLManager::SetDrawMode(DrawMode _mode)
 {
 	switch (_mode)
 	{
-	case DRAW_DOT:
+	case DRAW_POINT:
 		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
 		break;
 	case DRAW_LINE:
@@ -329,8 +331,6 @@ void GLManager::RegisterUniform()
 	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_EFFECT_BLUR_AMOUNT, "float_blurAmount");
 	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_EFFECT_SOBEL, "float_sobelAmount");
 
-	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_PARTICLE_HIDE, "boolean_hideParticle");
-
 	/******************** Light shader ********************/
 	m_shader[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_TRANSLATE, "m4_translate");
 	m_shader[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_SCALE, "m4_scale");
@@ -346,8 +346,9 @@ void GLManager::RegisterUniform()
 	m_shader[SHADER_PARTICLE]->ConnectUniform(UNIFORM_PARTICLE_ROTATE, "m4_rotate");
 	m_shader[SHADER_PARTICLE]->ConnectUniform(UNIFORM_PARTICLE_CAMERA, "m4_viewport");
 	m_shader[SHADER_PARTICLE]->ConnectUniform(UNIFORM_PARTICLE_PROJECTION, "m4_projection");
-	m_shader[SHADER_PARTICLE]->ConnectUniform(UNIFORM_PARTICLE_TIME, "float_time");
-	m_shader[SHADER_PARTICLE]->ConnectUniform(UNIFORM_PARTICLE_LIFETIME, "float_lifeTime");
+	m_shader[SHADER_PARTICLE]->ConnectUniform(UNIFORM_PARTICLE_HIDE, "boolean_hide");
+	/*m_shader[SHADER_PARTICLE]->ConnectUniform(UNIFORM_PARTICLE_TIME, "float_time");
+	m_shader[SHADER_PARTICLE]->ConnectUniform(UNIFORM_PARTICLE_LIFETIME, "float_lifeTime");*/
 
 }
 

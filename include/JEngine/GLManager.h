@@ -17,10 +17,10 @@ class GLManager {
 
 	using Shaders = std::vector<Shader*>;
 
-	enum DrawMode { DRAW_DOT, DRAW_LINE, DRAW_FILL };
-	enum ShaderType {SHADER_NORMAL, SHADER_LIGHTING, SHADER_PARTICLE, SHADER_END};
-	enum ShapeType { SHAPE_POINT, SHAPE_PLANE, SHAPE_PARTICLE, SHAPE_CUBE, SHAPE_END};
-	enum UniformType {
+	enum DrawMode  { DRAW_POINT, DRAW_LINE, DRAW_FILL };
+	enum ShaderType  {SHADER_NORMAL, SHADER_LIGHTING, SHADER_PARTICLE, SHADER_END};
+	enum ShapeType  { SHAPE_POINT, SHAPE_PLANE, SHAPE_PARTICLE, SHAPE_CUBE, SHAPE_END};
+	enum UniformType  {
 
 		/******************** Normal shader ********************/
 		//////////////////////

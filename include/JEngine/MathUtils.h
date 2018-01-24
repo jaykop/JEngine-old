@@ -21,9 +21,14 @@ JE_BEGIN
 
 namespace Math
 {
-	static const float PI = 3.1415926535897932F;
-	static const float RADIAN = 0.01745329251994329576923690768489F;
-	static const float RADIAN_DEGREE = 57.2958F;
+	static const float ZERO				= 0.F;
+	static const float ONE				= 1.F;
+	static const float PREPENDICULAR	= 90.F;
+	static const float COLINEAR			= 180.F;
+	static const float ROUND			= 360.F;
+	static const float PI				= 3.1415926535897932F;
+	static const float RADIAN			= 0.01745329251994329576923690768489F;
+	static const float RADIAN_DEGREE	= 57.2958F;
 
 	float DegToRad(float degree);
 	float RadToDeg(float radian);

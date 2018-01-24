@@ -173,7 +173,7 @@ struct stbrp_context
    int init_mode;
    int heuristic;
    int num_nodes;
-   stbrp_node *active_head;
+   stbrp_node *actiVISUALEFFECT_head;
    stbrp_node *free_head;
    stbrp_node extra[2]; // we allocate two extra nodes so optimal user-node-count is 'width' not 'width+2'
 };
@@ -256,7 +256,7 @@ STBRP_DEF void stbrp_init_target(stbrp_context *context, int width, int height, 
    context->init_mode = STBRP__INIT_skyline;
    context->heuristic = STBRP_HEURISTIC_Skyline_default;
    context->free_head = &nodes[0];
-   context->active_head = &context->extra[0];
+   context->actiVISUALEFFECT_head = &context->extra[0];
    context->width = width;
    context->height = height;
    context->num_nodes = num_nodes;
@@ -343,8 +343,8 @@ static stbrp__findresult stbrp__skyline_find_best_pos(stbrp_context *c, int widt
    width -= width % c->align;
    STBRP_ASSERT(width % c->align == 0);
 
-   node = c->active_head;
-   prev = &c->active_head;
+   node = c->actiVISUALEFFECT_head;
+   prev = &c->actiVISUALEFFECT_head;
    while (node->x + width <= c->width) {
       int y,waste;
       y = stbrp__skyline_find_min_y(c, node, node->x, width, &waste);
@@ -389,9 +389,9 @@ static stbrp__findresult stbrp__skyline_find_best_pos(stbrp_context *c, int widt
    // This makes BF take about 2x the time
 
    if (c->heuristic == STBRP_HEURISTIC_Skyline_BF_sortHeight) {
-      tail = c->active_head;
-      node = c->active_head;
-      prev = &c->active_head;
+      tail = c->actiVISUALEFFECT_head;
+      node = c->actiVISUALEFFECT_head;
+      prev = &c->actiVISUALEFFECT_head;
       // find first node that's admissible
       while (tail->x < width)
          tail = tail->next;
@@ -480,7 +480,7 @@ static stbrp__findresult stbrp__skyline_pack_rectangle(stbrp_context *context, i
       cur->x = (stbrp_coord) (res.x + width);
 
 #ifdef _DEBUG
-   cur = context->active_head;
+   cur = context->actiVISUALEFFECT_head;
    while (cur->x < context->width) {
       STBRP_ASSERT(cur->x < cur->next->x);
       cur = cur->next;
@@ -490,7 +490,7 @@ static stbrp__findresult stbrp__skyline_pack_rectangle(stbrp_context *context, i
    {
       stbrp_node *L1 = NULL, *L2 = NULL;
       int count=0;
-      cur = context->active_head;
+      cur = context->actiVISUALEFFECT_head;
       while (cur) {
          L1 = cur;
          cur = cur->next;

@@ -10,7 +10,7 @@ class Material;
 class Transform;
 class Animation;
 
-enum ProjectType { PERSPECTIVE, ORTHOGONAL };
+enum ProjectType  { PROJECTION_PERSPECTIVE, PROJECTION_ORTHOGONAL };
 
 class GraphicSystem : public System
 {
@@ -26,6 +26,8 @@ class GraphicSystem : public System
 	using Sprites = std::vector<Sprite*>;
 	using Cameras = std::vector<Camera*>;
 
+	enum Alias  {ALIAS_ALIASED, ALIAS_ANTIALIASED, ALIAS_MULTISAMPLE};
+
 public:
 
 	int		GetWidth() const;
@@ -38,6 +40,7 @@ public:
 	void	SetBackgroundColor(float _r, float _g, float _b, float _a);
 
 	bool	m_Is2d;
+	Alias	m_aliasMode;
 
 private:
 
@@ -70,7 +73,7 @@ private:
 	void ParticlePipeline(Emitter* _emitter, const float _dt);
 	void EffectsPipeline(Sprite* _sprite);
 
-	void Render(const unsigned &_vao, const int _elementSize);
+	void Render(const unsigned &_vao, const int _elementSize, unsigned _mode = 0x0004 /*GL_TRIANGLES*/);
 
 	void GLMousePosition();
 

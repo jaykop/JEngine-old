@@ -13,17 +13,26 @@ uniform mat4 m4_viewport;
 uniform mat4 m4_projection;
 uniform vec4 v4_color;
 
+uniform bool boolean_hide;
+
 out	vec2 	v2_outTexCoord;
 out vec4 	v4_outColor;
 
 void main(){
 
-	mat4 model = m4_scale * m4_rotate * m4_translate;
-	mat4 mvp = transpose(m4_projection) * transpose(m4_viewport) * transpose(model);
+	if (!boolean_hide) {
+		mat4 model = m4_scale * m4_rotate * m4_translate;
+		mat4 mvp = transpose(m4_projection) * transpose(m4_viewport) * transpose(model);
 
-	gl_Position = mvp *  vec4(position, 1); 
-	v2_outTexCoord = uvPosition;
-	v4_outColor = v4_color;
+		gl_Position = mvp *  vec4(position, 1); 
+		v2_outTexCoord = uvPosition;
+		v4_outColor = v4_color;
+	}
 	
+	else {
+		gl_Position = vec4(0,0,0,0); 
+		v2_outTexCoord = vec2(0,0);
+		v4_outColor = vec4(0,0,0,0);	
+	}
 }
 

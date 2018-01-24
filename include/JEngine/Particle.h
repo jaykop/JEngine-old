@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include "glew.h"
 #include "Sprite.h"
 #include "Vector3.h"
 
@@ -29,8 +28,9 @@ class Emitter : public Sprite
 	friend class EmitterBuilder;
 	friend class GraphicSystem;
 
-	enum ParticleType {PT_NORMAL, PT_EXPLODE, PT_WIDE, PT_SMOG};
-
+	enum ParticleType			{ PARTICLE_NORMAL, PARTICLE_EXPLODE, PARTICLE_WIDE, PARTICLE_SMOG };
+	enum ParticleRendertType	{ PARTICLERENDER_NORMAL, PARTICLERENDER_POINT };
+	
 	class Particle {
 
 		friend class GraphicSystem;
@@ -38,11 +38,11 @@ class Emitter : public Sprite
 
 	public:
 
-		float	m_life, m_rotation, m_rotateDiff;
-		vec3	m_color, m_position, m_direction;
-		bool	m_standBy, m_dead;
-		
 		void	Refresh();
+
+		bool	m_hidden, m_dead;
+		vec3	m_color, m_position, m_direction;
+		float	m_life, m_rotationSpeed, m_rotation;
 		
 	private:
 
@@ -60,17 +60,18 @@ class Emitter : public Sprite
 
 public:
 
-	bool			m_active;
-	ParticleType	m_type;
-	vec3			m_direction, m_velocity, m_range;
-	unsigned		m_size;
-	float			m_life, m_rotation;
-
 	void Register() override;
 
 	void ManualRefresh();
 	void SetQuantity(unsigned _quantity);
 	void SetColors(const vec3& _start, const vec3& _end);
+
+	bool				m_active;
+	float				m_life, m_rotationSpeed, m_pointSize;
+	unsigned			m_size;
+	ParticleType		m_type;
+	ParticleRendertType	m_renderType;
+	vec3				m_direction, m_velocity, m_range;
 
 private:
 

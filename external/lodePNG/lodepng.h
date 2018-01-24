@@ -386,7 +386,7 @@ Returns false if the image can only have opaque pixels.
 In detail, it returns true only if it's a color type with alpha, or has a palette with non-opaque values,
 or if "key_defined" is true.
 */
-unsigned lodepng_can_have_alpha(const LodePNGColorMode* info);
+unsigned lodepng_can_haVISUALEFFECT_alpha(const LodePNGColorMode* info);
 /*Returns the byte size of a raw image buffer with given width, height and color mode*/
 size_t lodepng_get_raw_size(unsigned w, unsigned h, const LodePNGColorMode* color);
 
@@ -809,7 +809,7 @@ buffersize: size of the buffer to write
 filename: the path to the file to save to
 return value: error code (0 means ok)
 */
-unsigned lodepng_save_file(const unsigned char* buffer, size_t buffersize, const char* filename);
+unsigned lodepng_saVISUALEFFECT_file(const unsigned char* buffer, size_t buffersize, const char* filename);
 #endif /*LODEPNG_COMPILE_DISK*/
 
 #ifdef LODEPNG_COMPILE_CPP
@@ -857,7 +857,7 @@ unsigned load_file(std::vector<unsigned char>& buffer, const std::string& filena
 Save the binary data in an std::vector to a file on disk. The file is overwritten
 without warning.
 */
-unsigned save_file(const std::vector<unsigned char>& buffer, const std::string& filename);
+unsigned saVISUALEFFECT_file(const std::vector<unsigned char>& buffer, const std::string& filename);
 #endif /* LODEPNG_COMPILE_DISK */
 #endif /* LODEPNG_COMPILE_PNG */
 

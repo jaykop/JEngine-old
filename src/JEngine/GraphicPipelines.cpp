@@ -35,36 +35,37 @@ void GraphicSystem::LightSourcePipeline()
 		static vec3 s_lightScale(10.f, 10.f, 10.f), s_lightUp(0, 1, 0);
 		static float s_lightDeg = 0.f;
 
+		GLM::m_shader[GLM::SHADER_LIGHTING]->Use();
+
+		GLM::m_shader[GLM::SHADER_LIGHTING]->SetMatrix(
+			GLM::UNIFORM_LIGHT_SCALE,
+			mat4::Scale(s_lightScale));
+
+		GLM::m_shader[GLM::SHADER_LIGHTING]->SetMatrix(
+			GLM::UNIFORM_LIGHT_ROTATE,
+			mat4::Rotate(s_lightDeg, s_lightUp));
+
+		GLM::m_shader[GLM::SHADER_LIGHTING]->SetMatrix(
+			GLM::UNIFORM_LIGHT_CAMERA,
+			m_viewport);
+
 		for (auto light : m_lights) {
-			GLM::m_shader[GLM::SHADER_LIGHTING]->Use();
 
 			GLM::m_shader[GLM::SHADER_LIGHTING]->SetMatrix(
 				GLM::UNIFORM_LIGHT_TRANSLATE,
 				mat4::Translate(light->m_position));
 
-			GLM::m_shader[GLM::SHADER_LIGHTING]->SetMatrix(
-				GLM::UNIFORM_LIGHT_SCALE,
-				mat4::Scale(s_lightScale));
-
-			GLM::m_shader[GLM::SHADER_LIGHTING]->SetMatrix(
-				GLM::UNIFORM_LIGHT_ROTATE,
-				mat4::Rotate(s_lightDeg, s_lightUp));
-
-			m_viewport = mat4::Camera(
-				m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
-			GLM::m_shader[GLM::SHADER_LIGHTING]->SetMatrix(
-				GLM::UNIFORM_LIGHT_CAMERA,
-				m_viewport);
-
-			GLM::m_shader[GLM::SHADER_LIGHTING]->SetMatrix(
-				GLM::UNIFORM_LIGHT_PROJECTION,
-				m_perspective);
+			if (light->m_projection == PROJECTION_PERSPECTIVE)
+				GLM::m_shader[GLM::SHADER_LIGHTING]->SetMatrix(
+					GLM::UNIFORM_LIGHT_PROJECTION, m_perspective);
+			else
+				GLM::m_shader[GLM::SHADER_LIGHTING]->SetMatrix(
+					GLM::UNIFORM_LIGHT_PROJECTION, m_orthogonal);
 
 			GLM::m_shader[GLM::SHADER_LIGHTING]->SetVector4(
 				GLM::UNIFORM_LIGHT_COLOR,
 				light->m_color);
 
-			//glBindVertexArray(GLM::m_lightVao);
 			Render(GLM::m_vao[GLM::SHAPE_CUBE], GLM::m_elementSize[GLM::SHAPE_CUBE]);
 
 		} // for (auto light : m_lights) {
@@ -91,8 +92,6 @@ void GraphicSystem::NormalPipeline(const float _dt)
 void GraphicSystem::SpritePipeline(Sprite *_sprite)
 {
 	glEnable(GL_BLEND);
-	//glEnable(GL_POLYGON_SMOOTH);
-	//glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	static Transform* s_pTransform;
@@ -110,14 +109,11 @@ void GraphicSystem::SpritePipeline(Sprite *_sprite)
 		GLM::UNIFORM_ROTATE, mat4::Rotate(s_pTransform->m_rotation, s_pTransform->m_rotationAxis));
 
 	// Send camera info to shader
-	m_viewport = mat4::Camera(
-		m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
-
-	GLM::m_shader[GLM::SHADER_NORMAL]->SetMatrix(
+		GLM::m_shader[GLM::SHADER_NORMAL]->SetMatrix(
 		GLM::UNIFORM_CAMERA, m_viewport);
 
 	// Send projection info to shader
-	if (_sprite->m_projection == PERSPECTIVE)
+	if (_sprite->m_projection == PROJECTION_PERSPECTIVE)
 		GLM::m_shader[GLM::SHADER_NORMAL]->SetMatrix(
 			GLM::UNIFORM_PROJECTION, m_perspective);
 	else
@@ -280,11 +276,11 @@ void GraphicSystem::EffectsPipeline(Sprite *_sprite)
 
 		if (effect.second->m_active) {
 
-			VisualEffect::VEType type = effect.second->m_type;
+			VisualEffect::VisualEffectType type = effect.second->m_type;
 
 			switch (type) {
 
-			case VisualEffect::VEType::VE_BLUR: {
+			case VisualEffect::VisualEffectType::VISUALEFFECT_BLUR: {
 				GLM::m_shader[GLM::SHADER_NORMAL]->SetEnum(
 					GLM::UNIFORM_EFFECT_TYPE, type);
 
@@ -298,7 +294,7 @@ void GraphicSystem::EffectsPipeline(Sprite *_sprite)
 
 				break;
 			}
-			case VisualEffect::VEType::VE_SOBEL: {
+			case VisualEffect::VisualEffectType::VISUALEFFECT_SOBEL: {
 				GLM::m_shader[GLM::SHADER_NORMAL]->SetEnum(
 					GLM::UNIFORM_EFFECT_TYPE, type);
 
@@ -309,7 +305,7 @@ void GraphicSystem::EffectsPipeline(Sprite *_sprite)
 
 				break;
 			}
-			case VisualEffect::VEType::VE_INVERSE: {
+			case VisualEffect::VisualEffectType::VISUALEFFECT_INVERSE: {
 				GLM::m_shader[GLM::SHADER_NORMAL]->SetEnum(
 					GLM::UNIFORM_EFFECT_TYPE, type);
 
@@ -327,23 +323,37 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 	// Check emitter's active toggle
 	if (_emitter->m_active) {
 
-		//glDisable(GL_LIGHTING);
-		glEnable(GL_BLEND);					// Enable blend 
+		static GLuint s_vao, s_elementSize;
+		static GLenum s_mode;
+
+		// Particle render attributes setting
+		glEnable(GL_BLEND);
 		glDepthMask(GL_FALSE);				// Ignore depth buffer writing
-		//glDisable(GL_DEPTH_TEST);
-		//glBlendFunc(GL_ONE, GL_ONE);
-		//glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-		//glBlendFunc(GL_ONE, GL_SRC_ALPHA);
-		//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+
+		if (_emitter->m_renderType) {	// Points
+			s_mode = GL_POINTS;
+			glPointSize(_emitter->m_pointSize);
+			glEnable(GL_POINT_SMOOTH);
+			s_vao = GLM::m_vao[GLM::SHAPE_POINT];
+			s_elementSize = GLM::m_elementSize[GLM::SHAPE_POINT];
+		}
+		else {							//	Normal
+			s_mode = GL_TRIANGLES;
+			glDisable(GL_POINT_SMOOTH);
+			s_vao = GLM::m_vao[GLM::SHAPE_PARTICLE];
+			s_elementSize = GLM::m_elementSize[GLM::SHAPE_PARTICLE];
+		}
 
 		static vec3						s_velocity, s_colorDiff;
 		static float					s_doubleDt;
-		static bool						s_changeColor;
+		static bool						s_changeColor, s_rotation;
 		static vec4						s_color;
 		static unsigned					s_texture;
 		static Transform*				s_pTransform;
 		static Emitter::ParticleType	s_type;
 
+		s_rotation = _emitter->m_rotationSpeed;
 		s_changeColor = _emitter->m_changeColor;
 		s_type = _emitter->m_type;
 		s_pTransform = _emitter->m_transform;
@@ -354,6 +364,23 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 
 		GLM::m_shader[GLM::SHADER_PARTICLE]->Use();
 
+		GLM::m_shader[GLM::SHADER_PARTICLE]->SetMatrix(
+			GLM::UNIFORM_PARTICLE_SCALE, mat4::Scale(s_pTransform->m_scale));
+		
+		// Send camera info to shader
+		GLM::m_shader[GLM::SHADER_PARTICLE]->SetMatrix(
+			GLM::UNIFORM_PARTICLE_CAMERA, m_viewport);
+
+		// Send projection info to shader
+		if (_emitter->m_projection == PROJECTION_PERSPECTIVE)
+			GLM::m_shader[GLM::SHADER_PARTICLE]->SetMatrix(
+				GLM::UNIFORM_PARTICLE_PROJECTION, m_perspective);
+		else
+			GLM::m_shader[GLM::SHADER_PARTICLE]->SetMatrix(
+				GLM::UNIFORM_PARTICLE_PROJECTION, m_orthogonal);
+
+		glBindTexture(GL_TEXTURE_2D, s_texture);
+
 		for (auto particle : _emitter->m_particles) {
 
 			if (particle->m_life < 0.f)
@@ -363,7 +390,9 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 
 				particle->m_life -= s_doubleDt;
 				particle->m_position += particle->m_direction * s_velocity;
-				particle->m_rotation += particle->m_rotateDiff;
+
+				if (s_rotation)
+					particle->m_rotation += particle->m_rotationSpeed * _dt;
 
 				if (s_changeColor)
 					particle->m_color += s_colorDiff;
@@ -376,39 +405,19 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 					GLM::UNIFORM_PARTICLE_TRANSLATE, mat4::Translate(particle->m_position));
 
 				GLM::m_shader[GLM::SHADER_PARTICLE]->SetMatrix(
-					GLM::UNIFORM_PARTICLE_SCALE, mat4::Scale(s_pTransform->m_scale));
-
-				GLM::m_shader[GLM::SHADER_PARTICLE]->SetMatrix(
 					GLM::UNIFORM_PARTICLE_ROTATE, mat4::Rotate(particle->m_rotation, s_pTransform->m_rotationAxis));
-
-				// Send camera info to shader
-				m_viewport = mat4::Camera(
-					m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
-
-				GLM::m_shader[GLM::SHADER_PARTICLE]->SetMatrix(
-					GLM::UNIFORM_PARTICLE_CAMERA, m_viewport);
-
-				// Send projection info to shader
-				if (_emitter->m_projection == PERSPECTIVE)
-					GLM::m_shader[GLM::SHADER_PARTICLE]->SetMatrix(
-						GLM::UNIFORM_PARTICLE_PROJECTION, m_perspective);
-				else
-					GLM::m_shader[GLM::SHADER_PARTICLE]->SetMatrix(
-						GLM::UNIFORM_PARTICLE_PROJECTION, m_orthogonal);
-
-				glBindTexture(GL_TEXTURE_2D, s_texture);
 
 				// Send color info to shader
 				GLM::m_shader[GLM::SHADER_PARTICLE]->SetVector4(
 					GLM::UNIFORM_PARTICLE_COLOR, s_color);
-			}
 
-			Render(GLM::m_vao[GLM::SHAPE_POINT], GLM::m_elementSize[GLM::SHAPE_POINT]);
-			//Render(GLM::m_vao[GLM::SHAPE_PARTICLE], GLM::m_elementSize[GLM::SHAPE_PARTICLE]);
-			//Render(GLM::m_vao[GLM::SHAPE_CUBE], GLM::m_elementSize[GLM::SHAPE_CUBE]);
+				GLM::m_shader[GLM::SHADER_PARTICLE]->SetBool(
+					GLM::UNIFORM_PARTICLE_HIDE, particle->m_hidden);
+
+				Render(s_vao, s_elementSize, s_mode);
+			}
 		}
 
-		//glEnable(GL_DEPTH_TEST);
 		glDepthMask(GL_TRUE);	// Enable depth buffer writing
 		glDisable(GL_BLEND);	// Disable blend
 	}

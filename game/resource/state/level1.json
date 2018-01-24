@@ -7,7 +7,7 @@
 			"Component" : [
 				{
 					"Type": "Camera",
-					"Values": {"Position" : [50, 50, 50], "Target" : [0, 0, 0],
+					"Values": {"Position" : [100, 100, 100], "Target" : [0, 0, 0],
 						"Up" : [0, 1, 0]}
 				}
 			]
