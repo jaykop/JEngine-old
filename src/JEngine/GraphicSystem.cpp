@@ -12,8 +12,8 @@ JE_BEGIN
 
 GraphicSystem::GraphicSystem()
 	:System(), m_pMainCamera(nullptr),
-	m_fovy(45.f), m_zNear(.1f), m_zFar(1000.f), m_IsLight(false),
-	m_backgroundColor(vec4::ZERO), m_orthoFirst(false), m_Is2d(false),
+	m_fovy(45.f), m_zNear(.1f), m_zFar(1000.f), m_isLight(false),
+	m_backgroundColor(vec4::ZERO), m_orthoComesFirst(true),
 	m_width(Application::GetData().m_width), m_height(Application::GetData().m_height),
 	m_aniScale(vec3::ZERO), m_aniTranslate(vec3::ZERO), m_viewport(mat4()), m_aliasMode(ALIAS_ALIASED)
 {
@@ -25,7 +25,6 @@ GraphicSystem::GraphicSystem()
 
 	m_perspective = mat4::Perspective(m_fovy, m_aspect, m_zNear, m_zFar);
 	m_orthogonal = mat4::Orthogonal(m_left, m_right, m_bottom, m_top, m_zNear, m_zFar);
-
 }
 
 void GraphicSystem::Load(CR_RJDoc _data)
@@ -52,6 +51,15 @@ void GraphicSystem::Init()
 
 void GraphicSystem::Update(const float _dt)
 {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(m_backgroundColor.x, m_backgroundColor.y, m_backgroundColor.z, m_backgroundColor.w);
+
+	// Update main camera attributes
+	m_viewport = mat4::Camera(
+		m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
+
+	SortSprites();
+
 	//Start alias mode
 	switch (m_aliasMode)
 	{
@@ -76,24 +84,9 @@ void GraphicSystem::Update(const float _dt)
 		glEnable(GL_MULTISAMPLE);
 		break;
 	}
-	
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(m_backgroundColor.x, m_backgroundColor.y, m_backgroundColor.z, m_backgroundColor.w);
 
-	// Sort sprites by sprite's z position
-	std::sort(m_sprites.begin(), m_sprites.end(), compareOrder(m_orthoFirst));
+	UpdatePipelines(_dt);
 
-	// Update main camera attributes
-	m_viewport = mat4::Camera(
-		m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
-
-	LightSourcePipeline();
-	NormalPipeline(_dt);
-	
-	// TODO
-	// GLMousePosition();
-
-	// TODO
 	//End alias mode
 	switch (m_aliasMode)
 	{
@@ -106,6 +99,9 @@ void GraphicSystem::Update(const float _dt)
 		glDisable(GL_MULTISAMPLE);
 		break;
 	}
+
+	// TODO
+	// GLMousePosition();
 }
 
 void GraphicSystem::Close()
@@ -124,6 +120,35 @@ void GraphicSystem::Render(const unsigned &_vao, const int _elementSize, unsigne
 {
 	glBindVertexArray(_vao);
 	glDrawElements(_mode, _elementSize, GL_UNSIGNED_INT, 0);
+}
+
+void GraphicSystem::SortSprites()
+{
+	// Sort sprites by sprite's z position
+	std::sort(m_sprites.begin(), m_sprites.end(), 
+		[&](Sprite* _leftSpt, Sprite* _rightSpt) -> bool {
+
+		Transform* left = _leftSpt->m_transform;
+		Transform* right = _rightSpt->m_transform;
+
+		if (m_orthoComesFirst) {
+
+			if (_leftSpt->m_projection == PROJECTION_PERSPECTIVE
+				&& _rightSpt->m_projection == PROJECTION_ORTHOGONAL)
+				return true;
+
+			else if (_leftSpt->m_projection == PROJECTION_ORTHOGONAL
+				&& _rightSpt->m_projection == PROJECTION_PERSPECTIVE)
+				return false;
+
+			else
+				return left->m_position.z > right->m_position.z;
+		}
+
+		else
+			return left->m_position.z > right->m_position.z;
+	}
+	);
 }
 
 void GraphicSystem::AddSprite(Sprite* _sprite)
@@ -211,29 +236,6 @@ void GraphicSystem::RemoveLight(Light * _light)
 	}
 }
 
-bool GraphicSystem::compareOrder::operator()(Sprite * _leftSpt, Sprite * _rightSpt)
-{
-	Transform* left = _leftSpt->m_transform;
-	Transform* right = _rightSpt->m_transform;
-
-	if (m_orthoFirst) {
-
-		if (_leftSpt->m_projection == PROJECTION_PERSPECTIVE
-			&& _rightSpt->m_projection == PROJECTION_ORTHOGONAL)
-			return false;
-
-		else if (_leftSpt->m_projection == PROJECTION_ORTHOGONAL
-			&& _rightSpt->m_projection == PROJECTION_PERSPECTIVE)
-			return true;
-
-		else
-			return left->m_position.z < right->m_position.z;
-	}
-
-	else
-		return left->m_position.z < right->m_position.z;
-}
-
 void GraphicSystem::GLMousePosition() {
 
 	// Do unprojection by viewport and proejction matrix
@@ -262,4 +264,3 @@ void GraphicSystem::GLMousePosition() {
 }
 
 JE_END
-

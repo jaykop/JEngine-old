@@ -81,7 +81,7 @@ protected:
 	void Load(CR_RJValue _data) override;
 
 	bool m_culled;
-	bool m_hasMaterial, m_hasAnimation, m_isEmitter;
+	bool m_hasMaterial, m_hasAnimation, m_isEmitter, m_isModel;
 
 	Effects m_effects;
 

@@ -35,6 +35,10 @@ void AssetManager::Load()
 		STATE::PushState(states[i]["Directory"].GetString(), states[i]["Key"].GetString());
 	JE_DEBUG_PRINT("*AssetManager: Loaded game states successfully.\n");
 
+	CR_RJValue fristStates = JSON::GetDocument()["FirstState"];
+	STATE::SetStartingState(fristStates.GetString());
+	JE_DEBUG_PRINT("*AssetManager: First state is %s.\n", fristStates.GetString());
+
 	// Load images
 	JSON::ReadFile(ASSET::m_assetDirectory.c_str());
 	CR_RJValue textures = JSON::GetDocument()["Texture"];

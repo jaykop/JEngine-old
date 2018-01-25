@@ -1,4 +1,6 @@
 {
+	"FirstState" : "level3",
+	
 	"State" : [
 		{"Key" : "level1", 	"Directory" : "resource/state/level1.json"},
 		{"Key" : "level2", 	"Directory" : "resource/state/level2.json"},

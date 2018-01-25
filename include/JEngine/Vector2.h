@@ -55,8 +55,8 @@ struct Vector2
 	void		SetUnitY();
 	bool		IsZero() const;
 	bool		IsOne() const;
-	float		Length() const;
-	float		LengthSq() const;
+	float		GetLength() const;
+	float		GetLengthSq() const;
 	float		DotProduct(const Vector2& _rhs);
 	Vector2		CrossProduct(const Vector2& _rhs);
 	Vector2&	Normalize();

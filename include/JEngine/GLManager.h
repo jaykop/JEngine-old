@@ -98,7 +98,7 @@ private:
 	//static void CreateGBufferTex(GLenum _texUnit, GLenum _format, GLuint & _texid);
 	static void	InitGLEnvironment();
 	static void InitVBO();
-	//static void InitFBO();
+	static void InitFBO();
 	static void InitShaders();
 	static void ShowGLVersion();
 	static void SetVAO(GLuint &_vao, GLuint &_vbo, GLuint &_ebo,
@@ -110,16 +110,13 @@ private:
 	static Shaders		m_shader;
 	static DrawMode		m_mode;
 	static GLint		m_uniform[UNIFORM_END];
-	static GLuint		m_passIndex[2];
-	static GLuint		m_vao[SHAPE_END], m_vbo[SHAPE_END], m_ebo[SHAPE_END],
-		m_particlePosition, m_particleColor;
-	//static GLuint		m_deferredFBO, m_positionTex, m_normalTex, m_colorTex, m_depthBuf;
+	static GLuint		m_vao[SHAPE_END], m_vbo[SHAPE_END], m_ebo[SHAPE_END];
+	static GLuint		m_fbo;
 
 	// Basic indices and vertices sets
-	//static const unsigned	m_glArrayMax;
 	static const float		m_verticesPoint[8], m_verticesPlane[32], m_verticesParticle[96], m_verticesCube[192];
 	static const unsigned	m_indicesPoint[1], m_indicesPlane[6], m_indicesParticle[18], m_indicesCube[36], 
-		m_elementSize[SHAPE_END], m_vertexSize[SHAPE_END];
+		m_elementSize[SHAPE_END], m_verticesSize[SHAPE_END], m_indicesSize[SHAPE_END];
 
 	// Locked functions
 	GLManager() = delete;

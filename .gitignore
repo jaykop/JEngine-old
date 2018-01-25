@@ -1,5 +1,6 @@
 temp/
 build/vs2015/.vs/
+lib/JEngine/
 *.db
 *.suo
 *.user

@@ -76,7 +76,8 @@ void Application::Update()
 	m_pWindow = SDL_CreateWindow(m_Data.m_title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 		m_Data.m_width, m_Data.m_height, SDL_WINDOW_OPENGL);
 
-	// Window flag
+	// Window flag, resolution
+	//SDL_RenderSetLogicalSize();
 	SDL_SetWindowFullscreen(m_pWindow, m_Data.m_isFullScreen);
 
 	if (!m_pWindow) 

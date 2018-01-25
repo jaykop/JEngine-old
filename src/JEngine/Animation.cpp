@@ -6,7 +6,7 @@
 JE_BEGIN
 
 Animation::Animation(Object* _pOwner)
-	: Component(_pOwner), m_curretFrame(0.f), m_animationSpeed(0.f),
+	: Component(_pOwner), m_currentFrame(0.f), m_animationSpeed(0.f),
 	m_animationFrames(1), m_animationFixFrame(1), m_realSpeed(0.f),
 	m_realFrame(1.f), m_activeAnimation(false)
 {	
@@ -60,7 +60,7 @@ void Animation::FixAnimationFrame(int _thFrame)
 {
 	m_animationSpeed = 0.f;
 	m_activeAnimation = false;
-	m_curretFrame = float(_thFrame) * m_realFrame;
+	m_currentFrame = float(_thFrame) * m_realFrame;
 }
 
 void Animation::SetAnimationFrame(int _numOfFrame)

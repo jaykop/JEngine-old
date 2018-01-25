@@ -8,7 +8,7 @@ JE_BEGIN
 Sprite::Sprite(Object* _pOwner)
 	:Component(_pOwner), m_color(vec4::ONE),m_projection(PROJECTION_PERSPECTIVE), 
 	m_mainTex(0),m_transform(nullptr), m_flip(false), m_culled(false), 
-	m_material(nullptr), m_hasMaterial(false), m_isEmitter(false)
+	m_material(nullptr), m_hasMaterial(false), m_isEmitter(false), m_isModel(false)
 {}
 
 void Sprite::Register()
@@ -96,9 +96,11 @@ void Sprite::Load(CR_RJValue _data)
 			m_projection = PROJECTION_PERSPECTIVE;
 		}
 
-		else if (!strcmp("Orhtogonal", projection.GetString())) {
-			m_projection = PROJECTION_PERSPECTIVE;
+		else if (!strcmp("Orthogonal", projection.GetString())) {
+			m_projection = PROJECTION_ORTHOGONAL;
 		}
+		else
+			JE_DEBUG_PRINT("*Sprite: Wrong projection type - %s\n", projection.GetString());
 	}
 
 	if (_data.HasMember("Texture")) {
@@ -106,6 +108,7 @@ void Sprite::Load(CR_RJValue _data)
 		AddTexture(texture.GetString());
 	}
 
+	// TODO
 	if (_data.HasMember("Blur")) {
 		CR_RJValue effect = _data["Blur"];
 		auto found = m_effects.find(VisualEffect::VISUALEFFECT_BLUR);

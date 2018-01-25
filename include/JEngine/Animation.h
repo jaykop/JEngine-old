@@ -59,7 +59,7 @@ private:
 	bool	m_activeAnimation;
 	float	m_realSpeed;
 	float	m_realFrame;
-	float	m_curretFrame;
+	float	m_currentFrame;
 	float	m_animationSpeed;
 
 };

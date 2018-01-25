@@ -120,7 +120,7 @@ Vector2::Vector2(const vec2& _copy)
 /******************************************************************************/
 bool Vector2::operator<(const vec2& _rhs) const
 {
-	return this->LengthSq() < _rhs.LengthSq();
+	return this->GetLengthSq() < _rhs.GetLengthSq();
 }
 
 /******************************************************************************/
@@ -403,12 +403,12 @@ Vector2 Vector2::operator/(float _constant) const
 \return sqrt(x*x + y*y)
 */
 /******************************************************************************/
-float Vector2::Length() const
+float Vector2::GetLength() const
 {
-	return sqrt(LengthSq());
+	return sqrt(GetLengthSq());
 }
 
-float Vector2::LengthSq() const
+float Vector2::GetLengthSq() const
 {
 	return x*x + y*y;
 }
@@ -447,7 +447,7 @@ Vector2& Vector2::Normalize(void)
 {
 	// If this is not zero,
 	if (!IsZero())
-		*this = *this / Length();
+		*this = *this / GetLength();
 
 	// Unless.
 	else
@@ -462,7 +462,7 @@ Vector2 Vector2::GetNormalize() const
 
 	// If this is not zero,
 	if (!IsZero())
-		result = result / Length();
+		result = result / GetLength();
 
 	// Unless.
 	else

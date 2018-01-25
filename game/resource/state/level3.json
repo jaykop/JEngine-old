@@ -7,39 +7,55 @@
 			"Component" : [
 				{
 					"Type": "Camera",
-					"Values": {"Position" : [100, 50, -150], "Target" : [0, 0, 0],
+					"Values": {"Position" : [50, 50, -100], "Target" : [0, 0, 0],
 						"Up" : [0, 1, 0]}
 				}
 			]
 		},	
 		{
-			"Name" : "Light",
-			"Component" : [
-				{
-					"Type": "Light",
-					"Values": {"Type" : "Normal", "Position" : [0, 50, 0],
-						"Color" : [1, 1, 1, 1], "Direction" : [0, -1, 0],
-						"Diffuse" : [1, 1, 1, 1], "Specular" : [1, 1, 1, 1], 
-						"Ambient" : [1, 1, 1, 1], "Constant" : 1.0,
-						"Linear" : 0.009, "Quadratic" : 0.0032, 
-						"CutOff" : 12.5, "OuterCutOff" : 17.5}
-				}
-			]
-		},
-		{
-			"Name" : "Model",
+			"Name" : "PerspectiveModel",
 			"Component" : [
 				{
 					"Type": "Transform",
-					"Values": {"Position" : [0, 0, 0], "Scale" : [50, 50, 50]}
+					"Values": {"Position" : [0, 0, 1], "Scale" : [50, 50, 50]}
 				},
 				{
 					"Type": "Model",
 					"Values": {"Texture" : "uvtemplate", "Color" : [1, 1, 1, 1], "Projection" : "Perspective"}
+				}
+			]
+		},		
+		{
+			"Name" : "PerspectiveSprite",
+			"Component" : [
+				{
+					"Type": "Transform",
+					"Values": {"Position" : [0, 0, 0], "Scale" : [150, 250, 0]}
 				},
 				{
-					"Type": "Material",
-					"Values": {"Diffuse" : 32, "Specular" : 32, "Shininess" : 32}
+					"Type": "Sprite",
+					"Values": {"Texture" : "testAnimation", "Color" : [1, 1, 1, 1], "Projection" : "Perspective"}
+				},
+				{
+					"Type": "Animation",
+					"Values": {"Frame" : 8, "Speed" : 12, "Active" : true}
+				}
+			]
+		},
+		{
+			"Name" : "OrthogonalSprite",
+			"Component" : [
+				{
+					"Type": "Transform",
+					"Values": {"Position" : [0, 0, 0], "Scale" : [150, 250, 0]}
+				},
+				{
+					"Type": "Sprite",
+					"Values": {"Texture" : "testAnimation", "Color" : [1, 1, 1, 1], "Projection" : "Orthogonal"}
+				},
+				{
+					"Type": "Animation",
+					"Values": {"Frame" : 8, "Speed" : 12, "Active" : true}
 				}
 			]
 		},

@@ -57,8 +57,8 @@ public:
 	void		SetUnitW();
 	bool		IsZero() const;
 	bool		IsOne() const;
-	float		Length() const;
-	float		LengthSq() const;
+	float		GetLength() const;
+	float		GetLengthSq() const;
 	float		DotProduct(const Vector4& _rhs);
 	Vector4&	Normalize();
 	Vector4		GetNormalize() const;

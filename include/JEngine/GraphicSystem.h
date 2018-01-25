@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+//#include <functional>
 #include "System.h"
 #include "Matrix4x4.h"
 
@@ -39,7 +40,7 @@ public:
 	void	SetBackgroundColor(CR_vec4 _color);
 	void	SetBackgroundColor(float _r, float _g, float _b, float _a);
 
-	bool	m_Is2d;
+	bool	m_orthoComesFirst;
 	Alias	m_aliasMode;
 
 private:
@@ -63,9 +64,8 @@ private:
 	void AddLight(Light* _light);
 	void RemoveLight(Light* _light);
 
+	void UpdatePipelines(const float _dt);
 	void LightSourcePipeline();
-	void NormalPipeline(const float _dt);
-
 	void SpritePipeline(Sprite * _sprite);
 	void MappingPipeline(Sprite* _sprite);
 	void LightingEffectPipeline(Material* _material);
@@ -74,7 +74,7 @@ private:
 	void EffectsPipeline(Sprite* _sprite);
 
 	void Render(const unsigned &_vao, const int _elementSize, unsigned _mode = 0x0004 /*GL_TRIANGLES*/);
-
+	void SortSprites();
 	void GLMousePosition();
 
 	// Member variables
@@ -84,21 +84,14 @@ private:
 	Camera*		m_pMainCamera;
 	
 	int		m_width, m_height;
-	bool	m_orthoFirst, m_inside, m_IsLight;
+	bool	m_inside, m_isLight;
 	mat4	m_perspective, m_orthogonal, m_viewport;
 	vec4	m_backgroundColor;
 	vec3	m_aniScale, m_aniTranslate;
 	float	m_fovy, m_aspect, m_zNear, m_zFar;
 	float	m_left, m_right, m_top, m_bottom;
 
-	struct compareOrder {
-		
-		compareOrder(bool _orthoFirst) { m_orthoFirst = _orthoFirst; }
-		bool operator()(Sprite * _leftSpt, Sprite * _rightSpt);
-		
-		private:
-			bool m_orthoFirst;
-	};
+	//std::function<bool(Sprite*, Sprite*)> m_sorter;
 
 	GraphicSystem(const GraphicSystem& /*_copy*/) = delete;
 	void operator=(const GraphicSystem& /*_copy*/) = delete;

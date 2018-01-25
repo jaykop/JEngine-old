@@ -59,8 +59,8 @@ public:
 	void		SetUnitZ();
 	bool		IsZero() const;
 	bool		IsOne() const;
-	float		Length() const;
-	float		LengthSq() const;
+	float		GetLength() const;
+	float		GetLengthSq() const;
 	float		DotProduct(const Vector3& _rhs);
 	Vector3		CrossProduct(const Vector3& _rhs);
 	void		Normalize();
@@ -73,12 +73,13 @@ public:
 	float		GetAngle(const Vector3& _other);
 	Vector3		GetRotated(float _angle, const Vector3& _pivot);
 	float		GetDistance(const Vector3& _rhs);
+	float		GetDistanceSq(const Vector3& _rhs);
 	float		DistanceToLine(const Vector3& _lineStart, const Vector3& _lineEnd);
 
 	// Friend Functions
-	friend Vector3 operator+(float _constant, const Vector3& _rhs);
-	friend Vector3 operator*(float _constant, const Vector3& _rhs);
-	friend std::ostream& operator<<(std::ostream& _os, const Vector3& _constents);
+	friend Vector3			operator+(float _constant, const Vector3& _rhs);
+	friend Vector3			operator*(float _constant, const Vector3& _rhs);
+	friend std::ostream&	operator<<(std::ostream& _os, const Vector3& _constents);
 
 	// Static variables
 	static const Vector3 ZERO;

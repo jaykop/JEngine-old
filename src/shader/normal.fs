@@ -68,7 +68,6 @@ uniform float		float_blurSize;
 uniform float		float_blurAmount;
 uniform float		float_sobelAmount;
 uniform int 		int_lightSize;
-uniform bool		boolean_hideParticle;
 
 ////////////////////////////
 // function declarations
@@ -83,28 +82,25 @@ void main() {
 
 	vec4 finalTexture = vec4(0,0,0,0);
 	
-	if (boolean_hideParticle)
-		v4_fragColor = finalTexture;
-	
-	else {
-		// Any effect?
-		if ((enum_effectType != EFFECT_NONE) 
-			|| boolean_light) {
+
+	// Any effect?
+	if ((enum_effectType != EFFECT_NONE) 
+		|| boolean_light) {
 			
-			// Implement light attributes
-			if (boolean_light)
-				LightingEffect(finalTexture);
+		// Implement light attributes
+		if (boolean_light)
+			LightingEffect(finalTexture);
 				
-			// Impose visual effect here...
-			if (enum_effectType != EFFECT_NONE)
-				VisualEffect(finalTexture);
-		}
-		
-		// Unless..
-		else
-			finalTexture = texture(Texture, v2_outTexCoord)* v4_color;
-		
+		// Impose visual effect here...
+		if (enum_effectType != EFFECT_NONE)
+			VisualEffect(finalTexture);
 	}
+		
+	// Unless..
+	else
+		finalTexture = texture(Texture, v2_outTexCoord)* v4_color;
+		
+	
 	v4_fragColor = finalTexture;
 }
 

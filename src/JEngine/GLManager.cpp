@@ -10,21 +10,11 @@ JE_BEGIN
 //////////////////////////////////////////////////////////////////////////
 float				GLManager::m_width = 0;
 float				GLManager::m_height = 0;
-GLint				GLManager::m_uniform[];
-GLuint				GLManager::m_vao[];
-GLuint				GLManager::m_vbo[];
-GLuint				GLManager::m_ebo[];
-const unsigned		GLManager::m_elementSize[] = {1, 6, 72, 144};
-const unsigned		GLManager::m_vertexSize[] = {8, 128, 384, 768};
-//GLuint				GLManager::m_depthBuf = 0;
-//GLuint				GLManager::m_colorTex = 0;
-//GLuint				GLManager::m_normalTex = 0;
-//GLuint				GLManager::m_deferredFBO = 0;
-//GLuint				GLManager::m_positionTex = 0;
-GLuint				GLManager::m_passIndex[];
-GLuint				GLManager::m_particleColor = 0;
-GLuint				GLManager::m_particlePosition = 0;
-//const unsigned		GLManager::m_glArrayMax = 128;
+GLint				GLManager::m_uniform[] = { 0 };
+GLuint				GLManager::m_vao[] = { 0 };
+GLuint				GLManager::m_vbo[] = { 0 };
+GLuint				GLManager::m_ebo[] = { 0 };
+GLuint				GLManager::m_fbo = 0;
 GLManager::Shaders	GLManager::m_shader;
 GLManager::DrawMode GLManager::m_mode = DrawMode::DRAW_FILL;
 
@@ -32,17 +22,32 @@ const float GLManager::m_verticesPoint[] = {
 	// position				// uv		// normals
 	0.f,	0.f,	0.f,	1.f, 1.f,	0.0f,  0.0f, 0.0f,};
 
-const unsigned GLManager::m_indicesPoint[] = {0};
+const unsigned GLManager::m_indicesPoint[] = { 0 };
 
 const float GLManager::m_verticesPlane[] = {
-	// position				// uv		// normals
-	-.5f,	.5f,	0.f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,		// top left	
-	.5f,	.5f,	0.f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,		// top right
-	.5f,	-.5f,	0.f,	0.f, 1.f,	0.0f,  0.0f, 1.0f,		// bottom right
-	-.5f,	-.5f,	0.f,	0.f, 0.f,	0.0f,  0.0f, 1.0f		// bottom left
+
+	//// position				// uv		// normals
+	//-.5f,	.5f,	0.f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,		// top left	
+	//.5f,	.5f,	0.f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,		// top right
+	//.5f,	-.5f,	0.f,	0.f, 1.f,	0.0f,  0.0f, 1.0f,		// bottom right
+	//-.5f,	-.5f,	0.f,	0.f, 0.f,	0.0f,  0.0f, 1.0f		// bottom left
+
+	// vertic position	// uv		// normals
+	-.5f, .5f, 0.f,		0.f, 0.f,	0.0f,  0.0f, 1.0f,	// top left	
+	.5f, .5f, 0.f,		1.f, 0.f,	0.0f,  0.0f, 1.0f,	// top right
+	.5f, -.5f,	0.f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,	// bottom right
+	-.5f, -.5f, 0.f,	0.f, 1.f,	0.0f,  0.0f, 1.0f	// bottom left
 };
 
 const unsigned GLManager::m_indicesPlane[] = {
+
+	/***************/
+	/*  *   second */
+	/*     *       */
+	/*        *    */
+	/*  first    * */
+	/***************/
+
 	// front
 	0, 2, 3,	// first triangle
 	2, 0, 1		// second triangle
@@ -167,6 +172,20 @@ const unsigned GLManager::m_indicesCube [] =
 	22, 20, 21	// second triangle
 };
 
+const unsigned		GLManager::m_elementSize[] = { 1, 6, 72, 144 };
+const unsigned		GLManager::m_verticesSize[] = { 
+
+	sizeof(GLM::m_verticesPoint), sizeof(GLM::m_verticesPlane), 
+	sizeof(GLM::m_verticesParticle), sizeof(GLM::m_verticesCube)
+
+};
+const unsigned		GLManager::m_indicesSize[] = { 
+
+	sizeof(GLM::m_indicesPoint), sizeof(GLM::m_indicesPlane),
+	sizeof(GLM::m_indicesParticle), sizeof(GLM::m_indicesCube)
+
+};
+
 //////////////////////////////////////////////////////////////////////////
 // GLManager functio bodies
 //////////////////////////////////////////////////////////////////////////
@@ -191,13 +210,10 @@ bool GLManager::initSDL_GL(float _width, float _height)
 		// Do gl stuff
 		ShowGLVersion();
 		InitVBO();
-		//InitFBO();
+		InitFBO();
 		InitGLEnvironment();
 		InitShaders();
 		RegisterUniform();
-
-		//m_passIndex[0] = glGetSubroutineIndex(m_shader[SHADER_NORMAL]->m_programId, GL_FRAGMENT_SHADER, "pass1");
-		//m_passIndex[1] = glGetSubroutineIndex(m_shader[SHADER_NORMAL]->m_programId, GL_FRAGMENT_SHADER, "pass2");
 	}
 
 	return true;
@@ -212,6 +228,14 @@ void GLManager::CloseSDL_GL()
 	}
 
 	m_shader.clear();
+
+	for (int index = 0; index < SHAPE_END; ++index) {
+		glDeleteBuffers(1, &m_ebo[index]);
+		glDeleteBuffers(1, &m_vbo[index]);
+		glDeleteVertexArrays(1, &m_vao[index]);
+	}
+
+	glDeleteFramebuffers(1, &m_fbo);
 }
 
 void GLManager::InitVBO()
@@ -219,20 +243,50 @@ void GLManager::InitVBO()
 	glActiveTexture(GL_TEXTURE0);
 
 	SetVAO(m_vao[SHAPE_POINT], m_vbo[SHAPE_POINT], m_ebo[SHAPE_POINT],
-		m_vertexSize[SHAPE_POINT], m_elementSize[SHAPE_POINT],
+		m_verticesSize[SHAPE_POINT], m_indicesSize[SHAPE_POINT],
 		m_verticesPoint, m_indicesPoint);
 
 	SetVAO(m_vao[SHAPE_PLANE], m_vbo[SHAPE_PLANE], m_ebo[SHAPE_PLANE],
-		m_vertexSize[SHAPE_PLANE], m_elementSize[SHAPE_PLANE],
+		m_verticesSize[SHAPE_PLANE], m_indicesSize[SHAPE_PLANE],
 		m_verticesPlane, m_indicesPlane);
 
 	SetVAO(m_vao[SHAPE_PARTICLE], m_vbo[SHAPE_PARTICLE], m_ebo[SHAPE_PARTICLE],
-		m_vertexSize[SHAPE_PARTICLE], m_elementSize[SHAPE_PARTICLE],
+		m_verticesSize[SHAPE_PARTICLE], m_indicesSize[SHAPE_PARTICLE],
 		m_verticesParticle, m_indicesParticle);
 
 	SetVAO(m_vao[SHAPE_CUBE], m_vbo[SHAPE_CUBE], m_ebo[SHAPE_CUBE],
-		m_vertexSize[SHAPE_CUBE], m_elementSize[SHAPE_CUBE],
+		m_verticesSize[SHAPE_CUBE], m_indicesSize[SHAPE_CUBE],
 		m_verticesCube, m_indicesCube);
+}
+
+void GLManager::InitFBO()
+{
+	// Create and bind the FBO
+	glGenFramebuffers(1, &m_fbo);
+	glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
+
+	//// The depth buffer
+	//glGenRenderbuffers(1, &m_depthBuf);
+	//glBindRenderbuffer(GL_RENDERBUFFER, m_depthBuf);
+	//glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, m_width, m_height);
+
+	//// Create the textures for position, normal and color
+	//CreateGBufferTex(GL_TEXTURE0, GL_RGB32F, m_positionTex);	// Position
+	//CreateGBufferTex(GL_TEXTURE1, GL_RGB32F, m_normalTex);		// Normal
+	//CreateGBufferTex(GL_TEXTURE2, GL_RGB8, m_colorTex);			// Color
+
+	//// Attach the textures to the framebuffer
+	//glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_depthBuf);
+	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_positionTex, 0);
+	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_normalTex, 0);
+	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, m_colorTex, 0);
+
+	//GLenum drawBuffers[] = { GL_NONE, GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1,
+	//	GL_COLOR_ATTACHMENT2 };
+	//glDrawBuffers(4, drawBuffers);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 }
 
 void GLManager::InitGLEnvironment()
@@ -247,7 +301,7 @@ void GLManager::InitGLEnvironment()
 
 	// Set depth 
 	glEnable(GL_LEQUAL);
-	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_DEPTH_TEST);
 	
 	//Set blending
 	glEnable(GL_BLEND);
@@ -264,6 +318,7 @@ void GLManager::InitGLEnvironment()
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+
 }
 
 void GLManager::InitShaders() 
@@ -375,7 +430,7 @@ void GLManager::SetVAO(GLuint &_vao, GLuint &_vbo, GLuint &_ebo,
 	const unsigned _verticeSize, const unsigned _elementSize,
 	const float _vertices[], const unsigned _elements[])
 {
-	// vertexy array for point
+	// Generate vertexy array object
 	glGenVertexArrays(1, &_vao);
 	glBindVertexArray(_vao);
 
@@ -389,7 +444,7 @@ void GLManager::SetVAO(GLuint &_vao, GLuint &_vbo, GLuint &_ebo,
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
-	// text coordinate position
+	// texture coordinate position
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
@@ -397,6 +452,7 @@ void GLManager::SetVAO(GLuint &_vao, GLuint &_vbo, GLuint &_ebo,
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
 	glEnableVertexAttribArray(2);
 
+	// Generate element buffer object
 	glGenBuffers(1, &_ebo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, _elementSize, _elements, GL_STATIC_DRAW);
@@ -412,36 +468,6 @@ void GLManager::SetVAO(GLuint &_vao, GLuint &_vbo, GLuint &_ebo,
 //	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 //	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 //	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
-//}
-
-//void GLManager::InitFBO()
-//{
-//	// Create and bind the FBO
-//	glGenFramebuffers(1, &m_deferredFBO);
-//	glBindFramebuffer(GL_FRAMEBUFFER, m_deferredFBO);
-//
-//	// The depth buffer
-//	glGenRenderbuffers(1, &m_depthBuf);
-//	glBindRenderbuffer(GL_RENDERBUFFER, m_depthBuf);
-//	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, m_width, m_height);
-//
-//	// Create the textures for position, normal and color
-//	CreateGBufferTex(GL_TEXTURE0, GL_RGB32F, m_positionTex);	// Position
-//	CreateGBufferTex(GL_TEXTURE1, GL_RGB32F, m_normalTex);		// Normal
-//	CreateGBufferTex(GL_TEXTURE2, GL_RGB8, m_colorTex);			// Color
-//
-//	// Attach the textures to the framebuffer
-//	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_depthBuf);
-//	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_positionTex, 0);
-//	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_normalTex, 0);
-//	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, m_colorTex, 0);
-//
-//	GLenum drawBuffers[] = { GL_NONE, GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1,
-//		GL_COLOR_ATTACHMENT2 };
-//	glDrawBuffers(4, drawBuffers);
-//
-//	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-//
 //}
 
 JE_END

@@ -4,7 +4,9 @@ JE_BEGIN
 
 Model::Model(Object* _pOwner)
 	:Sprite(_pOwner)
-{}
+{
+	m_isModel = true;
+}
 
 ModelBuilder::ModelBuilder()
 	:ComponentBuilder()

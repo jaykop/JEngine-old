@@ -412,6 +412,11 @@ Matrix4x4 operator*(float constant, const mat4& rhs)
 	return result;
 }
 
+Vector4 operator*(const Vector4 & _vector, const Matrix4x4 & _rhs)
+{
+	return _rhs * _vector;
+}
+
 /******************************************************************************/
 /*!
 \brief - Friend function << operator

@@ -66,7 +66,7 @@ public:
 	void SetQuantity(unsigned _quantity);
 	void SetColors(const vec3& _start, const vec3& _end);
 
-	bool				m_active;
+	bool				m_active, m_is2d;
 	float				m_life, m_rotationSpeed, m_pointSize;
 	unsigned			m_size;
 	ParticleType		m_type;

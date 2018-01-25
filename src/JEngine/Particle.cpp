@@ -32,7 +32,7 @@ Emitter::Particle::Particle(Emitter* _emitter)
 	if (s_rotationSpeed)
 		m_rotationSpeed = Random::GetRandomFloat(0., s_rotationSpeed);
 
-	if (SYSTEM::GetGraphicSystem()->m_Is2d)
+	if (m_emitter->m_is2d)
 		m_direction.z = 0.f;
 }
 
@@ -86,14 +86,14 @@ void Emitter::Particle::Refresh()
 
 		}
 
-		if (SYSTEM::GetGraphicSystem()->m_Is2d)
+		if (m_emitter->m_is2d)
 			m_direction.z = 0.f;
 	}
 }
 
 Emitter::Emitter(Object* _pOwner)
 	:Sprite(_pOwner), m_startColor(vec3::ONE), m_changeColor(true),
-	m_endColor(vec3::ZERO), m_life(1.f), m_type(PARTICLE_NORMAL),
+	m_endColor(vec3::ZERO), m_life(1.f), m_type(PARTICLE_NORMAL), m_is2d(false),
 	m_direction(vec3::ZERO), m_velocity(vec3::ZERO), m_active(true),
 	m_deadCount(0), m_renderType(PARTICLERENDER_NORMAL), m_pointSize(0.f),
 	m_range(vec3::ZERO), m_size(0), m_colorDiff(vec3::ZERO), m_rotationSpeed(0.f)

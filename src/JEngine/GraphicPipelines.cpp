@@ -8,20 +8,48 @@
 
 JE_BEGIN
 
+void GraphicSystem::UpdatePipelines(const float _dt)
+{
+	// Update sprites and lights
+	m_isLight = m_lights.empty() ? false : true;
+
+	// Inform that there are lights
+	GLM::m_shader[GLM::SHADER_NORMAL]->Use();
+
+	GLM::m_shader[GLM::SHADER_NORMAL]->SetBool(
+		GLM::UNIFORM_IS_LIGHT, m_isLight);
+
+	LightSourcePipeline();
+
+	GLM::m_shader[GLM::SHADER_NORMAL]->Use();
+
+	// Send camera info to shader
+	GLM::m_shader[GLM::SHADER_NORMAL]->SetMatrix(
+		GLM::UNIFORM_CAMERA, m_viewport);
+
+	GLM::m_shader[GLM::SHADER_PARTICLE]->Use();
+
+	// Send camera info to shader
+	GLM::m_shader[GLM::SHADER_PARTICLE]->SetMatrix(
+		GLM::UNIFORM_PARTICLE_CAMERA, m_viewport);
+
+	for (auto sprite : m_sprites) {
+
+		// Emitter
+		if (sprite->m_isEmitter)
+			ParticlePipeline(static_cast<Emitter*>(sprite), _dt);
+
+		// Normal models
+		else
+			SpritePipeline(sprite);
+	}
+}
+
 //////////////////////////////////////////////////////////////////////////
 // Light box pipeline
 //////////////////////////////////////////////////////////////////////////
 void GraphicSystem::LightSourcePipeline()
 {
-	// Update sprites and lights
-	m_IsLight = m_lights.empty() ? false : true;
-	
-	// Inform that there are lights
-	GLM::m_shader[GLM::SHADER_NORMAL]->Use();
-
-	GLM::m_shader[GLM::SHADER_NORMAL]->SetBool(
-		GLM::UNIFORM_IS_LIGHT, m_IsLight);
-
 	static int s_lightSize;
 
 	// TODO
@@ -30,7 +58,9 @@ void GraphicSystem::LightSourcePipeline()
 	GLM::m_shader[GLM::SHADER_NORMAL]->SetInt(
 		GLM::UNIFORM_LIGHT_SIZE, s_lightSize);
 
-	if (m_IsLight) {
+	if (m_isLight) {
+
+		glEnable(GL_DEPTH_TEST);
 
 		static vec3 s_lightScale(10.f, 10.f, 10.f), s_lightUp(0, 1, 0);
 		static float s_lightDeg = 0.f;
@@ -70,33 +100,18 @@ void GraphicSystem::LightSourcePipeline()
 
 		} // for (auto light : m_lights) {
 	} // if (m_isLight) {
+
+	glDisable(GL_DEPTH_TEST);
 }
 
 //////////////////////////////////////////////////////////////////////////
 // Sprite(model) pipeline
 //////////////////////////////////////////////////////////////////////////
-void GraphicSystem::NormalPipeline(const float _dt)
-{
-	for (auto sprite : m_sprites) {
-
-		// Emitter
-		if (sprite->m_isEmitter) 
-			ParticlePipeline(static_cast<Emitter*>(sprite), _dt);
-
-		// Normal models
-		else 
-			SpritePipeline(sprite);
-	}
-}
-
 void GraphicSystem::SpritePipeline(Sprite *_sprite)
 {
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 	static Transform* s_pTransform;
 	s_pTransform = _sprite->m_transform;
-	
+
 	GLM::m_shader[GLM::SHADER_NORMAL]->Use();
 
 	GLM::m_shader[GLM::SHADER_NORMAL]->SetMatrix(
@@ -107,10 +122,6 @@ void GraphicSystem::SpritePipeline(Sprite *_sprite)
 
 	GLM::m_shader[GLM::SHADER_NORMAL]->SetMatrix(
 		GLM::UNIFORM_ROTATE, mat4::Rotate(s_pTransform->m_rotation, s_pTransform->m_rotationAxis));
-
-	// Send camera info to shader
-		GLM::m_shader[GLM::SHADER_NORMAL]->SetMatrix(
-		GLM::UNIFORM_CAMERA, m_viewport);
 
 	// Send projection info to shader
 	if (_sprite->m_projection == PROJECTION_PERSPECTIVE)
@@ -125,7 +136,72 @@ void GraphicSystem::SpritePipeline(Sprite *_sprite)
 	//if (!_sprite->m_culled) {
 
 	MappingPipeline(_sprite);
+
+	if (!_sprite->m_effects.empty())
+		EffectsPipeline(_sprite);
+
+	if (_sprite->m_hasMaterial && m_isLight)
+		LightingEffectPipeline(_sprite->m_material);
+
+	// TODO
+	// Just render cube for now...
 	
+	glEnable(GL_BLEND);
+	glBlendEquation(GL_FUNC_ADD);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
+	if (_sprite->m_isModel) {
+		glEnable(GL_DEPTH_TEST);
+		Render(GLM::m_vao[GLM::SHAPE_CUBE], GLM::m_elementSize[GLM::SHAPE_CUBE]);
+		glDisable(GL_DEPTH_TEST);
+	}
+	else
+		Render(GLM::m_vao[GLM::SHAPE_PLANE], GLM::m_elementSize[GLM::SHAPE_PLANE]);
+
+	glDisable(GL_BLEND);
+}
+
+void GraphicSystem::MappingPipeline(Sprite* _sprite)
+{
+	glBindTexture(GL_TEXTURE_2D, _sprite->GetCurrentTexutre());
+
+	if (_sprite->m_hasAnimation) {
+		
+		static Animation* animation;
+		animation = _sprite->m_animation;
+
+		if (animation->m_activeAnimation) {
+
+			static float realSpeed;
+			realSpeed = animation->m_realSpeed;
+
+			if (realSpeed <= animation->m_timer.GetTime()) {
+
+				static float nextFrame;
+				if (_sprite->m_flip)
+					nextFrame = animation->m_currentFrame - animation->m_realFrame;
+				else
+					nextFrame = animation->m_currentFrame + animation->m_realFrame;
+
+				if (nextFrame >= 1.f)
+					animation->m_currentFrame = 0.f;
+				else
+					animation->m_currentFrame = nextFrame;
+
+				animation->m_timer.Start();
+			} // if (realSpeed <= animation->m_timer.GetTime()) {
+		} // if (animation->m_activeAnimation) {
+
+		m_aniScale.Set(animation->m_realFrame, 1.f, 0.f);
+		m_aniTranslate.Set(animation->m_currentFrame, 0.f, 0.f);
+
+	} // if (_sprite->m_hasAnimation) {
+
+	else {
+		m_aniScale.Set(1, 1, 0);
+		m_aniTranslate.Set(0, 0, 0);
+	}
+
 	// Send color info to shader
 	GLM::m_shader[GLM::SHADER_NORMAL]->SetVector4(
 		GLM::UNIFORM_COLOR,
@@ -142,55 +218,6 @@ void GraphicSystem::SpritePipeline(Sprite *_sprite)
 	GLM::m_shader[GLM::SHADER_NORMAL]->SetMatrix(
 		GLM::UNIFORM_ANI_TRANSLATE,
 		mat4::Translate(m_aniTranslate));
-
-	if (!_sprite->m_effects.empty())
-		EffectsPipeline(_sprite);
-
-	if (_sprite->m_hasMaterial && m_IsLight)
-		LightingEffectPipeline(_sprite->m_material);
-
-	// TODO
-	// Just render cube for now...
-	Render(GLM::m_vao[GLM::SHAPE_CUBE], GLM::m_elementSize[GLM::SHAPE_CUBE]);
-	glDisable(GL_BLEND);
-}
-
-void GraphicSystem::MappingPipeline(Sprite* _sprite)
-{
-	glBindTexture(GL_TEXTURE_2D, _sprite->GetCurrentTexutre());
-
-	if (_sprite->m_hasAnimation) {
-		Animation* animation = _sprite->m_animation;
-		if (animation->m_activeAnimation) {
-
-			float realSpeed = animation->m_realSpeed;
-
-			if (realSpeed <= animation->m_timer.GetTime()) {
-
-				float nextFrame;
-				if (_sprite->m_flip)
-					nextFrame = animation->m_curretFrame - animation->m_realFrame;
-				else
-					nextFrame = animation->m_curretFrame + animation->m_realFrame;
-
-				if (nextFrame >= 1.f)
-					animation->m_curretFrame = 0.f;
-				else
-					animation->m_curretFrame = nextFrame;
-
-				animation->m_timer.Start();
-			} // if (realSpeed <= animation->m_timer.GetTime()) {
-		} // if (animation->m_activeAnimation) {
-
-		m_aniScale.Set(animation->m_realFrame, 1.f, 0.f);
-		m_aniTranslate.Set(animation->m_curretFrame, 0.f, 0.f);
-
-	} // if (_sprite->m_hasAnimation) {
-
-	else {
-		m_aniScale.Set(1, 1, 0);
-		m_aniTranslate.Set(0, 0, 0);
-	}
 }
 
 void GraphicSystem::LightingEffectPipeline(Material *_material)
@@ -366,10 +393,6 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 
 		GLM::m_shader[GLM::SHADER_PARTICLE]->SetMatrix(
 			GLM::UNIFORM_PARTICLE_SCALE, mat4::Scale(s_pTransform->m_scale));
-		
-		// Send camera info to shader
-		GLM::m_shader[GLM::SHADER_PARTICLE]->SetMatrix(
-			GLM::UNIFORM_PARTICLE_CAMERA, m_viewport);
 
 		// Send projection info to shader
 		if (_emitter->m_projection == PROJECTION_PERSPECTIVE)
