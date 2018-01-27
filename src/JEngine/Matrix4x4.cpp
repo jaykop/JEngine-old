@@ -786,7 +786,7 @@ Matrix4x4 Matrix4x4::Orthogonal(float _left, float _right, float _bottom, float 
 	return Result;
 }
 
-Matrix4x4 Matrix4x4::Camera(const Vector3 _eye, const Vector3 _target, const Vector3 _up)
+Matrix4x4 Matrix4x4::LookAt(const Vector3& _eye, const Vector3& _target, const Vector3& _up)
 {
 	Vector3 look = (_eye - _target).GetNormalize();
 	Vector3 up = _up;
@@ -814,7 +814,6 @@ Matrix4x4 Matrix4x4::Camera(const Vector3 _eye, const Vector3 _target, const Vec
 
 	return Result;
 }
-
 
 Matrix4x4 Matrix4x4::Translate(const vec3& _vec)
 {

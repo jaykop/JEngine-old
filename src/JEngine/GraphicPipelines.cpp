@@ -19,6 +19,18 @@ void GraphicSystem::UpdatePipelines(const float _dt)
 	GLM::m_shader[GLM::SHADER_NORMAL]->SetBool(
 		GLM::UNIFORM_IS_LIGHT, m_isLight);
 
+	//// TODO
+	//// SAMPLE CODES
+	//glBindFramebuffer(GL_FRAMEBUFFER, GLM::m_fbo);
+	//glViewport(0, 0, 512, 512);
+	//int location = glGetUniformLocation(GLM::m_shader[GLM::SHADER_NORMAL]->m_programId, "Texture1");
+	//glUniform1i(location, 0);
+
+	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	//glViewport(0, 0, 800, 600);
+	//location = glGetUniformLocation(GLM::m_shader[GLM::SHADER_NORMAL]->m_programId, "Texture1");
+	//glUniform1i(location, 0);
+
 	LightSourcePipeline();
 
 	GLM::m_shader[GLM::SHADER_NORMAL]->Use();
@@ -123,6 +135,12 @@ void GraphicSystem::SpritePipeline(Sprite *_sprite)
 	GLM::m_shader[GLM::SHADER_NORMAL]->SetMatrix(
 		GLM::UNIFORM_ROTATE, mat4::Rotate(s_pTransform->m_rotation, s_pTransform->m_rotationAxis));
 
+	GLM::m_shader[GLM::SHADER_NORMAL]->SetVector3(
+		GLM::UNIFORM_CAMERA_POSITION, m_pMainCamera->m_position);
+
+	GLM::m_shader[GLM::SHADER_NORMAL]->SetBool(
+		GLM::UNIFORM_BILBOARD, _sprite->m_bilboard);
+
 	// Send projection info to shader
 	if (_sprite->m_projection == PROJECTION_PERSPECTIVE)
 		GLM::m_shader[GLM::SHADER_NORMAL]->SetMatrix(
@@ -149,15 +167,15 @@ void GraphicSystem::SpritePipeline(Sprite *_sprite)
 	glEnable(GL_BLEND);
 	glBlendEquation(GL_FUNC_ADD);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_DEPTH_TEST);
 	
 	if (_sprite->m_isModel) {
-		glEnable(GL_DEPTH_TEST);
 		Render(GLM::m_vao[GLM::SHAPE_CUBE], GLM::m_elementSize[GLM::SHAPE_CUBE]);
-		glDisable(GL_DEPTH_TEST);
+	
 	}
 	else
 		Render(GLM::m_vao[GLM::SHAPE_PLANE], GLM::m_elementSize[GLM::SHAPE_PLANE]);
-
+	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
 }
 
@@ -356,16 +374,27 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 		// Particle render attributes setting
 		glEnable(GL_BLEND);
 		glDepthMask(GL_FALSE);				// Ignore depth buffer writing
+		//glDisable(GL_DEPTH_TEST);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-
-		if (_emitter->m_renderType) {	// Points
+		
+		// Points
+		if (_emitter->m_renderType == Emitter::PARTICLERENDER_POINT) {	
 			s_mode = GL_POINTS;
 			glPointSize(_emitter->m_pointSize);
 			glEnable(GL_POINT_SMOOTH);
 			s_vao = GLM::m_vao[GLM::SHAPE_POINT];
 			s_elementSize = GLM::m_elementSize[GLM::SHAPE_POINT];
 		}
-		else {							//	Normal
+		// Plane
+		else if (_emitter->m_renderType == Emitter::PARTICLERENDER_PLANE) {	
+			s_mode = GL_TRIANGLES;
+			glDisable(GL_POINT_SMOOTH);
+			s_vao = GLM::m_vao[GLM::SHAPE_PLANE];
+			s_elementSize = GLM::m_elementSize[GLM::SHAPE_PLANE];
+		}
+
+		// Cross form
+		else {
 			s_mode = GL_TRIANGLES;
 			glDisable(GL_POINT_SMOOTH);
 			s_vao = GLM::m_vao[GLM::SHAPE_PARTICLE];
@@ -393,6 +422,9 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 
 		GLM::m_shader[GLM::SHADER_PARTICLE]->SetMatrix(
 			GLM::UNIFORM_PARTICLE_SCALE, mat4::Scale(s_pTransform->m_scale));
+
+		GLM::m_shader[GLM::SHADER_PARTICLE]->SetBool(
+			GLM::UNIFORM_PARTICLE_BILBOARD, _emitter->m_bilboard);
 
 		// Send projection info to shader
 		if (_emitter->m_projection == PROJECTION_PERSPECTIVE)
@@ -441,6 +473,7 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 			}
 		}
 
+		//glEnable(GL_DEPTH_TEST);
 		glDepthMask(GL_TRUE);	// Enable depth buffer writing
 		glDisable(GL_BLEND);	// Disable blend
 	}

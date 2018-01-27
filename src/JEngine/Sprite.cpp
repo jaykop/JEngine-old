@@ -7,7 +7,7 @@ JE_BEGIN
 
 Sprite::Sprite(Object* _pOwner)
 	:Component(_pOwner), m_color(vec4::ONE),m_projection(PROJECTION_PERSPECTIVE), 
-	m_mainTex(0),m_transform(nullptr), m_flip(false), m_culled(false), 
+	m_mainTex(0),m_transform(nullptr), m_flip(false), m_culled(false), m_bilboard(false),
 	m_material(nullptr), m_hasMaterial(false), m_isEmitter(false), m_isModel(false)
 {}
 
@@ -107,6 +107,9 @@ void Sprite::Load(CR_RJValue _data)
 		CR_RJValue texture = _data["Texture"];
 		AddTexture(texture.GetString());
 	}
+
+	if (_data.HasMember("Bilboard"))
+		m_bilboard = _data["Bilboard"].GetBool();
 
 	// TODO
 	if (_data.HasMember("Blur")) {

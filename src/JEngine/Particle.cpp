@@ -95,7 +95,7 @@ Emitter::Emitter(Object* _pOwner)
 	:Sprite(_pOwner), m_startColor(vec3::ONE), m_changeColor(true),
 	m_endColor(vec3::ZERO), m_life(1.f), m_type(PARTICLE_NORMAL), m_is2d(false),
 	m_direction(vec3::ZERO), m_velocity(vec3::ZERO), m_active(true),
-	m_deadCount(0), m_renderType(PARTICLERENDER_NORMAL), m_pointSize(0.f),
+	m_deadCount(0), m_renderType(PARTICLERENDER_3D), m_pointSize(0.f),
 	m_range(vec3::ZERO), m_size(0), m_colorDiff(vec3::ZERO), m_rotationSpeed(0.f)
 {
 	m_isEmitter = true;
@@ -128,6 +128,9 @@ void Emitter::Load(CR_RJValue _data)
 {
 	if (_data.HasMember("Active"))
 		m_active = _data["Active"].GetBool();
+
+	if (_data.HasMember("Bilboard"))
+		m_bilboard = _data["Bilboard"].GetBool();
 
 	if (_data.HasMember("Projection")) {
 		CR_RJValue projection = _data["Projection"];
@@ -166,13 +169,15 @@ void Emitter::Load(CR_RJValue _data)
 		SetColors(m_startColor, m_endColor);
 	}
 
-	if (_data.HasMember("IsPoint")) {
-		CR_RJValue IsPoint = _data["IsPoint"];
+	if (_data.HasMember("RenderType")) {
+		CR_RJValue RenderType = _data["RenderType"];
 
-		if (IsPoint.GetBool())
+		if (!strcmp("Point", RenderType.GetString()))
 			m_renderType = PARTICLERENDER_POINT;
-		else 
-			m_renderType = PARTICLERENDER_NORMAL;
+		else if (!strcmp("Plane", RenderType.GetString()))
+			m_renderType = PARTICLERENDER_PLANE;
+		else if (!strcmp("3D", RenderType.GetString()))
+			m_renderType = PARTICLERENDER_3D;
 	}
 
 	if (_data.HasMember("Type")) {

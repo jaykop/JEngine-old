@@ -56,18 +56,21 @@ out	vec4 v4_fragColor;
 ////////////////////////////
 // uniform variables
 ////////////////////////////
+uniform int			enum_effectType;
+uniform int 		int_lightSize;
 uniform vec3 		v3_cameraPosition;
 uniform vec4 		v4_color;
 uniform vec4 		v4_lightColor[MAX_ARRAY];
 uniform bool 		boolean_light;
-uniform sampler2D 	Texture;
-uniform Material 	material;
 uniform Light		light[MAX_ARRAY];
-uniform int			enum_effectType;
 uniform float		float_blurSize;
 uniform float		float_blurAmount;
 uniform float		float_sobelAmount;
-uniform int 		int_lightSize;
+uniform sampler2D 	Texture;
+uniform Material 	material;
+
+// TODO
+uniform sampler2D	Texture1;
 
 ////////////////////////////
 // function declarations

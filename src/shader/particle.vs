@@ -14,6 +14,7 @@ uniform mat4 m4_projection;
 uniform vec4 v4_color;
 
 uniform bool boolean_hide;
+uniform bool boolean_bilboard;
 
 out	vec2 	v2_outTexCoord;
 out vec4 	v4_outColor;
@@ -21,8 +22,24 @@ out vec4 	v4_outColor;
 void main(){
 
 	if (!boolean_hide) {
+	
 		mat4 model = m4_scale * m4_rotate * m4_translate;
-		mat4 mvp = transpose(m4_projection) * transpose(m4_viewport) * transpose(model);
+		mat4 modelview = transpose(m4_viewport) * transpose(model);
+		
+		if (boolean_bilboard) {
+			modelview[0][0] 
+			= modelview[1][1] 
+			= modelview[2][2] = 1;
+			
+			modelview[0][1]
+			= modelview[0][2]
+			= modelview[1][0]
+			= modelview[1][2]
+			= modelview[2][0]
+			= modelview[2][1] = 0;
+		}
+		
+		mat4 mvp = transpose(m4_projection) * modelview;
 
 		gl_Position = mvp *  vec4(position, 1); 
 		v2_outTexCoord = uvPosition;

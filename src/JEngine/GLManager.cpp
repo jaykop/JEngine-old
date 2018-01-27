@@ -15,8 +15,13 @@ GLuint				GLManager::m_vao[] = { 0 };
 GLuint				GLManager::m_vbo[] = { 0 };
 GLuint				GLManager::m_ebo[] = { 0 };
 GLuint				GLManager::m_fbo = 0;
+GLuint				GLManager::m_rbo = 0;
 GLManager::Shaders	GLManager::m_shader;
 GLManager::DrawMode GLManager::m_mode = DrawMode::DRAW_FILL;
+
+// TODO
+// For test...
+GLuint				GLManager::m_sampleBuffer = 0;
 
 const float GLManager::m_verticesPoint[] = {
 	// position				// uv		// normals
@@ -210,7 +215,7 @@ bool GLManager::initSDL_GL(float _width, float _height)
 		// Do gl stuff
 		ShowGLVersion();
 		InitVBO();
-		InitFBO();
+		//InitFBO();
 		InitGLEnvironment();
 		InitShaders();
 		RegisterUniform();
@@ -261,10 +266,48 @@ void GLManager::InitVBO()
 
 void GLManager::InitFBO()
 {
+	//	TODO
+	// ALL THESE ARE SAMPLE CODES
+
 	// Create and bind the FBO
 	glGenFramebuffers(1, &m_fbo);
 	glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
 
+	//SetFBOTexture(m_fbo);
+	if (GL_FRAMEBUFFER_COMPLETE != glCheckFramebufferStatus(m_fbo))
+		JE_DEBUG_PRINT("*GLManager: Framebuffer is not created properly.\n");
+
+	GLuint fboTex;
+	glGenTextures(1, &fboTex);
+	glBindTexture(GL_TEXTURE_2D, fboTex);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 512, 512, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fboTex, 0);
+
+	GLuint depthBuffer;
+	glGenRenderbuffers(1, &depthBuffer);
+	glBindRenderbuffer(GL_RENDERBUFFER, depthBuffer);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 512, 512);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
+
+	GLenum drawBufs[] = { GL_COLOR_ATTACHMENT0 };
+	glDrawBuffers(1, drawBufs);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	GLuint texHandle;
+	GLubyte whiteTex[] = {255, 255, 255, 255};
+	glActiveTexture(GL_TEXTURE1);
+	glGenTextures(1, &texHandle);
+	glBindTexture(GL_TEXTURE_2D, texHandle);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, whiteTex);
+/*
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+*/
 	//// The depth buffer
 	//glGenRenderbuffers(1, &m_depthBuf);
 	//glBindRenderbuffer(GL_RENDERBUFFER, m_depthBuf);
@@ -374,6 +417,7 @@ void GLManager::RegisterUniform()
 	
 	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_FLIP, "boolean_flip");
 	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_IS_LIGHT, "boolean_light");
+	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_BILBOARD, "boolean_bilboard");
 	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_LIGHT_SIZE, "int_lightSize");
 
 	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_MATERIAL_AMBIENT, "material.m_ambient");
@@ -402,8 +446,7 @@ void GLManager::RegisterUniform()
 	m_shader[SHADER_PARTICLE]->ConnectUniform(UNIFORM_PARTICLE_CAMERA, "m4_viewport");
 	m_shader[SHADER_PARTICLE]->ConnectUniform(UNIFORM_PARTICLE_PROJECTION, "m4_projection");
 	m_shader[SHADER_PARTICLE]->ConnectUniform(UNIFORM_PARTICLE_HIDE, "boolean_hide");
-	/*m_shader[SHADER_PARTICLE]->ConnectUniform(UNIFORM_PARTICLE_TIME, "float_time");
-	m_shader[SHADER_PARTICLE]->ConnectUniform(UNIFORM_PARTICLE_LIFETIME, "float_lifeTime");*/
+	m_shader[SHADER_PARTICLE]->ConnectUniform(UNIFORM_PARTICLE_BILBOARD, "boolean_bilboard");
 
 }
 
@@ -457,6 +500,27 @@ void GLManager::SetVAO(GLuint &_vao, GLuint &_vbo, GLuint &_ebo,
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, _elementSize, _elements, GL_STATIC_DRAW);
 }
+
+//void GLManager::SetFBOTexture(GLuint& _buffer)
+//{
+//	GLuint fboTex;
+//	glGenTextures(1, &fboTex);
+//	glBindTexture(GL_TEXTURE_2D, fboTex);
+//	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 80, 60, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+//
+//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+//
+//	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fboTex, 0);
+//}
+//
+//void GLManager::SetRBOImage(GLuint &_rbo)
+//{
+//	glGenRenderbuffers(1, &_rbo);
+//	glBindRenderbuffer(GL_RENDERBUFFER, _rbo);
+//	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 80, 60);
+//	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, _rbo);
+//}
 
 //void GLManager::CreateGBufferTex(GLenum _texUnit, GLenum _format, GLuint &_texid) {
 //	glActiveTexture(_texUnit);

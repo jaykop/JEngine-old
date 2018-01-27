@@ -47,6 +47,7 @@ class GLManager {
 		//////////////////////
 		UNIFORM_FLIP,			// animation attributes
 		UNIFORM_IS_LIGHT,		// light attributes
+		UNIFORM_BILBOARD,
 
 		//////////////////////
 		// Float uniform
@@ -64,9 +65,6 @@ class GLManager {
 		UNIFORM_EFFECT_SOBEL, 
 
 		/******************** Light shader ********************/
-		//////////////////////
-		// Martix uniform
-		//////////////////////
 		UNIFORM_LIGHT_TRANSLATE, UNIFORM_LIGHT_SCALE, 
 		UNIFORM_LIGHT_ROTATE,
 		UNIFORM_LIGHT_CAMERA, UNIFORM_LIGHT_PROJECTION,
@@ -77,10 +75,8 @@ class GLManager {
 		UNIFORM_PARTICLE_ROTATE, UNIFORM_PARTICLE_CAMERA,
 		UNIFORM_PARTICLE_PROJECTION,
 		
-		UNIFORM_PARTICLE_COLOR,
+		UNIFORM_PARTICLE_COLOR, UNIFORM_PARTICLE_BILBOARD,
 		UNIFORM_PARTICLE_HIDE,			// hide particle
-
-		UNIFORM_PARTICLE_LIFETIME, UNIFORM_PARTICLE_TIME,
 
 		UNIFORM_END
 	};
@@ -105,13 +101,16 @@ private:
 		const unsigned _verticeSize, const unsigned _elementSize,
 		const float _vertices[], const unsigned _elements[]);
 
+	static void SetFBOTexture(GLuint &_buffer);
+	static void SetRBOImage(GLuint &_buffer);
+
 	// Private member variables
 	static float		m_width, m_height;
 	static Shaders		m_shader;
 	static DrawMode		m_mode;
 	static GLint		m_uniform[UNIFORM_END];
 	static GLuint		m_vao[SHAPE_END], m_vbo[SHAPE_END], m_ebo[SHAPE_END];
-	static GLuint		m_fbo;
+	static GLuint		m_fbo, m_rbo, m_sampleBuffer;
 
 	// Basic indices and vertices sets
 	static const float		m_verticesPoint[8], m_verticesPlane[32], m_verticesParticle[96], m_verticesCube[192];

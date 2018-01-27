@@ -7,7 +7,7 @@
 			"Component" : [
 				{
 					"Type": "Camera",
-					"Values": {"Position" : [0, 0, 50], "Target" : [0, 0, 0],
+					"Values": {"Position" : [25, 25, 25], "Target" : [0, 0, 0],
 						"Up" : [0, 1, 0]}
 				}
 			]
@@ -21,9 +21,9 @@
 				},
 				{
 					"Type": "Emitter",
-					"Values": {"Texture" : "particle", "Color" : [1, 1, 1, 1], "Projection" : "Perspective", 
+					"Values": {"Texture" : "smoke", "Color" : [1, 1, 1, 1], "Projection" : "Perspective", 
 						"Life" : 1.0, "Velocity" : [0.25, 0.25, 0], "Quantity" : 100, "Direction" : [-1, 1, 0], 
-						"StartColor" : [1, 1, 1], "EndColor" : [0, 0, 1]}
+						"StartColor" : [1, 1, 1], "EndColor" : [0, 0, 1], "RenderType" : "Plane"}
 				}
 			]
 		},
@@ -36,9 +36,10 @@
 				},
 				{
 					"Type": "Emitter",
-					"Values": {"Type" : "Wide", "Texture" : "particle", "Color" : [1, 1, 1, 1], "Projection" : "Perspective", 
+					"Values": {"Type" : "Wide", "Texture" : "rect", "Color" : [1, 1, 1, 1], "Projection" : "Perspective", 
 						"Life" : 1.0, "Velocity" : [0.5, 0.5, 0], "Quantity" : 100, "Range" : [100, 10, 0], 
-						"StartColor" : [1, 1, 1], "EndColor" : [0, 0, 1], "RotationSpeed" : 1}
+						"StartColor" : [1, 1, 1], "EndColor" : [0, 0, 1], "RotationSpeed" : 1, "RenderType" : "Plane",
+						"Bilboard" : true}
 				}
 			]
 		},
@@ -53,7 +54,7 @@
 					"Type": "Emitter",
 					"Values": {"Type" : "Explosion", "Texture" : "particle", "Color" : [1, 1, 1, 1], "Projection" : "Perspective", 
 						"Life" : 0.25, "Velocity" : [2.5, 2.5, 0], "Quantity" : 100, "Direction" : [-1, 1, 0], 
-						"StartColor" : [1, 1, 1], "EndColor" : [0, 0, 1]}
+						"StartColor" : [1, 1, 1], "EndColor" : [0, 0, 1], "RenderType" : "Plane"}
 				}
 			]
 		},

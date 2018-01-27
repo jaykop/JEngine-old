@@ -9,12 +9,11 @@
 Contains Matrix4x4's template class and members
 Custom Matrix looks like this...
 
-0  1  2  3
-0	[ 00 10 20 30 ]
-1	[ 01 11 21 31 ]
-2	[ 02 12 22 32 ]
-3	[ 03 13 23 33 ]
-
+		  0  1  2  3
+	0	[ 00 01 02 03 ]
+	1	[ 10 11 12 13 ]
+	2	[ 20 21 22 23 ]
+	3	[ 30 31 32 33 ]
 
 */
 /******************************************************************************/
@@ -83,7 +82,7 @@ public:
 	static Matrix4x4 Rotate(float degree, const vec3& vec);
 	static Matrix4x4 Perspective(float fovy, float aspect, float zNear, float zFar);
 	static Matrix4x4 Orthogonal(float left, float right, float bottom, float top, float zNear, float zFar);
-	static Matrix4x4 Camera(const Vector3 eye, const Vector3 center, const Vector3 up);
+	static Matrix4x4 LookAt(const Vector3& eye, const Vector3& center, const Vector3& up);
 
 	//Friend functions
 	friend Matrix4x4		operator+(float _constant, const Matrix4x4& _rhs);

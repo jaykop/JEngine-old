@@ -29,7 +29,7 @@ class Emitter : public Sprite
 	friend class GraphicSystem;
 
 	enum ParticleType			{ PARTICLE_NORMAL, PARTICLE_EXPLODE, PARTICLE_WIDE, PARTICLE_SMOG };
-	enum ParticleRendertType	{ PARTICLERENDER_NORMAL, PARTICLERENDER_POINT };
+	enum ParticleRendertType	{ PARTICLERENDER_POINT, PARTICLERENDER_PLANE, PARTICLERENDER_3D };
 	
 	class Particle {
 

@@ -55,7 +55,7 @@ void GraphicSystem::Update(const float _dt)
 	glClearColor(m_backgroundColor.x, m_backgroundColor.y, m_backgroundColor.z, m_backgroundColor.w);
 
 	// Update main camera attributes
-	m_viewport = mat4::Camera(
+	m_viewport = mat4::LookAt(
 		m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
 
 	SortSprites();
@@ -84,7 +84,8 @@ void GraphicSystem::Update(const float _dt)
 		glEnable(GL_MULTISAMPLE);
 		break;
 	}
-
+	
+	//glBindFramebuffer(GL_FRAMEBUFFER, GLM::m_fbo);
 	UpdatePipelines(_dt);
 
 	//End alias mode
@@ -102,6 +103,7 @@ void GraphicSystem::Update(const float _dt)
 
 	// TODO
 	// GLMousePosition();
+
 }
 
 void GraphicSystem::Close()
@@ -124,14 +126,17 @@ void GraphicSystem::Render(const unsigned &_vao, const int _elementSize, unsigne
 
 void GraphicSystem::SortSprites()
 {
+	//TODO
+	// For now let's just put only orthogonal sprites to come first
 	// Sort sprites by sprite's z position
-	std::sort(m_sprites.begin(), m_sprites.end(), 
-		[&](Sprite* _leftSpt, Sprite* _rightSpt) -> bool {
+	if (m_orthoComesFirst) {
+		std::sort(m_sprites.begin(), m_sprites.end(),
+			[&](Sprite* _leftSpt, Sprite* _rightSpt) -> bool {
 
-		Transform* left = _leftSpt->m_transform;
-		Transform* right = _rightSpt->m_transform;
+			//Transform* left = _leftSpt->m_transform;
+			//Transform* right = _rightSpt->m_transform;
 
-		if (m_orthoComesFirst) {
+			//if (m_orthoComesFirst) {
 
 			if (_leftSpt->m_projection == PROJECTION_PERSPECTIVE
 				&& _rightSpt->m_projection == PROJECTION_ORTHOGONAL)
@@ -141,14 +146,21 @@ void GraphicSystem::SortSprites()
 				&& _rightSpt->m_projection == PROJECTION_PERSPECTIVE)
 				return false;
 
+			// TODO
+			// If two sprites are same projection, no change
+			// THIS IS TEMP CODES
 			else
-				return left->m_position.z > right->m_position.z;
-		}
+				return false;
 
-		else
-			return left->m_position.z > right->m_position.z;
+			//	else
+			//		return left->m_position.z > right->m_position.z;
+			//}
+
+			//else
+			//	return left->m_position.z > right->m_position.z;
+		}
+		);
 	}
-	);
 }
 
 void GraphicSystem::AddSprite(Sprite* _sprite)

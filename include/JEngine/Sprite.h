@@ -69,7 +69,7 @@ public:
 
 	void		ConvertVisualEffectType(const char* _name, VisualEffect::VisualEffectType& _VisualEffectType);
 
-	bool		m_flip;
+	bool		m_flip, m_bilboard;
 	vec4		m_color;
 	ProjectType m_projection;
 

@@ -14,14 +14,12 @@ uniform mat4 m4_scale;
 uniform mat4 m4_rotate;
 uniform mat4 m4_viewport;
 uniform mat4 m4_projection;
-
 uniform mat4 m4_aniScale;
 uniform mat4 m4_aniTranslate;
-
 uniform vec4 v4_lightColor[MAX_ARRAY];
-
-uniform bool	boolean_flip;
-uniform bool 	boolean_light;
+uniform bool boolean_flip;
+uniform bool boolean_light;
+uniform bool boolean_bilboard;
 
 ////////////////////////////
 // out variables
@@ -58,8 +56,22 @@ void main(){
 void Transforming(vec4 _position, mat4 _model) {
 
 	// Calculate mvp transform matrix
-	mat4 mvp = transpose(m4_projection) * transpose(m4_viewport) * transpose(_model);
-	
+	mat4 modelview = transpose(m4_viewport) * transpose(_model);
+		
+		if (boolean_bilboard) {
+			modelview[0][0] 
+			= modelview[1][1] 
+			= modelview[2][2] = 1;
+			
+			modelview[0][1]
+			= modelview[0][2]
+			= modelview[1][0]
+			= modelview[1][2]
+			= modelview[2][0]
+			= modelview[2][1] = 0;
+		}
+		
+	mat4 mvp = transpose(m4_projection) * modelview;
 	gl_Position = mvp * _position;
 }
 
