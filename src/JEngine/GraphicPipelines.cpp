@@ -19,18 +19,6 @@ void GraphicSystem::UpdatePipelines(const float _dt)
 	GLM::m_shader[GLM::SHADER_NORMAL]->SetBool(
 		GLM::UNIFORM_IS_LIGHT, m_isLight);
 
-	//// TODO
-	//// SAMPLE CODES
-	//glBindFramebuffer(GL_FRAMEBUFFER, GLM::m_fbo);
-	//glViewport(0, 0, 512, 512);
-	//int location = glGetUniformLocation(GLM::m_shader[GLM::SHADER_NORMAL]->m_programId, "Texture1");
-	//glUniform1i(location, 0);
-
-	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	//glViewport(0, 0, 800, 600);
-	//location = glGetUniformLocation(GLM::m_shader[GLM::SHADER_NORMAL]->m_programId, "Texture1");
-	//glUniform1i(location, 0);
-
 	LightSourcePipeline();
 
 	GLM::m_shader[GLM::SHADER_NORMAL]->Use();
@@ -168,13 +156,12 @@ void GraphicSystem::SpritePipeline(Sprite *_sprite)
 	glBlendEquation(GL_FUNC_ADD);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_DEPTH_TEST);
-	
-	if (_sprite->m_isModel) {
+
+	if (_sprite->m_isModel) 
 		Render(GLM::m_vao[GLM::SHAPE_CUBE], GLM::m_elementSize[GLM::SHAPE_CUBE]);
-	
-	}
 	else
 		Render(GLM::m_vao[GLM::SHAPE_PLANE], GLM::m_elementSize[GLM::SHAPE_PLANE]);
+
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
 }

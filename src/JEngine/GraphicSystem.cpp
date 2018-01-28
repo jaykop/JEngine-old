@@ -8,6 +8,10 @@
 #include "Transform.h"
 #include "InputHandler.h"
 
+// TODO
+#include "Shader.hpp"
+#include "AssetManager.h"
+
 JE_BEGIN
 
 GraphicSystem::GraphicSystem()
@@ -51,13 +55,20 @@ void GraphicSystem::Init()
 
 void GraphicSystem::Update(const float _dt)
 {
+	// Render to framebuffer
+	glBindFramebuffer(GL_FRAMEBUFFER, GLM::m_fbo);
+	glBindVertexArray(GLM::m_vao[GLM::SHAPE_CUBE]);
+	GLM::m_shader[GLM::SHADER_NORMAL]->Use();
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(m_backgroundColor.x, m_backgroundColor.y, m_backgroundColor.z, m_backgroundColor.w);
+	glClearColor(0.f, 0.f, 0.f, 0.f);
+	glViewport(0, 0, GLint(m_width), GLint(m_height));
 
 	// Update main camera attributes
 	m_viewport = mat4::LookAt(
 		m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
 
+	// Sort orthogonal objects and perspective objects
 	SortSprites();
 
 	//Start alias mode
@@ -85,7 +96,6 @@ void GraphicSystem::Update(const float _dt)
 		break;
 	}
 	
-	//glBindFramebuffer(GL_FRAMEBUFFER, GLM::m_fbo);
 	UpdatePipelines(_dt);
 
 	//End alias mode
@@ -104,6 +114,20 @@ void GraphicSystem::Update(const float _dt)
 	// TODO
 	// GLMousePosition();
 
+	// Bind default framebuffer and render to screen
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(m_backgroundColor.x, m_backgroundColor.y, m_backgroundColor.z, m_backgroundColor.w);
+
+	glBindVertexArray(GLM::m_vao[GLM::SHAPE_PLANE]);
+	glDisable(GL_DEPTH_TEST);
+	GLM::m_shader[GLM::SHADER_SCREEN]->Use();
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, GLM::renderedTexture);
+
+	glDrawElements(GL_TRIANGLES, GLM::m_elementSize[GLM::SHAPE_PLANE], GL_UNSIGNED_INT, 0);
+	glEnable(GL_DEPTH_TEST);
 }
 
 void GraphicSystem::Close()

@@ -50,8 +50,8 @@ void SampleLogic::Update(const float _dt)
 	if (INPUT::KeyTriggered(JE_3))
 		STATE::SetNextState("level3");
 
-	//if (INPUT::KeyTriggered(JE_4))
-	//		STATE::Pause("PauseState");
+	if (INPUT::KeyTriggered(JE_4))
+		STATE::SetNextState("level4");
 
 	//if (INPUT::KeyTriggered(JE_5))
 	//		STATE::Resume();

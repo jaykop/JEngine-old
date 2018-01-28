@@ -31,8 +31,10 @@ void AssetManager::Load()
 	// Load states
 	JSON::ReadFile(ASSET::m_stateDirectory.c_str());
 	CR_RJValue states = JSON::GetDocument()["State"];
-	for (rapidjson::SizeType i = 0; i < states.Size(); ++i) 
+	for (rapidjson::SizeType i = 0; i < states.Size(); ++i) {
 		STATE::PushState(states[i]["Directory"].GetString(), states[i]["Key"].GetString());
+		JE_DEBUG_PRINT("*AssetManager: Loaded state - %s.\n", states[i]["Directory"].GetString());
+	}
 	JE_DEBUG_PRINT("*AssetManager: Loaded game states successfully.\n");
 
 	CR_RJValue fristStates = JSON::GetDocument()["FirstState"];
@@ -42,8 +44,10 @@ void AssetManager::Load()
 	// Load images
 	JSON::ReadFile(ASSET::m_assetDirectory.c_str());
 	CR_RJValue textures = JSON::GetDocument()["Texture"];
-	for (rapidjson::SizeType i = 0; i < textures.Size(); ++i) 
+	for (rapidjson::SizeType i = 0; i < textures.Size(); ++i) {
 		LoadImage(textures[i]["Directory"].GetString(), textures[i]["Key"].GetString());
+		JE_DEBUG_PRINT("*AssetManager: Loaded texture - %s.\n", textures[i]["Directory"].GetString());
+	}
 	JE_DEBUG_PRINT("*AssetManager: Loaded textures successfully.\n");
 }
 

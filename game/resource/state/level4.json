@@ -1,0 +1,38 @@
+{
+
+	"Background" : [ 0.5, 0.5, 0.5, 0.5 ],
+	"Object" : [
+		{
+			"Name" : "Camera",
+			"Component" : [
+				{
+					"Type": "Camera",
+					"Values": {"Position" : [-150, 150, 150], "Target" : [0, 0, 0],
+						"Up" : [0, 1, 0]}
+				}
+			]
+		},	
+		{
+			"Name" : "PerspectiveModel",
+			"Component" : [
+				{
+					"Type": "Transform",
+					"Values": {"Position" : [0, 0, 0], "Scale" : [50, 50, 50]}
+				},
+				{
+					"Type": "Model",
+					"Values": {"Texture" : "uvtemplate", "Color" : [1, 1, 1, 1], "Projection" : "Perspective"}
+				}
+			]
+		},		
+		{
+			"Name" : "sampleObject",
+			"Component" : [
+				{
+					"Type": "SampleLogic",
+					"Values": {}
+				}
+			]
+		}
+	]
+}

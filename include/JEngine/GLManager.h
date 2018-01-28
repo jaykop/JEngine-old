@@ -18,7 +18,7 @@ class GLManager {
 	using Shaders = std::vector<Shader*>;
 
 	enum DrawMode  { DRAW_POINT, DRAW_LINE, DRAW_FILL };
-	enum ShaderType  {SHADER_NORMAL, SHADER_LIGHTING, SHADER_PARTICLE, SHADER_END};
+	enum ShaderType  {SHADER_NORMAL, SHADER_LIGHTING, SHADER_PARTICLE, SHADER_SCREEN, SHADER_END};
 	enum ShapeType  { SHAPE_POINT, SHAPE_PLANE, SHAPE_PARTICLE, SHAPE_CUBE, SHAPE_END};
 	enum UniformType  {
 
@@ -78,6 +78,9 @@ class GLManager {
 		UNIFORM_PARTICLE_COLOR, UNIFORM_PARTICLE_BILBOARD,
 		UNIFORM_PARTICLE_HIDE,			// hide particle
 
+		/******************** Screen shader ********************/
+		UNIFORM_SCREEN_FRAMEBUFFER,
+
 		UNIFORM_END
 	};
 
@@ -110,7 +113,7 @@ private:
 	static DrawMode		m_mode;
 	static GLint		m_uniform[UNIFORM_END];
 	static GLuint		m_vao[SHAPE_END], m_vbo[SHAPE_END], m_ebo[SHAPE_END];
-	static GLuint		m_fbo, m_rbo, m_sampleBuffer;
+	static GLuint		m_fbo, m_rbo, m_sampleBuffer, renderedTexture;
 
 	// Basic indices and vertices sets
 	static const float		m_verticesPoint[8], m_verticesPlane[32], m_verticesParticle[96], m_verticesCube[192];

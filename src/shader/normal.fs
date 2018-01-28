@@ -1,5 +1,7 @@
 #version 410 core
 
+layout(location = 0) out vec4 v4_fragColor;
+
 ////////////////////////////
 // const variables
 ////////////////////////////
@@ -47,11 +49,6 @@ struct Light {
 in	vec2 v2_outTexCoord;
 in	vec3 v3_outNormal;
 in 	vec3 v3_outFragmentPosition;
-
-////////////////////////////
-// out variables
-////////////////////////////
-out	vec4 v4_fragColor;
 
 ////////////////////////////
 // uniform variables
@@ -114,7 +111,7 @@ void LightingEffect(inout vec4 _color) {
 
 	// TODO
 	// Dynamic light loop...
-	for (int index = 0; index < 2; ++index) {
+	for (int index = 0; index < 128; ++index) {
 	
 		vec3 	lightDirection;
 		float 	attenuation = 1.f;
@@ -140,19 +137,19 @@ void LightingEffect(inout vec4 _color) {
 		}	
 		
 		// Ambient light
-		vec4 ambient = light[index].m_ambient * vec4(texture(material.m_diffuse, v2_outTexCoord)); 
+		vec4 ambient = light[index].m_ambient * vec4(texture(Texture1, v2_outTexCoord)); 
 		
 		// Diffuse light
 		vec3 norm = normalize(v3_outNormal);
 		
 		float diff = max(dot(norm, lightDirection), 0.0);
-		vec4 diffuse = light[index].m_diffuse * vec4(diff * texture(material.m_diffuse, v2_outTexCoord)); 
+		vec4 diffuse = light[index].m_diffuse * vec4(diff * texture(Texture1, v2_outTexCoord)); 
 		
 		// Specular light
 		vec3 viewDirection = normalize(v3_cameraPosition - v3_outFragmentPosition);
 		vec3 reflectedDirection = reflect(-lightDirection, norm);
 		float spec = pow(max(dot(viewDirection, reflectedDirection), 0.0), material.m_shininess);
-		vec4 specular = light[index].m_specular * vec4(spec * texture(material.m_specular, v2_outTexCoord)); 
+		vec4 specular = light[index].m_specular * vec4(spec * texture(Texture1, v2_outTexCoord)); 
 		
 		// Smooth spotlight
 		if (light[index].m_type == LIGHT_SPOTLIGHT) {

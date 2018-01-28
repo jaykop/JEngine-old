@@ -22,6 +22,7 @@ GLManager::DrawMode GLManager::m_mode = DrawMode::DRAW_FILL;
 // TODO
 // For test...
 GLuint				GLManager::m_sampleBuffer = 0;
+GLuint				GLManager::renderedTexture = 0;
 
 const float GLManager::m_verticesPoint[] = {
 	// position				// uv		// normals
@@ -30,12 +31,6 @@ const float GLManager::m_verticesPoint[] = {
 const unsigned GLManager::m_indicesPoint[] = { 0 };
 
 const float GLManager::m_verticesPlane[] = {
-
-	//// position				// uv		// normals
-	//-.5f,	.5f,	0.f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,		// top left	
-	//.5f,	.5f,	0.f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,		// top right
-	//.5f,	-.5f,	0.f,	0.f, 1.f,	0.0f,  0.0f, 1.0f,		// bottom right
-	//-.5f,	-.5f,	0.f,	0.f, 0.f,	0.0f,  0.0f, 1.0f		// bottom left
 
 	// vertic position	// uv		// normals
 	-.5f, .5f, 0.f,		0.f, 0.f,	0.0f,  0.0f, 1.0f,	// top left	
@@ -215,7 +210,7 @@ bool GLManager::initSDL_GL(float _width, float _height)
 		// Do gl stuff
 		ShowGLVersion();
 		InitVBO();
-		//InitFBO();
+		InitFBO();
 		InitGLEnvironment();
 		InitShaders();
 		RegisterUniform();
@@ -274,59 +269,39 @@ void GLManager::InitFBO()
 	glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
 
 	//SetFBOTexture(m_fbo);
-	if (GL_FRAMEBUFFER_COMPLETE != glCheckFramebufferStatus(m_fbo))
+
+	// The texture we're going to render to
+	glGenTextures(1, &renderedTexture);
+
+	// "Bind" the newly created texture : all future texture functions will modify this texture
+	glBindTexture(GL_TEXTURE_2D, renderedTexture);
+
+	// Give an empty image to OpenGL ( the last "0" )
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, GLsizei(m_width), GLsizei(m_height), 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+
+	// Poor filtering. Needed !
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	// The depth buffer
+	GLuint depthrenderbuffer;
+	glGenRenderbuffers(1, &depthrenderbuffer);
+	glBindRenderbuffer(GL_RENDERBUFFER, depthrenderbuffer);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, GLsizei(m_width), GLsizei(m_height));
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthrenderbuffer);
+
+	// Set "renderedTexture" as our colour attachement #0
+	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, renderedTexture, 0);
+
+	// Set the list of draw buffers.
+	GLenum DrawBuffers[1] = { GL_COLOR_ATTACHMENT0 };
+	glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
+
+	// Always check that our framebuffer is ok
+	if (GL_FRAMEBUFFER_COMPLETE != glCheckFramebufferStatus(GL_FRAMEBUFFER))
 		JE_DEBUG_PRINT("*GLManager: Framebuffer is not created properly.\n");
-
-	GLuint fboTex;
-	glGenTextures(1, &fboTex);
-	glBindTexture(GL_TEXTURE_2D, fboTex);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 512, 512, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fboTex, 0);
-
-	GLuint depthBuffer;
-	glGenRenderbuffers(1, &depthBuffer);
-	glBindRenderbuffer(GL_RENDERBUFFER, depthBuffer);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 512, 512);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
-
-	GLenum drawBufs[] = { GL_COLOR_ATTACHMENT0 };
-	glDrawBuffers(1, drawBufs);
-
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-	GLuint texHandle;
-	GLubyte whiteTex[] = {255, 255, 255, 255};
-	glActiveTexture(GL_TEXTURE1);
-	glGenTextures(1, &texHandle);
-	glBindTexture(GL_TEXTURE_2D, texHandle);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, whiteTex);
-/*
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-*/
-	//// The depth buffer
-	//glGenRenderbuffers(1, &m_depthBuf);
-	//glBindRenderbuffer(GL_RENDERBUFFER, m_depthBuf);
-	//glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, m_width, m_height);
-
-	//// Create the textures for position, normal and color
-	//CreateGBufferTex(GL_TEXTURE0, GL_RGB32F, m_positionTex);	// Position
-	//CreateGBufferTex(GL_TEXTURE1, GL_RGB32F, m_normalTex);		// Normal
-	//CreateGBufferTex(GL_TEXTURE2, GL_RGB8, m_colorTex);			// Color
-
-	//// Attach the textures to the framebuffer
-	//glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_depthBuf);
-	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_positionTex, 0);
-	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_normalTex, 0);
-	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, m_colorTex, 0);
-
-	//GLenum drawBuffers[] = { GL_NONE, GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1,
-	//	GL_COLOR_ATTACHMENT2 };
-	//glDrawBuffers(4, drawBuffers);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -370,17 +345,21 @@ void GLManager::InitShaders()
 	for (unsigned i = 0; i < SHADER_END; ++i) 
 		m_shader.push_back(new Shader);
 
-	m_shader[SHADER_LIGHTING]->LoadShader(
-		"../src/shader/lighting.vs",
-		"../src/shader/lighting.fs");
-
 	m_shader[SHADER_NORMAL]->LoadShader(
 		"../src/shader/normal.vs",
 		"../src/shader/normal.fs");
 
+	m_shader[SHADER_LIGHTING]->LoadShader(
+		"../src/shader/lighting.vs",
+		"../src/shader/lighting.fs");
+
 	m_shader[SHADER_PARTICLE]->LoadShader(
 		"../src/shader/particle.vs",
 		"../src/shader/particle.fs");
+
+	m_shader[SHADER_SCREEN]->LoadShader(
+		"../src/shader/screen.vs",
+		"../src/shader/screen.fs");
 }
 
 void GLManager::SetDrawMode(DrawMode _mode)
@@ -447,6 +426,9 @@ void GLManager::RegisterUniform()
 	m_shader[SHADER_PARTICLE]->ConnectUniform(UNIFORM_PARTICLE_PROJECTION, "m4_projection");
 	m_shader[SHADER_PARTICLE]->ConnectUniform(UNIFORM_PARTICLE_HIDE, "boolean_hide");
 	m_shader[SHADER_PARTICLE]->ConnectUniform(UNIFORM_PARTICLE_BILBOARD, "boolean_bilboard");
+
+	/******************** Screen shader ********************/
+	m_shader[SHADER_SCREEN]->ConnectUniform(UNIFORM_SCREEN_FRAMEBUFFER, "Framebuffer");
 
 }
 

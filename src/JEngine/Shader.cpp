@@ -217,6 +217,48 @@ void Shader::SetVector4(const char* _name, const vec4& _vector)
 		_vector.x, _vector.y, _vector.z, _vector.w);
 }
 
+void Shader::SetInt(GLuint _buffer, int _int)
+{
+	glUniform1d(_buffer, _int);
+}
+
+void Shader::SetEnum(GLuint _buffer, int _enum)
+{
+	glUniform1i(_buffer, _enum);
+}
+
+void Shader::SetBool(GLuint _buffer, bool _bool)
+{
+	glUniform1i(_buffer, _bool);
+}
+
+void Shader::SetFloat(GLuint _buffer, float _float)
+{
+	glUniform1f(_buffer, _float);
+}
+
+void Shader::SetuInt(GLuint _buffer, unsigned _uInt)
+{
+	glUniform1ui(_buffer, _uInt);
+}
+
+void Shader::SetVector2(GLuint _buffer, float _x, float _y)
+{
+	glUniform2f(_buffer, _x, _y);
+}
+
+void Shader::SetVector3(GLuint _buffer, const vec3 & _vector)
+{
+	glUniform3f(_buffer,
+		_vector.x, _vector.y, _vector.z);
+}
+
+void Shader::SetVector4(GLuint _buffer, const vec4 & _vector)
+{
+	glUniform4f(_buffer,
+		_vector.x, _vector.y, _vector.z, _vector.w);
+}
+
 void Shader::SetVector3(const char* _name, const vec3& _vector)
 {
 	glUniform3f(glGetUniformLocation(m_programId, _name),
