@@ -1,11 +1,14 @@
 #include "Model.h"
+#include "GLManager.h"
 
 JE_BEGIN
 
 Model::Model(Object* _pOwner)
 	:Sprite(_pOwner)
 {
-	m_isModel = true;
+	//m_isModel = true;
+	m_vao = &(GLM::m_vao[GLM::SHAPE_CUBE]);
+	m_elementSize = GLM::m_elementSize[GLM::SHAPE_CUBE];
 }
 
 ModelBuilder::ModelBuilder()

@@ -206,12 +206,10 @@
     <ClInclude Include="..\..\include\JEngine\Vector2.h" />
     <ClInclude Include="..\..\include\JEngine\Vector3.h" />
     <ClInclude Include="..\..\include\JEngine\Vector4.h" />
-    <ClInclude Include="..\..\include\JEngine\VisualEffect.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\include\JEngine\Object.inl" />
     <None Include="..\..\include\JEngine\ObjectContainer.inl" />
-    <None Include="..\..\include\JEngine\Sprite.inl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\imgui\imgui.cpp" />
@@ -267,7 +265,6 @@
     <ClCompile Include="..\..\src\JEngine\Vector2.cpp" />
     <ClCompile Include="..\..\src\JEngine\Vector3.cpp" />
     <ClCompile Include="..\..\src\JEngine\Vector4.cpp" />
-    <ClCompile Include="..\..\src\JEngine\VisualEffect.cpp" />
     <ClCompile Include="..\..\src\lodePNG\lodepng.cpp" />
     <ClCompile Include="..\..\src\lodePNG\lodepng_util.cpp" />
   </ItemGroup>

@@ -29,8 +29,8 @@ void Transform::Load(CR_RJValue _data)
 		m_rotation = rotation.GetFloat();
 	}
 
-	if (_data.HasMember("Rotation3d")) {
-		CR_RJValue rotation3D = _data["Rotation3d"];
+	if (_data.HasMember("Axis")) {
+		CR_RJValue rotation3D = _data["Axis"];
 		m_rotationAxis.Set(rotation3D[0].GetFloat(), rotation3D[1].GetFloat(), rotation3D[2].GetFloat());
 	}
 }

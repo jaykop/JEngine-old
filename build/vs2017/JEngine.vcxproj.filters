@@ -109,9 +109,6 @@
     <ClInclude Include="..\..\include\JEngine\Sprite.h">
       <Filter>System\Graphic</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\VisualEffect.h">
-      <Filter>System\Graphic</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\JEngine\BehaviorSystem.h">
       <Filter>System\Behavior</Filter>
     </ClInclude>
@@ -173,9 +170,6 @@
     </None>
     <None Include="..\..\include\JEngine\ObjectContainer.inl">
       <Filter>Core\Object</Filter>
-    </None>
-    <None Include="..\..\include\JEngine\Sprite.inl">
-      <Filter>System\Graphic</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -273,9 +267,6 @@
       <Filter>System\Graphic</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\JEngine\Sprite.cpp">
-      <Filter>System\Graphic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\VisualEffect.cpp">
       <Filter>System\Graphic</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\JEngine\BehaviorSystem.cpp">

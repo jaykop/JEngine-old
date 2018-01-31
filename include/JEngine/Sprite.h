@@ -2,7 +2,6 @@
 #include "Vector4.h"
 #include "Component.h"
 #include "ComponentBuilder.h"
-#include "VisualEffect.h"
 
 // For enum ProjectType
 #include "GraphicSystem.h"
@@ -12,7 +11,6 @@ JE_BEGIN
 class Material;
 class Transform;
 class Animation; 
-class VisualEffect;
 
 class SpriteBuilder : public ComponentBuilder
 {
@@ -42,7 +40,6 @@ class Sprite : public Component
 	friend class	GraphicSystem;
 	friend class	ComponentManager;
 
-	using Effects		= std::unordered_map<VisualEffect::VisualEffectType, VisualEffect*>;
 	using TextureMap	= std::unordered_map<std::string, unsigned>;
 
 public:
@@ -55,23 +52,11 @@ public:
 	unsigned	GetCurrentTexutre();
 	unsigned	GetTexutre(const char* _key);
 
-	template <class EffectType>
-	void		AddEffect();
-
-	template <class EffectType>
-	EffectType*	GetEffect();
-
-	template <class EffectType>
-	void		RemoveEffect();
-
-	template <class EffectType>
-	bool		HasEffect();
-
-	void		ConvertVisualEffectType(const char* _name, VisualEffect::VisualEffectType& _VisualEffectType);
-
 	bool		m_flip, m_bilboard;
 	vec4		m_color;
 	ProjectType m_projection;
+
+	unsigned	*m_vao, m_elementSize;
 
 protected:
 
@@ -81,9 +66,7 @@ protected:
 	void Load(CR_RJValue _data) override;
 
 	bool m_culled;
-	bool m_hasMaterial, m_hasAnimation, m_isEmitter, m_isModel;
-
-	Effects m_effects;
+	bool m_hasMaterial, m_hasAnimation, m_isEmitter/*, m_isModel*/;
 
 	unsigned	m_mainTex;
 	TextureMap	m_textureMap;
@@ -102,5 +85,3 @@ private:
 };
 
 JE_END
-
-#include "Sprite.inl"

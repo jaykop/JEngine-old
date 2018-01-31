@@ -172,12 +172,21 @@ void Emitter::Load(CR_RJValue _data)
 	if (_data.HasMember("RenderType")) {
 		CR_RJValue RenderType = _data["RenderType"];
 
-		if (!strcmp("Point", RenderType.GetString()))
+		if (!strcmp("Point", RenderType.GetString())) {
 			m_renderType = PARTICLERENDER_POINT;
-		else if (!strcmp("Plane", RenderType.GetString()))
+			m_vao = &GLM::m_vao[GLM::SHAPE_POINT];
+			m_elementSize = GLM::m_elementSize[GLM::SHAPE_POINT];
+		}
+		else if (!strcmp("Plane", RenderType.GetString())) {
 			m_renderType = PARTICLERENDER_PLANE;
-		else if (!strcmp("3D", RenderType.GetString()))
+			m_vao = &GLM::m_vao[GLM::SHAPE_PLANE];
+			m_elementSize = GLM::m_elementSize[GLM::SHAPE_PLANE];
+		}
+		else if (!strcmp("Plane3D", RenderType.GetString())) {
 			m_renderType = PARTICLERENDER_3D;
+			m_vao = &GLM::m_vao[GLM::SHAPE_PLANE3D];
+			m_elementSize = GLM::m_elementSize[GLM::SHAPE_PLANE3D];
+		}
 	}
 
 	if (_data.HasMember("Type")) {

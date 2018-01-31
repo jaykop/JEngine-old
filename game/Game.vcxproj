@@ -154,14 +154,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ControlLight.cpp" />
+    <ClCompile Include="CameraController.cpp" />
+    <ClCompile Include="LightController.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RegisterAssets.cpp" />
-    <ClCompile Include="SampleLogic.cpp" />
+    <ClCompile Include="LevelController.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ControlLight.h" />
-    <ClInclude Include="SampleLogic.h" />
+    <ClInclude Include="CameraController.h" />
+    <ClInclude Include="LightController.h" />
+    <ClInclude Include="LevelController.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

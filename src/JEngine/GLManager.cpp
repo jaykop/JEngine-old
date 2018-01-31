@@ -15,14 +15,21 @@ GLuint				GLManager::m_vao[] = { 0 };
 GLuint				GLManager::m_vbo[] = { 0 };
 GLuint				GLManager::m_ebo[] = { 0 };
 GLuint				GLManager::m_fbo = 0;
-GLuint				GLManager::m_rbo = 0;
+GLuint				GLManager::m_depthBuffer = 0;
+GLuint				GLManager::m_renderTarget = 0;
 GLManager::Shaders	GLManager::m_shader;
 GLManager::DrawMode GLManager::m_mode = DrawMode::DRAW_FILL;
 
 // TODO
 // For test...
-GLuint				GLManager::m_sampleBuffer = 0;
-GLuint				GLManager::renderedTexture = 0;
+GLuint				GLManager::m_deferredFBO = 0;
+GLuint				GLManager::m_positionBuffer = 0;
+GLuint				GLManager::m_normalBuffer = 0;
+GLuint				GLManager::m_colorBuffer = 0;
+GLuint				GLManager::m_passIndex[] = { 0 };
+GLuint				GLManager::m_passIndex1 = 0;
+GLuint				GLManager::m_passIndex2 = 0;
+
 
 const float GLManager::m_verticesPoint[] = {
 	// position				// uv		// normals
@@ -211,6 +218,7 @@ bool GLManager::initSDL_GL(float _width, float _height)
 		ShowGLVersion();
 		InitVBO();
 		InitFBO();
+		//InitDefferedFBO();
 		InitGLEnvironment();
 		InitShaders();
 		RegisterUniform();
@@ -250,31 +258,28 @@ void GLManager::InitVBO()
 		m_verticesSize[SHAPE_PLANE], m_indicesSize[SHAPE_PLANE],
 		m_verticesPlane, m_indicesPlane);
 
-	SetVAO(m_vao[SHAPE_PARTICLE], m_vbo[SHAPE_PARTICLE], m_ebo[SHAPE_PARTICLE],
-		m_verticesSize[SHAPE_PARTICLE], m_indicesSize[SHAPE_PARTICLE],
+	SetVAO(m_vao[SHAPE_PLANE3D], m_vbo[SHAPE_PLANE3D], m_ebo[SHAPE_PLANE3D],
+		m_verticesSize[SHAPE_PLANE3D], m_indicesSize[SHAPE_PLANE3D],
 		m_verticesParticle, m_indicesParticle);
 
 	SetVAO(m_vao[SHAPE_CUBE], m_vbo[SHAPE_CUBE], m_ebo[SHAPE_CUBE],
 		m_verticesSize[SHAPE_CUBE], m_indicesSize[SHAPE_CUBE],
 		m_verticesCube, m_indicesCube);
+
+	glBindVertexArray(0);
 }
 
 void GLManager::InitFBO()
 {
-	//	TODO
-	// ALL THESE ARE SAMPLE CODES
-
 	// Create and bind the FBO
 	glGenFramebuffers(1, &m_fbo);
 	glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
 
-	//SetFBOTexture(m_fbo);
-
 	// The texture we're going to render to
-	glGenTextures(1, &renderedTexture);
+	glGenTextures(1, &m_renderTarget);
 
 	// "Bind" the newly created texture : all future texture functions will modify this texture
-	glBindTexture(GL_TEXTURE_2D, renderedTexture);
+	glBindTexture(GL_TEXTURE_2D, m_renderTarget);
 
 	// Give an empty image to OpenGL ( the last "0" )
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, GLsizei(m_width), GLsizei(m_height), 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
@@ -286,14 +291,13 @@ void GLManager::InitFBO()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 	// The depth buffer
-	GLuint depthrenderbuffer;
-	glGenRenderbuffers(1, &depthrenderbuffer);
-	glBindRenderbuffer(GL_RENDERBUFFER, depthrenderbuffer);
+	glGenRenderbuffers(1, &m_depthBuffer);
+	glBindRenderbuffer(GL_RENDERBUFFER, m_depthBuffer);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, GLsizei(m_width), GLsizei(m_height));
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthrenderbuffer);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_depthBuffer);
 
 	// Set "renderedTexture" as our colour attachement #0
-	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, renderedTexture, 0);
+	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, m_renderTarget, 0);
 
 	// Set the list of draw buffers.
 	GLenum DrawBuffers[1] = { GL_COLOR_ATTACHMENT0 };
@@ -305,6 +309,35 @@ void GLManager::InitFBO()
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+}
+
+void GLManager::InitDefferedFBO()
+{
+	// Create and bind the FBO
+	glGenFramebuffers(1, &m_deferredFBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, m_deferredFBO);
+
+	// The depth buffer
+	glGenRenderbuffers(1, &m_depthBuffer);
+	glBindRenderbuffer(GL_RENDERBUFFER, m_depthBuffer);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, GLsizei(m_width), GLsizei(m_height));
+
+	// Create the textures for position, normal and color
+	CreateGBufferTexture(GL_TEXTURE0, GL_RGB32F, m_positionBuffer);  // Position
+	CreateGBufferTexture(GL_TEXTURE1, GL_RGB8, m_colorBuffer);  // Color
+	CreateGBufferTexture(GL_TEXTURE2, GL_RGB32F, m_normalBuffer); // Normal
+
+	// Attach the textures to the framebuffer
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_depthBuffer);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_positionBuffer, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_colorBuffer, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, m_normalBuffer, 0);
+
+	GLenum drawBuffers[] = { GL_NONE, GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1,
+		GL_COLOR_ATTACHMENT2 };
+	glDrawBuffers(4, drawBuffers);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void GLManager::InitGLEnvironment()
@@ -360,6 +393,13 @@ void GLManager::InitShaders()
 	m_shader[SHADER_SCREEN]->LoadShader(
 		"../src/shader/screen.vs",
 		"../src/shader/screen.fs");
+
+	m_shader[SHADER_DEFERRED]->LoadShader(
+		"../src/shader/deferred.vs",
+		"../src/shader/deferred.fs");
+
+	m_passIndex1 = glGetSubroutineIndex(m_shader[SHADER_DEFERRED]->m_programId, GL_FRAGMENT_SHADER, "render1");
+	m_passIndex2 = glGetSubroutineIndex(m_shader[SHADER_DEFERRED]->m_programId, GL_FRAGMENT_SHADER, "render2");
 }
 
 void GLManager::SetDrawMode(DrawMode _mode)
@@ -404,11 +444,6 @@ void GLManager::RegisterUniform()
 	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_MATERIAL_SPECULAR, "material.m_specular");
 	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_MATERIAL_SHININESS, "material.m_shininess");
 
-	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_EFFECT_TYPE, "enum_effectType");
-	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_EFFECT_BLUR_SIZE, "float_blurSize");
-	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_EFFECT_BLUR_AMOUNT, "float_blurAmount");
-	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_EFFECT_SOBEL, "float_sobelAmount");
-
 	/******************** Light shader ********************/
 	m_shader[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_TRANSLATE, "m4_translate");
 	m_shader[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_SCALE, "m4_scale");
@@ -428,8 +463,20 @@ void GLManager::RegisterUniform()
 	m_shader[SHADER_PARTICLE]->ConnectUniform(UNIFORM_PARTICLE_BILBOARD, "boolean_bilboard");
 
 	/******************** Screen shader ********************/
+	m_shader[SHADER_SCREEN]->ConnectUniform(UNIFORM_SCREEN_COLOR, "v4_screenColor");
 	m_shader[SHADER_SCREEN]->ConnectUniform(UNIFORM_SCREEN_FRAMEBUFFER, "Framebuffer");
-
+	m_shader[SHADER_SCREEN]->ConnectUniform(UNIFORM_SCREEN_EFFECT, "enum_effectType");
+	m_shader[SHADER_SCREEN]->ConnectUniform(UNIFORM_SCREEN_BLUR_SIZE, "float_blurSize");
+	m_shader[SHADER_SCREEN]->ConnectUniform(UNIFORM_SCREEN_BLUR_AMOUNT, "float_blurAmount");
+	m_shader[SHADER_SCREEN]->ConnectUniform(UNIFORM_SCREEN_SOBEL, "float_sobelAmount");
+	
+	/******************** Light shader ********************/
+	m_shader[SHADER_DEFERRED]->ConnectUniform(UNIFORM_DEFERRED_TRANSLATE, "m4_translate");
+	m_shader[SHADER_DEFERRED]->ConnectUniform(UNIFORM_DEFERRED_SCALE, "m4_scale");
+	m_shader[SHADER_DEFERRED]->ConnectUniform(UNIFORM_DEFERRED_ROTATE, "m4_rotate");
+	m_shader[SHADER_DEFERRED]->ConnectUniform(UNIFORM_DEFERRED_CAMERA, "m4_viewport");
+	m_shader[SHADER_DEFERRED]->ConnectUniform(UNIFORM_DEFERRED_PROJECTION, "m4_projection");
+	//m_shader[SHADER_DEFERRED]->ConnectUniform(UNIFORM_DEFERRED_NORMAL, "m3_normal");
 }
 
 void GLManager::ShowGLVersion()
@@ -483,38 +530,19 @@ void GLManager::SetVAO(GLuint &_vao, GLuint &_vbo, GLuint &_ebo,
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, _elementSize, _elements, GL_STATIC_DRAW);
 }
 
-//void GLManager::SetFBOTexture(GLuint& _buffer)
-//{
-//	GLuint fboTex;
-//	glGenTextures(1, &fboTex);
-//	glBindTexture(GL_TEXTURE_2D, fboTex);
-//	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 80, 60, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-//
-//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-//
-//	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fboTex, 0);
-//}
-//
-//void GLManager::SetRBOImage(GLuint &_rbo)
-//{
-//	glGenRenderbuffers(1, &_rbo);
-//	glBindRenderbuffer(GL_RENDERBUFFER, _rbo);
-//	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 80, 60);
-//	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, _rbo);
-//}
+void GLManager::CreateGBufferTexture(GLenum _texUnit, GLenum _format, GLuint &_texid)
+{
+	glActiveTexture(_texUnit);
+	glGenTextures(1, &_texid);
+	glBindTexture(GL_TEXTURE_2D, _texid);
 
-//void GLManager::CreateGBufferTex(GLenum _texUnit, GLenum _format, GLuint &_texid) {
-//	glActiveTexture(_texUnit);
-//	glGenTextures(1, &_texid);
-//	glBindTexture(GL_TEXTURE_2D, _texid);
-//
-//	glTexStorage2D(GL_TEXTURE_2D, 1, _format, GLsizei(m_width), GLsizei(m_height));
-//
-//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
-//}
+	//glTexImage2D(GL_TEXTURE_2D, 0, _format, GLsizei(m_width), GLsizei(m_height), 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	glTexStorage2D(GL_TEXTURE_2D, 1, _format, GLsizei(m_width), GLsizei(m_height));
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
+}
 
 JE_END
 

@@ -43,7 +43,7 @@ public:
 private:
 
 	// Locked constuctors and destructor
-	~Animation() {};
+	~Animation();
 	Animation(Object* _pOwner);
 
 	Animation() = delete;

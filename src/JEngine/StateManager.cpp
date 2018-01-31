@@ -13,11 +13,10 @@ JE_BEGIN
 //////////////////////////////////////////////////////////////////////////
 Timer						StateManager::m_timer;
 States						StateManager::m_states;
-StateManager::StateStatus	StateManager::m_status = S_CHANGE;
+StateManager::StateStatus	StateManager::m_status = STATE_CHANGE;
 ObjectContainer				*StateManager::m_pOBC = nullptr;
 State						*StateManager::m_pCurrent = nullptr, 
-							*StateManager::m_pNext = nullptr, 
-							*StateManager::m_pPause = nullptr;
+							*StateManager::m_pNext = nullptr;
 
 //////////////////////////////////////////////////////////////////////////
 // funciton bodues
@@ -42,7 +41,7 @@ void StateManager::Update(SDL_Event& _event)
 	ChangeState();
 
 	while (SDL_PollEvent(&_event) != 0	// Event handler loop
-		|| m_status == S_NONE) {		// State updating loop
+		|| m_status == STATE_NONE) {		// State updating loop
 
 		//Get input by input handler
 		INPUT::Update(&_event);
@@ -73,11 +72,11 @@ void StateManager::Update(SDL_Event& _event)
 
 		// TODO 
 		// Pause process
-	case S_PAUSE:
+	case STATE_PAUSE:
 		SystemManager::Pause();
 		break;
 
-	case S_QUIT:				// The case to quit app
+	case STATE_QUIT:				// The case to quit app
 		while (m_pCurrent) {
 			State* pLast = m_pCurrent->m_pLastStage;
 			m_pCurrent->Close();
@@ -86,14 +85,15 @@ void StateManager::Update(SDL_Event& _event)
 		}
 		break;
 	
-	case S_RESUME:				// The case to resume to last state
+	case STATE_RESUME:				// The case to resume to last state
 		m_pCurrent->Close();
 		m_pCurrent->Unload();
 		SystemManager::Resume();
 		break;
 
-	case S_CHANGE:				// The case to change to next state
-	case S_RESUME_AND_CHANGE:	// The case to resume and change
+	case STATE_RESTART:				// The case to restart the current state
+	case STATE_CHANGE:				// The case to change to next state
+	case STATE_RESUME_AND_CHANGE:	// The case to resume and change
 		m_pCurrent->Close();
 		m_pCurrent->Unload();
 		break;
@@ -113,17 +113,19 @@ void StateManager::ChangeState()
 {
 	// Load and init agein
 	// for next stage
-	if (m_status == S_CHANGE || m_status == S_PAUSE) {
+	if (m_status == STATE_CHANGE 
+		|| m_status == STATE_PAUSE
+		|| m_status == STATE_RESTART) {
 		
 		// Save state to resume
-		if (m_status == S_PAUSE) {
+		if (m_status == STATE_PAUSE) {
 			State* toResume = m_pCurrent;
 			m_pCurrent = m_pNext;
 			m_pCurrent->m_pLastStage = toResume;
 		}
 
 		// Just change current state
-		else
+		else if (m_status == STATE_CHANGE)
 			m_pCurrent = m_pNext;
 
 		// Renew the state
@@ -132,7 +134,7 @@ void StateManager::ChangeState()
 	}
 
 	// Resume state
-	else if (m_status == S_RESUME) {
+	else if (m_status == STATE_RESUME) {
 		State* release = m_pCurrent;
 		m_pCurrent = m_pNext = m_pCurrent->m_pLastStage;
 		m_pOBC = m_pCurrent->m_objContainer;
@@ -140,15 +142,15 @@ void StateManager::ChangeState()
 	}
 
 	// Resume and change
-	else if (m_status == S_RESUME_AND_CHANGE) {
+	else if (m_status == STATE_RESUME_AND_CHANGE) {
 		m_pCurrent = m_pCurrent->m_pLastStage;
 		m_pOBC = m_pCurrent->m_objContainer;
-		m_status = S_CHANGE;
+		m_status = STATE_CHANGE;
 	}
 
 	// Refresh the status
 	if (m_pCurrent == m_pNext)
-		m_status = S_NONE;
+		m_status = STATE_NONE;
 }
 
 void StateManager::PushState(const char* _path, const char* _stateName)
@@ -208,7 +210,20 @@ void StateManager::SetStartingState(const char * _stateName)
 
 void StateManager::Quit()
 {
-	m_status = S_QUIT;
+	m_status = STATE_QUIT;
+}
+
+void StateManager::Restart()
+{
+	if (IsPaused())
+		JE_DEBUG_PRINT("*StateManager: Cannot restart on pause state.\n");
+	else
+		m_status = STATE_RESTART;
+}
+
+bool StateManager::IsPaused()
+{
+	return m_pCurrent->m_pLastStage != nullptr ? true : false ;
 }
 
 StateManager::StateStatus StateManager::GetStatus(void)
@@ -235,7 +250,7 @@ void StateManager::SetNextState(const char* _stateName)
 				// Found the state
 				else {
 					m_pNext = it;
-					m_status = S_CHANGE;
+					m_status = STATE_CHANGE;
 				}
 
 				break;
@@ -254,14 +269,14 @@ void StateManager::Pause(const char* _nextState)
 {
 	// Set state to pause
 	m_pNext = GetState(_nextState);
-	m_status = S_PAUSE;
+	m_status = STATE_PAUSE;
 }
 
 void StateManager::Resume()
 {
 	// Check state to resume
 	if (m_pCurrent->m_pLastStage)
-		m_status = S_RESUME;
+		m_status = STATE_RESUME;
 
 	else
 		JE_DEBUG_PRINT("*StateManager: No state to resume.\n");
@@ -269,7 +284,7 @@ void StateManager::Resume()
 
 void StateManager::ResumeAndNext(const char* _nextState)
 {
-	m_status = S_RESUME_AND_CHANGE;
+	m_status = STATE_RESUME_AND_CHANGE;
 	m_pNext = GetState(_nextState);
 }
 

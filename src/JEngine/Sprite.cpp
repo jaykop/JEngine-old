@@ -1,4 +1,5 @@
 #include "Sprite.h"
+#include "GLManager.h"
 #include "Transform.h"
 #include "AssetManager.h"
 #include "SystemManager.h"
@@ -6,9 +7,11 @@
 JE_BEGIN
 
 Sprite::Sprite(Object* _pOwner)
-	:Component(_pOwner), m_color(vec4::ONE),m_projection(PROJECTION_PERSPECTIVE), 
-	m_mainTex(0),m_transform(nullptr), m_flip(false), m_culled(false), m_bilboard(false),
-	m_material(nullptr), m_hasMaterial(false), m_isEmitter(false), m_isModel(false)
+	:Component(_pOwner), m_color(vec4::ONE), m_projection(PROJECTION_PERSPECTIVE),
+	m_mainTex(0), m_transform(nullptr), m_flip(false), m_culled(false), m_bilboard(false),
+	m_material(nullptr), m_hasMaterial(false), m_isEmitter(false), 
+	m_vao(&(GLM::m_vao[GLM::SHAPE_PLANE])), m_elementSize(GLM::m_elementSize[GLM::SHAPE_PLANE])
+	/*, m_isModel(false)*/
 {}
 
 void Sprite::Register()
@@ -66,14 +69,6 @@ Sprite::~Sprite()
 	// Remove textures
 	m_textureMap.clear();
 	SystemManager::GetGraphicSystem()->RemoveSprite(this);
-
-	// Remove effects
-	for (auto effect : m_effects) {
-		delete effect.second;
-		effect.second = nullptr;
-	}
-
-	m_effects.clear();
 }
 
 void Sprite::Load(CR_RJValue _data)
@@ -110,61 +105,6 @@ void Sprite::Load(CR_RJValue _data)
 
 	if (_data.HasMember("Bilboard"))
 		m_bilboard = _data["Bilboard"].GetBool();
-
-	// TODO
-	if (_data.HasMember("Blur")) {
-		CR_RJValue effect = _data["Blur"];
-		auto found = m_effects.find(VisualEffect::VISUALEFFECT_BLUR);
-		if (found == m_effects.end()) {
-			AddEffect<Blur>();
-			Blur* blur = GetEffect<Blur>();
-			blur->m_size = effect[0].GetFloat();
-			blur->m_amount = effect[1].GetFloat();
-		}
-
-		else
-			JE_DEBUG_PRINT("*Sprite: Existing effet - Blur\n");
-	}
-
-	if (_data.HasMember("Sobel")) {
-		CR_RJValue amount = _data["Sobel"];
-		auto found = m_effects.find(VisualEffect::VISUALEFFECT_SOBEL);
-		if (found == m_effects.end()) {
-			AddEffect<Sobel>();
-			Sobel* sobel = GetEffect<Sobel>();
-			sobel->m_amount = amount.GetFloat();
-		}
-
-		else
-			JE_DEBUG_PRINT("*Sprite: Existing effet - Sobel\n");
-	}
-
-	if (_data.HasMember("Inverse")) {
-		CR_RJValue effect = _data["Inverse"];
-		auto found = m_effects.find(VisualEffect::VISUALEFFECT_INVERSE);
-		if (found == m_effects.end()) {
-			AddEffect<Inverse>();
-			Inverse *inverse = GetEffect<Inverse>();
-			inverse->m_active = effect.GetBool();
-		}
-
-		else
-			JE_DEBUG_PRINT("*Sprite: Existing effet - Inverse\n");
-	}
-}
-
-void Sprite::ConvertVisualEffectType(const char* _name, VisualEffect::VisualEffectType& _VisualEffectType)
-{
-	std::string additional("class JEngine::");
-	std::string blur = additional + "Blur", inv = additional + "Inverse",
-		sobel = additional + "Sobel";
-
-	if (!strcmp(_name, blur.c_str()))
-		_VisualEffectType = VisualEffect::VisualEffectType::VISUALEFFECT_BLUR;
-	else if (!strcmp(_name, sobel.c_str()))
-		_VisualEffectType = VisualEffect::VisualEffectType::VISUALEFFECT_SOBEL;
-	else if (!strcmp(_name, inv.c_str()))
-		_VisualEffectType = VisualEffect::VisualEffectType::VISUALEFFECT_INVERSE;
 }
 
 SpriteBuilder::SpriteBuilder()

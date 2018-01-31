@@ -1,0 +1,43 @@
+{
+
+	"Background" : [ 0.25, 0.25, 0.25, 1.0 ],
+	"Screen" : [ 1.0, 1.0, 1.0, 1.0 ],
+	"Object" : [
+		{
+			"Name" : "Camera",
+			"Component" : [
+				{
+					"Type": "Camera",
+					"Values": {"Position" : [50, 50, 100], "Target" : [0, 0, 0],
+						"Up" : [0, 1, 0]}
+				},
+				{
+					"Type": "CameraController",
+					"Values": {}
+				}
+			]
+		},	
+		{
+			"Name" : "Box",
+			"Component" : [
+				{
+					"Type": "Transform",
+					"Values": {"Position" : [0, 0, 0], "Scale" : [50, 50, 50]}
+				},
+				{
+					"Type": "Model",
+					"Values": {"Texture" : "uvtemplate", "Color" : [1, 1, 1, 1], "Projection" : "Perspective"}
+				}
+			]
+		},		
+		{
+			"Name" : "LevelController",
+			"Component" : [
+				{
+					"Type": "LevelController",
+					"Values": {}
+				}
+			]
+		}
+	]
+}

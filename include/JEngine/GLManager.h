@@ -11,6 +11,8 @@ JE_BEGIN
 class GLManager {
 
 	friend class Shader;
+	friend class Model;
+	friend class Sprite;
 	friend class Emitter;
 	friend class Application;
 	friend class GraphicSystem;
@@ -18,51 +20,23 @@ class GLManager {
 	using Shaders = std::vector<Shader*>;
 
 	enum DrawMode  { DRAW_POINT, DRAW_LINE, DRAW_FILL };
-	enum ShaderType  {SHADER_NORMAL, SHADER_LIGHTING, SHADER_PARTICLE, SHADER_SCREEN, SHADER_END};
-	enum ShapeType  { SHAPE_POINT, SHAPE_PLANE, SHAPE_PARTICLE, SHAPE_CUBE, SHAPE_END};
+	enum ShaderType  {SHADER_NORMAL, SHADER_LIGHTING, SHADER_PARTICLE, SHADER_SCREEN, SHADER_DEFERRED, SHADER_END};
+	enum ShapeType  { SHAPE_POINT, SHAPE_PLANE, SHAPE_PLANE3D, SHAPE_CUBE, SHAPE_END};
 	enum UniformType  {
 
 		/******************** Normal shader ********************/
-		//////////////////////
-		// Martix uniform
-		//////////////////////
 		UNIFORM_TRANSLATE, UNIFORM_SCALE, UNIFORM_ROTATE,
 		UNIFORM_CAMERA, UNIFORM_PROJECTION,
 		UNIFORM_ANI_TRANSLATE, UNIFORM_ANI_SCALE,
-
-		//////////////////////
-		// Vector uniform
-		//////////////////////
 		UNIFORM_COLOR,
 
-		// Material attributes
-		UNIFORM_MATERIAL_AMBIENT, UNIFORM_MATERIAL_DIFFUSE,
-		UNIFORM_MATERIAL_SPECULAR,
-
-		// Others...
+		UNIFORM_MATERIAL_AMBIENT, UNIFORM_MATERIAL_DIFFUSE,		// Material attributes
+		UNIFORM_MATERIAL_SPECULAR, UNIFORM_MATERIAL_SHININESS,
 		UNIFORM_CAMERA_POSITION,
-
-		//////////////////////
-		// Boolean uniform
-		//////////////////////
-		UNIFORM_FLIP,			// animation attributes
-		UNIFORM_IS_LIGHT,		// light attributes
+		UNIFORM_FLIP,											// animation attributes
+		UNIFORM_IS_LIGHT,										// light attributes
 		UNIFORM_BILBOARD,
-
-		//////////////////////
-		// Float uniform
-		//////////////////////
-		// material attributes
-		UNIFORM_MATERIAL_SHININESS,	
-
-		//////////////////////
-		// Integer, Enum uniform
-		//////////////////////
 		UNIFORM_LIGHT_TYPE, UNIFORM_LIGHT_SIZE,
-
-		UNIFORM_EFFECT_TYPE,
-		UNIFORM_EFFECT_BLUR_SIZE, UNIFORM_EFFECT_BLUR_AMOUNT,
-		UNIFORM_EFFECT_SOBEL, 
 
 		/******************** Light shader ********************/
 		UNIFORM_LIGHT_TRANSLATE, UNIFORM_LIGHT_SCALE, 
@@ -76,10 +50,19 @@ class GLManager {
 		UNIFORM_PARTICLE_PROJECTION,
 		
 		UNIFORM_PARTICLE_COLOR, UNIFORM_PARTICLE_BILBOARD,
-		UNIFORM_PARTICLE_HIDE,			// hide particle
+		UNIFORM_PARTICLE_HIDE,								
 
 		/******************** Screen shader ********************/
-		UNIFORM_SCREEN_FRAMEBUFFER,
+		UNIFORM_SCREEN_FRAMEBUFFER, UNIFORM_SCREEN_COLOR,
+		UNIFORM_SCREEN_EFFECT,
+		UNIFORM_SCREEN_BLUR_SIZE, UNIFORM_SCREEN_BLUR_AMOUNT,
+		UNIFORM_SCREEN_SOBEL,
+
+		/******************** Deferred shader ********************/
+		UNIFORM_DEFERRED_TRANSLATE, UNIFORM_DEFERRED_SCALE,
+		UNIFORM_DEFERRED_ROTATE,
+		UNIFORM_DEFERRED_CAMERA, UNIFORM_DEFERRED_PROJECTION,
+		UNIFORM_DEFERRED_NORMAL,
 
 		UNIFORM_END
 	};
@@ -94,7 +77,6 @@ private:
 	static bool	initSDL_GL(float _width, float _height);
 	static void	CloseSDL_GL();
 	static void	RegisterUniform();
-	//static void CreateGBufferTex(GLenum _texUnit, GLenum _format, GLuint & _texid);
 	static void	InitGLEnvironment();
 	static void InitVBO();
 	static void InitFBO();
@@ -104,8 +86,8 @@ private:
 		const unsigned _verticeSize, const unsigned _elementSize,
 		const float _vertices[], const unsigned _elements[]);
 
-	static void SetFBOTexture(GLuint &_buffer);
-	static void SetRBOImage(GLuint &_buffer);
+	static void InitDefferedFBO();
+	static void CreateGBufferTexture(GLenum _texUnit, GLenum _format, GLuint &_texid);
 
 	// Private member variables
 	static float		m_width, m_height;
@@ -113,11 +95,12 @@ private:
 	static DrawMode		m_mode;
 	static GLint		m_uniform[UNIFORM_END];
 	static GLuint		m_vao[SHAPE_END], m_vbo[SHAPE_END], m_ebo[SHAPE_END];
-	static GLuint		m_fbo, m_rbo, m_sampleBuffer, renderedTexture;
+	static GLuint		m_fbo, m_renderTarget, m_depthBuffer,
+		m_deferredFBO, m_positionBuffer, m_normalBuffer, m_colorBuffer, m_passIndex[2], m_passIndex1, m_passIndex2;	// Deffered shading test variables
 
 	// Basic indices and vertices sets
-	static const float		m_verticesPoint[8], m_verticesPlane[32], m_verticesParticle[96], m_verticesCube[192];
-	static const unsigned	m_indicesPoint[1], m_indicesPlane[6], m_indicesParticle[18], m_indicesCube[36], 
+	static const float		m_verticesPoint[8], m_verticesPlane[32], m_verticesParticle[96], m_verticesCube[192], m_verticesSkybox[192];
+	static const unsigned	m_indicesPoint[1], m_indicesPlane[6], m_indicesParticle[18], m_indicesCube[36],
 		m_elementSize[SHAPE_END], m_verticesSize[SHAPE_END], m_indicesSize[SHAPE_END];
 
 	// Locked functions

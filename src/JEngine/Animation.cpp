@@ -21,6 +21,15 @@ Animation::Animation(Object* _pOwner)
 		JE_DEBUG_PRINT("*Animation: This object has no sprite componnet - %s\n", _pOwner->GetName().c_str());
 }
 
+Animation::~Animation() {
+
+	// Turn off the toggle
+	if (m_pOwner->HasComponent<Sprite>()) {
+		m_pOwner->GetComponent<Sprite>()->m_animation = nullptr;
+		m_pOwner->GetComponent<Sprite>()->m_hasAnimation = false;
+	}
+}
+
 void Animation::Load(CR_RJValue _data)
 {
 	if (_data.HasMember("FixAt")) {

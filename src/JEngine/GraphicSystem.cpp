@@ -8,18 +8,16 @@
 #include "Transform.h"
 #include "InputHandler.h"
 
-// TODO
-#include "Shader.hpp"
-#include "AssetManager.h"
-
 JE_BEGIN
 
 GraphicSystem::GraphicSystem()
 	:System(), m_pMainCamera(nullptr),
 	m_fovy(45.f), m_zNear(.1f), m_zFar(1000.f), m_isLight(false),
-	m_backgroundColor(vec4::ZERO), m_orthoComesFirst(true),
+	m_backgroundColor(vec4::ZERO), m_orthoComesFirst(true), m_screenColor(vec4::ONE),
 	m_width(Application::GetData().m_width), m_height(Application::GetData().m_height),
-	m_aniScale(vec3::ZERO), m_aniTranslate(vec3::ZERO), m_viewport(mat4()), m_aliasMode(ALIAS_ALIASED)
+	m_aniScale(vec3::ZERO), m_aniTranslate(vec3::ZERO), m_viewport(mat4()),
+	m_sobelAmount(0.f), m_blurSize(0.f), m_blurAmount(0.f),
+	m_aliasMode(ALIAS_ALIASED), m_screenEffect(EFFECT_NONE)
 {
 	m_aspect = float(m_width) / float(m_height);
 	m_right = m_width * .5f;
@@ -42,6 +40,42 @@ void GraphicSystem::Load(CR_RJDoc _data)
 			color[3].GetFloat()
 		);
 	}
+
+	if (_data.HasMember("Screen")) {
+		CR_RJValue color = _data["Screen"];
+		m_screenColor.Set(
+			color[0].GetFloat(),
+			color[1].GetFloat(),
+			color[2].GetFloat(),
+			color[3].GetFloat()
+		);
+	}
+
+	if (_data.HasMember("Effect")) {
+		CR_RJValue effect = _data["Effect"];
+		CR_RJValue type = effect["Type"];
+		if (!strcmp("Inverse", type.GetString())) {
+			m_screenEffect = EFFECT_INVERSE;
+		}
+		else if (!strcmp("Sobel", type.GetString())) {
+			static float s_recommend = 0.005f;
+			m_screenEffect = EFFECT_SOBEL;
+			if (effect.HasMember("SobelAmount")) {
+				m_sobelAmount = effect["SobelAmount"].GetFloat();
+				if (m_sobelAmount > s_recommend)
+					JE_DEBUG_PRINT("*GraphicSystem: Recommend to set sobel amount less than %f.\n", s_recommend);
+			}
+		}
+		else if (!strcmp("Blur", type.GetString())) {
+			m_screenEffect = EFFECT_BLUR;
+			if (effect.HasMember("BlurAmount"))
+				m_blurAmount = effect["BlurAmount"].GetFloat();
+			if (effect.HasMember("BlurSize"))
+				m_blurSize= effect["BlurSize"].GetFloat();
+		}
+		else
+			JE_DEBUG_PRINT("*GraphicSystem: Wrong type of screen effect.\n");
+	}
 }
 
 void GraphicSystem::Init()
@@ -50,84 +84,20 @@ void GraphicSystem::Init()
 	// set the first camera as a main camera.
 	if (!m_pMainCamera)
 		m_pMainCamera = m_cameras[0];
-
 }
 
 void GraphicSystem::Update(const float _dt)
 {
-	// Render to framebuffer
-	glBindFramebuffer(GL_FRAMEBUFFER, GLM::m_fbo);
-	glBindVertexArray(GLM::m_vao[GLM::SHAPE_CUBE]);
-	GLM::m_shader[GLM::SHADER_NORMAL]->Use();
-
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(0.f, 0.f, 0.f, 0.f);
-	glViewport(0, 0, GLint(m_width), GLint(m_height));
-
-	// Update main camera attributes
-	m_viewport = mat4::LookAt(
-		m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
+	RenderToFramebuffer();
 
 	// Sort orthogonal objects and perspective objects
 	SortSprites();
-
-	//Start alias mode
-	switch (m_aliasMode)
-	{
-	case ALIAS_ALIASED:
-		glDisable(GL_LINE_SMOOTH);
-		glDisable(GL_POINT_SMOOTH);
-		glDisable(GL_POLYGON_SMOOTH);
-		glDisable(GL_MULTISAMPLE);
-		break;
-
-	case ALIAS_ANTIALIASED:
-		glEnable(GL_LINE_SMOOTH);
-		glEnable(GL_POINT_SMOOTH);
-		glEnable(GL_POLYGON_SMOOTH);
-		glDisable(GL_MULTISAMPLE);
-		break;
-
-	case ALIAS_MULTISAMPLE:
-		glDisable(GL_LINE_SMOOTH); 
-		glDisable(GL_POINT_SMOOTH);
-		glDisable(GL_POLYGON_SMOOTH);
-		glEnable(GL_MULTISAMPLE);
-		break;
-	}
-	
 	UpdatePipelines(_dt);
 
-	//End alias mode
-	switch (m_aliasMode)
-	{
-	case ALIAS_ANTIALIASED:
-		glDisable(GL_LINE_SMOOTH);
-		glDisable(GL_POLYGON_SMOOTH);
-		break;
-
-	case ALIAS_MULTISAMPLE:
-		glDisable(GL_MULTISAMPLE);
-		break;
-	}
+	RenderToScreen();
 
 	// TODO
 	// GLMousePosition();
-
-	// Bind default framebuffer and render to screen
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(m_backgroundColor.x, m_backgroundColor.y, m_backgroundColor.z, m_backgroundColor.w);
-
-	glBindVertexArray(GLM::m_vao[GLM::SHAPE_PLANE]);
-	glDisable(GL_DEPTH_TEST);
-	GLM::m_shader[GLM::SHADER_SCREEN]->Use();
-
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, GLM::renderedTexture);
-
-	glDrawElements(GL_TRIANGLES, GLM::m_elementSize[GLM::SHAPE_PLANE], GL_UNSIGNED_INT, 0);
-	glEnable(GL_DEPTH_TEST);
 }
 
 void GraphicSystem::Close()
@@ -146,6 +116,7 @@ void GraphicSystem::Render(const unsigned &_vao, const int _elementSize, unsigne
 {
 	glBindVertexArray(_vao);
 	glDrawElements(_mode, _elementSize, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
 }
 
 void GraphicSystem::SortSprites()
@@ -218,6 +189,21 @@ const vec4& GraphicSystem::GetBackgroundColor() const
 	return m_backgroundColor;
 }
 
+CR_vec4 GraphicSystem::GetScreenColor() const
+{
+	return m_screenColor;
+}
+
+void GraphicSystem::SetScreenColor(CR_vec4 _color)
+{
+	m_screenColor.Set(_color);
+}
+
+void GraphicSystem::SetScreenColor(float _r, float _g, float _b, float _a)
+{
+	m_screenColor.Set(_r, _g, _b, _a);
+}
+
 int GraphicSystem::GetWidth() const
 {
 	return m_width;
@@ -269,6 +255,50 @@ void GraphicSystem::RemoveLight(Light * _light)
 			m_lights.erase(it);
 			break;
 		}
+	}
+}
+
+void GraphicSystem::StartAntialiasing()
+{	
+	//Start alias mode
+	switch (m_aliasMode)
+	{
+	case ALIAS_ALIASED:
+		glDisable(GL_LINE_SMOOTH);
+		glDisable(GL_POINT_SMOOTH);
+		glDisable(GL_POLYGON_SMOOTH);
+		glDisable(GL_MULTISAMPLE);
+		break;
+
+	case ALIAS_ANTIALIASED:
+		glEnable(GL_LINE_SMOOTH);
+		glEnable(GL_POINT_SMOOTH);
+		glEnable(GL_POLYGON_SMOOTH);
+		glDisable(GL_MULTISAMPLE);
+		break;
+
+	case ALIAS_MULTISAMPLE:
+		glDisable(GL_LINE_SMOOTH);
+		glDisable(GL_POINT_SMOOTH);
+		glDisable(GL_POLYGON_SMOOTH);
+		glEnable(GL_MULTISAMPLE);
+		break;
+	}
+}
+
+void GraphicSystem::EndAntialiasing()
+{	
+	//End alias mode
+	switch (m_aliasMode)
+	{
+	case ALIAS_ANTIALIASED:
+		glDisable(GL_LINE_SMOOTH);
+		glDisable(GL_POLYGON_SMOOTH);
+		break;
+
+	case ALIAS_MULTISAMPLE:
+		glDisable(GL_MULTISAMPLE);
+		break;
 	}
 }
 

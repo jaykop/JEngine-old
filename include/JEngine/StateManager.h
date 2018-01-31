@@ -14,13 +14,15 @@ class StateManager {
 	friend class Application;
 	friend class AssetManager;
 	enum StateStatus  {
-		S_NONE, S_PAUSE, S_RESUME, S_CHANGE, S_RESUME_AND_CHANGE, S_QUIT };
+		STATE_NONE, STATE_RESTART, STATE_PAUSE, STATE_RESUME, STATE_CHANGE, STATE_RESUME_AND_CHANGE, STATE_QUIT };
 
 public:
 
 	static void Quit();
+	static void Restart();
 	static void Resume();
 	static void Pause(const char* _nextState);
+	static bool IsPaused();
 	static void SetNextState(const char* _nextState);
 	static void ResumeAndNext(const char* _nextState);
 	static void SetStartingState(const char* _stateName);
@@ -54,7 +56,7 @@ private:
 	static Timer		m_timer;
 	static States		m_states;
 	static StateStatus	m_status;
-	static State*		m_pCurrent, *m_pNext, *m_pPause;
+	static State*		m_pCurrent, *m_pNext;
 
 };
 

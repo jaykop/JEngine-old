@@ -788,9 +788,14 @@ Matrix4x4 Matrix4x4::Orthogonal(float _left, float _right, float _bottom, float 
 
 Matrix4x4 Matrix4x4::LookAt(const Vector3& _eye, const Vector3& _target, const Vector3& _up)
 {
-	Vector3 look = (_eye - _target).GetNormalize();
-	Vector3 up = _up;
-	Vector3 right = up.CrossProduct(look);
+	Vector3 look, up, right;
+
+	if (_eye == _target)
+		JE_DEBUG_PRINT("*Matrix4x4: LookAt's position and target are identical.\n");
+
+	look = (_eye - _target).GetNormalize();
+	up = _up;
+	right = up.CrossProduct(look);
 	up = look.CrossProduct(right);
 
 	Matrix4x4 Result;

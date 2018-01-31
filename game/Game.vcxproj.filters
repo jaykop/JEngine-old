@@ -1,24 +1,30 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="SampleLogic.cpp">
-      <Filter>GameLogic</Filter>
-    </ClCompile>
-    <ClCompile Include="ControlLight.cpp">
-      <Filter>GameLogic</Filter>
-    </ClCompile>
     <ClCompile Include="RegisterAssets.cpp">
       <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Base</Filter>
     </ClCompile>
+    <ClCompile Include="LightController.cpp">
+      <Filter>GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelController.cpp">
+      <Filter>GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraController.cpp">
+      <Filter>GameLogic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SampleLogic.h">
+    <ClInclude Include="LightController.h">
       <Filter>GameLogic</Filter>
     </ClInclude>
-    <ClInclude Include="ControlLight.h">
+    <ClInclude Include="LevelController.h">
+      <Filter>GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraController.h">
       <Filter>GameLogic</Filter>
     </ClInclude>
   </ItemGroup>

@@ -110,7 +110,7 @@ void Application::Update()
 
 		// Update the surface
 		while (STATE::GetStatus()
-			!= STATE::StateStatus::S_QUIT) {
+			!= STATE::StateStatus::STATE_QUIT) {
 			
 			// Update state manager
 			STATE::Update(m_pEvent);

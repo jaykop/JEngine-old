@@ -8,6 +8,7 @@
 		{"Key" : "fire", 			"Directory" : "resource/texture/fire.png"},
 		{"Key" : "smoke", 			"Directory" : "resource/texture/smoke.png"},
 		{"Key" : "particle", 		"Directory" : "resource/texture/particle.png"},
+		{"Key" : "skybox", 			"Directory" : "resource/texture/skybox.png"},
 		{"Key" : "testAnimation", 	"Directory" : "resource/texture/testAnimation.png"}
 	]
 }

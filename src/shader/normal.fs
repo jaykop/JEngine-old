@@ -1,6 +1,6 @@
 #version 410 core
 
-layout(location = 0) out vec4 v4_fragColor;
+layout (location = 0) out vec4 v4_fragColor;
 
 ////////////////////////////
 // const variables
@@ -9,10 +9,6 @@ const int MAX_ARRAY			= 128;
 const int LIGHT_DIRECTIONAL	= 1;
 const int LIGHT_SPOTLIGHT	= 2;
 const int LIGHT_POINTLIGHT	= 3;
-const int EFFECT_NONE		= 0;
-const int EFFECT_BLUR		= 1;
-const int EFFECT_SOBEL		= 2;
-const int EFFECT_INVERSE	= 3;
 
 ////////////////////////////
 // structs
@@ -53,16 +49,12 @@ in 	vec3 v3_outFragmentPosition;
 ////////////////////////////
 // uniform variables
 ////////////////////////////
-uniform int			enum_effectType;
 uniform int 		int_lightSize;
 uniform vec3 		v3_cameraPosition;
 uniform vec4 		v4_color;
 uniform vec4 		v4_lightColor[MAX_ARRAY];
 uniform bool 		boolean_light;
 uniform Light		light[MAX_ARRAY];
-uniform float		float_blurSize;
-uniform float		float_blurAmount;
-uniform float		float_sobelAmount;
 uniform sampler2D 	Texture;
 uniform Material 	material;
 
@@ -73,7 +65,6 @@ uniform sampler2D	Texture1;
 // function declarations
 ////////////////////////////
 void LightingEffect(inout vec4 _light);
-void VisualEffect(inout vec4 _color);
 
 ////////////////////////////
 // entry point
@@ -81,20 +72,10 @@ void VisualEffect(inout vec4 _color);
 void main() {
 
 	vec4 finalTexture = vec4(0,0,0,0);
-	
-
-	// Any effect?
-	if ((enum_effectType != EFFECT_NONE) 
-		|| boolean_light) {
-			
-		// Implement light attributes
-		if (boolean_light)
-			LightingEffect(finalTexture);
-				
-		// Impose visual effect here...
-		if (enum_effectType != EFFECT_NONE)
-			VisualEffect(finalTexture);
-	}
+		
+	// Implement light attributes
+	if (boolean_light)
+		LightingEffect(finalTexture);
 		
 	// Unless..
 	else
@@ -111,7 +92,7 @@ void LightingEffect(inout vec4 _color) {
 
 	// TODO
 	// Dynamic light loop...
-	for (int index = 0; index < 128; ++index) {
+	for (int index = 0; index < 2; ++index) {
 	
 		vec3 	lightDirection;
 		float 	attenuation = 1.f;
@@ -168,47 +149,3 @@ void LightingEffect(inout vec4 _color) {
 }
 
 
-void VisualEffect(inout vec4 _color){
-
-	// Blur effect
-	if (enum_effectType == EFFECT_BLUR) {
-		
-		int x_range = int(float_blurSize / 2.0);
-		int y_range = int(float_blurSize / 2.0);
-		
-		vec4 sum = vec4(0,0,0,0);
-		for (int x = -x_range ; x <= x_range ; x++)
-			for(int y = -y_range ; y <= y_range ; y++){
-				sum += texture(Texture, 
-					vec2(v2_outTexCoord.x + x * (1 / float_blurAmount), 
-						v2_outTexCoord.y + y * (1 / float_blurAmount))) 
-						/ (float_blurSize * float_blurSize);
-			}
-			
-		_color = sum;
-	}
-	
-	// Sobel effect
-	else if (enum_effectType == EFFECT_SOBEL){
-		vec4 top         = texture(Texture, vec2(v2_outTexCoord.x, v2_outTexCoord.y + 5.0 / float_sobelAmount));
-		vec4 bottom      = texture(Texture, vec2(v2_outTexCoord.x, v2_outTexCoord.y - 5.0 / float_sobelAmount));
-		vec4 left        = texture(Texture, vec2(v2_outTexCoord.x - 5.0 / float_sobelAmount, v2_outTexCoord.y));
-		vec4 right       = texture(Texture, vec2(v2_outTexCoord.x + 5.0 / float_sobelAmount, v2_outTexCoord.y));
-		vec4 topLeft     = texture(Texture, vec2(v2_outTexCoord.x - 5.0 / float_sobelAmount, v2_outTexCoord.y + 5.0 / float_sobelAmount));
-		vec4 topRight    = texture(Texture, vec2(v2_outTexCoord.x + 5.0 / float_sobelAmount, v2_outTexCoord.y + 5.0 / float_sobelAmount));
-		vec4 bottomLeft  = texture(Texture, vec2(v2_outTexCoord.x - 5.0 / float_sobelAmount, v2_outTexCoord.y - 5.0 / float_sobelAmount));
-		vec4 bottomRight = texture(Texture, vec2(v2_outTexCoord.x + 5.0 / float_sobelAmount, v2_outTexCoord.y - 5.0 / float_sobelAmount));
-		vec4 sx = -topLeft - 2 * left - bottomLeft + topRight   + 2 * right  + bottomRight;
-		vec4 sy = -topLeft - 2 * top  - topRight   + bottomLeft + 2 * bottom + bottomRight;
-		_color = sqrt(sx * sx + sy * sy);
-	}
-	
-	// Inverse effect
-	else if (enum_effectType == EFFECT_INVERSE)
-	{
-		vec4 inversed = vec4(1,1,1,1) - _color;
-		inversed.w = 1.f;
-		
-		_color = inversed;
-	}
-}

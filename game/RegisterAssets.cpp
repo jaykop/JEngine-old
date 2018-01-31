@@ -5,8 +5,9 @@
 /////////////////////////////////////////////////////////////////////////
 // customize component headers
 //////////////////////////////////////////////////////////////////////////
-#include "SampleLogic.h"
-#include "ControlLight.h"
+#include "CameraController.h"
+#include "LevelController.h"
+#include "LightController.h"
 
 JE_BEGIN
 
@@ -19,8 +20,9 @@ void AssetManager::RegisterAssets()
 	ASSET::m_archeDirectory.assign("resource/register/archetype.json");
 
 	// Load customized components
-	JE_ADD_COMPONENT(SampleLogic);
-	JE_ADD_COMPONENT(ControlLight);
+	JE_ADD_COMPONENT(CameraController);
+	JE_ADD_COMPONENT(LevelController);
+	JE_ADD_COMPONENT(LightController);
 
 }
 
