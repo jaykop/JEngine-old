@@ -54,9 +54,13 @@ void GraphicSystem::Load(CR_RJDoc _data)
 	if (_data.HasMember("Effect")) {
 		CR_RJValue effect = _data["Effect"];
 		CR_RJValue type = effect["Type"];
-		if (!strcmp("Inverse", type.GetString())) {
+
+		if (!strcmp("None", type.GetString())) 
+			m_screenEffect = EFFECT_NONE;
+
+		else if (!strcmp("Inverse", type.GetString())) 
 			m_screenEffect = EFFECT_INVERSE;
-		}
+		
 		else if (!strcmp("Sobel", type.GetString())) {
 			static float s_recommend = 0.005f;
 			m_screenEffect = EFFECT_SOBEL;
@@ -98,6 +102,12 @@ void GraphicSystem::Update(const float _dt)
 
 	// TODO
 	// GLMousePosition();
+
+	// Deferred rendering tutorial test
+
+	/*render1();
+	glFlush();
+	render2();*/
 }
 
 void GraphicSystem::Close()

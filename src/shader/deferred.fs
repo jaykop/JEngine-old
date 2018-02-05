@@ -1,4 +1,4 @@
-#version 410 core
+#version 450 core
 
 struct LightInfo {
 	vec4 Position;
@@ -16,9 +16,9 @@ uniform MaterialInfo Material;
 subroutine void RenderPassType();
 subroutine uniform RenderPassType RenderPass;
 
-uniform sampler2D PositionTex;
-uniform sampler2D ColorTex;
-uniform sampler2D NormalTex;
+layout(binding=0) uniform sampler2D PositionTex;
+layout(binding=1) uniform sampler2D ColorTex;
+layout(binding=2) uniform sampler2D NormalTex;
 
 in vec3 v3_outPosition;
 in vec2 v2_outTexCoord;
@@ -42,7 +42,7 @@ subroutine (RenderPassType)
 void render1()
 {
 	// Store position, normal, and diffuse color in g-buffer
-	PositionData = v3_outPosition;
+	PositionData = 2 * v3_outPosition;
 	ColorData = Material.Kd;
 	NormalData = v3_outNormal;
 }
@@ -52,11 +52,14 @@ void render2()
 {
 	// Retrieve position, normal and color information from
 	// the g-buffer textures
-	vec3 pos = vec3(texture(PositionTex, v2_outTexCoord));
-	vec3 diffColor = vec3(texture(ColorTex, v2_outTexCoord));
-	vec3 norm = vec3(texture(NormalTex, v2_outTexCoord));
+	vec2 newTex = v2_outTexCoord;
+	newTex.y = 1 - newTex.y;
+	vec3 pos = vec3(texture(PositionTex, newTex));
+	vec3 diffColor = vec3(texture(ColorTex, newTex));
+	vec3 norm = vec3(texture(NormalTex, newTex));
 	
 	FragColor = vec4(DiffuseModel(pos, norm, diffColor), 1.0);
+	
 }
 
 void main()

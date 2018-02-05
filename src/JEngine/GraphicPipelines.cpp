@@ -59,15 +59,6 @@ void GraphicSystem::RenderToFramebuffer()
 	glClearColor(0.f, 0.f, 0.f, 0.f);
 	glViewport(0, 0, GLint(m_width), GLint(m_height));
 
-	// TODO
-	//glBindFramebuffer(GL_FRAMEBUFFER, GLM::m_deferredFBO);
-	//GLM::m_shader[GLM::SHADER_DEFERRED]->Use();
-	//
-	//glViewport(0, 0, GLint(m_width), GLint(m_height));
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	//glClearColor(m_backgroundColor.x, m_backgroundColor.y, m_backgroundColor.z, m_backgroundColor.w);
-	//glEnable(GL_DEPTH_TEST);
-	//glUniformSubroutinesuiv(GL_FRAGMENT_SHADER, 1, &(GLM::m_passIndex1));
 }
 
 void GraphicSystem::RenderToScreen()
@@ -98,29 +89,6 @@ void GraphicSystem::RenderToScreen()
 	glDrawElements(GL_TRIANGLES, GLM::m_elementSize[GLM::SHAPE_PLANE], GL_UNSIGNED_INT, 0);
 	glEnable(GL_DEPTH_TEST);
 
-	// TODO
-	//glFinish();
-	//glFlush();
-
-	//// Revert to default framebuffer
-	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-	//glUniformSubroutinesuiv(GL_FRAGMENT_SHADER, 1, &(GLM::m_passIndex2));
-
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	//glDisable(GL_DEPTH_TEST);
-
-	//static mat4 identity;
-	//identity.SetIdentity();
-
-	//GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(GLM::UNIFORM_TRANSLATE, identity);
-	//GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(GLM::UNIFORM_SCALE, identity);
-	//GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(GLM::UNIFORM_ROTATE, identity);
-	//GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(GLM::UNIFORM_CAMERA, identity);
-	//GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(GLM::UNIFORM_PROJECTION, identity);
-
-	//// Render the quad
-	//Render(GLM::m_vao[GLM::SHAPE_PLANE], GLM::m_elementSize[GLM::SHAPE_PLANE]);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -484,31 +452,79 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 }
 
 // TODO
-void GraphicSystem::testRender(Sprite* _sprite)
+void GraphicSystem::render1()
 {
+	glBindFramebuffer(GL_FRAMEBUFFER, GLM::m_deferredFBO);
+	GLM::m_shader[GLM::SHADER_DEFERRED]->Use();
+
+	glViewport(0, 0, GLint(m_width), GLint(m_height));
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(m_backgroundColor.x, m_backgroundColor.y, m_backgroundColor.z, m_backgroundColor.w);
+	glEnable(GL_DEPTH_TEST);
+	glUniformSubroutinesuiv(GL_FRAGMENT_SHADER, 1, &(GLM::m_passIndex1));
+
 	m_viewport = mat4::LookAt(
 		m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
 
-
+	GLM::m_shader[GLM::SHADER_DEFERRED]->SetInt("PositionTex", 0);
+	GLM::m_shader[GLM::SHADER_DEFERRED]->SetInt("NormalTex", 2);
+	GLM::m_shader[GLM::SHADER_DEFERRED]->SetInt("ColorTex", 1);
 
 	GLM::m_shader[GLM::SHADER_DEFERRED]->SetVector3("Material.Kd", vec3(0.5f, 0.5f, 0.5f));
 	GLM::m_shader[GLM::SHADER_DEFERRED]->SetVector4("Light.Position", vec4(10.0f, 10.0f, 10.0f, 1.0f));
+	GLM::m_shader[GLM::SHADER_DEFERRED]->SetVector3("Light.Intensity", vec3(1.0f, 1.0f, 1.0f));
 
 	static Transform* s_pTransform;
-	s_pTransform = _sprite->m_transform;
+	s_pTransform = (*m_sprites.begin())->m_transform;
 
-	GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(GLM::UNIFORM_TRANSLATE, mat4::Translate(s_pTransform->m_position));
-	GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(GLM::UNIFORM_SCALE, mat4::Scale(s_pTransform->m_scale));
-	GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(GLM::UNIFORM_ROTATE, mat4::Rotate(s_pTransform->m_rotation, s_pTransform->m_rotationAxis));
-	GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(GLM::UNIFORM_CAMERA, m_viewport);
+	glBindTexture(GL_TEXTURE_2D, (*m_sprites.begin())->GetCurrentTexutre());
+
+	GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(GLM::UNIFORM_DEFERRED_TRANSLATE, mat4::Translate(s_pTransform->m_position));
+	GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(GLM::UNIFORM_DEFERRED_SCALE, mat4::Scale(s_pTransform->m_scale));
+	GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(GLM::UNIFORM_DEFERRED_ROTATE, mat4::Rotate(s_pTransform->m_rotation, s_pTransform->m_rotationAxis));
+	GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(GLM::UNIFORM_DEFERRED_CAMERA, m_viewport);
 
 	// Send projection info to shader
-	if (_sprite->m_projection == PROJECTION_PERSPECTIVE)
+	if ((*m_sprites.begin())->m_projection == PROJECTION_PERSPECTIVE)
 		GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(
-			GLM::UNIFORM_PROJECTION, m_perspective);
+			GLM::UNIFORM_DEFERRED_PROJECTION, m_perspective);
 	else
 		GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(
-			GLM::UNIFORM_PROJECTION, m_orthogonal);
+			GLM::UNIFORM_DEFERRED_PROJECTION, m_orthogonal);
+
+	Render(*(*m_sprites.begin())->m_vao, (*m_sprites.begin())->m_elementSize);
+
+	glFinish();
+
+}
+
+void GraphicSystem::render2()
+{
+	// Revert to default framebuffer
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	glUniformSubroutinesuiv(GL_FRAGMENT_SHADER, 1, &(GLM::m_passIndex2));
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glDisable(GL_DEPTH_TEST);
+
+	static mat4 identity;
+	identity.SetIdentity();
+
+	GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(GLM::UNIFORM_DEFERRED_TRANSLATE, identity);
+	GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(GLM::UNIFORM_DEFERRED_SCALE, identity);
+	GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(GLM::UNIFORM_DEFERRED_ROTATE, identity);
+	GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(GLM::UNIFORM_DEFERRED_CAMERA, identity);
+	GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(GLM::UNIFORM_DEFERRED_PROJECTION, identity);
+
+	// Render the quad
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, GLM::m_positionBuffer);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, GLM::m_colorBuffer);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, GLM::m_normalBuffer);
+	Render(GLM::m_vao[GLM::SHAPE_PLANE], GLM::m_elementSize[GLM::SHAPE_PLANE]);
 }
 
 JE_END

@@ -2,13 +2,14 @@
 
 	"Background" : [ 0.25, 0.25, 0.25, 1.0 ],
 	"Screen" : [ 1.0, 1.0, 1.0, 1.0 ],
+	"Effect" : { "Type" : "Blur", "BlurSize" : 10, "BlurAmount" : 100 },
 	"Object" : [
 		{
 			"Name" : "Camera",
 			"Component" : [
 				{
 					"Type": "Camera",
-					"Values": {"Position" : [50, 50, 100], "Target" : [0, 0, 0],
+					"Values": {"Position" : [10, 10, 10], "Target" : [0, 0, 0],
 						"Up" : [0, 1, 0]}
 				},
 				{
@@ -22,7 +23,7 @@
 			"Component" : [
 				{
 					"Type": "Transform",
-					"Values": {"Position" : [0, 0, 0], "Scale" : [50, 50, 50]}
+					"Values": {"Position" : [0, 0, 0], "Scale" : [5, 5, 5]}
 				},
 				{
 					"Type": "Model",

@@ -87,6 +87,9 @@ private:
 	void SortSprites();
 	void GLMousePosition();
 
+	void render1();
+	void render2();
+
 	// TODO
 	// TestRenderingFunctions
 	void testRender(Sprite* _sprite);

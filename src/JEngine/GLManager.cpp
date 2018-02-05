@@ -216,11 +216,11 @@ bool GLManager::initSDL_GL(float _width, float _height)
 
 		// Do gl stuff
 		ShowGLVersion();
-		InitVBO();
-		InitFBO();
-		//InitDefferedFBO();
-		InitGLEnvironment();
 		InitShaders();
+		InitVBO();
+		InitFBO();				// These two are to be off to visualise deferred rendering
+		InitGLEnvironment();	// These two are to be off to visualise deferred rendering
+		//InitDefferedFBO();
 		RegisterUniform();
 	}
 
@@ -323,9 +323,9 @@ void GLManager::InitDefferedFBO()
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, GLsizei(m_width), GLsizei(m_height));
 
 	// Create the textures for position, normal and color
-	CreateGBufferTexture(GL_TEXTURE0, GL_RGB32F, m_positionBuffer);  // Position
-	CreateGBufferTexture(GL_TEXTURE1, GL_RGB8, m_colorBuffer);  // Color
-	CreateGBufferTexture(GL_TEXTURE2, GL_RGB32F, m_normalBuffer); // Normal
+	CreateGBufferTexture(GL_TEXTURE0, GL_RGB32F, m_positionBuffer);		// Position
+	CreateGBufferTexture(GL_TEXTURE1, GL_RGB8, m_colorBuffer);			// Color
+	CreateGBufferTexture(GL_TEXTURE2, GL_RGB32F, m_normalBuffer);		// Normal
 
 	// Attach the textures to the framebuffer
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_depthBuffer);
@@ -337,7 +337,13 @@ void GLManager::InitDefferedFBO()
 		GL_COLOR_ATTACHMENT2 };
 	glDrawBuffers(4, drawBuffers);
 
+	if (GL_FRAMEBUFFER_COMPLETE != glCheckFramebufferStatus(GL_FRAMEBUFFER))
+		JE_DEBUG_PRINT("*GLManager: Framebuffer is not created properly.\n");
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	m_passIndex1 = glGetSubroutineIndex(m_shader[SHADER_DEFERRED]->m_programId, GL_FRAGMENT_SHADER, "render1");
+	m_passIndex2 = glGetSubroutineIndex(m_shader[SHADER_DEFERRED]->m_programId, GL_FRAGMENT_SHADER, "render2");
 }
 
 void GLManager::InitGLEnvironment()
@@ -397,9 +403,6 @@ void GLManager::InitShaders()
 	m_shader[SHADER_DEFERRED]->LoadShader(
 		"../src/shader/deferred.vs",
 		"../src/shader/deferred.fs");
-
-	m_passIndex1 = glGetSubroutineIndex(m_shader[SHADER_DEFERRED]->m_programId, GL_FRAGMENT_SHADER, "render1");
-	m_passIndex2 = glGetSubroutineIndex(m_shader[SHADER_DEFERRED]->m_programId, GL_FRAGMENT_SHADER, "render2");
 }
 
 void GLManager::SetDrawMode(DrawMode _mode)

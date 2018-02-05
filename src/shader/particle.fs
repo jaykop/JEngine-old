@@ -1,4 +1,4 @@
-#version 410 core
+#version 450 core
 
 // Interpolated values from the vertex shaders
 in vec2 v2_outTexCoord;
