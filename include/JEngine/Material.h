@@ -1,6 +1,5 @@
 #pragma once
 #include "Macro.h"
-#include "Vector4.h"
 #include "Component.h"
 #include "ComponentBuilder.h"
 

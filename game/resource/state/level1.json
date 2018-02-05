@@ -56,10 +56,6 @@
 				{
 					"Type": "Model",
 					"Values": {"Texture" : "uvtemplate", "Color" : [1, 1, 1, 1], "Projection" : "Perspective"}
-				},
-				{
-					"Type": "Material",
-					"Values": {"Diffuse" : 32, "Specular" : 32, "Shininess" : 32}
 				}
 			]
 		},

@@ -99,8 +99,8 @@ private:
 		m_deferredFBO, m_positionBuffer, m_normalBuffer, m_colorBuffer, m_passIndex[2], m_passIndex1, m_passIndex2;	// Deffered shading test variables
 
 	// Basic indices and vertices sets
-	static const float		m_verticesPoint[8], m_verticesPlane[32], m_verticesParticle[96], m_verticesCube[192], m_verticesSkybox[192];
-	static const unsigned	m_indicesPoint[1], m_indicesPlane[6], m_indicesParticle[18], m_indicesCube[36],
+	static const float		m_verticesPoint[8], m_verticesPlane[32], m_verticesPlane3D[96], m_verticesCube[192], m_verticesSkybox[192];
+	static const unsigned	m_indicesPoint[1], m_indicesPlane[6], m_indicesPlane3D[18], m_indicesCube[36],
 		m_elementSize[SHAPE_END], m_verticesSize[SHAPE_END], m_indicesSize[SHAPE_END];
 
 	// Locked functions

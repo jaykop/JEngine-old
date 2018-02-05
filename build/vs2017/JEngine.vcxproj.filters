@@ -82,9 +82,6 @@
     <ClInclude Include="..\..\include\JEngine\Camera.h">
       <Filter>System\Graphic</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\GLManager.h">
-      <Filter>System\Graphic</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\JEngine\GraphicComponents.h">
       <Filter>System\Graphic</Filter>
     </ClInclude>
@@ -162,6 +159,9 @@
     </ClInclude>
     <ClInclude Include="..\..\external\imgui\imgui_impl_sdl.h">
       <Filter>Utils\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\GLManager.h">
+      <Filter>Core\OpenGL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -245,9 +245,6 @@
     <ClCompile Include="..\..\src\JEngine\Camera.cpp">
       <Filter>System\Graphic</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\GLManager.cpp">
-      <Filter>System\Graphic</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\JEngine\GraphicSystem.cpp">
       <Filter>System\Graphic</Filter>
     </ClCompile>
@@ -307,6 +304,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\JEngine\GraphicPipelines.cpp">
       <Filter>System\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JEngine\GLManager.cpp">
+      <Filter>Core\OpenGL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -369,6 +369,9 @@
     </Filter>
     <Filter Include="Utils\lodePNG">
       <UniqueIdentifier>{10c782e7-b26b-42df-baea-1e61e059c282}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\OpenGL">
+      <UniqueIdentifier>{5a991f34-d6ae-43d5-a4ea-4351cde65642}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

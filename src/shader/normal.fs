@@ -72,13 +72,15 @@ void LightingEffect(inout vec4 _light);
 void main() {
 
 	vec4 finalTexture = vec4(0,0,0,0);
-		
-	// Implement light attributes
-	if (boolean_light)
-		LightingEffect(finalTexture);
+	
+	// TODO
+	// For loop does not support...
+	// Implement light attributes	
+	//	if (boolean_light)
+	//		LightingEffect(finalTexture);
 		
 	// Unless..
-	else
+	//	else
 		finalTexture = texture(Texture, v2_outTexCoord)* v4_color;
 		
 	

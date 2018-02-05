@@ -60,7 +60,7 @@ const unsigned GLManager::m_indicesPlane[] = {
 	2, 0, 1		// second triangle
 };
 
-const float GLManager::m_verticesParticle[] = {
+const float GLManager::m_verticesPlane3D[] = {
 
 	// position				// uv		// normals
 	-.5f,	.5f,	0.f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,		// top left	
@@ -81,7 +81,7 @@ const float GLManager::m_verticesParticle[] = {
 	-.5f,	0.f,	.5f,	0.f, 0.f,	0.0f,  0.0f, 1.0f,		// bottom left
 
 };
-const unsigned GLManager::m_indicesParticle[] = {
+const unsigned GLManager::m_indicesPlane3D[] = {
 	// front
 	0, 2, 3,	// first triangle
 	2, 0, 1,	// second triangle
@@ -183,13 +183,13 @@ const unsigned		GLManager::m_elementSize[] = { 1, 6, 72, 144 };
 const unsigned		GLManager::m_verticesSize[] = { 
 
 	sizeof(GLM::m_verticesPoint), sizeof(GLM::m_verticesPlane), 
-	sizeof(GLM::m_verticesParticle), sizeof(GLM::m_verticesCube)
+	sizeof(GLM::m_verticesPlane3D), sizeof(GLM::m_verticesCube)
 
 };
 const unsigned		GLManager::m_indicesSize[] = { 
 
 	sizeof(GLM::m_indicesPoint), sizeof(GLM::m_indicesPlane),
-	sizeof(GLM::m_indicesParticle), sizeof(GLM::m_indicesCube)
+	sizeof(GLM::m_verticesPlane3D), sizeof(GLM::m_indicesCube)
 
 };
 
