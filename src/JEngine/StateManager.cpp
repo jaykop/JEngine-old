@@ -1,7 +1,6 @@
 #include "State.h"
 #include "StateManager.h"
 #include "InputHandler.h"
-#include "Application.h"
 #include "SystemManager.h"
 #include "ImguiManager.h"
 #include "AssetManager.h"
@@ -11,6 +10,7 @@ JE_BEGIN
 //////////////////////////////////////////////////////////////////////////
 // static variables
 //////////////////////////////////////////////////////////////////////////
+SDL_Window*					StateManager::m_pWindow = nullptr;
 Timer						StateManager::m_timer;
 States						StateManager::m_states;
 StateManager::StateStatus	StateManager::m_status = STATE_CHANGE;
@@ -21,17 +21,21 @@ State						*StateManager::m_pCurrent = nullptr,
 //////////////////////////////////////////////////////////////////////////
 // funciton bodues
 //////////////////////////////////////////////////////////////////////////
-void StateManager::Init()
+void StateManager::Init(SDL_Window* _pWindow)
 {
-	// Allocate systems in advance
-	SystemManager::Bind();
+	if (_pWindow) {
+		m_pWindow = _pWindow;
+
+		// Allocate systems in advance
+		SystemManager::Bind();
+	}
+
+	else
+		JE_DEBUG_PRINT("!StateManager: Window pointer is null.\n");
 }
 
 void StateManager::Update(SDL_Event& _event)
 {
-	//	Get pointer to window
-	SDL_Window* pWindow = Application::GetWindow();
-
 	// Timer
 	m_timer.Start();
 
@@ -59,7 +63,7 @@ void StateManager::Update(SDL_Event& _event)
 			m_timer.Start();
 
 			// Swap buffer
-			SDL_GL_SwapWindow(pWindow);
+			SDL_GL_SwapWindow(m_pWindow);
 
 			// Update imgui renderer
 			#ifdef JE_SUPPORT_IMGUI
@@ -70,8 +74,8 @@ void StateManager::Update(SDL_Event& _event)
 
 	switch (m_status) {
 
-		// TODO 
-		// Pause process
+	// TODO 
+	// Pause process
 	case STATE_PAUSE:
 		SystemManager::Pause();
 		break;
@@ -162,7 +166,7 @@ void StateManager::PushState(const char* _path, const char* _stateName)
 		// mark toggle
 		if (!strcmp((*it)->m_name.c_str(), _stateName)) {
 			sameOne = true;
-			JE_DEBUG_PRINT("*StateManager: Existing state - %s\n", _stateName);
+			JE_DEBUG_PRINT("!StateManager - Existing state: %s\n", _stateName);
 			break;
 		}
 	}	
@@ -216,7 +220,7 @@ void StateManager::Quit()
 void StateManager::Restart()
 {
 	if (IsPaused())
-		JE_DEBUG_PRINT("*StateManager: Cannot restart on pause state.\n");
+		JE_DEBUG_PRINT("!StateManager - Cannot restart on pause state.\n");
 	else
 		m_status = STATE_RESTART;
 }
@@ -245,7 +249,7 @@ void StateManager::SetNextState(const char* _stateName)
 
 				// Current state is the state
 				if (m_pCurrent == it)
-					JE_DEBUG_PRINT("*StateManager: As same as current state - %s\n", _stateName);
+					JE_DEBUG_PRINT("!StateManager - As same as current state: %s\n", _stateName);
 
 				// Found the state
 				else {
@@ -258,11 +262,11 @@ void StateManager::SetNextState(const char* _stateName)
 		}
 
 		if (!found)
-			JE_DEBUG_PRINT("*StateManager: No such name of enrolled state - %s\n", _stateName);
+			JE_DEBUG_PRINT("!StateManager - No such name of enrolled state: %s\n", _stateName);
 	}
 
 	else
-		JE_DEBUG_PRINT("*StateManager: Cannot move on paused status.\n");
+		JE_DEBUG_PRINT("!StateManager - Cannot move on paused status.\n");
 }
 
 void StateManager::Pause(const char* _nextState)
@@ -279,7 +283,7 @@ void StateManager::Resume()
 		m_status = STATE_RESUME;
 
 	else
-		JE_DEBUG_PRINT("*StateManager: No state to resume.\n");
+		JE_DEBUG_PRINT("!StateManager - No state to resume.\n");
 }
 
 void StateManager::ResumeAndNext(const char* _nextState)
@@ -301,7 +305,7 @@ State* StateManager::GetState(const char* _stateName)
 			return it;
 
 	// If there is no,
-	JE_DEBUG_PRINT("*StateManager: No such name of enrolled state - %s\n", _stateName);
+	JE_DEBUG_PRINT("!StateManager - No such name of enrolled state: %s\n", _stateName);
 	return nullptr;
 }
 

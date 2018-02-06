@@ -56,7 +56,7 @@ void Object::AddChild(Object* _child)
 
 	// Unless...
 	else
-		JE_DEBUG_PRINT("*Object: Existing child.\n");
+		JE_DEBUG_PRINT("!Object - Existing child: %s\n", _child->GetName().c_str());
 }
 
 void Object::RemoveChild(const char* _name)
@@ -71,7 +71,7 @@ void Object::RemoveChild(const char* _name)
 	}
 		
 	else 
-		JE_DEBUG_PRINT("*Object: No such name of enrolled object - %s\n", _name);
+		JE_DEBUG_PRINT("!Object - No such name of enrolled object: %s\n", _name);
 }
 
 Object* Object::GetChild(const char* _name)
@@ -85,7 +85,7 @@ Object* Object::GetChild(const char* _name)
 
 	// Unless...
 	else {
-		JE_DEBUG_PRINT("*Object: No such name of enrolled object - %s\n", _name);
+		JE_DEBUG_PRINT("!Object - No such name of enrolled object: %s\n", _name);
 		return nullptr;
 	}
 }
@@ -101,7 +101,7 @@ bool Object::HasChild(const char* _name)
 
 	// Unless...
 	else {
-		JE_DEBUG_PRINT("*Object: No such name of enrolled object - %s\n", _name);
+		JE_DEBUG_PRINT("!Object - No such name of enrolled object: %s\n", _name);
 		return false;
 	}
 }
@@ -171,7 +171,7 @@ void Object::AddComponent(const char* _componentName)
 			));
 
 	else
-		JE_DEBUG_PRINT("*Object: Cannot add identical component again - %s\n", _componentName);
+		JE_DEBUG_PRINT("!Object - Cannot add identical component again: %s\n", _componentName);
 }
 
 Component* Object::GetComponent(const char* _componentName)
@@ -184,7 +184,7 @@ Component* Object::GetComponent(const char* _componentName)
 		return found->second;
 
 	else {
-		JE_DEBUG_PRINT("*Object: No such name of enrolled component - %s\n", _componentName);
+		JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", _componentName);
 		return nullptr;
 	}
 }
@@ -199,7 +199,7 @@ bool Object::HasComponent(const char* _componentName) const
 		return true;
 
 	else {
-		JE_DEBUG_PRINT("*Object: No such name of enrolled component - %s\n", _componentName);
+		JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", _componentName);
 		return false;
 	}
 }
@@ -214,7 +214,7 @@ void Object::RemoveComponent(const char* _componentName)
 		delete found->second;
 
 	else 
-		JE_DEBUG_PRINT("*Object: No such name of enrolled component - %s\n", _componentName);
+		JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", _componentName);
 	
 }
 

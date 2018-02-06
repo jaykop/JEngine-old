@@ -33,22 +33,22 @@ void AssetManager::Load()
 	CR_RJValue states = JSON::GetDocument()["State"];
 	for (rapidjson::SizeType i = 0; i < states.Size(); ++i) {
 		STATE::PushState(states[i]["Directory"].GetString(), states[i]["Key"].GetString());
-		JE_DEBUG_PRINT("*AssetManager: Loaded state - %s.\n", states[i]["Directory"].GetString());
+		JE_DEBUG_PRINT("*AssetManager - Loaded state: %s.\n", states[i]["Directory"].GetString());
 	}
-	JE_DEBUG_PRINT("*AssetManager: Loaded game states successfully.\n");
+	JE_DEBUG_PRINT("*AssetManager - Loaded game states successfully.\n");
 
 	CR_RJValue fristStates = JSON::GetDocument()["FirstState"];
 	STATE::SetStartingState(fristStates.GetString());
-	JE_DEBUG_PRINT("*AssetManager: First state is %s.\n", fristStates.GetString());
+	JE_DEBUG_PRINT("*AssetManager - First state is %s.\n", fristStates.GetString());
 
 	// Load images
 	JSON::ReadFile(ASSET::m_assetDirectory.c_str());
 	CR_RJValue textures = JSON::GetDocument()["Texture"];
 	for (rapidjson::SizeType i = 0; i < textures.Size(); ++i) {
 		LoadImage(textures[i]["Directory"].GetString(), textures[i]["Key"].GetString());
-		JE_DEBUG_PRINT("*AssetManager: Loaded texture - %s.\n", textures[i]["Directory"].GetString());
+		JE_DEBUG_PRINT("*AssetManager - Loaded texture: %s.\n", textures[i]["Directory"].GetString());
 	}
-	JE_DEBUG_PRINT("*AssetManager: Loaded textures successfully.\n");
+	JE_DEBUG_PRINT("*AssetManager - Loaded textures successfully.\n");
 }
 
 void AssetManager::Unload()
@@ -84,7 +84,7 @@ State* AssetManager::GetState(const char *_key)
 	if (found != m_stateMap.end())
 		return found->second;
 
-	JE_DEBUG_PRINT("*AssetManager: Cannot find such name of state resource - %s.\n", _key);
+	JE_DEBUG_PRINT("!AssetManager - Cannot find such name of state resource: %s.\n", _key);
 	return nullptr;
 }
 
@@ -94,7 +94,7 @@ Audio* AssetManager::GetAudio(const char *_key)
 	if (found != m_audioMap.end())
 		return found->second;
 
-	JE_DEBUG_PRINT("*AssetManager: Cannot find such name of audio resource - %s.\n", _key);
+	JE_DEBUG_PRINT("!AssetManager - Cannot find such name of audio resource: %s.\n", _key);
 	return nullptr;
 }
 
@@ -104,7 +104,7 @@ unsigned AssetManager::GetTexture(const char *_key)
 	if (found != m_textureMap.end())
 		return found->second;
 
-	JE_DEBUG_PRINT("*AssetManager: Cannot find such name of texture resource - %s.\n", _key);
+	JE_DEBUG_PRINT("!AssetManager - Cannot find such name of texture resource: %s.\n", _key);
 	return 0;
 }
 
@@ -114,7 +114,7 @@ Archetype* AssetManager::GetArchetype(const char *_key)
 	if (found != m_archetypeMap.end())
 		return found->second;
 
-	JE_DEBUG_PRINT("*AssetManager: Cannot find such name of archetype resource - %s.\n", _key);
+	JE_DEBUG_PRINT("!AssetManager: Cannot find such name of archetype resource: %s.\n", _key);
 	return nullptr;
 }
 
@@ -132,7 +132,7 @@ void AssetManager::LoadImage(const char *_path, const char *_textureKey)
 	unsigned	error = lodepng::decode(image, width, height, _path);
 
 	if (error)
-		JE_DEBUG_PRINT("*AssetManager: decoder error %d - %s.\n", error, lodepng_error_text(error));
+		JE_DEBUG_PRINT("!AssetManager - decoder error %d / %s.\n", error, lodepng_error_text(error));
 
 	// Enable the texture for OpenGL.
 	glEnable(GL_TEXTURE_2D);
@@ -171,7 +171,7 @@ void AssetManager::LoadBuiltInComponents()
 	JE_ADD_COMPONENT(Material);
 	JE_ADD_COMPONENT(Animation);
 
-	JE_DEBUG_PRINT("*AssetManager: Loaded bulit-in components successfully.\n");
+	JE_DEBUG_PRINT("*AssetManager - Loaded bulit-in components successfully.\n");
 }
 
 JE_END

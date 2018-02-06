@@ -36,13 +36,13 @@ public:
 private:
 
 	// Locked contsturctord and destructor
-	StateManager() {};
-	~StateManager() {};
+	StateManager() = delete;
+	~StateManager() = delete;
 	StateManager(const StateManager& /*_copy*/) = delete;
 	void operator=(const StateManager& /*_copy*/) = delete;
 
 	// Private member functions
-	static void Init();
+	static void Init(SDL_Window* _pWindow);
 	static void Update(SDL_Event& _event);
 	static void Close();
 
@@ -57,6 +57,7 @@ private:
 	static States		m_states;
 	static StateStatus	m_status;
 	static State*		m_pCurrent, *m_pNext;
+	static SDL_Window*	m_pWindow;
 
 };
 

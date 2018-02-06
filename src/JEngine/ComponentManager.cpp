@@ -15,7 +15,7 @@ Component* ComponentManager::CreateComponent(
 	// If there is nothing like that,
 	// return null
 	if (found == m_builderMap.end()) {
-		JE_DEBUG_PRINT("*Component: No such name of enrolled component - %s\n", _componentName);
+		JE_DEBUG_PRINT("!Component - No such name of enrolled component: %s\n", _componentName);
 		return nullptr;
 	}
 
@@ -32,7 +32,7 @@ void ComponentManager::RegisterBuilder(
 	// If there is existing like that,
 	// don't add new builder
 	if (found != m_builderMap.end())
-		JE_DEBUG_PRINT("*Component: No such name of enrolled component - %s\n", _componentName);
+		JE_DEBUG_PRINT("!Component - No such name of enrolled component: %s\n", _componentName);
 
 	// Unless, add new builder
 	else

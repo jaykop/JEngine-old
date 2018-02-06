@@ -273,7 +273,7 @@ Vector2& Vector2::operator/=(float _constant)
 
 	// Unless.
 	else
-		JE_DEBUG_PRINT("*Vector2: Cannot devide by 0.\n");
+		JE_DEBUG_PRINT("!Vector2 - Cannot devide by 0.\n");
 
 	return *this;
 }
@@ -392,7 +392,7 @@ Vector2 Vector2::operator/(float _constant) const
 
 	// Unless.
 	else
-		JE_DEBUG_PRINT("*Vector2: Cannot devide by 0.\n");
+		JE_DEBUG_PRINT("!Vector2 - Cannot devide by 0.\n");
 
 	return result;
 }
@@ -451,7 +451,7 @@ Vector2& Vector2::Normalize(void)
 
 	// Unless.
 	else
-		JE_DEBUG_PRINT("*Vector2: Cannot devide by 0.\n");
+		JE_DEBUG_PRINT("!Vector2 - Cannot devide by 0.\n");
 
 	return *this;
 }
@@ -466,7 +466,7 @@ Vector2 Vector2::GetNormalize() const
 
 	// Unless.
 	else
-		JE_DEBUG_PRINT("*Vector2: Cannot devide by 0.\n");
+		JE_DEBUG_PRINT("!Vector2 - Cannot devide by 0.\n");
 
 	return result;
 }

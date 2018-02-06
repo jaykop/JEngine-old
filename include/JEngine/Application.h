@@ -24,7 +24,12 @@ JE_BEGIN
 //////////////////////////////////////////////////////////////////////////
 class Application {
 
+	friend class Engine;
+	friend class StateManager;
+
 public:
+
+private:
 
 	//////////////////////////////////////////////////////////////////////////
 	// Init data for application
@@ -45,13 +50,11 @@ public:
 	static SDL_Window*	GetWindow();
 	static SDL_Surface* GetSurface();
 
-private:
-
 	// Locked functions
-	Application() {}; 
-	~Application() {};
-	Application(const Application& /*app*/) {};
-	void operator=(const Application& /*app*/) {};
+	Application() = delete; 
+	~Application() = delete;
+	Application(const Application& /*app*/) = delete;
+	void operator=(const Application& /*app*/) = delete;
 
 	// Private variables
 	static InitData			m_Data;		// Window config
@@ -62,6 +65,23 @@ private:
 	static int				m_buffers, m_samples;
 };
 
+//////////////////////////////////////////////////////////////////////////
+// Engine class
+//////////////////////////////////////////////////////////////////////////
+class Engine {
+
+public:
+	static void Run();
+
+private:
+
+	Engine() = delete;
+	~Engine() = delete;
+	Engine(const Engine& /*_copy*/) = delete;
+	void operator=(const Engine& /*_copy*/) = delete;
+};
+
 using APP = Application;
+using JENGINE = Engine;
 
 JE_END

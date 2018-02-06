@@ -299,7 +299,7 @@ Matrix2x2 Matrix2x2::GetInverse() const
 	}
 
 	else
-		JE_DEBUG_PRINT("*Matrix2x2: Determine is 0.\n");
+		JE_DEBUG_PRINT("!Matrix2x2 - Determine is 0.\n");
 
 	return result;
 
@@ -323,7 +323,7 @@ Matrix2x2& Matrix2x2::Inverse()
 	}
 
 	else
-		JE_DEBUG_PRINT("*Matrix2x2: Determine is 0.\n");
+		JE_DEBUG_PRINT("!Matrix2x2 - Determine is 0.\n");
 
 	return (*this);
 }

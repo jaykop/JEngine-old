@@ -15,7 +15,7 @@ State::State(const char* _name)
 
 void State::Load()
 {
-	JE_DEBUG_PRINT("*State: Loading %s...\n", m_name.c_str());
+	JE_DEBUG_PRINT("*State - Loading %s...\n", m_name.c_str());
 	STATE::m_pOBC = m_objContainer = new ObjectContainer;
 	JSON::ReadFile(m_loadDirectory.c_str());
 
@@ -25,26 +25,26 @@ void State::Load()
 
 void State::Init()
 {
-	JE_DEBUG_PRINT("*State: Initializing %s...\n", m_name.c_str());
+	JE_DEBUG_PRINT("*State - Initializing %s...\n", m_name.c_str());
 	SYSTEM::Init();
 }
 
 void State::Update(const float _dt)
 {
 	// TODO
-	//JE_DEBUG_PRINT("*State: Updating %s...\n", m_name.c_str());
+	//JE_DEBUG_PRINT("*State - Updating %s...\n", m_name.c_str());
 	SYSTEM::Update(_dt);
 }
 
 void State::Close()
 {
-	JE_DEBUG_PRINT("*State: Closing %s...\n", m_name.c_str());
+	JE_DEBUG_PRINT("*State - Closing %s...\n", m_name.c_str());
 	SYSTEM::Close();
 }
 
 void State::Unload()
 {
-	JE_DEBUG_PRINT("*State: Unloading %s...\n", m_name.c_str());
+	JE_DEBUG_PRINT("*State - Unloading %s...\n", m_name.c_str());
 	SYSTEM::Unload();
 	ClearObjectContainer();
 }

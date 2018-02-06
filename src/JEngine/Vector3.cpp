@@ -224,7 +224,7 @@ Vector3 Vector3::operator/(float _constant) const
 
 	// Unless.
 	else
-		JE_DEBUG_PRINT("*Vector3: Cannot devide by 0.\n");
+		JE_DEBUG_PRINT("!Vector3 - Cannot devide by 0.\n");
 
 	return result;
 }
@@ -407,7 +407,7 @@ Vector3& Vector3::operator/=(float _constant)
 
 	// Unless.
 	else
-		JE_DEBUG_PRINT("*Vector3: Cannot devide by 0.\n");
+		JE_DEBUG_PRINT("!Vector3 - Cannot devide by 0.\n");
 
 	return *this;
 }
@@ -491,7 +491,7 @@ void Vector3::Normalize(void)
 
 		// Unless.
 		else
-			JE_DEBUG_PRINT("*Vector3: Cannot devide by 0.\n");
+			JE_DEBUG_PRINT("!Vector3 - Cannot devide by 0.\n");
 }
 
 Vector3 Vector3::GetNormalize() const
@@ -504,7 +504,7 @@ Vector3 Vector3::GetNormalize() const
 
 	// Unless.
 	else
-		JE_DEBUG_PRINT("*Vector3: Cannot devide by 0.\n");
+		JE_DEBUG_PRINT("!Vector3 - Cannot devide by 0.\n");
 
 	return result;
 }
@@ -755,7 +755,7 @@ Vector3  GetSegmentIntersection(
 	float D = a1 * b2 - a2 * b1;
 	
 	if (!D)
-		JE_DEBUG_PRINT("*Vector3: Determine is 0.\n");
+		JE_DEBUG_PRINT("!Vector3 - Determine is 0.\n");
 
 	return Vector3((b1*c2 - b2*c1) / D, (a2*c1 - a1*c2) / D);
 }

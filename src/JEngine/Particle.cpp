@@ -237,7 +237,7 @@ void Emitter::SetQuantity(unsigned _quantity)
 
 		if (m_maxSize < _quantity) {
 			_quantity = m_maxSize;
-			JE_DEBUG_PRINT("*Emitter: The quantity of particle must be less than 1000.\n");
+			JE_DEBUG_PRINT("!Emitter - The quantity of particle must be less than 1000.\n");
 		}
 
 		for (unsigned i = 0; i < _quantity; ++i)
@@ -246,7 +246,7 @@ void Emitter::SetQuantity(unsigned _quantity)
 	}
 
 	else
-		JE_DEBUG_PRINT("*Emitter: Already allocated.\n");
+		JE_DEBUG_PRINT("!Emitter - Already allocated.\n");
 }
 
 void Emitter::SetColors(const vec3& _start, const vec3& _end)

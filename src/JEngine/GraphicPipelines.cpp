@@ -381,7 +381,7 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 
 		s_vao = *(_emitter->m_vao);
 		s_elementSize = _emitter->m_elementSize;
-		s_rotation = _emitter->m_rotationSpeed;
+		s_rotation = _emitter->m_rotationSpeed == 0 ? false : true;
 		s_changeColor = _emitter->m_changeColor;
 		s_type = _emitter->m_type;
 		s_pTransform = _emitter->m_transform;

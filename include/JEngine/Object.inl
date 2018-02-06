@@ -18,7 +18,7 @@ inline void Object::AddComponent()
 			));
 
 	else
-		JE_DEBUG_PRINT("*Object: Cannot add identical component again - %s\n", componentName);
+		JE_DEBUG_PRINT("!Object - Cannot add identical component again: %s\n", componentName);
 }
 
 template<typename ComponentType>
@@ -34,7 +34,7 @@ inline ComponentType* Object::GetComponent()
 		return static_cast<ComponentType*>(found->second);
 
 	else {
-		JE_DEBUG_PRINT("*Object: No such name of enrolled component - %s\n", componentName);
+		JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", componentName);
 		return nullptr;
 	}
 }
@@ -51,7 +51,7 @@ inline bool Object::HasComponent()
 		return true;
 
 	else {
-		JE_DEBUG_PRINT("*Object: No such name of enrolled component - %s\n", componentName);
+		JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", componentName);
 		return false;
 	}
 }
@@ -68,7 +68,7 @@ inline void Object::RemoveComponent()
 		delete found->second;
 
 	else
-		JE_DEBUG_PRINT("*Object: No such name of enrolled component - %s\n", componentName);
+		JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", componentName);
 }
 
 JE_END

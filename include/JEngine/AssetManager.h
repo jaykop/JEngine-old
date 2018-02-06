@@ -41,8 +41,8 @@ public:
 private:
 	
 	// Locked constructors and destructor
-	AssetManager() {};
-	~AssetManager() {};
+	AssetManager() = delete;
+	~AssetManager() = delete;
 	AssetManager(const AssetManager& /*_copy*/) = delete;
 	void operator=(const AssetManager& /*_copy*/) = delete;
 

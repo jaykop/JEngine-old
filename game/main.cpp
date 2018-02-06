@@ -26,27 +26,16 @@ USING_NS_JE;
 
 int main(int argc, char* args[]) {
 
-	//wchar_t *program = 
+	DEBUG_LEAK_CHECKS(-1);	// Pop console window 
+	DEBUG_CREATE_CONSOLE(); // and check memory leak
 
-	// Make console and check memory leak
-	DEBUG_LEAK_CHECKS(-1);
-	DEBUG_CREATE_CONSOLE();
+	JE_UNUSED_PARAM(argc);	// No argc - Block the warnings
+	JE_UNUSED_PARAM(args);	// No args - Block the warnings
 
-	// Block the warnings
-	JE_UNUSED_PARAM(argc);
-	JE_UNUSED_PARAM(args);
-
-	// Load assets
-	ASSET::RegisterAssets();
+	ASSET::RegisterAssets(); // Load assets
+	JENGINE::Run();			 // Run Engine
 	
-	// Open application
-	if (APP::Initialize())
-		APP::Update();
-
-	APP::Close();
-
-	// Delete console
-	DEBUG_DESTROY_CONSOLE();
+	DEBUG_DESTROY_CONSOLE(); // Delete console window
 
 	return 0;
 

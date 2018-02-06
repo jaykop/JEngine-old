@@ -18,7 +18,7 @@ void LevelController::Load(CR_RJValue /*_data*/)
 void LevelController::Init()
 {}
 
-void LevelController::Update(const float _dt)
+void LevelController::Update(const float /*_dt*/)
 {
 
 	if (INPUT::KeyTriggered(JE_1))

@@ -167,7 +167,7 @@ void Matrix4x4::operator/=(float constant)
 				m[i][j] /= constant;
 
 	else
-		JE_DEBUG_PRINT("*Matrix4x4: Cannot devide by 0.\n");
+		JE_DEBUG_PRINT("!Matrix4x4 - Cannot devide by 0.\n");
 }
 
 /******************************************************************************/
@@ -736,7 +736,7 @@ Matrix4x4& Matrix4x4::Inverse()
 
 	// No inverse in this case
 	if (det == 0) {
-		JE_DEBUG_PRINT("*Matrix4x4: Cannot devide by 0.\n");
+		JE_DEBUG_PRINT("!Matrix4x4 - Cannot devide by 0.\n");
 		return *this;
 	}
 
@@ -786,12 +786,25 @@ Matrix4x4 Matrix4x4::Orthogonal(float _left, float _right, float _bottom, float 
 	return Result;
 }
 
+Matrix4x4 Matrix4x4::Orthogonal(float _left, float _right, float _bottom, float _top)
+{
+	mat4 Result;
+
+	Result.m[0][0] = 2.f / (_right - _left);
+	Result.m[1][1] = 2.f / (_top - _bottom);
+	Result.m[2][2] = 1.f;
+	Result.m[0][3] = -(_right + _left) / (_right - _left);
+	Result.m[1][3] = -(_top + _bottom) / (_top - _bottom);
+	Result.m[3][3] = 1.f;
+	return Result;
+}
+
 Matrix4x4 Matrix4x4::LookAt(const Vector3& _eye, const Vector3& _target, const Vector3& _up)
 {
 	Vector3 look, up, right;
 
 	if (_eye == _target)
-		JE_DEBUG_PRINT("*Matrix4x4: LookAt's position and target are identical.\n");
+		JE_DEBUG_PRINT("!Matrix4x4 - LookAt's position and target are identical.\n");
 
 	look = (_eye - _target).GetNormalize();
 	up = _up;

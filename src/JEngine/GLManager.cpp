@@ -260,7 +260,7 @@ void GLManager::InitVBO()
 
 	SetVAO(m_vao[SHAPE_PLANE3D], m_vbo[SHAPE_PLANE3D], m_ebo[SHAPE_PLANE3D],
 		m_verticesSize[SHAPE_PLANE3D], m_indicesSize[SHAPE_PLANE3D],
-		m_verticesParticle, m_indicesParticle);
+		m_verticesPlane3D, m_indicesPlane3D);
 
 	SetVAO(m_vao[SHAPE_CUBE], m_vbo[SHAPE_CUBE], m_ebo[SHAPE_CUBE],
 		m_verticesSize[SHAPE_CUBE], m_indicesSize[SHAPE_CUBE],
@@ -305,7 +305,7 @@ void GLManager::InitFBO()
 
 	// Always check that our framebuffer is ok
 	if (GL_FRAMEBUFFER_COMPLETE != glCheckFramebufferStatus(GL_FRAMEBUFFER))
-		JE_DEBUG_PRINT("*GLManager: Framebuffer is not created properly.\n");
+		JE_DEBUG_PRINT("!GLManager - Framebuffer is not created properly.\n");
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -338,7 +338,7 @@ void GLManager::InitDefferedFBO()
 	glDrawBuffers(4, drawBuffers);
 
 	if (GL_FRAMEBUFFER_COMPLETE != glCheckFramebufferStatus(GL_FRAMEBUFFER))
-		JE_DEBUG_PRINT("*GLManager: Framebuffer is not created properly.\n");
+		JE_DEBUG_PRINT("!GLManager - Framebuffer is not created properly.\n");
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -351,7 +351,7 @@ void GLManager::InitGLEnvironment()
 	// Show how much attributes are available
 	int nrAttributes;
 	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
-	JE_DEBUG_PRINT("*GLManager: Maximum nr of vertex attributes supported - %d\n", nrAttributes);
+	JE_DEBUG_PRINT("*GLManager - Maximum nr of vertex attributes supported: %d\n", nrAttributes);
 
 	// Set how to draw
 	SetDrawMode(m_mode);
@@ -493,12 +493,12 @@ void GLManager::ShowGLVersion()
 	glGetIntegerv(GL_SAMPLE_BUFFERS, &buffers);
 	glGetIntegerv(GL_SAMPLES, &samples);
 
-	JE_DEBUG_PRINT("*GLManager: GL Vendor - %s\n", vendor);
-	JE_DEBUG_PRINT("*GLManager: GL Renderer - %s\n", renderer);
-	JE_DEBUG_PRINT("*GLManager: GL Version - %s\n", version);
-	JE_DEBUG_PRINT("*GLManager: GLSL Version - %s\n", glslVersion);
-	JE_DEBUG_PRINT("*GLManager: GL Samples - %d\n", samples);
-	JE_DEBUG_PRINT("*GLManager: GL Sample Buffers - %d\n", buffers);
+	JE_DEBUG_PRINT("*GLManager - GL Vendor: %s\n", vendor);
+	JE_DEBUG_PRINT("*GLManager - GL Renderer: %s\n", renderer);
+	JE_DEBUG_PRINT("*GLManager - GL Version: %s\n", version);
+	JE_DEBUG_PRINT("*GLManager - GLSL Version: %s\n", glslVersion);
+	JE_DEBUG_PRINT("*GLManager - GL Samples: %d\n", samples);
+	JE_DEBUG_PRINT("*GLManager - GL Sample Buffers: %d\n", buffers);
 }
 
 void GLManager::SetVAO(GLuint &_vao, GLuint &_vbo, GLuint &_ebo,

@@ -4,7 +4,6 @@
 #include "Application.h"
 #include "Transform.h"
 #include "InputHandler.h"
-
 #include "Sprite.h"
 #include "Light.h"
 #include "Camera.h"
@@ -15,12 +14,12 @@ GraphicSystem::GraphicSystem()
 	:System(), m_pMainCamera(nullptr),
 	m_fovy(45.f), m_zNear(.1f), m_zFar(1000.f), m_isLight(false),
 	m_backgroundColor(vec4::ZERO), m_orthoComesFirst(true), m_screenColor(vec4::ONE),
-	m_width(Application::GetData().m_width), m_height(Application::GetData().m_height),
+	m_width(int(GLM::m_width)), m_height(int(GLM::m_height)),
 	m_aniScale(vec3::ZERO), m_aniTranslate(vec3::ZERO), m_viewport(mat4()),
 	m_sobelAmount(0.f), m_blurSize(0.f), m_blurAmount(0.f),
 	m_aliasMode(ALIAS_ALIASED), m_screenEffect(EFFECT_NONE)
 {
-	m_aspect = float(m_width) / float(m_height);
+	m_aspect = GLM::m_width / GLM::m_height;
 	m_right = m_width * .5f;
 	m_left = -m_right;
 	m_top = m_height * .5f;
@@ -68,7 +67,7 @@ void GraphicSystem::Load(CR_RJDoc _data)
 			if (effect.HasMember("SobelAmount")) {
 				m_sobelAmount = effect["SobelAmount"].GetFloat();
 				if (m_sobelAmount > s_recommend)
-					JE_DEBUG_PRINT("*GraphicSystem: Recommend to set sobel amount less than %f.\n", s_recommend);
+					JE_DEBUG_PRINT("!GraphicSystem - Recommend to set sobel amount less than %f.\n", s_recommend);
 			}
 		}
 		else if (!strcmp("Blur", type.GetString())) {
@@ -79,7 +78,7 @@ void GraphicSystem::Load(CR_RJDoc _data)
 				m_blurSize= effect["BlurSize"].GetFloat();
 		}
 		else
-			JE_DEBUG_PRINT("*GraphicSystem: Wrong type of screen effect.\n");
+			JE_DEBUG_PRINT("!GraphicSystem - Wrong type of screen effect.\n");
 	}
 }
 
@@ -183,36 +182,6 @@ void GraphicSystem::RemoveSprite(Sprite* _sprite)
 			break;
 		}
 	}
-}
-
-void GraphicSystem::SetBackgroundColor(float _r, float _g, float _b, float _a)
-{
-	m_backgroundColor.Set(_r, _g, _b, _a);
-}
-
-void GraphicSystem::SetBackgroundColor(CR_vec4 _color)
-{
-	m_backgroundColor = _color;
-}
-
-const vec4& GraphicSystem::GetBackgroundColor() const
-{
-	return m_backgroundColor;
-}
-
-CR_vec4 GraphicSystem::GetScreenColor() const
-{
-	return m_screenColor;
-}
-
-void GraphicSystem::SetScreenColor(CR_vec4 _color)
-{
-	m_screenColor.Set(_color);
-}
-
-void GraphicSystem::SetScreenColor(float _r, float _g, float _b, float _a)
-{
-	m_screenColor.Set(_r, _g, _b, _a);
 }
 
 int GraphicSystem::GetWidth() const

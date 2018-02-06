@@ -82,6 +82,7 @@ public:
 	static Matrix4x4 Rotate(float degree, const vec3& vec);
 	static Matrix4x4 Perspective(float fovy, float aspect, float zNear, float zFar);
 	static Matrix4x4 Orthogonal(float left, float right, float bottom, float top, float zNear, float zFar);
+	static Matrix4x4 Orthogonal(float _left, float _right, float _bottom, float _top);
 	static Matrix4x4 LookAt(const Vector3& eye, const Vector3& center, const Vector3& up);
 
 	//Friend functions

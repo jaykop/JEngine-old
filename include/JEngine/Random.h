@@ -8,9 +8,10 @@ JE_BEGIN
 
 class Random {
 
+	friend class Application;
+
 public:
 
-	static void		PlantSeed();
 	static float	GetRandomFloat(float _min, float _max);
 	static int		GetRandomInt(int _min, int _max);
 	static bool		GetRandBoolean(float _probabilityOfTrue);
@@ -20,6 +21,8 @@ public:
 	static vec4		GetRandVec4(float _x, float _y, float _z, float _w);
 
 private:
+	
+	static void	PlantSeed(); 
 	
 	static std::mt19937	m_randomObject;
 

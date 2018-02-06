@@ -45,19 +45,19 @@ void JsonParser::LoadObjects(ObjectContainer* _pOBC)
 					if (component[j].HasMember("Type"))
 						LoadComponents(component[j]);
 					else
-						JE_DEBUG_PRINT("*JsonParser: Wrong component type or values.\n");
+						JE_DEBUG_PRINT("!JsonParser - Wrong component type or values.\n");
 
 				} // for (rapidjson::SizeType j = 0; j < component.Size(); ++j) {
 			} // if (object[i].HasMember("Component")) {
 
 			else
-				JE_DEBUG_PRINT("*JsonParser: No component in this object - %s\n", object[i]["Name"].GetString());
+				JE_DEBUG_PRINT("!JsonParser - No component in this object: %s\n", object[i]["Name"].GetString());
 
 			FACTORY::AddCreatedObject(_pOBC);
 		} // if (object[i]["Name"].IsString()) {
 
 		else // if (object[i]["Name"].IsString()) {
-			JE_DEBUG_PRINT("*JsonParser: Wrong type of object name.\n");
+			JE_DEBUG_PRINT("!JsonParser - Wrong type of object name.\n");
 
 	} // for (rapidjson::SizeType i = 0; i < object.Size(); ++i) {
 }
