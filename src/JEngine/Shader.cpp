@@ -109,30 +109,35 @@ void Shader::LoadShader(
 			JE_DEBUG_PRINT("*Shader - Linking program...\n");
 			m_programId = glCreateProgram();
 
-			// Combine two shaders into the program
-			glAttachShader(m_programId, vertexShaderId);
-			glAttachShader(m_programId, fragmentShaderId);
-			glLinkProgram(m_programId);
+			if (m_programId == 0)
+				JE_DEBUG_PRINT("!Shader - Shader couldn't get program id.\n");
 
-			// Check the program
-			glGetProgramiv(m_programId, GL_LINK_STATUS, &result);
-			glGetShaderiv(m_programId, GL_INFO_LOG_LENGTH, &infoLogLength);
+			else {
+				// Combine two shaders into the program
+				glAttachShader(m_programId, vertexShaderId);
+				glAttachShader(m_programId, fragmentShaderId);
+				glLinkProgram(m_programId);
 
-			// Check if linked properly
-			if (infoLogLength > 0) {
-				std::vector<char> ProgramErrorMessage(infoLogLength + 1);
-				glGetShaderInfoLog(m_programId, infoLogLength, NULL, &ProgramErrorMessage[0]);
-				JE_DEBUG_PRINT("!Shader: %4s\n", &ProgramErrorMessage[0]);
+				// Check the program
+				glGetProgramiv(m_programId, GL_LINK_STATUS, &result);
+				glGetShaderiv(m_programId, GL_INFO_LOG_LENGTH, &infoLogLength);
 
-			}	// if (infoLogLength > 0) {
+				// Check if linked properly
+				if (infoLogLength > 0) {
+					std::vector<char> ProgramErrorMessage(infoLogLength + 1);
+					glGetShaderInfoLog(m_programId, infoLogLength, NULL, &ProgramErrorMessage[0]);
+					JE_DEBUG_PRINT("!Shader: %4s\n", &ProgramErrorMessage[0]);
 
-			glUseProgram(m_programId);	// Start using shade  program
+				}	// if (infoLogLength > 0) {
 
-			glDetachShader(m_programId, vertexShaderId);
-			glDetachShader(m_programId, fragmentShaderId);
+				glUseProgram(m_programId);	// Start using shade  program
 
-			glDeleteShader(vertexShaderId);
-			glDeleteShader(fragmentShaderId);
+				glDetachShader(m_programId, vertexShaderId);
+				glDetachShader(m_programId, fragmentShaderId);
+
+				glDeleteShader(vertexShaderId);
+				glDeleteShader(fragmentShaderId);
+			}
 
 		}	// if (vsToggle && fsToggle) {
 
@@ -217,43 +222,43 @@ void Shader::SetVector4(const char* _name, const vec4& _vector)
 		_vector.x, _vector.y, _vector.z, _vector.w);
 }
 
-void Shader::SetInt(GLuint _buffer, int _int)
+void Shader::SetInt(GLint& _buffer, int _int)
 {
 	glUniform1d(_buffer, _int);
 }
 
-void Shader::SetEnum(GLuint _buffer, int _enum)
+void Shader::SetEnum(GLint& _buffer, int _enum)
 {
 	glUniform1i(_buffer, _enum);
 }
 
-void Shader::SetBool(GLuint _buffer, bool _bool)
+void Shader::SetBool(GLint& _buffer, bool _bool)
 {
 	glUniform1i(_buffer, _bool);
 }
 
-void Shader::SetFloat(GLuint _buffer, float _float)
+void Shader::SetFloat(GLint& _buffer, float _float)
 {
 	glUniform1f(_buffer, _float);
 }
 
-void Shader::SetuInt(GLuint _buffer, unsigned _uInt)
+void Shader::SetuInt(GLint& _buffer, unsigned _uInt)
 {
 	glUniform1ui(_buffer, _uInt);
 }
 
-void Shader::SetVector2(GLuint _buffer, float _x, float _y)
+void Shader::SetVector2(GLint& _buffer, float _x, float _y)
 {
 	glUniform2f(_buffer, _x, _y);
 }
 
-void Shader::SetVector3(GLuint _buffer, const vec3 & _vector)
+void Shader::SetVector3(GLint& _buffer, const vec3 & _vector)
 {
 	glUniform3f(_buffer,
 		_vector.x, _vector.y, _vector.z);
 }
 
-void Shader::SetVector4(GLuint _buffer, const vec4 & _vector)
+void Shader::SetVector4(GLint& _buffer, const vec4 & _vector)
 {
 	glUniform4f(_buffer,
 		_vector.x, _vector.y, _vector.z, _vector.w);

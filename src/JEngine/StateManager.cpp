@@ -47,11 +47,10 @@ void StateManager::Update(SDL_Event& _event)
 	while (SDL_PollEvent(&_event) != 0	// Event handler loop
 		|| m_status == STATE_NONE) {		// State updating loop
 
-		//Get input by input handler
-		INPUT::Update(&_event);
+		INPUT::Update(&_event);			//Get input by input handler
+		IMGUI::EventUpdate(&_event);	//Get input by imgui manager
 
-		// Update state manager
-		m_pCurrent->Update(s_dt);
+		m_pCurrent->Update(s_dt);	// Update state manager
 
 		s_dt = m_timer.GetTime();	// Get delta time
 		++s_frame;					// Increment to framw
@@ -62,13 +61,8 @@ void StateManager::Update(SDL_Event& _event)
 			s_frame = 0;
 			m_timer.Start();
 
-			// Swap buffer
-			SDL_GL_SwapWindow(m_pWindow);
-
-			// Update imgui renderer
-			#ifdef JE_SUPPORT_IMGUI
-			ImguiManager::Update();
-			#endif
+			IMGUI::Update();			// Update imgui renderer
+			SDL_GL_SwapWindow(m_pWindow);	// Swap buffer
 		}
 	}
 

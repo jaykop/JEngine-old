@@ -595,7 +595,7 @@ static void stb_textedit_sortselection(STB_TexteditState *state)
 }
 
 // move cursor to first character of selection
-static void stb_textedit_moVISUALEFFECT_to_first(STB_TexteditState *state)
+static void stb_textedit_move_to_first(STB_TexteditState *state)
 {
    if (STB_TEXT_HAS_SELECTION(state)) {
       stb_textedit_sortselection(state);
@@ -606,7 +606,7 @@ static void stb_textedit_moVISUALEFFECT_to_first(STB_TexteditState *state)
 }
 
 // move cursor to last character of selection
-static void stb_textedit_moVISUALEFFECT_to_last(STB_TEXTEDIT_STRING *str, STB_TexteditState *state)
+static void stb_textedit_move_to_last(STB_TEXTEDIT_STRING *str, STB_TexteditState *state)
 {
    if (STB_TEXT_HAS_SELECTION(state)) {
       stb_textedit_sortselection(state);
@@ -624,7 +624,7 @@ static int is_word_boundary( STB_TEXTEDIT_STRING *str, int idx )
 }
 
 #ifndef STB_TEXTEDIT_MOVEWORDLEFT
-static int stb_textedit_moVISUALEFFECT_to_word_previous( STB_TEXTEDIT_STRING *str, int c )
+static int stb_textedit_move_to_word_previous( STB_TEXTEDIT_STRING *str, int c )
 {
    --c; // always move at least one character
    while( c >= 0 && !is_word_boundary( str, c ) )
@@ -635,11 +635,11 @@ static int stb_textedit_moVISUALEFFECT_to_word_previous( STB_TEXTEDIT_STRING *st
 
    return c;
 }
-#define STB_TEXTEDIT_MOVEWORDLEFT stb_textedit_moVISUALEFFECT_to_word_previous
+#define STB_TEXTEDIT_MOVEWORDLEFT stb_textedit_move_to_word_previous
 #endif
 
 #ifndef STB_TEXTEDIT_MOVEWORDRIGHT
-static int stb_textedit_moVISUALEFFECT_to_word_next( STB_TEXTEDIT_STRING *str, int c )
+static int stb_textedit_move_to_word_next( STB_TEXTEDIT_STRING *str, int c )
 {
    const int len = STB_TEXTEDIT_STRINGLEN(str);
    ++c; // always move at least one character
@@ -651,7 +651,7 @@ static int stb_textedit_moVISUALEFFECT_to_word_next( STB_TEXTEDIT_STRING *str, i
 
    return c;
 }
-#define STB_TEXTEDIT_MOVEWORDRIGHT stb_textedit_moVISUALEFFECT_to_word_next
+#define STB_TEXTEDIT_MOVEWORDRIGHT stb_textedit_move_to_word_next
 #endif
 
 #endif
@@ -748,7 +748,7 @@ retry:
       case STB_TEXTEDIT_K_LEFT:
          // if currently there's a selection, move cursor to start of selection
          if (STB_TEXT_HAS_SELECTION(state))
-            stb_textedit_moVISUALEFFECT_to_first(state);
+            stb_textedit_move_to_first(state);
          else 
             if (state->cursor > 0)
                --state->cursor;
@@ -758,7 +758,7 @@ retry:
       case STB_TEXTEDIT_K_RIGHT:
          // if currently there's a selection, move cursor to end of selection
          if (STB_TEXT_HAS_SELECTION(state))
-            stb_textedit_moVISUALEFFECT_to_last(str, state);
+            stb_textedit_move_to_last(str, state);
          else
             ++state->cursor;
          stb_textedit_clamp(str, state);
@@ -778,7 +778,7 @@ retry:
 #ifdef STB_TEXTEDIT_MOVEWORDLEFT
       case STB_TEXTEDIT_K_WORDLEFT:
          if (STB_TEXT_HAS_SELECTION(state))
-            stb_textedit_moVISUALEFFECT_to_first(state);
+            stb_textedit_move_to_first(state);
          else {
             state->cursor = STB_TEXTEDIT_MOVEWORDLEFT(str, state->cursor);
             stb_textedit_clamp( str, state );
@@ -799,7 +799,7 @@ retry:
 #ifdef STB_TEXTEDIT_MOVEWORDRIGHT
       case STB_TEXTEDIT_K_WORDRIGHT:
          if (STB_TEXT_HAS_SELECTION(state)) 
-            stb_textedit_moVISUALEFFECT_to_last(str, state);
+            stb_textedit_move_to_last(str, state);
          else {
             state->cursor = STB_TEXTEDIT_MOVEWORDRIGHT(str, state->cursor);
             stb_textedit_clamp( str, state );
@@ -841,7 +841,7 @@ retry:
          if (sel)
             stb_textedit_prep_selection_at_cursor(state);
          else if (STB_TEXT_HAS_SELECTION(state))
-            stb_textedit_moVISUALEFFECT_to_last(str,state);
+            stb_textedit_move_to_last(str,state);
 
          // compute current position of cursor point
          stb_textedit_clamp(str, state);
@@ -892,7 +892,7 @@ retry:
          if (sel)
             stb_textedit_prep_selection_at_cursor(state);
          else if (STB_TEXT_HAS_SELECTION(state))
-            stb_textedit_moVISUALEFFECT_to_first(state);
+            stb_textedit_move_to_first(state);
 
          // compute current position of cursor point
          stb_textedit_clamp(str, state);
@@ -995,7 +995,7 @@ retry:
 #endif
       case STB_TEXTEDIT_K_LINESTART:
          stb_textedit_clamp(str, state);
-         stb_textedit_moVISUALEFFECT_to_first(state);
+         stb_textedit_move_to_first(state);
          if (state->single_line)
             state->cursor = 0;
          else while (state->cursor > 0 && STB_TEXTEDIT_GETCHAR(str, state->cursor-1) != STB_TEXTEDIT_NEWLINE)
@@ -1009,7 +1009,7 @@ retry:
       case STB_TEXTEDIT_K_LINEEND: {
          int n = STB_TEXTEDIT_STRINGLEN(str);
          stb_textedit_clamp(str, state);
-         stb_textedit_moVISUALEFFECT_to_first(state);
+         stb_textedit_move_to_first(state);
          if (state->single_line)
              state->cursor = n;
          else while (state->cursor < n && STB_TEXTEDIT_GETCHAR(str, state->cursor) != STB_TEXTEDIT_NEWLINE)

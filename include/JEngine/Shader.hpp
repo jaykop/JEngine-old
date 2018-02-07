@@ -42,14 +42,14 @@ private:
 	void SetVector4(const char * _name, const vec4& _vector);
 
 	// By buffer
-	void SetInt(GLuint _buffer, int _int);
-	void SetEnum(GLuint _buffer, int _enum);
-	void SetBool(GLuint _buffer, bool _bool);
-	void SetFloat(GLuint _buffer, float _float);
-	void SetuInt(GLuint _buffer, unsigned _uInt);
-	void SetVector2(GLuint _buffer, float _x, float _y);
-	void SetVector3(GLuint _buffer, const vec3& _vector);
-	void SetVector4(GLuint _buffer, const vec4& _vector);
+	void SetInt(GLint& _buffer, int _int);
+	void SetEnum(GLint& _buffer, int _enum);
+	void SetBool(GLint& _buffer, bool _bool);
+	void SetFloat(GLint& _buffer, float _float);
+	void SetuInt(GLint& _buffer, unsigned _uInt);
+	void SetVector2(GLint& _buffer, float _x, float _y);
+	void SetVector3(GLint& _buffer, const vec3& _vector);
+	void SetVector4(GLint& _buffer, const vec4& _vector);
 	
 	Shader() :m_programId(0) {};
 	~Shader() {};

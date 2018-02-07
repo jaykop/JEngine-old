@@ -1669,14 +1669,14 @@ static int stbtt__GetGlyphShapeTT(const stbtt_fontinfo *info, int glyph_index, s
             // @TODO handle matching point
             STBTT_assert(0);
          }
-         if (flags & (1<<3)) { // WE_HAVISUALEFFECT_A_SCALE
+         if (flags & (1<<3)) { // WE_HAVE_A_SCALE
             mtx[0] = mtx[3] = ttSHORT(comp)/16384.0f; comp+=2;
             mtx[1] = mtx[2] = 0;
-         } else if (flags & (1<<6)) { // WE_HAVISUALEFFECT_AN_X_AND_YSCALE
+         } else if (flags & (1<<6)) { // WE_HAVE_AN_X_AND_YSCALE
             mtx[0] = ttSHORT(comp)/16384.0f; comp+=2;
             mtx[1] = mtx[2] = 0;
             mtx[3] = ttSHORT(comp)/16384.0f; comp+=2;
-         } else if (flags & (1<<7)) { // WE_HAVISUALEFFECT_A_TWO_BY_TWO
+         } else if (flags & (1<<7)) { // WE_HAVE_A_TWO_BY_TWO
             mtx[0] = ttSHORT(comp)/16384.0f; comp+=2;
             mtx[1] = ttSHORT(comp)/16384.0f; comp+=2;
             mtx[2] = ttSHORT(comp)/16384.0f; comp+=2;
@@ -1774,7 +1774,7 @@ static void stbtt__csctx_close_shape(stbtt__csctx *ctx)
       stbtt__csctx_v(ctx, STBTT_vline, (int)ctx->first_x, (int)ctx->first_y, 0, 0, 0, 0);
 }
 
-static void stbtt__csctx_rmoVISUALEFFECT_to(stbtt__csctx *ctx, float dx, float dy)
+static void stbtt__csctx_rmove_to(stbtt__csctx *ctx, float dx, float dy)
 {
    stbtt__csctx_close_shape(ctx);
    ctx->first_x = ctx->x = ctx->x + dx;
@@ -1789,7 +1789,7 @@ static void stbtt__csctx_rline_to(stbtt__csctx *ctx, float dx, float dy)
    stbtt__csctx_v(ctx, STBTT_vline, (int)ctx->x, (int)ctx->y, 0, 0, 0, 0);
 }
 
-static void stbtt__csctx_rccurVISUALEFFECT_to(stbtt__csctx *ctx, float dx1, float dy1, float dx2, float dy2, float dx3, float dy3)
+static void stbtt__csctx_rccurve_to(stbtt__csctx *ctx, float dx1, float dy1, float dx2, float dy2, float dx3, float dy3)
 {
    float cx1 = ctx->x + dx1;
    float cy1 = ctx->y + dy1;
@@ -1878,17 +1878,17 @@ static int stbtt__run_charstring(const stbtt_fontinfo *info, int glyph_index, st
       case 0x15: // rmoveto
          in_header = 0;
          if (sp < 2) return STBTT__CSERR("rmoveto stack");
-         stbtt__csctx_rmoVISUALEFFECT_to(c, s[sp-2], s[sp-1]);
+         stbtt__csctx_rmove_to(c, s[sp-2], s[sp-1]);
          break;
       case 0x04: // vmoveto
          in_header = 0;
          if (sp < 1) return STBTT__CSERR("vmoveto stack");
-         stbtt__csctx_rmoVISUALEFFECT_to(c, 0, s[sp-1]);
+         stbtt__csctx_rmove_to(c, 0, s[sp-1]);
          break;
       case 0x16: // hmoveto
          in_header = 0;
          if (sp < 1) return STBTT__CSERR("hmoveto stack");
-         stbtt__csctx_rmoVISUALEFFECT_to(c, s[sp-1], 0);
+         stbtt__csctx_rmove_to(c, s[sp-1], 0);
          break;
 
       case 0x05: // rlineto
@@ -1923,11 +1923,11 @@ static int stbtt__run_charstring(const stbtt_fontinfo *info, int glyph_index, st
          if (sp < 4) return STBTT__CSERR("vhcurveto stack");
          for (;;) {
             if (i + 3 >= sp) break;
-            stbtt__csctx_rccurVISUALEFFECT_to(c, 0, s[i], s[i+1], s[i+2], s[i+3], (sp - i == 5) ? s[i + 4] : 0.0f);
+            stbtt__csctx_rccurve_to(c, 0, s[i], s[i+1], s[i+2], s[i+3], (sp - i == 5) ? s[i + 4] : 0.0f);
             i += 4;
       hvcurveto:
             if (i + 3 >= sp) break;
-            stbtt__csctx_rccurVISUALEFFECT_to(c, s[i], 0, s[i+1], s[i+2], (sp - i == 5) ? s[i+4] : 0.0f, s[i+3]);
+            stbtt__csctx_rccurve_to(c, s[i], 0, s[i+1], s[i+2], (sp - i == 5) ? s[i+4] : 0.0f, s[i+3]);
             i += 4;
          }
          break;
@@ -1935,13 +1935,13 @@ static int stbtt__run_charstring(const stbtt_fontinfo *info, int glyph_index, st
       case 0x08: // rrcurveto
          if (sp < 6) return STBTT__CSERR("rcurveline stack");
          for (; i + 5 < sp; i += 6)
-            stbtt__csctx_rccurVISUALEFFECT_to(c, s[i], s[i+1], s[i+2], s[i+3], s[i+4], s[i+5]);
+            stbtt__csctx_rccurve_to(c, s[i], s[i+1], s[i+2], s[i+3], s[i+4], s[i+5]);
          break;
 
       case 0x18: // rcurveline
          if (sp < 8) return STBTT__CSERR("rcurveline stack");
          for (; i + 5 < sp - 2; i += 6)
-            stbtt__csctx_rccurVISUALEFFECT_to(c, s[i], s[i+1], s[i+2], s[i+3], s[i+4], s[i+5]);
+            stbtt__csctx_rccurve_to(c, s[i], s[i+1], s[i+2], s[i+3], s[i+4], s[i+5]);
          if (i + 1 >= sp) return STBTT__CSERR("rcurveline stack");
          stbtt__csctx_rline_to(c, s[i], s[i+1]);
          break;
@@ -1951,7 +1951,7 @@ static int stbtt__run_charstring(const stbtt_fontinfo *info, int glyph_index, st
          for (; i + 1 < sp - 6; i += 2)
             stbtt__csctx_rline_to(c, s[i], s[i+1]);
          if (i + 5 >= sp) return STBTT__CSERR("rlinecurve stack");
-         stbtt__csctx_rccurVISUALEFFECT_to(c, s[i], s[i+1], s[i+2], s[i+3], s[i+4], s[i+5]);
+         stbtt__csctx_rccurve_to(c, s[i], s[i+1], s[i+2], s[i+3], s[i+4], s[i+5]);
          break;
 
       case 0x1A: // vvcurveto
@@ -1961,9 +1961,9 @@ static int stbtt__run_charstring(const stbtt_fontinfo *info, int glyph_index, st
          if (sp & 1) { f = s[i]; i++; }
          for (; i + 3 < sp; i += 4) {
             if (b0 == 0x1B)
-               stbtt__csctx_rccurVISUALEFFECT_to(c, s[i], f, s[i+1], s[i+2], s[i+3], 0.0);
+               stbtt__csctx_rccurve_to(c, s[i], f, s[i+1], s[i+2], s[i+3], 0.0);
             else
-               stbtt__csctx_rccurVISUALEFFECT_to(c, f, s[i], s[i+1], s[i+2], 0.0, s[i+3]);
+               stbtt__csctx_rccurve_to(c, f, s[i], s[i+1], s[i+2], 0.0, s[i+3]);
             f = 0.0;
          }
          break;
@@ -2012,8 +2012,8 @@ static int stbtt__run_charstring(const stbtt_fontinfo *info, int glyph_index, st
             dx4 = s[4];
             dx5 = s[5];
             dx6 = s[6];
-            stbtt__csctx_rccurVISUALEFFECT_to(c, dx1, 0, dx2, dy2, dx3, 0);
-            stbtt__csctx_rccurVISUALEFFECT_to(c, dx4, 0, dx5, -dy2, dx6, 0);
+            stbtt__csctx_rccurve_to(c, dx1, 0, dx2, dy2, dx3, 0);
+            stbtt__csctx_rccurve_to(c, dx4, 0, dx5, -dy2, dx6, 0);
             break;
 
          case 0x23: // flex
@@ -2031,8 +2031,8 @@ static int stbtt__run_charstring(const stbtt_fontinfo *info, int glyph_index, st
             dx6 = s[10];
             dy6 = s[11];
             //fd is s[12]
-            stbtt__csctx_rccurVISUALEFFECT_to(c, dx1, dy1, dx2, dy2, dx3, dy3);
-            stbtt__csctx_rccurVISUALEFFECT_to(c, dx4, dy4, dx5, dy5, dx6, dy6);
+            stbtt__csctx_rccurve_to(c, dx1, dy1, dx2, dy2, dx3, dy3);
+            stbtt__csctx_rccurve_to(c, dx4, dy4, dx5, dy5, dx6, dy6);
             break;
 
          case 0x24: // hflex1
@@ -2046,8 +2046,8 @@ static int stbtt__run_charstring(const stbtt_fontinfo *info, int glyph_index, st
             dx5 = s[6];
             dy5 = s[7];
             dx6 = s[8];
-            stbtt__csctx_rccurVISUALEFFECT_to(c, dx1, dy1, dx2, dy2, dx3, 0);
-            stbtt__csctx_rccurVISUALEFFECT_to(c, dx4, 0, dx5, dy5, dx6, -(dy1+dy2+dy5));
+            stbtt__csctx_rccurve_to(c, dx1, dy1, dx2, dy2, dx3, 0);
+            stbtt__csctx_rccurve_to(c, dx4, 0, dx5, dy5, dx6, -(dy1+dy2+dy5));
             break;
 
          case 0x25: // flex1
@@ -2069,8 +2069,8 @@ static int stbtt__run_charstring(const stbtt_fontinfo *info, int glyph_index, st
                dy6 = -dy;
             else
                dx6 = -dx;
-            stbtt__csctx_rccurVISUALEFFECT_to(c, dx1, dy1, dx2, dy2, dx3, dy3);
-            stbtt__csctx_rccurVISUALEFFECT_to(c, dx4, dy4, dx5, dy5, dx6, dy6);
+            stbtt__csctx_rccurve_to(c, dx1, dy1, dx2, dy2, dx3, dy3);
+            stbtt__csctx_rccurve_to(c, dx4, dy4, dx5, dy5, dx6, dy6);
             break;
 
          default:
@@ -2322,9 +2322,9 @@ typedef struct stbtt__edge {
 } stbtt__edge;
 
 
-typedef struct stbtt__actiVISUALEFFECT_edge
+typedef struct stbtt__active_edge
 {
-   struct stbtt__actiVISUALEFFECT_edge *next;
+   struct stbtt__active_edge *next;
    #if STBTT_RASTERIZER_VERSION==1
    int x,dx;
    float ey;
@@ -2337,16 +2337,16 @@ typedef struct stbtt__actiVISUALEFFECT_edge
    #else
    #error "Unrecognized value of STBTT_RASTERIZER_VERSION"
    #endif
-} stbtt__actiVISUALEFFECT_edge;
+} stbtt__active_edge;
 
 #if STBTT_RASTERIZER_VERSION == 1
 #define STBTT_FIXSHIFT   10
 #define STBTT_FIX        (1 << STBTT_FIXSHIFT)
 #define STBTT_FIXMASK    (STBTT_FIX-1)
 
-static stbtt__actiVISUALEFFECT_edge *stbtt__new_active(stbtt__hheap *hh, stbtt__edge *e, int off_x, float start_point, void *userdata)
+static stbtt__active_edge *stbtt__new_active(stbtt__hheap *hh, stbtt__edge *e, int off_x, float start_point, void *userdata)
 {
-   stbtt__actiVISUALEFFECT_edge *z = (stbtt__actiVISUALEFFECT_edge *) stbtt__hheap_alloc(hh, sizeof(*z), userdata);
+   stbtt__active_edge *z = (stbtt__active_edge *) stbtt__hheap_alloc(hh, sizeof(*z), userdata);
    float dxdy = (e->x1 - e->x0) / (e->y1 - e->y0);
    STBTT_assert(z != NULL);
    if (!z) return z;
@@ -2366,9 +2366,9 @@ static stbtt__actiVISUALEFFECT_edge *stbtt__new_active(stbtt__hheap *hh, stbtt__
    return z;
 }
 #elif STBTT_RASTERIZER_VERSION == 2
-static stbtt__actiVISUALEFFECT_edge *stbtt__new_active(stbtt__hheap *hh, stbtt__edge *e, int off_x, float start_point, void *userdata)
+static stbtt__active_edge *stbtt__new_active(stbtt__hheap *hh, stbtt__edge *e, int off_x, float start_point, void *userdata)
 {
-   stbtt__actiVISUALEFFECT_edge *z = (stbtt__actiVISUALEFFECT_edge *) stbtt__hheap_alloc(hh, sizeof(*z), userdata);
+   stbtt__active_edge *z = (stbtt__active_edge *) stbtt__hheap_alloc(hh, sizeof(*z), userdata);
    float dxdy = (e->x1 - e->x0) / (e->y1 - e->y0);
    STBTT_assert(z != NULL);
    //STBTT_assert(e->y0 <= start_point);
@@ -2391,7 +2391,7 @@ static stbtt__actiVISUALEFFECT_edge *stbtt__new_active(stbtt__hheap *hh, stbtt__
 // note: this routine clips fills that extend off the edges... ideally this
 // wouldn't happen, but it could happen if the truetype glyph bounding boxes
 // are wrong, or if the user supplies a too-small bitmap
-static void stbtt__fill_actiVISUALEFFECT_edges(unsigned char *scanline, int len, stbtt__actiVISUALEFFECT_edge *e, int max_weight)
+static void stbtt__fill_active_edges(unsigned char *scanline, int len, stbtt__active_edge *e, int max_weight)
 {
    // non-zero winding fill
    int x0=0, w=0;
@@ -2436,7 +2436,7 @@ static void stbtt__fill_actiVISUALEFFECT_edges(unsigned char *scanline, int len,
 static void stbtt__rasterize_sorted_edges(stbtt__bitmap *result, stbtt__edge *e, int n, int vsubsample, int off_x, int off_y, void *userdata)
 {
    stbtt__hheap hh = { 0, 0, 0 };
-   stbtt__actiVISUALEFFECT_edge *active = NULL;
+   stbtt__active_edge *active = NULL;
    int y,j=0;
    int max_weight = (255 / vsubsample);  // weight per vertical scanline
    int s; // vertical subsample index
@@ -2455,12 +2455,12 @@ static void stbtt__rasterize_sorted_edges(stbtt__bitmap *result, stbtt__edge *e,
       for (s=0; s < vsubsample; ++s) {
          // find center of pixel for this scanline
          float scan_y = y + 0.5f;
-         stbtt__actiVISUALEFFECT_edge **step = &active;
+         stbtt__active_edge **step = &active;
 
          // update all active edges;
          // remove all active edges that terminate before the center of this scanline
          while (*step) {
-            stbtt__actiVISUALEFFECT_edge * z = *step;
+            stbtt__active_edge * z = *step;
             if (z->ey <= scan_y) {
                *step = z->next; // delete from list
                STBTT_assert(z->direction);
@@ -2478,8 +2478,8 @@ static void stbtt__rasterize_sorted_edges(stbtt__bitmap *result, stbtt__edge *e,
             step = &active;
             while (*step && (*step)->next) {
                if ((*step)->x > (*step)->next->x) {
-                  stbtt__actiVISUALEFFECT_edge *t = *step;
-                  stbtt__actiVISUALEFFECT_edge *q = t->next;
+                  stbtt__active_edge *t = *step;
+                  stbtt__active_edge *q = t->next;
 
                   t->next = q->next;
                   q->next = t;
@@ -2494,7 +2494,7 @@ static void stbtt__rasterize_sorted_edges(stbtt__bitmap *result, stbtt__edge *e,
          // insert all edges that start before the center of this scanline -- omit ones that also end on this scanline
          while (e->y0 <= scan_y) {
             if (e->y1 > scan_y) {
-               stbtt__actiVISUALEFFECT_edge *z = stbtt__new_active(&hh, e, off_x, scan_y, userdata);
+               stbtt__active_edge *z = stbtt__new_active(&hh, e, off_x, scan_y, userdata);
                if (z != NULL) {
                   // find insertion point
                   if (active == NULL)
@@ -2505,7 +2505,7 @@ static void stbtt__rasterize_sorted_edges(stbtt__bitmap *result, stbtt__edge *e,
                      active = z;
                   } else {
                      // find thing to insert AFTER
-                     stbtt__actiVISUALEFFECT_edge *p = active;
+                     stbtt__active_edge *p = active;
                      while (p->next && p->next->x < z->x)
                         p = p->next;
                      // at this point, p->next->x is NOT < z->x
@@ -2519,7 +2519,7 @@ static void stbtt__rasterize_sorted_edges(stbtt__bitmap *result, stbtt__edge *e,
 
          // now process all active edges in XOR fashion
          if (active)
-            stbtt__fill_actiVISUALEFFECT_edges(scanline, result->w, active, max_weight);
+            stbtt__fill_active_edges(scanline, result->w, active, max_weight);
 
          ++y;
       }
@@ -2537,7 +2537,7 @@ static void stbtt__rasterize_sorted_edges(stbtt__bitmap *result, stbtt__edge *e,
 
 // the edge passed in here does not cross the vertical line at x or the vertical line at x+1
 // (i.e. it has already been clipped to those)
-static void stbtt__handle_clipped_edge(float *scanline, int x, stbtt__actiVISUALEFFECT_edge *e, float x0, float y0, float x1, float y1)
+static void stbtt__handle_clipped_edge(float *scanline, int x, stbtt__active_edge *e, float x0, float y0, float x1, float y1)
 {
    if (y0 == y1) return;
    STBTT_assert(y0 < y1);
@@ -2574,7 +2574,7 @@ static void stbtt__handle_clipped_edge(float *scanline, int x, stbtt__actiVISUAL
    }
 }
 
-static void stbtt__fill_actiVISUALEFFECT_edges_new(float *scanline, float *scanline_fill, int len, stbtt__actiVISUALEFFECT_edge *e, float y_top)
+static void stbtt__fill_active_edges_new(float *scanline, float *scanline_fill, int len, stbtt__active_edge *e, float y_top)
 {
    float y_bottom = y_top+1;
 
@@ -2740,7 +2740,7 @@ static void stbtt__fill_actiVISUALEFFECT_edges_new(float *scanline, float *scanl
 static void stbtt__rasterize_sorted_edges(stbtt__bitmap *result, stbtt__edge *e, int n, int vsubsample, int off_x, int off_y, void *userdata)
 {
    stbtt__hheap hh = { 0, 0, 0 };
-   stbtt__actiVISUALEFFECT_edge *active = NULL;
+   stbtt__active_edge *active = NULL;
    int y,j=0, i;
    float scanline_data[129], *scanline, *scanline2;
 
@@ -2760,7 +2760,7 @@ static void stbtt__rasterize_sorted_edges(stbtt__bitmap *result, stbtt__edge *e,
       // find center of pixel for this scanline
       float scan_y_top    = y + 0.0f;
       float scan_y_bottom = y + 1.0f;
-      stbtt__actiVISUALEFFECT_edge **step = &active;
+      stbtt__active_edge **step = &active;
 
       STBTT_memset(scanline , 0, result->w*sizeof(scanline[0]));
       STBTT_memset(scanline2, 0, (result->w+1)*sizeof(scanline[0]));
@@ -2768,7 +2768,7 @@ static void stbtt__rasterize_sorted_edges(stbtt__bitmap *result, stbtt__edge *e,
       // update all active edges;
       // remove all active edges that terminate before the top of this scanline
       while (*step) {
-         stbtt__actiVISUALEFFECT_edge * z = *step;
+         stbtt__active_edge * z = *step;
          if (z->ey <= scan_y_top) {
             *step = z->next; // delete from list
             STBTT_assert(z->direction);
@@ -2782,7 +2782,7 @@ static void stbtt__rasterize_sorted_edges(stbtt__bitmap *result, stbtt__edge *e,
       // insert all edges that start before the bottom of this scanline
       while (e->y0 <= scan_y_bottom) {
          if (e->y0 != e->y1) {
-            stbtt__actiVISUALEFFECT_edge *z = stbtt__new_active(&hh, e, off_x, scan_y_top, userdata);
+            stbtt__active_edge *z = stbtt__new_active(&hh, e, off_x, scan_y_top, userdata);
             if (z != NULL) {
                STBTT_assert(z->ey >= scan_y_top);
                // insert at front
@@ -2795,7 +2795,7 @@ static void stbtt__rasterize_sorted_edges(stbtt__bitmap *result, stbtt__edge *e,
 
       // now process all active edges
       if (active)
-         stbtt__fill_actiVISUALEFFECT_edges_new(scanline, scanline2+1, result->w, active, scan_y_top);
+         stbtt__fill_active_edges_new(scanline, scanline2+1, result->w, active, scan_y_top);
 
       {
          float sum = 0;
@@ -2813,7 +2813,7 @@ static void stbtt__rasterize_sorted_edges(stbtt__bitmap *result, stbtt__edge *e,
       // advance all the edges
       step = &active;
       while (*step) {
-         stbtt__actiVISUALEFFECT_edge *z = *step;
+         stbtt__active_edge *z = *step;
          z->fx += z->fdx; // advance to position for current scanline
          step = &((*step)->next); // advance through list
       }

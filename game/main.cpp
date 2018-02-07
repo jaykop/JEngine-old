@@ -11,13 +11,7 @@ Contains Process' main flow
 */
 /******************************************************************************/
 
-#include "Debug.h"
-#include "Application.h"
-#include "AssetManager.h"
-
-// TODO
-// Pyhton script later...
-//#include "Python.h"
+#include "Engine.h"
 
 #pragma comment(lib, "sdl2")
 #pragma comment(lib, "sdl2main")
@@ -26,16 +20,15 @@ USING_NS_JE;
 
 int main(int argc, char* args[]) {
 
-	DEBUG_LEAK_CHECKS(-1);	// Pop console window 
-	DEBUG_CREATE_CONSOLE(); // and check memory leak
-
 	JE_UNUSED_PARAM(argc);	// No argc - Block the warnings
 	JE_UNUSED_PARAM(args);	// No args - Block the warnings
 
-	ASSET::RegisterAssets(); // Load assets
-	JENGINE::Run();			 // Run Engine
-	
-	DEBUG_DESTROY_CONSOLE(); // Delete console window
+	JENGINE::m_IMGUI = false;	// Turn off imgui
+
+	JENGINE::OpenConsole();
+	JENGINE::Ready();		
+	JENGINE::Run();			
+	JENGINE::CloseConsole();
 
 	return 0;
 

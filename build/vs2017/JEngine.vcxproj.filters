@@ -136,13 +136,13 @@
     <ClInclude Include="..\..\external\lodePNG\lodepng.h">
       <Filter>Utils\lodePNG</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\GLManager.h">
+      <Filter>Core\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\Engine.h">
+      <Filter>Core\Engine</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\external\imgui\imgui_impl_sdl_gl3.h">
-      <Filter>Utils\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\external\imgui\imconfig.h">
-      <Filter>Utils\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\external\imgui\imgui.h">
       <Filter>Utils\Imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\external\imgui\imgui_internal.h">
@@ -157,11 +157,11 @@
     <ClInclude Include="..\..\external\imgui\stb_truetype.h">
       <Filter>Utils\Imgui</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\external\imgui\imgui_impl_sdl.h">
+    <ClInclude Include="..\..\external\imgui\imconfig.h">
       <Filter>Utils\Imgui</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\GLManager.h">
-      <Filter>Core\OpenGL</Filter>
+    <ClInclude Include="..\..\external\imgui\imgui.h">
+      <Filter>Utils\Imgui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -287,26 +287,26 @@
     <ClCompile Include="..\..\src\lodePNG\lodepng_util.cpp">
       <Filter>Utils\lodePNG</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\JEngine\GraphicPipelines.cpp">
+      <Filter>System\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JEngine\GLManager.cpp">
+      <Filter>Core\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JEngine\Engine.cpp">
+      <Filter>Core\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\imgui\imgui_draw.cpp">
+      <Filter>Utils\Imgui</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\imgui\imgui_impl_sdl_gl3.cpp">
       <Filter>Utils\Imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\imgui\imgui.cpp">
       <Filter>Utils\Imgui</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\imgui\imgui_draw.cpp">
-      <Filter>Utils\Imgui</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\imgui\imgui_demo.cpp">
       <Filter>Utils\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\imgui\imgui_impl_sdl.cpp">
-      <Filter>Utils\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\GraphicPipelines.cpp">
-      <Filter>System\Graphic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\GLManager.cpp">
-      <Filter>Core\OpenGL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -372,6 +372,9 @@
     </Filter>
     <Filter Include="Core\OpenGL">
       <UniqueIdentifier>{5a991f34-d6ae-43d5-a4ea-4351cde65642}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Engine">
+      <UniqueIdentifier>{952103c7-cbf1-4f02-908b-324f0fefb38c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

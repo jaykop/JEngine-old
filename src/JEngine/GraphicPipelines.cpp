@@ -53,8 +53,6 @@ void GraphicSystem::RenderToFramebuffer()
 {	
 	// Render to framebuffer
 	glBindFramebuffer(GL_FRAMEBUFFER, GLM::m_fbo);
-	GLM::m_shader[GLM::SHADER_NORMAL]->Use();
-
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.f, 0.f, 0.f, 0.f);
 	glViewport(0, 0, GLint(m_width), GLint(m_height));

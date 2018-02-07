@@ -144,18 +144,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\external\imgui\imconfig.h" />
     <ClInclude Include="..\..\external\imgui\imgui.h" />
-    <ClInclude Include="..\..\external\imgui\imgui_impl_sdl.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="..\..\external\imgui\imgui_impl_sdl_gl3.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </ClInclude>
+    <ClInclude Include="..\..\external\imgui\imgui_impl_sdl_gl3.h" />
     <ClInclude Include="..\..\external\imgui\imgui_internal.h" />
     <ClInclude Include="..\..\external\imgui\stb_rect_pack.h" />
     <ClInclude Include="..\..\external\imgui\stb_textedit.h" />
@@ -171,10 +160,20 @@
     <ClInclude Include="..\..\include\JEngine\ComponentBuilder.h" />
     <ClInclude Include="..\..\include\JEngine\ComponentManager.h" />
     <ClInclude Include="..\..\include\JEngine\Debug.h" />
+    <ClInclude Include="..\..\include\JEngine\Engine.h" />
     <ClInclude Include="..\..\include\JEngine\GLManager.h" />
     <ClInclude Include="..\..\include\JEngine\GraphicComponents.h" />
     <ClInclude Include="..\..\include\JEngine\GraphicSystem.h" />
-    <ClInclude Include="..\..\include\JEngine\ImguiManager.h" />
+    <ClInclude Include="..\..\include\JEngine\ImguiManager.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\..\include\JEngine\InputHandler.h" />
     <ClInclude Include="..\..\include\JEngine\JsonParser.h" />
     <ClInclude Include="..\..\include\JEngine\Light.h" />
@@ -215,18 +214,7 @@
     <ClCompile Include="..\..\src\imgui\imgui.cpp" />
     <ClCompile Include="..\..\src\imgui\imgui_demo.cpp" />
     <ClCompile Include="..\..\src\imgui\imgui_draw.cpp" />
-    <ClCompile Include="..\..\src\imgui\imgui_impl_sdl.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\src\imgui\imgui_impl_sdl_gl3.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="..\..\src\imgui\imgui_impl_sdl_gl3.cpp" />
     <ClCompile Include="..\..\src\JEngine\Animation.cpp" />
     <ClCompile Include="..\..\src\JEngine\Application.cpp" />
     <ClCompile Include="..\..\src\JEngine\AssetManager.cpp" />
@@ -235,10 +223,20 @@
     <ClCompile Include="..\..\src\JEngine\ComponentBuilder.cpp" />
     <ClCompile Include="..\..\src\JEngine\ComponentManager.cpp" />
     <ClCompile Include="..\..\src\JEngine\Debug.cpp" />
+    <ClCompile Include="..\..\src\JEngine\Engine.cpp" />
     <ClCompile Include="..\..\src\JEngine\GLManager.cpp" />
     <ClCompile Include="..\..\src\JEngine\GraphicPipelines.cpp" />
     <ClCompile Include="..\..\src\JEngine\GraphicSystem.cpp" />
-    <ClCompile Include="..\..\src\JEngine\ImguiManager.cpp" />
+    <ClCompile Include="..\..\src\JEngine\ImguiManager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\src\JEngine\InputHandler.cpp" />
     <ClCompile Include="..\..\src\JEngine\JsonParser.cpp" />
     <ClCompile Include="..\..\src\JEngine\Light.cpp" />

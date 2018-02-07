@@ -1,24 +1,25 @@
 #pragma once
 #include "Macro.h"
 
-#ifdef JE_SUPPORT_IMGUI
-
-#include "SDL.h"
+union SDL_Event;
+struct SDL_Window;
 
 JE_BEGIN
 
 class ImguiManager {
 
-public:
-
-	static void Init(SDL_Window* _window);
-	static void Update();
-	static void Close();
+	friend class Application;
+	friend class StateManager;
 
 private:
 
-	ImguiManager() {};
-	~ImguiManager() {};
+	static void Init(SDL_Window* _window);
+	static void EventUpdate(SDL_Event* _event);
+	static void Update();
+	static void Close();
+
+	ImguiManager() = delete;
+	~ImguiManager() = delete;
 	ImguiManager(const ImguiManager& /*_copy*/) = delete;
 	void operator=(const ImguiManager& /*_copy*/) = delete;
 
@@ -28,5 +29,3 @@ private:
 using IMGUI = ImguiManager;
 
 JE_END
-
-#endif

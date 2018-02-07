@@ -479,7 +479,6 @@ void GLManager::RegisterUniform()
 	m_shader[SHADER_DEFERRED]->ConnectUniform(UNIFORM_DEFERRED_ROTATE, "m4_rotate");
 	m_shader[SHADER_DEFERRED]->ConnectUniform(UNIFORM_DEFERRED_CAMERA, "m4_viewport");
 	m_shader[SHADER_DEFERRED]->ConnectUniform(UNIFORM_DEFERRED_PROJECTION, "m4_projection");
-	//m_shader[SHADER_DEFERRED]->ConnectUniform(UNIFORM_DEFERRED_NORMAL, "m3_normal");
 }
 
 void GLManager::ShowGLVersion()

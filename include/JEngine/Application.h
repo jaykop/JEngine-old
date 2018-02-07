@@ -25,7 +25,6 @@ JE_BEGIN
 class Application {
 
 	friend class Engine;
-	friend class StateManager;
 
 public:
 
@@ -46,10 +45,6 @@ private:
 	static void	Update();
 	static void	Close();
 
-	static InitData&	GetData();
-	static SDL_Window*	GetWindow();
-	static SDL_Surface* GetSurface();
-
 	// Locked functions
 	Application() = delete; 
 	~Application() = delete;
@@ -65,23 +60,6 @@ private:
 	static int				m_buffers, m_samples;
 };
 
-//////////////////////////////////////////////////////////////////////////
-// Engine class
-//////////////////////////////////////////////////////////////////////////
-class Engine {
-
-public:
-	static void Run();
-
-private:
-
-	Engine() = delete;
-	~Engine() = delete;
-	Engine(const Engine& /*_copy*/) = delete;
-	void operator=(const Engine& /*_copy*/) = delete;
-};
-
 using APP = Application;
-using JENGINE = Engine;
 
 JE_END
