@@ -1,26 +1,29 @@
 #pragma once
-
+#include "ft2build.h"
+#include FT_FREETYPE_H
 #include "glew.h"
 #define GLEW_STATIC
-
+#include <map>
 #include <vector>
-#include "Macro.h"
+#include "Vector2.h"
 
 JE_BEGIN
 
 class GLManager {
 
 	friend class Shader;
+	friend class Text;
 	friend class Model;
 	friend class Sprite;
 	friend class Emitter;
 	friend class Application;
+	friend class AssetManager;
 	friend class GraphicSystem;
 
 	using Shaders = std::vector<Shader*>;
 
 	enum DrawMode  { DRAW_POINT, DRAW_LINE, DRAW_FILL };
-	enum ShaderType  {SHADER_NORMAL, SHADER_LIGHTING, SHADER_PARTICLE, SHADER_SCREEN, SHADER_DEFERRED, SHADER_END};
+	enum ShaderType  {SHADER_MODEL, SHADER_LIGHTING, SHADER_PARTICLE, SHADER_SCREEN, SHADER_DEFERRED, SHADER_END};
 	enum ShapeType  { SHAPE_POINT, SHAPE_PLANE, SHAPE_PLANE3D, SHAPE_CUBE, SHAPE_END};
 	enum UniformType  {
 
@@ -67,6 +70,17 @@ class GLManager {
 		UNIFORM_END
 	};
 
+	// TODO
+	// Merge to one font data
+	struct Character {
+		GLuint m_texture;	// ID handle of the glyph texture
+		GLuint m_advance;	// Horizontal offset to advance to next glyph
+		vec2 m_size;		// Size of glyph
+		vec2 m_bearing;		// Offset from baseline to left/top of glyph
+	};
+
+	typedef std::map<char, Character> Font;
+
 public:
 
 	static void SetDrawMode(DrawMode _mode);
@@ -80,6 +94,7 @@ private:
 	static void	InitGLEnvironment();
 	static void InitVBO();
 	static void InitFBO();
+	static void InitFreetype();
 	static void InitShaders();
 	static void ShowGLVersion();
 	static void SetVAO(GLuint &_vao, GLuint &_vbo, GLuint &_ebo,
@@ -102,6 +117,11 @@ private:
 	static const float		m_verticesPoint[8], m_verticesPlane[32], m_verticesPlane3D[96], m_verticesCube[192], m_verticesSkybox[192];
 	static const unsigned	m_indicesPoint[1], m_indicesPlane[6], m_indicesPlane3D[18], m_indicesCube[36],
 		m_elementSize[SHAPE_END], m_verticesSize[SHAPE_END], m_indicesSize[SHAPE_END];
+
+	// Freetype Library
+	static Font			m_font;
+	static FT_Face		m_ftFace;
+	static FT_Library	m_ftLibrary;
 
 	// Locked functions
 	GLManager() = delete;

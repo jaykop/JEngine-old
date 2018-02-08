@@ -129,6 +129,63 @@ void GraphicSystem::Render(const unsigned &_vao, const int _elementSize, unsigne
 	glBindVertexArray(0);
 }
 
+void GraphicSystem::Render(const unsigned & _vao, const int _elementSize, 
+	const std::string& _text, Transform* _transform)
+{
+	static Transform* s_pTransform;
+	static vec3 s_position, s_scale;
+	
+	s_pTransform = _transform;
+	s_scale = _transform->m_scale;
+	s_position = _transform->m_position;
+
+	// TODO
+	// Set init values
+	GLfloat new_x = GLfloat(s_position.x);
+	GLfloat init_x = new_x, lower_y = 0, nl_offset = 2.f / 3.f;
+	int num_newline = 1;
+
+	// Iterate all character
+	std::string::const_iterator c;
+	for (c = _text.begin(); c != _text.end(); ++c)
+	{
+		GLM::Character ch = GLM::m_font[*c];
+		GLfloat xpos = new_x + ch.m_bearing.x * s_scale.x;
+		GLfloat ypos = s_position.y - (ch.m_size.y - ch.m_bearing.y) * s_scale.y - lower_y;
+		GLfloat zpos = s_position.z;
+
+		GLfloat w = ch.m_size.x * s_scale.x;
+		GLfloat h = ch.m_size.y * s_scale.y;
+
+		//Update vbo
+		GLfloat vertices[4][5] = {
+			{ xpos, ypos + h, zpos, 0.0, 0.0 },
+		{ xpos, ypos, zpos, 0.0, 1.0 },
+		{ xpos + w, ypos, zpos, 1.0, 1.0 },
+		{ xpos + w, ypos + h, zpos, 1.0, 0.0 }
+		};
+
+		glBindTexture(GL_TEXTURE_2D, ch.m_texture);
+		//glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(m_vertex_buffer_data), vertices);	
+		glBindVertexArray(_vao);
+		glDrawElements(GL_TRIANGLES, _elementSize, GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
+
+		const char newline = *c;
+		if (newline == '\n')
+		{
+			// TODO
+			// Font size
+			new_x = init_x;
+			lower_y = 48.f * nl_offset * num_newline;
+			++num_newline;
+		}
+
+		else
+			new_x += (ch.m_advance >> 6) * s_scale.x;
+	}
+}
+
 void GraphicSystem::SortSprites()
 {
 	//TODO

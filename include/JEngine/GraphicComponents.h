@@ -3,6 +3,7 @@
 // Graphic component headers
 //////////////////////////////////////////////////////////////////////////
 
+#include "Text.h"
 #include "Light.h"
 #include "Camera.h"
 #include "Sprite.h"

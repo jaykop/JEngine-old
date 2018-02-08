@@ -1,4 +1,6 @@
 {
+	"Font" : "resource/font/Default.ttf",
+	
 	"Texture" : [
 
 		{"Key" : "rect", 			"Directory" : "resource/texture/rect.png"},

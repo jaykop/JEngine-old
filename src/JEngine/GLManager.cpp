@@ -17,6 +17,9 @@ GLuint				GLManager::m_depthBuffer = 0;
 GLuint				GLManager::m_renderTarget = 0;
 GLManager::Shaders	GLManager::m_shader;
 GLManager::DrawMode GLManager::m_mode = DrawMode::DRAW_FILL;
+GLManager::Font		GLManager::m_font;
+FT_Face				GLManager::m_ftFace;
+FT_Library			GLManager::m_ftLibrary;
 
 // TODO
 // For test...
@@ -218,6 +221,7 @@ bool GLManager::initSDL_GL(float _width, float _height)
 		InitVBO();
 		InitFBO();				// These two are to be off to visualise deferred rendering
 		InitGLEnvironment();	// These two are to be off to visualise deferred rendering
+		InitFreetype();
 		//InitDefferedFBO();
 		RegisterUniform();
 	}
@@ -382,9 +386,9 @@ void GLManager::InitShaders()
 	for (unsigned i = 0; i < SHADER_END; ++i) 
 		m_shader.push_back(new Shader);
 
-	m_shader[SHADER_NORMAL]->LoadShader(
-		"../src/shader/normal.vs",
-		"../src/shader/normal.fs");
+	m_shader[SHADER_MODEL]->LoadShader(
+		"../src/shader/model.vs",
+		"../src/shader/model.fs");
 
 	m_shader[SHADER_LIGHTING]->LoadShader(
 		"../src/shader/lighting.vs",
@@ -401,6 +405,12 @@ void GLManager::InitShaders()
 	m_shader[SHADER_DEFERRED]->LoadShader(
 		"../src/shader/deferred.vs",
 		"../src/shader/deferred.fs");
+}
+
+void GLManager::InitFreetype()
+{
+	if (FT_Init_FreeType(&m_ftLibrary))
+		JE_DEBUG_PRINT("!GLManager - Could not init freetype library.\n");
 }
 
 void GLManager::SetDrawMode(DrawMode _mode)
@@ -424,26 +434,26 @@ void GLManager::SetDrawMode(DrawMode _mode)
 void GLManager::RegisterUniform()
 {
 	/******************** normal shader ********************/
-	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_TRANSLATE, "m4_translate");
-	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_SCALE, "m4_scale");
-	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_ROTATE, "m4_rotate");
-	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_CAMERA, "m4_viewport");
-	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_PROJECTION, "m4_projection");
-	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_ANI_TRANSLATE, "m4_aniTranslate");
-	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_ANI_SCALE, "m4_aniScale");
+	m_shader[SHADER_MODEL]->ConnectUniform(UNIFORM_TRANSLATE, "m4_translate");
+	m_shader[SHADER_MODEL]->ConnectUniform(UNIFORM_SCALE, "m4_scale");
+	m_shader[SHADER_MODEL]->ConnectUniform(UNIFORM_ROTATE, "m4_rotate");
+	m_shader[SHADER_MODEL]->ConnectUniform(UNIFORM_CAMERA, "m4_viewport");
+	m_shader[SHADER_MODEL]->ConnectUniform(UNIFORM_PROJECTION, "m4_projection");
+	m_shader[SHADER_MODEL]->ConnectUniform(UNIFORM_ANI_TRANSLATE, "m4_aniTranslate");
+	m_shader[SHADER_MODEL]->ConnectUniform(UNIFORM_ANI_SCALE, "m4_aniScale");
 
-	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_COLOR, "v4_color");
-	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_CAMERA_POSITION, "v3_cameraPosition");
+	m_shader[SHADER_MODEL]->ConnectUniform(UNIFORM_COLOR, "v4_color");
+	m_shader[SHADER_MODEL]->ConnectUniform(UNIFORM_CAMERA_POSITION, "v3_cameraPosition");
 	
-	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_FLIP, "boolean_flip");
-	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_IS_LIGHT, "boolean_light");
-	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_BILBOARD, "boolean_bilboard");
-	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_LIGHT_SIZE, "int_lightSize");
+	m_shader[SHADER_MODEL]->ConnectUniform(UNIFORM_FLIP, "boolean_flip");
+	m_shader[SHADER_MODEL]->ConnectUniform(UNIFORM_IS_LIGHT, "boolean_light");
+	m_shader[SHADER_MODEL]->ConnectUniform(UNIFORM_BILBOARD, "boolean_bilboard");
+	m_shader[SHADER_MODEL]->ConnectUniform(UNIFORM_LIGHT_SIZE, "int_lightSize");
 
-	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_MATERIAL_AMBIENT, "material.m_ambient");
-	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_MATERIAL_DIFFUSE, "material.m_diffuse");
-	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_MATERIAL_SPECULAR, "material.m_specular");
-	m_shader[SHADER_NORMAL]->ConnectUniform(UNIFORM_MATERIAL_SHININESS, "material.m_shininess");
+	m_shader[SHADER_MODEL]->ConnectUniform(UNIFORM_MATERIAL_AMBIENT, "material.m_ambient");
+	m_shader[SHADER_MODEL]->ConnectUniform(UNIFORM_MATERIAL_DIFFUSE, "material.m_diffuse");
+	m_shader[SHADER_MODEL]->ConnectUniform(UNIFORM_MATERIAL_SPECULAR, "material.m_specular");
+	m_shader[SHADER_MODEL]->ConnectUniform(UNIFORM_MATERIAL_SHININESS, "material.m_shininess");
 
 	/******************** Light shader ********************/
 	m_shader[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_TRANSLATE, "m4_translate");

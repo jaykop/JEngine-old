@@ -1,5 +1,5 @@
-#include "glew.h"
 #include "lodepng.h"
+#include "GLManager.h"
 #include "State.h"
 #include "AssetManager.h"
 #include "JsonParser.h"
@@ -49,6 +49,11 @@ void AssetManager::Load()
 		JE_DEBUG_PRINT("*AssetManager - Loaded texture: %s.\n", textures[i]["Directory"].GetString());
 	}
 	JE_DEBUG_PRINT("*AssetManager - Loaded textures successfully.\n");
+
+	// Load font
+	CR_RJValue font = JSON::GetDocument()["Font"];
+	LoadFont(font.GetString());
+	JE_DEBUG_PRINT("*AssetManager - Loaded font successfully.\n");
 }
 
 void AssetManager::Unload()
@@ -86,6 +91,7 @@ void AssetManager::LoadBuiltInComponents()
 	JE_ADD_COMPONENT(Transform);
 
 	// Graphic components
+	JE_ADD_COMPONENT(Text);
 	JE_ADD_COMPONENT(Model);
 	JE_ADD_COMPONENT(Camera);
 	JE_ADD_COMPONENT(Sprite);
@@ -97,6 +103,62 @@ void AssetManager::LoadBuiltInComponents()
 	JE_DEBUG_PRINT("*AssetManager - Loaded bulit-in components successfully.\n");
 }
 
+
+void AssetManager::LoadFont(const char * _path)
+{
+	// Check freetype face init
+	if (!FT_New_Face(GLM::m_ftLibrary, _path, 0, &GLM::m_ftFace))
+		JE_DEBUG_PRINT("!AssetManager - Loaded font: %sn", _path);
+
+	//TODO
+	static float m_fontSize = 48;
+
+	// Set size to load glyphs as
+	FT_Set_Pixel_Sizes(GLM::m_ftFace, 0, FT_UInt(m_fontSize));
+
+	// Disable byte-alignment restriction
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+	// Load first 128 characters of ASCII set
+	for (GLubyte c = 0; c < 128; c++)
+	{
+		// Load character glyph 
+		if (FT_Load_Char(GLM::m_ftFace, c, FT_LOAD_RENDER))
+		{
+			std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
+			continue;
+		}
+		// Generate texture
+		GLuint texture;
+		glGenTextures(1, &texture);
+		glBindTexture(GL_TEXTURE_2D, texture);
+		glTexImage2D(
+			GL_TEXTURE_2D,
+			0,
+			GL_RED,
+			GLM::m_ftFace->glyph->bitmap.width,
+			GLM::m_ftFace->glyph->bitmap.rows,
+			0,
+			GL_RED,
+			GL_UNSIGNED_BYTE,
+			GLM::m_ftFace->glyph->bitmap.buffer
+		);
+		// Set texture options
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		// Now store character for later use
+		GLM::Character character = {
+			texture, GLuint(GLM::m_ftFace->glyph->advance.x),
+			vec2(float(GLM::m_ftFace->glyph->bitmap.width), float(GLM::m_ftFace->glyph->bitmap.rows)),
+			vec2(float(GLM::m_ftFace->glyph->bitmap_left), float(GLM::m_ftFace->glyph->bitmap_top))
+		};
+		GLM::m_font.insert(std::pair<char, GLM::Character>(c, character));
+	}
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
 
 void AssetManager::LoadAudio(const char* /*_path*/, const char* /*_audioKey*/)
 {

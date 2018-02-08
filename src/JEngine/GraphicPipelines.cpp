@@ -18,17 +18,17 @@ void GraphicSystem::UpdatePipelines(const float _dt)
 	m_isLight = m_lights.empty() ? false : true;
 
 	// Inform that there are lights
-	GLM::m_shader[GLM::SHADER_NORMAL]->Use();
+	GLM::m_shader[GLM::SHADER_MODEL]->Use();
 
-	GLM::m_shader[GLM::SHADER_NORMAL]->SetBool(
+	GLM::m_shader[GLM::SHADER_MODEL]->SetBool(
 		GLM::UNIFORM_IS_LIGHT, m_isLight);
 
 	LightSourcePipeline();
 
-	GLM::m_shader[GLM::SHADER_NORMAL]->Use();
+	GLM::m_shader[GLM::SHADER_MODEL]->Use();
 
 	// Send camera info to shader
-	GLM::m_shader[GLM::SHADER_NORMAL]->SetMatrix(
+	GLM::m_shader[GLM::SHADER_MODEL]->SetMatrix(
 		GLM::UNIFORM_CAMERA, m_viewport);
 
 	GLM::m_shader[GLM::SHADER_PARTICLE]->Use();
@@ -99,7 +99,7 @@ void GraphicSystem::LightSourcePipeline()
 	// TODO
 	// Multiple lights?
 	s_lightSize = int(m_lights.size());
-	GLM::m_shader[GLM::SHADER_NORMAL]->SetInt(
+	GLM::m_shader[GLM::SHADER_MODEL]->SetInt(
 		GLM::UNIFORM_LIGHT_SIZE, s_lightSize);
 
 	if (m_isLight) {
@@ -158,29 +158,29 @@ void GraphicSystem::SpritePipeline(Sprite *_sprite)
 	static Transform* s_pTransform;
 	s_pTransform = _sprite->m_transform;
 
-	GLM::m_shader[GLM::SHADER_NORMAL]->Use();
+	GLM::m_shader[GLM::SHADER_MODEL]->Use();
 
-	GLM::m_shader[GLM::SHADER_NORMAL]->SetMatrix(
+	GLM::m_shader[GLM::SHADER_MODEL]->SetMatrix(
 		GLM::UNIFORM_TRANSLATE, mat4::Translate(s_pTransform->m_position));
 
-	GLM::m_shader[GLM::SHADER_NORMAL]->SetMatrix(
+	GLM::m_shader[GLM::SHADER_MODEL]->SetMatrix(
 		GLM::UNIFORM_SCALE, mat4::Scale(s_pTransform->m_scale));
 
-	GLM::m_shader[GLM::SHADER_NORMAL]->SetMatrix(
+	GLM::m_shader[GLM::SHADER_MODEL]->SetMatrix(
 		GLM::UNIFORM_ROTATE, mat4::Rotate(s_pTransform->m_rotation, s_pTransform->m_rotationAxis));
 
-	GLM::m_shader[GLM::SHADER_NORMAL]->SetVector3(
+	GLM::m_shader[GLM::SHADER_MODEL]->SetVector3(
 		GLM::UNIFORM_CAMERA_POSITION, m_pMainCamera->m_position);
 
-	GLM::m_shader[GLM::SHADER_NORMAL]->SetBool(
+	GLM::m_shader[GLM::SHADER_MODEL]->SetBool(
 		GLM::UNIFORM_BILBOARD, _sprite->m_bilboard);
 
 	// Send projection info to shader
 	if (_sprite->m_projection == PROJECTION_PERSPECTIVE)
-		GLM::m_shader[GLM::SHADER_NORMAL]->SetMatrix(
+		GLM::m_shader[GLM::SHADER_MODEL]->SetMatrix(
 			GLM::UNIFORM_PROJECTION, m_perspective);
 	else
-		GLM::m_shader[GLM::SHADER_NORMAL]->SetMatrix(
+		GLM::m_shader[GLM::SHADER_MODEL]->SetMatrix(
 			GLM::UNIFORM_PROJECTION, m_orthogonal);
 
 	// TODO
@@ -244,19 +244,19 @@ void GraphicSystem::MappingPipeline(Sprite* _sprite)
 	}
 
 	// Send color info to shader
-	GLM::m_shader[GLM::SHADER_NORMAL]->SetVector4(
+	GLM::m_shader[GLM::SHADER_MODEL]->SetVector4(
 		GLM::UNIFORM_COLOR,
 		_sprite->m_color);
 
-	GLM::m_shader[GLM::SHADER_NORMAL]->SetBool(
+	GLM::m_shader[GLM::SHADER_MODEL]->SetBool(
 		GLM::UNIFORM_FLIP,
 		_sprite->m_flip);
 
-	GLM::m_shader[GLM::SHADER_NORMAL]->SetMatrix(
+	GLM::m_shader[GLM::SHADER_MODEL]->SetMatrix(
 		GLM::UNIFORM_ANI_SCALE,
 		mat4::Scale(m_aniScale));
 
-	GLM::m_shader[GLM::SHADER_NORMAL]->SetMatrix(
+	GLM::m_shader[GLM::SHADER_MODEL]->SetMatrix(
 		GLM::UNIFORM_ANI_TRANSLATE,
 		mat4::Translate(m_aniTranslate));
 }
@@ -264,15 +264,15 @@ void GraphicSystem::MappingPipeline(Sprite* _sprite)
 void GraphicSystem::LightingEffectPipeline(Material *_material)
 {
 	// Send material info to shader
-	GLM::m_shader[GLM::SHADER_NORMAL]->SetInt(
+	GLM::m_shader[GLM::SHADER_MODEL]->SetInt(
 		GLM::UNIFORM_MATERIAL_SPECULAR,
 		_material->m_specular);
 
-	GLM::m_shader[GLM::SHADER_NORMAL]->SetInt(
+	GLM::m_shader[GLM::SHADER_MODEL]->SetInt(
 		GLM::UNIFORM_MATERIAL_DIFFUSE,
 		_material->m_diffuse);
 
-	GLM::m_shader[GLM::SHADER_NORMAL]->SetFloat(
+	GLM::m_shader[GLM::SHADER_MODEL]->SetFloat(
 		GLM::UNIFORM_MATERIAL_SHININESS,
 		_material->m_shininess);
 
@@ -288,49 +288,49 @@ void GraphicSystem::LightingEffectPipeline(Material *_material)
 		s_index = std::to_string(s_lightIndex);
 
 		s_color = "v4_lightColor[" + s_index + "]";
-		GLM::m_shader[GLM::SHADER_NORMAL]->SetVector4(
+		GLM::m_shader[GLM::SHADER_MODEL]->SetVector4(
 			s_color.c_str(), _light->m_color);
 
 		s_light = "light[" + s_index + "].";
 
 		s_input = s_light + spec;
-		GLM::m_shader[GLM::SHADER_NORMAL]->SetVector4(
+		GLM::m_shader[GLM::SHADER_MODEL]->SetVector4(
 			s_input.c_str(), _light->m_specular);
 
 		s_input = s_light + diff;
-		GLM::m_shader[GLM::SHADER_NORMAL]->SetVector4(
+		GLM::m_shader[GLM::SHADER_MODEL]->SetVector4(
 			s_input.c_str(), _light->m_diffuse);
 
 		s_input = s_light + type;
-		GLM::m_shader[GLM::SHADER_NORMAL]->SetEnum(
+		GLM::m_shader[GLM::SHADER_MODEL]->SetEnum(
 			s_input.c_str(), _light->m_type);
 
 		s_input = s_light + dir;
-		GLM::m_shader[GLM::SHADER_NORMAL]->SetVector3(
+		GLM::m_shader[GLM::SHADER_MODEL]->SetVector3(
 			s_input.c_str(), _light->m_direction);
 
 		s_input = s_light + constant;
-		GLM::m_shader[GLM::SHADER_NORMAL]->SetFloat(
+		GLM::m_shader[GLM::SHADER_MODEL]->SetFloat(
 			s_input.c_str(), _light->m_constant);
 
 		s_input = s_light + linear;
-		GLM::m_shader[GLM::SHADER_NORMAL]->SetFloat(
+		GLM::m_shader[GLM::SHADER_MODEL]->SetFloat(
 			s_input.c_str(), _light->m_linear);
 
 		s_input = s_light + quad;
-		GLM::m_shader[GLM::SHADER_NORMAL]->SetFloat(
+		GLM::m_shader[GLM::SHADER_MODEL]->SetFloat(
 			s_input.c_str(), _light->m_quadratic);
 
 		s_input = s_light + pos;
-		GLM::m_shader[GLM::SHADER_NORMAL]->SetVector3(
+		GLM::m_shader[GLM::SHADER_MODEL]->SetVector3(
 			s_input.c_str(), _light->m_position);
 
 		s_input = s_light + cut;
-		GLM::m_shader[GLM::SHADER_NORMAL]->SetFloat(
+		GLM::m_shader[GLM::SHADER_MODEL]->SetFloat(
 			s_input.c_str(), cosf(Math::DegToRad(_light->m_cutOff)));
 
 		s_input = s_light + outcut;
-		GLM::m_shader[GLM::SHADER_NORMAL]->SetFloat(
+		GLM::m_shader[GLM::SHADER_MODEL]->SetFloat(
 			s_input.c_str(), cosf(Math::DegToRad(_light->m_outerCutOff)));
 
 		s_lightIndex++;

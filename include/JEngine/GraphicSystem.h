@@ -14,7 +14,7 @@ enum ProjectType  { PROJECTION_PERSPECTIVE, PROJECTION_ORTHOGONAL };
 
 class GraphicSystem : public System
 {
-
+	friend class Text;
 	friend class Light;
 	friend class Model;
 	friend class Sprite;
@@ -77,6 +77,7 @@ private:
 	void ParticlePipeline(Emitter* _emitter, const float _dt);
 
 	void Render(const unsigned &_vao, const int _elementSize, unsigned _mode = 0x0004 /*GL_TRIANGLES*/);
+	void Render(const unsigned& _vao, const int _elementSize, const std::string& _text, Transform* _transform);
 	void SortSprites();
 	void GLMousePosition();
 

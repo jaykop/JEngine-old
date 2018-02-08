@@ -127,12 +127,6 @@
     <ClInclude Include="..\..\include\JEngine\SoundSystem.h">
       <Filter>System\Sound</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\external\lodePNG\lodepng_util.h">
-      <Filter>Utils\lodePNG</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\external\lodePNG\lodepng.h">
-      <Filter>Utils\lodePNG</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\JEngine\GLManager.h">
       <Filter>Core\OpenGL</Filter>
     </ClInclude>
@@ -165,6 +159,12 @@
     </ClInclude>
     <ClInclude Include="..\..\include\JEngine\Shader.h">
       <Filter>System\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\external\lodePNG\lodepng_util.h">
+      <Filter>Utils\lodePNG</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\external\lodePNG\lodepng.h">
+      <Filter>Utils\lodePNG</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -284,12 +284,6 @@
     <ClCompile Include="..\..\src\JEngine\SoundSystem.cpp">
       <Filter>System\Sound</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\lodePNG\lodepng.cpp">
-      <Filter>Utils\lodePNG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lodePNG\lodepng_util.cpp">
-      <Filter>Utils\lodePNG</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\JEngine\GraphicPipelines.cpp">
       <Filter>System\Graphic</Filter>
     </ClCompile>
@@ -313,6 +307,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\JEngine\Text.cpp">
       <Filter>System\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lodePNG\lodepng_util.cpp">
+      <Filter>Utils\lodePNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lodePNG\lodepng.cpp">
+      <Filter>Utils\lodePNG</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
