@@ -1,4 +1,5 @@
 #include "SoundSystem.h"
+#include "SoundComponents.h"
 
 JE_BEGIN
 
@@ -17,7 +18,7 @@ void SoundSystem::Init()
 {
 }
 
-void SoundSystem::Update(float /*dt*/)
+void SoundSystem::Update(const float /*_dt*/)
 {
 }
 

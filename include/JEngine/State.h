@@ -4,12 +4,12 @@
 
 JE_BEGIN
 
+class ObjectContainer;
+
 class State {
 
 	friend class StateManager;
 	friend class AssetManager;
-	friend class BehaviorSystem;
-	friend class ObjectContainer;
 
 public:
 
@@ -17,6 +17,7 @@ private:
 
 	State(const char* _name);
 	~State() {};
+	State() = delete;
 	State(const State& /*_copy*/) = delete;
 	void operator=(const State& /*_copy*/) = delete;
 

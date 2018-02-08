@@ -5,7 +5,6 @@
 #include "AssetManager.h"
 #include "JsonParser.h"
 #include "Random.h"
-
 #include "ImguiManager.h"
 
 JE_BEGIN
@@ -115,7 +114,7 @@ void Application::Update()
 		!= STATE::StateStatus::STATE_QUIT) {
 		
 		// Update state manager
-		STATE::Update(m_pEvent);
+		STATE::Update(&m_pEvent);
 	
 		// Update sdl window
 		SDL_UpdateWindowSurface(m_pWindow);

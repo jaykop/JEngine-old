@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-//#include <functional>
 #include "System.h"
 #include "Matrix4x4.h"
 
@@ -50,7 +49,7 @@ private:
 
 	void Load(CR_RJDoc _data) override;
 	void Init() override;
-	void Update(float dt) override;
+	void Update(const float _dt) override;
 	void Close() override;
 	void Unload() override;
 

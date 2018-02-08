@@ -1,8 +1,8 @@
-#include "ImguiManager.h"
-#include "Engine.h"
 #include "glew.h"
 #include "imgui.h"
 #include "imgui_impl_sdl_gl3.h"
+#include "ImguiManager.h"
+#include "Core.h"
 
 JE_BEGIN
 
@@ -10,7 +10,7 @@ SDL_Window* ImguiManager::m_pWindow = nullptr;
 
 void ImguiManager::Init(SDL_Window* _window)
 {
-	if (JENGINE::m_IMGUI) {
+	if (CORE::m_IMGUI) {
 		m_pWindow = _window;
 		ImGui_ImplSdlGL3_Init(_window);
 	}
@@ -18,13 +18,13 @@ void ImguiManager::Init(SDL_Window* _window)
 
 void ImguiManager::EventUpdate(SDL_Event* _event)
 {
-	if (JENGINE::m_IMGUI)
+	if (CORE::m_IMGUI)
 		ImGui_ImplSdlGL3_ProcessEvent(_event);
 }
 
 void ImguiManager::Update()
 {
-	if (JENGINE::m_IMGUI) {
+	if (CORE::m_IMGUI) {
 		
 		bool show_demo_window = true;
 		bool show_another_window = false;
@@ -72,7 +72,7 @@ void ImguiManager::Update()
 
 void ImguiManager::Close()
 {
-	if (JENGINE::m_IMGUI) 
+	if (CORE::m_IMGUI) 
 		ImGui_ImplSdlGL3_Shutdown();
 }
 

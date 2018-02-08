@@ -17,7 +17,6 @@ Custom Matrix looks like this...
 /******************************************************************************/
 
 #pragma once
-#include "Macro.h"
 #include "Vector2.h"
 #include <iostream>
 

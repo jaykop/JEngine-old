@@ -1,5 +1,4 @@
 #include "Camera.h"
-#include "MathUtils.h"
 #include "SystemManager.h"
 #include "GraphicSystem.h"
 

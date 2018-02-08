@@ -1,8 +1,5 @@
-#include "State.h"
 #include "UserComponent.h"
-#include "StateManager.h"
 #include "BehaviorSystem.h"
-#include "ObjectContainer.h"
 
 JE_BEGIN
 

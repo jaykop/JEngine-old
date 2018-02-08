@@ -1,5 +1,4 @@
 #pragma once
-#include "Macro.h"
 #include "Component.h"
 #include "Vector3.h"
 #include "Vector4.h"
@@ -34,7 +33,6 @@ class Light : public Component
 	enum LightType  {NORMALLIGHT, DIRECTIONALLIGHT, SPOTLIGHT, POINTLIGHT};
 
 	friend class GraphicSystem;
-	friend class ComponentManager;
 	friend class LightBuilder;
 
 public:
@@ -51,7 +49,7 @@ public:
 private:
 
 	Light(Object* _pOwner);
-	~Light() {};
+	~Light();
 
 	Light() = delete;
 	Light(const Light& /*_copy*/) = delete;

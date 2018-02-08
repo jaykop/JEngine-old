@@ -16,7 +16,7 @@ Sprite::Sprite(Object* _pOwner)
 
 void Sprite::Register()
 {
-	SystemManager::GetGraphicSystem()->AddSprite(this);
+	SYSTEM::GetGraphicSystem()->AddSprite(this);
 	if (m_pOwner->HasComponent<Transform>())
 		m_transform = m_pOwner->GetComponent<Transform>();
 }
@@ -28,7 +28,7 @@ void Sprite::AddTexture(const char *_key)
 		JE_DEBUG_PRINT("!Sprite - Existing texture: %s.\n", _key);
 
 	else {
-		unsigned newTexture = AssetManager::GetTexture(_key);
+		unsigned newTexture = ASSET::GetTexture(_key);
 
 		if (!m_textureMap.size())
 			m_mainTex = newTexture;
@@ -68,7 +68,7 @@ Sprite::~Sprite()
 {
 	// Remove textures
 	m_textureMap.clear();
-	SystemManager::GetGraphicSystem()->RemoveSprite(this);
+	SYSTEM::GetGraphicSystem()->RemoveSprite(this);
 }
 
 void Sprite::Load(CR_RJValue _data)

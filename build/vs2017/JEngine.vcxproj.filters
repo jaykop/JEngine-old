@@ -100,9 +100,6 @@
     <ClInclude Include="..\..\include\JEngine\Particle.h">
       <Filter>System\Graphic</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\Shader.hpp">
-      <Filter>System\Graphic</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\JEngine\Sprite.h">
       <Filter>System\Graphic</Filter>
     </ClInclude>
@@ -139,9 +136,6 @@
     <ClInclude Include="..\..\include\JEngine\GLManager.h">
       <Filter>Core\OpenGL</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\Engine.h">
-      <Filter>Core\Engine</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\external\imgui\imgui_impl_sdl_gl3.h">
       <Filter>Utils\Imgui</Filter>
     </ClInclude>
@@ -163,6 +157,15 @@
     <ClInclude Include="..\..\external\imgui\imgui.h">
       <Filter>Utils\Imgui</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\Core.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\Text.h">
+      <Filter>System\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\Shader.h">
+      <Filter>System\Graphic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\include\JEngine\Object.inl">
@@ -170,6 +173,9 @@
     </None>
     <None Include="..\..\include\JEngine\ObjectContainer.inl">
       <Filter>Core\Object</Filter>
+    </None>
+    <None Include="..\..\include\JEngine\ComponentManager.inl">
+      <Filter>Core\Component</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -181,9 +187,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\JEngine\AssetManager.cpp">
       <Filter>Core\Asset</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\ComponentBuilder.cpp">
-      <Filter>Core\Component</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\JEngine\ComponentManager.cpp">
       <Filter>Core\Component</Filter>
@@ -293,9 +296,6 @@
     <ClCompile Include="..\..\src\JEngine\GLManager.cpp">
       <Filter>Core\OpenGL</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\Engine.cpp">
-      <Filter>Core\Engine</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\imgui\imgui_draw.cpp">
       <Filter>Utils\Imgui</Filter>
     </ClCompile>
@@ -307,6 +307,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\imgui\imgui_demo.cpp">
       <Filter>Utils\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JEngine\Core.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JEngine\Text.cpp">
+      <Filter>System\Graphic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -372,9 +378,6 @@
     </Filter>
     <Filter Include="Core\OpenGL">
       <UniqueIdentifier>{5a991f34-d6ae-43d5-a4ea-4351cde65642}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Engine">
-      <UniqueIdentifier>{952103c7-cbf1-4f02-908b-324f0fefb38c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

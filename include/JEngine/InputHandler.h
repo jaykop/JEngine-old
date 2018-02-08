@@ -1,8 +1,8 @@
 #pragma once
 #include <map>
-#include "SDL.h"
-#include "Macro.h"
 #include "Vector3.h"
+
+union SDL_Event;
 
 JE_BEGIN
 
@@ -82,6 +82,7 @@ enum JE_KEY  {
 class InputHandler {
 
 	friend class StateManager;
+	friend class GraphicSystem;
 	using KeyMap = std::map<unsigned, bool> ;
 
 public:
@@ -90,9 +91,11 @@ public:
 	static bool KeyPressed(JE_KEY _pressed);
 	static bool KeyTriggered(JE_KEY _trigger);
 
+	// TODO
 	static void Ray(const vec3& _position, const vec3& _direction);
-
-	static vec3 m_orthoPosition, m_perspPosition, m_rawPosition;
+	static vec3& GetRawPosition();
+	static vec3& GetOrhtoPosition();
+	static vec3& GetPerspPosition();
 
 private:
 
@@ -113,6 +116,7 @@ private:
 
 	static JE_KEY	KeyTranslator(SDL_Event* _event);
 
+	static vec3		m_orthoPosition, m_perspPosition, m_rawPosition;
 	static bool		m_keyPressed, m_mousePressed, m_wheelMoved;
 	static KeyMap	m_keys, m_triggerList;
 };

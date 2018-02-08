@@ -1,3 +1,4 @@
+#include "SDL.h"
 #include "State.h"
 #include "StateManager.h"
 #include "InputHandler.h"
@@ -27,14 +28,14 @@ void StateManager::Init(SDL_Window* _pWindow)
 		m_pWindow = _pWindow;
 
 		// Allocate systems in advance
-		SystemManager::Bind();
+		SYSTEM::Bind();
 	}
 
 	else
 		JE_DEBUG_PRINT("!StateManager: Window pointer is null.\n");
 }
 
-void StateManager::Update(SDL_Event& _event)
+void StateManager::Update(SDL_Event* _event)
 {
 	// Timer
 	m_timer.Start();
@@ -44,11 +45,11 @@ void StateManager::Update(SDL_Event& _event)
 
 	ChangeState();
 
-	while (SDL_PollEvent(&_event) != 0	// Event handler loop
+	while (SDL_PollEvent(_event) != 0	// Event handler loop
 		|| m_status == STATE_NONE) {		// State updating loop
 
-		INPUT::Update(&_event);			//Get input by input handler
-		IMGUI::EventUpdate(&_event);	//Get input by imgui manager
+		INPUT::Update(_event);			//Get input by input handler
+		IMGUI::EventUpdate(_event);	//Get input by imgui manager
 
 		m_pCurrent->Update(s_dt);	// Update state manager
 
@@ -71,7 +72,7 @@ void StateManager::Update(SDL_Event& _event)
 	// TODO 
 	// Pause process
 	case STATE_PAUSE:
-		SystemManager::Pause();
+		SYSTEM::Pause();
 		break;
 
 	case STATE_QUIT:				// The case to quit app
@@ -86,7 +87,7 @@ void StateManager::Update(SDL_Event& _event)
 	case STATE_RESUME:				// The case to resume to last state
 		m_pCurrent->Close();
 		m_pCurrent->Unload();
-		SystemManager::Resume();
+		SYSTEM::Resume();
 		break;
 
 	case STATE_RESTART:				// The case to restart the current state
@@ -101,7 +102,7 @@ void StateManager::Update(SDL_Event& _event)
 void StateManager::Close()
 {
 	// Deallocate systems in advance
-	SystemManager::Unbind();
+	SYSTEM::Unbind();
 
 	// Clear all the states
 	ClearStates();

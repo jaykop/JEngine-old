@@ -1,8 +1,6 @@
 #include "Particle.h"
 #include "GLManager.h"
-#include "AssetManager.h"
 #include "Transform.h"
-#include "GraphicSystem.h"
 #include "SystemManager.h"
 #include "Random.h"
 
@@ -108,11 +106,13 @@ Emitter::~Emitter()
 		delete particle;
 		particle = nullptr;
 	}
+
+	SYSTEM::GetGraphicSystem()->RemoveSprite(this);
 }
 
 void Emitter::Register()
 {
-	SystemManager::GetGraphicSystem()->AddSprite(this);
+	SYSTEM::GetGraphicSystem()->AddSprite(this);
 	if (m_pOwner->HasComponent<Transform>()) 
 		m_transform = m_pOwner->GetComponent<Transform>();
 }

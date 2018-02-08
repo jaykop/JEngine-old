@@ -1,4 +1,5 @@
 #pragma once
+#include "Core.h"
 #include "AssetManager.h"
 #include "ComponentManager.h"
 
@@ -10,6 +11,12 @@
 #include "LightController.h"
 
 JE_BEGIN
+
+void Core::Ready()
+{
+	// Get assets ready 
+	ASSET::RegisterAssets();
+}
 
 void AssetManager::RegisterAssets()
 {

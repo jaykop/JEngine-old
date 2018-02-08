@@ -26,20 +26,20 @@ public:
 
 	static void RegisterAssets();
 
-	static void LoadAudio(const char* _path, const char* _audioKey);
-	static void LoadImage(const char* _path, const char* _textureKey);
-	static void LoadArchetype(const char* _path, const char* _archetypeKey);
-
 	static State*		GetState(const char* _key);
 	static Audio*		GetAudio(const char* _key);
 	static unsigned		GetTexture(const char* _key);
 	static Archetype*	GetArchetype(const char* _key);
 
-	static std::string m_initDirectory, m_assetDirectory, 
-		m_stateDirectory, m_archeDirectory;
-
 private:
+
+	static std::string m_initDirectory, m_assetDirectory,
+		m_stateDirectory, m_archeDirectory;
 	
+	static void LoadAudio(const char* _path, const char* _audioKey);
+	static void LoadImage(const char* _path, const char* _textureKey);
+	static void LoadArchetype(const char* _path, const char* _archetypeKey);
+
 	// Locked constructors and destructor
 	AssetManager() = delete;
 	~AssetManager() = delete;
@@ -55,7 +55,7 @@ private:
 	static AudioMap		m_audioMap;
 	static StateMap		m_stateMap;
 	static TextureMap	m_textureMap;
-	static ArchetypeMap	m_archetypeMap;
+	static ArchetypeMap	m_archetypeMap; 
 
 };
 

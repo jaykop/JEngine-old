@@ -78,6 +78,63 @@ void AssetManager::Unload()
 	COMPONENT::ClearBuilders();
 }
 
+void AssetManager::LoadBuiltInComponents()
+{
+	// Load built-in components
+
+	// Physics components
+	JE_ADD_COMPONENT(Transform);
+
+	// Graphic components
+	JE_ADD_COMPONENT(Model);
+	JE_ADD_COMPONENT(Camera);
+	JE_ADD_COMPONENT(Sprite);
+	JE_ADD_COMPONENT(Emitter);
+	JE_ADD_COMPONENT(Light);
+	JE_ADD_COMPONENT(Material);
+	JE_ADD_COMPONENT(Animation);
+
+	JE_DEBUG_PRINT("*AssetManager - Loaded bulit-in components successfully.\n");
+}
+
+
+void AssetManager::LoadAudio(const char* /*_path*/, const char* /*_audioKey*/)
+{
+	// TODO
+	// load audio assets
+}
+
+void AssetManager::LoadImage(const char *_path, const char *_textureKey)
+{
+	unsigned	newImage;
+	Image		image;
+	unsigned	width, height;
+	unsigned	error = lodepng::decode(image, width, height, _path);
+
+	if (error)
+		JE_DEBUG_PRINT("!AssetManager - decoder error %d / %s.\n", error, lodepng_error_text(error));
+
+	// Enable the texture for OpenGL.
+	glEnable(GL_TEXTURE_2D);
+	glGenTextures(1, &newImage);
+	glBindTexture(GL_TEXTURE_2D, newImage);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0,
+		GL_RGBA, GL_UNSIGNED_BYTE, &image[0]);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	m_textureMap.insert(TextureMap::value_type(
+		_textureKey, newImage));
+
+}
+
+void AssetManager::LoadArchetype(const char* /*_path*/, const char* /*_archetypeKey*/)
+{
+	// TODO
+	// load archetpye assets
+}
+
 State* AssetManager::GetState(const char *_key)
 {
 	auto found = m_stateMap.find(_key);
@@ -116,62 +173,6 @@ Archetype* AssetManager::GetArchetype(const char *_key)
 
 	JE_DEBUG_PRINT("!AssetManager: Cannot find such name of archetype resource: %s.\n", _key);
 	return nullptr;
-}
-
-void AssetManager::LoadAudio(const char* /*_path*/, const char* /*_audioKey*/)
-{
-	// TODO
-	// load audio assets
-}
-
-void AssetManager::LoadImage(const char *_path, const char *_textureKey)
-{
-	unsigned	newImage;
-	Image		image;
-	unsigned	width, height;
-	unsigned	error = lodepng::decode(image, width, height, _path);
-
-	if (error)
-		JE_DEBUG_PRINT("!AssetManager - decoder error %d / %s.\n", error, lodepng_error_text(error));
-
-	// Enable the texture for OpenGL.
-	glEnable(GL_TEXTURE_2D);
-	glGenTextures(1, &newImage);
-	glBindTexture(GL_TEXTURE_2D, newImage);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0,
-		GL_RGBA, GL_UNSIGNED_BYTE, &image[0]);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-	m_textureMap.insert(TextureMap::value_type(
-		_textureKey, newImage));
-	
-}
-
-void AssetManager::LoadArchetype(const char* /*_path*/, const char* /*_archetypeKey*/)
-{
-	// TODO
-	// load archetpye assets
-}
-
-void AssetManager::LoadBuiltInComponents()
-{
-	// Load built-in components
-
-	// Physics components
-	JE_ADD_COMPONENT(Transform);
-
-	// Graphic components
-	JE_ADD_COMPONENT(Model);
-	JE_ADD_COMPONENT(Camera);
-	JE_ADD_COMPONENT(Sprite);
-	JE_ADD_COMPONENT(Emitter);
-	JE_ADD_COMPONENT(Light);
-	JE_ADD_COMPONENT(Material);
-	JE_ADD_COMPONENT(Animation);
-
-	JE_DEBUG_PRINT("*AssetManager - Loaded bulit-in components successfully.\n");
 }
 
 JE_END

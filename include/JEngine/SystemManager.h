@@ -1,6 +1,5 @@
 #pragma once
 #include <stack>
-#include "Macro.h"
 #include "JsonParser.h"
 
 JE_BEGIN
@@ -20,8 +19,8 @@ class SystemManager {
 
 		Systems();
 		~Systems() {};
-		Systems(const Systems& /*_cpoy*/) {};
-		void operator=(const Systems& /*_cpoy*/) {};
+		Systems(const Systems& /*_cpoy*/) = delete;
+		void operator=(const Systems& /*_cpoy*/) = delete;
 
 		void Bind();
 		void Unbind();
@@ -67,8 +66,8 @@ private:
 	static void Bind();
 	static void Unbind();
 
-	SystemManager();
-	~SystemManager() {};
+	SystemManager() = delete;
+	~SystemManager() = delete;
 	SystemManager(const SystemManager& /*_copy*/) = delete;
 	void operator=(const SystemManager& /*_copy*/) = delete;
 

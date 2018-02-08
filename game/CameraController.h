@@ -27,7 +27,7 @@ private:
 class Camera;
 class CameraController : public UserComponent
 {
-	friend class ComponentManager;
+
 	friend class CameraControllerBuilder;
 
 public:

@@ -1,5 +1,4 @@
 #include "Animation.h"
-#include "SystemManager.h"
 #include "GraphicSystem.h"
 #include "Sprite.h"
 

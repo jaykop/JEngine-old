@@ -67,8 +67,8 @@ private:
 	void ClearComponents();
 	void ClearChildren();
 
-	void		AddComponent(const char * _componentName);
-	Component*	GetComponent(const char * _componentName);
+	void		AddComponent(const char* _componentName);
+	Component*	GetComponent(const char* _componentName);
 	bool		HasComponent(const char* _componentName) const;
 	void		RemoveComponent(const char* _componentName);
 
@@ -79,9 +79,7 @@ private:
 	ChildObjects		m_childObjs;
 	ComponentMap		m_componentMap;
 	ObjectContainer*	m_pOBC;
-
-	static std::string m_nameHeader;
-
+	
 	Object() = delete;
 	Object(const Object& /*_copy*/) = delete;
 	void operator=(const Object& /*_copy*/) = delete;

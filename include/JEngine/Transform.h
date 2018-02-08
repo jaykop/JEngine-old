@@ -31,7 +31,6 @@ class Transform : public Component
 	};
 
 	friend class PhysicsSystem;
-	friend class ComponentManager;
 	friend class TransformBuilder;
 
 public:

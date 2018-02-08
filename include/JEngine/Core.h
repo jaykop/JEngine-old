@@ -9,9 +9,9 @@
 JE_BEGIN
 
 //////////////////////////////////////////////////////////////////////////
-// Engine class
+// Core class
 //////////////////////////////////////////////////////////////////////////
-class Engine {
+class Core {
 
 public:
 
@@ -23,15 +23,13 @@ public:
 	static bool m_IMGUI;
 
 private:
-
-	static bool m_functionOrder[4];
-
-	Engine() = delete;
-	~Engine() = delete;
-	Engine(const Engine& /*_copy*/) = delete;
-	void operator=(const Engine& /*_copy*/) = delete;
+	
+	Core() = delete;
+	~Core() = delete;
+	Core(const Core& /*_copy*/) = delete;
+	void operator=(const Core& /*_copy*/) = delete;
 };
 
-using JENGINE = Engine;
+using CORE = Core;
 
 JE_END

@@ -4,7 +4,7 @@
 JE_BEGIN
 
 BuilderMap	ComponentManager::m_builderMap;
-std::string ComponentManager::m_nameHeader = "class JEngine::";
+ComponentTypeMap	ComponentManager::m_typeMap;
 
 Component* ComponentManager::CreateComponent(
 	const char* _componentName, Object* _pOwner)
@@ -23,32 +23,25 @@ Component* ComponentManager::CreateComponent(
 	return found->second->CreateComponent(_pOwner);
 }
 
-void ComponentManager::RegisterBuilder(
-	const char* _componentName, ComponentBuilder* _pBuilder)
+const char* ComponentManager::KeyTranslator(const char* _name)
 {
-	// Check if either there is a existing component builder 
-	auto found = m_builderMap.find(m_nameHeader + _componentName);
+	auto found = m_typeMap.find(_name);
+	if (found != m_typeMap.end())
+		return found->second.c_str();
 
-	// If there is existing like that,
-	// don't add new builder
-	if (found != m_builderMap.end())
-		JE_DEBUG_PRINT("!Component - No such name of enrolled component: %s\n", _componentName);
-
-	// Unless, add new builder
-	else
-		m_builderMap.insert(
-			BuilderMap::value_type(m_nameHeader + _componentName, _pBuilder));
+	return nullptr;
 }
 
 void ComponentManager::ClearBuilders()
 {
 	// Delete instance
 	for (auto it = m_builderMap.begin();
-		it != m_builderMap.end(); ) 
+		it != m_builderMap.end(); )
 		delete ((it++)->second);
 	
 	// Clear nodes
 	m_builderMap.clear();
+	m_typeMap.clear();
 }
 
 JE_END

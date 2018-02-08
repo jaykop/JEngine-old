@@ -25,7 +25,7 @@ private:
 
 class LightController : public UserComponent
 {
-	friend class ComponentManager;
+
 	friend class LightControllerBuilder;
 
 public:

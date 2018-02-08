@@ -1,7 +1,9 @@
 #pragma once
 #include <vector>
 #include "Timer.h"
-#include "SDL.h"
+
+union SDL_Event;
+struct SDL_Window;
 
 JE_BEGIN
 
@@ -13,6 +15,7 @@ class StateManager {
 
 	friend class Application;
 	friend class AssetManager;
+
 	enum StateStatus  {
 		STATE_NONE, STATE_RESTART, STATE_PAUSE, STATE_RESUME, STATE_CHANGE, STATE_RESUME_AND_CHANGE, STATE_QUIT };
 
@@ -43,7 +46,7 @@ private:
 
 	// Private member functions
 	static void Init(SDL_Window* _pWindow);
-	static void Update(SDL_Event& _event);
+	static void Update(SDL_Event* _event);
 	static void Close();
 
 	static void PushState(const char* _path, const char* _stateName);

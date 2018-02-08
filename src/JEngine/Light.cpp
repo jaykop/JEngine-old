@@ -1,5 +1,4 @@
 #include "Light.h"
-#include "Transform.h"
 #include "SystemManager.h"
 
 JE_BEGIN
@@ -13,9 +12,14 @@ Light::Light(Object * _pOwner)
 	m_projection(PROJECTION_PERSPECTIVE)
 {}
 
+Light::~Light()
+{
+	SYSTEM::GetGraphicSystem()->RemoveLight(this);
+}
+
 void Light::Register()
 {
-	SystemManager::GetGraphicSystem()->AddLight(this);
+	SYSTEM::GetGraphicSystem()->AddLight(this);
 }
 
 void Light::Load(CR_RJValue _data)

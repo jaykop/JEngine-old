@@ -1,8 +1,7 @@
 #pragma once
-#include "Macro.h"
+#include <random>
 #include "Vector3.h"
 #include "Vector4.h"
-#include <random>
 
 JE_BEGIN
 

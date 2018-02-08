@@ -1,6 +1,6 @@
 /******************************************************************************/
 /*!
-\file   Platform_win32.cpp
+\file   main.cpp
 \author Jeong Juyong
 \par    email: jeykop14\@gmail.com
 \date   2017/08/22(yy/mm/dd)
@@ -11,7 +11,7 @@ Contains Process' main flow
 */
 /******************************************************************************/
 
-#include "Engine.h"
+#include "Core.h"
 
 #pragma comment(lib, "sdl2")
 #pragma comment(lib, "sdl2main")
@@ -23,12 +23,12 @@ int main(int argc, char* args[]) {
 	JE_UNUSED_PARAM(argc);	// No argc - Block the warnings
 	JE_UNUSED_PARAM(args);	// No args - Block the warnings
 
-	JENGINE::m_IMGUI = false;	// Turn off imgui
+	CORE::m_IMGUI = false;	// Turn off imgui
 
-	JENGINE::OpenConsole();
-	JENGINE::Ready();		
-	JENGINE::Run();			
-	JENGINE::CloseConsole();
+	CORE::OpenConsole();
+	CORE::Ready();
+	CORE::Run();
+	CORE::CloseConsole();
 
 	return 0;
 

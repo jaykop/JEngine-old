@@ -10,7 +10,6 @@ Contains Application's class and member functions
 
 */
 /******************************************************************************/
-
 #pragma once
 
 #include "Macro.h"
@@ -24,7 +23,7 @@ JE_BEGIN
 //////////////////////////////////////////////////////////////////////////
 class Application {
 
-	friend class Engine;
+	friend class Core;
 
 public:
 

@@ -27,7 +27,6 @@ class Animation : public Component
 {
 	// Keyword Definitions
 	friend class	GraphicSystem;
-	friend class	ComponentManager;
 	friend class	AnimationBuilder;
 
 public:

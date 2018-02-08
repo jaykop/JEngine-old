@@ -1,5 +1,5 @@
-#include "Transform.h"
 #include "PhysicsSystem.h"
+#include "PhysicsComponents.h"
 
 JE_BEGIN
 
@@ -16,10 +16,11 @@ void PhysicsSystem::Init()
 {
 }
 
-void PhysicsSystem::Update(float /*dt*/)
+void PhysicsSystem::Update(const float /*_dt*/)
 {
-	for (auto transform : m_transforms)
-		UpdateEdges(transform);
+	// TODO
+	//for (auto transform : m_transforms)
+	//	UpdateEdges(transform);
 }
 
 void PhysicsSystem::Close()

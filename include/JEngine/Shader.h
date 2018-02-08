@@ -1,5 +1,4 @@
 #pragma once
-#include "Macro.h"
 #include "glew.h"
 #include "Vector4.h"
 #include "Matrix4x4.h"

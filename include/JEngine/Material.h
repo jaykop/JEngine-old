@@ -1,5 +1,4 @@
 #pragma once
-#include "Macro.h"
 #include "Component.h"
 #include "ComponentBuilder.h"
 
@@ -27,7 +26,6 @@ class Material : public Component {
 
 	friend class MaterialBuilder;
 	friend class GraphicSystem;
-	friend class ComponentManager;
 
 public:
 

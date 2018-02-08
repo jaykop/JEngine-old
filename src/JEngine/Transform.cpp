@@ -1,6 +1,4 @@
 #include "Transform.h"
-#include "PhysicsSystem.h"
-#include "SystemManager.h"
 
 JE_BEGIN
 
@@ -9,7 +7,6 @@ Transform::Transform(Object* _pOwner)
 	m_position(vec3::ZERO), m_scale(vec3::ZERO), 
 	m_rotation(0.f), m_rotationAxis(vec3::UNIT_Z)
 {
-	//SystemManager::GetPhysicsSystem()->AddTransform();
 }
 
 void Transform::Load(CR_RJValue _data)

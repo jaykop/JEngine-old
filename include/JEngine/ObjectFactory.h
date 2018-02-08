@@ -3,6 +3,8 @@
 
 JE_BEGIN
 
+class ObjectContainer;
+
 class ObjectFactory {
 
 	friend class Object;
@@ -15,8 +17,8 @@ public:
 
 private:
 
-	~ObjectFactory() {};
-	ObjectFactory() {};
+	~ObjectFactory() = delete;
+	ObjectFactory() = delete;
 	ObjectFactory(const ObjectFactory& /*_copy*/) = delete;
 	void operator=(const ObjectFactory& /*_copy*/) = delete;
 

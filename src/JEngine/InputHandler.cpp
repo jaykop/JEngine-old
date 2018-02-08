@@ -1,3 +1,4 @@
+#include "SDL.h"
 #include "InputHandler.h"
 
 JE_BEGIN
@@ -338,6 +339,21 @@ void InputHandler::Update(SDL_Event* _event)
 void InputHandler::Ray(const vec3& /*_position*/, const vec3& /*_direction*/)
 {
 	;
+}
+
+vec3& InputHandler::GetRawPosition()
+{
+	return m_rawPosition;
+}
+
+vec3& InputHandler::GetOrhtoPosition()
+{
+	return m_orthoPosition;
+}
+
+vec3& InputHandler::GetPerspPosition()
+{
+	return m_perspPosition;
 }
 
 JE_END

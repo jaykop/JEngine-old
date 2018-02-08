@@ -28,7 +28,6 @@ class Camera : public Component
 {
 
 	friend class GraphicSystem;
-	friend class ComponentManager;
 	friend class CameraBuilder;
 
 public:

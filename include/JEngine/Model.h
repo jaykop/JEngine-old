@@ -24,7 +24,6 @@ private:
 class Model : public Sprite
 {
 	friend class GraphicSystem;
-	friend class ComponentManager;
 	friend class ModelBuilder;
 
 public:
@@ -32,7 +31,7 @@ public:
 private:
 
 	Model(Object* pObject);
-	~Model() {};
+	~Model();
 
 	Model() = delete;
 	Model(const Model& /*_copy*/) = delete;

@@ -1,7 +1,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
-#include "Shader.hpp"
+#include "Shader.h"
 
 JE_BEGIN
 

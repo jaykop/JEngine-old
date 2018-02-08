@@ -1,6 +1,5 @@
 #include "Model.h"
 #include "Object.h"
-#include "Sprite.h"
 #include "Material.h"
 
 JE_BEGIN

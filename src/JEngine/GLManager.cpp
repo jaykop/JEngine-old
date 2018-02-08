@@ -1,7 +1,5 @@
-#include <cstdio>
-#include <string>
 #include "GLManager.h"
-#include "Shader.hpp"
+#include "Shader.h"
 
 JE_BEGIN
 

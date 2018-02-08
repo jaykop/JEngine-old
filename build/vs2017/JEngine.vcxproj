@@ -160,7 +160,7 @@
     <ClInclude Include="..\..\include\JEngine\ComponentBuilder.h" />
     <ClInclude Include="..\..\include\JEngine\ComponentManager.h" />
     <ClInclude Include="..\..\include\JEngine\Debug.h" />
-    <ClInclude Include="..\..\include\JEngine\Engine.h" />
+    <ClInclude Include="..\..\include\JEngine\Core.h" />
     <ClInclude Include="..\..\include\JEngine\GLManager.h" />
     <ClInclude Include="..\..\include\JEngine\GraphicComponents.h" />
     <ClInclude Include="..\..\include\JEngine\GraphicSystem.h" />
@@ -191,7 +191,7 @@
     <ClInclude Include="..\..\include\JEngine\PhysicsSystem.h" />
     <ClInclude Include="..\..\include\JEngine\Random.h" />
     <ClInclude Include="..\..\include\JEngine\Rigidbody.h" />
-    <ClInclude Include="..\..\include\JEngine\Shader.hpp" />
+    <ClInclude Include="..\..\include\JEngine\Shader.h" />
     <ClInclude Include="..\..\include\JEngine\SoundComponents.h" />
     <ClInclude Include="..\..\include\JEngine\SoundSystem.h" />
     <ClInclude Include="..\..\include\JEngine\Sprite.h" />
@@ -199,6 +199,7 @@
     <ClInclude Include="..\..\include\JEngine\StateManager.h" />
     <ClInclude Include="..\..\include\JEngine\System.h" />
     <ClInclude Include="..\..\include\JEngine\SystemManager.h" />
+    <ClInclude Include="..\..\include\JEngine\Text.h" />
     <ClInclude Include="..\..\include\JEngine\Timer.h" />
     <ClInclude Include="..\..\include\JEngine\Transform.h" />
     <ClInclude Include="..\..\include\JEngine\UserComponent.h" />
@@ -207,6 +208,7 @@
     <ClInclude Include="..\..\include\JEngine\Vector4.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\include\JEngine\ComponentManager.inl" />
     <None Include="..\..\include\JEngine\Object.inl" />
     <None Include="..\..\include\JEngine\ObjectContainer.inl" />
   </ItemGroup>
@@ -220,10 +222,9 @@
     <ClCompile Include="..\..\src\JEngine\AssetManager.cpp" />
     <ClCompile Include="..\..\src\JEngine\BehaviorSystem.cpp" />
     <ClCompile Include="..\..\src\JEngine\Camera.cpp" />
-    <ClCompile Include="..\..\src\JEngine\ComponentBuilder.cpp" />
     <ClCompile Include="..\..\src\JEngine\ComponentManager.cpp" />
     <ClCompile Include="..\..\src\JEngine\Debug.cpp" />
-    <ClCompile Include="..\..\src\JEngine\Engine.cpp" />
+    <ClCompile Include="..\..\src\JEngine\Core.cpp" />
     <ClCompile Include="..\..\src\JEngine\GLManager.cpp" />
     <ClCompile Include="..\..\src\JEngine\GraphicPipelines.cpp" />
     <ClCompile Include="..\..\src\JEngine\GraphicSystem.cpp" />
@@ -258,6 +259,7 @@
     <ClCompile Include="..\..\src\JEngine\State.cpp" />
     <ClCompile Include="..\..\src\JEngine\StateManager.cpp" />
     <ClCompile Include="..\..\src\JEngine\SystemManager.cpp" />
+    <ClCompile Include="..\..\src\JEngine\Text.cpp" />
     <ClCompile Include="..\..\src\JEngine\Timer.cpp" />
     <ClCompile Include="..\..\src\JEngine\Transform.cpp" />
     <ClCompile Include="..\..\src\JEngine\Vector2.cpp" />

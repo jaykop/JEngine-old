@@ -19,12 +19,12 @@ public:
 
 private:
 
-	JsonParser() {};
-	~JsonParser() {};
+	JsonParser() = delete;
+	~JsonParser() = delete;
 	JsonParser(const JsonParser& /*_copy*/) = delete;
 	void operator=(const JsonParser& /*_copy*/) = delete;
 
-	static void ReadFile(const char* _dir);
+	static void		ReadFile(const char* _dir);
 	static CR_RJDoc GetDocument();
 
 	static void LoadObjects(ObjectContainer* _pOBC);

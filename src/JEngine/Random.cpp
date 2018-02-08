@@ -1,5 +1,6 @@
-#include "Random.h"
 #include <chrono>
+#include "Random.h"
+
 JE_BEGIN
 
 std::mt19937 Random::m_randomObject;

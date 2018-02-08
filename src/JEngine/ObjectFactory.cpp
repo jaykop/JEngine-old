@@ -1,4 +1,3 @@
-#include "Object.h"
 #include "ObjectFactory.h"
 #include "ObjectContainer.h"
 

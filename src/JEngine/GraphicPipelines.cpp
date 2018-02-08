@@ -1,7 +1,7 @@
 #include <string>
 #include "GraphicSystem.h"
 #include "GLManager.h"
-#include "Shader.hpp"
+#include "Shader.h"
 #include "GraphicComponents.h"
 #include "MathUtils.h"
 #include "Transform.h"

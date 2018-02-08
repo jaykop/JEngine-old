@@ -6,6 +6,7 @@ JE_BEGIN
 
 class Transform;
 class Rigidbody;
+
 class PhysicsSystem : public System
 {
 	friend class SystemManager;
@@ -24,7 +25,7 @@ private:
 
 	void Load(CR_RJDoc _data) override;
 	void Init() override;
-	void Update(float dt) override;
+	void Update(const float _dt) override;
 	void Close() override;
 	void Unload() override;
 

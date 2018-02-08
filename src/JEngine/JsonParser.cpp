@@ -2,7 +2,6 @@
 #include "Component.h"
 #include "JsonParser.h"
 #include "ObjectFactory.h"
-#include "ObjectContainer.h"
 #include "stringbuffer.h"
 #include "FileReadStream.h"
 
@@ -64,6 +63,7 @@ void JsonParser::LoadObjects(ObjectContainer* _pOBC)
 
 void JsonParser::LoadComponents(CR_RJValue _data)
 {
+	std::string a = _data["Type"].GetString();
 		FACTORY::GetCreatedObject()->AddComponent(_data["Type"].GetString());
 		Component* found = 
 			FACTORY::GetCreatedObject()->GetComponent(_data["Type"].GetString());

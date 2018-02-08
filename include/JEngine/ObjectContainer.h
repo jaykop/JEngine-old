@@ -10,7 +10,6 @@ using ObjectMap = std::unordered_map<std::string, Object*>;
 class ObjectContainer {
 
 	friend class State;
-	friend class Object;
 	friend class ObjectFactory;
 
 public:

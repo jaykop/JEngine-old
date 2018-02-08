@@ -3,8 +3,6 @@
 #include "SystemManager.h"
 #include "ObjectContainer.h"
 
-#include "InputHandler.h"
-
 JE_BEGIN
 
 State::State(const char* _name)

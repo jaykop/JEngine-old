@@ -27,7 +27,7 @@ private:
 class Camera;
 class LevelController : public UserComponent
 {
-	friend class ComponentManager;
+
 	friend class LevelControllerBuilder;
 
 public:

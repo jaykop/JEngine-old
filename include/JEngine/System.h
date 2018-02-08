@@ -1,5 +1,4 @@
 #pragma once
-#include "Macro.h"
 #include "JsonParser.h"
 
 JE_BEGIN
