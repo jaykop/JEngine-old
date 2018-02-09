@@ -36,7 +36,9 @@ private:
 	static std::string m_initDirectory, m_assetDirectory,
 		m_stateDirectory, m_archeDirectory;
 	
-	static void LoadFont(const char * _path);
+	// TODO
+	// Make font array...
+	static void LoadFont(const char* _path, const char* _audioKey, unsigned _size);
 	static void LoadAudio(const char* _path, const char* _audioKey);
 	static void LoadImage(const char* _path, const char* _textureKey);
 	static void LoadArchetype(const char* _path, const char* _archetypeKey);

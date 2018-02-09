@@ -31,6 +31,12 @@ void GraphicSystem::UpdatePipelines(const float _dt)
 	GLM::m_shader[GLM::SHADER_MODEL]->SetMatrix(
 		GLM::UNIFORM_CAMERA, m_viewport);
 
+	GLM::m_shader[GLM::SHADER_TEXT]->Use();
+
+	// Send camera info to shader
+	GLM::m_shader[GLM::SHADER_TEXT]->SetMatrix(
+		GLM::UNIFORM_TEXT_CAMERA, m_viewport);
+
 	GLM::m_shader[GLM::SHADER_PARTICLE]->Use();
 
 	// Send camera info to shader
@@ -42,6 +48,9 @@ void GraphicSystem::UpdatePipelines(const float _dt)
 		// Emitter
 		if (sprite->m_isEmitter)
 			ParticlePipeline(static_cast<Emitter*>(sprite), _dt);
+		
+		else if (sprite->m_isText)
+			TextPipeline(static_cast<Text*>(sprite));
 
 		// Normal models
 		else
@@ -104,6 +113,8 @@ void GraphicSystem::LightSourcePipeline()
 
 	if (m_isLight) {
 
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_DEPTH_TEST);
 
 		static vec3 s_lightScale(10.f, 10.f, 10.f), s_lightUp(0, 1, 0);
@@ -148,6 +159,7 @@ void GraphicSystem::LightSourcePipeline()
 	} // if (m_isLight) {
 
 	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_BLEND);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -337,6 +349,50 @@ void GraphicSystem::LightingEffectPipeline(Material *_material)
 	}
 }
 
+void GraphicSystem::TextPipeline(Text * _text) 
+{
+	static Transform* s_pTransform;
+	s_pTransform = _text->m_transform;
+
+	GLM::m_shader[GLM::SHADER_TEXT]->Use();
+
+	GLM::m_shader[GLM::SHADER_TEXT]->SetMatrix(
+		GLM::UNIFORM_TEXT_TRANSLATE, mat4::Translate(s_pTransform->m_position));
+
+	GLM::m_shader[GLM::SHADER_TEXT]->SetMatrix(
+		GLM::UNIFORM_TEXT_SCALE, mat4::Scale(s_pTransform->m_scale));
+
+	GLM::m_shader[GLM::SHADER_TEXT]->SetMatrix(
+		GLM::UNIFORM_TEXT_ROTATE, mat4::Rotate(s_pTransform->m_rotation, s_pTransform->m_rotationAxis));
+
+	GLM::m_shader[GLM::SHADER_TEXT]->SetBool(
+		GLM::UNIFORM_TEXT_BILBOARD, _text->m_bilboard);
+
+	GLM::m_shader[GLM::SHADER_TEXT]->SetVector4(
+		GLM::UNIFORM_TEXT_COLOR, _text->m_color);
+
+	// Send projection info to shader
+	if (_text->m_projection == PROJECTION_PERSPECTIVE)
+		GLM::m_shader[GLM::SHADER_TEXT]->SetMatrix(
+			GLM::UNIFORM_TEXT_PROJECTION, m_perspective);
+	else
+		GLM::m_shader[GLM::SHADER_TEXT]->SetMatrix(
+			GLM::UNIFORM_TEXT_PROJECTION, m_orthogonal);
+
+	// TODO
+	// It so, not draw
+	//if (!_sprite->m_culled) {
+
+	glEnable(GL_BLEND); 
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_DEPTH_TEST);
+
+	Render(*(_text->m_vao), (_text->m_vbo), _text->m_text, s_pTransform);
+
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_BLEND);
+}
+
 void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 {
 	// Check emitter's active toggle
@@ -447,6 +503,83 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 		glDepthMask(GL_TRUE);	// Enable depth buffer writing
 		glDisable(GL_BLEND);	// Disable blend
 	}
+}
+
+void GraphicSystem::Render(const unsigned &_vao, const int _elementSize, unsigned _mode)
+{
+	glBindVertexArray(_vao);
+	glDrawElements(_mode, _elementSize, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
+}
+
+void GraphicSystem::Render(unsigned & _vao, unsigned & _vbo, const std::string& _text, Transform* _transform)
+{
+	static vec3 s_position, s_scale;
+
+	s_scale = _transform->m_scale;
+	s_position = _transform->m_position;
+
+	glBindVertexArray(_vao);
+	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+
+	// TODO
+	// Set init values and fix text bug....
+	GLfloat new_x = GLfloat(s_position.x);
+	GLfloat init_x = new_x, lower_y = 0, nl_offset = 2.f / 3.f;
+	int num_newline = 1;
+
+	// Iterate all character
+	std::string::const_iterator c;
+	for (c = _text.begin(); c != _text.end(); ++c)
+	{
+		GLM::Character ch = GLM::m_font[*c];
+		GLfloat xpos = new_x + ch.m_bearing.x * s_scale.x;
+		GLfloat ypos = s_position.y - (ch.m_size.y - ch.m_bearing.y) * s_scale.y - lower_y;
+		GLfloat zpos = s_position.z;
+
+		GLfloat w = ch.m_size.x * s_scale.x;
+		GLfloat h = ch.m_size.y * s_scale.y;
+
+		//Update vbo
+		GLfloat vertices[4][8] = {
+		{ xpos,		ypos + h,	zpos, 0.f, 0.f, 0.f, 0.f, 1.f },
+		{ xpos + w, ypos + h,	zpos, 1.f, 0.f, 0.f, 0.f, 1.f },
+		{ xpos,		ypos,		zpos, 0.f, 1.f, 0.f, 0.f, 1.f },
+		{ xpos + w, ypos,		zpos, 1.f, 1.f ,0.f, 0.f, 1.f }
+		};
+
+		glBindTexture(GL_TEXTURE_2D, ch.m_texture);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+		// vertex position
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(0);
+
+		// texture coordinate position
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+		glEnableVertexAttribArray(1);
+
+		// normals of vertices
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
+		glEnableVertexAttribArray(2);
+
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4); 
+
+		const char newline = *c;
+		if (newline == '\n')
+		{
+			// TODO
+			// Font size
+			new_x = init_x;
+			lower_y = 48.f * nl_offset * num_newline;
+			++num_newline;
+		}
+
+		else
+			new_x += (ch.m_advance >> 6) * s_scale.x;
+	}
+
+	glBindVertexArray(0);
 }
 
 // TODO

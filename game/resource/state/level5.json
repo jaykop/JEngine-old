@@ -1,15 +1,15 @@
 {
 
-	"Background" : [ 0.25, 0.25, 0.25, 1.0 ],
+	"Background" : [ 0.5, 0.5, 0.5, 1.0 ],
 	"Screen" : [ 1.0, 1.0, 1.0, 1.0 ],
-	"Effect" : { "Type" : "Blur", "BlurSize" : 10, "BlurAmount" : 100 },
+	"Effect" : { "Type" : "None" },
 	"Object" : [
 		{
 			"Name" : "Camera",
 			"Component" : [
 				{
 					"Type": "Camera",
-					"Values": {"Position" : [10, 10, 10], "Target" : [0, 0, 0],
+					"Values": {"Position" : [0, 0, 100], "Target" : [0, 0, 0],
 						"Up" : [0, 1, 0]}
 				},
 				{
@@ -19,18 +19,18 @@
 			]
 		},	
 		{
-			"Name" : "Box",
+			"Name" : "Text",
 			"Component" : [
 				{
 					"Type": "Transform",
-					"Values": {"Position" : [0, 0, 0], "Scale" : [5, 5, 5]}
+					"Values": {"Position" : [0, 0, 0], "Scale" : [0.5, 0.5, 0]}
 				},
 				{
-					"Type": "Model",
-					"Values": {"Texture" : "uvtemplate", "Color" : [1, 1, 1, 1], "Projection" : "Perspective"}
+					"Type": "Text",
+					"Values": {"Text" : "This is 5th state to demonstrate text component.\nHope this works!"}
 				}
 			]
-		},		
+		},	
 		{
 			"Name" : "LevelController",
 			"Component" : [

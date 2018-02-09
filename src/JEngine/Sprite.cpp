@@ -9,7 +9,7 @@ JE_BEGIN
 Sprite::Sprite(Object* _pOwner)
 	:Component(_pOwner), m_color(vec4::ONE), m_projection(PROJECTION_PERSPECTIVE),
 	m_mainTex(0), m_transform(nullptr), m_flip(false), m_culled(false), m_bilboard(false),
-	m_material(nullptr), m_hasMaterial(false), m_isEmitter(false), 
+	m_material(nullptr), m_hasMaterial(false), m_isEmitter(false), m_isText(false),
 	m_vao(&(GLM::m_vao[GLM::SHAPE_PLANE])), m_elementSize(GLM::m_elementSize[GLM::SHAPE_PLANE])
 	/*, m_isModel(false)*/
 {}

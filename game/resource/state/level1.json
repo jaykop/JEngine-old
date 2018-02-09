@@ -45,7 +45,8 @@
 						"CutOff" : 12.5, "OuterCutOff" : 17.5}
 				}
 			]
-		},
+		},		
+		
 		{
 			"Name" : "Model",
 			"Component" : [

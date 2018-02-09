@@ -390,6 +390,10 @@ void GLManager::InitShaders()
 		"../src/shader/model.vs",
 		"../src/shader/model.fs");
 
+	m_shader[SHADER_TEXT]->LoadShader(
+		"../src/shader/text.vs",
+		"../src/shader/text.fs");
+
 	m_shader[SHADER_LIGHTING]->LoadShader(
 		"../src/shader/lighting.vs",
 		"../src/shader/lighting.fs");
@@ -472,6 +476,15 @@ void GLManager::RegisterUniform()
 	m_shader[SHADER_PARTICLE]->ConnectUniform(UNIFORM_PARTICLE_PROJECTION, "m4_projection");
 	m_shader[SHADER_PARTICLE]->ConnectUniform(UNIFORM_PARTICLE_HIDE, "boolean_hide");
 	m_shader[SHADER_PARTICLE]->ConnectUniform(UNIFORM_PARTICLE_BILBOARD, "boolean_bilboard");
+
+	/******************** Text shader ********************/
+	m_shader[SHADER_TEXT]->ConnectUniform(UNIFORM_TEXT_COLOR, "v4_color");
+	m_shader[SHADER_TEXT]->ConnectUniform(UNIFORM_TEXT_TRANSLATE, "m4_translate");
+	m_shader[SHADER_TEXT]->ConnectUniform(UNIFORM_TEXT_SCALE, "m4_scale");
+	m_shader[SHADER_TEXT]->ConnectUniform(UNIFORM_TEXT_ROTATE, "m4_rotate");
+	m_shader[SHADER_TEXT]->ConnectUniform(UNIFORM_TEXT_CAMERA, "m4_viewport");
+	m_shader[SHADER_TEXT]->ConnectUniform(UNIFORM_TEXT_PROJECTION, "m4_projection");
+	m_shader[SHADER_TEXT]->ConnectUniform(UNIFORM_TEXT_BILBOARD, "boolean_bilboard");
 
 	/******************** Screen shader ********************/
 	m_shader[SHADER_SCREEN]->ConnectUniform(UNIFORM_SCREEN_COLOR, "v4_screenColor");

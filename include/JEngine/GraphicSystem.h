@@ -71,13 +71,14 @@ private:
 
 	void UpdatePipelines(const float _dt);
 	void LightSourcePipeline();
+	void TextPipeline(Text * _text);
 	void SpritePipeline(Sprite * _sprite);
 	void MappingPipeline(Sprite* _sprite);
 	void LightingEffectPipeline(Material* _material);
 	void ParticlePipeline(Emitter* _emitter, const float _dt);
 
 	void Render(const unsigned &_vao, const int _elementSize, unsigned _mode = 0x0004 /*GL_TRIANGLES*/);
-	void Render(const unsigned& _vao, const int _elementSize, const std::string& _text, Transform* _transform);
+	void Render(unsigned & _vao, unsigned & _vbo, const std::string& _text, Transform* _transform);
 	void SortSprites();
 	void GLMousePosition();
 

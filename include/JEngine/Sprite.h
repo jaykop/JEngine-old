@@ -65,7 +65,7 @@ protected:
 	void Load(CR_RJValue _data) override;
 
 	bool m_culled;
-	bool m_hasMaterial, m_hasAnimation, m_isEmitter/*, m_isModel*/;
+	bool m_hasMaterial, m_hasAnimation, m_isEmitter, m_isText;
 
 	unsigned	m_mainTex;
 	TextureMap	m_textureMap;

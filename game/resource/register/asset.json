@@ -1,5 +1,7 @@
 {
-	"Font" : "resource/font/Default.ttf",
+	"Font" : [
+		{"Key" : "Defalut", "Size" : 48, "Directory" : "resource/font/Default.ttf"}
+	],
 	
 	"Texture" : [
 

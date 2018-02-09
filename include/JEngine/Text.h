@@ -31,12 +31,18 @@ public:
 
 	void Register() override;
 
+	void				SetText(const char* _text, ...);
+	const std::string&	GetText(void) const;
+
+	float m_fontSize;
+
 private:
 	
 	// TODO
 	// Change to vector
 	char		m_textStorage[512];
 	std::string m_text;
+	unsigned	m_vbo;
 
 	Text(Object* pObject);
 	~Text();

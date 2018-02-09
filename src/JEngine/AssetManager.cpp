@@ -51,8 +51,11 @@ void AssetManager::Load()
 	JE_DEBUG_PRINT("*AssetManager - Loaded textures successfully.\n");
 
 	// Load font
-	CR_RJValue font = JSON::GetDocument()["Font"];
-	LoadFont(font.GetString());
+	CR_RJValue fonts = JSON::GetDocument()["Font"];
+	for (rapidjson::SizeType i = 0; i < fonts.Size(); ++i) {
+		LoadFont(fonts[i]["Directory"].GetString(), fonts[i]["Key"].GetString(), fonts[i]["Size"].GetUint());
+		JE_DEBUG_PRINT("*AssetManager - Loaded fonst: %s.\n", fonts[i]["Directory"].GetString());
+	}
 	JE_DEBUG_PRINT("*AssetManager - Loaded font successfully.\n");
 }
 
@@ -104,17 +107,13 @@ void AssetManager::LoadBuiltInComponents()
 }
 
 
-void AssetManager::LoadFont(const char * _path)
+void AssetManager::LoadFont(const char * _path, const char* _key, unsigned _size)
 {
 	// Check freetype face init
 	if (!FT_New_Face(GLM::m_ftLibrary, _path, 0, &GLM::m_ftFace))
 		JE_DEBUG_PRINT("!AssetManager - Loaded font: %sn", _path);
 
-	//TODO
-	static float m_fontSize = 48;
-
-	// Set size to load glyphs as
-	FT_Set_Pixel_Sizes(GLM::m_ftFace, 0, FT_UInt(m_fontSize));
+	FT_Set_Pixel_Sizes(GLM::m_ftFace, 0, _size);
 
 	// Disable byte-alignment restriction
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -125,9 +124,10 @@ void AssetManager::LoadFont(const char * _path)
 		// Load character glyph 
 		if (FT_Load_Char(GLM::m_ftFace, c, FT_LOAD_RENDER))
 		{
-			std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
+			JE_DEBUG_PRINT("!AssetManager - Failed to load Glyph.\n");
 			continue;
 		}
+
 		// Generate texture
 		GLuint texture;
 		glGenTextures(1, &texture);
@@ -154,7 +154,7 @@ void AssetManager::LoadFont(const char * _path)
 			vec2(float(GLM::m_ftFace->glyph->bitmap.width), float(GLM::m_ftFace->glyph->bitmap.rows)),
 			vec2(float(GLM::m_ftFace->glyph->bitmap_left), float(GLM::m_ftFace->glyph->bitmap_top))
 		};
-		GLM::m_font.insert(std::pair<char, GLM::Character>(c, character));
+		GLM::m_font.insert(GLM::Font::value_type(c, character));
 	}
 
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -188,7 +188,6 @@ void AssetManager::LoadImage(const char *_path, const char *_textureKey)
 
 	m_textureMap.insert(TextureMap::value_type(
 		_textureKey, newImage));
-
 }
 
 void AssetManager::LoadArchetype(const char* /*_path*/, const char* /*_archetypeKey*/)
