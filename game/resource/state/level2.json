@@ -9,7 +9,7 @@
 			"Component" : [
 				{
 					"Type": "Camera",
-					"Values": {"Position" : [25, 25, 25], "Target" : [0, 0, 0],
+					"Values": {"Position" : [0, 0, 100], "Target" : [0, 0, 0],
 						"Up" : [0, 1, 0]}
 				}
 			]
@@ -26,6 +26,22 @@
 					"Values": {"Texture" : "smoke", "Color" : [1, 1, 1, 1], "Projection" : "Perspective", 
 						"Life" : 1.0, "Velocity" : [0.25, 0.25, 0], "Quantity" : 100, "Direction" : [-1, 1, 0], 
 						"StartColor" : [1, 1, 1], "EndColor" : [0, 0, 1], "RenderType" : "Plane"}
+				}
+			]
+		},
+		{
+			"Name" : "PointParticle",
+			"Component" : [
+				{
+					"Type": "Transform",
+					"Values": {"Position" : [0, 0, 0], "Scale" : [2.5, 2.5, 2.5]}
+				},
+				{
+					"Type": "Emitter",
+					"Values": {"Texture" : "particle", "Color" : [1, 1, 1, 1], "Projection" : "Perspective", 
+						"Life" : 1.0, "Velocity" : [0.25, 0.25, 0], "Quantity" : 100, "Direction" : [-1, 1, 0], 
+						"StartColor" : [1, 1, 1], "EndColor" : [0, 0, 1], "RenderType" : "Point", "Bilboard" : true,
+						"PointSize" : 1}
 				}
 			]
 		},

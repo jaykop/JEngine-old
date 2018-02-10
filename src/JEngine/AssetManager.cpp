@@ -15,6 +15,7 @@
 JE_BEGIN
 
 // Declare static member variables
+ASSET::FontMap		ASSET::m_fontMap;
 ASSET::AudioMap		ASSET::m_audioMap;
 ASSET::StateMap		ASSET::m_stateMap;
 ASSET::TextureMap	ASSET::m_textureMap;
@@ -69,6 +70,15 @@ void AssetManager::Unload()
 	//	}
 	//}
 
+	// Clear font map
+	for (auto font : m_fontMap) {
+		if (font.second) {
+			delete font.second;
+			font.second = nullptr;
+		}
+	}
+	m_fontMap.clear();
+
 	// Clear texture map
 	m_textureMap.clear();
 
@@ -109,20 +119,29 @@ void AssetManager::LoadBuiltInComponents()
 
 void AssetManager::LoadFont(const char * _path, const char* _key, unsigned _size)
 {
+	Font* newFont = new Font;
+	newFont->m_fontSize = _size;
+
+	// Init freetype
+	if (FT_Init_FreeType(&newFont->m_lib))
+		JE_DEBUG_PRINT("!AssetManager - Could not init freetype library: %s\n", _path);
+
 	// Check freetype face init
-	if (!FT_New_Face(GLM::m_ftLibrary, _path, 0, &GLM::m_ftFace))
+	if (!FT_New_Face(newFont->m_lib, _path, 0, &newFont->m_face))
 		JE_DEBUG_PRINT("!AssetManager - Loaded font: %sn", _path);
 
-	FT_Set_Pixel_Sizes(GLM::m_ftFace, 0, _size);
+	FT_Set_Pixel_Sizes(newFont->m_face, 0, _size);
 
 	// Disable byte-alignment restriction
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+	static float s_newLineLevel = 0;
 
 	// Load first 128 characters of ASCII set
 	for (GLubyte c = 0; c < 128; c++)
 	{
 		// Load character glyph 
-		if (FT_Load_Char(GLM::m_ftFace, c, FT_LOAD_RENDER))
+		if (FT_Load_Char(newFont->m_face, c, FT_LOAD_RENDER))
 		{
 			JE_DEBUG_PRINT("!AssetManager - Failed to load Glyph.\n");
 			continue;
@@ -136,28 +155,34 @@ void AssetManager::LoadFont(const char * _path, const char* _key, unsigned _size
 			GL_TEXTURE_2D,
 			0,
 			GL_RED,
-			GLM::m_ftFace->glyph->bitmap.width,
-			GLM::m_ftFace->glyph->bitmap.rows,
+			newFont->m_face->glyph->bitmap.width,
+			newFont->m_face->glyph->bitmap.rows,
 			0,
 			GL_RED,
 			GL_UNSIGNED_BYTE,
-			GLM::m_ftFace->glyph->bitmap.buffer
+			newFont->m_face->glyph->bitmap.buffer
 		);
+
 		// Set texture options
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
 		// Now store character for later use
-		GLM::Character character = {
-			texture, GLuint(GLM::m_ftFace->glyph->advance.x),
-			vec2(float(GLM::m_ftFace->glyph->bitmap.width), float(GLM::m_ftFace->glyph->bitmap.rows)),
-			vec2(float(GLM::m_ftFace->glyph->bitmap_left), float(GLM::m_ftFace->glyph->bitmap_top))
+		Font::Character character = {
+			texture, GLuint(newFont->m_face->glyph->advance.x),
+			vec2(float(newFont->m_face->glyph->bitmap.width), float(newFont->m_face->glyph->bitmap.rows)),
+			vec2(float(newFont->m_face->glyph->bitmap_left), float(newFont->m_face->glyph->bitmap_top))
 		};
-		GLM::m_font.insert(GLM::Font::value_type(c, character));
+		s_newLineLevel += character.m_size.y;
+		newFont->m_data.insert(Font::FontData::value_type(c, character));
 	}
+	newFont->m_newLineInterval = (s_newLineLevel / 128.f);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+	m_fontMap.insert(FontMap::value_type(_key, newFont));
 }
 
 void AssetManager::LoadAudio(const char* /*_path*/, const char* /*_audioKey*/)
@@ -168,10 +193,10 @@ void AssetManager::LoadAudio(const char* /*_path*/, const char* /*_audioKey*/)
 
 void AssetManager::LoadImage(const char *_path, const char *_textureKey)
 {
-	unsigned	newImage;
-	Image		image;
-	unsigned	width, height;
-	unsigned	error = lodepng::decode(image, width, height, _path);
+	unsigned		newImage;
+	Sprite::Image	image;
+	unsigned		width, height;
+	unsigned		error = lodepng::decode(image, width, height, _path);
 
 	if (error)
 		JE_DEBUG_PRINT("!AssetManager - decoder error %d / %s.\n", error, lodepng_error_text(error));
@@ -194,6 +219,16 @@ void AssetManager::LoadArchetype(const char* /*_path*/, const char* /*_archetype
 {
 	// TODO
 	// load archetpye assets
+}
+
+Font* AssetManager::GetFont(const char *_key)
+{
+	auto found = m_fontMap.find(_key);
+	if (found != m_fontMap.end())
+		return found->second;
+
+	JE_DEBUG_PRINT("!AssetManager - Cannot find such name of font resource: %s.\n", _key);
+	return nullptr;
 }
 
 State* AssetManager::GetState(const char *_key)

@@ -17,9 +17,6 @@ GLuint				GLManager::m_depthBuffer = 0;
 GLuint				GLManager::m_renderTarget = 0;
 GLManager::Shaders	GLManager::m_shader;
 GLManager::DrawMode GLManager::m_mode = DrawMode::DRAW_FILL;
-GLManager::Font		GLManager::m_font;
-FT_Face				GLManager::m_ftFace;
-FT_Library			GLManager::m_ftLibrary;
 
 // TODO
 // For test...
@@ -221,7 +218,6 @@ bool GLManager::initSDL_GL(float _width, float _height)
 		InitVBO();
 		InitFBO();				// These two are to be off to visualise deferred rendering
 		InitGLEnvironment();	// These two are to be off to visualise deferred rendering
-		InitFreetype();
 		//InitDefferedFBO();
 		RegisterUniform();
 	}
@@ -267,6 +263,15 @@ void GLManager::InitVBO()
 	SetVAO(m_vao[SHAPE_CUBE], m_vbo[SHAPE_CUBE], m_ebo[SHAPE_CUBE],
 		m_verticesSize[SHAPE_CUBE], m_indicesSize[SHAPE_CUBE],
 		m_verticesCube, m_indicesCube);
+
+	// Set vao for text
+	// Generate vertexy array object
+	glGenVertexArrays(1, &m_vao[SHAPE_TEXT]);
+	glBindVertexArray(m_vao[SHAPE_TEXT]);
+
+	// Generate vertex buffer object(VBO)
+	glGenBuffers(1, &m_vbo[SHAPE_TEXT]);
+	glBindBuffer(GL_ARRAY_BUFFER, m_vbo[SHAPE_TEXT]);
 
 	glBindVertexArray(0);
 }
@@ -409,12 +414,6 @@ void GLManager::InitShaders()
 	m_shader[SHADER_DEFERRED]->LoadShader(
 		"../src/shader/deferred.vs",
 		"../src/shader/deferred.fs");
-}
-
-void GLManager::InitFreetype()
-{
-	if (FT_Init_FreeType(&m_ftLibrary))
-		JE_DEBUG_PRINT("!GLManager - Could not init freetype library.\n");
 }
 
 void GLManager::SetDrawMode(DrawMode _mode)

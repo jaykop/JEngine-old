@@ -5,6 +5,7 @@
 
 JE_BEGIN
 
+class Font;
 class Audio;
 class State;
 class Texture;
@@ -16,7 +17,7 @@ class AssetManager {
 	friend class Application;
 	friend class StateManager;
 
-	using Image =			std::vector<unsigned char>;
+	using FontMap =			std::unordered_map<std::string, Font*>;
 	using AudioMap =		std::unordered_map<std::string, Audio*>;
 	using StateMap =		std::unordered_map<std::string, State*>;
 	using TextureMap =		std::unordered_map<std::string, unsigned>;
@@ -26,6 +27,7 @@ public:
 
 	static void			RegisterAssets();
 
+	static Font*		GetFont(const char* _key);
 	static State*		GetState(const char* _key);
 	static Audio*		GetAudio(const char* _key);
 	static unsigned		GetTexture(const char* _key);
@@ -36,8 +38,6 @@ private:
 	static std::string m_initDirectory, m_assetDirectory,
 		m_stateDirectory, m_archeDirectory;
 	
-	// TODO
-	// Make font array...
 	static void LoadFont(const char* _path, const char* _audioKey, unsigned _size);
 	static void LoadAudio(const char* _path, const char* _audioKey);
 	static void LoadImage(const char* _path, const char* _textureKey);
@@ -55,6 +55,7 @@ private:
 	static void Unload();
 
 	// Private member variables
+	static FontMap		m_fontMap;
 	static AudioMap		m_audioMap;
 	static StateMap		m_stateMap;
 	static TextureMap	m_textureMap;

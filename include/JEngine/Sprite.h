@@ -38,7 +38,9 @@ class Sprite : public Component
 	friend class	ModelBuilder;
 	friend class	SpriteBuilder;
 	friend class	GraphicSystem;
+	friend class	AssetManager;
 
+	using Image			= std::vector<unsigned char>;
 	using TextureMap	= std::unordered_map<std::string, unsigned>;
 
 public:

@@ -387,7 +387,7 @@ void GraphicSystem::TextPipeline(Text * _text)
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_DEPTH_TEST);
 
-	Render(*(_text->m_vao), (_text->m_vbo), _text->m_text, s_pTransform);
+	Render(_text->m_pFont, _text->m_text, s_pTransform);
 
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
@@ -402,26 +402,22 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 
 		// Particle render attributes setting
 		glEnable(GL_BLEND);
-		glDepthMask(GL_FALSE);				// Ignore depth buffer writing
-		//glDisable(GL_DEPTH_TEST);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-		
+		glDepthMask(GL_FALSE);	
+
 		// Points
 		if (_emitter->m_renderType == Emitter::PARTICLERENDER_POINT) {	
 			s_mode = GL_POINTS;
 			glPointSize(_emitter->m_pointSize);
 			glEnable(GL_POINT_SMOOTH);
-		}
-		// Plane
-		else if (_emitter->m_renderType == Emitter::PARTICLERENDER_PLANE) {	
-			s_mode = GL_TRIANGLES;
-			glDisable(GL_POINT_SMOOTH);
+			glBlendFunc(GL_ONE, GL_ONE);
 		}
 
+		// Plane
 		// Cross form
 		else {
 			s_mode = GL_TRIANGLES;
 			glDisable(GL_POINT_SMOOTH);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 		}
 
 		static GLuint					s_vao, s_elementSize;
@@ -499,7 +495,6 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 			}
 		}
 
-		//glEnable(GL_DEPTH_TEST);
 		glDepthMask(GL_TRUE);	// Enable depth buffer writing
 		glDisable(GL_BLEND);	// Disable blend
 	}
@@ -512,27 +507,27 @@ void GraphicSystem::Render(const unsigned &_vao, const int _elementSize, unsigne
 	glBindVertexArray(0);
 }
 
-void GraphicSystem::Render(unsigned & _vao, unsigned & _vbo, const std::string& _text, Transform* _transform)
+void GraphicSystem::Render(Font* _font, const std::string& _text, Transform* _transform)
 {
 	static vec3 s_position, s_scale;
 
 	s_scale = _transform->m_scale;
 	s_position = _transform->m_position;
 
-	glBindVertexArray(_vao);
-	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+	glBindVertexArray(GLM::m_vao[GLM::SHAPE_TEXT]);
+	glBindBuffer(GL_ARRAY_BUFFER, GLM::m_vbo[GLM::SHAPE_TEXT]);
 
 	// TODO
 	// Set init values and fix text bug....
 	GLfloat new_x = GLfloat(s_position.x);
-	GLfloat init_x = new_x, lower_y = 0, nl_offset = 2.f / 3.f;
+	GLfloat init_x = new_x, lower_y = 0;
 	int num_newline = 1;
 
 	// Iterate all character
 	std::string::const_iterator c;
 	for (c = _text.begin(); c != _text.end(); ++c)
 	{
-		GLM::Character ch = GLM::m_font[*c];
+		Font::Character ch = _font->m_data[*c];
 		GLfloat xpos = new_x + ch.m_bearing.x * s_scale.x;
 		GLfloat ypos = s_position.y - (ch.m_size.y - ch.m_bearing.y) * s_scale.y - lower_y;
 		GLfloat zpos = s_position.z;
@@ -568,10 +563,8 @@ void GraphicSystem::Render(unsigned & _vao, unsigned & _vbo, const std::string& 
 		const char newline = *c;
 		if (newline == '\n')
 		{
-			// TODO
-			// Font size
 			new_x = init_x;
-			lower_y = 48.f * nl_offset * num_newline;
+			lower_y = _font->m_newLineInterval * num_newline;
 			++num_newline;
 		}
 

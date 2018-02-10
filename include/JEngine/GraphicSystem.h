@@ -5,6 +5,7 @@
 
 JE_BEGIN
 
+class Font;
 class Shader;
 class Material;
 class Transform;
@@ -78,7 +79,7 @@ private:
 	void ParticlePipeline(Emitter* _emitter, const float _dt);
 
 	void Render(const unsigned &_vao, const int _elementSize, unsigned _mode = 0x0004 /*GL_TRIANGLES*/);
-	void Render(unsigned & _vao, unsigned & _vbo, const std::string& _text, Transform* _transform);
+	void Render(Font* _font, const std::string& _text, Transform* _transform);
 	void SortSprites();
 	void GLMousePosition();
 

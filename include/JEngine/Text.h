@@ -1,8 +1,41 @@
 #pragma once
 
+#include <map>
+#include "ft2build.h"
+#include FT_FREETYPE_H
+
 #include "Sprite.h"
+#include "Vector2.h"
 
 JE_BEGIN
+
+class Font {
+
+	struct Character {
+		unsigned	m_texture;	// ID handle of the glyph texture
+		unsigned	m_advance;	// Horizontal offset to advance to next glyph
+		vec2		m_size;		// Size of glyph
+		vec2		m_bearing;		// Offset from baseline to left/top of glyph
+	};
+
+	typedef std::map<char, Character> FontData;
+
+	friend class AssetManager;
+	friend class GraphicSystem;
+
+private:
+
+	Font();
+	~Font() {};
+	Font(const Font& /*_copy*/) = delete;
+	void operator = (const Font& /*_copy*/) = delete;
+
+	FontData m_data;
+	FT_Face m_face;
+	FT_Library m_lib;
+	unsigned m_fontSize;
+	float m_newLineInterval;
+};
 
 class TextBuilder : public ComponentBuilder
 {
@@ -34,15 +67,14 @@ public:
 	void				SetText(const char* _text, ...);
 	const std::string&	GetText(void) const;
 
-	float m_fontSize;
+	Font* m_pFont;
 
 private:
 	
 	// TODO
 	// Change to vector
-	char		m_textStorage[512];
+	char		m_textStorage[1024];
 	std::string m_text;
-	unsigned	m_vbo;
 
 	Text(Object* pObject);
 	~Text();
