@@ -71,8 +71,6 @@ public:
 
 private:
 	
-	// TODO
-	// Change to vector
 	char		m_textStorage[1024];
 	std::string m_text;
 

@@ -17,15 +17,13 @@ void GraphicSystem::UpdatePipelines(const float _dt)
 	// Update sprites and lights
 	m_isLight = m_lights.empty() ? false : true;
 
-	// Inform that there are lights
-	GLM::m_shader[GLM::SHADER_MODEL]->Use();
-
-	GLM::m_shader[GLM::SHADER_MODEL]->SetBool(
-		GLM::UNIFORM_IS_LIGHT, m_isLight);
-
 	LightSourcePipeline();
 
 	GLM::m_shader[GLM::SHADER_MODEL]->Use();
+
+	// Inform that there are lights
+	GLM::m_shader[GLM::SHADER_MODEL]->SetBool(
+		GLM::UNIFORM_IS_LIGHT, m_isLight);
 
 	// Send camera info to shader
 	GLM::m_shader[GLM::SHADER_MODEL]->SetMatrix(
@@ -117,18 +115,13 @@ void GraphicSystem::LightSourcePipeline()
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_DEPTH_TEST);
 
-		static vec3 s_lightScale(10.f, 10.f, 10.f), s_lightUp(0, 1, 0);
 		static float s_lightDeg = 0.f;
 
 		GLM::m_shader[GLM::SHADER_LIGHTING]->Use();
 
 		GLM::m_shader[GLM::SHADER_LIGHTING]->SetMatrix(
 			GLM::UNIFORM_LIGHT_SCALE,
-			mat4::Scale(s_lightScale));
-
-		GLM::m_shader[GLM::SHADER_LIGHTING]->SetMatrix(
-			GLM::UNIFORM_LIGHT_ROTATE,
-			mat4::Rotate(s_lightDeg, s_lightUp));
+			mat4::Scale(m_lightScale));
 
 		GLM::m_shader[GLM::SHADER_LIGHTING]->SetMatrix(
 			GLM::UNIFORM_LIGHT_CAMERA,
@@ -139,6 +132,14 @@ void GraphicSystem::LightSourcePipeline()
 			GLM::m_shader[GLM::SHADER_LIGHTING]->SetMatrix(
 				GLM::UNIFORM_LIGHT_TRANSLATE,
 				mat4::Translate(light->m_position));
+
+			GLM::m_shader[GLM::SHADER_LIGHTING]->SetMatrix(
+				GLM::UNIFORM_LIGHT_ROTATEZ,
+				mat4::RotateZ(atan2(light->m_direction.y, light->m_direction.z)));
+
+			GLM::m_shader[GLM::SHADER_LIGHTING]->SetMatrix(
+				GLM::UNIFORM_LIGHT_ROTATEY,
+				mat4::RotateY(atan2(light->m_direction.z, light->m_direction.x)));
 
 			if (light->m_projection == PROJECTION_PERSPECTIVE)
 				GLM::m_shader[GLM::SHADER_LIGHTING]->SetMatrix(
@@ -151,9 +152,7 @@ void GraphicSystem::LightSourcePipeline()
 				GLM::UNIFORM_LIGHT_COLOR,
 				light->m_color);
 
-			// TODO
-			// Change vertices
-			Render(GLM::m_vao[GLM::SHAPE_CUBE], GLM::m_elementSize[GLM::SHAPE_CUBE]);
+			Render(GLM::m_vao[GLM::SHAPE_CONE], GLM::m_elementSize[GLM::SHAPE_CONE]);
 
 		} // for (auto light : m_lights) {
 	} // if (m_isLight) {
@@ -179,7 +178,7 @@ void GraphicSystem::SpritePipeline(Sprite *_sprite)
 		GLM::UNIFORM_SCALE, mat4::Scale(s_pTransform->m_scale));
 
 	GLM::m_shader[GLM::SHADER_MODEL]->SetMatrix(
-		GLM::UNIFORM_ROTATE, mat4::Rotate(s_pTransform->m_rotation, s_pTransform->m_rotationAxis));
+		GLM::UNIFORM_ROTATE, mat4::Rotate(Math::RadToDeg(s_pTransform->m_rotation), s_pTransform->m_rotationAxis));
 
 	GLM::m_shader[GLM::SHADER_MODEL]->SetVector3(
 		GLM::UNIFORM_CAMERA_POSITION, m_pMainCamera->m_position);
@@ -363,7 +362,7 @@ void GraphicSystem::TextPipeline(Text * _text)
 		GLM::UNIFORM_TEXT_SCALE, mat4::Scale(s_pTransform->m_scale));
 
 	GLM::m_shader[GLM::SHADER_TEXT]->SetMatrix(
-		GLM::UNIFORM_TEXT_ROTATE, mat4::Rotate(s_pTransform->m_rotation, s_pTransform->m_rotationAxis));
+		GLM::UNIFORM_TEXT_ROTATE, mat4::Rotate(Math::RadToDeg(s_pTransform->m_rotation), s_pTransform->m_rotationAxis));
 
 	GLM::m_shader[GLM::SHADER_TEXT]->SetBool(
 		GLM::UNIFORM_TEXT_BILBOARD, _text->m_bilboard);
@@ -412,8 +411,7 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 			glBlendFunc(GL_ONE, GL_ONE);
 		}
 
-		// Plane
-		// Cross form
+		// Plane 2d and 3d form
 		else {
 			s_mode = GL_TRIANGLES;
 			glDisable(GL_POINT_SMOOTH);
@@ -482,7 +480,7 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 					GLM::UNIFORM_PARTICLE_TRANSLATE, mat4::Translate(particle->m_position));
 
 				GLM::m_shader[GLM::SHADER_PARTICLE]->SetMatrix(
-					GLM::UNIFORM_PARTICLE_ROTATE, mat4::Rotate(particle->m_rotation, s_pTransform->m_rotationAxis));
+					GLM::UNIFORM_PARTICLE_ROTATE, mat4::Rotate(Math::RadToDeg(particle->m_rotation), s_pTransform->m_rotationAxis));
 
 				// Send color info to shader
 				GLM::m_shader[GLM::SHADER_PARTICLE]->SetVector4(
@@ -605,7 +603,7 @@ void GraphicSystem::render1()
 
 	GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(GLM::UNIFORM_DEFERRED_TRANSLATE, mat4::Translate(s_pTransform->m_position));
 	GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(GLM::UNIFORM_DEFERRED_SCALE, mat4::Scale(s_pTransform->m_scale));
-	GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(GLM::UNIFORM_DEFERRED_ROTATE, mat4::Rotate(s_pTransform->m_rotation, s_pTransform->m_rotationAxis));
+	GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(GLM::UNIFORM_DEFERRED_ROTATE, mat4::Rotate(Math::RadToDeg(s_pTransform->m_rotation), s_pTransform->m_rotationAxis));
 	GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(GLM::UNIFORM_DEFERRED_CAMERA, m_viewport);
 
 	// Send projection info to shader

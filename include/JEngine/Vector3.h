@@ -40,7 +40,7 @@ public:
 	Vector3		operator*(const Vector3& _rhs) const;
 	Vector3		operator/(float _constant) const;
 	Vector3&	operator=(const Vector3& _rhs);
-	Vector3&	operator-(void);
+	Vector3	operator-(void);
 	Vector3&	operator+=(const Vector3& _rhs);
 	Vector3&	operator+=(float _constant);
 	Vector3&	operator-=(const Vector3& _rhs);

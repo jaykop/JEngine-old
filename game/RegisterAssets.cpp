@@ -2,13 +2,7 @@
 #include "Core.h"
 #include "AssetManager.h"
 #include "ComponentManager.h"
-
-/////////////////////////////////////////////////////////////////////////
-// customize component headers
-//////////////////////////////////////////////////////////////////////////
-#include "CameraController.h"
-#include "LevelController.h"
-#include "LightController.h"
+#include "CustomLogics.h"
 
 JE_BEGIN
 
@@ -30,6 +24,7 @@ void AssetManager::RegisterAssets()
 	JE_ADD_COMPONENT(CameraController);
 	JE_ADD_COMPONENT(LevelController);
 	JE_ADD_COMPONENT(LightController);
+	JE_ADD_COMPONENT(TestLogic);
 
 }
 

@@ -37,7 +37,7 @@ public:
 	Vector4		operator*(const Vector4& _rhs) const;
 	Vector4		operator/(float _constant) const;
 	Vector4&	operator=(const Vector4& _rhs);
-	Vector4&	operator-(void);
+	Vector4		operator-(void);
 	Vector4&	operator+=(const Vector4& _rhs);
 	Vector4&	operator+=(float _constant);
 	Vector4&	operator-=(const Vector4& _rhs);

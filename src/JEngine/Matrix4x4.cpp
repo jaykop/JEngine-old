@@ -858,14 +858,60 @@ Matrix4x4 Matrix4x4::Scale(const vec3& _vec)
 	return Result;
 }
 
-Matrix4x4 Matrix4x4::Rotate(float _degree, const vec3& _vec)
+Matrix4x4 Matrix4x4::RotateX(float _radian)
+{
+	Matrix4x4 rotation;
+	float c = std::cosf(_radian);
+	float s = std::sinf(_radian);
+
+	rotation.m[0][0] = 1.f;
+	rotation.m[1][1] = c;
+	rotation.m[1][2] = -s;
+	rotation.m[2][1] = s;
+	rotation.m[2][2] = c;
+	rotation.m[3][3] = 1.f;
+
+	return rotation;
+}
+
+Matrix4x4 Matrix4x4::RotateY(float _radian)
+{
+	Matrix4x4 rotation;
+	float c = std::cosf(_radian);
+	float s = std::sinf(_radian);
+
+	rotation.m[0][0] = c;
+	rotation.m[1][1] = 1.f;
+	rotation.m[0][2] = s;
+	rotation.m[2][0] = -s;
+	rotation.m[2][2] = c;
+	rotation.m[3][3] = 1.f;
+
+	return rotation;
+}
+
+Matrix4x4 Matrix4x4::RotateZ(float _radian)
+{
+	Matrix4x4 rotation;
+	float c = std::cosf(_radian);
+	float s = std::sinf(_radian);
+
+	rotation.m[0][0] = c;
+	rotation.m[0][1] = -s;
+	rotation.m[1][0] = s;
+	rotation.m[1][1] = c;
+	rotation.m[2][2] = 1.f;
+	rotation.m[3][3] = 1.f;
+
+	return rotation;
+}
+
+Matrix4x4 Matrix4x4::Rotate(float _radian, const vec3& _vec)
 {
 	Matrix4x4 Result;
-
-	float radian = Math::DegToRad(_degree);
-
-	float cosine = cos(radian);
-	float sine = sin(radian);
+	
+	float cosine = cos(_radian);
+	float sine = sin(_radian);
 
 	Vector3 norm = _vec.GetNormalize();
 	Vector3 offset = (1.f - cosine) * norm;

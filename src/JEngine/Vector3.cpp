@@ -91,16 +91,18 @@ Vector3& Vector3::operator=(const vec3& _rhs)
 /*!
 \brief - Vector3 unary - operator
 \param _rhs - Vector3 to be assigned
-\return *this
+\return Result.
 */
 /******************************************************************************/
-Vector3& Vector3::operator-(void)
+Vector3 Vector3::operator-(void)
 {
-	x = -x;
-	y = -y;
-	z = -z;
+	vec3 Result;
 
-	return *this;
+	Result.x = -x;
+	Result.y = -y;
+	Result.z = -z;
+
+	return Result;
 }
 
 /******************************************************************************/

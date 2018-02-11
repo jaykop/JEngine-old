@@ -28,9 +28,8 @@ GLuint				GLManager::m_passIndex[] = { 0 };
 GLuint				GLManager::m_passIndex1 = 0;
 GLuint				GLManager::m_passIndex2 = 0;
 
-
-const float GLManager::m_verticesPoint[] = {
-	// position				// uv		// normals
+const float GLManager::m_verticesPoint[] = 
+{	// position				// uv		// normals
 	0.f,	0.f,	0.f,	1.f, 1.f,	0.0f,  0.0f, 0.0f,};
 
 const unsigned GLManager::m_indicesPoint[] = { 0 };
@@ -66,13 +65,11 @@ const float GLManager::m_verticesPlane3D[] = {
 	.5f,	-.5f,	0.f,	0.f, 1.f,	0.0f,  0.0f, 1.0f,		// bottom right
 	-.5f,	-.5f,	0.f,	0.f, 0.f,	0.0f,  0.0f, 1.0f,		// bottom left
 
-	// position				// uv		// normals
 	0.f,	.5f,	.5f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,		// top left	
 	0.f,	.5f,	-.5f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,		// top right
 	0.f,	-.5f,	-.5f,	0.f, 1.f,	0.0f,  0.0f, 1.0f,		// bottom right
 	0.f,	-.5f,	.5f,	0.f, 0.f,	0.0f,  0.0f, 1.0f,		// bottom left
 
-	// position				// uv		// normals
 	-.5f,	0.f,	-.5f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,		// top left	
 	.5f,	0.f,	-.5f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,		// top right
 	.5f,	0.f,	.5f,	0.f, 1.f,	0.0f,  0.0f, 1.0f,		// bottom right
@@ -103,35 +100,30 @@ const float GLManager::m_verticesCube [] =
 	-.5f,	-.5f,	.5f,	.25f, .5f,	0.0f,  0.0f, 1.0f,		// bottom left
 
 	// back
-	// position				// uv		// normals
 	.5f,	.5f,	-.5f,	.75f, .25f,	0.0f,  0.0f, -1.0f,		// top left	
 	-.5f,	.5f,	-.5f,	1.f, .25f,	0.0f,  0.0f, -1.0f,		// top right
 	-.5f,	-.5f,	-.5f,	1.f, .5f,	0.0f,  0.0f, -1.0f,		// bottom right
 	.5f,	-.5f,	-.5f,	.75f, .5f,	0.0f,  0.0f, -1.0f,		// bottom left
 
 	// left
-	// position				// uv		// normals
 	-.5f,	.5f,	-.5f,	0.f, .25f,	-1.0f,  0.0f,  0.0f,	// top left	
 	-.5f,	.5f,	.5f,	.25f, .25f,	-1.0f,  0.0f,  0.0f,	// top right
 	-.5f,	-.5f,	.5f,	.25f, .5f,	-1.0f,  0.0f,  0.0f,	// bottom right
 	-.5f,	-.5f,	-.5f,	0.f, .5f,	-1.0f,  0.0f,  0.0f,	// bottom left
 
 	// right
-	// position				// uv		// normals
 	.5f,	.5f,	.5f,	.5f, .25f,	1.0f,  0.0f,  0.0f,		// top left	
 	.5f,	.5f,	-.5f,	.75f, .25f,	1.0f,  0.0f,  0.0f,		// top right
 	.5f,	-.5f,	-.5f,	.75f, .5f,	1.0f,  0.0f,  0.0f,		// bottom right
 	.5f,	-.5f,	.5f,	.5f, .5f,	1.0f,  0.0f,  0.0f,		// bottom left
 
 	// down
-	// position				// uv		// normals
 	-.5f,	-.5f,	.5f,	.25f, .5f,	0.0f, -1.0f,  0.0f,		// top left	
 	.5f,	-.5f,	.5f,	.5f, .5f,	0.0f, -1.0f,  0.0f,		// top right
 	.5f,	-.5f,	-.5f,	.5f, .75f,	0.0f, -1.0f,  0.0f,		// bottom right
 	-.5f,	-.5f,	-.5f,	.25f, .75f,	0.0f, -1.0f,  0.0f,		// bottom left
 
 	// up
-	// position				// uv		// normals
 	-.5f,	.5f,	-.5f,	.25f, 0.f,	0.0f,  1.0f,  0.0f,		// top left	
 	.5f,	.5f,	-.5f,	.5f, 0.f,	0.0f,  1.0f,  0.0f,		// top right
 	.5f,	.5f,	.5f,	.5f, .25f,	0.0f,  1.0f,  0.0f,		// bottom right
@@ -177,17 +169,54 @@ const unsigned GLManager::m_indicesCube [] =
 	22, 20, 21	// second triangle
 };
 
-const unsigned		GLManager::m_elementSize[] = { 1, 6, 72, 144 };
+const float GLManager::m_verticesCone[] = {
+
+	// position				// uv		// normals
+	-.5f,	0.f,	0.f,	0.f, 0.f,	0.f,  1.f, 0.f,		// front
+	.5f,	.5f,	-.5f,	0.f, 0.f,	0.f,  1.f, 0.f,		// front
+	.5f,	.5f,	.5f,	0.f, 0.f,	0.f,  1.f, 0.f,		// front
+
+	-.5f,	0.f,	0.f,	0.f, 0.f,	-1.f,  0.f, 0.f,	// right
+	.5f,	.5f,	.5f,	0.f, 0.f,	-1.f,  0.f, 0.f,	// right
+	.5f,	-.5f,	.5f,	0.f, 0.f,	-1.f,  0.f, 0.f,	// right
+
+	-.5f,	0.f,	0.f,	0.f, 0.f,	1.f,  0.f, 0.f,		// left
+	.5f,	-.5f,	.5f,	0.f, 0.f,	1.f,  0.f, 0.f,		// left
+	.5f,	-.5f,	-.5f,	0.f, 0.f,	1.f,  0.f, 0.f,		// left
+
+	-.5f,	0.f,	0.f,	0.f, 0.f,	0.f,  -1.f, 0.f,	// back
+	.5f,	-.5f,	-.5f,	0.f, 0.f,	0.f,  -1.f, 0.f,	// back
+	.5f,	.5f,	-.5f,	0.f, 0.f,	0.f,  -1.f, 0.f,	// back
+
+	.5f,	.5f,	-.5f,	1.f, 0.f,	0.f,  0.f, -1.f,	// botom - top left	
+	.5f,	.5f,	.5f,	1.f, 1.f,	0.f,  0.f, -1.f,	// botom - top right
+	.5f,	-.5f,	.5f,	0.f, 1.f,	0.f,  0.f, -1.f,	// botom - bottom right
+	.5f,	-.5f,	-.5f,	0.f, 0.f,	0.f,  0.f, -1.f,	// botom - bottom left
+};
+
+const unsigned GLManager::m_indicesCone[] = {
+
+	0,	1,	2,
+	3,	4,	5,
+	6,	7,	8,
+	9,	10,	11,
+	12, 14, 15,
+	14, 12, 16 
+};
+
+const unsigned		GLManager::m_elementSize[] = { 1, 6, 72, 144, 6, 18 };
 const unsigned		GLManager::m_verticesSize[] = { 
 
 	sizeof(GLM::m_verticesPoint), sizeof(GLM::m_verticesPlane), 
-	sizeof(GLM::m_verticesPlane3D), sizeof(GLM::m_verticesCube)
+	sizeof(GLM::m_verticesPlane3D), sizeof(GLM::m_verticesCube),
+	sizeof(GLM::m_verticesPlane), sizeof(GLM::m_verticesCone)
 
 };
 const unsigned		GLManager::m_indicesSize[] = { 
 
 	sizeof(GLM::m_indicesPoint), sizeof(GLM::m_indicesPlane),
-	sizeof(GLM::m_verticesPlane3D), sizeof(GLM::m_indicesCube)
+	sizeof(GLM::m_verticesPlane3D), sizeof(GLM::m_indicesCube),
+	sizeof(GLM::m_indicesPlane),sizeof(GLM::m_indicesCone)
 
 };
 
@@ -263,6 +292,10 @@ void GLManager::InitVBO()
 	SetVAO(m_vao[SHAPE_CUBE], m_vbo[SHAPE_CUBE], m_ebo[SHAPE_CUBE],
 		m_verticesSize[SHAPE_CUBE], m_indicesSize[SHAPE_CUBE],
 		m_verticesCube, m_indicesCube);
+
+	SetVAO(m_vao[SHAPE_CONE], m_vbo[SHAPE_CONE], m_ebo[SHAPE_CONE],
+		m_verticesSize[SHAPE_CONE], m_indicesSize[SHAPE_CONE],
+		m_verticesCone, m_indicesCone);
 
 	// Set vao for text
 	// Generate vertexy array object
@@ -461,10 +494,11 @@ void GLManager::RegisterUniform()
 	/******************** Light shader ********************/
 	m_shader[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_TRANSLATE, "m4_translate");
 	m_shader[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_SCALE, "m4_scale");
-	m_shader[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_ROTATE, "m4_rotate");
 	m_shader[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_CAMERA, "m4_viewport");
 	m_shader[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_PROJECTION, "m4_projection");
 	m_shader[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_COLOR, "v4_color");
+	m_shader[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_ROTATEY, "m4_rotateY");
+	m_shader[SHADER_LIGHTING]->ConnectUniform(UNIFORM_LIGHT_ROTATEZ, "m4_rotateZ");
 
 	/******************** Particle shader ********************/
 	m_shader[SHADER_PARTICLE]->ConnectUniform(UNIFORM_PARTICLE_COLOR, "v4_color");
@@ -493,7 +527,7 @@ void GLManager::RegisterUniform()
 	m_shader[SHADER_SCREEN]->ConnectUniform(UNIFORM_SCREEN_BLUR_AMOUNT, "float_blurAmount");
 	m_shader[SHADER_SCREEN]->ConnectUniform(UNIFORM_SCREEN_SOBEL, "float_sobelAmount");
 	
-	/******************** Light shader ********************/
+	/******************** Deferred shader ********************/
 	m_shader[SHADER_DEFERRED]->ConnectUniform(UNIFORM_DEFERRED_TRANSLATE, "m4_translate");
 	m_shader[SHADER_DEFERRED]->ConnectUniform(UNIFORM_DEFERRED_SCALE, "m4_scale");
 	m_shader[SHADER_DEFERRED]->ConnectUniform(UNIFORM_DEFERRED_ROTATE, "m4_rotate");

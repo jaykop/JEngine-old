@@ -76,13 +76,16 @@ public:
 	void		SetZero();
 
 	// To use graphic...
-	static Matrix4x4 Translate(const vec3& vec);
-	static Matrix4x4 Scale(const vec3& vec);
-	static Matrix4x4 Rotate(float degree, const vec3& vec);
-	static Matrix4x4 Perspective(float fovy, float aspect, float zNear, float zFar);
-	static Matrix4x4 Orthogonal(float left, float right, float bottom, float top, float zNear, float zFar);
+	static Matrix4x4 Translate(const vec3& _vec);
+	static Matrix4x4 Scale(const vec3& _vec);
+	static Matrix4x4 Rotate(float _radian, const vec3& _vec);
+	static Matrix4x4 RotateX(float _radian);
+	static Matrix4x4 RotateY(float _radian);
+	static Matrix4x4 RotateZ(float _radian);
+	static Matrix4x4 Perspective(float _fovy, float _aspect, float _zNear, float _zFar);
+	static Matrix4x4 Orthogonal(float _left, float _right, float _bottom, float _top, float _zNear, float _zFar);
 	static Matrix4x4 Orthogonal(float _left, float _right, float _bottom, float _top);
-	static Matrix4x4 LookAt(const Vector3& eye, const Vector3& center, const Vector3& up);
+	static Matrix4x4 LookAt(const Vector3& _eye, const Vector3& _target, const Vector3& _up);
 
 	//Friend functions
 	friend Matrix4x4		operator+(float _constant, const Matrix4x4& _rhs);

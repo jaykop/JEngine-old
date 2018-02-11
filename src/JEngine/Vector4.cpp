@@ -61,17 +61,19 @@ Vector4::Vector4(const vec4& _copy)
 /*!
 \brief - Vector4 unary - operator
 \param _rhs - Vector4 to be assigned
-\return *this
+\return Result
 */
 /******************************************************************************/
-Vector4& Vector4::operator-(void)
+Vector4 Vector4::operator-(void)
 {
-	x = -x;
-	y = -y;
-	z = -z;
-	w = -w;
+	vec4 Result;
 
-	return *this;
+	Result.x = -x;
+	Result.y = -y;
+	Result.z = -z;
+	Result.w = -w;
+
+	return Result;
 }
 
 /******************************************************************************/

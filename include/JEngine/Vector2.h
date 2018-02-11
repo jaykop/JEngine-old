@@ -37,7 +37,7 @@ struct Vector2
 	Vector2		operator*(const Vector2& _rhs) const;
 	Vector2		operator/(float _constant) const;
 	Vector2&	operator=(const Vector2& _rhs);
-	Vector2&	operator-(void);
+	Vector2		operator-(void);
 	Vector2&	operator+=(const Vector2& _rhs);
 	Vector2&	operator+=(float _constant);
 	Vector2&	operator-=(const Vector2& _rhs);
@@ -63,6 +63,7 @@ struct Vector2
 	Vector2		GetNormalize() const;
 	Vector2&	Absolute();
 	Vector2		GetAbsolute() const;
+	float		GetAngle();
 
 	// Friend functions
 	friend Vector2			operator+(float _constant, const Vector2& _rhs);

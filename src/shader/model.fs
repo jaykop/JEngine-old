@@ -76,11 +76,11 @@ void main() {
 	// TODO
 	// For loop does not support...
 	// Implement light attributes	
-	//	if (boolean_light)
-	//		LightingEffect(finalTexture);
+	if (boolean_light)
+		LightingEffect(finalTexture);
 		
 	// Unless..
-	//	else
+	else
 		finalTexture = texture(Texture, v2_outTexCoord)* v4_color;
 		
 	
@@ -94,7 +94,7 @@ void LightingEffect(inout vec4 _color) {
 
 	// TODO
 	// Dynamic light loop...
-	for (int index = 0; index < 2; ++index) {
+	for (int index = 0; index < 3; ++index) {
 	
 		vec3 	lightDirection;
 		float 	attenuation = 1.f;

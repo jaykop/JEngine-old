@@ -169,15 +169,17 @@ Vector2& Vector2::operator=(const vec2& _rhs)
 /*!
 \brief - Vector2 unary - operator
 \param _rhs - vector2 to be assigned
-\return *this
+\return Result
 */
 /******************************************************************************/
-Vector2& Vector2::operator-(void)
+Vector2 Vector2::operator-(void)
 {
-	x = -x;
-	y = -y;
+	vec2 Result;
 
-	return *this;
+	Result.x = -x;
+	Result.y = -y;
+
+	return Result;
 }
 
 /******************************************************************************/
@@ -539,6 +541,11 @@ std::ostream& operator<<(std::ostream& _os, const vec2& _constents)
 {
 	_os << "Vector2[ " << _constents.x << ", " << _constents.y << " ]";
 	return _os;
+}
+
+float Vector2::GetAngle()
+{
+	return atan2(y, x);
 }
 
 JE_END

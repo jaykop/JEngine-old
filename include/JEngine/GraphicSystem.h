@@ -37,6 +37,7 @@ public:
 	void	SetMainCamera(Camera* _camera);
 	Camera* GetMainCamera();
 
+	vec3			m_lightScale;
 	vec4			m_backgroundColor, m_screenColor;
 	bool			m_orthoComesFirst;
 	float			m_sobelAmount, m_blurSize, m_blurAmount, m_sobelSize;
@@ -85,10 +86,6 @@ private:
 
 	void render1();
 	void render2();
-
-	// TODO
-	// TestRenderingFunctions
-	void testRender(Sprite* _sprite);
 
 	// Member variables
 	Lights		m_lights;

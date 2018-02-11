@@ -14,7 +14,7 @@ GraphicSystem::GraphicSystem()
 	:System(), m_pMainCamera(nullptr),
 	m_fovy(45.f), m_zNear(.1f), m_zFar(1000.f), m_isLight(false),
 	m_backgroundColor(vec4::ZERO), m_orthoComesFirst(true), m_screenColor(vec4::ONE),
-	m_width(int(GLM::m_width)), m_height(int(GLM::m_height)),
+	m_width(int(GLM::m_width)), m_height(int(GLM::m_height)), m_lightScale(vec3(10, 10, 10)),
 	m_aniScale(vec3::ZERO), m_aniTranslate(vec3::ZERO), m_viewport(mat4()),
 	m_sobelAmount(0.f), m_blurSize(0.f), m_blurAmount(0.f),
 	m_aliasMode(ALIAS_ALIASED), m_screenEffect(EFFECT_NONE)
@@ -88,6 +88,9 @@ void GraphicSystem::Init()
 	// set the first camera as a main camera.
 	if (!m_pMainCamera)
 		m_pMainCamera = m_cameras[0];
+
+	for (auto light : m_lights)
+		light->m_direction.Normalize();
 }
 
 void GraphicSystem::Update(const float _dt)

@@ -21,7 +21,7 @@ class GLManager {
 
 	enum DrawMode  { DRAW_POINT, DRAW_LINE, DRAW_FILL };
 	enum ShaderType  {SHADER_MODEL, SHADER_TEXT, SHADER_LIGHTING, SHADER_PARTICLE, SHADER_SCREEN, SHADER_DEFERRED, SHADER_END};
-	enum ShapeType  { SHAPE_POINT, SHAPE_PLANE, SHAPE_PLANE3D, SHAPE_CUBE, SHAPE_TEXT, SHAPE_END};
+	enum ShapeType  { SHAPE_POINT, SHAPE_PLANE, SHAPE_PLANE3D, SHAPE_CUBE, SHAPE_TEXT, SHAPE_CONE, SHAPE_END};
 	enum UniformType  {
 
 		/******************** Normal shader ********************/
@@ -40,7 +40,7 @@ class GLManager {
 
 		/******************** Light shader ********************/
 		UNIFORM_LIGHT_TRANSLATE, UNIFORM_LIGHT_SCALE, 
-		UNIFORM_LIGHT_ROTATE,
+		UNIFORM_LIGHT_ROTATEY, UNIFORM_LIGHT_ROTATEZ,
 		UNIFORM_LIGHT_CAMERA, UNIFORM_LIGHT_PROJECTION,
 		UNIFORM_LIGHT_COLOR,
 
@@ -106,9 +106,9 @@ private:
 		m_deferredFBO, m_positionBuffer, m_normalBuffer, m_colorBuffer, m_passIndex[2], m_passIndex1, m_passIndex2;	// Deffered shading test variables
 
 	// Basic indices and vertices sets
-	static const float		m_verticesPoint[8], m_verticesPlane[32], m_verticesPlane3D[96], m_verticesCube[192], m_verticesSkybox[192];
-	static const unsigned	m_indicesPoint[1], m_indicesPlane[6], m_indicesPlane3D[18], m_indicesCube[36],
-		m_elementSize[SHAPE_END], m_verticesSize[SHAPE_END], m_indicesSize[SHAPE_END];
+	static const float		m_verticesPoint[8], m_verticesPlane[32], m_verticesPlane3D[96], m_verticesCube[192], m_verticesCone[128];
+	static const unsigned	m_indicesPoint[1], m_indicesPlane[6], m_indicesPlane3D[18], m_indicesCube[36], m_indicesCone[18],
+							m_elementSize[SHAPE_END], m_verticesSize[SHAPE_END], m_indicesSize[SHAPE_END];
 
 	// Locked functions
 	GLManager() = delete;

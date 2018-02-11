@@ -18,6 +18,7 @@ Emitter::Particle::Particle(Emitter* _emitter)
 	m_position	= s_pTransform->m_position;
 	m_rotation	= Random::GetRandomFloat(0.f, 360.f);
 	m_direction	= Random::GetRandVec3(m_emitter->m_direction.x, m_emitter->m_direction.y);
+	m_direction.Normalize();
 	m_color.Set(m_emitter->m_startColor);
 	
 	static float s_rotationSpeed = m_emitter->m_rotationSpeed;
