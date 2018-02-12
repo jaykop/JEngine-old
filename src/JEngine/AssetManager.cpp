@@ -221,6 +221,26 @@ void AssetManager::LoadArchetype(const char* /*_path*/, const char* /*_archetype
 	// load archetpye assets
 }
 
+void AssetManager::SetInitDirectory(const char * _dir)
+{
+	m_initDirectory.assign(_dir);
+}
+
+void AssetManager::SetAssetDirectory(const char * _dir)
+{
+	m_assetDirectory.assign(_dir);
+}
+
+void AssetManager::SetStateDirectory(const char * _dir)
+{
+	m_stateDirectory.assign(_dir);
+}
+
+void AssetManager::SetArchetypeDirectory(const char * _dir)
+{
+	m_archeDirectory.assign(_dir);
+}
+
 Font* AssetManager::GetFont(const char *_key)
 {
 	auto found = m_fontMap.find(_key);

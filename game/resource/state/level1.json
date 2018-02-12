@@ -9,7 +9,7 @@
 			"Component" : [
 				{
 					"Type": "Camera",
-					"Values": {"Position" : [60, 60, 150], "Target" : [0, 0, 0],
+					"Values": {"Position" : [0, 0, 150], "Target" : [0, 0, 0],
 						"Up" : [0, 1, 0]}
 				}
 			]
@@ -52,7 +52,7 @@
 				{
 					"Type": "Light",
 					"Values": {"Type" : "Spot", "Position" : [-50, 0, 0],
-						"Color" : [0, 0, 1, 1], "Direction" : [1, 0, 0],
+						"Color" : [0, 0, 1, 1], "Direction" : [-1, 0, 0],
 						"Diffuse" : [1, 1, 1, 1], "Specular" : [1, 1, 1, 1], 
 						"Ambient" : [1, 1, 1, 1], "Constant" : 1.0,
 						"Linear" : 0.009, "Quadratic" : 0.0032, 

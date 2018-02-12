@@ -9,7 +9,7 @@ JE_BEGIN
 class LevelControllerBuilder : public ComponentBuilder
 {
 
-	friend class AssetManager;
+	friend class Core;
 
 public:
 

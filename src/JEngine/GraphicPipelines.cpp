@@ -63,7 +63,11 @@ void GraphicSystem::RenderToFramebuffer()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.f, 0.f, 0.f, 0.f);
 	glViewport(0, 0, GLint(m_width), GLint(m_height));
-
+	
+	// Backface culling
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glFrontFace(GL_CW);
 }
 
 void GraphicSystem::RenderToScreen()
@@ -73,8 +77,11 @@ void GraphicSystem::RenderToScreen()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(m_backgroundColor.x, m_backgroundColor.y, m_backgroundColor.z, m_backgroundColor.w);
 
+	glDisable(GL_CULL_FACE);	//Disable face culling
+	glDisable(GL_DEPTH_TEST);	//Disable depth test
+	
+	// Render to plane 2d
 	glBindVertexArray(GLM::m_vao[GLM::SHAPE_PLANE]);
-	glDisable(GL_DEPTH_TEST);
 	GLM::m_shader[GLM::SHADER_SCREEN]->Use();
 	GLM::m_shader[GLM::SHADER_SCREEN]->SetVector4(GLM::UNIFORM_SCREEN_COLOR, m_screenColor);
 
@@ -135,11 +142,11 @@ void GraphicSystem::LightSourcePipeline()
 
 			GLM::m_shader[GLM::SHADER_LIGHTING]->SetMatrix(
 				GLM::UNIFORM_LIGHT_ROTATEZ,
-				mat4::RotateZ(atan2(light->m_direction.y, light->m_direction.z)));
+				mat4::RotateZ(atan2(light->m_direction.y, light->m_direction.x)));
 
 			GLM::m_shader[GLM::SHADER_LIGHTING]->SetMatrix(
 				GLM::UNIFORM_LIGHT_ROTATEY,
-				mat4::RotateY(atan2(light->m_direction.z, light->m_direction.x)));
+				mat4::RotateY(-atan2(light->m_direction.z, light->m_direction.x)));
 
 			if (light->m_projection == PROJECTION_PERSPECTIVE)
 				GLM::m_shader[GLM::SHADER_LIGHTING]->SetMatrix(

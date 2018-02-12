@@ -201,7 +201,7 @@ const unsigned GLManager::m_indicesCone[] = {
 	6,	7,	8,
 	9,	10,	11,
 	12, 14, 15,
-	14, 12, 16 
+	14, 12, 13 
 };
 
 const unsigned		GLManager::m_elementSize[] = { 1, 6, 72, 144, 6, 18 };
@@ -399,7 +399,7 @@ void GLManager::InitGLEnvironment()
 	// Set depth 
 	glEnable(GL_LEQUAL);
 	glDisable(GL_DEPTH_TEST);
-	
+
 	//Set blending
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

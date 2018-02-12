@@ -15,7 +15,7 @@ class Font {
 		unsigned	m_texture;	// ID handle of the glyph texture
 		unsigned	m_advance;	// Horizontal offset to advance to next glyph
 		vec2		m_size;		// Size of glyph
-		vec2		m_bearing;		// Offset from baseline to left/top of glyph
+		vec2		m_bearing;	// Offset from baseline to left/top of glyph
 	};
 
 	typedef std::map<char, Character> FontData;

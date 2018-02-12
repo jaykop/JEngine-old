@@ -8,7 +8,7 @@ class Light;
 class TestLogicBuilder : public ComponentBuilder
 {
 
-	friend class AssetManager;
+	friend class Core;
 
 public:
 

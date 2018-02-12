@@ -1,3 +1,4 @@
+#include <thread>
 #include "TestLogic.h"
 #include "GameLogicHeader.h"
 
@@ -17,11 +18,7 @@ void TestLogic::Load(CR_RJValue /*_data*/)
 
 void TestLogic::Init()
 {
-	vec3 a(1, 0, 0);
-	vec3 b(0, 0, -1);
-	float aa = Math::RadToDeg(atan2(0, -1)); 
-	float ab = Math::RadToDeg(atan2(-1, 0));
-	//float d = Math::RadToDeg(a.DotProduct(b));
+
 }
 
 void TestLogic::Update(const float /*_dt*/)

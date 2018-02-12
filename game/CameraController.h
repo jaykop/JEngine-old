@@ -9,7 +9,7 @@ JE_BEGIN
 class CameraControllerBuilder : public ComponentBuilder
 {
 
-	friend class AssetManager;
+	friend class Core;
 
 public:
 

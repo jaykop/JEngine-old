@@ -25,7 +25,10 @@ class AssetManager {
 
 public:
 
-	static void			RegisterAssets();
+	static void			SetInitDirectory(const char* _dir);
+	static void			SetAssetDirectory(const char* _dir);
+	static void			SetStateDirectory(const char* _dir);
+	static void			SetArchetypeDirectory(const char* _dir);
 
 	static Font*		GetFont(const char* _key);
 	static State*		GetState(const char* _key);

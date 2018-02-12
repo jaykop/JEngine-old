@@ -127,9 +127,6 @@
     <ClInclude Include="..\..\include\JEngine\SoundSystem.h">
       <Filter>System\Sound</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\GLManager.h">
-      <Filter>Core\OpenGL</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\external\imgui\imgui_impl_sdl_gl3.h">
       <Filter>Utils\Imgui</Filter>
     </ClInclude>
@@ -165,6 +162,12 @@
     </ClInclude>
     <ClInclude Include="..\..\external\lodePNG\lodepng.h">
       <Filter>Utils\lodePNG</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\GLManager.h">
+      <Filter>Core\App</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\MemoryAllocater.h">
+      <Filter>Core\Memory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -287,9 +290,6 @@
     <ClCompile Include="..\..\src\JEngine\GraphicPipelines.cpp">
       <Filter>System\Graphic</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\GLManager.cpp">
-      <Filter>Core\OpenGL</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\imgui\imgui_draw.cpp">
       <Filter>Utils\Imgui</Filter>
     </ClCompile>
@@ -314,6 +314,12 @@
     <ClCompile Include="..\..\src\lodePNG\lodepng.cpp">
       <Filter>Utils\lodePNG</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\JEngine\GLManager.cpp">
+      <Filter>Core\App</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JEngine\MemoryAllocater.cpp">
+      <Filter>Core\Memory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -325,14 +331,8 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{9f679f07-69e3-4c4d-9fe3-79d83de77100}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\App">
-      <UniqueIdentifier>{9942681c-700b-4db6-ad0a-c55c71ca1c59}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\Component">
       <UniqueIdentifier>{f239c628-a9c8-4ecb-a136-c3bfc8e1d7ca}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Asset">
-      <UniqueIdentifier>{35a0dba4-537c-4076-b283-e04ced48544a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Core\Input">
       <UniqueIdentifier>{0c69cde0-ae5f-486d-b627-b5d22a3311da}</UniqueIdentifier>
@@ -376,8 +376,14 @@
     <Filter Include="Utils\lodePNG">
       <UniqueIdentifier>{10c782e7-b26b-42df-baea-1e61e059c282}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\OpenGL">
+    <Filter Include="Core\Asset">
+      <UniqueIdentifier>{35a0dba4-537c-4076-b283-e04ced48544a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Memory">
       <UniqueIdentifier>{5a991f34-d6ae-43d5-a4ea-4351cde65642}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\App">
+      <UniqueIdentifier>{9942681c-700b-4db6-ad0a-c55c71ca1c59}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
