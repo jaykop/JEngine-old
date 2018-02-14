@@ -203,7 +203,7 @@ void Shader::SetEnum(GLManager::UniformType _uniform, int _enum)
 
 void Shader::SetInt(GLManager::UniformType _uniform, int _int)
 {
-	glUniform1d(GLManager::m_uniform[_uniform], _int);
+	glUniform1i(GLManager::m_uniform[_uniform], _int);
 }
 
 void Shader::SetBool(const char* _name, bool _bool)
@@ -224,7 +224,7 @@ void Shader::SetVector4(const char* _name, const vec4& _vector)
 
 void Shader::SetInt(GLint& _buffer, int _int)
 {
-	glUniform1d(_buffer, _int);
+	glUniform1i(_buffer, _int);
 }
 
 void Shader::SetEnum(GLint& _buffer, int _enum)
@@ -272,7 +272,7 @@ void Shader::SetVector3(const char* _name, const vec3& _vector)
 
 void Shader::SetInt(const char* _name, int _int)
 {
-	glUniform1d(glGetUniformLocation(m_programId, _name), _int);
+	glUniform1i(glGetUniformLocation(m_programId, _name), _int);
 }
 
 void Shader::SetFloat(const char* _name, float _float)

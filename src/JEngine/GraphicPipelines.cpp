@@ -108,13 +108,6 @@ void GraphicSystem::RenderToScreen()
 //////////////////////////////////////////////////////////////////////////
 void GraphicSystem::LightSourcePipeline()
 {
-	static int s_lightSize;
-
-	// TODO
-	// Multiple lights?
-	s_lightSize = int(m_lights.size());
-	GLM::m_shader[GLM::SHADER_MODEL]->SetInt(
-		GLM::UNIFORM_LIGHT_SIZE, s_lightSize);
 
 	if (m_isLight) {
 
@@ -281,6 +274,9 @@ void GraphicSystem::MappingPipeline(Sprite* _sprite)
 
 void GraphicSystem::LightingEffectPipeline(Material *_material)
 {
+	GLM::m_shader[GLM::SHADER_MODEL]->SetInt(
+		GLM::UNIFORM_LIGHT_SIZE, int(m_lights.size()));
+
 	// Send material info to shader
 	GLM::m_shader[GLM::SHADER_MODEL]->SetInt(
 		GLM::UNIFORM_MATERIAL_SPECULAR,

@@ -9,7 +9,7 @@
 			"Component" : [
 				{
 					"Type": "Camera",
-					"Values": {"Position" : [50, 50, 100], "Target" : [0, 0, 0],
+					"Values": {"Position" : [0, 0, 100], "Target" : [0, 0, 0],
 						"Up" : [0, 1, 0]}
 				}
 			]
@@ -24,23 +24,6 @@
 				{
 					"Type": "Model",
 					"Values": {"Texture" : "uvtemplate", "Color" : [1, 1, 1, 1], "Projection" : "Perspective"}
-				}
-			]
-		},		
-		{
-			"Name" : "PerspectiveSprite",
-			"Component" : [
-				{
-					"Type": "Transform",
-					"Values": {"Position" : [0, 0, 30], "Scale" : [150, 250, 0]}
-				},
-				{
-					"Type": "Sprite",
-					"Values": {"Texture" : "testAnimation", "Color" : [1, 1, 1, 1], "Projection" : "Perspective"}
-				},
-				{
-					"Type": "Animation",
-					"Values": {"Frame" : 8, "Speed" : 12, "Active" : true}
 				}
 			]
 		},
@@ -58,6 +41,15 @@
 				{
 					"Type": "Animation",
 					"Values": {"Frame" : 8, "Speed" : 12, "Active" : true}
+				}
+			]
+		},
+		{
+			"Name" : "TestObject",
+			"Component" : [
+				{
+					"Type": "TestLogic",
+					"Values": {}
 				}
 			]
 		},

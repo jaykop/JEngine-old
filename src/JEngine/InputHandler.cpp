@@ -10,8 +10,7 @@ bool			INPUT::m_keyPressed = false;
 bool			INPUT::m_mousePressed = false;
 bool			INPUT::m_wheelMoved = false;
 vec3			INPUT::m_rawPosition = vec3::ZERO;
-vec3			INPUT::m_orthoPosition = vec3::ZERO;
-vec3			INPUT::m_perspPosition = vec3::ZERO;
+vec3			INPUT::m_screenPosition = vec3::ZERO;
 INPUT::KeyMap	INPUT::m_keys, INPUT::m_triggerList;
 
 bool InputHandler::KeyPressed(JE_KEY _pressed)
@@ -334,13 +333,6 @@ void InputHandler::Update(SDL_Event* _event)
 	}
 }
 
-// TODO
-// Develope later
-void InputHandler::Ray(const vec3& /*_position*/, const vec3& /*_direction*/)
-{
-	;
-}
-
 vec3& InputHandler::GetRawPosition()
 {
 	return m_rawPosition;
@@ -348,12 +340,7 @@ vec3& InputHandler::GetRawPosition()
 
 vec3& InputHandler::GetOrhtoPosition()
 {
-	return m_orthoPosition;
-}
-
-vec3& InputHandler::GetPerspPosition()
-{
-	return m_perspPosition;
+	return m_screenPosition;
 }
 
 JE_END

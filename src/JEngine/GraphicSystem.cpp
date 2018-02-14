@@ -16,8 +16,8 @@ GraphicSystem::GraphicSystem()
 	m_backgroundColor(vec4::ZERO), m_orthoComesFirst(true), m_screenColor(vec4::ONE),
 	m_width(int(GLM::m_width)), m_height(int(GLM::m_height)), m_lightScale(vec3(10, 10, 10)),
 	m_aniScale(vec3::ZERO), m_aniTranslate(vec3::ZERO), m_viewport(mat4()),
-	m_sobelAmount(0.f), m_blurSize(0.f), m_blurAmount(0.f),
-	m_aliasMode(ALIAS_ALIASED), m_screenEffect(EFFECT_NONE)
+	m_sobelAmount(0.f), m_blurSize(0.f), m_blurAmount(0.f), m_maxLights(16),
+	m_aliasMode(ALIAS_ALIASED), m_screenEffect(EFFECT_NONE), m_mouseZ(0.f)
 {
 	m_aspect = GLM::m_width / GLM::m_height;
 	m_right = m_width * .5f;
@@ -86,8 +86,10 @@ void GraphicSystem::Init()
 {
 	// If there is no preset camera by user,
 	// set the first camera as a main camera.
-	if (!m_pMainCamera)
+	if (!m_pMainCamera) 
 		m_pMainCamera = m_cameras[0];
+
+	m_mouseZ = m_pMainCamera->m_position.z;
 
 	for (auto light : m_lights)
 		light->m_direction.Normalize();
@@ -104,10 +106,10 @@ void GraphicSystem::Update(const float _dt)
 	RenderToScreen();
 
 	// TODO
-	// GLMousePosition();
+	GLMousePosition();
+	Ray();
 
 	// Deferred rendering tutorial test
-
 	/*render1();
 	glFlush();
 	render2();*/
@@ -220,7 +222,11 @@ void GraphicSystem::RemoveCamera(Camera* _camera)
 
 void GraphicSystem::AddLight(Light * _light)
 {
-	m_lights.push_back(_light);
+	if (m_lights.size() < m_maxLights)
+		m_lights.push_back(_light);
+
+	else
+		JE_DEBUG_PRINT("!GraphicSystem: JEngine cannot support the number of lights more than %d.", m_maxLights);
 }
 
 void GraphicSystem::RemoveLight(Light * _light)
@@ -280,29 +286,37 @@ void GraphicSystem::EndAntialiasing()
 
 void GraphicSystem::GLMousePosition() {
 
-	// Do unprojection by viewport and proejction matrix
-	static vec4 in, orthoPos, perspPos;
-	static mat4 ortho, perspective;
-	static float orthoOffset, perspOffset;
-
-	in.x = (2.f * (InputHandler::m_rawPosition.x / m_width)) - 1.f;
-	in.y = 1.f - (2.f* (InputHandler::m_rawPosition.y / m_height));
-	in.w = in.z = 1.f;
+	if (INPUT::KeyPressed(JE_MOUSE_WHEEL_UP)) {
+		m_mouseZ++;
+		JE_DEBUG_PRINT("*GraphicSystem: Mouse screen position - [ %f, %f, %f ]\n", INPUT::m_screenPosition.x, INPUT::m_screenPosition.y, m_mouseZ);
+	}
+	else if (INPUT::KeyPressed(JE_MOUSE_WHEEL_DOWN)) {
+		m_mouseZ--;
+		JE_DEBUG_PRINT("*GraphicSystem: Mouse screen position - [ %f, %f, %f ]\n", INPUT::m_screenPosition.x, INPUT::m_screenPosition.y, m_mouseZ);
+	}
 	
-	ortho = m_orthogonal * m_viewport;
-	ortho.Inverse();
-	orthoPos = ortho * in;
-	orthoOffset = 1.f / orthoPos.w;
-	InputHandler::m_orthoPosition.Set(orthoPos.x, orthoPos.y, orthoPos.z);
-	InputHandler::m_orthoPosition *= orthoOffset;
+	// Set mouse;s screen position 
+	static float width = float(m_width)* .5f, height = float(m_height)* .5f;
+	INPUT::m_screenPosition.Set(INPUT::m_rawPosition.x - width, height - INPUT::m_rawPosition.y, m_mouseZ);
 
-	perspective = m_perspective * m_viewport;
-	perspective.Inverse();
-	perspPos = perspective * in;
-	perspOffset = 1.f / perspPos.w;
-	InputHandler::m_perspPosition.Set(perspPos.x, perspPos.y, perspPos.z);
-	InputHandler::m_perspPosition *= perspOffset;
+}
 
+
+void GraphicSystem::Ray()
+{
+	vec3 a = INPUT::m_screenPosition;
+	//std::cout << a << std::endl;
+	float x = (2.0f * INPUT::m_screenPosition.x) / m_width - 1.0f;
+	float y = 1.0f - (2.0f * INPUT::m_screenPosition.y) / m_height;
+	float z = 1.0f;
+	vec3 ray_nds = vec3(x, y, z);
+	vec4 ray_clip = vec4(ray_nds.x, ray_nds.y, -1.0, 1.0);
+	vec4 ray_eye = m_perspective.GetInverse().Transpose() * ray_clip;
+	ray_eye = vec4(ray_eye.x, ray_eye.y, -1.0, 0.0);
+	vec4 ray4_wor = m_viewport.GetInverse().Transpose() * ray_eye;
+	vec3 ray_wor(ray4_wor.x, ray4_wor.y, ray4_wor.z);
+	// don't forget to normalise the vector at some point
+	ray_wor = ray_wor.GetNormalize();
 }
 
 JE_END

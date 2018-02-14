@@ -1,10 +1,13 @@
 #version 450 core
 
-#define MAX_ARRAY 128
-
 layout (location = 0) in vec3 position;
 layout (location = 1) in vec2 uvPosition;
 layout (location = 2) in vec3 normal;
+
+////////////////////////////
+// const variables
+////////////////////////////
+const int MAX_ARRAY	= 16;
 
 ////////////////////////////
 // uniform variables

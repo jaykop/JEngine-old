@@ -4,7 +4,7 @@
 
 JE_BEGIN
 
-class Light;
+class Object;
 class TestLogicBuilder : public ComponentBuilder
 {
 
@@ -29,6 +29,8 @@ class TestLogic : public UserComponent
 	friend class TestLogicBuilder;
 
 public:
+
+	Object *m_ortho, *m_pers;
 
 private:
 

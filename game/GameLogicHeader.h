@@ -10,7 +10,17 @@
 #include "ObjectContainer.h"
 #include "AssetManager.h"
 #include "SystemManager.h"
+
+/////////////////////////////////////////////////////////////////////////
+// Systems
+//////////////////////////////////////////////////////////////////////////
 #include "BehaviorSystem.h"
+#include "GraphicSystem.h"
+#include "GraphicComponents.h"
+#include "PhysicsSystem.h"
+#include "PhysicsComponents.h"
+#include "SoundSystem.h"
+#include "SoundComponents.h"
 
 /////////////////////////////////////////////////////////////////////////
 // Math headers
@@ -18,6 +28,7 @@
 #include "Vector2.h"
 #include "Vector3.h"
 #include "Vector4.h"
+#include "Matrix4x4.h"
 #include "MathUtils.h"
 
 /////////////////////////////////////////////////////////////////////////

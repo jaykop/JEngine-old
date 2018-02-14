@@ -5,7 +5,7 @@ layout (location = 0) out vec4 v4_fragColor;
 ////////////////////////////
 // const variables
 ////////////////////////////
-const int MAX_ARRAY			= 128;
+const int MAX_ARRAY			= 16;
 const int LIGHT_DIRECTIONAL	= 1;
 const int LIGHT_SPOTLIGHT	= 2;
 const int LIGHT_POINTLIGHT	= 3;
@@ -58,9 +58,6 @@ uniform Light		light[MAX_ARRAY];
 uniform sampler2D 	Texture;
 uniform Material 	material;
 
-// TODO
-uniform sampler2D	Texture1;
-
 ////////////////////////////
 // function declarations
 ////////////////////////////
@@ -94,53 +91,45 @@ void LightingEffect(inout vec4 _color) {
 
 	// TODO
 	// Dynamic light loop...
-	for (int index = 0; index < 3; ++index) {
+	for (int index = 0; index < int_lightSize ; index++) {
 	
-		vec3 	lightDirection;
 		float 	attenuation = 1.f;
 		vec3 	gap = light[index].m_position - v3_outFragmentPosition;
+		vec3 	lightDirection = normalize(gap);
 		float 	theta = 0.f;
+		float 	intensity = 1.f;
 		
 		// Directional light
 		if (light[index].m_type == LIGHT_DIRECTIONAL)
 			lightDirection = normalize(-light[index].m_direction);
-		else {
-			lightDirection = normalize(gap);
-		
-			// Spotlight
-			if (light[index].m_type == LIGHT_SPOTLIGHT) {
-				theta = dot(lightDirection, normalize(-light[index].m_direction));
-			}
+		 
+		// Spotlight
+		else if (light[index].m_type == LIGHT_SPOTLIGHT) {
+			theta = dot(lightDirection, normalize(-light[index].m_direction));
+			float epsilon = light[index].m_cutOff - light[index].m_outerCutOff;
+			intensity = clamp((theta - light[index].m_outerCutOff) / epsilon, 0.0, 1.0);
+		}
 			
-			// Pointlight
-			else if (light[index].m_type == LIGHT_POINTLIGHT) {
-				float distance = length(gap);
-				attenuation = 1.0 / (light[index].m_constant + light[index].m_linear * distance + light[index].m_quadratic * (distance * distance));
-			}
-		}	
+		// Pointlight
+		else if (light[index].m_type == LIGHT_POINTLIGHT) {
+			float distance = length(gap);
+			attenuation = 1.0 / (light[index].m_constant + light[index].m_linear * distance + light[index].m_quadratic * (distance * distance));
+		}
 		
 		// Ambient light
-		vec4 ambient = light[index].m_ambient * vec4(texture(Texture1, v2_outTexCoord)); 
+		vec4 ambient = light[index].m_ambient * vec4(texture(Texture, v2_outTexCoord)); 
 		
 		// Diffuse light
 		vec3 norm = normalize(v3_outNormal);
 		
 		float diff = max(dot(norm, lightDirection), 0.0);
-		vec4 diffuse = light[index].m_diffuse * vec4(diff * texture(Texture1, v2_outTexCoord)); 
+		vec4 diffuse = light[index].m_diffuse * vec4(diff * texture(Texture, v2_outTexCoord))* intensity;
 		
 		// Specular light
 		vec3 viewDirection = normalize(v3_cameraPosition - v3_outFragmentPosition);
 		vec3 reflectedDirection = reflect(-lightDirection, norm);
 		float spec = pow(max(dot(viewDirection, reflectedDirection), 0.0), material.m_shininess);
-		vec4 specular = light[index].m_specular * vec4(spec * texture(Texture1, v2_outTexCoord)); 
-		
-		// Smooth spotlight
-		if (light[index].m_type == LIGHT_SPOTLIGHT) {
-			float epsilon = light[index].m_cutOff - light[index].m_outerCutOff;
-			float intensity = clamp((theta - light[index].m_outerCutOff) / epsilon, 0.0, 1.0);
-			diffuse *= intensity;
-			specular *= intensity;
-		}
+		vec4 specular = light[index].m_specular * vec4(spec * texture(Texture, v2_outTexCoord)) * intensity; 
 			
 		// Add all light effects
 		_color += v4_lightColor[index] * ((ambient + diffuse + specular) * attenuation);

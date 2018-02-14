@@ -40,7 +40,7 @@ public:
 	vec3			m_lightScale;
 	vec4			m_backgroundColor, m_screenColor;
 	bool			m_orthoComesFirst;
-	float			m_sobelAmount, m_blurSize, m_blurAmount, m_sobelSize;
+	float			m_sobelAmount, m_blurSize, m_blurAmount, m_sobelSize, m_fovy, m_aspect, m_zNear, m_zFar;
 	Alias			m_aliasMode;
 	ScreenEffect	m_screenEffect;
 
@@ -84,6 +84,8 @@ private:
 	void SortSprites();
 	void GLMousePosition();
 
+	void Ray();
+
 	void render1();
 	void render2();
 
@@ -93,12 +95,13 @@ private:
 	Cameras		m_cameras;
 	Camera*		m_pMainCamera;
 	
+	unsigned m_maxLights;
+
 	int		m_width, m_height;
 	bool	m_inside, m_isLight;
 	mat4	m_perspective, m_orthogonal, m_viewport;
 	vec3	m_aniScale, m_aniTranslate;
-	float	m_fovy, m_aspect, m_zNear, m_zFar;
-	float	m_left, m_right, m_top, m_bottom;
+	float	m_left, m_right, m_top, m_bottom, m_mouseZ;
 
 	//std::function<bool(Sprite*, Sprite*)> m_sorter;
 

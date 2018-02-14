@@ -200,8 +200,8 @@ const unsigned GLManager::m_indicesCone[] = {
 	3,	4,	5,
 	6,	7,	8,
 	9,	10,	11,
-	12, 14, 15,
-	14, 12, 13 
+	15, 14, 12,
+	13, 12, 14 
 };
 
 const unsigned		GLManager::m_elementSize[] = { 1, 6, 72, 144, 6, 18 };
@@ -425,28 +425,28 @@ void GLManager::InitShaders()
 		m_shader.push_back(new Shader);
 
 	m_shader[SHADER_MODEL]->LoadShader(
-		"../src/shader/model.vs",
-		"../src/shader/model.fs");
+		"../src/JEngine/shader/model.vs",
+		"../src/JEngine/shader/model.fs");
 
 	m_shader[SHADER_TEXT]->LoadShader(
-		"../src/shader/text.vs",
-		"../src/shader/text.fs");
+		"../src/JEngine/shader/text.vs",
+		"../src/JEngine/shader/text.fs");
 
 	m_shader[SHADER_LIGHTING]->LoadShader(
-		"../src/shader/lighting.vs",
-		"../src/shader/lighting.fs");
+		"../src/JEngine/shader/lighting.vs",
+		"../src/JEngine/shader/lighting.fs");
 
 	m_shader[SHADER_PARTICLE]->LoadShader(
-		"../src/shader/particle.vs",
-		"../src/shader/particle.fs");
+		"../src/JEngine/shader/particle.vs",
+		"../src/JEngine/shader/particle.fs");
 
 	m_shader[SHADER_SCREEN]->LoadShader(
-		"../src/shader/screen.vs",
-		"../src/shader/screen.fs");
+		"../src/JEngine/shader/screen.vs",
+		"../src/JEngine/shader/screen.fs");
 
 	m_shader[SHADER_DEFERRED]->LoadShader(
-		"../src/shader/deferred.vs",
-		"../src/shader/deferred.fs");
+		"../src/JEngine/shader/deferred.vs",
+		"../src/JEngine/shader/deferred.fs");
 }
 
 void GLManager::SetDrawMode(DrawMode _mode)

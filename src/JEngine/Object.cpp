@@ -64,7 +64,7 @@ void Object::RemoveChild(const char* _name)
 
 	// If there is, remove
 	if (found != m_childObjs.end()) {
-		m_childObjs.erase(_name);			// Remove from the child list
+		m_childObjs.erase(_name);		// Remove from the child list
 		m_pOBC->RemoveObject(_name);	// Remove from obj manager
 	}
 		

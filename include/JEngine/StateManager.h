@@ -13,6 +13,7 @@ using States = std::vector<State*>;
 
 class StateManager {
 
+	friend class State;
 	friend class Application;
 	friend class AssetManager;
 
@@ -34,7 +35,7 @@ public:
 	static State*		GetCurrentState(void);
 	static State*		GetState(const char* _stateName);
 
-	static ObjectContainer* m_pOBC;
+	static ObjectContainer* GetContainer();
 
 private:
 
@@ -55,12 +56,16 @@ private:
 	static void ChangeState();
 	static void ClearStates();
 
+	static void SetContainer(ObjectContainer* _container);
+
 	// Private member variables
 	static Timer		m_timer;
 	static States		m_states;
 	static StateStatus	m_status;
 	static State*		m_pCurrent, *m_pNext;
 	static SDL_Window*	m_pWindow;
+
+	static ObjectContainer* m_pOBC;
 
 };
 

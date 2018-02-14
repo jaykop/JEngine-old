@@ -304,6 +304,11 @@ State* StateManager::GetState(const char* _stateName)
 	return nullptr;
 }
 
+ObjectContainer* StateManager::GetContainer()
+{
+	return m_pOBC;
+}
+
 void StateManager::ClearStates()
 {
 	// Remove all states from the vector
@@ -311,6 +316,11 @@ void StateManager::ClearStates()
 		delete (*it++);	
 
 	m_states.clear();
+}
+
+void StateManager::SetContainer(ObjectContainer * _container)
+{
+	m_pOBC = _container;
 }
 
 JE_END
