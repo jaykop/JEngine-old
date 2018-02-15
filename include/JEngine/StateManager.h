@@ -67,6 +67,10 @@ private:
 
 	static ObjectContainer* m_pOBC;
 
+#if defined(_DEBUG)
+	static bool m_showUpdateMessage;
+#endif // _DEBUG
+
 };
 
 using STATE = StateManager;

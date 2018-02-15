@@ -26,10 +26,6 @@ private:
 class Transform : public Component
 {
 
-	struct Edge {
-		Vector3 m_leftTop, m_rightTop, m_leftBot, m_rightBot;
-	};
-
 	friend class PhysicsSystem;
 	friend class TransformBuilder;
 
@@ -37,8 +33,6 @@ public:
 
 	vec3 m_position, m_scale, m_rotationAxis;
 	float m_rotation;
-	Edge m_edges;
-
 
 private:
 

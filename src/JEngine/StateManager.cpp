@@ -19,6 +19,10 @@ ObjectContainer				*StateManager::m_pOBC = nullptr;
 State						*StateManager::m_pCurrent = nullptr, 
 							*StateManager::m_pNext = nullptr;
 
+#if defined(_DEBUG)
+bool						StateManager::m_showUpdateMessage = true;
+#endif // _DEBUG
+
 //////////////////////////////////////////////////////////////////////////
 // funciton bodues
 //////////////////////////////////////////////////////////////////////////

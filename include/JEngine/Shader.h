@@ -16,7 +16,11 @@ private:
 	void LoadShader(
 		const char* _vertex_file_path,
 		const char* _fragment_file_path);
-	
+	void EnterShader(
+		std::string& _vertexShader, std::string& _fragmentShader, 
+		const char* _vertexPath = nullptr, const char* _fragmentPath = nullptr
+	);
+
 	void Use();
 	void ConnectUniform(GLManager::UniformType _uniform, const char* _name);
 
@@ -54,6 +58,8 @@ private:
 	~Shader() {};
 
 	GLuint m_programId;
+
+	static std::string  m_shaderVertex[GLM::SHADER_END], m_shaderFragment[GLM::SHADER_END];
 
 	Shader(const Shader& /*_copy*/) = delete;
 	void operator=(const Shader& /*_copy*/) = delete;

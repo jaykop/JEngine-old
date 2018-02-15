@@ -24,19 +24,32 @@ void State::Load()
 
 void State::Init()
 {
+#if defined(_DEBUG)
+		STATE::m_showUpdateMessage = true;
+#endif // _DEBUG
+
 	JE_DEBUG_PRINT("*State - Initializing %s...\n", m_name.c_str());
 	SYSTEM::Init();
 }
 
 void State::Update(const float _dt)
 {
-	// TODO
-	//JE_DEBUG_PRINT("*State - Updating %s...\n", m_name.c_str());
+#if defined(_DEBUG)
+	if (STATE::m_showUpdateMessage) {
+		JE_DEBUG_PRINT("*State - Updating %s...\n", m_name.c_str());
+		STATE::m_showUpdateMessage = false;
+	}
+#endif // _DEBUG
+
 	SYSTEM::Update(_dt);
 }
 
 void State::Close()
 {
+#if defined(_DEBUG)
+	STATE::m_showUpdateMessage = true;
+#endif // _DEBUG
+
 	JE_DEBUG_PRINT("*State - Closing %s...\n", m_name.c_str());
 	SYSTEM::Close();
 }

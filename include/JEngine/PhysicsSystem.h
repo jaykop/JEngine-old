@@ -34,9 +34,7 @@ private:
 
 	void AddRigidbody(Transform* _rigidbody);
 	void RemoveRigidbody(Transform* _rigidbody);
-
-	void UpdateEdges(Transform* _transform);
-
+	
 	Transforms		m_transforms;
 	Rigidbodies		m_rigidboide;
 };

@@ -73,7 +73,7 @@ namespace DebugTools
 
 		freopen_s(&pFile, "CONOUT$", "wt", stdout);
 		freopen_s(&pFile, "CONOUT$", "wt", stderr);
-		SetConsoleTitle("Debug Console");
+		SetConsoleTitle("JEngine Debug Console");
 	}
 
 	/******************************************************************************/

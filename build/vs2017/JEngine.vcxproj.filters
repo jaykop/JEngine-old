@@ -154,20 +154,20 @@
     <ClInclude Include="..\..\include\JEngine\Text.h">
       <Filter>System\Graphic</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\Shader.h">
-      <Filter>System\Graphic</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\external\lodePNG\lodepng_util.h">
       <Filter>Utils\lodePNG</Filter>
     </ClInclude>
     <ClInclude Include="..\..\external\lodePNG\lodepng.h">
       <Filter>Utils\lodePNG</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\GLManager.h">
-      <Filter>Core\App</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\JEngine\MemoryAllocater.h">
       <Filter>Core\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\GLManager.h">
+      <Filter>Core\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\Shader.h">
+      <Filter>Core\OpenGL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -266,9 +266,6 @@
     <ClCompile Include="..\..\src\JEngine\Particle.cpp">
       <Filter>System\Graphic</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\Shader.cpp">
-      <Filter>System\Graphic</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\JEngine\Sprite.cpp">
       <Filter>System\Graphic</Filter>
     </ClCompile>
@@ -314,11 +311,20 @@
     <ClCompile Include="..\..\src\lodePNG\lodepng.cpp">
       <Filter>Utils\lodePNG</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\GLManager.cpp">
-      <Filter>Core\App</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\JEngine\MemoryAllocater.cpp">
       <Filter>Core\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JEngine\GLManager.cpp">
+      <Filter>Core\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JEngine\Shader.cpp">
+      <Filter>Core\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JEngine\ShaderVertex.cpp">
+      <Filter>Core\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JEngine\ShaderFragment.cpp">
+      <Filter>Core\OpenGL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -384,6 +390,9 @@
     </Filter>
     <Filter Include="Core\App">
       <UniqueIdentifier>{9942681c-700b-4db6-ad0a-c55c71ca1c59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\OpenGL">
+      <UniqueIdentifier>{58b0b6ad-5921-44da-a0be-91458f0dfd57}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

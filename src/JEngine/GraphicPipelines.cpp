@@ -10,9 +10,11 @@ JE_BEGIN
 
 void GraphicSystem::UpdatePipelines(const float _dt)
 {
-	// Update main camera attributes
-	m_viewport = mat4::LookAt(
-		m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
+	// Update projection size by window screen size
+	static vec3 s_windowSize, s_resolutionStandard(1.f / 800.f, 1.f / 600.f, 1.f);
+	s_windowSize.Set(float(m_width), float(m_height), 1.f);
+
+	m_resolutionScaler = s_windowSize * s_resolutionStandard;
 
 	// Update sprites and lights
 	m_isLight = m_lights.empty() ? false : true;
@@ -24,22 +26,6 @@ void GraphicSystem::UpdatePipelines(const float _dt)
 	// Inform that there are lights
 	GLM::m_shader[GLM::SHADER_MODEL]->SetBool(
 		GLM::UNIFORM_IS_LIGHT, m_isLight);
-
-	// Send camera info to shader
-	GLM::m_shader[GLM::SHADER_MODEL]->SetMatrix(
-		GLM::UNIFORM_CAMERA, m_viewport);
-
-	GLM::m_shader[GLM::SHADER_TEXT]->Use();
-
-	// Send camera info to shader
-	GLM::m_shader[GLM::SHADER_TEXT]->SetMatrix(
-		GLM::UNIFORM_TEXT_CAMERA, m_viewport);
-
-	GLM::m_shader[GLM::SHADER_PARTICLE]->Use();
-
-	// Send camera info to shader
-	GLM::m_shader[GLM::SHADER_PARTICLE]->SetMatrix(
-		GLM::UNIFORM_PARTICLE_CAMERA, m_viewport);
 
 	for (auto sprite : m_sprites) {
 
@@ -108,7 +94,6 @@ void GraphicSystem::RenderToScreen()
 //////////////////////////////////////////////////////////////////////////
 void GraphicSystem::LightSourcePipeline()
 {
-
 	if (m_isLight) {
 
 		glEnable(GL_BLEND);
@@ -122,10 +107,6 @@ void GraphicSystem::LightSourcePipeline()
 		GLM::m_shader[GLM::SHADER_LIGHTING]->SetMatrix(
 			GLM::UNIFORM_LIGHT_SCALE,
 			mat4::Scale(m_lightScale));
-
-		GLM::m_shader[GLM::SHADER_LIGHTING]->SetMatrix(
-			GLM::UNIFORM_LIGHT_CAMERA,
-			m_viewport);
 
 		for (auto light : m_lights) {
 
@@ -141,12 +122,26 @@ void GraphicSystem::LightSourcePipeline()
 				GLM::UNIFORM_LIGHT_ROTATEY,
 				mat4::RotateY(-atan2(light->m_direction.z, light->m_direction.x)));
 
-			if (light->m_projection == PROJECTION_PERSPECTIVE)
+			if (light->m_projection == PROJECTION_PERSPECTIVE) {
 				GLM::m_shader[GLM::SHADER_LIGHTING]->SetMatrix(
 					GLM::UNIFORM_LIGHT_PROJECTION, m_perspective);
-			else
+
+				m_viewport = mat4::LookAt(
+					m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
+
+			}
+
+			else {
 				GLM::m_shader[GLM::SHADER_LIGHTING]->SetMatrix(
 					GLM::UNIFORM_LIGHT_PROJECTION, m_orthogonal);
+
+				m_viewport.SetIdentity();
+				m_viewport = mat4::Scale(m_resolutionScaler);
+			}
+			
+			GLM::m_shader[GLM::SHADER_LIGHTING]->SetMatrix(
+				GLM::UNIFORM_LIGHT_CAMERA,
+				m_viewport);
 
 			GLM::m_shader[GLM::SHADER_LIGHTING]->SetVector4(
 				GLM::UNIFORM_LIGHT_COLOR,
@@ -187,12 +182,25 @@ void GraphicSystem::SpritePipeline(Sprite *_sprite)
 		GLM::UNIFORM_BILBOARD, _sprite->m_bilboard);
 
 	// Send projection info to shader
-	if (_sprite->m_projection == PROJECTION_PERSPECTIVE)
+	if (_sprite->m_projection == PROJECTION_PERSPECTIVE) {
 		GLM::m_shader[GLM::SHADER_MODEL]->SetMatrix(
 			GLM::UNIFORM_PROJECTION, m_perspective);
-	else
+
+		m_viewport = mat4::LookAt(
+			m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
+	}
+
+	else{
 		GLM::m_shader[GLM::SHADER_MODEL]->SetMatrix(
 			GLM::UNIFORM_PROJECTION, m_orthogonal);
+
+		m_viewport.SetIdentity();
+		m_viewport = mat4::Scale(m_resolutionScaler);
+	}
+
+	// Send camera info to shader
+	GLM::m_shader[GLM::SHADER_MODEL]->SetMatrix(
+		GLM::UNIFORM_CAMERA, m_viewport);
 
 	// TODO
 	// It so, not draw
@@ -351,7 +359,7 @@ void GraphicSystem::LightingEffectPipeline(Material *_material)
 	}
 }
 
-void GraphicSystem::TextPipeline(Text * _text) 
+void GraphicSystem::TextPipeline(Text * _text)
 {
 	static Transform* s_pTransform;
 	s_pTransform = _text->m_transform;
@@ -374,12 +382,25 @@ void GraphicSystem::TextPipeline(Text * _text)
 		GLM::UNIFORM_TEXT_COLOR, _text->m_color);
 
 	// Send projection info to shader
-	if (_text->m_projection == PROJECTION_PERSPECTIVE)
+	if (_text->m_projection == PROJECTION_PERSPECTIVE) {
 		GLM::m_shader[GLM::SHADER_TEXT]->SetMatrix(
 			GLM::UNIFORM_TEXT_PROJECTION, m_perspective);
-	else
+
+		m_viewport = mat4::LookAt(
+			m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
+	}
+
+	else {
 		GLM::m_shader[GLM::SHADER_TEXT]->SetMatrix(
 			GLM::UNIFORM_TEXT_PROJECTION, m_orthogonal);
+
+		m_viewport.SetIdentity();
+		m_viewport = mat4::Scale(m_resolutionScaler);
+	}
+
+	// Send camera info to shader
+	GLM::m_shader[GLM::SHADER_TEXT]->SetMatrix(
+		GLM::UNIFORM_TEXT_CAMERA, m_viewport);
 
 	// TODO
 	// It so, not draw
@@ -450,12 +471,25 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 			GLM::UNIFORM_PARTICLE_BILBOARD, _emitter->m_bilboard);
 
 		// Send projection info to shader
-		if (_emitter->m_projection == PROJECTION_PERSPECTIVE)
+		if (_emitter->m_projection == PROJECTION_PERSPECTIVE) {
 			GLM::m_shader[GLM::SHADER_PARTICLE]->SetMatrix(
 				GLM::UNIFORM_PARTICLE_PROJECTION, m_perspective);
-		else
+			
+			m_viewport = mat4::LookAt(
+				m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
+		}
+		
+		else {
 			GLM::m_shader[GLM::SHADER_PARTICLE]->SetMatrix(
 				GLM::UNIFORM_PARTICLE_PROJECTION, m_orthogonal);
+
+			m_viewport.SetIdentity();
+			m_viewport = mat4::Scale(m_resolutionScaler);
+		}
+
+		// Send camera info to shader
+		GLM::m_shader[GLM::SHADER_PARTICLE]->SetMatrix(
+			GLM::UNIFORM_PARTICLE_CAMERA, m_viewport);
 
 		glBindTexture(GL_TEXTURE_2D, s_texture);
 
@@ -574,82 +608,6 @@ void GraphicSystem::Render(Font* _font, const std::string& _text, Transform* _tr
 	}
 
 	glBindVertexArray(0);
-}
-
-// TODO
-void GraphicSystem::render1()
-{
-	glBindFramebuffer(GL_FRAMEBUFFER, GLM::m_deferredFBO);
-	GLM::m_shader[GLM::SHADER_DEFERRED]->Use();
-
-	glViewport(0, 0, GLint(m_width), GLint(m_height));
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(m_backgroundColor.x, m_backgroundColor.y, m_backgroundColor.z, m_backgroundColor.w);
-	glEnable(GL_DEPTH_TEST);
-	glUniformSubroutinesuiv(GL_FRAGMENT_SHADER, 1, &(GLM::m_passIndex1));
-
-	m_viewport = mat4::LookAt(
-		m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
-
-	GLM::m_shader[GLM::SHADER_DEFERRED]->SetInt("PositionTex", 0);
-	GLM::m_shader[GLM::SHADER_DEFERRED]->SetInt("NormalTex", 2);
-	GLM::m_shader[GLM::SHADER_DEFERRED]->SetInt("ColorTex", 1);
-
-	GLM::m_shader[GLM::SHADER_DEFERRED]->SetVector3("Material.Kd", vec3(0.5f, 0.5f, 0.5f));
-	GLM::m_shader[GLM::SHADER_DEFERRED]->SetVector4("Light.Position", vec4(10.0f, 10.0f, 10.0f, 1.0f));
-	GLM::m_shader[GLM::SHADER_DEFERRED]->SetVector3("Light.Intensity", vec3(1.0f, 1.0f, 1.0f));
-
-	static Transform* s_pTransform;
-	s_pTransform = (*m_sprites.begin())->m_transform;
-
-	glBindTexture(GL_TEXTURE_2D, (*m_sprites.begin())->GetCurrentTexutre());
-
-	GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(GLM::UNIFORM_DEFERRED_TRANSLATE, mat4::Translate(s_pTransform->m_position));
-	GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(GLM::UNIFORM_DEFERRED_SCALE, mat4::Scale(s_pTransform->m_scale));
-	GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(GLM::UNIFORM_DEFERRED_ROTATE, mat4::Rotate(Math::RadToDeg(s_pTransform->m_rotation), s_pTransform->m_rotationAxis));
-	GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(GLM::UNIFORM_DEFERRED_CAMERA, m_viewport);
-
-	// Send projection info to shader
-	if ((*m_sprites.begin())->m_projection == PROJECTION_PERSPECTIVE)
-		GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(
-			GLM::UNIFORM_DEFERRED_PROJECTION, m_perspective);
-	else
-		GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(
-			GLM::UNIFORM_DEFERRED_PROJECTION, m_orthogonal);
-
-	Render(*(*m_sprites.begin())->m_vao, (*m_sprites.begin())->m_elementSize);
-
-	glFinish();
-
-}
-
-void GraphicSystem::render2()
-{
-	// Revert to default framebuffer
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-	glUniformSubroutinesuiv(GL_FRAGMENT_SHADER, 1, &(GLM::m_passIndex2));
-
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glDisable(GL_DEPTH_TEST);
-
-	static mat4 identity;
-	identity.SetIdentity();
-
-	GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(GLM::UNIFORM_DEFERRED_TRANSLATE, identity);
-	GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(GLM::UNIFORM_DEFERRED_SCALE, identity);
-	GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(GLM::UNIFORM_DEFERRED_ROTATE, identity);
-	GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(GLM::UNIFORM_DEFERRED_CAMERA, identity);
-	GLM::m_shader[GLM::SHADER_DEFERRED]->SetMatrix(GLM::UNIFORM_DEFERRED_PROJECTION, identity);
-
-	// Render the quad
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, GLM::m_positionBuffer);
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, GLM::m_colorBuffer);
-	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, GLM::m_normalBuffer);
-	Render(GLM::m_vao[GLM::SHAPE_PLANE], GLM::m_elementSize[GLM::SHAPE_PLANE]);
 }
 
 JE_END

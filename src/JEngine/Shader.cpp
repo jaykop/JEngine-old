@@ -14,10 +14,6 @@ void Shader::LoadShader(
 
 		bool vsToggle = true, fsToggle = true;
 
-		// Create the shader
-		GLuint vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
-		GLuint fragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
-
 		// Read the vertex shader code from the file
 		std::string vertexShaderCode;
 		std::ifstream vertexShaderStream(_vertex_file_path, std::ios::in);
@@ -25,9 +21,6 @@ void Shader::LoadShader(
 		// Read the fragment shader code from the file
 		std::string fragmentShaderCode;
 		std::ifstream fragmentShaderStream(_fragment_file_path, std::ios::in);
-
-		GLint result = GL_FALSE;
-		int infoLogLength;
 
 		// If the vertex shader file is valid,
 		if (vertexShaderStream.is_open()) {
@@ -66,85 +59,95 @@ void Shader::LoadShader(
 		}	// if (vsToggle) {
 
 		// So both shaders are valid and compatible,
-		if (vsToggle && fsToggle) {
-
-			// Complie vertex shader
-			JE_DEBUG_PRINT("*Shader - Compiling vertex shader: %s\n", _vertex_file_path);
-			char const* vertexSourcePointer = vertexShaderCode.c_str();
-			glShaderSource(vertexShaderId, 1, &vertexSourcePointer, NULL);
-			glCompileShader(vertexShaderId);
-
-			// Check vertex shader
-			glGetShaderiv(vertexShaderId, GL_COMPILE_STATUS, &result);
-			glGetShaderiv(vertexShaderId, GL_INFO_LOG_LENGTH, &infoLogLength);
-
-			if (infoLogLength > 0) {
-				std::vector<char> VertexShaderErrorMessage(infoLogLength + 1);
-				glGetShaderInfoLog(vertexShaderId, infoLogLength, NULL, &VertexShaderErrorMessage[0]);
-				JE_DEBUG_PRINT("!Shader - %4s\n", &VertexShaderErrorMessage[0]);
-
-			}	// if (infoLogLength > 0) {
-
-			// Complie fragment shader
-			JE_DEBUG_PRINT("*Shader - Compiling fragment shader: %s\n", _fragment_file_path);
-
-			// Get shader string
-			char const* fragmentSourcePointer = fragmentShaderCode.c_str();
-			glShaderSource(fragmentShaderId, 1, &fragmentSourcePointer, NULL);
-			glCompileShader(fragmentShaderId);
-
-			// Check fragment shader
-			glGetShaderiv(fragmentShaderId, GL_COMPILE_STATUS, &result);
-			glGetShaderiv(fragmentShaderId, GL_INFO_LOG_LENGTH, &infoLogLength);
-
-			// Check if copiled properly
-			if (infoLogLength > 0) {
-				std::vector<char> FragShaderErrorMessage(infoLogLength + 1);
-				glGetShaderInfoLog(fragmentShaderId, infoLogLength, NULL, &FragShaderErrorMessage[0]);
-				JE_DEBUG_PRINT("!Shader - %4s\n", &FragShaderErrorMessage[0]);
-
-			}	// if (infoLogLength > 0) {
-
-			// Link the program
-			JE_DEBUG_PRINT("*Shader - Linking program...\n");
-			m_programId = glCreateProgram();
-
-			if (m_programId == 0)
-				JE_DEBUG_PRINT("!Shader - Shader couldn't get program id.\n");
-
-			else {
-				// Combine two shaders into the program
-				glAttachShader(m_programId, vertexShaderId);
-				glAttachShader(m_programId, fragmentShaderId);
-				glLinkProgram(m_programId);
-
-				// Check the program
-				glGetProgramiv(m_programId, GL_LINK_STATUS, &result);
-				glGetShaderiv(m_programId, GL_INFO_LOG_LENGTH, &infoLogLength);
-
-				// Check if linked properly
-				if (infoLogLength > 0) {
-					std::vector<char> ProgramErrorMessage(infoLogLength + 1);
-					glGetShaderInfoLog(m_programId, infoLogLength, NULL, &ProgramErrorMessage[0]);
-					JE_DEBUG_PRINT("!Shader: %4s\n", &ProgramErrorMessage[0]);
-
-				}	// if (infoLogLength > 0) {
-
-				glUseProgram(m_programId);	// Start using shade  program
-
-				glDetachShader(m_programId, vertexShaderId);
-				glDetachShader(m_programId, fragmentShaderId);
-
-				glDeleteShader(vertexShaderId);
-				glDeleteShader(fragmentShaderId);
-			}
-
-		}	// if (vsToggle && fsToggle) {
+		if (vsToggle && fsToggle)
+			EnterShader(vertexShaderCode, fragmentShaderCode, _vertex_file_path, _fragment_file_path);
 
 	}	// if (_vertex_file_path && _fragment_file_path) {
 
 	else 
 		JE_DEBUG_PRINT("!Shader - Wrong shader path.\n");
+}
+
+void Shader::EnterShader(std::string & _vertexShader, std::string & _fragmentShader, const char* _vertexPath, const char* _fragmentPath)
+{
+	// Create the shader
+	GLuint vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
+	GLuint fragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
+	GLint result = GL_FALSE;
+	int infoLogLength;
+
+	// Complie vertex shader
+	if (_vertexPath)
+		JE_DEBUG_PRINT("*Shader - Compiling vertex shader: %s\n", _vertexPath);
+	char const* vertexSourcePointer = _vertexShader.c_str();
+	glShaderSource(vertexShaderId, 1, &vertexSourcePointer, NULL);
+	glCompileShader(vertexShaderId);
+
+	// Check vertex shader
+	glGetShaderiv(vertexShaderId, GL_COMPILE_STATUS, &result);
+	glGetShaderiv(vertexShaderId, GL_INFO_LOG_LENGTH, &infoLogLength);
+
+	if (infoLogLength > 0) {
+		std::vector<char> VertexShaderErrorMessage(infoLogLength + 1);
+		glGetShaderInfoLog(vertexShaderId, infoLogLength, NULL, &VertexShaderErrorMessage[0]);
+		JE_DEBUG_PRINT("!Shader - %4s\n", &VertexShaderErrorMessage[0]);
+
+	}	// if (infoLogLength > 0) {
+
+	// Complie fragment shader
+	if (_vertexPath)
+		JE_DEBUG_PRINT("*Shader - Compiling fragment shader: %s\n", _fragmentPath);
+
+	// Get shader string
+	char const* fragmentSourcePointer = _fragmentShader.c_str();
+	glShaderSource(fragmentShaderId, 1, &fragmentSourcePointer, NULL);
+	glCompileShader(fragmentShaderId);
+
+	// Check fragment shader
+	glGetShaderiv(fragmentShaderId, GL_COMPILE_STATUS, &result);
+	glGetShaderiv(fragmentShaderId, GL_INFO_LOG_LENGTH, &infoLogLength);
+
+	// Check if copiled properly
+	if (infoLogLength > 0) {
+		std::vector<char> FragShaderErrorMessage(infoLogLength + 1);
+		glGetShaderInfoLog(fragmentShaderId, infoLogLength, NULL, &FragShaderErrorMessage[0]);
+		JE_DEBUG_PRINT("!Shader - %4s\n", &FragShaderErrorMessage[0]);
+
+	}	// if (infoLogLength > 0) {
+
+		// Link the program
+	JE_DEBUG_PRINT("*Shader - Linking program...\n");
+	m_programId = glCreateProgram();
+
+	if (m_programId == 0)
+		JE_DEBUG_PRINT("!Shader - Shader couldn't get program id.\n");
+
+	else {
+		// Combine two shaders into the program
+		glAttachShader(m_programId, vertexShaderId);
+		glAttachShader(m_programId, fragmentShaderId);
+		glLinkProgram(m_programId);
+
+		// Check the program
+		glGetProgramiv(m_programId, GL_LINK_STATUS, &result);
+		glGetShaderiv(m_programId, GL_INFO_LOG_LENGTH, &infoLogLength);
+
+		// Check if linked properly
+		if (infoLogLength > 0) {
+			std::vector<char> ProgramErrorMessage(infoLogLength + 1);
+			glGetShaderInfoLog(m_programId, infoLogLength, NULL, &ProgramErrorMessage[0]);
+			JE_DEBUG_PRINT("!Shader: %4s\n", &ProgramErrorMessage[0]);
+
+		}	// if (infoLogLength > 0) {
+
+		glUseProgram(m_programId);	// Start using shade  program
+
+		glDetachShader(m_programId, vertexShaderId);
+		glDetachShader(m_programId, fragmentShaderId);
+
+		glDeleteShader(vertexShaderId);
+		glDeleteShader(fragmentShaderId);
+	}
 }
 
 void Shader::Use()

@@ -82,12 +82,10 @@ private:
 	void Render(const unsigned &_vao, const int _elementSize, unsigned _mode = 0x0004 /*GL_TRIANGLES*/);
 	void Render(Font* _font, const std::string& _text, Transform* _transform);
 	void SortSprites();
-	void GLMousePosition();
+	void UpdateMousePosition();
 
-	void Ray();
-
-	void render1();
-	void render2();
+	// TODO
+	void Ray(Sprite* _sprite, Transform* _transform);
 
 	// Member variables
 	Lights		m_lights;
@@ -95,6 +93,8 @@ private:
 	Cameras		m_cameras;
 	Camera*		m_pMainCamera;
 	
+	vec3		m_resolutionScaler;
+
 	unsigned m_maxLights;
 
 	int		m_width, m_height;

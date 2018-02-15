@@ -18,16 +18,6 @@ GLuint				GLManager::m_renderTarget = 0;
 GLManager::Shaders	GLManager::m_shader;
 GLManager::DrawMode GLManager::m_mode = DrawMode::DRAW_FILL;
 
-// TODO
-// For test...
-GLuint				GLManager::m_deferredFBO = 0;
-GLuint				GLManager::m_positionBuffer = 0;
-GLuint				GLManager::m_normalBuffer = 0;
-GLuint				GLManager::m_colorBuffer = 0;
-GLuint				GLManager::m_passIndex[] = { 0 };
-GLuint				GLManager::m_passIndex1 = 0;
-GLuint				GLManager::m_passIndex2 = 0;
-
 const float GLManager::m_verticesPoint[] = 
 {	// position				// uv		// normals
 	0.f,	0.f,	0.f,	1.f, 1.f,	0.0f,  0.0f, 0.0f,};
@@ -149,8 +139,8 @@ const unsigned GLManager::m_indicesCube [] =
 	2, 0, 1,	// second triangle
 
 	// back
-	5, 7, 6,	// first triangle
-	7, 5, 4,	// second triangle
+	6, 7, 5,	// first triangle
+	4, 5, 7,	// second triangle
 
 	// left
 	8, 10, 11,	// first triangle
@@ -245,9 +235,8 @@ bool GLManager::initSDL_GL(float _width, float _height)
 		ShowGLVersion();
 		InitShaders();
 		InitVBO();
-		InitFBO();				// These two are to be off to visualise deferred rendering
-		InitGLEnvironment();	// These two are to be off to visualise deferred rendering
-		//InitDefferedFBO();
+		InitFBO();			
+		InitGLEnvironment();	
 		RegisterUniform();
 	}
 
@@ -351,41 +340,6 @@ void GLManager::InitFBO()
 
 }
 
-void GLManager::InitDefferedFBO()
-{
-	// Create and bind the FBO
-	glGenFramebuffers(1, &m_deferredFBO);
-	glBindFramebuffer(GL_FRAMEBUFFER, m_deferredFBO);
-
-	// The depth buffer
-	glGenRenderbuffers(1, &m_depthBuffer);
-	glBindRenderbuffer(GL_RENDERBUFFER, m_depthBuffer);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, GLsizei(m_width), GLsizei(m_height));
-
-	// Create the textures for position, normal and color
-	CreateGBufferTexture(GL_TEXTURE0, GL_RGB32F, m_positionBuffer);		// Position
-	CreateGBufferTexture(GL_TEXTURE1, GL_RGB8, m_colorBuffer);			// Color
-	CreateGBufferTexture(GL_TEXTURE2, GL_RGB32F, m_normalBuffer);		// Normal
-
-	// Attach the textures to the framebuffer
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_depthBuffer);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_positionBuffer, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_colorBuffer, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, m_normalBuffer, 0);
-
-	GLenum drawBuffers[] = { GL_NONE, GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1,
-		GL_COLOR_ATTACHMENT2 };
-	glDrawBuffers(4, drawBuffers);
-
-	if (GL_FRAMEBUFFER_COMPLETE != glCheckFramebufferStatus(GL_FRAMEBUFFER))
-		JE_DEBUG_PRINT("!GLManager - Framebuffer is not created properly.\n");
-
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-	m_passIndex1 = glGetSubroutineIndex(m_shader[SHADER_DEFERRED]->m_programId, GL_FRAGMENT_SHADER, "render1");
-	m_passIndex2 = glGetSubroutineIndex(m_shader[SHADER_DEFERRED]->m_programId, GL_FRAGMENT_SHADER, "render2");
-}
-
 void GLManager::InitGLEnvironment()
 {
 	// Show how much attributes are available
@@ -421,32 +375,33 @@ void GLManager::InitGLEnvironment()
 void GLManager::InitShaders() 
 {
 	// Do shader stuff
-	for (unsigned i = 0; i < SHADER_END; ++i) 
+	for (unsigned i = 0; i < SHADER_END; ++i) {
+		
 		m_shader.push_back(new Shader);
+		m_shader[i]->EnterShader(
+			Shader::m_shaderVertex[i],
+			Shader::m_shaderFragment[i]);
+	}
 
-	m_shader[SHADER_MODEL]->LoadShader(
-		"../src/JEngine/shader/model.vs",
-		"../src/JEngine/shader/model.fs");
+	//m_shader[SHADER_MODEL]->LoadShader(
+	//	"../src/JEngine/shader/model.vs",
+	//	"../src/JEngine/shader/model.fs");
 
-	m_shader[SHADER_TEXT]->LoadShader(
-		"../src/JEngine/shader/text.vs",
-		"../src/JEngine/shader/text.fs");
+	//m_shader[SHADER_TEXT]->LoadShader(
+	//	"../src/JEngine/shader/text.vs",
+	//	"../src/JEngine/shader/text.fs");
 
-	m_shader[SHADER_LIGHTING]->LoadShader(
-		"../src/JEngine/shader/lighting.vs",
-		"../src/JEngine/shader/lighting.fs");
+	//m_shader[SHADER_LIGHTING]->LoadShader(
+	//	"../src/JEngine/shader/lighting.vs",
+	//	"../src/JEngine/shader/lighting.fs");
 
-	m_shader[SHADER_PARTICLE]->LoadShader(
-		"../src/JEngine/shader/particle.vs",
-		"../src/JEngine/shader/particle.fs");
+	//m_shader[SHADER_PARTICLE]->LoadShader(
+	//	"../src/JEngine/shader/particle.vs",
+	//	"../src/JEngine/shader/particle.fs");
 
-	m_shader[SHADER_SCREEN]->LoadShader(
-		"../src/JEngine/shader/screen.vs",
-		"../src/JEngine/shader/screen.fs");
-
-	m_shader[SHADER_DEFERRED]->LoadShader(
-		"../src/JEngine/shader/deferred.vs",
-		"../src/JEngine/shader/deferred.fs");
+	//m_shader[SHADER_SCREEN]->LoadShader(
+	//	"../src/JEngine/shader/screen.vs",
+	//	"../src/JEngine/shader/screen.fs");
 }
 
 void GLManager::SetDrawMode(DrawMode _mode)
@@ -526,13 +481,7 @@ void GLManager::RegisterUniform()
 	m_shader[SHADER_SCREEN]->ConnectUniform(UNIFORM_SCREEN_BLUR_SIZE, "float_blurSize");
 	m_shader[SHADER_SCREEN]->ConnectUniform(UNIFORM_SCREEN_BLUR_AMOUNT, "float_blurAmount");
 	m_shader[SHADER_SCREEN]->ConnectUniform(UNIFORM_SCREEN_SOBEL, "float_sobelAmount");
-	
-	/******************** Deferred shader ********************/
-	m_shader[SHADER_DEFERRED]->ConnectUniform(UNIFORM_DEFERRED_TRANSLATE, "m4_translate");
-	m_shader[SHADER_DEFERRED]->ConnectUniform(UNIFORM_DEFERRED_SCALE, "m4_scale");
-	m_shader[SHADER_DEFERRED]->ConnectUniform(UNIFORM_DEFERRED_ROTATE, "m4_rotate");
-	m_shader[SHADER_DEFERRED]->ConnectUniform(UNIFORM_DEFERRED_CAMERA, "m4_viewport");
-	m_shader[SHADER_DEFERRED]->ConnectUniform(UNIFORM_DEFERRED_PROJECTION, "m4_projection");
+
 }
 
 void GLManager::ShowGLVersion()
@@ -584,20 +533,6 @@ void GLManager::SetVAO(GLuint &_vao, GLuint &_vbo, GLuint &_ebo,
 	glGenBuffers(1, &_ebo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, _elementSize, _elements, GL_STATIC_DRAW);
-}
-
-void GLManager::CreateGBufferTexture(GLenum _texUnit, GLenum _format, GLuint &_texid)
-{
-	glActiveTexture(_texUnit);
-	glGenTextures(1, &_texid);
-	glBindTexture(GL_TEXTURE_2D, _texid);
-
-	//glTexImage2D(GL_TEXTURE_2D, 0, _format, GLsizei(m_width), GLsizei(m_height), 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-	glTexStorage2D(GL_TEXTURE_2D, 1, _format, GLsizei(m_width), GLsizei(m_height));
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
 }
 
 JE_END

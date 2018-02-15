@@ -23,6 +23,7 @@ private:
 
 };
 
+void threadTest(int a);
 class TestLogic : public UserComponent
 {
 

@@ -8,6 +8,12 @@ TestLogic::TestLogic(Object* _pObject)
 	:UserComponent(_pObject)
 {}
 
+void threadTest(int a)
+{
+	for (int index = 0; index < a; ++index)
+		printf("%d ", index);
+}
+
 void TestLogic::Register()
 {
 	SYSTEM::GetBehaviorSystem()->AddBehavior(this);
@@ -18,6 +24,11 @@ void TestLogic::Load(CR_RJValue /*_data*/)
 
 void TestLogic::Init()
 {
+	std::thread a(&threadTest, 10);
+
+	if (a.joinable())
+		a.join();
+
 	m_ortho = STATE::GetContainer()->GetObject("OrthogonalSprite");
 	m_pers = STATE::GetContainer()->GetObject("PerspectiveModel");
 }

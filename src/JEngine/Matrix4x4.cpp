@@ -845,7 +845,6 @@ Matrix4x4 Matrix4x4::Translate(const vec3& _vec)
 	return Result;
 }
 
-
 Matrix4x4 Matrix4x4::Scale(const vec3& _vec)
 {
 	Matrix4x4 Result;

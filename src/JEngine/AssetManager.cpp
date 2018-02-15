@@ -20,10 +20,8 @@ ASSET::AudioMap		ASSET::m_audioMap;
 ASSET::StateMap		ASSET::m_stateMap;
 ASSET::TextureMap	ASSET::m_textureMap;
 ASSET::ArchetypeMap	ASSET::m_archetypeMap;
-std::string			ASSET::m_initDirectory;
-std::string			ASSET::m_assetDirectory;
-std::string			ASSET::m_stateDirectory;
-std::string			ASSET::m_archeDirectory;
+std::string			ASSET::m_initDirectory, ASSET::m_assetDirectory,
+					ASSET::m_stateDirectory, ASSET::m_archeDirectory;
 
 void AssetManager::Load()
 {

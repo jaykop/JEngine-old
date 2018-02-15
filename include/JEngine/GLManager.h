@@ -20,7 +20,7 @@ class GLManager {
 	using Shaders = std::vector<Shader*>;
 
 	enum DrawMode  { DRAW_POINT, DRAW_LINE, DRAW_FILL };
-	enum ShaderType  {SHADER_MODEL, SHADER_TEXT, SHADER_LIGHTING, SHADER_PARTICLE, SHADER_SCREEN, SHADER_DEFERRED, SHADER_END};
+	enum ShaderType  {SHADER_MODEL, SHADER_TEXT, SHADER_LIGHTING, SHADER_PARTICLE, SHADER_SCREEN, SHADER_END};
 	enum ShapeType  { SHAPE_POINT, SHAPE_PLANE, SHAPE_PLANE3D, SHAPE_CUBE, SHAPE_TEXT, SHAPE_CONE, SHAPE_END};
 	enum UniformType  {
 
@@ -65,12 +65,6 @@ class GLManager {
 		UNIFORM_SCREEN_BLUR_SIZE, UNIFORM_SCREEN_BLUR_AMOUNT,
 		UNIFORM_SCREEN_SOBEL,
 
-		/******************** Deferred shader ********************/
-		UNIFORM_DEFERRED_TRANSLATE, UNIFORM_DEFERRED_SCALE,
-		UNIFORM_DEFERRED_ROTATE,
-		UNIFORM_DEFERRED_CAMERA, UNIFORM_DEFERRED_PROJECTION,
-		UNIFORM_DEFERRED_NORMAL,
-
 		UNIFORM_END
 	};
 
@@ -93,17 +87,13 @@ private:
 		const unsigned _verticeSize, const unsigned _elementSize,
 		const float _vertices[], const unsigned _elements[]);
 
-	static void InitDefferedFBO();
-	static void CreateGBufferTexture(GLenum _texUnit, GLenum _format, GLuint &_texid);
-
 	// Private member variables
 	static float		m_width, m_height;
 	static Shaders		m_shader;
 	static DrawMode		m_mode;
 	static GLint		m_uniform[UNIFORM_END];
 	static GLuint		m_vao[SHAPE_END], m_vbo[SHAPE_END], m_ebo[SHAPE_END];
-	static GLuint		m_fbo, m_renderTarget, m_depthBuffer,
-		m_deferredFBO, m_positionBuffer, m_normalBuffer, m_colorBuffer, m_passIndex[2], m_passIndex1, m_passIndex2;	// Deffered shading test variables
+	static GLuint		m_fbo, m_renderTarget, m_depthBuffer;
 
 	// Basic indices and vertices sets
 	static const float		m_verticesPoint[8], m_verticesPlane[32], m_verticesPlane3D[96], m_verticesCube[192], m_verticesCone[128];

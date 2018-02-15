@@ -32,7 +32,7 @@
 			"Component" : [
 				{
 					"Type": "Transform",
-					"Values": {"Position" : [0, 0, 0], "Scale" : [150, 250, 0]}
+					"Values": {"Position" : [0, 0, -100], "Scale" : [150, 250, 0]}
 				},
 				{
 					"Type": "Sprite",

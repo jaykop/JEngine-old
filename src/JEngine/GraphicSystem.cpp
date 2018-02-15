@@ -12,12 +12,12 @@ JE_BEGIN
 
 GraphicSystem::GraphicSystem()
 	:System(), m_pMainCamera(nullptr),
-	m_fovy(45.f), m_zNear(.1f), m_zFar(1000.f), m_isLight(false),
-	m_backgroundColor(vec4::ZERO), m_orthoComesFirst(true), m_screenColor(vec4::ONE),
-	m_width(int(GLM::m_width)), m_height(int(GLM::m_height)), m_lightScale(vec3(10, 10, 10)),
-	m_aniScale(vec3::ZERO), m_aniTranslate(vec3::ZERO), m_viewport(mat4()),
-	m_sobelAmount(0.f), m_blurSize(0.f), m_blurAmount(0.f), m_maxLights(16),
-	m_aliasMode(ALIAS_ALIASED), m_screenEffect(EFFECT_NONE), m_mouseZ(0.f)
+	m_fovy(45.f), m_zNear(.1f), m_zFar(1000.f), m_isLight(false), m_backgroundColor(vec4::ZERO), 
+	m_orthoComesFirst(true), m_screenColor(vec4::ONE), m_width(int(GLM::m_width)), m_mouseZ(0.f),
+	m_height(int(GLM::m_height)), m_lightScale(vec3(10, 10, 10)), m_aniScale(vec3::ZERO), 
+	m_aniTranslate(vec3::ZERO), m_viewport(mat4()), m_sobelAmount(0.f), m_blurSize(0.f), 
+	m_blurAmount(0.f), m_maxLights(16), m_aliasMode(ALIAS_ALIASED), m_screenEffect(EFFECT_NONE), 
+	m_resolutionScaler(GLM::m_width, GLM::m_height, 1.f)
 {
 	m_aspect = GLM::m_width / GLM::m_height;
 	m_right = m_width * .5f;
@@ -104,15 +104,7 @@ void GraphicSystem::Update(const float _dt)
 	UpdatePipelines(_dt);
 
 	RenderToScreen();
-
-	// TODO
-	GLMousePosition();
-	Ray();
-
-	// Deferred rendering tutorial test
-	/*render1();
-	glFlush();
-	render2();*/
+	UpdateMousePosition();
 }
 
 void GraphicSystem::Close()
@@ -284,7 +276,7 @@ void GraphicSystem::EndAntialiasing()
 	}
 }
 
-void GraphicSystem::GLMousePosition() {
+void GraphicSystem::UpdateMousePosition() {
 
 	if (INPUT::KeyPressed(JE_MOUSE_WHEEL_UP)) {
 		m_mouseZ++;
@@ -302,21 +294,13 @@ void GraphicSystem::GLMousePosition() {
 }
 
 
-void GraphicSystem::Ray()
+void GraphicSystem::Ray(Sprite* _sprite, Transform* _transform)
 {
-	vec3 a = INPUT::m_screenPosition;
-	//std::cout << a << std::endl;
-	float x = (2.0f * INPUT::m_screenPosition.x) / m_width - 1.0f;
-	float y = 1.0f - (2.0f * INPUT::m_screenPosition.y) / m_height;
-	float z = 1.0f;
-	vec3 ray_nds = vec3(x, y, z);
-	vec4 ray_clip = vec4(ray_nds.x, ray_nds.y, -1.0, 1.0);
-	vec4 ray_eye = m_perspective.GetInverse().Transpose() * ray_clip;
-	ray_eye = vec4(ray_eye.x, ray_eye.y, -1.0, 0.0);
-	vec4 ray4_wor = m_viewport.GetInverse().Transpose() * ray_eye;
-	vec3 ray_wor(ray4_wor.x, ray4_wor.y, ray4_wor.z);
-	// don't forget to normalise the vector at some point
-	ray_wor = ray_wor.GetNormalize();
+	if (_sprite->GetOwnerId() != _transform->GetOwnerId())
+		JE_DEBUG_PRINT("!The owners of sprite and transform are not identical.\n");
+
+	// TODO...
+	// http://goguri.tistory.com/entry/3D-%ED%94%BC%ED%82%B9
 }
 
 JE_END
