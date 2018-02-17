@@ -1,5 +1,5 @@
 #pragma once
-#include "UserComponent.h"
+#include "CustomComponent.h"
 #include "ComponentBuilder.h"
 
 JE_BEGIN
@@ -19,12 +19,12 @@ private:
 	TestLogicBuilder(const TestLogicBuilder& /*_copy*/) = delete;
 	void operator=(const TestLogicBuilder& /*_copy*/) = delete;
 
-	UserComponent* CreateComponent(Object* _pOwner) const override;
+	CustomComponent* CreateComponent(Object* _pOwner) const override;
 
 };
 
 void threadTest(int a);
-class TestLogic : public UserComponent
+class TestLogic : public CustomComponent
 {
 
 	friend class TestLogicBuilder;

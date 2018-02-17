@@ -5,18 +5,18 @@
 JE_BEGIN
 
 class Object;
-class UserComponent;
+class CustomComponent;
 
 class BehaviorSystem : public System
 {
 	friend class SystemManager;
 
-	using Behaviors = std::vector<UserComponent*> ;
+	using Behaviors = std::vector<CustomComponent*> ;
 
 public:
 
-	void AddBehavior(UserComponent* _behavior);
-	void RemoveBehavior(UserComponent* _behavior);
+	void AddBehavior(CustomComponent* _behavior);
+	void RemoveBehavior(CustomComponent* _behavior);
 
 private:
 

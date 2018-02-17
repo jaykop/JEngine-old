@@ -3,7 +3,7 @@
 
 JE_BEGIN
 
-class UserComponent : public Component {
+class CustomComponent : public Component {
 
 	friend class BehaviorSystem;
 
@@ -16,15 +16,15 @@ public:
 
 protected:
 
-	UserComponent(Object* _pOwner = nullptr)
+	CustomComponent(Object* _pOwner = nullptr)
 		: Component(_pOwner, true) {};
-	virtual	~UserComponent() {};
+	virtual	~CustomComponent() {};
 
 private:
 
-	UserComponent() = delete;
-	UserComponent(const UserComponent& /*_copy*/) = delete;
-	void operator=(const UserComponent& /*_copy*/) = delete;
+	CustomComponent() = delete;
+	CustomComponent(const CustomComponent& /*_copy*/) = delete;
+	void operator=(const CustomComponent& /*_copy*/) = delete;
 };
 
 JE_END

@@ -1,5 +1,5 @@
 #pragma once
-#include "UserComponent.h"
+#include "CustomComponent.h"
 #include "ComponentBuilder.h"
 
 JE_BEGIN
@@ -19,11 +19,11 @@ private:
 	LightControllerBuilder(const LightControllerBuilder& _copy) = delete;
 	void operator=(const LightControllerBuilder& _copy) = delete;
 
-	UserComponent* CreateComponent(Object* _pOwner) const override;
+	CustomComponent* CreateComponent(Object* _pOwner) const override;
 
 };
 
-class LightController : public UserComponent
+class LightController : public CustomComponent
 {
 
 	friend class LightControllerBuilder;

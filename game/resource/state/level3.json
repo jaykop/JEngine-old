@@ -9,7 +9,7 @@
 			"Component" : [
 				{
 					"Type": "Camera",
-					"Values": {"Position" : [0, 0, 100], "Target" : [0, 0, 0],
+					"Values": {"Position" : [100, 100, 100], "Target" : [0, 0, 0],
 						"Up" : [0, 1, 0]}
 				}
 			]
@@ -19,7 +19,7 @@
 			"Component" : [
 				{
 					"Type": "Transform",
-					"Values": {"Position" : [0, 0, 0], "Scale" : [50, 50, 50]}
+					"Values": {"Position" : [50, 0, 0], "Scale" : [50, 50, 50]}
 				},
 				{
 					"Type": "Model",
@@ -32,7 +32,7 @@
 			"Component" : [
 				{
 					"Type": "Transform",
-					"Values": {"Position" : [0, 0, -100], "Scale" : [150, 250, 0]}
+					"Values": {"Position" : [350, 50, -10], "Scale" : [150, 250, 0]}
 				},
 				{
 					"Type": "Sprite",

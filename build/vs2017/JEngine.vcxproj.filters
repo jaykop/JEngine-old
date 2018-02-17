@@ -106,9 +106,6 @@
     <ClInclude Include="..\..\include\JEngine\BehaviorSystem.h">
       <Filter>System\Behavior</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\UserComponent.h">
-      <Filter>System\Behavior</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\JEngine\Transform.h">
       <Filter>System\Physics</Filter>
     </ClInclude>
@@ -168,6 +165,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\JEngine\Shader.h">
       <Filter>Core\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\CustomComponent.h">
+      <Filter>System\Behavior</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -31,13 +31,9 @@ private:
 
 	static const char* KeyTranslator(const char* _name);
 
-	//template <class ComponentType>
-	//inline static Component*	CreateComponent(
-	//	Object* _pOwner);
-
-	/*static std::string m_nameHeader;*/
 	static BuilderMap			m_builderMap;
-	static ComponentTypeMap		m_typeMap;
+	static ComponentTypeMap		m_typeMap;	
+	static bool					m_loadingCustomLogic;
 
 };
 

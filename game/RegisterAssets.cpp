@@ -2,7 +2,7 @@
 #include "Core.h"
 #include "AssetManager.h"
 #include "ComponentManager.h"
-#include "CustomLogics.h"
+#include "CustomLogic.h"
 
 JE_BEGIN
 

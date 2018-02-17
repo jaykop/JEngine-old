@@ -121,17 +121,9 @@ void GraphicSystem::Unload()
 
 void GraphicSystem::SortSprites()
 {
-	//TODO
-	// For now let's just put only orthogonal sprites to come first
-	// Sort sprites by sprite's z position
 	if (m_orthoComesFirst) {
 		std::sort(m_sprites.begin(), m_sprites.end(),
 			[&](Sprite* _leftSpt, Sprite* _rightSpt) -> bool {
-
-			//Transform* left = _leftSpt->m_transform;
-			//Transform* right = _rightSpt->m_transform;
-
-			//if (m_orthoComesFirst) {
 
 			if (_leftSpt->m_projection == PROJECTION_PERSPECTIVE
 				&& _rightSpt->m_projection == PROJECTION_ORTHOGONAL)
@@ -141,18 +133,8 @@ void GraphicSystem::SortSprites()
 				&& _rightSpt->m_projection == PROJECTION_PERSPECTIVE)
 				return false;
 
-			// TODO
-			// If two sprites are same projection, no change
-			// THIS IS TEMP CODES
 			else
 				return false;
-
-			//	else
-			//		return left->m_position.z > right->m_position.z;
-			//}
-
-			//else
-			//	return left->m_position.z > right->m_position.z;
 		}
 		);
 	}
@@ -197,8 +179,8 @@ Camera* GraphicSystem::GetMainCamera()
 void GraphicSystem::AddCamera(Camera* _camera)
 {
 	m_cameras.push_back(_camera);
-	if (m_cameras.size() == 1)
-		m_pMainCamera = _camera;
+	if (m_cameras.size())
+		m_pMainCamera = m_cameras[0];
 }
 
 void GraphicSystem::RemoveCamera(Camera* _camera)
@@ -298,6 +280,31 @@ void GraphicSystem::Ray(Sprite* _sprite, Transform* _transform)
 {
 	if (_sprite->GetOwnerId() != _transform->GetOwnerId())
 		JE_DEBUG_PRINT("!The owners of sprite and transform are not identical.\n");
+
+	static mat4 s_translate, s_scale, s_rotation,
+		s_viewport, s_projection;
+	static vec4 s_final, s_position4;
+	static vec3 s_position3;
+
+	s_position3 = _transform->m_position;
+	s_position4.Set(s_position3.x, s_position3.y, s_position3.z, 1.f);
+	s_translate = mat4::Translate(s_position3);
+	s_scale = mat4::Scale(_transform->m_scale);
+	s_rotation = mat4::Rotate(_transform->m_rotation, _transform->m_rotationAxis);
+	
+	if (_sprite->m_projection == PROJECTION_PERSPECTIVE) {
+		s_projection = m_perspective;
+		s_viewport = mat4::LookAt(
+			m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
+	}
+
+	else {	// PROJECTION_ORTHOGONAL
+		s_projection = m_orthogonal;
+		s_viewport.SetIdentity();
+		s_viewport = mat4::Scale(m_resolutionScaler);
+	}
+
+	s_final = s_projection * s_viewport * (s_scale * s_rotation * s_translate) * s_position4;
 
 	// TODO...
 	// http://goguri.tistory.com/entry/3D-%ED%94%BC%ED%82%B9

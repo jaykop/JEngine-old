@@ -32,6 +32,9 @@ class GraphicSystem : public System
 
 public:
 
+	// TODO
+	void	Ray(Sprite* _sprite, Transform* _transform);
+	
 	int		GetWidth() const;
 	int		GetHeight() const;
 	void	SetMainCamera(Camera* _camera);
@@ -83,9 +86,6 @@ private:
 	void Render(Font* _font, const std::string& _text, Transform* _transform);
 	void SortSprites();
 	void UpdateMousePosition();
-
-	// TODO
-	void Ray(Sprite* _sprite, Transform* _transform);
 
 	// Member variables
 	Lights		m_lights;

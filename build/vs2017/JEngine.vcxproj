@@ -203,7 +203,7 @@
     <ClInclude Include="..\..\include\JEngine\Text.h" />
     <ClInclude Include="..\..\include\JEngine\Timer.h" />
     <ClInclude Include="..\..\include\JEngine\Transform.h" />
-    <ClInclude Include="..\..\include\JEngine\UserComponent.h" />
+    <ClInclude Include="..\..\include\JEngine\CustomComponent.h" />
     <ClInclude Include="..\..\include\JEngine\Vector2.h" />
     <ClInclude Include="..\..\include\JEngine\Vector3.h" />
     <ClInclude Include="..\..\include\JEngine\Vector4.h" />

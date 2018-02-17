@@ -163,7 +163,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CameraController.h" />
-    <ClInclude Include="CustomLogics.h" />
+    <ClInclude Include="CustomLogic.h" />
     <ClInclude Include="LightController.h" />
     <ClInclude Include="LevelController.h" />
     <ClInclude Include="TestLogic.h" />

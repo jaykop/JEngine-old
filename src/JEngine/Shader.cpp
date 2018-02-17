@@ -5,70 +5,7 @@
 
 JE_BEGIN
 
-void Shader::LoadShader(
-	const char* _vertex_file_path, 
-	const char* _fragment_file_path) {
-
-	// Both strings are should be valid
-	if (_vertex_file_path && _fragment_file_path) {
-
-		bool vsToggle = true, fsToggle = true;
-
-		// Read the vertex shader code from the file
-		std::string vertexShaderCode;
-		std::ifstream vertexShaderStream(_vertex_file_path, std::ios::in);
-
-		// Read the fragment shader code from the file
-		std::string fragmentShaderCode;
-		std::ifstream fragmentShaderStream(_fragment_file_path, std::ios::in);
-
-		// If the vertex shader file is valid,
-		if (vertexShaderStream.is_open()) {
-			std::string line = "";
-			while (std::getline(vertexShaderStream, line))
-				vertexShaderCode += "\n" + line;
-			vertexShaderStream.close();
-
-		}	// if (vertexShaderStream.is_open()) {
-
-		else {
-			JE_DEBUG_PRINT("!Shader - Wrong vertex shader path: %s\n", _vertex_file_path);
-			vsToggle = false;
-
-		}	// else {
-
-		// If vertex file is valid
-		// load fragement shader
-		if (vsToggle) {
-
-			// If the fragment shader file is valid,
-			if (fragmentShaderStream.is_open()) {
-				std::string line = "";
-				while (std::getline(fragmentShaderStream, line))
-					fragmentShaderCode += "\n" + line;
-				fragmentShaderStream.close();
-
-			}	// if (fragmentShaderStream.is_open()) {
-
-			else {
-				JE_DEBUG_PRINT("!Shader - Wrong fragment shader path: %s\n", _fragment_file_path);
-				fsToggle = false;
-
-			}	// else {
-
-		}	// if (vsToggle) {
-
-		// So both shaders are valid and compatible,
-		if (vsToggle && fsToggle)
-			EnterShader(vertexShaderCode, fragmentShaderCode, _vertex_file_path, _fragment_file_path);
-
-	}	// if (_vertex_file_path && _fragment_file_path) {
-
-	else 
-		JE_DEBUG_PRINT("!Shader - Wrong shader path.\n");
-}
-
-void Shader::EnterShader(std::string & _vertexShader, std::string & _fragmentShader, const char* _vertexPath, const char* _fragmentPath)
+void Shader::EnterShader(std::string & _vertexShader, std::string & _fragmentShader/*, const char* _vertexPath, const char* _fragmentPath*/)
 {
 	// Create the shader
 	GLuint vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
@@ -76,9 +13,6 @@ void Shader::EnterShader(std::string & _vertexShader, std::string & _fragmentSha
 	GLint result = GL_FALSE;
 	int infoLogLength;
 
-	// Complie vertex shader
-	if (_vertexPath)
-		JE_DEBUG_PRINT("*Shader - Compiling vertex shader: %s\n", _vertexPath);
 	char const* vertexSourcePointer = _vertexShader.c_str();
 	glShaderSource(vertexShaderId, 1, &vertexSourcePointer, NULL);
 	glCompileShader(vertexShaderId);
@@ -93,10 +27,6 @@ void Shader::EnterShader(std::string & _vertexShader, std::string & _fragmentSha
 		JE_DEBUG_PRINT("!Shader - %4s\n", &VertexShaderErrorMessage[0]);
 
 	}	// if (infoLogLength > 0) {
-
-	// Complie fragment shader
-	if (_vertexPath)
-		JE_DEBUG_PRINT("*Shader - Compiling fragment shader: %s\n", _fragmentPath);
 
 	// Get shader string
 	char const* fragmentSourcePointer = _fragmentShader.c_str();
@@ -115,8 +45,6 @@ void Shader::EnterShader(std::string & _vertexShader, std::string & _fragmentSha
 
 	}	// if (infoLogLength > 0) {
 
-		// Link the program
-	JE_DEBUG_PRINT("*Shader - Linking program...\n");
 	m_programId = glCreateProgram();
 
 	if (m_programId == 0)
@@ -287,5 +215,68 @@ void Shader::SetEnum(const char* _name, int _enum)
 {
 	glUniform1i(glGetUniformLocation(m_programId, _name), _enum);
 }
+
+//void Shader::LoadShader(
+//	const char* _vertex_file_path, 
+//	const char* _fragment_file_path) {
+//
+//	// Both strings are should be valid
+//	if (_vertex_file_path && _fragment_file_path) {
+//
+//		bool vsToggle = true, fsToggle = true;
+//
+//		// Read the vertex shader code from the file
+//		std::string vertexShaderCode;
+//		std::ifstream vertexShaderStream(_vertex_file_path, std::ios::in);
+//
+//		// Read the fragment shader code from the file
+//		std::string fragmentShaderCode;
+//		std::ifstream fragmentShaderStream(_fragment_file_path, std::ios::in);
+//
+//		// If the vertex shader file is valid,
+//		if (vertexShaderStream.is_open()) {
+//			std::string line = "";
+//			while (std::getline(vertexShaderStream, line))
+//				vertexShaderCode += "\n" + line;
+//			vertexShaderStream.close();
+//
+//		}	// if (vertexShaderStream.is_open()) {
+//
+//		else {
+//			JE_DEBUG_PRINT("!Shader - Wrong vertex shader path: %s\n", _vertex_file_path);
+//			vsToggle = false;
+//
+//		}	// else {
+//
+//		// If vertex file is valid
+//		// load fragement shader
+//		if (vsToggle) {
+//
+//			// If the fragment shader file is valid,
+//			if (fragmentShaderStream.is_open()) {
+//				std::string line = "";
+//				while (std::getline(fragmentShaderStream, line))
+//					fragmentShaderCode += "\n" + line;
+//				fragmentShaderStream.close();
+//
+//			}	// if (fragmentShaderStream.is_open()) {
+//
+//			else {
+//				JE_DEBUG_PRINT("!Shader - Wrong fragment shader path: %s\n", _fragment_file_path);
+//				fsToggle = false;
+//
+//			}	// else {
+//
+//		}	// if (vsToggle) {
+//
+//		// So both shaders are valid and compatible,
+//		if (vsToggle && fsToggle)
+//			EnterShader(vertexShaderCode, fragmentShaderCode, _vertex_file_path, _fragment_file_path);
+//
+//	}	// if (_vertex_file_path && _fragment_file_path) {
+//
+//	else 
+//		JE_DEBUG_PRINT("!Shader - Wrong shader path.\n");
+//}
 
 JE_END

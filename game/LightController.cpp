@@ -6,7 +6,7 @@
 JE_BEGIN
 
 LightController::LightController(Object* _pObject)
-	:UserComponent(_pObject)
+	:CustomComponent(_pObject)
 {}
 
 void LightController::Register()
@@ -55,7 +55,7 @@ LightControllerBuilder::LightControllerBuilder()
 	:ComponentBuilder()
 {}
 
-UserComponent* LightControllerBuilder::CreateComponent(Object* _pOwner) const
+CustomComponent* LightControllerBuilder::CreateComponent(Object* _pOwner) const
 {
 	return new LightController(_pOwner);
 }

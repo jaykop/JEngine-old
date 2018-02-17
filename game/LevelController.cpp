@@ -4,7 +4,7 @@
 JE_BEGIN
 
 LevelController::LevelController(Object* _pObject)
-	:UserComponent(_pObject)
+	:CustomComponent(_pObject)
 {}
 
 void LevelController::Register()
@@ -65,7 +65,7 @@ LevelControllerBuilder::LevelControllerBuilder()
 	:ComponentBuilder()
 {}
 
-UserComponent* LevelControllerBuilder::CreateComponent(Object* _pOwner) const
+CustomComponent* LevelControllerBuilder::CreateComponent(Object* _pOwner) const
 {
 	return new LevelController(_pOwner);
 }

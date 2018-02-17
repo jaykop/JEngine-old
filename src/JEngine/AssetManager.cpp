@@ -25,8 +25,6 @@ std::string			ASSET::m_initDirectory, ASSET::m_assetDirectory,
 
 void AssetManager::Load()
 {
-	LoadBuiltInComponents();
-
 	// Load states
 	JSON::ReadFile(ASSET::m_stateDirectory.c_str());
 	CR_RJValue states = JSON::GetDocument()["State"];
@@ -34,7 +32,6 @@ void AssetManager::Load()
 		STATE::PushState(states[i]["Directory"].GetString(), states[i]["Key"].GetString());
 		JE_DEBUG_PRINT("*AssetManager - Loaded state: %s.\n", states[i]["Directory"].GetString());
 	}
-	JE_DEBUG_PRINT("*AssetManager - Loaded game states successfully.\n");
 
 	CR_RJValue fristStates = JSON::GetDocument()["FirstState"];
 	STATE::SetStartingState(fristStates.GetString());
@@ -47,15 +44,15 @@ void AssetManager::Load()
 		LoadImage(textures[i]["Directory"].GetString(), textures[i]["Key"].GetString());
 		JE_DEBUG_PRINT("*AssetManager - Loaded texture: %s.\n", textures[i]["Directory"].GetString());
 	}
-	JE_DEBUG_PRINT("*AssetManager - Loaded textures successfully.\n");
 
 	// Load font
 	CR_RJValue fonts = JSON::GetDocument()["Font"];
-	for (rapidjson::SizeType i = 0; i < fonts.Size(); ++i) {
+	for (rapidjson::SizeType i = 0; i < fonts.Size(); ++i)
 		LoadFont(fonts[i]["Directory"].GetString(), fonts[i]["Key"].GetString(), fonts[i]["Size"].GetUint());
-		JE_DEBUG_PRINT("*AssetManager - Loaded fonst: %s.\n", fonts[i]["Directory"].GetString());
-	}
-	JE_DEBUG_PRINT("*AssetManager - Loaded font successfully.\n");
+
+	// Load engine components
+	COMPONENT::m_loadingCustomLogic = false;
+	LoadBuiltInComponents();
 }
 
 void AssetManager::Unload()
@@ -111,7 +108,7 @@ void AssetManager::LoadBuiltInComponents()
 	JE_ADD_COMPONENT(Material);
 	JE_ADD_COMPONENT(Animation);
 
-	JE_DEBUG_PRINT("*AssetManager - Loaded bulit-in components successfully.\n");
+	JE_DEBUG_PRINT("*AssetManager - Loaded bulit-in components.\n");
 }
 
 
@@ -126,7 +123,9 @@ void AssetManager::LoadFont(const char * _path, const char* _key, unsigned _size
 
 	// Check freetype face init
 	if (!FT_New_Face(newFont->m_lib, _path, 0, &newFont->m_face))
-		JE_DEBUG_PRINT("!AssetManager - Loaded font: %sn", _path);
+		JE_DEBUG_PRINT("*AssetManager - Loaded font: %s\n", _path);
+	else
+		JE_DEBUG_PRINT("!AssetManager - Failed to load font: %s\n", _path);
 
 	FT_Set_Pixel_Sizes(newFont->m_face, 0, _size);
 
@@ -134,6 +133,7 @@ void AssetManager::LoadFont(const char * _path, const char* _key, unsigned _size
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 	static float s_newLineLevel = 0;
+	static FT_ULong numOfChars;
 
 	// Load first 128 characters of ASCII set
 	for (GLubyte c = 0; c < 128; c++)
@@ -197,7 +197,7 @@ void AssetManager::LoadImage(const char *_path, const char *_textureKey)
 	unsigned		error = lodepng::decode(image, width, height, _path);
 
 	if (error)
-		JE_DEBUG_PRINT("!AssetManager - decoder error %d / %s.\n", error, lodepng_error_text(error));
+		JE_DEBUG_PRINT("!AssetManager - Decoder error %d / %s.\n", error, lodepng_error_text(error));
 
 	// Enable the texture for OpenGL.
 	glEnable(GL_TEXTURE_2D);

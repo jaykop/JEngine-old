@@ -15,7 +15,7 @@ void ComponentManager::RegisterBuilder(
 	// If there is existing like that,
 	// don't add new builder
 	if (foundName != m_builderMap.end())
-		JE_DEBUG_PRINT("!Component - No such name of enrolled component: %s\n", s_name);
+		JE_DEBUG_PRINT("!ComponentManager - No such name of enrolled component: %s\n", s_name);
 
 	// Unless, add new builder
 	else {
@@ -25,6 +25,8 @@ void ComponentManager::RegisterBuilder(
 		// Key = Type name, Value = Class Name
 		m_typeMap.insert(
 			ComponentTypeMap::value_type(_componentName, typeid(ComponentType).name()));
+		if (m_loadingCustomLogic)
+			JE_DEBUG_PRINT("*ComponentManager - Loaded custom logic: %s\n", _componentName);
 	}
 
 }

@@ -1,11 +1,11 @@
-#include <thread>
+//#include <thread>
 #include "TestLogic.h"
 #include "GameLogicHeader.h"
 
 JE_BEGIN
 
 TestLogic::TestLogic(Object* _pObject)
-	:UserComponent(_pObject)
+	:CustomComponent(_pObject)
 {}
 
 void threadTest(int a)
@@ -24,10 +24,10 @@ void TestLogic::Load(CR_RJValue /*_data*/)
 
 void TestLogic::Init()
 {
-	std::thread a(&threadTest, 10);
+	//std::thread a(&threadTest, 10);
 
-	if (a.joinable())
-		a.join();
+	//if (a.joinable())
+	//	a.join();
 
 	m_ortho = STATE::GetContainer()->GetObject("OrthogonalSprite");
 	m_pers = STATE::GetContainer()->GetObject("PerspectiveModel");
@@ -35,11 +35,8 @@ void TestLogic::Init()
 
 void TestLogic::Update(const float /*_dt*/)
 {
-	if (INPUT::KeyPressed(JE_MOUSE_LEFT)) {
-		/*m_ortho->GetComponent<Transform>()->m_position.Set(
-		INPUT::GetOrhtoPosition());*/
-		//m_pers->GetComponent<Transform>()->m_position.Set();
-	}
+	//if (INPUT::KeyPressed(JE_MOUSE_LEFT)) 
+	//	SYSTEM::GetGraphicSystem()->Ray(m_pers->GetComponent<Model>(), m_pers->GetComponent<Transform>());
 
 	//std::cout << INPUT::GetOrhtoPosition() << std::endl;
 	//std::cout << INPUT::GetPerspPosition() << std::endl;
@@ -76,7 +73,7 @@ TestLogicBuilder::TestLogicBuilder()
 	:ComponentBuilder()
 {}
 
-UserComponent* TestLogicBuilder::CreateComponent(Object* _pOwner) const
+CustomComponent* TestLogicBuilder::CreateComponent(Object* _pOwner) const
 {
 	return new TestLogic(_pOwner);
 }

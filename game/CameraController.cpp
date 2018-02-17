@@ -9,7 +9,7 @@
 JE_BEGIN
 
 CameraController::CameraController(Object* _pObject)
-	:UserComponent(_pObject), m_camera(nullptr),
+	:CustomComponent(_pObject), m_camera(nullptr),
 	m_position(vec3::ZERO), m_target(vec3::ZERO)
 {}
 
@@ -92,7 +92,7 @@ CameraControllerBuilder::CameraControllerBuilder()
 	:ComponentBuilder()
 {}
 
-UserComponent* CameraControllerBuilder::CreateComponent(Object* _pOwner) const
+CustomComponent* CameraControllerBuilder::CreateComponent(Object* _pOwner) const
 {
 	return new CameraController(_pOwner);
 }

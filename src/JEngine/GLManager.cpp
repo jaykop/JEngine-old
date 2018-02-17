@@ -342,11 +342,6 @@ void GLManager::InitFBO()
 
 void GLManager::InitGLEnvironment()
 {
-	// Show how much attributes are available
-	int nrAttributes;
-	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
-	JE_DEBUG_PRINT("*GLManager - Maximum nr of vertex attributes supported: %d\n", nrAttributes);
-
 	// Set how to draw
 	SetDrawMode(m_mode);
 
@@ -382,6 +377,8 @@ void GLManager::InitShaders()
 			Shader::m_shaderVertex[i],
 			Shader::m_shaderFragment[i]);
 	}
+
+	JE_DEBUG_PRINT("*GLManager - Compiled and linked shaders.\n");
 
 	//m_shader[SHADER_MODEL]->LoadShader(
 	//	"../src/JEngine/shader/model.vs",
@@ -482,10 +479,12 @@ void GLManager::RegisterUniform()
 	m_shader[SHADER_SCREEN]->ConnectUniform(UNIFORM_SCREEN_BLUR_AMOUNT, "float_blurAmount");
 	m_shader[SHADER_SCREEN]->ConnectUniform(UNIFORM_SCREEN_SOBEL, "float_sobelAmount");
 
+	JE_DEBUG_PRINT("*GLManager - Registered uniforms.\n");
 }
 
 void GLManager::ShowGLVersion()
 {
+	// Show GL version info
 	const GLubyte *renderer = glGetString(GL_RENDERER);
 	const GLubyte *vendor = glGetString(GL_VENDOR);
 	const GLubyte *version = glGetString(GL_VERSION);
@@ -495,12 +494,15 @@ void GLManager::ShowGLVersion()
 	glGetIntegerv(GL_SAMPLE_BUFFERS, &buffers);
 	glGetIntegerv(GL_SAMPLES, &samples);
 
-	JE_DEBUG_PRINT("*GLManager - GL Vendor: %s\n", vendor);
-	JE_DEBUG_PRINT("*GLManager - GL Renderer: %s\n", renderer);
+	JE_DEBUG_PRINT("*GLManager - GL Vendor: %s / GL Renderer: %s\n", vendor, renderer);
 	JE_DEBUG_PRINT("*GLManager - GL Version: %s\n", version);
 	JE_DEBUG_PRINT("*GLManager - GLSL Version: %s\n", glslVersion);
-	JE_DEBUG_PRINT("*GLManager - GL Samples: %d\n", samples);
-	JE_DEBUG_PRINT("*GLManager - GL Sample Buffers: %d\n", buffers);
+	JE_DEBUG_PRINT("*GLManager - GL Samples: %d / GL Sample Buffers: %d\n", samples, buffers);
+
+	// Show how much attributes are available
+	int nrAttributes;
+	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
+	JE_DEBUG_PRINT("*GLManager - Maximum number of vertex attributes supported: %d\n", nrAttributes);
 }
 
 void GLManager::SetVAO(GLuint &_vao, GLuint &_vbo, GLuint &_ebo,

@@ -1,4 +1,4 @@
-#include "UserComponent.h"
+#include "CustomComponent.h"
 #include "BehaviorSystem.h"
 
 JE_BEGIN
@@ -7,12 +7,12 @@ BehaviorSystem::BehaviorSystem()
 	:System()
 {}
 
-void BehaviorSystem::AddBehavior(UserComponent* _behavior)
+void BehaviorSystem::AddBehavior(CustomComponent* _behavior)
 {
 	m_behaviors.push_back(_behavior);
 }
 
-void BehaviorSystem::RemoveBehavior(UserComponent* _behavior)
+void BehaviorSystem::RemoveBehavior(CustomComponent* _behavior)
 {
 	for (Behaviors::iterator it = m_behaviors.begin();
 		it != m_behaviors.end(); ++it) {

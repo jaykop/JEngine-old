@@ -272,10 +272,12 @@ JE_KEY InputHandler::KeyTranslator(SDL_Event* _event)
 void InputHandler::Update(SDL_Event* _event)
 {	
 	// Refresh the mouse wheel toggles
-	if (m_wheelMoved)
+	if (m_wheelMoved) {
 		m_keys[JE_MOUSE_WHEEL_DOWN]
 			= m_keys[JE_MOUSE_WHEEL_UP]
 			= m_wheelMoved = false;
+		_event->wheel.y = 0;
+	}
 
 	// Handle input events
 	switch (_event->type)
@@ -317,15 +319,13 @@ void InputHandler::Update(SDL_Event* _event)
 
 	case SDL_MOUSEWHEEL_NORMAL:
 
-		if (_event->wheel.y > 0) {
-			_event->wheel.y = 0;
+		if (_event->wheel.y == 1) {
 			m_wheelMoved = true;
 			m_triggerList[JE_MOUSE_WHEEL_UP]
 				= m_keys[JE_MOUSE_WHEEL_UP] = true;
 		}
 
-		else if (_event->wheel.y < 0) {
-			_event->wheel.y = 0;
+		else if (_event->wheel.y == -1) {
 			m_wheelMoved = true;
 			m_triggerList[JE_MOUSE_WHEEL_DOWN]
 				= m_keys[JE_MOUSE_WHEEL_DOWN] = true;

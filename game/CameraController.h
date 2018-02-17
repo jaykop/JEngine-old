@@ -1,5 +1,5 @@
 #pragma once
-#include "UserComponent.h"
+#include "CustomComponent.h"
 #include "ComponentBuilder.h"
 
 #include "Vector3.h"
@@ -20,12 +20,12 @@ private:
 	CameraControllerBuilder(const CameraControllerBuilder& _copy) = delete;
 	void operator=(const CameraControllerBuilder& _copy) = delete;
 
-	UserComponent* CreateComponent(Object* _pOwner) const override;
+	CustomComponent* CreateComponent(Object* _pOwner) const override;
 
 };
 
 class Camera;
-class CameraController : public UserComponent
+class CameraController : public CustomComponent
 {
 
 	friend class CameraControllerBuilder;

@@ -3,8 +3,9 @@
 
 JE_BEGIN
 
-BuilderMap	ComponentManager::m_builderMap;
+BuilderMap			ComponentManager::m_builderMap;
 ComponentTypeMap	ComponentManager::m_typeMap;
+bool				ComponentManager::m_loadingCustomLogic = true;
 
 Component* ComponentManager::CreateComponent(
 	const char* _componentName, Object* _pOwner)
@@ -15,7 +16,7 @@ Component* ComponentManager::CreateComponent(
 	// If there is nothing like that,
 	// return null
 	if (found == m_builderMap.end()) {
-		JE_DEBUG_PRINT("!Component - No such name of enrolled component: %s\n", _componentName);
+		JE_DEBUG_PRINT("!ComponentManager - No such name of enrolled component: %s\n", _componentName);
 		return nullptr;
 	}
 

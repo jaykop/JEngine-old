@@ -24,6 +24,11 @@ void Random::PlantSeed()
 
 int Random::GetRandomInt(int _min, int _max) 
 {
+	if (_min > _max) {
+		JE_DEBUG_PRINT("!Random - Set minimum lower than maximum / returning 0.\n");
+		return 0;
+	}
+
 	std::uniform_int_distribution<int> 	intRand(_min, _max);
 	return intRand(m_randomObject);
 }
@@ -66,6 +71,11 @@ vec4 Random::GetRandVec4(float _x, float _y, float _z, float _w)
 
 float Random::GetRandomFloat(float _min, float _max) 
 {
+	if (_min > _max) {
+		JE_DEBUG_PRINT("!Random - Set minimum lower than maximum / returning 0.\n");
+		return 0.f;
+	}
+
 	std::uniform_real_distribution<float>	floatRand(_min, _max);
 	return floatRand(m_randomObject);
 }

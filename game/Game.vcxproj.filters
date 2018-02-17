@@ -8,41 +8,41 @@
       <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="LightController.cpp">
-      <Filter>GameLogic</Filter>
+      <Filter>CustomLogic</Filter>
     </ClCompile>
     <ClCompile Include="LevelController.cpp">
-      <Filter>GameLogic</Filter>
+      <Filter>CustomLogic</Filter>
     </ClCompile>
     <ClCompile Include="CameraController.cpp">
-      <Filter>GameLogic</Filter>
+      <Filter>CustomLogic</Filter>
     </ClCompile>
     <ClCompile Include="TestLogic.cpp">
-      <Filter>GameLogic</Filter>
+      <Filter>CustomLogic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LightController.h">
-      <Filter>GameLogic</Filter>
+      <Filter>CustomLogic</Filter>
     </ClInclude>
     <ClInclude Include="LevelController.h">
-      <Filter>GameLogic</Filter>
+      <Filter>CustomLogic</Filter>
     </ClInclude>
     <ClInclude Include="CameraController.h">
-      <Filter>GameLogic</Filter>
+      <Filter>CustomLogic</Filter>
     </ClInclude>
     <ClInclude Include="TestLogic.h">
-      <Filter>GameLogic</Filter>
+      <Filter>CustomLogic</Filter>
     </ClInclude>
-    <ClInclude Include="CustomLogics.h">
+    <ClInclude Include="CustomLogic.h">
       <Filter>Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="GameLogic">
-      <UniqueIdentifier>{818968ee-ddb5-4b82-bcce-49db06526fa4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Base">
       <UniqueIdentifier>{ab48f47d-0e05-4311-88dc-b288860aa953}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CustomLogic">
+      <UniqueIdentifier>{818968ee-ddb5-4b82-bcce-49db06526fa4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
