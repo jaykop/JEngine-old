@@ -458,9 +458,8 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 		s_type = _emitter->m_type;
 		s_pTransform = _emitter->m_transform;
 		s_texture = _emitter->m_mainTex;
-		s_doubleDt = _dt * _dt;
 		s_velocity = _dt * _emitter->m_velocity;
-		s_colorDiff = s_doubleDt * _emitter->m_colorDiff;
+		s_colorDiff = _dt * _emitter->m_colorDiff;
 
 		GLM::m_shader[GLM::SHADER_PARTICLE]->Use();
 
@@ -500,7 +499,7 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 
 			else {
 
-				particle->m_life -= s_doubleDt;
+				particle->m_life -= _dt;
 				particle->m_position += particle->m_direction * s_velocity;
 
 				if (s_rotation)

@@ -44,30 +44,37 @@ void StateManager::Update(SDL_Event* _event)
 	// Timer
 	m_timer.Start();
 
-	static int s_frame = 0;
-	static float s_dt = 0.f, s_stack = 0.f;
+	static float s_dt = 1.f / 60.f, s_stack, s_frameTime, s_newTime, s_currentTime;
+	s_stack = s_frameTime = s_newTime = s_currentTime = 0.f;
 
 	ChangeState();
 
 	while (SDL_PollEvent(_event) != 0	// Event handler loop
-		|| m_status == STATE_NONE) {		// State updating loop
+		|| m_status == STATE_NONE) {	// State updating loop
 
-		INPUT::Update(_event);			//Get input by input handler
-		IMGUI::EventUpdate(_event);	//Get input by imgui manager
+		INPUT::Update(_event);			// Get input by input handler
+		IMGUI::EventUpdate(_event);		// Get input by imgui manager
+		
+		s_newTime = m_timer.GetTime();	// Get delta time
+		s_frameTime						// Get frame time
+			= s_newTime - s_currentTime;
 
-		m_pCurrent->Update(s_dt);	// Update state manager
+		if (s_frameTime > 0.25f)		// Lock the frame time
+			s_frameTime = 0.25f;
 
-		s_dt = m_timer.GetTime();	// Get delta time
-		++s_frame;					// Increment to framw
-		s_stack += s_dt;			// Stack dt
+		s_currentTime = s_newTime;		// Refresh current time
+		s_stack += s_frameTime;			// Stack frame time
 
-		if (s_stack >= 1.f) {		// Refresh every sec
-			s_stack = 0.f;
-			s_frame = 0;
-			m_timer.Start();
-
-			IMGUI::Update();			// Update imgui renderer
-			SDL_GL_SwapWindow(m_pWindow);	// Swap buffer
+		// Fixed timestep
+		if (s_stack >= s_dt) {			// Refresh every sec
+			
+			m_pCurrent->Update(s_dt);	// Update state
+			IMGUI::Update(s_frameTime);	// Update imgui renderer
+			
+			/* Update rendrer with physics together 
+			so makes rendering scene more smoothly */
+			SDL_GL_SwapWindow(m_pWindow);
+			s_stack -= s_dt;
 		}
 	}
 

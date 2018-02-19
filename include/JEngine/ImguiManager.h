@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 #include "Macro.h"
 
 union SDL_Event;
@@ -15,7 +16,7 @@ private:
 
 	static void Init(SDL_Window* _window);
 	static void EventUpdate(SDL_Event* _event);
-	static void Update();
+	static void Update(const float _dt);
 	static void Close();
 
 	ImguiManager() = delete;

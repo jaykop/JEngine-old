@@ -23,7 +23,7 @@ int main(int argc, char* args[]) {
 	JE_UNUSED_PARAM(argc);	// No argc - Block the warnings
 	JE_UNUSED_PARAM(args);	// No args - Block the warnings
 
-	CORE::m_IMGUI = false;	// Turn off imgui
+	CORE::m_IMGUI = true;
 
 	CORE::OpenConsole();
 	CORE::Ready();

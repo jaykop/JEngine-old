@@ -16,6 +16,7 @@ class GLManager {
 	friend class Application;
 	friend class AssetManager;
 	friend class GraphicSystem;
+	friend class ImguiManager;
 
 	using Shaders = std::vector<Shader*>;
 
@@ -94,6 +95,7 @@ private:
 	static GLint		m_uniform[UNIFORM_END];
 	static GLuint		m_vao[SHAPE_END], m_vbo[SHAPE_END], m_ebo[SHAPE_END];
 	static GLuint		m_fbo, m_renderTarget, m_depthBuffer;
+	static std::string	m_glInfo;
 
 	// Basic indices and vertices sets
 	static const float		m_verticesPoint[8], m_verticesPlane[32], m_verticesPlane3D[96], m_verticesCube[192], m_verticesCone[128];

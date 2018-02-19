@@ -14,10 +14,10 @@ public:
 	static float	GetRandomFloat(float _min, float _max);
 	static int		GetRandomInt(int _min, int _max);
 	static bool		GetRandBoolean(float _probabilityOfTrue);
-	static vec3		GetRandVec3(float  _min, float _max);
-	static vec4		GetRandVec4(float  _min, float  _max);
-	static vec3		GetRandVec3(float _x, float _y, float _z);
-	static vec4		GetRandVec4(float _x, float _y, float _z, float _w);
+	static vec3		GetRandVec3(float _minX, float _minY, float _minZ, float _maxX, float _maxY, float _maxZ);
+	static vec4		GetRandVec4(float _minX, float _minY, float _minZ, float _minW, float _maxX, float _maxY, float _maxZ, float _maxW);
+	static vec3		GetRandVec3(const vec3& _minVec3, const vec3& _maxVec3);
+	static vec4		GetRandVec4(const vec4& _minVec4, const vec4& _maxVec4);
 
 private:
 	

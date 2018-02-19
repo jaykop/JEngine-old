@@ -39,34 +39,34 @@ bool Random::GetRandBoolean(float _probabilityOfTrue)
 	return boolRand(m_randomObject);
 }
 
-vec3 Random::GetRandVec3(float _min, float _max)
+vec3 Random::GetRandVec3(float _minX, float _minY, float _minZ, float _maxX, float _maxY, float _maxZ)
 {
-	return vec3(GetRandomFloat(_min, _max), 
-		GetRandomFloat(_min, _max),
-		GetRandomFloat(_min, _max));
+	return vec3(GetRandomFloat(_minX, _maxX),
+		GetRandomFloat(_minY, _maxY),
+		GetRandomFloat(_minZ, _maxZ));
 }
 
-vec4 Random::GetRandVec4(float _min, float _max)
+vec4 Random::GetRandVec4(float _minX, float _minY, float _minZ, float _minW, float _maxX, float _maxY, float _maxZ, float _maxW)
 {
-	return vec4(GetRandomFloat(_min, _max),
-		GetRandomFloat(_min, _max),
-		GetRandomFloat(_min, _max),
-		GetRandomFloat(_min, _max));
+	return vec4(GetRandomFloat(_minX, _maxX),
+		GetRandomFloat(_minY, _maxY),
+		GetRandomFloat(_minZ, _maxZ),
+		GetRandomFloat(_minW, _maxW));
 }
 
-vec3 Random::GetRandVec3(float _x, float _y, float _z)
+vec3 Random::GetRandVec3(const vec3& _minVec3, const vec3& _maxVec3)
 {
-	return vec3(GetRandomFloat(-_x, _x),
-		GetRandomFloat(-_y, _y),
-		GetRandomFloat(-_z, _z));
+	return vec3(GetRandomFloat(_minVec3.x, _maxVec3.x),
+		GetRandomFloat(_minVec3.y, _maxVec3.y),
+		GetRandomFloat(_minVec3.z, _maxVec3.z));
 }
 
-vec4 Random::GetRandVec4(float _x, float _y, float _z, float _w)
+vec4 Random::GetRandVec4(const vec4& _minVec4, const vec4& _maxVec4)
 {
-	return vec4(GetRandomFloat(-_x, _x),
-		GetRandomFloat(-_y, _y),
-		GetRandomFloat(-_z, _z),
-		GetRandomFloat(-_w, _w));
+	return vec4(GetRandomFloat(_minVec4.x, _maxVec4.x),
+		GetRandomFloat(_minVec4.y, _maxVec4.y),
+		GetRandomFloat(_minVec4.z, _maxVec4.z),
+		GetRandomFloat(_minVec4.w, _maxVec4.w));
 }
 
 float Random::GetRandomFloat(float _min, float _max) 

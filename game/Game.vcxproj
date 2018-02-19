@@ -105,7 +105,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\external\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\external\Python27;$(SolutionDir)..\..\external\imgui;$(SolutionDir)..\..\external\SDL2;$(SolutionDir)..\..\external\lodePNG;$(SolutionDir)..\..\external\freetype2</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>JEngine_d.lib;SDL2.lib;SDL2main.lib;opengl32.lib;glew32.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;glew32.lib;freetype.lib;JEngine_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -117,7 +117,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\external\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\external\Python27;$(SolutionDir)..\..\external\imgui;$(SolutionDir)..\..\external\SDL2;$(SolutionDir)..\..\external\lodePNG;$(SolutionDir)..\..\external\freetype2</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>JEngine_d.lib;SDL2.lib;SDL2main.lib;opengl32.lib;glew32.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;glew32.lib;freetype.lib;JEngine_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -133,7 +133,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>JEngine.lib;SDL2.lib;SDL2main.lib;opengl32.lib;glew32.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;glew32.lib;freetype.lib;JEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -149,7 +149,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>JEngine.lib;SDL2.lib;SDL2main.lib;opengl32.lib;glew32.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;glew32.lib;freetype.lib;JEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>

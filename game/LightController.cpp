@@ -25,7 +25,7 @@ void LightController::Init()
 
 void LightController::Update(const float _dt)
 {
-	float speed = 1.f * _dt;
+	float speed = 60.f * _dt;
 	if (INPUT::KeyPressed(JE_A))
 		m_light->m_position.x-= speed;
 	

@@ -15,9 +15,10 @@ Emitter::Particle::Particle(Emitter* _emitter)
 	s_pTransform = m_emitter->m_pOwner->GetComponent<Transform>();
 	
 	m_life		= Random::GetRandomFloat(0.f, m_emitter->m_life);
+	m_velocity	= Random::GetRandVec3(vec3::ZERO, m_emitter->m_velocity);
 	m_position	= s_pTransform->m_position;
 	m_rotation	= Random::GetRandomFloat(0.f, 360.f);
-	m_direction	= Random::GetRandVec3(m_emitter->m_direction.x, m_emitter->m_direction.y);
+	m_direction	= Random::GetRandVec3(-m_emitter->m_direction, m_emitter->m_direction);
 	m_direction.Normalize();
 	m_color.Set(m_emitter->m_startColor);
 	
@@ -37,57 +38,61 @@ Emitter::Particle::Particle(Emitter* _emitter)
 
 void Emitter::Particle::Refresh()
 {
+	static Transform* s_pTransform;
+	s_pTransform = m_emitter->m_pOwner->GetComponent<Transform>();
 
-	if (m_emitter->m_type == PARTICLE_EXPLODE) {
+	m_rotation = Random::GetRandomFloat(0.f, 360.f);
+	m_rotationSpeed = Random::GetRandomFloat(0., m_emitter->m_rotationSpeed);
+
+	m_life = Random::GetRandomFloat(0.f, m_emitter->m_life);
+	m_color.Set(m_emitter->m_startColor);
+
+	if (m_emitter->m_type == Emitter::PARTICLE_NORMAL) {
+
+		m_position = s_pTransform->m_position;
+		m_hidden = false;
+		m_direction = Random::GetRandVec3(-m_emitter->m_direction, m_emitter->m_direction);
+	}
+
+	else if (m_emitter->m_type == PARTICLE_EXPLODE) {
+
+		// No more particle to update,
+		// turn off the active toggle
 		if (m_emitter->m_size == m_emitter->m_deadCount)
 			m_emitter->m_active = false;
 
 		else if (!m_dead) {
+
+			// Ready for next update
+			m_position = s_pTransform->m_position;
+			m_direction = Random::GetRandVec3(-m_emitter->m_direction, m_emitter->m_direction);
+
+			// Set dead and add number
 			m_dead = true;
+			m_hidden = true;
 			m_emitter->m_deadCount++;
 		}
 	}
 
-	else {
+	else if (m_emitter->m_type == Emitter::PARTICLE_WIDE) {
 
-		static Transform* s_pTransform;
-		s_pTransform = m_emitter->m_pOwner->GetComponent<Transform>();
-
-		m_rotation = Random::GetRandomFloat(0.f, 360.f);
-		m_rotationSpeed = Random::GetRandomFloat(0., m_emitter->m_rotationSpeed);
-
+		m_direction.y = -1;
 		m_hidden = false;
+
+		static vec3 pos, range;
+		range = m_emitter->m_range;
+		pos = s_pTransform->m_position;
+		m_position.x = Random::GetRandomFloat(pos.x - range.x, pos.x + range.x);
+		m_position.y = Random::GetRandomFloat(pos.y - range.y, pos.y + range.y);
+		m_position.z = Random::GetRandomFloat(pos.z - range.z, pos.z + range.z);
+
 		m_life = Random::GetRandomFloat(0.f, m_emitter->m_life);
 		m_color.Set(m_emitter->m_startColor);
 
-		if (m_emitter->m_type == Emitter::PARTICLE_NORMAL) {
-
-			m_position = s_pTransform->m_position;
-			m_direction = Random::GetRandVec3(
-				m_emitter->m_direction.x,
-				m_emitter->m_direction.y);
-		}
-
-		else if (m_emitter->m_type == Emitter::PARTICLE_WIDE) {
-
-			m_direction.y = -1;
-
-			static vec3 pos, range;
-
-			range = m_emitter->m_range;
-			pos = s_pTransform->m_position;
-			m_position.x = Random::GetRandomFloat(pos.x - range.x, pos.x + range.x);
-			m_position.y = Random::GetRandomFloat(pos.y - range.y, pos.y + range.y);
-			m_position.z = Random::GetRandomFloat(pos.z - range.z, pos.z + range.z);
-
-			m_life = Random::GetRandomFloat(0.f, m_emitter->m_life);
-			m_color.Set(m_emitter->m_startColor);
-
-		}
-
-		if (m_emitter->m_is2d)
-			m_direction.z = 0.f;
 	}
+
+	if (m_emitter->m_is2d)
+		m_direction.z = 0.f;
 }
 
 Emitter::Emitter(Object* _pOwner)
@@ -132,6 +137,9 @@ void Emitter::Load(CR_RJValue _data)
 
 	if (_data.HasMember("Bilboard"))
 		m_bilboard = _data["Bilboard"].GetBool();
+
+	if (_data.HasMember("Is2d"))
+		m_is2d = _data["Is2d"].GetBool();
 
 	if (_data.HasMember("Projection")) {
 		CR_RJValue projection = _data["Projection"];

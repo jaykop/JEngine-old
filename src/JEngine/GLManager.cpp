@@ -17,6 +17,7 @@ GLuint				GLManager::m_depthBuffer = 0;
 GLuint				GLManager::m_renderTarget = 0;
 GLManager::Shaders	GLManager::m_shader;
 GLManager::DrawMode GLManager::m_mode = DrawMode::DRAW_FILL;
+std::string			GLManager::m_glInfo;
 
 const float GLManager::m_verticesPoint[] = 
 {	// position				// uv		// normals
@@ -498,6 +499,8 @@ void GLManager::ShowGLVersion()
 	JE_DEBUG_PRINT("*GLManager - GL Version: %s\n", version);
 	JE_DEBUG_PRINT("*GLManager - GLSL Version: %s\n", glslVersion);
 	JE_DEBUG_PRINT("*GLManager - GL Samples: %d / GL Sample Buffers: %d\n", samples, buffers);
+
+	m_glInfo.append(reinterpret_cast<const char*>(version));
 
 	// Show how much attributes are available
 	int nrAttributes;

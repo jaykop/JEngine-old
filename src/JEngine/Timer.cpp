@@ -20,7 +20,7 @@ void Timer::Start(void)
 /******************************************************************************/
 float Timer::GetTime(void)
 {
-	return (static_cast<float>(clock()) - m_time) / (CLOCKS_PER_SEC);
+	return (static_cast<float>(clock()) - m_time) / static_cast<float>(CLOCKS_PER_SEC);
 }
 
 JE_END

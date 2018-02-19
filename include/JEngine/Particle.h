@@ -41,7 +41,7 @@ class Emitter : public Sprite
 		void	Refresh();
 
 		bool	m_hidden, m_dead;
-		vec3	m_color, m_position, m_direction;
+		vec3	m_color, m_position, m_direction, m_velocity;
 		float	m_life, m_rotationSpeed, m_rotation;
 		
 	private:
