@@ -2,9 +2,8 @@
 #include "SDL.h"
 #include "Macro.h"
 
-// TODO
-// Pyhton script later...
-//#include "Python.h"
+/*Python Version 3.6.4*/
+#include "Python.h"
 
 JE_BEGIN
 
@@ -13,17 +12,19 @@ JE_BEGIN
 //////////////////////////////////////////////////////////////////////////
 class Core {
 
+	friend class ImguiManager;
+
 public:
 
-	static void OpenConsole();
+	static void Open(bool _imgui);
 	static void Ready();
 	static void Run();
-	static void CloseConsole();
+	static void Close();
+	
+private:
 
 	static bool m_IMGUI;
 
-private:
-	
 	Core() = delete;
 	~Core() = delete;
 	Core(const Core& /*_copy*/) = delete;

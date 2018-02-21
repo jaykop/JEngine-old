@@ -44,6 +44,8 @@ private:
 	static void	Update();
 	static void	Close();
 
+	static void EditorUpdate(const float _dt);
+
 	// Locked functions
 	Application() = delete; 
 	~Application() = delete;

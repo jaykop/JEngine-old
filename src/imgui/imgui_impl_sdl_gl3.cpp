@@ -170,8 +170,12 @@ bool ImGui_ImplSdlGL3_ProcessEvent(SDL_Event* event)
         }
     case SDL_TEXTINPUT:
         {
-            io.AddInputCharactersUTF8(event->text.text);
-            return true;
+			static unsigned int prevTimestamp = 0;
+			if (event->text.timestamp != prevTimestamp) {
+				io.AddInputCharactersUTF8(event->text.text);
+			}
+			prevTimestamp = event->text.timestamp;
+			return true;
         }
     case SDL_KEYDOWN:
     case SDL_KEYUP:

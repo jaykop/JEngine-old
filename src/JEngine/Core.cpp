@@ -11,8 +11,13 @@ JE_BEGIN
 
 bool Core::m_IMGUI = false;
 
-void Core::OpenConsole()
+void Core::Open(bool _imgui)
 {
+	m_IMGUI = _imgui;
+
+	// Init python
+	//Py_Initialize();
+
 	// Pop console window 
 	DEBUG_LEAK_CHECKS(-1);
 
@@ -29,8 +34,11 @@ void Core::Run()
 	APP::Close();
 }
 
-void Core::CloseConsole()
+void Core::Close()
 {
+	// Wrap up python
+	//Py_Finalize();
+
 	// Delete console window
 	DEBUG_DESTROY_CONSOLE();
 }

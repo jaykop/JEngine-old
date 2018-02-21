@@ -21,20 +21,20 @@ void LevelController::Init()
 void LevelController::Update(const float /*_dt*/)
 {
 
-	if (INPUT::KeyTriggered(JE_1))
-		STATE::SetNextState("level1");
+	//if (INPUT::KeyTriggered(JE_1))
+	//	STATE::SetNextState("level1");
 
-	if (INPUT::KeyTriggered(JE_2))
-		STATE::SetNextState("level2");
+	//if (INPUT::KeyTriggered(JE_2))
+	//	STATE::SetNextState("level2");
 
-	if (INPUT::KeyTriggered(JE_3))
-		STATE::SetNextState("level3");
+	//if (INPUT::KeyTriggered(JE_3))
+	//	STATE::SetNextState("level3");
 
-	if (INPUT::KeyTriggered(JE_4))
-		STATE::SetNextState("level4");
+	//if (INPUT::KeyTriggered(JE_4))
+	//	STATE::SetNextState("level4");
 
-	if (INPUT::KeyTriggered(JE_5))
-		STATE::SetNextState("level5");
+	//if (INPUT::KeyTriggered(JE_5))
+	//	STATE::SetNextState("level5");
 
 	// TODO
 	// No specific pause state

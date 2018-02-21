@@ -73,28 +73,28 @@
     <OutDir>$(SolutionDir)..\..\bin\game\Debug\x86\</OutDir>
     <IntDir>$(SolutionDir)..\..\temp\game\Debug\x86\</IntDir>
     <TargetName>demo</TargetName>
-    <LibraryPath>$(SolutionDir)..\..\lib\GL\x86;$(SolutionDir)..\..\lib\SDL2\x86;$(SolutionDir)..\..\lib\Python27\libs;$(SolutionDir)..\..\lib\Python27\Lib;$(SolutionDir)..\..\lib\JEngine\Debug\x86;$(LibraryPath);$(SolutionDir)..\..\lib\freetype\x86</LibraryPath>
+    <LibraryPath>$(SolutionDir)..\..\lib\GL\x86;$(SolutionDir)..\..\lib\SDL2\x86;$(SolutionDir)..\..\lib\Python36\libs\Debug\x86;$(SolutionDir)..\..\lib\JEngine\Debug\x86;$(LibraryPath);$(SolutionDir)..\..\lib\freetype\x86</LibraryPath>
     <SourcePath>$(VC_SourcePath);</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)..\..\bin\game\Release\x86\</OutDir>
     <IntDir>$(SolutionDir)..\..\temp\game\Release\x86\</IntDir>
     <TargetName>demo</TargetName>
-    <LibraryPath>$(SolutionDir)..\..\lib\GL\x86;$(SolutionDir)..\..\lib\SDL2\x86;$(SolutionDir)..\..\lib\Python27\libs;$(SolutionDir)..\..\lib\Python27\Lib;$(SolutionDir)..\..\lib\JEngine\Release\x86;$(LibraryPath);$(SolutionDir)..\..\lib\freetype\x86</LibraryPath>
+    <LibraryPath>$(SolutionDir)..\..\lib\GL\x86;$(SolutionDir)..\..\lib\SDL2\x86;$(SolutionDir)..\..\lib\Python36\libs\Release\x86;$(SolutionDir)..\..\lib\JEngine\Release\x86;$(LibraryPath);$(SolutionDir)..\..\lib\freetype\x86</LibraryPath>
     <SourcePath>$(VC_SourcePath);</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)..\..\bin\game\Debug\x64\</OutDir>
     <IntDir>$(SolutionDir)..\..\temp\game\Debug\x64\</IntDir>
     <TargetName>demo</TargetName>
-    <LibraryPath>$(SolutionDir)..\..\lib\GL\x64;$(SolutionDir)..\..\lib\SDL2\x64;$(SolutionDir)..\..\lib\Python27\libs;$(SolutionDir)..\..\lib\Python27\Lib;$(SolutionDir)..\..\lib\JEngine\Debug\x64;$(LibraryPath);$(SolutionDir)..\..\lib\freetype\x64</LibraryPath>
+    <LibraryPath>$(SolutionDir)..\..\lib\GL\x64;$(SolutionDir)..\..\lib\SDL2\x64;$(SolutionDir)..\..\lib\Python36\libs\Debug\x64;$(SolutionDir)..\..\lib\JEngine\Debug\x64;$(LibraryPath);$(SolutionDir)..\..\lib\freetype\x64</LibraryPath>
     <SourcePath>$(VC_SourcePath);</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)..\..\bin\game\Release\x64\</OutDir>
     <IntDir>$(SolutionDir)..\..\temp\game\Release\x64\</IntDir>
     <TargetName>demo</TargetName>
-    <LibraryPath>$(SolutionDir)..\..\lib\GL\x64;$(SolutionDir)..\..\lib\SDL2\x64;$(SolutionDir)..\..\lib\Python27\libs;$(SolutionDir)..\..\lib\Python27\Lib;$(SolutionDir)..\..\lib\JEngine\Release\x64;$(LibraryPath);$(SolutionDir)..\..\lib\freetype\x64</LibraryPath>
+    <LibraryPath>$(SolutionDir)..\..\lib\GL\x64;$(SolutionDir)..\..\lib\SDL2\x64;$(SolutionDir)..\..\lib\Python36\libs\Release\x64;$(SolutionDir)..\..\lib\JEngine\Release\x64;$(LibraryPath);$(SolutionDir)..\..\lib\freetype\x64</LibraryPath>
     <SourcePath>$(VC_SourcePath);</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -102,10 +102,10 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\external\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\external\Python27;$(SolutionDir)..\..\external\imgui;$(SolutionDir)..\..\external\SDL2;$(SolutionDir)..\..\external\lodePNG;$(SolutionDir)..\..\external\freetype2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\external\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\external\Python36;$(SolutionDir)..\..\external\imgui;$(SolutionDir)..\..\external\SDL2;$(SolutionDir)..\..\external\lodePNG;$(SolutionDir)..\..\external\freetype2</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;glew32.lib;freetype.lib;JEngine_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>JEngine_d.lib;SDL2.lib;SDL2main.lib;freetype.lib;opengl32.lib;glew32.lib;python36_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -114,10 +114,10 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\external\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\external\Python27;$(SolutionDir)..\..\external\imgui;$(SolutionDir)..\..\external\SDL2;$(SolutionDir)..\..\external\lodePNG;$(SolutionDir)..\..\external\freetype2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\external\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\external\Python36;$(SolutionDir)..\..\external\imgui;$(SolutionDir)..\..\external\SDL2;$(SolutionDir)..\..\external\lodePNG;$(SolutionDir)..\..\external\freetype2</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;glew32.lib;freetype.lib;JEngine_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>JEngine_d.lib;SDL2.lib;SDL2main.lib;freetype.lib;opengl32.lib;glew32.lib;python36_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -128,12 +128,12 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\external\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\external\Python27;$(SolutionDir)..\..\external\imgui;$(SolutionDir)..\..\external\SDL2;$(SolutionDir)..\..\external\lodePNG;$(SolutionDir)..\..\external\freetype2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\external\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\external\Python36;$(SolutionDir)..\..\external\imgui;$(SolutionDir)..\..\external\SDL2;$(SolutionDir)..\..\external\lodePNG;$(SolutionDir)..\..\external\freetype2</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;glew32.lib;freetype.lib;JEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>JEngine.lib;SDL2.lib;SDL2main.lib;freetype.lib;opengl32.lib;glew32.lib;python36.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -144,12 +144,12 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\external\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\external\Python27;$(SolutionDir)..\..\external\imgui;$(SolutionDir)..\..\external\SDL2;$(SolutionDir)..\..\external\lodePNG;$(SolutionDir)..\..\external\freetype2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\external\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\external\Python36;$(SolutionDir)..\..\external\imgui;$(SolutionDir)..\..\external\SDL2;$(SolutionDir)..\..\external\lodePNG;$(SolutionDir)..\..\external\freetype2</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;glew32.lib;freetype.lib;JEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>JEngine.lib;SDL2.lib;SDL2main.lib;freetype.lib;opengl32.lib;glew32.lib;python36.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>

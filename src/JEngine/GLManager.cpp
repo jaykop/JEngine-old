@@ -1,5 +1,7 @@
 #include "GLManager.h"
 #include "Shader.h"
+#include "imgui.h"
+#include "ImguiManager.h"
 
 JE_BEGIN
 
@@ -8,16 +10,21 @@ JE_BEGIN
 //////////////////////////////////////////////////////////////////////////
 float				GLManager::m_width = 0;
 float				GLManager::m_height = 0;
-GLint				GLManager::m_uniform[] = { 0 };
-GLuint				GLManager::m_vao[] = { 0 };
-GLuint				GLManager::m_vbo[] = { 0 };
-GLuint				GLManager::m_ebo[] = { 0 };
-GLuint				GLManager::m_fbo = 0;
-GLuint				GLManager::m_depthBuffer = 0;
-GLuint				GLManager::m_renderTarget = 0;
+GLint				GLManager::m_uniform[] = { 0 },
+					GLManager::m_buffers,
+					GLManager::m_samples,
+					GLManager::m_Attributes;
+GLuint				GLManager::m_vao[] = { 0 },
+					GLManager::m_vbo[] = { 0 },
+					GLManager::m_ebo[] = { 0 },
+					GLManager::m_fbo = 0, 
+					GLManager::m_depthBuffer = 0,
+					GLManager::m_renderTarget = 0;
 GLManager::Shaders	GLManager::m_shader;
 GLManager::DrawMode GLManager::m_mode = DrawMode::DRAW_FILL;
-std::string			GLManager::m_glInfo;
+const GLubyte		*GLManager::m_renderer = nullptr, *GLManager::m_vendor = nullptr,
+					*GLManager::m_version = nullptr, *GLManager::m_glslVersion = nullptr;
+unsigned			GLManager::m_drawMode = GL_TRIANGLES;
 
 const float GLManager::m_verticesPoint[] = 
 {	// position				// uv		// normals
@@ -136,8 +143,8 @@ const unsigned GLManager::m_indicesCube [] =
 	//		3				2
 
 	// front
-	0, 2, 3,	// first triangle
-	2, 0, 1,	// second triangle
+	3, 0, 2,	// first triangle
+	1, 2, 0,	// second triangle
 
 	// back
 	6, 7, 5,	// first triangle
@@ -148,8 +155,8 @@ const unsigned GLManager::m_indicesCube [] =
 	10, 8, 9,	// second triangle
 
 	// right
-	12, 14, 15,	// first triangle
-	14, 12, 13,	// second triangle
+	14, 15, 13,	// first triangle
+	12, 13, 15,	// second triangle
 
 	// down
 	16, 18, 19,	// first triangle
@@ -214,7 +221,7 @@ const unsigned		GLManager::m_indicesSize[] = {
 //////////////////////////////////////////////////////////////////////////
 // GLManager functio bodies
 //////////////////////////////////////////////////////////////////////////
-bool GLManager::initSDL_GL(float _width, float _height)
+bool GLManager::initSDL_GL()
 {
 	// force GLEW to use a modern OpenGL method
 	glewExperimental = GL_TRUE;
@@ -228,10 +235,6 @@ bool GLManager::initSDL_GL(float _width, float _height)
 	// Unless
 	else {
 
-		// Set wdith and heught
-		m_width		= _width;
-		m_height	= _height;
-
 		// Do gl stuff
 		ShowGLVersion();
 		InitShaders();
@@ -239,6 +242,7 @@ bool GLManager::initSDL_GL(float _width, float _height)
 		InitFBO();			
 		InitGLEnvironment();	
 		RegisterUniform();
+		IMGUI::AddEditorFunc(EditorUpdate);
 	}
 
 	return true;
@@ -407,13 +411,14 @@ void GLManager::SetDrawMode(DrawMode _mode)
 	switch (_mode)
 	{
 	case DRAW_POINT:
-		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+		m_drawMode = GL_POINTS;
+		glPointSize(5);
 		break;
 	case DRAW_LINE:
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		m_drawMode = GL_LINES;
 		break;
 	case DRAW_FILL:
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		m_drawMode = GL_TRIANGLES;
 		break;
 	}
 
@@ -486,26 +491,28 @@ void GLManager::RegisterUniform()
 void GLManager::ShowGLVersion()
 {
 	// Show GL version info
-	const GLubyte *renderer = glGetString(GL_RENDERER);
-	const GLubyte *vendor = glGetString(GL_VENDOR);
-	const GLubyte *version = glGetString(GL_VERSION);
-	const GLubyte *glslVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
+	m_renderer = glGetString(GL_RENDERER);
+	m_vendor = glGetString(GL_VENDOR);
+	m_version = glGetString(GL_VERSION);
+	m_glslVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
 
-	GLint buffers = 0, samples = 0;
-	glGetIntegerv(GL_SAMPLE_BUFFERS, &buffers);
-	glGetIntegerv(GL_SAMPLES, &samples);
+	glGetIntegerv(GL_SAMPLE_BUFFERS, &m_buffers);
+	glGetIntegerv(GL_SAMPLES, &m_samples);
 
-	JE_DEBUG_PRINT("*GLManager - GL Vendor: %s / GL Renderer: %s\n", vendor, renderer);
-	JE_DEBUG_PRINT("*GLManager - GL Version: %s\n", version);
-	JE_DEBUG_PRINT("*GLManager - GLSL Version: %s\n", glslVersion);
-	JE_DEBUG_PRINT("*GLManager - GL Samples: %d / GL Sample Buffers: %d\n", samples, buffers);
-
-	m_glInfo.append(reinterpret_cast<const char*>(version));
+	JE_DEBUG_PRINT("*GLManager - GL Vendor: %s / GL Renderer: %s\n", m_vendor, m_renderer);
+	JE_DEBUG_PRINT("*GLManager - GL Version: %s\n", m_version);
+	JE_DEBUG_PRINT("*GLManager - GLSL Version: %s\n", m_glslVersion);
+	JE_DEBUG_PRINT("*GLManager - GL Samples: %d / GL Sample Buffers: %d\n", m_samples, m_buffers);
 
 	// Show how much attributes are available
-	int nrAttributes;
-	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
-	JE_DEBUG_PRINT("*GLManager - Maximum number of vertex attributes supported: %d\n", nrAttributes);
+	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &m_Attributes);
+	JE_DEBUG_PRINT("*GLManager - Maximum number of vertex attributes supported: %d\n", m_Attributes);
+}
+
+void GLManager::Resize(int _width, int _height)
+{
+	m_width = float(_width);
+	m_height = float(_height);
 }
 
 void GLManager::SetVAO(GLuint &_vao, GLuint &_vbo, GLuint &_ebo,
@@ -538,6 +545,43 @@ void GLManager::SetVAO(GLuint &_vao, GLuint &_vbo, GLuint &_ebo,
 	glGenBuffers(1, &_ebo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, _elementSize, _elements, GL_STATIC_DRAW);
+}
+
+void GLManager::EditorUpdate(const float /*_dt*/)
+{
+	ImGui::Begin("OpenGL");
+
+	ImGui::Text("*GL Vendor: %s", m_vendor);
+	ImGui::Text("*GL Renderer: %s", m_renderer);
+	ImGui::Text("*GL Version: %s", m_version);
+	ImGui::Text("*GLSL Version: %s", m_glslVersion);
+	ImGui::Text("*GL Samples: %d", m_samples);
+	ImGui::Text("*GL Sample Buffers: %d", m_buffers);
+	ImGui::Text("*Maximum vertex attributes: %d", m_Attributes);
+	ImGui::Text("*Total Shaders: %d", int(SHADER_END));
+
+	switch (m_mode) {
+	case DRAW_FILL:
+		ImGui::Text("*Draw Mode: FILL");
+		break;
+	case DRAW_LINE:
+		ImGui::Text("*Draw Mode: LINE"); 
+		break;
+	case DRAW_POINT:
+		ImGui::Text("*Draw Mode: POINT"); 
+		break;
+	}
+
+	if(ImGui::Button("POINT"))
+		SetDrawMode(DRAW_POINT);
+	ImGui::SameLine();
+	if (ImGui::Button("LINE"))
+		SetDrawMode(DRAW_LINE);
+	ImGui::SameLine();
+	if (ImGui::Button("FILL"))
+		SetDrawMode(DRAW_FILL);
+
+	ImGui::End();
 }
 
 JE_END

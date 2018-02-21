@@ -6,6 +6,7 @@
 #include "JsonParser.h"
 #include "Random.h"
 #include "ImguiManager.h"
+#include "imgui.h"
 
 JE_BEGIN
 
@@ -82,9 +83,6 @@ bool Application::Initialize()
 	// Get context
 	m_pContext = SDL_GL_CreateContext(m_pWindow);
 
-	// TODO
-	// Window flag, resolution
-	//SDL_RenderSetLogicalSize();
 	SDL_SetWindowFullscreen(m_pWindow, m_Data.m_isFullScreen);
 
 	// Get window surface
@@ -94,10 +92,12 @@ bool Application::Initialize()
 	SDL_FillRect(m_pSurface, nullptr, SDL_MapRGB(m_pSurface->format, 0xFF, 0xFF, 0xFF));
 
 	/*************** Open GL **************/
-	GLM::initSDL_GL(float(m_Data.m_width), float(m_Data.m_height));
+	GLM::Resize(m_Data.m_width, m_Data.m_height);
+	GLM::initSDL_GL();
 
 	/**************** IMGUI **************/
 	IMGUI::Init(m_pWindow);
+	IMGUI::AddEditorFunc(&EditorUpdate);
 
 	/**************** Built-in **************/
 	Random::PlantSeed();	// Plant random seed
@@ -138,6 +138,32 @@ void Application::Close()
 
 	//Quit SDL subsystems
 	SDL_Quit();
+}
+
+void Application::EditorUpdate(const float /*_dt*/)
+{		
+	// Basic debug window
+	ImGui::Begin("Debug");
+	ImGui::Text("*JEngine Frame Time: %.11f", STATE::m_frameTime);
+	ImGui::Text("*Resolution: %d x %d", m_Data.m_width, m_Data.m_height);
+
+	if (!m_Data.m_isFullScreen) {
+		ImGui::Text("*Screen Mode: Window Mode");
+		if (ImGui::Button("Fullscreen")) {
+			m_Data.m_isFullScreen = true;
+			SDL_SetWindowFullscreen(m_pWindow, m_Data.m_isFullScreen);
+		}
+	}
+
+	else {
+		ImGui::Text("*Screen Mode: Fullscreen");
+		if (ImGui::Button("Window Mode")) {
+			m_Data.m_isFullScreen = false;
+			SDL_SetWindowFullscreen(m_pWindow, m_Data.m_isFullScreen);
+		}
+	}
+
+	ImGui::End();
 }
 
 JE_END

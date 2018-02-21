@@ -76,7 +76,7 @@ public:
 private:
 
 	// Private member functions
-	static bool	initSDL_GL(float _width, float _height);
+	static bool	initSDL_GL();
 	static void	CloseSDL_GL();
 	static void	RegisterUniform();
 	static void	InitGLEnvironment();
@@ -84,18 +84,22 @@ private:
 	static void InitFBO();
 	static void InitShaders();
 	static void ShowGLVersion();
+	static void Resize(int _width, int _height);
 	static void SetVAO(GLuint &_vao, GLuint &_vbo, GLuint &_ebo,
 		const unsigned _verticeSize, const unsigned _elementSize,
 		const float _vertices[], const unsigned _elements[]);
+
+	static void EditorUpdate(const float _dt);
 
 	// Private member variables
 	static float		m_width, m_height;
 	static Shaders		m_shader;
 	static DrawMode		m_mode;
-	static GLint		m_uniform[UNIFORM_END];
-	static GLuint		m_vao[SHAPE_END], m_vbo[SHAPE_END], m_ebo[SHAPE_END];
-	static GLuint		m_fbo, m_renderTarget, m_depthBuffer;
-	static std::string	m_glInfo;
+	static unsigned		m_drawMode;
+	static GLint		m_uniform[UNIFORM_END], m_Attributes, m_buffers, m_samples;
+	static GLuint		m_vao[SHAPE_END], m_vbo[SHAPE_END], m_ebo[SHAPE_END], m_fbo, m_renderTarget, m_depthBuffer;
+	
+	static const GLubyte	*m_renderer, *m_vendor, *m_version, *m_glslVersion;
 
 	// Basic indices and vertices sets
 	static const float		m_verticesPoint[8], m_verticesPlane[32], m_verticesPlane3D[96], m_verticesCube[192], m_verticesCone[128];

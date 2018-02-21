@@ -7,7 +7,13 @@
 
 JE_BEGIN
 
-SDL_Window* ImguiManager::m_pWindow = nullptr;
+SDL_Window*		IMGUI::m_pWindow = nullptr;
+IMGUI::Editors	IMGUI::m_editors;
+
+void ImguiManager::AddEditorFunc(const EditorUpdateFunc &_pFunc)
+{
+	m_editors.push_back(_pFunc);
+}
 
 void ImguiManager::Init(SDL_Window* _window)
 {
@@ -19,46 +25,34 @@ void ImguiManager::Init(SDL_Window* _window)
 
 void ImguiManager::EventUpdate(SDL_Event* _event)
 {
-	if (CORE::m_IMGUI)
+	if (CORE::m_IMGUI) 
 		ImGui_ImplSdlGL3_ProcessEvent(_event);
 }
 
 void ImguiManager::Update(const float _dt)
 {
 	if (CORE::m_IMGUI) {
-
+				
 		ImVec4 clear_color = ImColor(114, 144, 154);
 		ImGui_ImplSdlGL3_NewFrame(m_pWindow);
-		
-		// Basic debug window
-		{
-			ImGui::Begin("Debug");
-			ImGui::Text("*JEngine Frame Time: %.11f", _dt);
-			ImGui::Text("*GL Version: %s", GLM::m_glInfo.c_str());
-			ImGui::Text("*Window Size: %i X %i", int(GLM::m_width), int(GLM::m_height));
-			ImGui::End();
-		}
 
-		// Object Manager
-		{
-			ImGui::Begin("Object Manager");
-			ImGui::Text("*Coming Soon...");
-			ImGui::End();
-		}
+		// Updated added editor functions
+		for (auto editorUpdate : m_editors)
+			editorUpdate(_dt);
 
-		// System Manager
-		{
-			ImGui::Begin("System Manager");
-			ImGui::Text("*Coming Soon...");
-			ImGui::End(); 
-		}
+		//// System Manager
+		//{
+		//	ImGui::Begin("System Manager");
+		//	ImGui::Text("*Coming Soon...");
+		//	ImGui::End(); 
+		//}
 
-		// Json Exporter
-		{
-			ImGui::Begin("Json Exporter");
-			ImGui::Text("*Coming Soon...");
-			ImGui::End();
-		}
+		//// Json Exporter
+		//{
+		//	ImGui::Begin("Json Exporter");
+		//	ImGui::Text("*Coming Soon...");
+		//	ImGui::End();
+		//}
 
 		// Rendering
 		glViewport(0, 0, (int)ImGui::GetIO().DisplaySize.x, (int)ImGui::GetIO().DisplaySize.y);

@@ -51,9 +51,15 @@ void GraphicSystem::RenderToFramebuffer()
 	glViewport(0, 0, GLint(m_width), GLint(m_height));
 	
 	// Backface culling
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-	glFrontFace(GL_CW);
+	if (GLM::m_drawMode == GL_TRIANGLES) {
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
+		glFrontFace(GL_CW);
+	}
+
+	// Default point size
+	if (GLM::m_drawMode == GL_POINTS)
+		glPointSize(5);
 }
 
 void GraphicSystem::RenderToScreen()
@@ -147,7 +153,7 @@ void GraphicSystem::LightSourcePipeline()
 				GLM::UNIFORM_LIGHT_COLOR,
 				light->m_color);
 
-			Render(GLM::m_vao[GLM::SHAPE_CONE], GLM::m_elementSize[GLM::SHAPE_CONE]);
+			Render(GLM::m_vao[GLM::SHAPE_CONE], GLM::m_elementSize[GLM::SHAPE_CONE], GLM::m_drawMode);
 
 		} // for (auto light : m_lights) {
 	} // if (m_isLight) {
@@ -215,7 +221,7 @@ void GraphicSystem::SpritePipeline(Sprite *_sprite)
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_DEPTH_TEST);
 
-	Render(*(_sprite->m_vao), _sprite->m_elementSize);
+	Render(*(_sprite->m_vao), _sprite->m_elementSize, GLM::m_drawMode);
 
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
@@ -551,8 +557,6 @@ void GraphicSystem::Render(Font* _font, const std::string& _text, Transform* _tr
 	glBindVertexArray(GLM::m_vao[GLM::SHAPE_TEXT]);
 	glBindBuffer(GL_ARRAY_BUFFER, GLM::m_vbo[GLM::SHAPE_TEXT]);
 
-	// TODO
-	// Set init values and fix text bug....
 	GLfloat new_x = GLfloat(s_position.x);
 	GLfloat init_x = new_x, lower_y = 0;
 	int num_newline = 1;

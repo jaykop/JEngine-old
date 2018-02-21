@@ -44,6 +44,7 @@ private:
 	void operator=(const ObjectContainer& /*_copy*/) = delete;
 
 	void		ClearObjectMap();
+	void		EditorUpdate(const float _dt);
 
 	ObjectMap	m_objectMap;
 };

@@ -34,6 +34,7 @@ public:
 	static StateStatus	GetStatus(void);
 	static State*		GetCurrentState(void);
 	static State*		GetState(const char* _stateName);
+	static bool			HasState(const char* _stateName);
 
 	static ObjectContainer* GetContainer();
 
@@ -57,8 +58,10 @@ private:
 	static void ClearStates();
 
 	static void SetContainer(ObjectContainer* _container);
+	static void	EditorUpdate(const float _dt);
 
 	// Private member variables
+	static float		m_frameTime;
 	static Timer		m_timer;
 	static States		m_states;
 	static StateStatus	m_status;

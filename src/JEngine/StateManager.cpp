@@ -3,8 +3,10 @@
 #include "StateManager.h"
 #include "InputHandler.h"
 #include "SystemManager.h"
+#include "imgui.h"
 #include "ImguiManager.h"
 #include "AssetManager.h"
+#include "ObjectContainer.h"
 
 JE_BEGIN
 
@@ -18,6 +20,7 @@ StateManager::StateStatus	StateManager::m_status = STATE_CHANGE;
 ObjectContainer				*StateManager::m_pOBC = nullptr;
 State						*StateManager::m_pCurrent = nullptr, 
 							*StateManager::m_pNext = nullptr;
+float						STATE::m_frameTime = 0.f;
 
 #if defined(_DEBUG)
 bool						StateManager::m_showUpdateMessage = true;
@@ -33,6 +36,9 @@ void StateManager::Init(SDL_Window* _pWindow)
 
 		// Allocate systems in advance
 		SYSTEM::Bind();
+
+		// Add editor update func
+		IMGUI::AddEditorFunc(EditorUpdate);
 	}
 
 	else
@@ -44,32 +50,31 @@ void StateManager::Update(SDL_Event* _event)
 	// Timer
 	m_timer.Start();
 
-	static float s_dt = 1.f / 60.f, s_stack, s_frameTime, s_newTime, s_currentTime;
-	s_stack = s_frameTime = s_newTime = s_currentTime = 0.f;
+	static float s_dt = 1.f / 60.f, s_stack, s_newTime, s_currentTime;
+	s_stack = s_newTime = s_currentTime = 0.f;
 
 	ChangeState();
 
 	while (SDL_PollEvent(_event) != 0	// Event handler loop
 		|| m_status == STATE_NONE) {	// State updating loop
-
-		INPUT::Update(_event);			// Get input by input handler
+				
 		IMGUI::EventUpdate(_event);		// Get input by imgui manager
-		
+		INPUT::Update(_event);			// Get input by input handler
+
 		s_newTime = m_timer.GetTime();	// Get delta time
-		s_frameTime						// Get frame time
+		m_frameTime						// Get frame time
 			= s_newTime - s_currentTime;
 
-		if (s_frameTime > 0.25f)		// Lock the frame time
-			s_frameTime = 0.25f;
+		if (m_frameTime > 0.25f)		// Lock the frame time
+			m_frameTime = 0.25f;
 
 		s_currentTime = s_newTime;		// Refresh current time
-		s_stack += s_frameTime;			// Stack frame time
+		s_stack += m_frameTime;			// Stack frame time
 
 		// Fixed timestep
 		if (s_stack >= s_dt) {			// Refresh every sec
-			
 			m_pCurrent->Update(s_dt);	// Update state
-			IMGUI::Update(s_frameTime);	// Update imgui renderer
+			IMGUI::Update(s_dt);		// Update imgui renderer
 			
 			/* Update rendrer with physics together 
 			so makes rendering scene more smoothly */
@@ -241,45 +246,38 @@ StateManager::StateStatus StateManager::GetStatus(void)
 	return m_status;
 }
 
-void StateManager::SetNextState(const char* _stateName)
+void StateManager::SetNextState(const char* _nextState)
 {
-	// Check if there is no state to resume
-	if (!m_pCurrent->m_pLastStage) {
-		bool found = false;
-		for (auto it : m_states) {
+	// Current state is the state
+	if (!strcmp(m_pCurrent->m_name.c_str(), _nextState))
+		JE_DEBUG_PRINT("!StateManager - As same as current state: %s\n", _nextState);
 
-			// If found the one,
-			if (!strcmp(_stateName, it->m_name.c_str())) {
-
-				found = true;
-
-				// Current state is the state
-				if (m_pCurrent == it)
-					JE_DEBUG_PRINT("!StateManager - As same as current state: %s\n", _stateName);
-
-				// Found the state
-				else {
-					m_pNext = it;
-					m_status = STATE_CHANGE;
-				}
-
-				break;
+	else {
+		// Check if there is no state to resume
+		if (!m_pCurrent->m_pLastStage) {
+			
+			if (HasState(_nextState)) {
+				m_pNext = GetState(_nextState);
+				m_status = STATE_CHANGE;
 			}
 		}
 
-		if (!found)
-			JE_DEBUG_PRINT("!StateManager - No such name of enrolled state: %s\n", _stateName);
+		else
+			JE_DEBUG_PRINT("!StateManager - Cannot move on paused status.\n");
 	}
-
-	else
-		JE_DEBUG_PRINT("!StateManager - Cannot move on paused status.\n");
 }
 
 void StateManager::Pause(const char* _nextState)
 {
-	// Set state to pause
-	m_pNext = GetState(_nextState);
-	m_status = STATE_PAUSE;
+	// Current state is the state
+	if (!strcmp(m_pCurrent->m_name.c_str(), _nextState))
+		JE_DEBUG_PRINT("!StateManager - As same as current state: %s\n", _nextState);
+
+	else if (HasState(_nextState)) {
+		m_pNext = GetState(_nextState);
+		m_status = STATE_PAUSE;
+	}
+	
 }
 
 void StateManager::Resume()
@@ -294,8 +292,10 @@ void StateManager::Resume()
 
 void StateManager::ResumeAndNext(const char* _nextState)
 {
-	m_status = STATE_RESUME_AND_CHANGE;
-	m_pNext = GetState(_nextState);
+	if(HasState(_nextState)) {
+		m_status = STATE_RESUME_AND_CHANGE;
+		m_pNext = GetState(_nextState);
+	}
 }
 
 State* StateManager::GetCurrentState(void)
@@ -315,6 +315,24 @@ State* StateManager::GetState(const char* _stateName)
 	return nullptr;
 }
 
+bool StateManager::HasState(const char *_stateName)
+{
+	bool found = false;
+	for (auto state : m_states) {
+
+		// If found the one,
+		if (!strcmp(_stateName, state->m_name.c_str())) {
+			found = true;
+			return found;
+		}
+	}
+
+	if (!found)
+		JE_DEBUG_PRINT("!StateManager - No such name of enrolled state: %s\n", _stateName);
+
+	return found;
+}
+
 ObjectContainer* StateManager::GetContainer()
 {
 	return m_pOBC;
@@ -332,6 +350,56 @@ void StateManager::ClearStates()
 void StateManager::SetContainer(ObjectContainer * _container)
 {
 	m_pOBC = _container;
+}
+
+void StateManager::EditorUpdate(const float /*_dt*/)
+{
+	static bool foundObject = false, showLevels = false;
+	static Object* s_pObj = nullptr;
+
+	ImGui::Begin("StateManager");
+	ImGui::Text("*Current State: %s", m_pCurrent->m_name.c_str());
+
+	ImGui::Text("*Total States: %d", m_states.size());
+	ImGui::Text("*States Stacked: %d", SYSTEM::m_pauseStack.size());
+
+	if (ImGui::Button("ShowLevelList"))
+		showLevels = !showLevels;
+
+	static char s_StateId[128] = "StateName";
+	ImGui::InputText("", s_StateId, IM_ARRAYSIZE(s_StateId));
+
+	ImGui::SameLine();
+	if (ImGui::Button("Go"))
+		SetNextState(s_StateId);
+
+	ImGui::SameLine();
+	ImGui::Text("/");
+
+	ImGui::SameLine();
+	if (ImGui::Button("Pause"))
+		Pause(s_StateId);
+
+	if (ImGui::Button("Restart"))
+		Restart();
+
+	ImGui::SameLine();
+	if (ImGui::Button("Resume"))
+		Resume();
+
+	ImGui::SameLine();
+	if (ImGui::Button("Quit"))
+		Quit();
+
+	ImGui::End();
+
+	if (showLevels)
+	{
+		ImGui::Begin("LevelList");
+		for (auto state : m_states)
+			ImGui::Text("%s", state->m_name.c_str());
+		ImGui::End();
+	}
 }
 
 JE_END

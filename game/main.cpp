@@ -23,13 +23,21 @@ int main(int argc, char* args[]) {
 	JE_UNUSED_PARAM(argc);	// No argc - Block the warnings
 	JE_UNUSED_PARAM(args);	// No args - Block the warnings
 
-	CORE::m_IMGUI = true;
+	CORE::Open(true);		// Set imgui toggle on
 
-	CORE::OpenConsole();
-	CORE::Ready();
-	CORE::Run();
-	CORE::CloseConsole();
+	// TODO
+	//PyRun_SimpleString("test1 = 1\n"
+	//	"test2 = 2\n"
+	//	"test3 = test1 + test2\n");
+	//PyObject *pModule = PyImport_AddModule("__main__"); //create main module
+	//PyObject *catcher = PyObject_GetAttrString(pModule, "test3");
+	//char *a = PyBytes_AsString(catcher);
+	//printf("Here's the output: %s\n"); //it's not in our C++ portion
 
+	CORE::Ready();			// Load user components and directory
+	CORE::Run();			// Run application
+	CORE::Close();			// Wrap up the app and close
+	
 	return 0;
 
 }
