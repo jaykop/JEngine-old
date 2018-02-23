@@ -4,6 +4,9 @@
 
 JE_BEGIN
 
+Material*	Material::m_pEdit = nullptr;
+bool		Material::m_showWindow = false;
+
 Material::Material(Object* _pOwner)
 	:Component(_pOwner), m_diffuse(0), 
 	m_specular(0), m_shininess(1.f)
@@ -25,6 +28,25 @@ Material::Material(Object* _pOwner)
 		JE_DEBUG_PRINT("!Material - This object has no sprite componnet: %s\n", _pOwner->GetName().c_str());
 }
 
+void Material::operator=(const Material & _copy)
+{
+	m_diffuse = _copy.m_diffuse;
+	m_specular = _copy.m_specular;
+	m_shininess = _copy.m_shininess;
+	
+	if (m_pOwner->HasComponent<Sprite>()
+		&& !m_pOwner->GetComponent<Sprite>()->m_hasMaterial) {
+		m_pOwner->GetComponent<Sprite>()->m_material = this;
+		m_pOwner->GetComponent<Sprite>()->m_hasMaterial = true;
+	}
+	else if (m_pOwner->HasComponent<Model>()
+		&& !m_pOwner->GetComponent<Model>()->m_hasMaterial) {
+		m_pOwner->GetComponent<Model>()->m_material = this;
+		m_pOwner->GetComponent<Model>()->m_hasMaterial = true;
+	}
+
+}
+
 void Material::Load(CR_RJValue _data)
 {
 	if (_data.HasMember("Diffuse")) {
@@ -41,6 +63,11 @@ void Material::Load(CR_RJValue _data)
 		CR_RJValue shininess = _data["Shininess"];
 		m_shininess = shininess.GetFloat();
 	}
+}
+
+void Material::EditorUpdate(const float /*_dt*/)
+{
+	// TODO
 }
 
 MaterialBuilder::MaterialBuilder()

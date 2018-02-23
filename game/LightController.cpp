@@ -5,6 +5,9 @@
 
 JE_BEGIN
 
+LightController*	LightController::m_pEdit = nullptr;
+bool				LightController::m_showWindow = false;
+
 LightController::LightController(Object* _pObject)
 	:CustomComponent(_pObject)
 {}
@@ -50,6 +53,11 @@ void LightController::Close()
 
 void LightController::Unload()
 {}
+
+void LightController::EditorUpdate(const float /*_dt*/)
+{
+	// TODO
+}
 
 LightControllerBuilder::LightControllerBuilder()
 	:ComponentBuilder()

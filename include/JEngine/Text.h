@@ -57,6 +57,7 @@ private:
 
 class Text : public Sprite
 {
+	friend class ComponentManager;
 	friend class GraphicSystem;
 	friend class TextBuilder;
 
@@ -76,12 +77,16 @@ private:
 
 	Text(Object* pObject);
 	~Text();
+	void operator=(const Text& _copy);
 
 	void Load(CR_RJValue _data) override;
 
+	static void		EditorUpdate(const float _dt);
+	static bool		m_showWindow;
+	static Text*	m_pEdit;
+
 	Text() = delete;
 	Text(const Text& /*_copy*/) = delete;
-	void operator=(const Text& /*_copy*/) = delete;
 };
 
 JE_END

@@ -4,6 +4,9 @@
 
 JE_BEGIN
 
+TestLogic*	TestLogic::m_pEdit = nullptr;
+bool		TestLogic::m_showWindow = false;
+
 TestLogic::TestLogic(Object* _pObject)
 	:CustomComponent(_pObject)
 {}
@@ -29,8 +32,8 @@ void TestLogic::Init()
 	//if (a.joinable())
 	//	a.join();
 
-	m_ortho = STATE::GetContainer()->GetObject("OrthogonalSprite");
-	m_pers = STATE::GetContainer()->GetObject("PerspectiveModel");
+	m_ortho = OBJECT::GetCurrentContainer()->GetObject("OrthogonalSprite");
+	m_pers = OBJECT::GetCurrentContainer()->GetObject("PerspectiveModel");
 }
 
 void TestLogic::Update(const float /*_dt*/)
@@ -68,6 +71,11 @@ void TestLogic::Close()
 
 void TestLogic::Unload()
 {}
+
+void TestLogic::EditorUpdate(const float /*_dt*/)
+{
+	// TODO
+}
 
 TestLogicBuilder::TestLogicBuilder()
 	:ComponentBuilder()

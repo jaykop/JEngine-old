@@ -3,6 +3,9 @@
 
 JE_BEGIN
 
+LevelController*	LevelController::m_pEdit = nullptr;
+bool				LevelController::m_showWindow = false;
+
 LevelController::LevelController(Object* _pObject)
 	:CustomComponent(_pObject)
 {}
@@ -60,6 +63,11 @@ void LevelController::Close()
 
 void LevelController::Unload()
 {}
+
+void LevelController::EditorUpdate(const float /*_dt*/)
+{
+	// TODO
+}
 
 LevelControllerBuilder::LevelControllerBuilder()
 	:ComponentBuilder()

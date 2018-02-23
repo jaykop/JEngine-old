@@ -1,7 +1,6 @@
 #include "GLManager.h"
 #include "Shader.h"
 #include "imgui.h"
-#include "ImguiManager.h"
 
 JE_BEGIN
 
@@ -242,7 +241,6 @@ bool GLManager::initSDL_GL()
 		InitFBO();			
 		InitGLEnvironment();	
 		RegisterUniform();
-		IMGUI::AddEditorFunc(EditorUpdate);
 	}
 
 	return true;
@@ -551,13 +549,13 @@ void GLManager::EditorUpdate(const float /*_dt*/)
 {
 	ImGui::Begin("OpenGL");
 
-	ImGui::Text("*GL Vendor: %s", m_vendor);
+	//ImGui::Text("*GL Vendor: %s", m_vendor);
 	ImGui::Text("*GL Renderer: %s", m_renderer);
 	ImGui::Text("*GL Version: %s", m_version);
-	ImGui::Text("*GLSL Version: %s", m_glslVersion);
+	/*	ImGui::Text("*GLSL Version: %s", m_glslVersion);
 	ImGui::Text("*GL Samples: %d", m_samples);
 	ImGui::Text("*GL Sample Buffers: %d", m_buffers);
-	ImGui::Text("*Maximum vertex attributes: %d", m_Attributes);
+	ImGui::Text("*Maximum vertex attributes: %d", m_Attributes);*/
 	ImGui::Text("*Total Shaders: %d", int(SHADER_END));
 
 	switch (m_mode) {

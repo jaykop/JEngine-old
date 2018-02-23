@@ -1,17 +1,20 @@
 #include "Sprite.h"
 #include "GLManager.h"
+#include "Material.h"
 #include "Transform.h"
 #include "AssetManager.h"
 #include "SystemManager.h"
 
 JE_BEGIN
 
+Sprite*	Sprite::m_pEdit = nullptr;
+bool	Sprite::m_showWindow = false;
+
 Sprite::Sprite(Object* _pOwner)
 	:Component(_pOwner), m_color(vec4::ONE), m_projection(PROJECTION_PERSPECTIVE),
 	m_mainTex(0), m_transform(nullptr), m_flip(false), m_culled(false), m_bilboard(false),
 	m_material(nullptr), m_hasMaterial(false), m_isEmitter(false), m_isText(false),
 	m_vao(&(GLM::m_vao[GLM::SHAPE_PLANE])), m_elementSize(GLM::m_elementSize[GLM::SHAPE_PLANE])
-	/*, m_isModel(false)*/
 {}
 
 void Sprite::Register()
@@ -71,6 +74,23 @@ Sprite::~Sprite()
 	SYSTEM::GetGraphicSystem()->RemoveSprite(this);
 }
 
+void Sprite::operator=(const Sprite & _copy)
+{
+	m_color.Set(_copy.m_color); 
+	m_projection = _copy.m_projection,
+	m_mainTex = _copy.m_mainTex; 
+	m_transform = m_pOwner->GetComponent<Transform>(); 
+	m_flip = _copy.m_flip; 
+	m_culled = _copy.m_culled; 
+	m_bilboard = _copy.m_bilboard;
+	m_material = m_pOwner->GetComponent<Material>();
+	m_hasMaterial = _copy.m_hasMaterial;
+	m_isEmitter = _copy.m_isEmitter;
+	m_isText = _copy.m_isText;
+	m_vao = _copy.m_vao; 
+	m_elementSize = _copy.m_elementSize;
+}
+
 void Sprite::Load(CR_RJValue _data)
 {
 	if (_data.HasMember("Flip")) {
@@ -105,6 +125,11 @@ void Sprite::Load(CR_RJValue _data)
 
 	if (_data.HasMember("Bilboard"))
 		m_bilboard = _data["Bilboard"].GetBool();
+}
+
+void Sprite::EditorUpdate(const float /*_dt*/)
+{
+	// TODO
 }
 
 SpriteBuilder::SpriteBuilder()

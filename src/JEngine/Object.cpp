@@ -1,10 +1,13 @@
-#include "Object.h"
 #include "Component.h"
 #include "ObjectFactory.h"
 #include "ObjectContainer.h"
 #include "ComponentManager.h"
+#include "imgui.h"
 
 JE_BEGIN
+
+Object*	Object::m_pEdit = nullptr;
+bool	Object::m_showEditor = false;
 
 Object::Object(const char* _name)
 	:m_name(_name), m_active(true), m_pParent(nullptr),
@@ -219,6 +222,45 @@ void Object::RemoveComponent(const char* _componentName)
 	else 
 		JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", _componentName);
 	
+}
+
+void Object::EditorUpdate(const float /*_dt*/)
+{
+	// Searched object window
+	if (m_showEditor)
+	{
+		ImGui::Begin("Object");
+		ImGui::Text("*Object Name: %s", m_pEdit->m_name.c_str());
+		ImGui::Text("*Object Id: %d", m_pEdit->m_id);
+		if (m_pEdit->GetParent())
+			ImGui::Text("*Parent Object: %s", m_pEdit->m_pParent->m_name.c_str());
+		else
+			ImGui::Text("*Parent Object: None");
+
+		if (m_pEdit->m_componentMap.size()) {
+			ImGui::Text("*Component List:");
+			for (auto component : m_pEdit->m_componentMap) {
+				//TODO
+				if (ImGui::Button(COMPONENT::TypeTranslator(component.first.c_str())))
+					;// component.second->m;
+			}
+		}
+		else
+			ImGui::Text("*Component List: None");
+
+		if (m_pEdit->m_childObjs.size()) {
+			ImGui::Text("*Children List:");
+			for (auto child : m_pEdit->m_childObjs)
+				ImGui::Button(child.second->m_name.c_str());
+		}
+		else
+			ImGui::Text("*Children List: None");
+
+		if (ImGui::Button("Close"))
+			m_showEditor = false;
+
+		ImGui::End();
+	}
 }
 
 JE_END

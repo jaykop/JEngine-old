@@ -27,7 +27,7 @@ private:
 class Camera;
 class LevelController : public CustomComponent
 {
-
+	friend class ComponentManager;
 	friend class LevelControllerBuilder;
 
 public:
@@ -43,6 +43,10 @@ private:
 	void Update(const float _dt) override;
 	void Close() override;
 	void Unload() override;
+
+	static void				EditorUpdate(const float _dt);
+	static bool				m_showWindow;
+	static LevelController*	m_pEdit;
 };
 
 JE_END

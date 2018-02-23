@@ -4,6 +4,9 @@
 
 JE_BEGIN
 
+Camera*	Camera::m_pEdit = nullptr;
+bool	Camera::m_showWindow = false;
+
 Camera::Camera(Object* _pOwner)
 	: Component(_pOwner),
 	m_position(vec3::ZERO), m_up(vec3::UNIT_Y),
@@ -13,6 +16,13 @@ Camera::Camera(Object* _pOwner)
 void Camera::Register()
 {
 	SystemManager::GetGraphicSystem()->AddCamera(this);
+}
+
+void Camera::operator=(const Camera & _copy)
+{
+	m_position.Set(_copy.m_position);
+	m_up.Set(_copy.m_up);
+	m_target.Set(_copy.m_target);
 }
 
 void Camera::Load(CR_RJValue _data)
@@ -31,6 +41,11 @@ void Camera::Load(CR_RJValue _data)
 		CR_RJValue position = _data["Position"];
 		m_position.Set(position[0].GetFloat(), position[1].GetFloat(), position[2].GetFloat());
 	}
+}
+
+void Camera::EditorUpdate(const float /*_dt*/)
+{
+	// TODO
 }
 
 CameraBuilder::CameraBuilder()

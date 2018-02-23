@@ -37,7 +37,7 @@ inline ObjectMap ObjectContainer::GetObjects()
 		if (object.second->HasComponent<ComponentType>())
 			container.insert(
 				ObjectMap::value_type(
-					object.second->GetName().c_str(), object.second));
+					object.second->m_name.c_str(), object.second));
 	}
 	
 	return container;

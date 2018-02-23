@@ -6,6 +6,7 @@
 #include "StateManager.h"
 #include "ComponentBuilder.h"
 #include "ComponentManager.h"
+#include "imgui.h"
 
 // Built-In Component Headers
 #include "GraphicComponents.h"
@@ -52,6 +53,9 @@ void AssetManager::Load()
 
 	// Load engine components
 	COMPONENT::m_loadingCustomLogic = false;
+
+	// Add Object editor update function
+	IMGUI::AddEditorFunc(Object::EditorUpdate);
 	LoadBuiltInComponents();
 }
 

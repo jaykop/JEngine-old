@@ -1,9 +1,10 @@
-#include "Object.h"
 #include "Component.h"
 #include "JsonParser.h"
 #include "ObjectFactory.h"
 #include "stringbuffer.h"
 #include "FileReadStream.h"
+#include "imgui.h"
+#include "ImguiManager.h"
 
 JE_BEGIN
 

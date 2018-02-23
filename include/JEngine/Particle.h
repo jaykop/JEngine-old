@@ -25,6 +25,7 @@ private:
 class Emitter : public Sprite 
 {
 
+	friend class ComponentManager;
 	friend class EmitterBuilder;
 	friend class GraphicSystem;
 
@@ -48,11 +49,12 @@ class Emitter : public Sprite
 
 		Particle(Emitter* _emitter);
 		~Particle() {};
+		void operator=(const Particle& _copy);
+
 		Emitter* m_emitter;
 
 		Particle() = delete;
 		Particle(const Particle& /*_copy*/) = delete;
-		void operator=(const Particle& /*_copy*/) = delete;
 
 	};
 
@@ -77,6 +79,7 @@ private:
 
 	Emitter(Object* _pOwner);
 	~Emitter();
+	void operator=(const Emitter& _copy);
 
 	void Load(CR_RJValue _data) override;
 	void Refresh(Particle* _particle);
@@ -88,7 +91,10 @@ private:
 
 	Emitter() = delete;
 	Emitter(const Emitter& /*_copy*/) = delete;
-	void operator=(const Emitter& /*_copy*/) = delete;
+
+	static void		EditorUpdate(const float _dt);
+	static bool		m_showWindow;
+	static Emitter*	m_pEdit;
 
 	const static unsigned m_maxSize;
 

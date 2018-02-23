@@ -5,7 +5,6 @@
 #include "SystemManager.h"
 #include "imgui.h"
 #include "ImguiManager.h"
-#include "AssetManager.h"
 #include "ObjectContainer.h"
 
 JE_BEGIN
@@ -17,7 +16,6 @@ SDL_Window*					StateManager::m_pWindow = nullptr;
 Timer						StateManager::m_timer;
 States						StateManager::m_states;
 StateManager::StateStatus	StateManager::m_status = STATE_CHANGE;
-ObjectContainer				*StateManager::m_pOBC = nullptr;
 State						*StateManager::m_pCurrent = nullptr, 
 							*StateManager::m_pNext = nullptr;
 float						STATE::m_frameTime = 0.f;
@@ -35,10 +33,7 @@ void StateManager::Init(SDL_Window* _pWindow)
 		m_pWindow = _pWindow;
 
 		// Allocate systems in advance
-		SYSTEM::Bind();
-
-		// Add editor update func
-		IMGUI::AddEditorFunc(EditorUpdate);
+		SYSTEM::Bind();	
 	}
 
 	else
@@ -47,7 +42,6 @@ void StateManager::Init(SDL_Window* _pWindow)
 
 void StateManager::Update(SDL_Event* _event)
 {
-	// Timer
 	m_timer.Start();
 
 	static float s_dt = 1.f / 60.f, s_stack, s_newTime, s_currentTime;
@@ -57,7 +51,7 @@ void StateManager::Update(SDL_Event* _event)
 
 	while (SDL_PollEvent(_event) != 0	// Event handler loop
 		|| m_status == STATE_NONE) {	// State updating loop
-				
+
 		IMGUI::EventUpdate(_event);		// Get input by imgui manager
 		INPUT::Update(_event);			// Get input by input handler
 
@@ -73,6 +67,8 @@ void StateManager::Update(SDL_Event* _event)
 
 		// Fixed timestep
 		if (s_stack >= s_dt) {			// Refresh every sec
+			
+			INPUT::m_mouseWheel = 0;	// Reset mouse wheel session
 			m_pCurrent->Update(s_dt);	// Update state
 			IMGUI::Update(s_dt);		// Update imgui renderer
 			
@@ -85,7 +81,6 @@ void StateManager::Update(SDL_Event* _event)
 
 	switch (m_status) {
 
-	// TODO 
 	// Pause process
 	case STATE_PAUSE:
 		SYSTEM::Pause();
@@ -146,20 +141,27 @@ void StateManager::ChangeState()
 		// Renew the state
 		m_pCurrent->Load();
 		m_pCurrent->Init();
+
+		// Add object container editor function
+		static bool s_addContainerEditor = false;
+		if (!s_addContainerEditor) {
+			IMGUI::AddEditorFunc(OBJECT::EditorUpdate);
+			s_addContainerEditor = true;
+		}
 	}
 
 	// Resume state
 	else if (m_status == STATE_RESUME) {
 		State* release = m_pCurrent;
 		m_pCurrent = m_pNext = m_pCurrent->m_pLastStage;
-		m_pOBC = m_pCurrent->m_objContainer;
+		OBJECT::m_pSharedContainer = m_pCurrent->m_objContainer;
 		release->m_pLastStage = nullptr;
 	}
 
 	// Resume and change
 	else if (m_status == STATE_RESUME_AND_CHANGE) {
 		m_pCurrent = m_pCurrent->m_pLastStage;
-		m_pOBC = m_pCurrent->m_objContainer;
+		OBJECT::m_pSharedContainer = m_pCurrent->m_objContainer;
 		m_status = STATE_CHANGE;
 	}
 
@@ -333,10 +335,10 @@ bool StateManager::HasState(const char *_stateName)
 	return found;
 }
 
-ObjectContainer* StateManager::GetContainer()
-{
-	return m_pOBC;
-}
+//ObjectContainer* StateManager::GetContainer()
+//{
+//	return m_pOBC;
+//}
 
 void StateManager::ClearStates()
 {
@@ -347,15 +349,14 @@ void StateManager::ClearStates()
 	m_states.clear();
 }
 
-void StateManager::SetContainer(ObjectContainer * _container)
-{
-	m_pOBC = _container;
-}
+//void StateManager::SetContainer(ObjectContainer * _container)
+//{
+//	m_pOBC = _container;
+//}
 
 void StateManager::EditorUpdate(const float /*_dt*/)
 {
 	static bool foundObject = false, showLevels = false;
-	static Object* s_pObj = nullptr;
 
 	ImGui::Begin("StateManager");
 	ImGui::Text("*Current State: %s", m_pCurrent->m_name.c_str());
@@ -363,7 +364,7 @@ void StateManager::EditorUpdate(const float /*_dt*/)
 	ImGui::Text("*Total States: %d", m_states.size());
 	ImGui::Text("*States Stacked: %d", SYSTEM::m_pauseStack.size());
 
-	if (ImGui::Button("ShowLevelList"))
+	if (ImGui::Button("Show Level List"))
 		showLevels = !showLevels;
 
 	static char s_StateId[128] = "StateName";

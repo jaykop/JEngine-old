@@ -1,10 +1,5 @@
 #pragma once
 
-// TODO
-// Implement type_info 
-// #include <typeinfo>
-// typedef std::unordered_map<std::type_info, Component*>	ComponentMap;
-
 #include "Macro.h"
 #include <unordered_map>
 
@@ -23,6 +18,7 @@ public:
 	friend class JsonParser;
 	friend class ObjectFactory;
 	friend class ObjectContainer;
+	friend class AssetManager;
 
 	Object(const char* _name);
 	~Object();
@@ -80,6 +76,11 @@ private:
 	ComponentMap		m_componentMap;
 	ObjectContainer*	m_pOBC;
 	
+	// statiic editor variable and function
+	static Object*	m_pEdit;
+	static void		EditorUpdate(const float _dt);
+	static bool		m_showEditor;
+
 	Object() = delete;
 	Object(const Object& /*_copy*/) = delete;
 	void operator=(const Object& /*_copy*/) = delete;

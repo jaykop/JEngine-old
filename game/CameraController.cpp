@@ -8,6 +8,9 @@
 
 JE_BEGIN
 
+CameraController*	CameraController::m_pEdit = nullptr;
+bool				CameraController::m_showWindow = false;
+
 CameraController::CameraController(Object* _pObject)
 	:CustomComponent(_pObject), m_camera(nullptr),
 	m_position(vec3::ZERO), m_target(vec3::ZERO)
@@ -87,6 +90,11 @@ void CameraController::Close()
 
 void CameraController::Unload()
 {}
+
+void CameraController::EditorUpdate(const float /*_dt*/)
+{
+	// TODO
+}
 
 CameraControllerBuilder::CameraControllerBuilder()
 	:ComponentBuilder()

@@ -4,6 +4,9 @@
 
 JE_BEGIN
 
+Animation*	Animation::m_pEdit = nullptr;
+bool		Animation::m_showWindow = false;
+
 Animation::Animation(Object* _pOwner)
 	: Component(_pOwner), m_currentFrame(0.f), m_animationSpeed(0.f),
 	m_animationFrames(1), m_animationFixFrame(1), m_realSpeed(0.f),
@@ -29,6 +32,24 @@ Animation::~Animation() {
 	}
 }
 
+void Animation::operator=(const Animation & _copy)
+{
+	m_currentFrame = _copy.m_currentFrame; 
+	m_animationSpeed = _copy.m_animationSpeed;
+	m_animationFrames = _copy.m_animationFrames;
+	m_animationFixFrame = _copy.m_animationFixFrame;
+	m_realSpeed = _copy.m_realSpeed;
+	m_realFrame = _copy.m_realFrame;
+	m_activeAnimation = _copy.m_activeAnimation;
+
+	// Connect to sprite's pointer
+	if (m_pOwner->HasComponent<Sprite>()
+		&& !m_pOwner->GetComponent<Sprite>()->m_hasAnimation) {
+		m_pOwner->GetComponent<Sprite>()->m_animation = this;
+		m_pOwner->GetComponent<Sprite>()->m_hasAnimation = true;
+	}
+}
+
 void Animation::Load(CR_RJValue _data)
 {
 	if (_data.HasMember("FixAt")) {
@@ -50,6 +71,11 @@ void Animation::Load(CR_RJValue _data)
 		CR_RJValue speed = _data["Speed"];
 		SetAnimationSpeed(speed.GetFloat());
 	}
+}
+
+void Animation::EditorUpdate(const float /*_dt*/)
+{
+	// TODO
 }
 
 bool Animation::GetActiveAnimationToggle()

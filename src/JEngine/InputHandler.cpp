@@ -8,10 +8,10 @@ JE_BEGIN
 //////////////////////////////////////////////////////////////////////////
 bool			INPUT::m_keyPressed = false;
 bool			INPUT::m_mousePressed = false;
-bool			INPUT::m_wheelMoved = false;
 vec3			INPUT::m_rawPosition = vec3::ZERO;
 vec3			INPUT::m_screenPosition = vec3::ZERO;
 INPUT::KeyMap	INPUT::m_keys, INPUT::m_triggerList;
+int				INPUT::m_mouseWheel = 0;
 
 bool InputHandler::KeyPressed(JE_KEY _pressed)
 {
@@ -272,11 +272,21 @@ JE_KEY InputHandler::KeyTranslator(SDL_Event* _event)
 void InputHandler::Update(SDL_Event* _event)
 {	
 	// Refresh the mouse wheel toggles
-	if (m_wheelMoved) {
-		m_keys[JE_MOUSE_WHEEL_DOWN]
-			= m_keys[JE_MOUSE_WHEEL_UP]
-			= m_wheelMoved = false;
-		_event->wheel.y = 0;
+	switch (m_mouseWheel) {
+	case 0:
+		m_triggerList[JE_MOUSE_WHEEL_DOWN]
+			= m_keys[JE_MOUSE_WHEEL_DOWN]
+			= m_triggerList[JE_MOUSE_WHEEL_UP]
+			= m_keys[JE_MOUSE_WHEEL_UP] = false;
+		break;
+	case 1:
+		m_triggerList[JE_MOUSE_WHEEL_UP]
+			= m_keys[JE_MOUSE_WHEEL_UP] = true;
+		break;
+	case -1:
+		m_triggerList[JE_MOUSE_WHEEL_DOWN]
+			= m_keys[JE_MOUSE_WHEEL_DOWN] = true;
+		break;
 	}
 
 	// Handle input events
@@ -288,16 +298,16 @@ void InputHandler::Update(SDL_Event* _event)
 		break;
 
 	case SDL_KEYUP:
-		m_triggerList[KeyTranslator(_event)] 
+		m_triggerList[KeyTranslator(_event)]
 			= m_keys[KeyTranslator(_event)] = false;
 		break;
-	
+
 		// Mouse
 	case SDL_MOUSEBUTTONDOWN:
 		MouseDown();
 		m_keys[KeyTranslator(_event)] = true;
 		break;
-	
+
 	case SDL_MOUSEBUTTONUP:
 		MouseUp();
 		m_triggerList[KeyTranslator(_event)]
@@ -305,31 +315,26 @@ void InputHandler::Update(SDL_Event* _event)
 		break;
 
 	case SDL_MOUSEMOTION:
-		m_rawPosition = vec3(float(_event->motion.x), float(_event->motion.y));
+		m_rawPosition
+			= vec3(float(_event->motion.x), float(_event->motion.y));
 		break;
+
+	case SDL_MOUSEWHEEL:
+	{
+		if (_event->wheel.y > 0)
+			m_mouseWheel = 1;
+
+		else if (_event->wheel.y < 0)
+			m_mouseWheel = -1;
+
+		_event->wheel.y = 0;
+		break;
+	}
 
 	case SDL_WINDOWEVENT:
 	case SDL_TEXTEDITING:
 	default:
 		break;
-	}
-
-	// Handle mouse wheels
-	switch (_event->wheel.direction) {
-
-	case SDL_MOUSEWHEEL_NORMAL:
-
-		if (_event->wheel.y == 1) {
-			m_wheelMoved = true;
-			m_triggerList[JE_MOUSE_WHEEL_UP]
-				= m_keys[JE_MOUSE_WHEEL_UP] = true;
-		}
-
-		else if (_event->wheel.y == -1) {
-			m_wheelMoved = true;
-			m_triggerList[JE_MOUSE_WHEEL_DOWN]
-				= m_keys[JE_MOUSE_WHEEL_DOWN] = true;
-		}
 	}
 }
 

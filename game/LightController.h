@@ -25,7 +25,7 @@ private:
 
 class LightController : public CustomComponent
 {
-
+	friend class ComponentManager;
 	friend class LightControllerBuilder;
 
 public:
@@ -43,6 +43,10 @@ private:
 	void Unload() override;
 
 	Light* m_light;
+
+	static void				EditorUpdate(const float _dt);
+	static bool				m_showWindow;
+	static LightController*	m_pEdit;
 };
 
 JE_END

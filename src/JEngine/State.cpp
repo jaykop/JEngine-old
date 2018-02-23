@@ -14,10 +14,15 @@ State::State(const char* _name)
 void State::Load()
 {
 	JE_DEBUG_PRINT("*State - Loading %s...\n", m_name.c_str());
-	m_objContainer = new ObjectContainer;
-	STATE::SetContainer(m_objContainer);
+	
+	// Allocate new object container;
+	OBJECT::m_pSharedContainer 
+		= m_objContainer = new ObjectContainer;
+	
+	// Read flie from json state file
 	JSON::ReadFile(m_loadDirectory.c_str());
 
+	// Load objects and components, and system information
 	JSON::LoadObjects(m_objContainer);
 	SYSTEM::Load(JSON::GetDocument());
 }
@@ -49,6 +54,8 @@ void State::Close()
 #if defined(_DEBUG)
 	STATE::m_showUpdateMessage = true;
 #endif // _DEBUG
+
+	OBJECT::m_pSharedContainer = STATE::GetCurrentState()->m_objContainer;
 
 	JE_DEBUG_PRINT("*State - Closing %s...\n", m_name.c_str());
 	SYSTEM::Close();

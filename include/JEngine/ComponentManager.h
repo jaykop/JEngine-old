@@ -14,27 +14,28 @@ class ComponentBuilder;
 
 class ComponentManager {
 
+	friend class Core;
 	friend class Object;
 	friend class AssetManager;
 
 public:
 
-	template <class ComponentType>
-	inline static void RegisterBuilder(
-		const char* _componentName, ComponentBuilder* _pBuilder);
-	
+	static const char* KeyTranslator(const char* _name);
+	static const char* TypeTranslator(const char* _type);
+
 private:
 
 	static void			ClearBuilders();
 	static Component*	CreateComponent(
 		const char* _componentName, Object* _pOwner);
 
-	static const char* KeyTranslator(const char* _name);
-
 	static BuilderMap			m_builderMap;
-	static ComponentTypeMap		m_typeMap;	
+	static ComponentTypeMap		m_typeMap, m_nameMap;	
 	static bool					m_loadingCustomLogic;
 
+	template <class ComponentType>
+	inline static bool RegisterBuilder(
+		const char* _componentName, ComponentBuilder* _pBuilder);
 };
 
 using COMPONENT = ComponentManager;

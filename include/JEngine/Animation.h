@@ -26,8 +26,9 @@ private:
 class Animation : public Component
 {
 	// Keyword Definitions
-	friend class	GraphicSystem;
-	friend class	AnimationBuilder;
+	friend class ComponentManager;
+	friend class GraphicSystem;
+	friend class AnimationBuilder;
 
 public:
 
@@ -44,10 +45,10 @@ private:
 	// Locked constuctors and destructor
 	~Animation();
 	Animation(Object* _pOwner);
+	void operator=(const Animation& _copy);
 
 	Animation() = delete;
 	Animation(const Animation& /*_copy*/) = delete;
-	void operator=(const Animation& /*_copy*/) = delete;
 
 	void Load(CR_RJValue _data) override;
 	void Register() override {};
@@ -60,6 +61,10 @@ private:
 	float	m_realFrame;
 	float	m_currentFrame;
 	float	m_animationSpeed;
+
+	static void			EditorUpdate(const float _dt);
+	static bool			m_showWindow;
+	static Animation*	m_pEdit;
 
 };
 

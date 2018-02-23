@@ -23,6 +23,7 @@ private:
 
 class Model : public Sprite
 {
+	friend class ComponentManager;
 	friend class GraphicSystem;
 	friend class ModelBuilder;
 
@@ -32,10 +33,14 @@ private:
 
 	Model(Object* pObject);
 	~Model();
+	void operator=(const Model& _copy);
 
 	Model() = delete;
 	Model(const Model& /*_copy*/) = delete;
-	void operator=(const Model& /*_copy*/) = delete;
+
+	static void		EditorUpdate(const float _dt);
+	static bool		m_showWindow;
+	static Model*	m_pEdit;
 };
 
 JE_END

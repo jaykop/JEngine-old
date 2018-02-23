@@ -3,6 +3,9 @@
 
 JE_BEGIN
 
+Light*	Light::m_pEdit = nullptr;
+bool	Light::m_showWindow = false;
+
 Light::Light(Object * _pOwner)
 	:Component(_pOwner), m_color(vec4::ONE),
 	m_ambient(vec4::ONE), m_diffuse(vec4::ONE),
@@ -15,6 +18,22 @@ Light::Light(Object * _pOwner)
 Light::~Light()
 {
 	SYSTEM::GetGraphicSystem()->RemoveLight(this);
+}
+
+void Light::operator=(const Light & _copy)
+{
+	m_color.Set(_copy.m_color);
+	m_ambient.Set(_copy.m_ambient); 
+	m_diffuse.Set(_copy.m_diffuse);
+	m_specular.Set(_copy.m_specular); 
+	m_position.Set(_copy.m_position);
+	m_direction.Set(_copy.m_direction); 
+	m_constant = _copy.m_constant; 
+	m_linear = _copy.m_linear;
+	m_quadratic = _copy.m_quadratic;
+	m_cutOff = _copy.m_cutOff;
+	m_outerCutOff = _copy.m_outerCutOff;
+	m_projection = _copy.m_projection;
 }
 
 void Light::Register()
@@ -90,6 +109,11 @@ void Light::Load(CR_RJValue _data)
 		CR_RJValue position = _data["Position"];
 		m_position.Set(position[0].GetFloat(), position[1].GetFloat(), position[2].GetFloat());
 	}
+}
+
+void Light::EditorUpdate(const float /*_dt*/)
+{
+	// TODO
 }
 
 

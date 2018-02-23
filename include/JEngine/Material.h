@@ -24,6 +24,7 @@ private:
 
 class Material : public Component {
 
+	friend class ComponentManager;
 	friend class MaterialBuilder;
 	friend class GraphicSystem;
 
@@ -36,13 +37,17 @@ private:
 
 	Material(Object* _pOwner);
 	~Material() {};
+	void operator= (const Material& _copy);
 
 	Material() = delete;
 	Material(const Material& /*_copy*/) = delete;
-	void operator= (const Material& /*_copy*/) = delete;
 
 	void Load(CR_RJValue _data) override;
 	void Register() override {};
+
+	static void			EditorUpdate(const float _dt);
+	static bool			m_showWindow;
+	static Material*	m_pEdit;
 };
 
 JE_END

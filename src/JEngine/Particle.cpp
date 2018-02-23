@@ -6,7 +6,9 @@
 
 JE_BEGIN
 
-const unsigned Emitter::m_maxSize = 1000;
+Emitter*		Emitter::m_pEdit = nullptr;
+bool			Emitter::m_showWindow = false;
+const unsigned	Emitter::m_maxSize = 1000;
 
 Emitter::Particle::Particle(Emitter* _emitter)
 	: m_emitter(_emitter), m_dead(false)
@@ -34,6 +36,24 @@ Emitter::Particle::Particle(Emitter* _emitter)
 
 	if (m_emitter->m_is2d)
 		m_direction.z = 0.f;
+}
+
+void Emitter::Particle::operator=(const Particle & _copy)
+{
+	static Transform* s_pTransform;
+	s_pTransform = m_emitter->m_pOwner->GetComponent<Transform>();
+
+	m_dead = _copy.m_dead;
+	m_life = _copy.m_life;
+	m_velocity.Set(_copy.m_velocity);
+	m_position.Set(s_pTransform->m_position);
+	m_rotation = _copy.m_rotation;
+	m_direction.Set(_copy.m_direction);
+	m_direction.Normalize();
+	m_color.Set(_copy.m_color);
+	m_hidden = _copy.m_hidden;
+	m_rotationSpeed = _copy.m_rotationSpeed;
+	m_direction.z = _copy.m_direction.z;;
 }
 
 void Emitter::Particle::Refresh()
@@ -114,6 +134,33 @@ Emitter::~Emitter()
 	}
 
 	SYSTEM::GetGraphicSystem()->RemoveSprite(this);
+}
+
+void Emitter::operator=(const Emitter & _copy)
+{
+	m_startColor.Set(_copy.m_startColor);
+	m_changeColor = _copy.m_changeColor;
+	m_endColor.Set(_copy.m_endColor);
+	m_life = _copy.m_life;
+	m_type = _copy.m_type;
+	m_is2d = _copy.m_is2d;
+	m_direction.Set(_copy.m_direction);
+	m_velocity.Set(_copy.m_velocity);
+	m_active = _copy.m_active;
+	m_deadCount = _copy.m_deadCount;
+	m_renderType = _copy.m_renderType;
+	m_pointSize = _copy.m_pointSize;
+	m_range.Set(_copy.m_range);
+	m_size = _copy.m_size;
+	m_colorDiff.Set(_copy.m_colorDiff);
+	m_rotationSpeed = _copy.m_rotationSpeed;
+
+	SetQuantity(m_size);
+	auto copy = _copy.m_particles.begin();
+	for (auto particle = m_particles.begin(); particle != m_particles.end();
+		particle++, copy++) 
+		(*particle) = (*copy);
+	
 }
 
 void Emitter::Register()
@@ -276,6 +323,11 @@ void Emitter::Refresh(Particle *_particle)
 	_particle->m_position = m_transform->m_position;
 	_particle->m_color = m_startColor;
 
+}
+
+void Emitter::EditorUpdate(const float /*_dt*/)
+{
+	// TODO
 }
 
 EmitterBuilder::EmitterBuilder()

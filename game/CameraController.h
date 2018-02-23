@@ -28,6 +28,7 @@ class Camera;
 class CameraController : public CustomComponent
 {
 
+	friend class ComponentManager;
 	friend class CameraControllerBuilder;
 
 public:
@@ -46,6 +47,10 @@ private:
 
 	Camera* m_camera;
 	vec3 m_position, m_target;
+
+	static void					EditorUpdate(const float _dt);
+	static bool					m_showWindow;
+	static CameraController*	m_pEdit;
 };
 
 JE_END

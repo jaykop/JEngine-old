@@ -4,10 +4,12 @@
 
 JE_BEGIN
 
+Model*	Model::m_pEdit = nullptr;
+bool	Model::m_showWindow = false;
+
 Model::Model(Object* _pOwner)
 	:Sprite(_pOwner)
 {
-	//m_isModel = true;
 	m_vao = &(GLM::m_vao[GLM::SHAPE_CUBE]);
 	m_elementSize = GLM::m_elementSize[GLM::SHAPE_CUBE];
 }
@@ -15,6 +17,16 @@ Model::Model(Object* _pOwner)
 Model::~Model()
 {
 	SYSTEM::GetGraphicSystem()->RemoveSprite(this);
+}
+
+void Model::operator=(const Model & _copy)
+{
+	(*this).Sprite::operator=(_copy);
+}
+
+void Model::EditorUpdate(const float /*_dt*/)
+{
+	// TODO
 }
 
 ModelBuilder::ModelBuilder()

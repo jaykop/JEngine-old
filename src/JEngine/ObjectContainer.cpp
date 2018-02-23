@@ -2,9 +2,10 @@
 #include "ObjectContainer.h"
 #include "ComponentManager.h"
 #include "imgui.h"
-#include "ImguiManager.h"
 
 JE_BEGIN
+
+ObjectContainer* OBJECT::m_pSharedContainer = nullptr;
 
 ObjectContainer::~ObjectContainer()
 {
@@ -59,6 +60,11 @@ bool ObjectContainer::HasObject(const char* _name)
 	return false;
 }
 
+ObjectContainer* ObjectContainer::GetCurrentContainer()
+{
+	return m_pSharedContainer;
+}
+
 void ObjectContainer::ClearObjectMap()
 {
 	for (auto obj : m_objectMap)
@@ -72,31 +78,36 @@ void ObjectContainer::ClearObjectMap()
 	m_objectMap.clear();
 }
 
-void ObjectContainer::EditorUpdate(const float _dt)
+void ObjectContainer::EditorUpdate(const float /*_dt*/)
 {
-	//ImGui::Begin("StateManager");
-	//ImGui::Text("*The Number of Objects: %d", m_pOBC->GetObjectMap().size());
-	//static char ObjId[128] = "ObjectName";
-	//ImGui::InputText("", ObjId, IM_ARRAYSIZE(ObjId));
-	//ImGui::SameLine();
-	//if (ImGui::Button("Search")) {
-	//	foundObject = m_pOBC->HasObject(ObjId);
-	//	s_pObj = m_pOBC->GetObject(ObjId);
-	//}
+	static bool foundObject = false, showObjsList = false;
+	static Object* s_pObj = nullptr;
 
-	//ImGui::End();
+	// Main object container window
+	ImGui::Begin("ObjectContainer");
+	ImGui::Text("*Total Objects: %d", m_pSharedContainer->m_objectMap.size());
+	if (ImGui::Button("Show Object List"))
+		showObjsList = !showObjsList;
 
-	//if (foundObject)
-	//{
-	//	ImGui::Begin(ObjId);
-	//	ImGui::Text("*Object Id: %d", s_pObj->GetId());
-	//	if (s_pObj->GetParent())
-	//		ImGui::Text("*Parent Object: %s", s_pObj->GetParent()->GetName().c_str());
-	//	ImGui::Text("*Component List:");
-	//	/*for (auto component : s_pObj->GetComponentMap())
-	//	ImGui::Button(component->);*/
-	//	ImGui::End();
-	//}
+	static char ObjId[128] = "ObjectName";
+	ImGui::InputText("", ObjId, IM_ARRAYSIZE(ObjId));
+	
+	ImGui::SameLine();
+	if (ImGui::Button("Search")) {
+		Object::m_showEditor = m_pSharedContainer->HasObject(ObjId);
+		Object::m_pEdit		 = m_pSharedContainer->GetObject(ObjId);
+	}
+
+	ImGui::End();
+
+	// Object list window
+	if (showObjsList) {
+		ImGui::Begin("ObjectList");
+		for (auto Obj : m_pSharedContainer->m_objectMap)
+			ImGui::Text(Obj.second->GetName().c_str());
+		ImGui::End();
+	}
+
 }
 
 JE_END

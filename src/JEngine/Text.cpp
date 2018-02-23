@@ -6,6 +6,9 @@
 
 JE_BEGIN
 
+Text*	Text::m_pEdit = nullptr;
+bool	Text::m_showWindow = false;
+
 Font::Font()
 	:m_fontSize(0), m_newLineInterval(0.f)
 {}
@@ -19,6 +22,12 @@ Text::Text(Object* _pOwner)
 Text::~Text()
 {
 	SYSTEM::GetGraphicSystem()->RemoveSprite(this);
+}
+
+void Text::operator=(const Text & _copy)
+{
+	m_pFont = _copy.m_pFont;
+	m_text = _copy.m_text;
 }
 
 void Text::Register()
@@ -82,6 +91,11 @@ void Text::Load(CR_RJValue _data)
 		else
 			JE_DEBUG_PRINT("!Sprite - Wrong projection type: %s\n", projection.GetString());
 	}
+}
+
+void Text::EditorUpdate(const float /*_dt*/)
+{
+	// TODO
 }
 
 TextBuilder::TextBuilder()

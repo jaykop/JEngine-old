@@ -8,9 +8,7 @@
 
 JE_BEGIN
 
-class Material;
 class Transform;
-class Animation; 
 
 class SpriteBuilder : public ComponentBuilder
 {
@@ -39,6 +37,7 @@ class Sprite : public Component
 	friend class	SpriteBuilder;
 	friend class	GraphicSystem;
 	friend class	AssetManager;
+	friend class	ComponentManager;
 
 	using Image			= std::vector<unsigned char>;
 	using TextureMap	= std::unordered_map<std::string, unsigned>;
@@ -63,6 +62,7 @@ protected:
 
 	~Sprite();
 	Sprite(Object* _pOwner);
+	void operator=(const Sprite& _copy);
 
 	void Load(CR_RJValue _data) override;
 
@@ -75,14 +75,15 @@ protected:
 	Material	*m_material;
 	Animation	*m_animation;
 
-
 private:
 
 	// Locked constuctors and destructor
 	Sprite() = delete;
 	Sprite(const Sprite& /*_copy*/) = delete;
-	void operator=(const Sprite& /*_copy*/) = delete;
 
+	static void		EditorUpdate(const float _dt);
+	static bool		m_showWindow;
+	static Sprite*	m_pEdit;
 };
 
 JE_END

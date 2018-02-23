@@ -32,6 +32,7 @@ class Light : public Component
 
 	enum LightType  {NORMALLIGHT, DIRECTIONALLIGHT, SPOTLIGHT, POINTLIGHT};
 
+	friend class ComponentManager;
 	friend class GraphicSystem;
 	friend class LightBuilder;
 
@@ -50,13 +51,16 @@ private:
 
 	Light(Object* _pOwner);
 	~Light();
+	void operator=(const Light& _copy);
 
 	Light() = delete;
 	Light(const Light& /*_copy*/) = delete;
-	void operator=(const Light& /*_copy*/) = delete;
 
 	void Load(CR_RJValue _data) override;
 
+	static void		EditorUpdate(const float _dt);
+	static bool		m_showWindow;
+	static Light*	m_pEdit;
 };
 
 JE_END

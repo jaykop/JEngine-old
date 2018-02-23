@@ -94,11 +94,13 @@ bool Application::Initialize()
 	/*************** Open GL **************/
 	GLM::Resize(m_Data.m_width, m_Data.m_height);
 	GLM::initSDL_GL();
-
+	
 	/**************** IMGUI **************/
 	IMGUI::Init(m_pWindow);
-	IMGUI::AddEditorFunc(&EditorUpdate);
-
+	IMGUI::AddEditorFunc(APP::EditorUpdate);
+	IMGUI::AddEditorFunc(GLM::EditorUpdate);
+	IMGUI::AddEditorFunc(STATE::EditorUpdate);
+	
 	/**************** Built-in **************/
 	Random::PlantSeed();	// Plant random seed
 	ASSET::Load();			// Load info from json files

@@ -23,10 +23,10 @@ private:
 
 };
 
-
 class Camera : public Component
 {
 
+	friend class ComponentManager;
 	friend class GraphicSystem;
 	friend class CameraBuilder;
 
@@ -40,13 +40,16 @@ private:
 
 	Camera(Object* _pOwner);
 	~Camera() {};
+	void operator=(const Camera& _copy);
 
 	Camera() = delete;
 	Camera(const Camera& /*_copy*/) = delete;
-	void operator=(const Camera& /*_copy*/) = delete;
-
+	
 	void Load(CR_RJValue _data) override;
 
+	static void		EditorUpdate(const float _dt);
+	static bool		m_showWindow;
+	static Camera*	m_pEdit;
 };
 
 JE_END

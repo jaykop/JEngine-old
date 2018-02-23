@@ -4,7 +4,8 @@
 JE_BEGIN
 
 BuilderMap			ComponentManager::m_builderMap;
-ComponentTypeMap	ComponentManager::m_typeMap;
+ComponentTypeMap	ComponentManager::m_typeMap, 
+					ComponentManager::m_nameMap;
 bool				ComponentManager::m_loadingCustomLogic = true;
 
 Component* ComponentManager::CreateComponent(
@@ -28,6 +29,15 @@ const char* ComponentManager::KeyTranslator(const char* _name)
 {
 	auto found = m_typeMap.find(_name);
 	if (found != m_typeMap.end())
+		return found->second.c_str();
+
+	return nullptr;
+}
+
+const char* ComponentManager::TypeTranslator(const char *_type)
+{
+	auto found = m_nameMap.find(_type);
+	if (found != m_nameMap.end())
 		return found->second.c_str();
 
 	return nullptr;

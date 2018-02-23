@@ -10,6 +10,7 @@ using ObjectMap = std::unordered_map<std::string, Object*>;
 class ObjectContainer {
 
 	friend class State;
+	friend class StateManager;
 	friend class ObjectFactory;
 
 public:
@@ -36,6 +37,8 @@ public:
 	template <typename ComponentType>
 	inline ObjectMap		GetObjects();
 
+	static ObjectContainer* GetCurrentContainer();
+
 private:
 
 	~ObjectContainer();
@@ -43,11 +46,16 @@ private:
 	ObjectContainer(const ObjectContainer& /*_copy*/) = delete;
 	void operator=(const ObjectContainer& /*_copy*/) = delete;
 
-	void		ClearObjectMap();
-	void		EditorUpdate(const float _dt);
+	void ClearObjectMap();
+
+	// Static variable and function
+	static ObjectContainer* m_pSharedContainer;
+	static void				EditorUpdate(const float _dt);
 
 	ObjectMap	m_objectMap;
 };
+
+using OBJECT = ObjectContainer;
 
 JE_END
 

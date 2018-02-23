@@ -36,8 +36,6 @@ public:
 	static State*		GetState(const char* _stateName);
 	static bool			HasState(const char* _stateName);
 
-	static ObjectContainer* GetContainer();
-
 private:
 
 	// Locked contsturctord and destructor
@@ -57,7 +55,6 @@ private:
 	static void ChangeState();
 	static void ClearStates();
 
-	static void SetContainer(ObjectContainer* _container);
 	static void	EditorUpdate(const float _dt);
 
 	// Private member variables
@@ -67,9 +64,7 @@ private:
 	static StateStatus	m_status;
 	static State*		m_pCurrent, *m_pNext;
 	static SDL_Window*	m_pWindow;
-
-	static ObjectContainer* m_pOBC;
-
+	
 #if defined(_DEBUG)
 	static bool m_showUpdateMessage;
 #endif // _DEBUG
