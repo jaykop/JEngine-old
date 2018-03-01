@@ -29,7 +29,7 @@ public:
 	inline ComponentType*	GetComponent(const char* _fromObject);
 
 	template <typename ComponentType>
-	inline bool				HasComponen(const char* _fromObject);
+	inline bool				HasComponent(const char* _fromObject);
 
 	template <typename ComponentType>
 	inline void				RemoveComponent(const char* _fromObject);

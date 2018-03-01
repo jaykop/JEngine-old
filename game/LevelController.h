@@ -44,9 +44,7 @@ private:
 	void Close() override;
 	void Unload() override;
 
-	static void				EditorUpdate(const float _dt);
-	static bool				m_showWindow;
-	static LevelController*	m_pEdit;
+	void EditorUpdate(const float _dt);
 };
 
 JE_END

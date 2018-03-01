@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <unordered_map>
 #include "Macro.h"
 
 union SDL_Event;
@@ -7,17 +8,23 @@ struct SDL_Window;
 
 JE_BEGIN
 
+class Object;
+
+typedef void(*EditorUpdateFunc)(const float);
+using ComponentEditorMap = std::unordered_map<std::string, EditorUpdateFunc>;
+using ObjectEditorMap = std::unordered_map<std::string, ComponentEditorMap* >;
+
 class ImguiManager {
 
 	friend class Application;
 	friend class StateManager;
 
-	typedef void(*EditorUpdateFunc)(const float);
-	using Editors = std::vector<EditorUpdateFunc>;
+	using EditorList = std::vector<EditorUpdateFunc>;
 
 public:
 
 	static void AddEditorFunc(const EditorUpdateFunc& _pFunc);
+	static void AddObjectEditorFunc(Object* _object);
 
 private:
 
@@ -31,8 +38,9 @@ private:
 	ImguiManager(const ImguiManager& /*_copy*/) = delete;
 	void operator=(const ImguiManager& /*_copy*/) = delete;
 
-	static SDL_Window	*m_pWindow;
-	static Editors		m_editors;
+	static SDL_Window		*m_pWindow;
+	static EditorList		m_editors;
+	static ObjectEditorMap	m_objEditor;
 };
 
 using IMGUI = ImguiManager;

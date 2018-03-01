@@ -45,9 +45,7 @@ private:
 	void Load(CR_RJValue _data) override;
 	void Register() override {};
 
-	static void			EditorUpdate(const float _dt);
-	static bool			m_showWindow;
-	static Material*	m_pEdit;
+	void EditorUpdate(const float _dt);
 };
 
 JE_END

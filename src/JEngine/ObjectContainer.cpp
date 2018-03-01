@@ -81,7 +81,6 @@ void ObjectContainer::ClearObjectMap()
 void ObjectContainer::EditorUpdate(const float /*_dt*/)
 {
 	static bool foundObject = false, showObjsList = false;
-	static Object* s_pObj = nullptr;
 
 	// Main object container window
 	ImGui::Begin("ObjectContainer");
@@ -94,8 +93,9 @@ void ObjectContainer::EditorUpdate(const float /*_dt*/)
 	
 	ImGui::SameLine();
 	if (ImGui::Button("Search")) {
-		Object::m_showEditor = m_pSharedContainer->HasObject(ObjId);
-		Object::m_pEdit		 = m_pSharedContainer->GetObject(ObjId);
+		static Object* s_pObj = nullptr;
+		s_pObj = m_pSharedContainer->GetObject(ObjId);
+		s_pObj->m_showEditor = true;
 	}
 
 	ImGui::End();

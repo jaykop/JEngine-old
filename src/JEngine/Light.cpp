@@ -3,9 +3,6 @@
 
 JE_BEGIN
 
-Light*	Light::m_pEdit = nullptr;
-bool	Light::m_showWindow = false;
-
 Light::Light(Object * _pOwner)
 	:Component(_pOwner), m_color(vec4::ONE),
 	m_ambient(vec4::ONE), m_diffuse(vec4::ONE),
@@ -115,7 +112,6 @@ void Light::EditorUpdate(const float /*_dt*/)
 {
 	// TODO
 }
-
 
 LightBuilder::LightBuilder()
 	:ComponentBuilder()

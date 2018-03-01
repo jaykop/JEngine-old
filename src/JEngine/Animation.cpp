@@ -4,9 +4,6 @@
 
 JE_BEGIN
 
-Animation*	Animation::m_pEdit = nullptr;
-bool		Animation::m_showWindow = false;
-
 Animation::Animation(Object* _pOwner)
 	: Component(_pOwner), m_currentFrame(0.f), m_animationSpeed(0.f),
 	m_animationFrames(1), m_animationFixFrame(1), m_realSpeed(0.f),

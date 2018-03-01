@@ -4,9 +4,6 @@
 
 JE_BEGIN
 
-TestLogic*	TestLogic::m_pEdit = nullptr;
-bool		TestLogic::m_showWindow = false;
-
 TestLogic::TestLogic(Object* _pObject)
 	:CustomComponent(_pObject)
 {}

@@ -4,9 +4,6 @@
 
 JE_BEGIN
 
-Camera*	Camera::m_pEdit = nullptr;
-bool	Camera::m_showWindow = false;
-
 Camera::Camera(Object* _pOwner)
 	: Component(_pOwner),
 	m_position(vec3::ZERO), m_up(vec3::UNIT_Y),

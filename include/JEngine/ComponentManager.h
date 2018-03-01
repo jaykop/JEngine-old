@@ -34,7 +34,7 @@ private:
 	static bool					m_loadingCustomLogic;
 
 	template <class ComponentType>
-	inline static bool RegisterBuilder(
+	inline static void RegisterBuilder(
 		const char* _componentName, ComponentBuilder* _pBuilder);
 };
 

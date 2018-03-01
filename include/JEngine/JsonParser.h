@@ -4,7 +4,6 @@
 
 JE_BEGIN
 
-class ObjectContainer;
 using CR_RJValue	= const rapidjson::Value&;
 using RJDoc			= rapidjson::Document;
 using CR_RJDoc		= const RJDoc&;
@@ -27,7 +26,7 @@ private:
 	static void		ReadFile(const char* _dir);
 	static CR_RJDoc GetDocument();
 
-	static void LoadObjects(ObjectContainer* _pOBC);
+	static void LoadObjects();
 	static void LoadComponents(CR_RJValue _data);
 
 	static RJDoc m_document;

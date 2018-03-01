@@ -3,8 +3,6 @@
 
 JE_BEGIN
 
-class ObjectContainer;
-
 class ObjectFactory {
 
 	friend class Object;
@@ -13,7 +11,7 @@ public:
 
 	static void		CreateObject(const char* _name);
 	static Object*	GetCreatedObject();
-	static void		AddCreatedObject(ObjectContainer* _container);
+	static void		AddCreatedObject();
 
 private:
 

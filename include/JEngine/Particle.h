@@ -92,9 +92,7 @@ private:
 	Emitter() = delete;
 	Emitter(const Emitter& /*_copy*/) = delete;
 
-	static void		EditorUpdate(const float _dt);
-	static bool		m_showWindow;
-	static Emitter*	m_pEdit;
+	void EditorUpdate(const float _dt);
 
 	const static unsigned m_maxSize;
 

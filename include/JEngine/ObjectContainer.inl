@@ -17,7 +17,7 @@ inline ComponentType* ObjectContainer::GetComponent(const char* _fromObject)
 }
 
 template<typename ComponentType>
-inline bool ObjectContainer::HasComponen(const char* _fromObject)
+inline bool ObjectContainer::HasComponent(const char* _fromObject)
 {
 	return GetObject(_fromObject)->HasComponent(typeid(ComponentType).name());
 }

@@ -48,9 +48,7 @@ private:
 	Camera* m_camera;
 	vec3 m_position, m_target;
 
-	static void					EditorUpdate(const float _dt);
-	static bool					m_showWindow;
-	static CameraController*	m_pEdit;
+	void EditorUpdate(const float _dt);
 };
 
 JE_END

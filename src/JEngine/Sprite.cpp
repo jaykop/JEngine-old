@@ -7,9 +7,6 @@
 
 JE_BEGIN
 
-Sprite*	Sprite::m_pEdit = nullptr;
-bool	Sprite::m_showWindow = false;
-
 Sprite::Sprite(Object* _pOwner)
 	:Component(_pOwner), m_color(vec4::ONE), m_projection(PROJECTION_PERSPECTIVE),
 	m_mainTex(0), m_transform(nullptr), m_flip(false), m_culled(false), m_bilboard(false),

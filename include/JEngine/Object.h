@@ -18,7 +18,6 @@ public:
 	friend class JsonParser;
 	friend class ObjectFactory;
 	friend class ObjectContainer;
-	friend class AssetManager;
 
 	Object(const char* _name);
 	~Object();
@@ -77,9 +76,8 @@ private:
 	ObjectContainer*	m_pOBC;
 	
 	// statiic editor variable and function
-	static Object*	m_pEdit;
-	static void		EditorUpdate(const float _dt);
-	static bool		m_showEditor;
+	void	EditorUpdate(const float _dt);
+	bool	m_showEditor;
 
 	Object() = delete;
 	Object(const Object& /*_copy*/) = delete;

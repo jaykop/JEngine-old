@@ -4,15 +4,25 @@
 #include "ImguiManager.h"
 #include "Core.h"
 #include "GLManager.h"
+#include "Object.h"
 
 JE_BEGIN
 
-SDL_Window*		IMGUI::m_pWindow = nullptr;
-IMGUI::Editors	IMGUI::m_editors;
+SDL_Window*				IMGUI::m_pWindow = nullptr;
+IMGUI::EditorList		IMGUI::m_editors;
+ObjectEditorMap	IMGUI::m_objEditor;
 
 void ImguiManager::AddEditorFunc(const EditorUpdateFunc &_pFunc)
 {
 	m_editors.push_back(_pFunc);
+}
+
+void ImguiManager::AddObjectEditorFunc(Object* _object)
+{
+	//TODO
+	m_objEditor.insert(
+		ObjectEditorMap::value_type(
+		_object->GetName(), nullptr));
 }
 
 void ImguiManager::Init(SDL_Window* _window)
@@ -39,6 +49,14 @@ void ImguiManager::Update(const float _dt)
 		// Updated added editor functions
 		for (auto editorUpdate : m_editors)
 			editorUpdate(_dt);
+
+		// Update object's eidtor window
+		for (auto objEditor: m_objEditor) {
+		
+			// Update component's eidtor window
+			for (auto componentEditor : (*objEditor.second)) 
+				componentEditor.second(_dt);
+		}
 
 		//// System Manager
 		//{

@@ -23,7 +23,7 @@ void State::Load()
 	JSON::ReadFile(m_loadDirectory.c_str());
 
 	// Load objects and components, and system information
-	JSON::LoadObjects(m_objContainer);
+	JSON::LoadObjects();
 	SYSTEM::Load(JSON::GetDocument());
 }
 

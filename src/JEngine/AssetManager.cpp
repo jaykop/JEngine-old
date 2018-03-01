@@ -54,8 +54,6 @@ void AssetManager::Load()
 	// Load engine components
 	COMPONENT::m_loadingCustomLogic = false;
 
-	// Add Object editor update function
-	IMGUI::AddEditorFunc(Object::EditorUpdate);
 	LoadBuiltInComponents();
 }
 

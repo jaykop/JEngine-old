@@ -81,9 +81,7 @@ private:
 
 	void Load(CR_RJValue _data) override;
 
-	static void		EditorUpdate(const float _dt);
-	static bool		m_showWindow;
-	static Text*	m_pEdit;
+	void EditorUpdate(const float _dt);
 
 	Text() = delete;
 	Text(const Text& /*_copy*/) = delete;

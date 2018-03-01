@@ -6,9 +6,6 @@
 
 JE_BEGIN
 
-Text*	Text::m_pEdit = nullptr;
-bool	Text::m_showWindow = false;
-
 Font::Font()
 	:m_fontSize(0), m_newLineInterval(0.f)
 {}

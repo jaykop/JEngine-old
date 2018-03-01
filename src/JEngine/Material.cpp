@@ -4,9 +4,6 @@
 
 JE_BEGIN
 
-Material*	Material::m_pEdit = nullptr;
-bool		Material::m_showWindow = false;
-
 Material::Material(Object* _pOwner)
 	:Component(_pOwner), m_diffuse(0), 
 	m_specular(0), m_shininess(1.f)

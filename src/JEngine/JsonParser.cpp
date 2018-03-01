@@ -25,7 +25,7 @@ CR_RJDoc JsonParser::GetDocument()
 	return m_document;
 }
 
-void JsonParser::LoadObjects(ObjectContainer* _pOBC)
+void JsonParser::LoadObjects()
 {
 	CR_RJValue object = m_document["Object"];
 
@@ -53,7 +53,7 @@ void JsonParser::LoadObjects(ObjectContainer* _pOBC)
 			else
 				JE_DEBUG_PRINT("!JsonParser - No component in this object: %s\n", object[i]["Name"].GetString());
 
-			FACTORY::AddCreatedObject(_pOBC);
+			FACTORY::AddCreatedObject();
 		} // if (object[i]["Name"].IsString()) {
 
 		else // if (object[i]["Name"].IsString()) {

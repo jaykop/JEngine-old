@@ -6,12 +6,9 @@
 
 JE_BEGIN
 
-Object*	Object::m_pEdit = nullptr;
-bool	Object::m_showEditor = false;
-
 Object::Object(const char* _name)
 	:m_name(_name), m_active(true), m_pParent(nullptr),
-	m_id(ObjectFactory::m_registerNumber)
+	m_id(ObjectFactory::m_registerNumber), m_showEditor(false)
 {}
 
 Object::~Object()
@@ -230,27 +227,26 @@ void Object::EditorUpdate(const float /*_dt*/)
 	if (m_showEditor)
 	{
 		ImGui::Begin("Object");
-		ImGui::Text("*Object Name: %s", m_pEdit->m_name.c_str());
-		ImGui::Text("*Object Id: %d", m_pEdit->m_id);
-		if (m_pEdit->GetParent())
-			ImGui::Text("*Parent Object: %s", m_pEdit->m_pParent->m_name.c_str());
+		ImGui::Text("*Object Name: %s", m_name.c_str());
+		ImGui::Text("*Object Id: %d", m_id);
+		if (GetParent())
+			ImGui::Text("*Parent Object: %s", m_pParent->m_name.c_str());
 		else
 			ImGui::Text("*Parent Object: None");
 
-		if (m_pEdit->m_componentMap.size()) {
+		if (m_componentMap.size()) {
 			ImGui::Text("*Component List:");
-			for (auto component : m_pEdit->m_componentMap) {
-				//TODO
+			for (auto component : m_componentMap) {
 				if (ImGui::Button(COMPONENT::TypeTranslator(component.first.c_str())))
-					;// component.second->m;
+					component.second->m_showWindow = true;
 			}
 		}
 		else
 			ImGui::Text("*Component List: None");
 
-		if (m_pEdit->m_childObjs.size()) {
+		if (m_childObjs.size()) {
 			ImGui::Text("*Children List:");
-			for (auto child : m_pEdit->m_childObjs)
+			for (auto child : m_childObjs)
 				ImGui::Button(child.second->m_name.c_str());
 		}
 		else

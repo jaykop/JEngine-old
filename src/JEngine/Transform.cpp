@@ -3,9 +3,6 @@
 
 JE_BEGIN
 
-Transform*	Transform::m_pEdit = nullptr;
-bool		Transform::m_showWindow = false;
-
 Transform::Transform(Object* _pOwner)
 	:Component(_pOwner), 
 	m_position(vec3::ZERO), m_scale(vec3::ZERO), 
@@ -46,11 +43,11 @@ void Transform::Load(CR_RJValue _data)
 void Transform::EditorUpdate(const float /*_dt*/)
 {
 	// TODO
-	if (m_showWindow) {
-		ImGui::Begin("Transform");
-		ImGui::SliderFloat("float", &m_pEdit->m_position.x, 0.0f, 100.0f);
-		ImGui::End();
-	}
+	//if (m_showWindow) {
+	//	ImGui::Begin("Transform");
+	//	ImGui::SliderFloat("float", &m_pEdit->m_position.x, 0.0f, 100.0f);
+	//	ImGui::End();
+	//}
 }
 
 TransformBuilder::TransformBuilder()

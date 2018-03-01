@@ -38,9 +38,7 @@ private:
 	Model() = delete;
 	Model(const Model& /*_copy*/) = delete;
 
-	static void		EditorUpdate(const float _dt);
-	static bool		m_showWindow;
-	static Model*	m_pEdit;
+	void EditorUpdate(const float _dt);
 };
 
 JE_END

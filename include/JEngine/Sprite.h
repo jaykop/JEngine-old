@@ -81,9 +81,7 @@ private:
 	Sprite() = delete;
 	Sprite(const Sprite& /*_copy*/) = delete;
 
-	static void		EditorUpdate(const float _dt);
-	static bool		m_showWindow;
-	static Sprite*	m_pEdit;
+	void EditorUpdate(const float _dt);
 };
 
 JE_END

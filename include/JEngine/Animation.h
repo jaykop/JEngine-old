@@ -62,9 +62,7 @@ private:
 	float	m_currentFrame;
 	float	m_animationSpeed;
 
-	static void			EditorUpdate(const float _dt);
-	static bool			m_showWindow;
-	static Animation*	m_pEdit;
+	void	EditorUpdate(const float _dt);
 
 };
 

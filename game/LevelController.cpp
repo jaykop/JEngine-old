@@ -3,9 +3,6 @@
 
 JE_BEGIN
 
-LevelController*	LevelController::m_pEdit = nullptr;
-bool				LevelController::m_showWindow = false;
-
 LevelController::LevelController(Object* _pObject)
 	:CustomComponent(_pObject)
 {}

@@ -4,9 +4,6 @@
 
 JE_BEGIN
 
-Model*	Model::m_pEdit = nullptr;
-bool	Model::m_showWindow = false;
-
 Model::Model(Object* _pOwner)
 	:Sprite(_pOwner)
 {

@@ -6,8 +6,6 @@
 
 JE_BEGIN
 
-Emitter*		Emitter::m_pEdit = nullptr;
-bool			Emitter::m_showWindow = false;
 const unsigned	Emitter::m_maxSize = 1000;
 
 Emitter::Particle::Particle(Emitter* _emitter)
