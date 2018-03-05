@@ -42,12 +42,29 @@ void Transform::Load(CR_RJValue _data)
 
 void Transform::EditorUpdate(const float /*_dt*/)
 {
-	// TODO
-	//if (m_showWindow) {
-	//	ImGui::Begin("Transform");
-	//	ImGui::SliderFloat("float", &m_pEdit->m_position.x, 0.0f, 100.0f);
-	//	ImGui::End();
-	//}
+	if (m_showEditor) {
+		static float s_position[3] = { m_position.x, m_position.y, m_position.z }, 
+			s_scale[3] = { m_scale.x, m_scale.y, m_scale.z },
+			s_axis[3] = { m_rotationAxis.x, m_rotationAxis.y, m_rotationAxis.z },
+			s_rotation = m_rotation;
+		
+		ImGui::Begin("Transform");
+		ImGui::InputFloat3("Position", s_position);
+		ImGui::InputFloat3("Scale", s_scale);
+		ImGui::InputFloat3("Axis", s_axis);
+		ImGui::InputFloat("Rotation", &s_rotation);
+		
+		if (ImGui::Button("Close"))
+			m_showEditor = false;
+
+		ImGui::End();
+
+		m_position.Set(s_position[0], s_position[1], s_position[2]);
+		m_scale.Set(s_scale[0], s_scale[1], s_scale[2]);
+		m_rotationAxis.Set(s_axis[0], s_axis[1], s_axis[2]);
+		m_rotation = s_rotation;
+
+	}
 }
 
 TransformBuilder::TransformBuilder()

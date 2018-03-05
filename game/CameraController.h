@@ -48,7 +48,7 @@ private:
 	Camera* m_camera;
 	vec3 m_position, m_target;
 
-	void EditorUpdate(const float _dt);
+	void EditorUpdate(const float _dt) override;
 };
 
 JE_END

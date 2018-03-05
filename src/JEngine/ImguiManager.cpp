@@ -1,28 +1,53 @@
-#include "glew.h"
 #include "imgui.h"
 #include "imgui_impl_sdl_gl3.h"
+#include "glew.h"
 #include "ImguiManager.h"
 #include "Core.h"
 #include "GLManager.h"
-#include "Object.h"
+#include "Component.h"
 
 JE_BEGIN
 
-SDL_Window*				IMGUI::m_pWindow = nullptr;
-IMGUI::EditorList		IMGUI::m_editors;
-ObjectEditorMap	IMGUI::m_objEditor;
+SDL_Window*					IMGUI::m_pWindow = nullptr;
+IMGUI::EditorList			IMGUI::m_editors;
+IMGUI::ObjectEditorMap		IMGUI::m_objEditors;
+IMGUI::ComponentEditorMap	IMGUI::m_cptEditors;
 
 void ImguiManager::AddEditorFunc(const EditorUpdateFunc &_pFunc)
 {
 	m_editors.push_back(_pFunc);
 }
 
-void ImguiManager::AddObjectEditorFunc(Object* _object)
+void ImguiManager::AddComponentEditor(Component* _component)
 {
-	//TODO
-	m_objEditor.insert(
-		ObjectEditorMap::value_type(
-		_object->GetName(), nullptr));
+	m_cptEditors.push_back(_component);
+}
+
+void ImguiManager::RemoveComponentEditor(Component* _component)
+{
+	for (auto component = m_cptEditors.begin();
+		component != m_cptEditors.end(); ++component) {
+		if (*component == _component) {
+			m_cptEditors.erase(component);
+			break;
+		}
+	}
+}
+
+void ImguiManager::AddObjectEditor(Object* _object)
+{
+	m_objEditors.push_back(_object);
+}
+
+void ImguiManager::RemoveObjectEditor(Object* _object)
+{
+	for (auto object = m_objEditors.begin();
+		object != m_objEditors.end(); ++object) {
+		if (*object == _object) {
+			m_objEditors.erase(object);
+			break;
+		}
+	}
 }
 
 void ImguiManager::Init(SDL_Window* _window)
@@ -46,18 +71,7 @@ void ImguiManager::Update(const float _dt)
 		ImVec4 clear_color = ImColor(114, 144, 154);
 		ImGui_ImplSdlGL3_NewFrame(m_pWindow);
 
-		// Updated added editor functions
-		for (auto editorUpdate : m_editors)
-			editorUpdate(_dt);
-
-		// Update object's eidtor window
-		for (auto objEditor: m_objEditor) {
-		
-			// Update component's eidtor window
-			for (auto componentEditor : (*objEditor.second)) 
-				componentEditor.second(_dt);
-		}
-
+		//TODO Add...
 		//// System Manager
 		//{
 		//	ImGui::Begin("System Manager");
@@ -71,6 +85,17 @@ void ImguiManager::Update(const float _dt)
 		//	ImGui::Text("*Coming Soon...");
 		//	ImGui::End();
 		//}
+		// Updated added editor functions
+		for (auto editorUpdate : m_editors)
+			editorUpdate(_dt);
+
+		// Update object's eidtor window
+		for (auto objEditor : m_objEditors)
+			objEditor->EditorUpdate(_dt);
+
+		// Update component's eidtor window
+		for (auto componentEditor : m_cptEditors)
+			componentEditor->EditorUpdate(_dt);
 
 		// Rendering
 		glViewport(0, 0, (int)ImGui::GetIO().DisplaySize.x, (int)ImGui::GetIO().DisplaySize.y);

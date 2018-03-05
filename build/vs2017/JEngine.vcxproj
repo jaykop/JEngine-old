@@ -102,7 +102,7 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\external\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\external\Python36;$(SolutionDir)..\..\external\imgui;$(SolutionDir)..\..\external\SDL2;$(SolutionDir)..\..\external\lodePNG;$(SolutionDir)..\..\external\freetype2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\external\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\external\Python36;$(SolutionDir)..\..\external\imgui;$(SolutionDir)..\..\external\SDL2;$(SolutionDir)..\..\external\lodePNG;$(SolutionDir)..\..\external\freetype2;$(SolutionDir)..\..\external\Nuklear</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -110,7 +110,7 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\external\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\external\Python36;$(SolutionDir)..\..\external\imgui;$(SolutionDir)..\..\external\SDL2;$(SolutionDir)..\..\external\lodePNG;$(SolutionDir)..\..\external\freetype2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\external\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\external\Python36;$(SolutionDir)..\..\external\imgui;$(SolutionDir)..\..\external\SDL2;$(SolutionDir)..\..\external\lodePNG;$(SolutionDir)..\..\external\freetype2;$(SolutionDir)..\..\external\Nuklear</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -120,7 +120,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\external\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\external\Python36;$(SolutionDir)..\..\external\imgui;$(SolutionDir)..\..\external\SDL2;$(SolutionDir)..\..\external\lodePNG;$(SolutionDir)..\..\external\freetype2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\external\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\external\Python36;$(SolutionDir)..\..\external\imgui;$(SolutionDir)..\..\external\SDL2;$(SolutionDir)..\..\external\lodePNG;$(SolutionDir)..\..\external\freetype2;$(SolutionDir)..\..\external\Nuklear</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -134,7 +134,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\external\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\external\Python36;$(SolutionDir)..\..\external\imgui;$(SolutionDir)..\..\external\SDL2;$(SolutionDir)..\..\external\lodePNG;$(SolutionDir)..\..\external\freetype2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\external\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\external\Python36;$(SolutionDir)..\..\external\imgui;$(SolutionDir)..\..\external\SDL2;$(SolutionDir)..\..\external\lodePNG;$(SolutionDir)..\..\external\freetype2;$(SolutionDir)..\..\external\Nuklear</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -151,6 +151,18 @@
     <ClInclude Include="..\..\external\imgui\stb_truetype.h" />
     <ClInclude Include="..\..\external\lodePNG\lodepng.h" />
     <ClInclude Include="..\..\external\lodePNG\lodepng_util.h" />
+    <ClInclude Include="..\..\external\Nuklear\nuklear.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\external\Nuklear\nuklear_sdl_gl3.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\..\include\JEngine\Animation.h" />
     <ClInclude Include="..\..\include\JEngine\Application.h" />
     <ClInclude Include="..\..\include\JEngine\AssetManager.h" />
@@ -184,6 +196,12 @@
     <ClInclude Include="..\..\include\JEngine\Matrix4x4.h" />
     <ClInclude Include="..\..\include\JEngine\MemoryAllocater.h" />
     <ClInclude Include="..\..\include\JEngine\Model.h" />
+    <ClInclude Include="..\..\include\JEngine\NuklearManager.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\..\include\JEngine\Object.h" />
     <ClInclude Include="..\..\include\JEngine\ObjectContainer.h" />
     <ClInclude Include="..\..\include\JEngine\ObjectFactory.h" />
@@ -226,6 +244,12 @@
     <ClCompile Include="..\..\src\JEngine\ComponentManager.cpp" />
     <ClCompile Include="..\..\src\JEngine\Debug.cpp" />
     <ClCompile Include="..\..\src\JEngine\Core.cpp" />
+    <ClCompile Include="..\..\src\JEngine\NuklearManager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\src\JEngine\ShaderFragment.cpp" />
     <ClCompile Include="..\..\src\JEngine\GLManager.cpp" />
     <ClCompile Include="..\..\src\JEngine\GraphicPipelines.cpp" />

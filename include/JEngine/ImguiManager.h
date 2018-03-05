@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include <unordered_map>
 #include "Macro.h"
 
 union SDL_Event;
@@ -8,23 +7,21 @@ struct SDL_Window;
 
 JE_BEGIN
 
-class Object;
+class Component;
 
 typedef void(*EditorUpdateFunc)(const float);
-using ComponentEditorMap = std::unordered_map<std::string, EditorUpdateFunc>;
-using ObjectEditorMap = std::unordered_map<std::string, ComponentEditorMap* >;
 
 class ImguiManager {
 
+	friend class Object;
+	friend class ObjectFactory;
+	friend class ObjectContainer;
 	friend class Application;
 	friend class StateManager;
 
-	using EditorList = std::vector<EditorUpdateFunc>;
-
-public:
-
-	static void AddEditorFunc(const EditorUpdateFunc& _pFunc);
-	static void AddObjectEditorFunc(Object* _object);
+	using EditorList		 = std::vector<EditorUpdateFunc>;
+	using ComponentEditorMap = std::vector<Component*>;
+	using ObjectEditorMap	 = std::vector<Object*>;
 
 private:
 
@@ -38,9 +35,16 @@ private:
 	ImguiManager(const ImguiManager& /*_copy*/) = delete;
 	void operator=(const ImguiManager& /*_copy*/) = delete;
 
-	static SDL_Window		*m_pWindow;
-	static EditorList		m_editors;
-	static ObjectEditorMap	m_objEditor;
+	static void AddEditorFunc(const EditorUpdateFunc& _pFunc);
+	static void AddComponentEditor(Component* _component);
+	static void RemoveComponentEditor(Component* _component);
+	static void AddObjectEditor(Object* _object);
+	static void RemoveObjectEditor(Object* _object);
+
+	static SDL_Window			*m_pWindow;
+	static EditorList			m_editors;
+	static ObjectEditorMap		m_objEditors;
+	static ComponentEditorMap	m_cptEditors;
 };
 
 using IMGUI = ImguiManager;

@@ -2,6 +2,7 @@
 #include "ObjectContainer.h"
 #include "ComponentManager.h"
 #include "imgui.h"
+#include "ImguiManager.h"
 
 JE_BEGIN
 
@@ -19,8 +20,9 @@ void ObjectContainer::RemoveObject(const char* _name)
 
 	// If found the one
 	if (toRemove != m_objectMap.end()) {
-		delete (*toRemove).second;
-		(*toRemove).second = nullptr;
+		IMGUI::RemoveObjectEditor(toRemove->second);
+		delete toRemove->second;
+		toRemove->second = nullptr;
 	}
 
 	else
@@ -30,11 +32,11 @@ void ObjectContainer::RemoveObject(const char* _name)
 Object* ObjectContainer::GetObject(const char * _name)
 {
 	// Find the one to remove
-	auto faound = m_objectMap.find(_name);
+	auto found = m_objectMap.find(_name);
 
 	// If found the one
-	if (faound != m_objectMap.end())
-		return (*faound).second;
+	if (found != m_objectMap.end())
+		return found->second;
 
 	else {
 		JE_DEBUG_PRINT("!ObjectContainer - No such name of enrolled object: %s\n", _name);
@@ -50,12 +52,11 @@ ObjectMap& ObjectContainer::GetObjectMap()
 bool ObjectContainer::HasObject(const char* _name)
 {
 	// Find the one to remove
-	auto faound = m_objectMap.find(_name);
+	auto found = m_objectMap.find(_name);
 
 	// If found the one
-	if (faound != m_objectMap.end()) {
+	if (found != m_objectMap.end()) 
 		return true;
-	}
 
 	return false;
 }
@@ -70,6 +71,7 @@ void ObjectContainer::ClearObjectMap()
 	for (auto obj : m_objectMap)
 	{
 		if (obj.second) {
+			IMGUI::RemoveObjectEditor(obj.second);
 			delete obj.second;
 			obj.second = nullptr;
 		}

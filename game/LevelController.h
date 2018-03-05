@@ -44,7 +44,7 @@ private:
 	void Close() override;
 	void Unload() override;
 
-	void EditorUpdate(const float _dt);
+	void EditorUpdate(const float _dt) override;
 };
 
 JE_END

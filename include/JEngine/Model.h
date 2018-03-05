@@ -38,7 +38,7 @@ private:
 	Model() = delete;
 	Model(const Model& /*_copy*/) = delete;
 
-	void EditorUpdate(const float _dt);
+	void EditorUpdate(const float _dt) override;
 };
 
 JE_END

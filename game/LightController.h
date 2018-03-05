@@ -44,7 +44,7 @@ private:
 
 	Light* m_light;
 
-	void EditorUpdate(const float _dt);
+	void EditorUpdate(const float _dt) override;
 };
 
 JE_END

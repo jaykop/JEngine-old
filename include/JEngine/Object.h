@@ -18,6 +18,7 @@ public:
 	friend class JsonParser;
 	friend class ObjectFactory;
 	friend class ObjectContainer;
+	friend class ImguiManager;
 
 	Object(const char* _name);
 	~Object();

@@ -81,7 +81,7 @@ private:
 	Sprite() = delete;
 	Sprite(const Sprite& /*_copy*/) = delete;
 
-	void EditorUpdate(const float _dt);
+	void EditorUpdate(const float _dt) override;
 };
 
 JE_END

@@ -163,11 +163,13 @@ void Object::AddComponent(const char* _componentName)
 
 	// Found nothing exsting component type
 	// Insert new component to the list
-	if (found == m_componentMap.end())
+	if (found == m_componentMap.end()) {
+		Component* newComponent = COMPONENT::CreateComponent(s_name.c_str(), this);
 		m_componentMap.insert(
 			ComponentMap::value_type(s_name,
-				COMPONENT::CreateComponent(s_name.c_str(), this)
-			));
+				newComponent));
+		IMGUI::AddComponentEditor(newComponent);
+	}
 
 	else
 		JE_DEBUG_PRINT("!Object - Cannot add identical component again: %s\n", _componentName);
@@ -213,8 +215,11 @@ void Object::RemoveComponent(const char* _componentName)
 	auto found = m_componentMap.find(_componentName);
 
 	// If there is, remove it
-	if (found != m_componentMap.end())
+	if (found != m_componentMap.end()) {
+		IMGUI::RemoveComponentEditor(found->second); 
 		delete found->second;
+		found->second = nullptr;
+	}
 
 	else 
 		JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", _componentName);
@@ -238,7 +243,7 @@ void Object::EditorUpdate(const float /*_dt*/)
 			ImGui::Text("*Component List:");
 			for (auto component : m_componentMap) {
 				if (ImGui::Button(COMPONENT::TypeTranslator(component.first.c_str())))
-					component.second->m_showWindow = true;
+					component.second->m_showEditor = true;
 			}
 		}
 		else

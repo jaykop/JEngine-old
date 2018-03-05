@@ -16,7 +16,8 @@ class GLManager {
 	friend class Application;
 	friend class AssetManager;
 	friend class GraphicSystem;
-	friend class ImguiManager;
+	friend class ImguiManager;	// TODO OR..
+	friend class NuklearManager;
 
 	using Shaders = std::vector<Shader*>;
 

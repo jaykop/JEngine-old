@@ -169,6 +169,15 @@
     <ClInclude Include="..\..\include\JEngine\CustomComponent.h">
       <Filter>System\Behavior</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\external\Nuklear\nuklear_sdl_gl3.h">
+      <Filter>Utils\Nuklear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\external\Nuklear\nuklear.h">
+      <Filter>Utils\Nuklear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\NuklearManager.h">
+      <Filter>Utils\Nuklear</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\include\JEngine\Object.inl">
@@ -326,6 +335,9 @@
     <ClCompile Include="..\..\src\JEngine\ShaderFragment.cpp">
       <Filter>Core\OpenGL</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\JEngine\NuklearManager.cpp">
+      <Filter>Utils\Nuklear</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -393,6 +405,9 @@
     </Filter>
     <Filter Include="Core\OpenGL">
       <UniqueIdentifier>{58b0b6ad-5921-44da-a0be-91458f0dfd57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Nuklear">
+      <UniqueIdentifier>{5d41de4c-f723-4ddd-9a39-36e0fd80b370}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -92,7 +92,7 @@ private:
 	Emitter() = delete;
 	Emitter(const Emitter& /*_copy*/) = delete;
 
-	void EditorUpdate(const float _dt);
+	void EditorUpdate(const float _dt) override;
 
 	const static unsigned m_maxSize;
 

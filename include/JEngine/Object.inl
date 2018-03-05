@@ -1,5 +1,6 @@
 #include "Object.h"
 #include "ComponentManager.h"
+#include "ImguiManager.h"
 
 JE_BEGIN
 
@@ -12,11 +13,13 @@ inline void Object::AddComponent()
 
 	// Found nothing exsting component type
 	// Insert new component to the list
-	if (found == m_componentMap.end())
+	if (found == m_componentMap.end()) {
+		Component* newComponent = COMPONENT::CreateComponent<ComponentType>(this);
 		m_componentMap.insert(
 			ComponentMap::value_type(s_componentName,
-				COMPONENT::CreateComponent<ComponentType>(this)
-			));
+				newComponent));
+		IMGUI::AddComponentEditor(newComponent);
+	}
 
 	else
 		JE_DEBUG_PRINT("!Object - Cannot add identical component again: %s\n", s_componentName);
@@ -68,8 +71,11 @@ inline void Object::RemoveComponent()
 	auto found = m_componentMap.find(typeid(ComponentType).name());
 
 	// If there is, remove it
-	if (found != m_componentMap.end())
+	if (found != m_componentMap.end()) {
+		IMGUI::RemoveComponentEditor(found->second);
 		delete found->second;
+		found->second = nullptr;
+	}
 
 	else
 		JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", s_componentName);
