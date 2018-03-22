@@ -116,7 +116,6 @@ std::string Shader::m_vertexShader[] = {
 		}
 	};
 	)glsl",
-	/*************** Model Shader **************/
 
 	/*************** Text Shader **************/
 	R"glsl(
@@ -173,7 +172,6 @@ std::string Shader::m_vertexShader[] = {
 		v2_outTexCoord = uvPosition;
 	}
 	)glsl",
-	/*************** Text Shader **************/
 
 	/*************** Lighting Shader **************/
 	R"glsl(
@@ -199,7 +197,6 @@ std::string Shader::m_vertexShader[] = {
 		gl_Position = mvp * vec4(position, 1);
 	}
 	)glsl",
-	/*************** Lighting Shader **************/
 
 	/*************** Particle Shader **************/
 	R"glsl(
@@ -258,7 +255,6 @@ std::string Shader::m_vertexShader[] = {
 		}
 	}
 	)glsl",
-	/*************** Particle Shader **************/
 
 	/*************** Screen Shader **************/
 	R"glsl(
@@ -278,7 +274,6 @@ std::string Shader::m_vertexShader[] = {
 	
 	}
 	)glsl",
-	/*************** Screen Shader **************/
 };
 
 JE_END

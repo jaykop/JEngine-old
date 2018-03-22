@@ -145,7 +145,6 @@ std::string Shader::m_fragmentShader[] = {
 		_color.w = 1.0;
 	}
 	)glsl",
-	/*************** Model Shader **************/
 
 	/*************** Text Shader **************/
 	R"glsl(
@@ -173,7 +172,6 @@ std::string Shader::m_fragmentShader[] = {
 	
 	}
 	)glsl",
-	/*************** Text Shader **************/
 
 	/*************** Lighting Shader **************/
 	R"glsl(
@@ -208,7 +206,6 @@ std::string Shader::m_fragmentShader[] = {
 
 	}
 	)glsl",
-	/*************** Particle Shader **************/
 
 	/*************** Screen Shader **************/
 	R"glsl(
@@ -291,7 +288,6 @@ std::string Shader::m_fragmentShader[] = {
 		}
 	}
 	)glsl",
-	/*************** Screen Shader **************/
 };
 
 JE_END
