@@ -231,17 +231,13 @@ bool GLManager::initSDL_GL()
 		return false;
 	}
 
-	// Unless
-	else {
-
-		// Do gl stuff
-		ShowGLVersion();
-		InitShaders();
-		InitVBO();
-		InitFBO();			
-		InitGLEnvironment();	
-		RegisterUniform();
-	}
+	// Do gl stuff
+	ShowGLVersion();
+	InitShaders();
+	InitVBO();
+	InitFBO();
+	InitGLEnvironment();
+	RegisterUniform();
 
 	return true;
 }
@@ -376,32 +372,16 @@ void GLManager::InitShaders()
 	for (unsigned i = 0; i < SHADER_END; ++i) {
 		
 		m_shader.push_back(new Shader);
-		m_shader[i]->EnterShader(
-			Shader::m_shaderVertex[i],
-			Shader::m_shaderFragment[i]);
+		m_shader[i]->CreateShader(Shader::m_vertexShader[i], Shader::VERTEX);
+		// TODO
+		// Work on geometry shader
+		//m_shader[i]->CreateShader(Shader::m_geometryShader[i], Shader::GEOMETRY);
+		m_shader[i]->CreateShader(Shader::m_fragmentShader[i], Shader::PIXEL);
+
+		m_shader[i]->CombineShaders();
 	}
 
 	JE_DEBUG_PRINT("*GLManager - Compiled and linked shaders.\n");
-
-	//m_shader[SHADER_MODEL]->LoadShader(
-	//	"../src/JEngine/shader/model.vs",
-	//	"../src/JEngine/shader/model.fs");
-
-	//m_shader[SHADER_TEXT]->LoadShader(
-	//	"../src/JEngine/shader/text.vs",
-	//	"../src/JEngine/shader/text.fs");
-
-	//m_shader[SHADER_LIGHTING]->LoadShader(
-	//	"../src/JEngine/shader/lighting.vs",
-	//	"../src/JEngine/shader/lighting.fs");
-
-	//m_shader[SHADER_PARTICLE]->LoadShader(
-	//	"../src/JEngine/shader/particle.vs",
-	//	"../src/JEngine/shader/particle.fs");
-
-	//m_shader[SHADER_SCREEN]->LoadShader(
-	//	"../src/JEngine/shader/screen.vs",
-	//	"../src/JEngine/shader/screen.fs");
 }
 
 void GLManager::SetDrawMode(DrawMode _mode)

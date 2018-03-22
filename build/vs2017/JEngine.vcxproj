@@ -244,13 +244,14 @@
     <ClCompile Include="..\..\src\JEngine\ComponentManager.cpp" />
     <ClCompile Include="..\..\src\JEngine\Debug.cpp" />
     <ClCompile Include="..\..\src\JEngine\Core.cpp" />
+    <ClCompile Include="..\..\src\JEngine\GeometryShader.cpp" />
     <ClCompile Include="..\..\src\JEngine\NuklearManager.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\ShaderFragment.cpp" />
+    <ClCompile Include="..\..\src\JEngine\FragmentShader.cpp" />
     <ClCompile Include="..\..\src\JEngine\GLManager.cpp" />
     <ClCompile Include="..\..\src\JEngine\GraphicPipelines.cpp" />
     <ClCompile Include="..\..\src\JEngine\GraphicSystem.cpp" />
@@ -281,7 +282,7 @@
     <ClCompile Include="..\..\src\JEngine\Random.cpp" />
     <ClCompile Include="..\..\src\JEngine\Rigidbody.cpp" />
     <ClCompile Include="..\..\src\JEngine\Shader.cpp" />
-    <ClCompile Include="..\..\src\JEngine\ShaderVertex.cpp" />
+    <ClCompile Include="..\..\src\JEngine\VertexShader.cpp" />
     <ClCompile Include="..\..\src\JEngine\SoundSystem.cpp" />
     <ClCompile Include="..\..\src\JEngine\Sprite.cpp" />
     <ClCompile Include="..\..\src\JEngine\State.cpp" />

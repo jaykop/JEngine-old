@@ -10,17 +10,13 @@ class Shader {
 
 private:
 
+	enum Type{ VERTEX, GEOMETRY, PIXEL };
+
 	friend class GLManager;
 	friend class GraphicSystem;
 
-	//void LoadShader(
-	//	const char* _vertex_file_path,
-	//	const char* _fragment_file_path);
-
-	void EnterShader(
-		std::string& _vertexShader, std::string& _fragmentShader
-		/*, const char* _vertexPath = nullptr, const char* _fragmentPath = nullptr*/
-	);
+	void CreateShader(std::string& _shaderContents, Type _type);
+	void CombineShaders();
 
 	void Use();
 	void ConnectUniform(GLManager::UniformType _uniform, const char* _name);
@@ -55,12 +51,14 @@ private:
 	void SetVector3(GLint& _buffer, const vec3& _vector);
 	void SetVector4(GLint& _buffer, const vec4& _vector);
 	
-	Shader() :m_programId(0) {};
-	~Shader() {};
+	Shader();
+	~Shader();
 
-	GLuint m_programId;
+	GLuint	m_programId, m_vertexId, m_fragmentId, m_geometryId;
+	int		m_infoLogLength;
+	GLint	m_result;
 
-	static std::string  m_shaderVertex[GLM::SHADER_END], m_shaderFragment[GLM::SHADER_END];
+	static std::string  m_vertexShader[GLM::SHADER_END], m_fragmentShader[GLM::SHADER_END], m_geometryShader[GLM::SHADER_END];
 
 	Shader(const Shader& /*_copy*/) = delete;
 	void operator=(const Shader& /*_copy*/) = delete;

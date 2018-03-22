@@ -329,14 +329,17 @@
     <ClCompile Include="..\..\src\JEngine\Shader.cpp">
       <Filter>Core\OpenGL</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\ShaderVertex.cpp">
-      <Filter>Core\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\ShaderFragment.cpp">
-      <Filter>Core\OpenGL</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\JEngine\NuklearManager.cpp">
       <Filter>Utils\Nuklear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JEngine\GeometryShader.cpp">
+      <Filter>Core\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JEngine\FragmentShader.cpp">
+      <Filter>Core\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JEngine\VertexShader.cpp">
+      <Filter>Core\OpenGL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
