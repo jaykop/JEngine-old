@@ -1,5 +1,6 @@
+bin/
 temp/
-build/vs2015/.vs/JEngine/
+build/vs2017/.vs/JEngine/
 lib/JEngine/
 *.db
 *.suo

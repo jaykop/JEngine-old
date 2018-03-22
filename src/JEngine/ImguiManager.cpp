@@ -50,7 +50,19 @@ void ImguiManager::RemoveObjectEditor(Object* _object)
 	}
 }
 
-void ImguiManager::Init(SDL_Window* _window)
+	void ImguiManager::ClearComponentEditor()
+	{
+		if (!m_cptEditors.empty())
+			m_cptEditors.clear();
+	}
+
+	void ImguiManager::ClearObjectEditor()
+	{
+		if (!m_objEditors.empty())
+			m_objEditors.clear();
+	}
+
+	void ImguiManager::Init(SDL_Window* _window)
 {
 	if (CORE::m_IMGUI) {
 		m_pWindow = _window;

@@ -140,10 +140,13 @@ void Object::ClearComponents()
 	for (auto component : m_componentMap) {
 
 		if (component.second) {
+			IMGUI::AddComponentEditor(component.second);
 			delete component.second;
 			component.second = nullptr;
 		}
 	}
+
+	IMGUI::ClearComponentEditor();
 	m_componentMap.clear();
 }
 

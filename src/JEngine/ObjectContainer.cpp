@@ -77,6 +77,7 @@ void ObjectContainer::ClearObjectMap()
 		}
 	}
 
+	IMGUI::ClearObjectEditor();
 	m_objectMap.clear();
 }
 

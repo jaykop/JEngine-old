@@ -40,6 +40,8 @@ private:
 	static void RemoveComponentEditor(Component* _component);
 	static void AddObjectEditor(Object* _object);
 	static void RemoveObjectEditor(Object* _object);
+	static void ClearComponentEditor();
+	static void ClearObjectEditor();
 
 	static SDL_Window			*m_pWindow;
 	static EditorList			m_editors;
