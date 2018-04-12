@@ -1,0 +1,16 @@
+bin/
+temp/
+build/vs2017/.vs/JEngine/
+lib/JEngine/
+*.db
+*.suo
+*.user
+*.pdb
+*.orig
+*.tlog
+*.exe
+*.pdb
+*.obj
+*.log
+*.ilk
+*.ipch
