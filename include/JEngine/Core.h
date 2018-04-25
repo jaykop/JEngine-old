@@ -1,5 +1,4 @@
 #pragma once
-#include "SDL.h"
 #include "Macro.h"
 
 JE_BEGIN
@@ -14,7 +13,6 @@ class Core {
 public:
 
 	static void Open(bool _imgui);
-	static void Ready();
 	static void Run();
 	static void Close();
 	

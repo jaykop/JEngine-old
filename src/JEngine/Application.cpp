@@ -1,3 +1,4 @@
+
 #include "GLManager.h"
 #include "SDL_opengl.h"
 #include "Application.h"

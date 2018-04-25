@@ -8,7 +8,7 @@ class Object;
 class TestLogicBuilder : public ComponentBuilder
 {
 
-	friend class Core;
+	friend class JEngine;
 
 public:
 

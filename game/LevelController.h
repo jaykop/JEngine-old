@@ -9,7 +9,7 @@ JE_BEGIN
 class LevelControllerBuilder : public ComponentBuilder
 {
 
-	friend class Core;
+	friend class JEngine;
 
 public:
 

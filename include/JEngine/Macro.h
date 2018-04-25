@@ -15,10 +15,10 @@ Contains Engine's generic macros
 
 // Generic Engine Macro
 #ifdef __cplusplus
-#define JE_BEGIN	namespace JEngine {
+#define JE_BEGIN	namespace JE {
 #define JE_END	}
-#define USING_NS_JE	using namespace JEngine
-#define NS_JE		::JEngine
+#define USING_NS_JE	using namespace JE
+#define NS_JE		::JE
 #else
 #define NS_BEGIN 
 #define NE_END	 
