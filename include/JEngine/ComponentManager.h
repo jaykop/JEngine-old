@@ -14,6 +14,8 @@ class ComponentBuilder;
 
 class ComponentManager {
 
+	friend class JEngine;
+
 	friend class Core;
 	friend class Object;
 	friend class AssetManager;

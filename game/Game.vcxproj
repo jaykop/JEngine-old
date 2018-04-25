@@ -171,15 +171,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CameraController.cpp" />
+    <ClCompile Include="JEngine.cpp" />
     <ClCompile Include="LightController.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="RegisterAssets.cpp" />
     <ClCompile Include="LevelController.cpp" />
     <ClCompile Include="TestLogic.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CameraController.h" />
     <ClInclude Include="CustomLogic.h" />
+    <ClInclude Include="JEngine.h" />
     <ClInclude Include="LightController.h" />
     <ClInclude Include="LevelController.h" />
     <ClInclude Include="TestLogic.h" />
