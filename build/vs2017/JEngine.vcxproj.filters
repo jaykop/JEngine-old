@@ -166,6 +166,12 @@
     <ClInclude Include="..\..\include\JEngine\CustomComponent.h">
       <Filter>System\Behavior</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\MessageDispatcher.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\Telegram.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\include\JEngine\Object.inl">
@@ -322,6 +328,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\JEngine\VertexShader.cpp">
       <Filter>Core\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JEngine\MessageDispatcher.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
