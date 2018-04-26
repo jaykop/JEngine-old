@@ -12,16 +12,16 @@ JE_BEGIN
 //////////////////////////////////////////////////////////////////////////
 // static variables
 //////////////////////////////////////////////////////////////////////////
-SDL_Window*					StateManager::m_pWindow = nullptr;
-Timer						StateManager::m_timer;
-States						StateManager::m_states;
-StateManager::StateStatus	StateManager::m_status = STATE_CHANGE;
-State						*StateManager::m_pCurrent = nullptr, 
-							*StateManager::m_pNext = nullptr;
-float						STATE::m_frameTime = 0.f;
+SDL_Window*			STATE::m_pWindow = nullptr;
+Timer				STATE::m_timer;
+States				STATE::m_states;
+STATE::StateStatus	STATE::m_status = STATE_CHANGE;
+State				*STATE::m_pCurrent = nullptr,
+					*STATE::m_pNext = nullptr;
+float				STATE::m_frameTime = 0.f;
 
 #if defined(_DEBUG)
-bool						StateManager::m_showUpdateMessage = true;
+bool				STATE::m_showUpdateMessage = true;
 #endif // _DEBUG
 
 //////////////////////////////////////////////////////////////////////////

@@ -3,10 +3,10 @@
 
 JE_BEGIN
 
-BuilderMap			ComponentManager::m_builderMap;
-ComponentTypeMap	ComponentManager::m_typeMap, 
-					ComponentManager::m_nameMap;
-bool				ComponentManager::m_loadingCustomLogic = true;
+BuilderMap			COMPONENT::m_builderMap;
+ComponentTypeMap	COMPONENT::m_typeMap,
+					COMPONENT::m_nameMap;
+bool				COMPONENT::m_loadingCustomLogic = true;
 
 Component* ComponentManager::CreateComponent(
 	const char* _componentName, Object* _pOwner)

@@ -1,6 +1,5 @@
 #pragma once
 #include "Macro.h"
-#include <vector>
 #include <unordered_map>
 
 JE_BEGIN
