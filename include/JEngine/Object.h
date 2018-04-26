@@ -15,7 +15,7 @@ using ComponentMap = std::unordered_map<std::string, Component*>;
 
 class Object {
 
-	struct States
+	struct StateMachine
 	{
 		CustomComponent* m_pPreviousState = nullptr;
 		CustomComponent* m_pCurrentState = nullptr;
@@ -65,6 +65,9 @@ public:
 	template<typename ComponentType>
 	inline void				RemoveComponent();
 
+	void	ChangeState(CustomComponent* _pNextState);
+	void	RevertToPreviousState();
+
 private:
 
 	// Member function
@@ -78,12 +81,13 @@ private:
 	bool		HasComponent(const char* _componentName) const;
 	void		RemoveComponent(const char* _componentName);
 
-	bool		HandleMessage(Telegram& message);
+	bool	HandleMessage(Telegram& _message);
+	void	ClearStateMachine();
 
 	unsigned			m_id;
 	bool				m_active;
 	Object*				m_pParent;
-	States				m_States;
+	StateMachine		m_StateMachine;
 	std::string			m_name;
 	ChildObjects		m_childObjs;
 	ComponentMap		m_componentMap;

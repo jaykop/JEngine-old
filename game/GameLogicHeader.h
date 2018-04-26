@@ -21,6 +21,8 @@
 #include "PhysicsComponents.h"
 #include "SoundSystem.h"
 #include "SoundComponents.h"
+#include "Telegram.h"
+#include "MessageDispatcher.h"
 
 /////////////////////////////////////////////////////////////////////////
 // Math headers

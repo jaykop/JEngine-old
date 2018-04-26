@@ -15,6 +15,7 @@ Object::Object(const char* _name)
 
 Object::~Object()
 {
+	ClearStateMachine();
 	ClearChildren();
 	ClearComponents();
 }
@@ -227,17 +228,59 @@ void Object::RemoveComponent(const char* _componentName)
 	
 }
 
-bool Object::HandleMessage(Telegram& message)
+bool Object::HandleMessage(Telegram& _message)
 {
-	if (m_States.m_pCurrentState
-		&& m_States.m_pCurrentState->OnMessage(message))
+	if (m_StateMachine.m_pCurrentState
+		&& m_StateMachine.m_pCurrentState->OnMessage(_message))
 		return true;
 
-	if (m_States.m_pGlobalState
-		&& m_States.m_pGlobalState->OnMessage(message))
+	if (m_StateMachine.m_pGlobalState
+		&& m_StateMachine.m_pGlobalState->OnMessage(_message))
 		return true;
 
 	return false;
+}
+
+void Object::ChangeState(CustomComponent* _pNextState)
+{
+	if (_pNextState) {
+		m_StateMachine.m_pPreviousState = m_StateMachine.m_pCurrentState;
+		m_StateMachine.m_pPreviousState->Close();
+		m_StateMachine.m_pPreviousState->Unload();
+		m_StateMachine.m_pCurrentState = _pNextState;
+		m_StateMachine.m_pCurrentState->Init();
+	}
+
+	else
+		JE_DEBUG_PRINT("!Object - Set next state of %s to nullptr.\n", m_name.c_str());
+}
+
+void Object::RevertToPreviousState()
+{
+	ChangeState(m_StateMachine.m_pPreviousState);
+}
+
+void Object::ClearStateMachine()
+{
+	// Remove every allocated states
+
+	// Current one
+	if (m_StateMachine.m_pCurrentState) {
+		delete m_StateMachine.m_pCurrentState;
+		m_StateMachine.m_pCurrentState = nullptr;
+	}
+
+	// Previous one
+	if (m_StateMachine.m_pPreviousState) {
+		delete m_StateMachine.m_pPreviousState;
+		m_StateMachine.m_pPreviousState = nullptr;
+	}
+
+	// Global one
+	if (m_StateMachine.m_pGlobalState) {
+		delete m_StateMachine.m_pGlobalState;
+		m_StateMachine.m_pGlobalState = nullptr;
+	}
 }
 
 void Object::EditorUpdate(const float /*_dt*/)

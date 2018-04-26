@@ -166,10 +166,10 @@
     <ClInclude Include="..\..\include\JEngine\CustomComponent.h">
       <Filter>System\Behavior</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\Telegram.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\JEngine\MessageDispatcher.h">
+      <Filter>System\Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\Telegram.h">
       <Filter>System\Behavior</Filter>
     </ClInclude>
   </ItemGroup>

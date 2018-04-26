@@ -1,10 +1,7 @@
 #include "CameraController.h"
 #include "GameLogicHeader.h"
-
 #include "Camera.h"
-#include "Particle.h"
 #include "Vector4.h"
-#include "GraphicSystem.h"
 
 JE_BEGIN
 
