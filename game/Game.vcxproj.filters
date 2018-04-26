@@ -2,50 +2,77 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>Base</Filter>
-    </ClCompile>
-    <ClCompile Include="LightController.cpp">
-      <Filter>CustomLogic</Filter>
-    </ClCompile>
-    <ClCompile Include="LevelController.cpp">
-      <Filter>CustomLogic</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraController.cpp">
-      <Filter>CustomLogic</Filter>
-    </ClCompile>
-    <ClCompile Include="TestLogic.cpp">
-      <Filter>CustomLogic</Filter>
+      <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="JEngine.cpp">
-      <Filter>Base</Filter>
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="TestLogic.cpp">
+      <Filter>CustomLogic\ExistingLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="LightController.cpp">
+      <Filter>CustomLogic\ExistingLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelController.cpp">
+      <Filter>CustomLogic\ExistingLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraController.cpp">
+      <Filter>CustomLogic\ExistingLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="MinerState.cpp">
+      <Filter>CustomLogic\AI_Practicing</Filter>
+    </ClCompile>
+    <ClCompile Include="BullyState.cpp">
+      <Filter>CustomLogic\AI_Practicing</Filter>
+    </ClCompile>
+    <ClCompile Include="WifeState.cpp">
+      <Filter>CustomLogic\AI_Practicing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="LightController.h">
-      <Filter>CustomLogic</Filter>
-    </ClInclude>
-    <ClInclude Include="LevelController.h">
-      <Filter>CustomLogic</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraController.h">
-      <Filter>CustomLogic</Filter>
-    </ClInclude>
-    <ClInclude Include="TestLogic.h">
-      <Filter>CustomLogic</Filter>
-    </ClInclude>
     <ClInclude Include="CustomLogic.h">
-      <Filter>Base</Filter>
+      <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="JEngine.h">
-      <Filter>Base</Filter>
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="TestLogic.h">
+      <Filter>CustomLogic\ExistingLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="LightController.h">
+      <Filter>CustomLogic\ExistingLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelController.h">
+      <Filter>CustomLogic\ExistingLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraController.h">
+      <Filter>CustomLogic\ExistingLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="MinerState.h">
+      <Filter>CustomLogic\AI_Practicing</Filter>
+    </ClInclude>
+    <ClInclude Include="BullyState.h">
+      <Filter>CustomLogic\AI_Practicing</Filter>
+    </ClInclude>
+    <ClInclude Include="Location.h">
+      <Filter>CustomLogic\AI_Practicing</Filter>
+    </ClInclude>
+    <ClInclude Include="WifeState.h">
+      <Filter>CustomLogic\AI_Practicing</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Base">
-      <UniqueIdentifier>{ab48f47d-0e05-4311-88dc-b288860aa953}</UniqueIdentifier>
-    </Filter>
     <Filter Include="CustomLogic">
       <UniqueIdentifier>{818968ee-ddb5-4b82-bcce-49db06526fa4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{ab48f47d-0e05-4311-88dc-b288860aa953}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CustomLogic\ExistingLogic">
+      <UniqueIdentifier>{0dfefe60-f10e-45fc-a70c-8a158b392acd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CustomLogic\AI_Practicing">
+      <UniqueIdentifier>{8de72f25-8322-4669-b51c-6fcb67919c78}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

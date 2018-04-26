@@ -14,7 +14,7 @@ void MessageDispatcher::Discharge(Object* _pReceiver, Telegram& msg)
 		JE_DEBUG_PRINT("!MessageDispatcher - Message not handled!\n");
 }
 
-void MessageDispatcher::DispatcherMessage(float _delay, unsigned _sender, unsigned _receiver, const char* _MessageType, void *_extraInfo)
+void MessageDispatcher::DispatchMessage(float _delay, unsigned _sender, unsigned _receiver, const char* _MessageType, void *_extraInfo)
 {
 	Object* pReceiver = OBJECT::GetCurrentContainer()->GetObject(_receiver);
 	Telegram telegram(0.f, _sender, _receiver, _MessageType, _extraInfo);

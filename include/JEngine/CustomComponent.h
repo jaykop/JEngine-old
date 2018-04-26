@@ -7,6 +7,7 @@ struct Telegram;
 
 class CustomComponent : public Component {
 
+	friend class Object;
 	friend class BehaviorSystem;
 
 public:
@@ -15,6 +16,7 @@ public:
 	virtual void Update(const float _dt) = 0;
 	virtual void Close() = 0;
 	virtual void Unload() = 0;
+
 	virtual bool OnMessage(Telegram& msg) = 0;
 
 protected:

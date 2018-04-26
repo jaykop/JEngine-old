@@ -170,6 +170,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BullyState.cpp" />
     <ClCompile Include="CameraController.cpp" />
     <ClCompile Include="JEngine.cpp">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
@@ -180,15 +181,21 @@
     <ClCompile Include="LightController.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="LevelController.cpp" />
+    <ClCompile Include="MinerState.cpp" />
     <ClCompile Include="TestLogic.cpp" />
+    <ClCompile Include="WifeState.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BullyState.h" />
     <ClInclude Include="CameraController.h" />
     <ClInclude Include="CustomLogic.h" />
     <ClInclude Include="JEngine.h" />
     <ClInclude Include="LightController.h" />
     <ClInclude Include="LevelController.h" />
+    <ClInclude Include="Location.h" />
+    <ClInclude Include="MinerState.h" />
     <ClInclude Include="TestLogic.h" />
+    <ClInclude Include="WifeState.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\build\vs2017\JEngine.vcxproj">
