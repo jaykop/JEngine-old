@@ -102,7 +102,7 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\external\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\external\imgui;$(SolutionDir)..\..\external\SDL2;$(SolutionDir)..\..\external\lodePNG;$(SolutionDir)..\..\external\freetype2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\include\imgui;$(SolutionDir)..\..\include\SDL2;$(SolutionDir)..\..\include\lodePNG;$(SolutionDir)..\..\include\freetype2</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -110,7 +110,7 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\external\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\external\imgui;$(SolutionDir)..\..\external\SDL2;$(SolutionDir)..\..\external\lodePNG;$(SolutionDir)..\..\external\freetype2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\include\imgui;$(SolutionDir)..\..\include\SDL2;$(SolutionDir)..\..\include\lodePNG;$(SolutionDir)..\..\include\freetype2</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -120,7 +120,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\external\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\external\imgui;$(SolutionDir)..\..\external\SDL2;$(SolutionDir)..\..\external\lodePNG;$(SolutionDir)..\..\external\freetype2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\include\imgui;$(SolutionDir)..\..\include\SDL2;$(SolutionDir)..\..\include\lodePNG;$(SolutionDir)..\..\include\freetype2</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -134,7 +134,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\external\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\external\imgui;$(SolutionDir)..\..\external\SDL2;$(SolutionDir)..\..\external\lodePNG;$(SolutionDir)..\..\external\freetype2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\include\imgui;$(SolutionDir)..\..\include\SDL2;$(SolutionDir)..\..\include\lodePNG;$(SolutionDir)..\..\include\freetype2</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
