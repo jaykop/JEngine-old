@@ -145,9 +145,6 @@
     <ClInclude Include="..\..\external\imgui\imgui.h">
       <Filter>Utils\Imgui</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\Core.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\JEngine\Text.h">
       <Filter>System\Graphic</Filter>
     </ClInclude>
@@ -298,9 +295,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\imgui\imgui_demo.cpp">
       <Filter>Utils\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\Core.cpp">
-      <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\JEngine\Text.cpp">
       <Filter>System\Graphic</Filter>

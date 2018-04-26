@@ -13,11 +13,10 @@ Contains Process' main flow
 
 #include "SDL.h"
 #include "JEngine.h"
+#include "Macro.h"
 
 #pragma comment(lib, "sdl2")
 #pragma comment(lib, "sdl2main")
-
-JE_BEGIN
 
 int main(int argc, char* args[]) {
 
@@ -30,5 +29,3 @@ int main(int argc, char* args[]) {
 	return 0;
 
 }
-
-JE_END

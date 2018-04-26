@@ -160,7 +160,6 @@
     <ClInclude Include="..\..\include\JEngine\ComponentBuilder.h" />
     <ClInclude Include="..\..\include\JEngine\ComponentManager.h" />
     <ClInclude Include="..\..\include\JEngine\Debug.h" />
-    <ClInclude Include="..\..\include\JEngine\Core.h" />
     <ClInclude Include="..\..\include\JEngine\GLManager.h" />
     <ClInclude Include="..\..\include\JEngine\GraphicComponents.h" />
     <ClInclude Include="..\..\include\JEngine\GraphicSystem.h" />
@@ -225,7 +224,6 @@
     <ClCompile Include="..\..\src\JEngine\Camera.cpp" />
     <ClCompile Include="..\..\src\JEngine\ComponentManager.cpp" />
     <ClCompile Include="..\..\src\JEngine\Debug.cpp" />
-    <ClCompile Include="..\..\src\JEngine\Core.cpp" />
     <ClCompile Include="..\..\src\JEngine\GeometryShader.cpp" />
     <ClCompile Include="..\..\src\JEngine\FragmentShader.cpp" />
     <ClCompile Include="..\..\src\JEngine\GLManager.cpp" />

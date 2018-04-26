@@ -1,10 +1,10 @@
 #include "JEngine.h"
-#include "Core.h"
+#include "Application.h"
 #include "AssetManager.h"
 #include "ComponentManager.h"
 #include "CustomLogic.h"
 
-JE_BEGIN
+USING_NS_JE;
 
 void JEngine::RegisterAssets()
 {
@@ -23,9 +23,5 @@ void JEngine::RegisterAssets()
 
 void JEngine::Run()
 {
-	CORE::Open(true);		// Set imgui toggle on
-	CORE::Run();			// Run application
-	CORE::Close();			// Wrap up the app and close
+	APP::Run(true);	
 }
-
-JE_END
