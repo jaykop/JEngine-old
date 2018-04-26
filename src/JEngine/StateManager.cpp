@@ -335,10 +335,10 @@ bool StateManager::HasState(const char *_stateName)
 	return found;
 }
 
-//ObjectContainer* StateManager::GetContainer()
-//{
-//	return m_pOBC;
-//}
+float StateManager::GetCurrentTime()
+{
+	return m_timer.GetTime();
+}
 
 void StateManager::ClearStates()
 {
@@ -348,11 +348,6 @@ void StateManager::ClearStates()
 
 	m_states.clear();
 }
-
-//void StateManager::SetContainer(ObjectContainer * _container)
-//{
-//	m_pOBC = _container;
-//}
 
 void StateManager::EditorUpdate(const float /*_dt*/)
 {

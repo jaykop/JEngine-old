@@ -5,6 +5,8 @@
 JE_BEGIN
 
 class Light;
+struct Telegram;
+
 class LightControllerBuilder : public ComponentBuilder
 {
 
@@ -41,6 +43,7 @@ private:
 	void Update(const float _dt) override;
 	void Close() override;
 	void Unload() override;
+	bool OnMessage(Telegram& msg) override { msg; return false; }
 
 	Light* m_light;
 

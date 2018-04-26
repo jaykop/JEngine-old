@@ -1,5 +1,8 @@
 #pragma once
 #include <iostream>
+#include "Macro.h"
+
+JE_BEGIN;
 
 struct Telegram
 {
@@ -8,9 +11,9 @@ struct Telegram
 	float dispatchTime = 0.f;
 	void *extraInfo = nullptr;
 
-	Telegram(unsigned _senderId, unsigned _receiverId, 
+	Telegram(float _dispatchTime, unsigned _senderId, unsigned _receiverId, 
 		const char* _msg, void* _extraInfo)
-		: senderId(_senderId), receiverId(_receiverId),
+		: dispatchTime(_dispatchTime), senderId(_senderId), receiverId(_receiverId),
 	message(_msg), extraInfo(_extraInfo) {}
 };
 
@@ -35,10 +38,16 @@ inline bool operator<(const Telegram& left, const Telegram& right)
 
 inline std::ostream& operator<< (std::ostream& os, const Telegram& msg)
 {
-	os << "Time: " << msg.dispatchTime << " Sender: " << msg.senderId
+	os << "*Telegram - Time: " << msg.dispatchTime << " Sender: " << msg.senderId
 		<< " Receiver: " << msg.receiverId << " Message: " << msg.message << "\n";
 
 	return os;
+}
+
+inline void PrintMessageInfo(const Telegram& msg)
+{
+	JE_DEBUG_PRINT("*Telegram - Time: %f / Sender: %i / Receiver: %i / Message: %s\n", 
+		msg.dispatchTime, msg.senderId, msg.receiverId, msg.message);
 }
 
 template <class T>
@@ -49,3 +58,5 @@ inline T DereferenceToType(void *p)
 	// It also will apply a const_cast if it absolutely must.
 	return *(T*)(p);
 }
+
+JE_END;

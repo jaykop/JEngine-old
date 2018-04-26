@@ -5,6 +5,8 @@
 JE_BEGIN
 
 class Object;
+struct Telegram;
+
 class TestLogicBuilder : public ComponentBuilder
 {
 
@@ -44,6 +46,7 @@ private:
 	void Update(const float _dt) override;
 	void Close() override;
 	void Unload() override;
+	bool OnMessage(Telegram& msg) override { msg; return false; }
 
 	void EditorUpdate(const float _dt) override;
 

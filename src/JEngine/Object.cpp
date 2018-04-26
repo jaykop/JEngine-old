@@ -1,7 +1,9 @@
 #include "Component.h"
+#include "CustomComponent.h"
 #include "ObjectFactory.h"
 #include "ObjectContainer.h"
 #include "ComponentManager.h"
+#include "Telegram.h"
 #include "imgui.h"
 
 JE_BEGIN
@@ -98,10 +100,9 @@ bool Object::HasChild(const char* _name)
 		return true;
 
 	// Unless...
-	else {
-		JE_DEBUG_PRINT("!Object - No such name of enrolled object: %s\n", _name);
-		return false;
-	}
+	JE_DEBUG_PRINT("!Object - No such name of enrolled object: %s\n", _name);
+	return false;
+
 }
 
 void Object::SetParent(Object* _pObject)
@@ -189,10 +190,8 @@ Component* Object::GetComponent(const char* _componentName)
 	if (found != m_componentMap.end())
 		return found->second;
 
-	else {
-		JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", _componentName);
-		return nullptr;
-	}
+	JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", _componentName);
+	return nullptr;
 }
 
 bool Object::HasComponent(const char* _componentName) const
@@ -206,10 +205,9 @@ bool Object::HasComponent(const char* _componentName) const
 	if (found != m_componentMap.end())
 		return true;
 
-	else {
-		JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", _componentName);
-		return false;
-	}
+	JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", _componentName);
+	return false;
+
 }
 
 void Object::RemoveComponent(const char* _componentName)
@@ -227,6 +225,19 @@ void Object::RemoveComponent(const char* _componentName)
 	else 
 		JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", _componentName);
 	
+}
+
+bool Object::HandleMessage(Telegram& message)
+{
+	if (m_States.m_pCurrentState
+		&& m_States.m_pCurrentState->OnMessage(message))
+		return true;
+
+	if (m_States.m_pGlobalState
+		&& m_States.m_pGlobalState->OnMessage(message))
+		return true;
+
+	return false;
 }
 
 void Object::EditorUpdate(const float /*_dt*/)

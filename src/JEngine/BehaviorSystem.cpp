@@ -1,5 +1,6 @@
 #include "CustomComponent.h"
 #include "BehaviorSystem.h"
+#include "MessageDispatcher.h"
 
 JE_BEGIN
 
@@ -30,23 +31,24 @@ void BehaviorSystem::Load(CR_RJDoc /*_data*/)
 
 void BehaviorSystem::Init()
 {
-	for (auto behavior : m_behaviors){
+	for (auto behavior : m_behaviors)
 		behavior->Init();
-	}
 }
 
 void BehaviorSystem::Update(const float _dt)
 {
-	for (auto behavior : m_behaviors) {
+	// Update normal game logics
+	for (auto behavior : m_behaviors) 
 		behavior->Update(_dt);
-	}
+
+	// Deal with delayed event
+	DISPATCHER::DispatchDelayedMessage();
 }
 
 void BehaviorSystem::Close()
 {
-	for (auto behavior : m_behaviors) {
+	for (auto behavior : m_behaviors) 
 		behavior->Close();
-	}
 }
 
 void BehaviorSystem::Unload()

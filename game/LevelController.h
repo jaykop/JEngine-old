@@ -2,9 +2,9 @@
 #include "CustomComponent.h"
 #include "ComponentBuilder.h"
 
-#include "Vector3.h"
-
 JE_BEGIN
+
+struct Telegram;
 
 class LevelControllerBuilder : public ComponentBuilder
 {
@@ -43,6 +43,7 @@ private:
 	void Update(const float _dt) override;
 	void Close() override;
 	void Unload() override;
+	bool OnMessage(Telegram& msg) override { msg;  return false; }
 
 	void EditorUpdate(const float _dt) override;
 };

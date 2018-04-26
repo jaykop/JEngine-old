@@ -16,9 +16,12 @@ class ObjectContainer {
 public:
 
 	void		RemoveObject(const char* _name);
+	void		RemoveObject(unsigned _id);
 	Object*		GetObject(const char* _name);
-	ObjectMap&	GetObjectMap();
+	Object*		GetObject(unsigned _id);
 	bool		HasObject(const char* _name);
+	bool		HasObject(unsigned _id);
+	ObjectMap&	GetObjectMap();
 
 	// These functions are able to
 	// connect to objects directly

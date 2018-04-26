@@ -5,13 +5,22 @@
 
 JE_BEGIN
 
+struct Telegram;
 class Object;
 class Component;
+class CustomComponent;
 
 using ChildObjects = std::unordered_map<std::string, Object*>;
 using ComponentMap = std::unordered_map<std::string, Component*>;
 
 class Object {
+
+	struct States
+	{
+		CustomComponent* m_pPreviousState = nullptr;
+		CustomComponent* m_pCurrentState = nullptr;
+		CustomComponent* m_pGlobalState = nullptr;
+	};
 
 public:
 
@@ -19,6 +28,7 @@ public:
 	friend class ObjectFactory;
 	friend class ObjectContainer;
 	friend class ImguiManager;
+	friend class MessageDispatcher;
 
 	Object(const char* _name);
 	~Object();
@@ -68,9 +78,12 @@ private:
 	bool		HasComponent(const char* _componentName) const;
 	void		RemoveComponent(const char* _componentName);
 
+	bool		HandleMessage(Telegram& message);
+
 	unsigned			m_id;
 	bool				m_active;
 	Object*				m_pParent;
+	States				m_States;
 	std::string			m_name;
 	ChildObjects		m_childObjs;
 	ComponentMap		m_componentMap;
