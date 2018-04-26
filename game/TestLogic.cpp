@@ -29,8 +29,10 @@ void TestLogic::Init()
 	//if (a.joinable())
 	//	a.join();
 
-	m_ortho = OBJECT::GetCurrentContainer()->GetObject("OrthogonalSprite");
-	m_pers = OBJECT::GetCurrentContainer()->GetObject("PerspectiveModel");
+	m_ortho = CONTAINER->GetObject("OrthogonalSprite");
+	m_pers = CONTAINER->GetObject("PerspectiveModel");
+	CONTAINER->GET_COMPONENT("Model", Sprite);
+	CONTAINER->GET_COMPONENT(5, Sprite);
 }
 
 void TestLogic::Update(const float /*_dt*/)

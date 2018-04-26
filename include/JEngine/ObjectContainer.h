@@ -23,20 +23,6 @@ public:
 	bool		HasObject(unsigned _id);
 	ObjectMap&	GetObjectMap();
 
-	// These functions are able to
-	// connect to objects directly
-	template <typename ComponentType>
-	inline void				AddComponent(const char* _toObject);
-
-	template <typename ComponentType>
-	inline ComponentType*	GetComponent(const char* _fromObject);
-
-	template <typename ComponentType>
-	inline bool				HasComponent(const char* _fromObject);
-
-	template <typename ComponentType>
-	inline void				RemoveComponent(const char* _fromObject);
-
 	template <typename ComponentType>
 	inline ObjectMap		GetObjects();
 
@@ -64,3 +50,8 @@ using OBJECT = ObjectContainer;
 JE_END
 
 #include "ObjectContainer.inl"
+
+#define ADD_COMPONENT(o, c)		GetObject(o)->AddComponent<c>()
+#define GET_COMPONENT(o, c)		GetObject(o)->GetComponent<c>()
+#define REMOVE_COMPONENT(o, c)	GetObject(o)->RemoveComponent<c>()
+#define HAS_COMPONENT(o, c)		GetObject(o)->HasComponent<c>()
