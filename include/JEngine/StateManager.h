@@ -35,6 +35,7 @@ public:
 	static State*		GetCurrentState(void);
 	static State*		GetState(const char* _stateName);
 	static bool			HasState(const char* _stateName);
+	static float		GetCurrentTime();
 
 private:
 

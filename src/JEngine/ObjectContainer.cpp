@@ -28,7 +28,23 @@ void ObjectContainer::RemoveObject(const char* _name)
 		JE_DEBUG_PRINT("!ObjectContainer - No such name of enrolled object: %s\n", _name);
 }
 
-Object* ObjectContainer::GetObject(const char * _name)
+void ObjectContainer::RemoveObject(unsigned _id)
+{
+	bool notFound = true;
+	for (auto object : m_objectMap) {
+		if (_id == object.second->GetId()) {
+			IMGUI::RemoveObjectEditor(object.second);
+			delete object.second;
+			notFound = false;
+			object.second = nullptr;
+		}
+	}
+
+	if (notFound)
+		JE_DEBUG_PRINT("!ObjectContainer - No such name of enrolled object: %i\n", _id);
+}
+
+	Object* ObjectContainer::GetObject(const char *_name)
 {
 	// Find the one to remove
 	auto found = m_objectMap.find(_name);
@@ -37,10 +53,21 @@ Object* ObjectContainer::GetObject(const char * _name)
 	if (found != m_objectMap.end())
 		return found->second;
 
-	else {
-		JE_DEBUG_PRINT("!ObjectContainer - No such name of enrolled object: %s\n", _name);
-		return nullptr;
+	JE_DEBUG_PRINT("!ObjectContainer - No such name of enrolled object: %s\n", _name);
+	return nullptr;
+	
+}
+
+Object* ObjectContainer::GetObject(unsigned _id)
+{
+	for (auto object : m_objectMap) {
+		if (_id == object.second->GetId())	{
+			return object.second;
+		}
 	}
+
+	JE_DEBUG_PRINT("!ObjectContainer - No such name of enrolled object: %i\n", _id);
+	return nullptr;
 }
 
 ObjectMap& ObjectContainer::GetObjectMap()
@@ -57,6 +84,19 @@ bool ObjectContainer::HasObject(const char* _name)
 	if (found != m_objectMap.end()) 
 		return true;
 
+	JE_DEBUG_PRINT("!ObjectContainer - No such name of enrolled object: %s\n", _name);
+	return false;
+}
+
+bool ObjectContainer::HasObject(unsigned _id)
+{
+	for (auto object : m_objectMap) {
+		if (_id == object.second->GetId()) {
+			return true;
+		}
+	}
+
+	JE_DEBUG_PRINT("!ObjectContainer - No such name of enrolled object: %i\n", _id);
 	return false;
 }
 

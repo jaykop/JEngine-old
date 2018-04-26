@@ -6,6 +6,8 @@
 
 JE_BEGIN
 
+struct Telegram;
+
 class CameraControllerBuilder : public ComponentBuilder
 {
 
@@ -44,6 +46,7 @@ private:
 	void Update(const float _dt) override;
 	void Close() override;
 	void Unload() override;
+	bool OnMessage(Telegram& msg) override { msg; return false; }
 
 	Camera* m_camera;
 	vec3 m_position, m_target;
