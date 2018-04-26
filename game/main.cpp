@@ -23,8 +23,10 @@ int main(int argc, char* args[]) {
 	JE_UNUSED_PARAM(argc);	// No argc - Block the warnings
 	JE_UNUSED_PARAM(args);	// No args - Block the warnings
 
+	bool imguiToggle = true;
+
 	JEngine::RegisterAssets();
-	JEngine::Run();
+	JEngine::Run(imguiToggle);
 
 	return 0;
 

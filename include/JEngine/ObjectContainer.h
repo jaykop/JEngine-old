@@ -59,7 +59,7 @@ private:
 };
 
 using OBJECT = ObjectContainer;
-#define ObjContainer OBJECT::GetCurrentContainer()
+#define CONTAINER OBJECT::GetCurrentContainer()
 
 JE_END
 

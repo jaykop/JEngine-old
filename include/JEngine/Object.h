@@ -65,7 +65,15 @@ public:
 	template<typename ComponentType>
 	inline void				RemoveComponent();
 
-	void	ChangeState(CustomComponent* _pNextState);
+	template<typename ComponentType>
+	inline void				SetGlobalState();
+	
+	template<typename ComponentType>
+	inline void				SetCurretState();
+	
+	template<typename ComponentType>
+	inline void				ChangeState();
+	
 	void	RevertToPreviousState();
 
 private:
@@ -91,7 +99,6 @@ private:
 	std::string			m_name;
 	ChildObjects		m_childObjs;
 	ComponentMap		m_componentMap;
-	ObjectContainer*	m_pOBC;
 	
 	// statiic editor variable and function
 	void	EditorUpdate(const float _dt);

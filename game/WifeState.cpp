@@ -33,8 +33,7 @@ void WifeState::Init()
 void WifeState::Update(const float _dt)
 {
 	if (m_natureCalling > 10)
-		m_pOwner->ChangeState(
-			JE_CREATE_CUSTOM_COMPONENT(GoToBathroom, m_pOwner));
+		m_pOwner->ChangeState<GoToBathroom>();
 }
 
 void WifeState::Close()
@@ -151,7 +150,7 @@ bool CookStew::OnMessage(Telegram& msg)
 			nullptr);
 
 		m_pOwner->GetComponent<WifeState>()->m_isCooking = false;
-		m_pOwner->ChangeState(JE_CREATE_CUSTOM_COMPONENT(DoHousework, m_pOwner));
+		m_pOwner->ChangeState<DoHousework>();
 
 		return true;
 
@@ -190,7 +189,7 @@ void GoToBathroom::Init()
 void GoToBathroom::Update(const float _dt)
 {
 	m_pOwner->GetComponent<WifeState>()->m_natureCalling = 0;
-	m_pOwner->ChangeState(JE_CREATE_CUSTOM_COMPONENT(DoHousework, m_pOwner));
+	m_pOwner->ChangeState<DoHousework>();
 }
 
 void GoToBathroom::Close()

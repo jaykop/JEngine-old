@@ -98,17 +98,17 @@ void AssetManager::LoadBuiltInComponents()
 	// Load built-in components
 
 	// Physics components
-	JE_ADD_COMPONENT(Transform);
+	JE_REGISTER_COMPONENT(Transform);
 
 	// Graphic components
-	JE_ADD_COMPONENT(Text);
-	JE_ADD_COMPONENT(Model);
-	JE_ADD_COMPONENT(Camera);
-	JE_ADD_COMPONENT(Sprite);
-	JE_ADD_COMPONENT(Emitter);
-	JE_ADD_COMPONENT(Light);
-	JE_ADD_COMPONENT(Material);
-	JE_ADD_COMPONENT(Animation);
+	JE_REGISTER_COMPONENT(Text);
+	JE_REGISTER_COMPONENT(Model);
+	JE_REGISTER_COMPONENT(Camera);
+	JE_REGISTER_COMPONENT(Sprite);
+	JE_REGISTER_COMPONENT(Emitter);
+	JE_REGISTER_COMPONENT(Light);
+	JE_REGISTER_COMPONENT(Material);
+	JE_REGISTER_COMPONENT(Animation);
 
 	JE_DEBUG_PRINT("*AssetManager - Loaded bulit-in components.\n");
 }
