@@ -7,9 +7,9 @@ JE_BEGIN
 //////////////////////////////////////////////////////////////////////////
 // static variables
 //////////////////////////////////////////////////////////////////////////
-Object*		ObjectFactory::m_pLastMade = nullptr;
-unsigned	ObjectFactory::m_registerNumber = 0;
-bool		ObjectFactory::m_added = true;
+Object*		FACTORY::m_pLastMade = nullptr;
+unsigned	FACTORY::m_registerNumber = 0;
+bool		FACTORY::m_added = true;
 
 void ObjectFactory::CreateObject(const char* _name)
 {

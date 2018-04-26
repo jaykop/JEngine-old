@@ -7,23 +7,23 @@ JE_BEGIN
 //////////////////////////////////////////////////////////////////////////
 // static variables
 //////////////////////////////////////////////////////////////////////////
-float				GLManager::m_width = 0;
-float				GLManager::m_height = 0;
-GLint				GLManager::m_uniform[] = { 0 },
-					GLManager::m_buffers,
-					GLManager::m_samples,
-					GLManager::m_Attributes;
-GLuint				GLManager::m_vao[] = { 0 },
-					GLManager::m_vbo[] = { 0 },
-					GLManager::m_ebo[] = { 0 },
-					GLManager::m_fbo = 0, 
-					GLManager::m_depthBuffer = 0,
-					GLManager::m_renderTarget = 0;
-GLManager::Shaders	GLManager::m_shader;
-GLManager::DrawMode GLManager::m_mode = DrawMode::DRAW_FILL;
-const GLubyte		*GLManager::m_renderer = nullptr, *GLManager::m_vendor = nullptr,
-					*GLManager::m_version = nullptr, *GLManager::m_glslVersion = nullptr;
-unsigned			GLManager::m_drawMode = GL_TRIANGLES;
+float			GLM::m_width = 0;
+float			GLM::m_height = 0;
+GLint			GLM::m_uniform[] = { 0 },
+				GLM::m_buffers,
+				GLM::m_samples,
+				GLM::m_Attributes;
+GLuint			GLM::m_vao[] = { 0 },
+				GLM::m_vbo[] = { 0 },
+				GLM::m_ebo[] = { 0 },
+				GLM::m_fbo = 0,
+				GLM::m_depthBuffer = 0,
+				GLM::m_renderTarget = 0;
+GLM::Shaders	GLM::m_shader;
+GLM::DrawMode	GLM::m_mode = DrawMode::DRAW_FILL;
+const GLubyte	*GLM::m_renderer = nullptr, *GLM::m_vendor = nullptr,
+				*GLM::m_version = nullptr, *GLM::m_glslVersion = nullptr;
+unsigned		GLM::m_drawMode = GL_TRIANGLES;
 
 const float GLManager::m_verticesPoint[] = 
 {	// position				// uv		// normals
