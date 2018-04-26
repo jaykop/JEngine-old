@@ -1,4 +1,3 @@
-
 #include "GLManager.h"
 #include "SDL_opengl.h"
 #include "Application.h"
@@ -8,6 +7,7 @@
 #include "Random.h"
 #include "ImguiManager.h"
 #include "imgui.h"
+#include "Debug.h"
 
 JE_BEGIN
 
@@ -21,6 +21,27 @@ SDL_Window*		APP::m_pWindow = nullptr;
 SDL_Surface*	APP::m_pSurface = nullptr;
 SDL_GLContext	APP::m_pContext = nullptr;
 APP::InitData	APP::m_Data = { "demo", false, 800, 600 };
+bool			APP::m_IMGUI = false;
+
+void Application::Run(bool _imgui)
+{
+	m_IMGUI = _imgui;
+
+	// Pop console window 
+	DEBUG_LEAK_CHECKS(-1);
+
+	// and check memory leak
+	DEBUG_CREATE_CONSOLE();
+
+	// Open application
+	if (Initialize())
+		Update();
+
+	Close();
+
+	// Delete console window
+	DEBUG_DESTROY_CONSOLE();
+}
 
 bool Application::Initialize()
 {

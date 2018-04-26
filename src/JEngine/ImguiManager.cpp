@@ -1,8 +1,8 @@
 #include "imgui.h"
 #include "imgui_impl_sdl_gl3.h"
 #include "glew.h"
+#include "Application.h"
 #include "ImguiManager.h"
-#include "Core.h"
 #include "GLManager.h"
 #include "Component.h"
 
@@ -64,7 +64,7 @@ void ImguiManager::RemoveObjectEditor(Object* _object)
 
 	void ImguiManager::Init(SDL_Window* _window)
 {
-	if (CORE::m_IMGUI) {
+	if (APP::m_IMGUI) {
 		m_pWindow = _window;
 		ImGui_ImplSdlGL3_Init(_window);
 	}
@@ -72,13 +72,13 @@ void ImguiManager::RemoveObjectEditor(Object* _object)
 
 void ImguiManager::EventUpdate(SDL_Event* _event)
 {
-	if (CORE::m_IMGUI) 
+	if (APP::m_IMGUI)
 		ImGui_ImplSdlGL3_ProcessEvent(_event);
 }
 
 void ImguiManager::Update(const float _dt)
 {
-	if (CORE::m_IMGUI) {
+	if (APP::m_IMGUI) {
 				
 		ImVec4 clear_color = ImColor(114, 144, 154);
 		ImGui_ImplSdlGL3_NewFrame(m_pWindow);
@@ -117,7 +117,7 @@ void ImguiManager::Update(const float _dt)
 
 void ImguiManager::Close()
 {
-	if (CORE::m_IMGUI) 
+	if (APP::m_IMGUI)
 		ImGui_ImplSdlGL3_Shutdown();
 }
 

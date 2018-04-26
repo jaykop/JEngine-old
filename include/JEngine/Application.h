@@ -23,9 +23,11 @@ JE_BEGIN
 //////////////////////////////////////////////////////////////////////////
 class Application {
 
-	friend class Core;
+	friend class ImguiManager;
 
 public:
+
+	static void Run(bool _imgui);
 
 private:
 
@@ -59,6 +61,7 @@ private:
 	static SDL_GLContext	m_pContext;	// SDL GL context
 	static SDL_Surface*		m_pSurface; // SDL screen surface
 	static int				m_buffers, m_samples;
+	static bool				m_IMGUI;
 };
 
 using APP = Application;
