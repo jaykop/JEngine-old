@@ -21,6 +21,7 @@ void ObjectFactory::CreateObject(const char* _name)
 	// unless just make new object
 	else {
 		m_added = false;
+		++m_registerNumber;
 		m_pLastMade = new Object(_name);
 	}
 }
@@ -41,7 +42,6 @@ void ObjectFactory::AddCreatedObject()
 	m_pLastMade->m_pOBC = OBJECT::m_pSharedContainer;
 	m_pLastMade->RegisterComponents();
 	m_added = true;
-	++m_registerNumber;
 }
 
 JE_END

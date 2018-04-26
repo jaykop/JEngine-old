@@ -1,6 +1,5 @@
 #include "Object.h"
 #include "ObjectContainer.h"
-#include "ComponentManager.h"
 #include "imgui.h"
 #include "ImguiManager.h"
 
