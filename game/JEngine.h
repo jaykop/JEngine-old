@@ -5,5 +5,5 @@ class JEngine
 public:
 
 	static void RegisterAssets();
-	static void Run();
+	static void Run(bool _imguiToggle);
 };

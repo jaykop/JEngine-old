@@ -22,7 +22,7 @@ inline void Object::AddComponent()
 	}
 
 	else
-		JE_DEBUG_PRINT("!Object - Cannot add identical component again: %s\n", s_componentName);
+		JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", s_componentName);
 }
 
 template<typename ComponentType>
@@ -75,6 +75,70 @@ inline void Object::RemoveComponent()
 		IMGUI::RemoveComponentEditor(found->second);
 		delete found->second;
 		found->second = nullptr;
+	}
+
+	else
+		JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", s_componentName);
+}
+
+template<typename ComponentType>
+inline void Object::SetGlobalState()
+{
+	if (!m_StateMachine.m_pGlobalState) {
+		static const char* s_componentName;
+		s_componentName = typeid(ComponentType).name();
+		auto found = m_componentMap.find(s_componentName);
+
+		// Found nothing exsting component type
+		// Insert new component to the list
+		if (found == m_componentMap.end())
+			m_StateMachine.m_pGlobalState = JE_CREATE_CUSTOM_COMPONENT(ComponentType, this);
+
+		else
+			JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", s_componentName);
+	}
+
+	else
+		JE_DEBUG_PRINT("!Object - There is an allocated global state already: %s\n", s_componentName);
+}
+
+template<typename ComponentType>
+inline void Object::SetCurretState()
+{
+	if (!m_StateMachine.m_pCurrentState) {
+
+		static const char* s_componentName;
+		s_componentName = typeid(ComponentType).name();
+		auto found = m_componentMap.find(s_componentName);
+
+		// Found nothing exsting component type
+		// Insert new component to the list
+		if (found == m_componentMap.end())
+			m_StateMachine.m_pCurrentState = JE_CREATE_CUSTOM_COMPONENT(ComponentType, this);
+
+		else
+			JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", s_componentName);
+	}
+
+	else
+		JE_DEBUG_PRINT("!Object - There is an allocated current state already: %s\n", s_componentName);
+}
+
+template<typename ComponentType>
+inline void Object::ChangeState()
+{
+	static const char* s_componentName;
+	s_componentName = typeid(ComponentType).name();
+	auto found = m_componentMap.find(s_componentName);
+
+	// Found nothing exsting component type
+	// Insert new component to the list
+	if (found == m_componentMap.end()) {
+		m_StateMachine.m_pPreviousState = m_StateMachine.m_pCurrentState;
+		m_StateMachine.m_pPreviousState->Close();
+		m_StateMachine.m_pPreviousState->Unload();
+		m_StateMachine.m_pCurrentState = JE_CREATE_CUSTOM_COMPONENT(ComponentType, this);
+		m_StateMachine.m_pCurrentState->Init();
 	}
 
 	else

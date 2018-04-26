@@ -68,7 +68,7 @@ void Object::RemoveChild(const char* _name)
 	// If there is, remove
 	if (found != m_childObjs.end()) {
 		m_childObjs.erase(_name);		// Remove from the child list
-		m_pOBC->RemoveObject(_name);	// Remove from obj manager
+		CONTAINER->RemoveObject(_name);	// Remove from obj manager
 	}
 		
 	else 
@@ -155,7 +155,7 @@ void Object::ClearComponents()
 void Object::ClearChildren()
 {
 	for (auto child : m_childObjs)
-		m_pOBC->RemoveObject(child.second->GetName().c_str());
+		CONTAINER->RemoveObject(child.second->GetName().c_str());
 
 	m_childObjs.clear();
 }
@@ -241,23 +241,18 @@ bool Object::HandleMessage(Telegram& _message)
 	return false;
 }
 
-void Object::ChangeState(CustomComponent* _pNextState)
+void Object::RevertToPreviousState()
 {
-	if (_pNextState) {
+	if (m_StateMachine.m_pPreviousState) {
 		m_StateMachine.m_pPreviousState = m_StateMachine.m_pCurrentState;
 		m_StateMachine.m_pPreviousState->Close();
 		m_StateMachine.m_pPreviousState->Unload();
-		m_StateMachine.m_pCurrentState = _pNextState;
+		m_StateMachine.m_pCurrentState = m_StateMachine.m_pPreviousState;
 		m_StateMachine.m_pCurrentState->Init();
 	}
 
 	else
 		JE_DEBUG_PRINT("!Object - Set next state of %s to nullptr.\n", m_name.c_str());
-}
-
-void Object::RevertToPreviousState()
-{
-	ChangeState(m_StateMachine.m_pPreviousState);
 }
 
 void Object::ClearStateMachine()
@@ -296,7 +291,7 @@ void Object::EditorUpdate(const float /*_dt*/)
 		else
 			ImGui::Text("*Parent Object: None");
 
-		if (m_componentMap.size()) {
+		if (!m_componentMap.empty()) {
 			ImGui::Text("*Component List:");
 			for (auto component : m_componentMap) {
 				if (ImGui::Button(COMPONENT::TypeTranslator(component.first.c_str())))
@@ -306,7 +301,7 @@ void Object::EditorUpdate(const float /*_dt*/)
 		else
 			ImGui::Text("*Component List: None");
 
-		if (m_childObjs.size()) {
+		if (!m_componentMap.empty()) {
 			ImGui::Text("*Children List:");
 			for (auto child : m_childObjs)
 				ImGui::Button(child.second->m_name.c_str());

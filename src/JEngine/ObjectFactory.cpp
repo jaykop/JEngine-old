@@ -39,7 +39,6 @@ void ObjectFactory::AddCreatedObject()
 		ObjectMap::value_type(
 			m_pLastMade->m_name, m_pLastMade));
 	IMGUI::AddObjectEditor(m_pLastMade);
-	m_pLastMade->m_pOBC = OBJECT::m_pSharedContainer;
 	m_pLastMade->RegisterComponents();
 	m_added = true;
 }

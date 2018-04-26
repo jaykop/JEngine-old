@@ -34,11 +34,10 @@ void BullyState::Init()
 void BullyState::Update(const float /*_dt*/)
 {
 	Location whereIsMiner = 
-		ObjContainer->GetObject(m_minerId)->GetComponent<MinerState>()->m_location;
+		CONTAINER->GetObject(m_minerId)->GetComponent<MinerState>()->m_location;
 
 	if (m_hateMiner >= 5 && whereIsMiner) 
-		m_pOwner->ChangeState(
-			JE_CREATE_CUSTOM_COMPONENT(GoFight, m_pOwner));
+		m_pOwner->ChangeState<GoFight>();
 }
 
 void BullyState::Close()
