@@ -9,27 +9,17 @@ class Text;
 class Object;
 struct Telegram;
 
+JE_DECLARE_COMPONENT_BUILDER(MinerState)
+JE_DECLARE_COMPONENT_BUILDER(BeatBully)
+JE_DECLARE_COMPONENT_BUILDER(EatStew)
+JE_DECLARE_COMPONENT_BUILDER(GoHomeAndSleepTilRested)
+JE_DECLARE_COMPONENT_BUILDER(QuenchThirst)
+JE_DECLARE_COMPONENT_BUILDER(VisitBankAndDepositGold)
+JE_DECLARE_COMPONENT_BUILDER(EnterMineAndDigForNugget)
+
 /////////////////////////////////////////////////////////////////////////
 // Global miner state
 /////////////////////////////////////////////////////////////////////////
-class MinerStateBuilder : public ComponentBuilder
-{
-
-	friend class JEngine;
-
-public:
-
-private:
-
-	MinerStateBuilder();
-	~MinerStateBuilder() {};
-	MinerStateBuilder(const MinerStateBuilder& /*_copy*/) = delete;
-	void operator=(const MinerStateBuilder& /*_copy*/) = delete;
-
-	CustomComponent* CreateComponent(Object* _pOwner) const override;
-
-};
-
 class MinerState : public CustomComponent
 {
 	friend class ComponentManager;
@@ -62,24 +52,6 @@ private:
 /////////////////////////////////////////////////////////////////////////
 // BeatBully state
 /////////////////////////////////////////////////////////////////////////
-class BeatBullyBuilder : public ComponentBuilder
-{
-
-	friend class JEngine;
-
-public:
-
-private:
-
-	BeatBullyBuilder();
-	~BeatBullyBuilder() {};
-	BeatBullyBuilder(const BeatBullyBuilder& /*_copy*/) = delete;
-	void operator=(const BeatBullyBuilder& /*_copy*/) = delete;
-
-	CustomComponent* CreateComponent(Object* _pOwner) const override;
-
-};
-
 class BeatBully : public CustomComponent
 {
 	friend class ComponentManager;
@@ -110,24 +82,6 @@ private:
 /////////////////////////////////////////////////////////////////////////
 // EatStew state
 /////////////////////////////////////////////////////////////////////////
-class EatStewBuilder : public ComponentBuilder
-{
-
-	friend class JEngine;
-
-public:
-
-private:
-
-	EatStewBuilder();
-	~EatStewBuilder() {};
-	EatStewBuilder(const EatStewBuilder& /*_copy*/) = delete;
-	void operator=(const EatStewBuilder& /*_copy*/) = delete;
-
-	CustomComponent* CreateComponent(Object* _pOwner) const override;
-
-};
-
 class EatStew : public CustomComponent
 {
 	friend class ComponentManager;
@@ -157,24 +111,6 @@ private:
 /////////////////////////////////////////////////////////////////////////
 // GoHomeAndSleepTilRested state
 /////////////////////////////////////////////////////////////////////////
-class GoHomeAndSleepTilRestedBuilder : public ComponentBuilder
-{
-
-	friend class JEngine;
-
-public:
-
-private:
-
-	GoHomeAndSleepTilRestedBuilder();
-	~GoHomeAndSleepTilRestedBuilder() {};
-	GoHomeAndSleepTilRestedBuilder(const GoHomeAndSleepTilRestedBuilder& /*_copy*/) = delete;
-	void operator=(const GoHomeAndSleepTilRestedBuilder& /*_copy*/) = delete;
-
-	CustomComponent* CreateComponent(Object* _pOwner) const override;
-
-};
-
 class GoHomeAndSleepTilRested : public CustomComponent
 {
 	friend class ComponentManager;
@@ -204,24 +140,6 @@ private:
 /////////////////////////////////////////////////////////////////////////
 // QuenchThirst state
 /////////////////////////////////////////////////////////////////////////
-class QuenchThirstBuilder : public ComponentBuilder
-{
-
-	friend class JEngine;
-
-public:
-
-private:
-
-	QuenchThirstBuilder();
-	~QuenchThirstBuilder() {};
-	QuenchThirstBuilder(const QuenchThirstBuilder& /*_copy*/) = delete;
-	void operator=(const QuenchThirstBuilder& /*_copy*/) = delete;
-
-	CustomComponent* CreateComponent(Object* _pOwner) const override;
-
-};
-
 class QuenchThirst : public CustomComponent
 {
 	friend class ComponentManager;
@@ -251,24 +169,6 @@ private:
 /////////////////////////////////////////////////////////////////////////
 // VisitBankAndDepositGold state
 /////////////////////////////////////////////////////////////////////////
-class VisitBankAndDepositGoldBuilder : public ComponentBuilder
-{
-
-	friend class JEngine;
-
-public:
-
-private:
-
-	VisitBankAndDepositGoldBuilder();
-	~VisitBankAndDepositGoldBuilder() {};
-	VisitBankAndDepositGoldBuilder(const VisitBankAndDepositGoldBuilder& /*_copy*/) = delete;
-	void operator=(const VisitBankAndDepositGoldBuilder& /*_copy*/) = delete;
-
-	CustomComponent* CreateComponent(Object* _pOwner) const override;
-
-};
-
 class VisitBankAndDepositGold : public CustomComponent
 {
 	friend class ComponentManager;
@@ -298,24 +198,6 @@ private:
 /////////////////////////////////////////////////////////////////////////
 // EnterMineAndDigForNugget state
 /////////////////////////////////////////////////////////////////////////
-class EnterMineAndDigForNuggetBuilder : public ComponentBuilder
-{
-
-	friend class JEngine;
-
-public:
-
-private:
-
-	EnterMineAndDigForNuggetBuilder();
-	~EnterMineAndDigForNuggetBuilder() {};
-	EnterMineAndDigForNuggetBuilder(const EnterMineAndDigForNuggetBuilder& /*_copy*/) = delete;
-	void operator=(const EnterMineAndDigForNuggetBuilder& /*_copy*/) = delete;
-
-	CustomComponent* CreateComponent(Object* _pOwner) const override;
-
-};
-
 class EnterMineAndDigForNugget : public CustomComponent
 {
 	friend class ComponentManager;

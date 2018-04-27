@@ -7,14 +7,9 @@ JE_BEGIN
 /////////////////////////////////////////////////////////////////////////
 // Global bully state
 /////////////////////////////////////////////////////////////////////////
-BullyStateBuilder::BullyStateBuilder()
-	:ComponentBuilder()
-{}
-
-CustomComponent* BullyStateBuilder::CreateComponent(Object* _pOwner) const
-{
-	return new BullyState(_pOwner);
-}
+JE_DEFINE_COMPONENT_BUILDER(BullyState)
+JE_DEFINE_COMPONENT_BUILDER(JustHatingMiner)
+JE_DEFINE_COMPONENT_BUILDER(GoFight)
 
 BullyState::BullyState(Object* _pObject)
 	:CustomComponent(_pObject)
@@ -51,15 +46,6 @@ bool BullyState::OnMessage(Telegram& /*msg*/)
 /////////////////////////////////////////////////////////////////////////
 // Hating state
 /////////////////////////////////////////////////////////////////////////
-JustHatingMinerBuilder::JustHatingMinerBuilder()
-	:ComponentBuilder()
-{}
-
-CustomComponent* JustHatingMinerBuilder::CreateComponent(Object* _pOwner) const
-{
-	return new JustHatingMiner(_pOwner);
-}
-
 JustHatingMiner::JustHatingMiner(Object* _pObject)
 	:CustomComponent(_pObject)
 {}
@@ -92,15 +78,6 @@ bool JustHatingMiner::OnMessage(Telegram& /*msg*/)
 /////////////////////////////////////////////////////////////////////////
 // Go fight to miner
 /////////////////////////////////////////////////////////////////////////
-GoFightBuilder::GoFightBuilder()
-	:ComponentBuilder()
-{}
-
-CustomComponent* GoFightBuilder::CreateComponent(Object* _pOwner) const
-{
-	return new GoFight(_pOwner);
-}
-
 GoFight::GoFight(Object* _pObject)
 	:CustomComponent(_pObject)
 {}

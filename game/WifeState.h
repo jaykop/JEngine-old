@@ -8,27 +8,14 @@ JE_BEGIN
 class Object;
 struct Telegram;
 
+JE_DECLARE_COMPONENT_BUILDER(WifeState)
+JE_DECLARE_COMPONENT_BUILDER(DoHousework)
+JE_DECLARE_COMPONENT_BUILDER(CookStew)
+JE_DECLARE_COMPONENT_BUILDER(GoToBathroom)
+
 /////////////////////////////////////////////////////////////////////////
 // Global wife state
 /////////////////////////////////////////////////////////////////////////
-class WifeStateBuilder : public ComponentBuilder
-{
-
-	friend class JEngine;
-
-public:
-
-private:
-
-	WifeStateBuilder();
-	~WifeStateBuilder() {};
-	WifeStateBuilder(const WifeStateBuilder& /*_copy*/) = delete;
-	void operator=(const WifeStateBuilder& /*_copy*/) = delete;
-
-	CustomComponent* CreateComponent(Object* _pOwner) const override;
-
-};
-
 class WifeState : public CustomComponent
 {
 	friend class ComponentManager;
@@ -61,24 +48,6 @@ private:
 /////////////////////////////////////////////////////////////////////////
 // Housework state
 /////////////////////////////////////////////////////////////////////////
-class DoHouseworkBuilder : public ComponentBuilder
-{
-
-	friend class JEngine;
-
-public:
-
-private:
-
-	DoHouseworkBuilder();
-	~DoHouseworkBuilder() {};
-	DoHouseworkBuilder(const DoHouseworkBuilder& /*_copy*/) = delete;
-	void operator=(const DoHouseworkBuilder& /*_copy*/) = delete;
-
-	CustomComponent* CreateComponent(Object* _pOwner) const override;
-
-};
-
 class DoHousework : public CustomComponent
 {
 	friend class ComponentManager;
@@ -106,24 +75,6 @@ private:
 /////////////////////////////////////////////////////////////////////////
 // Cook Stew state
 /////////////////////////////////////////////////////////////////////////
-class CookStewBuilder : public ComponentBuilder
-{
-
-	friend class JEngine;
-
-public:
-
-private:
-
-	CookStewBuilder();
-	~CookStewBuilder() {};
-	CookStewBuilder(const CookStewBuilder& /*_copy*/) = delete;
-	void operator=(const CookStewBuilder& /*_copy*/) = delete;
-
-	CustomComponent* CreateComponent(Object* _pOwner) const override;
-
-};
-
 class CookStew : public CustomComponent
 {
 	friend class ComponentManager;
@@ -153,24 +104,6 @@ private:
 /////////////////////////////////////////////////////////////////////////
 // GoToBathroom state
 /////////////////////////////////////////////////////////////////////////
-class GoToBathroomBuilder : public ComponentBuilder
-{
-
-	friend class JEngine;
-
-public:
-
-private:
-
-	GoToBathroomBuilder();
-	~GoToBathroomBuilder() {};
-	GoToBathroomBuilder(const GoToBathroomBuilder& /*_copy*/) = delete;
-	void operator=(const GoToBathroomBuilder& /*_copy*/) = delete;
-
-	CustomComponent* CreateComponent(Object* _pOwner) const override;
-
-};
-
 class GoToBathroom : public CustomComponent
 {
 	friend class ComponentManager;
