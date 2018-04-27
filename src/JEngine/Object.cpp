@@ -163,7 +163,7 @@ void Object::ClearChildren()
 void Object::AddComponent(const char* _componentName)
 {
 	static std::string s_name;
-	s_name = COMPONENT::KeyTranslator(_componentName);
+	s_name = COMPONENT::KeyToTypeTranslator(_componentName);
 	auto found = m_componentMap.find(s_name);
 
 	// Found nothing exsting component type
@@ -184,7 +184,7 @@ Component* Object::GetComponent(const char* _componentName)
 {
 	// Find if there is the one
 	static std::string s_name;
-	s_name = COMPONENT::KeyTranslator(_componentName);
+	s_name = COMPONENT::KeyToTypeTranslator(_componentName);
 	auto found = m_componentMap.find(s_name);
 
 	// If there is return it
@@ -199,7 +199,7 @@ bool Object::HasComponent(const char* _componentName) const
 {
 	// Find if there is the one
 	static std::string s_name;
-	s_name = COMPONENT::KeyTranslator(_componentName);
+	s_name = COMPONENT::KeyToTypeTranslator(_componentName);
 	auto found = m_componentMap.find(s_name);
 
 	// If there is return it
@@ -278,6 +278,50 @@ void Object::ClearStateMachine()
 	}
 }
 
+void Object::SetGlobalState(const char* _componentName)
+{
+	if (!m_StateMachine.m_pGlobalState) {
+		static std::string s_name;
+		s_name = COMPONENT::KeyToTypeTranslator(_componentName);
+		auto found = m_componentMap.find(s_name);
+
+		// Found nothing exsting component type
+		// Insert new component to the list
+		if (found == m_componentMap.end())
+			m_StateMachine.m_pGlobalState 
+				= (CustomComponent*)COMPONENT::CreateComponent(
+					COMPONENT::KeyToTypeTranslator(_componentName), this);
+
+		else
+			JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", _componentName);
+	}
+
+	else
+		JE_DEBUG_PRINT("!Object - There is an allocated global state already: %s\n", _componentName);
+}
+
+void Object::SetCurrentState(const char* _componentName)
+{
+	if (!m_StateMachine.m_pCurrentState) {
+		static std::string s_name;
+		s_name = COMPONENT::KeyToTypeTranslator(_componentName);
+		auto found = m_componentMap.find(s_name);
+
+		// Found nothing exsting component type
+		// Insert new component to the list
+		if (found == m_componentMap.end())
+			m_StateMachine.m_pCurrentState
+				= (CustomComponent*)COMPONENT::CreateComponent(
+					COMPONENT::KeyToTypeTranslator(_componentName), this);
+
+		else
+			JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", _componentName);
+	}
+
+	else
+		JE_DEBUG_PRINT("!Object - There is an allocated current state already: %s\n", _componentName);
+}
+
 void Object::EditorUpdate(const float /*_dt*/)
 {
 	// Searched object window
@@ -294,7 +338,7 @@ void Object::EditorUpdate(const float /*_dt*/)
 		if (!m_componentMap.empty()) {
 			ImGui::Text("*Component List:");
 			for (auto component : m_componentMap) {
-				if (ImGui::Button(COMPONENT::TypeTranslator(component.first.c_str())))
+				if (ImGui::Button(COMPONENT::TypeToKeyTranslator(component.first.c_str())))
 					component.second->m_showEditor = true;
 			}
 		}

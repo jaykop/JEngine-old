@@ -13,6 +13,9 @@
 		{"Key" : "smoke", 			"Directory" : "resource/texture/smoke.png"},
 		{"Key" : "particle", 		"Directory" : "resource/texture/particle.png"},
 		{"Key" : "skybox", 			"Directory" : "resource/texture/skybox.png"},
-		{"Key" : "testAnimation", 	"Directory" : "resource/texture/testAnimation.png"}
+		{"Key" : "testAnimation", 	"Directory" : "resource/texture/testAnimation.png"},
+		{"Key" : "miner", 			"Directory" : "resource/texture/Miner.png"},
+		{"Key" : "wife", 			"Directory" : "resource/texture/Wife.png"},
+		{"Key" : "bully", 			"Directory" : "resource/texture/Bully.png"}
 	]
 }

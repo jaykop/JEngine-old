@@ -24,13 +24,13 @@ void WifeState::Register()
 	SYSTEM::GetBehaviorSystem()->AddBehavior(this);
 }
 
-void WifeState::Load(CR_RJValue _data)
+void WifeState::Load(CR_RJValue /*_data*/)
 {}
 
 void WifeState::Init()
 {}
 
-void WifeState::Update(const float _dt)
+void WifeState::Update(const float /*_dt*/)
 {
 	if (m_natureCalling > 10)
 		m_pOwner->ChangeState<GoToBathroom>();
@@ -186,7 +186,7 @@ void GoToBathroom::Load(CR_RJValue /*_data*/)
 void GoToBathroom::Init()
 {}
 
-void GoToBathroom::Update(const float _dt)
+void GoToBathroom::Update(const float /*_dt*/)
 {
 	m_pOwner->GetComponent<WifeState>()->m_natureCalling = 0;
 	m_pOwner->ChangeState<DoHousework>();

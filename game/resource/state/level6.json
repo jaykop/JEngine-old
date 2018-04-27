@@ -9,17 +9,13 @@
 			"Component" : [
 				{
 					"Type": "Camera",
-					"Values": {"Position" : [50, 50, 150], "Target" : [0, 0, 0],
+					"Values": {"Position" : [0, 0, 150], "Target" : [0, 0, 0],
 						"Up" : [0, 1, 0]}
-				},
-				{
-					"Type": "CameraController",
-					"Values": {}
 				}
 			]
 		},	
 		{
-			"Name" : "Miner",
+			"Name" : "LevelController",
 			"Component" : [
 				{
 					"Type": "LevelController",
@@ -28,19 +24,24 @@
 			]
 		},
 		{
-			"Name" : "Bully",
+			"Name" : "Miner",
 			"Component" : [
 				{
-					"Type": "BullyState",
-					"Values": {}
+					"Type": "Transform",
+					"Values": { "Position" : [-80, 0, 0], "Scale" : [25, 25, 0] }
 				},
 				{
-					"Type": "JustHating",
-					"Values": {}
+					"Type": "Sprite",
+					"Values": { "Texture" : "miner" }
 				},
 				{
-					"Type": "GoFight",
-					"Values": {}
+					"Type": "Text",
+					"Values": { "Font" : "Default",
+								"Text" : ""}
+				},
+				{
+					"Type": "StateMachine",
+					"Values": { "Current" : "GoHomeAndSleepTilRested", "Global" : "MinerState"}
 				}
 			]
 		}

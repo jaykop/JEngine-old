@@ -84,15 +84,17 @@ inline void Object::RemoveComponent()
 template<typename ComponentType>
 inline void Object::SetGlobalState()
 {
+	static const char* s_componentName;
+	s_componentName = typeid(ComponentType).name();
+
 	if (!m_StateMachine.m_pGlobalState) {
-		static const char* s_componentName;
-		s_componentName = typeid(ComponentType).name();
 		auto found = m_componentMap.find(s_componentName);
 
 		// Found nothing exsting component type
 		// Insert new component to the list
 		if (found == m_componentMap.end())
-			m_StateMachine.m_pGlobalState = JE_CREATE_CUSTOM_COMPONENT(ComponentType, this);
+			m_StateMachine.m_pGlobalState 
+				= (CustomComponent*)COMPONENT::CreateComponent(s_componentName, this);
 
 		else
 			JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", s_componentName);
@@ -103,18 +105,20 @@ inline void Object::SetGlobalState()
 }
 
 template<typename ComponentType>
-inline void Object::SetCurretState()
+inline void Object::SetCurrentState()
 {
+	static const char* s_componentName;
+	s_componentName = typeid(ComponentType).name();
+
 	if (!m_StateMachine.m_pCurrentState) {
 
-		static const char* s_componentName;
-		s_componentName = typeid(ComponentType).name();
 		auto found = m_componentMap.find(s_componentName);
 
 		// Found nothing exsting component type
 		// Insert new component to the list
 		if (found == m_componentMap.end())
-			m_StateMachine.m_pCurrentState = JE_CREATE_CUSTOM_COMPONENT(ComponentType, this);
+			m_StateMachine.m_pCurrentState 
+				= (CustomComponent*)COMPONENT::CreateComponent(s_componentName, this);
 
 		else
 			JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", s_componentName);
@@ -137,7 +141,7 @@ inline void Object::ChangeState()
 		m_StateMachine.m_pPreviousState = m_StateMachine.m_pCurrentState;
 		m_StateMachine.m_pPreviousState->Close();
 		m_StateMachine.m_pPreviousState->Unload();
-		m_StateMachine.m_pCurrentState = JE_CREATE_CUSTOM_COMPONENT(ComponentType, this);
+		m_StateMachine.m_pCurrentState = (CustomComponent*)COMPONENT::CreateComponent(s_componentName, this);
 		m_StateMachine.m_pCurrentState->Init();
 	}
 

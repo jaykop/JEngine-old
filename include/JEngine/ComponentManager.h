@@ -20,8 +20,8 @@ class ComponentManager {
 
 public:
 
-	static const char* KeyTranslator(const char* _name);
-	static const char* TypeTranslator(const char* _type);
+	static const char* KeyToTypeTranslator(const char* _name);
+	static const char* TypeToKeyTranslator(const char* _type);
 
 	static Component*	CreateComponent(
 		const char* _componentName, Object* _pOwner);
@@ -49,4 +49,3 @@ JE_END
 #define JE_STRINGFY(x)						#x
 #define JE_CONCAT(a, b)						a ## b
 #define JE_REGISTER_COMPONENT(c)			COMPONENT::RegisterBuilder<c>(JE_STRINGFY(c), new JE_CONCAT(c, Builder))
-#define JE_CREATE_CUSTOM_COMPONENT(c, o)	(CustomComponent*)COMPONENT::CreateComponent(JE_STRINGFY(c), o)

@@ -5,6 +5,7 @@
 
 JE_BEGIN
 
+class Text;
 class Object;
 struct Telegram;
 
@@ -38,6 +39,8 @@ public:
 
 	Location	m_location;
 	int			m_gold, m_money, m_thirst, m_fatigue, m_saved;
+	const char* m_content = nullptr;
+	Text*		m_text = nullptr;
 
 private:
 
@@ -84,6 +87,9 @@ class BeatBully : public CustomComponent
 
 public:
 
+	unsigned m_receiverId;
+	MinerState * m_globalState = nullptr;
+
 private:
 
 	BeatBully(Object* pObject);
@@ -128,6 +134,8 @@ class EatStew : public CustomComponent
 	friend class EatStewBuilder;
 
 public:
+
+	MinerState * m_globalState = nullptr;
 
 private:
 
@@ -174,6 +182,8 @@ class GoHomeAndSleepTilRested : public CustomComponent
 
 public:
 
+	MinerState * m_globalState = nullptr;
+
 private:
 
 	GoHomeAndSleepTilRested(Object* pObject);
@@ -218,6 +228,8 @@ class QuenchThirst : public CustomComponent
 	friend class QuenchThirstBuilder;
 
 public:
+
+	MinerState * m_globalState = nullptr;
 
 private:
 
@@ -264,6 +276,8 @@ class VisitBankAndDepositGold : public CustomComponent
 
 public:
 
+	MinerState * m_globalState = nullptr;
+
 private:
 
 	VisitBankAndDepositGold(Object* pObject);
@@ -308,6 +322,8 @@ class EnterMineAndDigForNugget : public CustomComponent
 	friend class EnterMineAndDigForNuggetBuilder;
 
 public:
+
+	MinerState * m_globalState = nullptr;
 
 private:
 

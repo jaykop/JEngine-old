@@ -53,7 +53,7 @@ private:
 	void Unload() override {};
 	bool OnMessage(Telegram& msg) override;
 
-	void EditorUpdate(const float _dt) override {};
+	void EditorUpdate(const float /*_dt*/) override {};
 
 };
 
@@ -98,7 +98,7 @@ private:
 	void Unload() override {};
 	bool OnMessage(Telegram& msg) override;
 
-	void EditorUpdate(const float _dt) override {};
+	void EditorUpdate(const float /*_dt*/) override {};
 
 };
 
@@ -145,7 +145,7 @@ private:
 	void Unload() override {};
 	bool OnMessage(Telegram& msg) override;
 
-	void EditorUpdate(const float _dt) override {};
+	void EditorUpdate(const float /*_dt*/) override {};
 
 };
 
