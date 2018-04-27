@@ -15,6 +15,8 @@ void JEngine::RegisterAssets()
 	ASSET::SetArchetypeDirectory("resource/register/archetype.json");
 
 	// Load customized components
+	JE_REGISTER_COMPONENT(StateMachine);
+
 	// States for bully
 	JE_REGISTER_COMPONENT(BullyState);
 	JE_REGISTER_COMPONENT(GoFight);

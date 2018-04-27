@@ -110,7 +110,7 @@ void GoFight::Register()
 	SYSTEM::GetBehaviorSystem()->AddBehavior(this);
 }
 
-void GoFight::Load(CR_RJValue _data)
+void GoFight::Load(CR_RJValue /*_data*/)
 {}
 
 void GoFight::Init()

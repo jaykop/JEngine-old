@@ -25,7 +25,7 @@ Component* ComponentManager::CreateComponent(
 	return found->second->CreateComponent(_pOwner);
 }
 
-const char* ComponentManager::KeyTranslator(const char* _name)
+const char* ComponentManager::KeyToTypeTranslator(const char* _name)
 {
 	auto found = m_typeMap.find(_name);
 	if (found != m_typeMap.end())
@@ -34,7 +34,7 @@ const char* ComponentManager::KeyTranslator(const char* _name)
 	return nullptr;
 }
 
-const char* ComponentManager::TypeTranslator(const char *_type)
+const char* ComponentManager::TypeToKeyTranslator(const char *_type)
 {
 	auto found = m_nameMap.find(_type);
 	if (found != m_nameMap.end())

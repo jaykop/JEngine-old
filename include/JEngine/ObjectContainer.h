@@ -45,12 +45,12 @@ private:
 };
 
 using OBJECT = ObjectContainer;
-#define CONTAINER OBJECT::GetCurrentContainer()
 
 JE_END
 
 #include "ObjectContainer.inl"
 
+#define CONTAINER				OBJECT::GetCurrentContainer()
 #define ADD_COMPONENT(o, c)		GetObject(o)->AddComponent<c>()
 #define GET_COMPONENT(o, c)		GetObject(o)->GetComponent<c>()
 #define REMOVE_COMPONENT(o, c)	GetObject(o)->RemoveComponent<c>()

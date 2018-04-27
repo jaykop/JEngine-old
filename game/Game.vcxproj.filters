@@ -28,6 +28,9 @@
     <ClCompile Include="WifeState.cpp">
       <Filter>CustomLogic\AI_Practicing</Filter>
     </ClCompile>
+    <ClCompile Include="StateMachine.cpp">
+      <Filter>CustomLogic\AI_Practicing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CustomLogic.h">
@@ -58,6 +61,9 @@
       <Filter>CustomLogic\AI_Practicing</Filter>
     </ClInclude>
     <ClInclude Include="WifeState.h">
+      <Filter>CustomLogic\AI_Practicing</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMachine.h">
       <Filter>CustomLogic\AI_Practicing</Filter>
     </ClInclude>
   </ItemGroup>

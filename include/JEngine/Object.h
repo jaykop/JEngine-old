@@ -69,11 +69,13 @@ public:
 	inline void				SetGlobalState();
 	
 	template<typename ComponentType>
-	inline void				SetCurretState();
+	inline void				SetCurrentState();
 	
 	template<typename ComponentType>
 	inline void				ChangeState();
 	
+	void	SetGlobalState(const char* _componentName);
+	void	SetCurrentState(const char* _componentName);
 	void	RevertToPreviousState();
 
 private:
