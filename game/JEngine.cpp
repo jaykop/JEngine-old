@@ -9,10 +9,10 @@ USING_NS_JE;
 void JEngine::RegisterAssets()
 {
 	// Get assets ready 
-	ASSET::SetInitDirectory("resource/register/initData.json");
-	ASSET::SetStateDirectory("resource/register/state.json");
-	ASSET::SetAssetDirectory("resource/register/asset.json");
-	ASSET::SetArchetypeDirectory("resource/register/archetype.json");
+	ASSET::SetInitDirectory("../resource/register/initData.json");
+	ASSET::SetStateDirectory("../resource/register/state.json");
+	ASSET::SetAssetDirectory("../resource/register/asset.json");
+	ASSET::SetArchetypeDirectory("../resource/register/archetype.json");
 
 	// Load customized components
 	JE_REGISTER_COMPONENT(StateMachine);

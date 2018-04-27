@@ -1,5 +1,5 @@
 #include "MinerState.h"
-#include "GameLogicHeader.h"
+#include "CustomLogicHeader.h"
 
 JE_BEGIN
 
