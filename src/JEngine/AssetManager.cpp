@@ -174,10 +174,11 @@ void AssetManager::LoadFont(const char * _path, const char* _key, unsigned _size
 			vec2(float(newFont->m_face->glyph->bitmap.width), float(newFont->m_face->glyph->bitmap.rows)),
 			vec2(float(newFont->m_face->glyph->bitmap_left), float(newFont->m_face->glyph->bitmap_top))
 		};
-		s_newLineLevel += character.m_size.y;
+		if (s_newLineLevel < character.m_size.y)
+			s_newLineLevel = character.m_size.y;
 		newFont->m_data.insert(Font::FontData::value_type(c, character));
 	}
-	newFont->m_newLineInterval = (s_newLineLevel / 128.f);
+	newFont->m_newLineInterval = s_newLineLevel;
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 

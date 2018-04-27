@@ -36,7 +36,7 @@ void MinerState::Init()
 	m_minerTalks->AddComponent<Transform>();
 	m_minerTalks->AddComponent<Text>();
 	m_talkTransform = m_minerTalks->GetComponent<Transform>();
-	m_talkTransform->m_scale.Set(.5f, .5f, 0.f);
+	m_talkTransform->m_scale.Set(.25f, .25f, 0.f);
 	m_talkText = m_minerTalks->GetComponent<Text>();
 	m_talkText->Register();
 	m_pOwner->AddChild(m_minerTalks);
@@ -52,7 +52,7 @@ void MinerState::Init()
 	m_pOwner->AddChild(m_minerInfo);
 
 	// Set font
-	m_talkText->m_pFont = m_infoText->m_pFont = ASSET::GetFont("Default");
+	m_talkText->m_pFont = m_infoText->m_pFont = ASSET::GetFont("JKDot");
 }
 
 void MinerState::Update(const float /*_dt*/)
