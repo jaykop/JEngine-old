@@ -3,18 +3,17 @@
 
 JE_BEGIN
 
+JE_DEFINE_COMPONENT_BUILDER(MinerState)
+JE_DEFINE_COMPONENT_BUILDER(BeatBully)
+JE_DEFINE_COMPONENT_BUILDER(EatStew)
+JE_DEFINE_COMPONENT_BUILDER(GoHomeAndSleepTilRested)
+JE_DEFINE_COMPONENT_BUILDER(QuenchThirst)
+JE_DEFINE_COMPONENT_BUILDER(VisitBankAndDepositGold)
+JE_DEFINE_COMPONENT_BUILDER(EnterMineAndDigForNugget)
+
 /////////////////////////////////////////////////////////////////////////
 // Global miner state
 /////////////////////////////////////////////////////////////////////////
-MinerStateBuilder::MinerStateBuilder()
-	:ComponentBuilder()
-{}
-
-CustomComponent* MinerStateBuilder::CreateComponent(Object* _pOwner) const
-{
-	return new MinerState(_pOwner);
-}
-
 MinerState::MinerState(Object* _pObject)
 	:CustomComponent(_pObject)
 {}
@@ -41,11 +40,6 @@ void MinerState::Update(const float /*_dt*/)
 	// Check fatigue
 	if (m_fatigue >= 10)
 		m_pOwner->ChangeState<GoHomeAndSleepTilRested>();
-	
-	switch (m_location)
-	{
-	case HOME: 
-	}
 
 	m_text->SetText("Location: %s", m_content);
 }
@@ -62,15 +56,6 @@ bool MinerState::OnMessage(Telegram& /*msg*/)
 /////////////////////////////////////////////////////////////////////////
 // BeatBully state
 /////////////////////////////////////////////////////////////////////////
-BeatBullyBuilder::BeatBullyBuilder()
-	:ComponentBuilder()
-{}
-
-CustomComponent* BeatBullyBuilder::CreateComponent(Object* _pOwner) const
-{
-	return new BeatBully(_pOwner);
-}
-
 BeatBully::BeatBully(Object* _pObject)
 	:CustomComponent(_pObject)
 {}
@@ -108,15 +93,6 @@ bool BeatBully::OnMessage(Telegram& /*msg*/)
 /////////////////////////////////////////////////////////////////////////
 // EatStew state
 /////////////////////////////////////////////////////////////////////////
-EatStewBuilder::EatStewBuilder()
-	:ComponentBuilder()
-{}
-
-CustomComponent* EatStewBuilder::CreateComponent(Object* _pOwner) const
-{
-	return new EatStew(_pOwner);
-}
-
 EatStew::EatStew(Object* _pObject)
 	:CustomComponent(_pObject)
 {}
@@ -148,15 +124,6 @@ bool EatStew::OnMessage(Telegram& /*msg*/)
 /////////////////////////////////////////////////////////////////////////
 // GoHomeAndSleepTilRested state
 /////////////////////////////////////////////////////////////////////////
-GoHomeAndSleepTilRestedBuilder::GoHomeAndSleepTilRestedBuilder()
-	:ComponentBuilder()
-{}
-
-CustomComponent* GoHomeAndSleepTilRestedBuilder::CreateComponent(Object* _pOwner) const
-{
-	return new GoHomeAndSleepTilRested(_pOwner);
-}
-
 GoHomeAndSleepTilRested::GoHomeAndSleepTilRested(Object* _pObject)
 	:CustomComponent(_pObject)
 {}
@@ -193,15 +160,6 @@ bool GoHomeAndSleepTilRested::OnMessage(Telegram& /*msg*/)
 /////////////////////////////////////////////////////////////////////////
 // QuenchThirst state
 /////////////////////////////////////////////////////////////////////////
-QuenchThirstBuilder::QuenchThirstBuilder()
-	:ComponentBuilder()
-{}
-
-CustomComponent* QuenchThirstBuilder::CreateComponent(Object* _pOwner) const
-{
-	return new QuenchThirst(_pOwner);
-}
-
 QuenchThirst::QuenchThirst(Object* _pObject)
 	:CustomComponent(_pObject)
 {}
@@ -236,15 +194,6 @@ bool QuenchThirst::OnMessage(Telegram& /*msg*/)
 /////////////////////////////////////////////////////////////////////////
 // VisitBankAndDepositGold state
 /////////////////////////////////////////////////////////////////////////
-VisitBankAndDepositGoldBuilder::VisitBankAndDepositGoldBuilder()
-	:ComponentBuilder()
-{}
-
-CustomComponent* VisitBankAndDepositGoldBuilder::CreateComponent(Object* _pOwner) const
-{
-	return new VisitBankAndDepositGold(_pOwner);
-}
-
 VisitBankAndDepositGold::VisitBankAndDepositGold(Object* _pObject)
 	:CustomComponent(_pObject)
 {}
@@ -285,15 +234,6 @@ bool VisitBankAndDepositGold::OnMessage(Telegram& /*msg*/)
 /////////////////////////////////////////////////////////////////////////
 // EnterMineAndDigForNugget state
 /////////////////////////////////////////////////////////////////////////
-EnterMineAndDigForNuggetBuilder::EnterMineAndDigForNuggetBuilder()
-	:ComponentBuilder()
-{}
-
-CustomComponent* EnterMineAndDigForNuggetBuilder::CreateComponent(Object* _pOwner) const
-{
-	return new EnterMineAndDigForNugget(_pOwner);
-}
-
 EnterMineAndDigForNugget::EnterMineAndDigForNugget(Object* _pObject)
 	:CustomComponent(_pObject)
 {}

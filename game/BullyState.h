@@ -8,27 +8,13 @@ JE_BEGIN
 class Object;
 struct Telegram;
 
+JE_DECLARE_COMPONENT_BUILDER(BullyState)
+JE_DECLARE_COMPONENT_BUILDER(JustHatingMiner)
+JE_DECLARE_COMPONENT_BUILDER(GoFight)
+
 /////////////////////////////////////////////////////////////////////////
 // Global bully state
 /////////////////////////////////////////////////////////////////////////
-class BullyStateBuilder : public ComponentBuilder
-{
-
-	friend class JEngine;
-
-public:
-
-private:
-
-	BullyStateBuilder();
-	~BullyStateBuilder() {};
-	BullyStateBuilder(const BullyStateBuilder& /*_copy*/) = delete;
-	void operator=(const BullyStateBuilder& /*_copy*/) = delete;
-
-	CustomComponent* CreateComponent(Object* _pOwner) const override;
-
-};
-
 class BullyState : public CustomComponent
 {
 	friend class ComponentManager;
@@ -60,24 +46,6 @@ private:
 /////////////////////////////////////////////////////////////////////////
 // Hating state
 /////////////////////////////////////////////////////////////////////////
-class JustHatingMinerBuilder : public ComponentBuilder
-{
-
-	friend class JEngine;
-
-public:
-
-private:
-
-	JustHatingMinerBuilder();
-	~JustHatingMinerBuilder() {};
-	JustHatingMinerBuilder(const JustHatingMinerBuilder& /*_copy*/) = delete;
-	void operator=(const JustHatingMinerBuilder& /*_copy*/) = delete;
-
-	CustomComponent* CreateComponent(Object* _pOwner) const override;
-
-};
-
 class JustHatingMiner : public CustomComponent
 {
 	friend class ComponentManager;
@@ -105,24 +73,6 @@ private:
 /////////////////////////////////////////////////////////////////////////
 // Go fight to miner
 /////////////////////////////////////////////////////////////////////////
-class GoFightBuilder : public ComponentBuilder
-{
-
-	friend class JEngine;
-
-public:
-
-private:
-
-	GoFightBuilder();
-	~GoFightBuilder() {};
-	GoFightBuilder(const GoFightBuilder& /*_copy*/) = delete;
-	void operator=(const GoFightBuilder& /*_copy*/) = delete;
-
-	CustomComponent* CreateComponent(Object* _pOwner) const override;
-
-};
-
 class GoFight : public CustomComponent
 {
 	friend class ComponentManager;

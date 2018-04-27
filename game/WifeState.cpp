@@ -3,18 +3,14 @@
 
 JE_BEGIN
 
+JE_DEFINE_COMPONENT_BUILDER(WifeState)
+JE_DEFINE_COMPONENT_BUILDER(DoHousework)
+JE_DEFINE_COMPONENT_BUILDER(CookStew)
+JE_DEFINE_COMPONENT_BUILDER(GoToBathroom)
+
 /////////////////////////////////////////////////////////////////////////
 // Global wife state
 /////////////////////////////////////////////////////////////////////////
-WifeStateBuilder::WifeStateBuilder()
-	:ComponentBuilder()
-{}
-
-CustomComponent* WifeStateBuilder::CreateComponent(Object* _pOwner) const
-{
-	return new WifeState(_pOwner);
-}
-
 WifeState::WifeState(Object* _pObject)
 	:CustomComponent(_pObject)
 {}
@@ -53,15 +49,6 @@ bool WifeState::OnMessage(Telegram& msg)
 /////////////////////////////////////////////////////////////////////////
 // Housework state
 /////////////////////////////////////////////////////////////////////////
-DoHouseworkBuilder::DoHouseworkBuilder()
-	:ComponentBuilder()
-{}
-
-CustomComponent* DoHouseworkBuilder::CreateComponent(Object* _pOwner) const
-{
-	return new DoHousework(_pOwner);
-}
-
 DoHousework::DoHousework(Object* _pObject)
 	:CustomComponent(_pObject)
 {}
@@ -93,15 +80,6 @@ bool DoHousework::OnMessage(Telegram& /*msg*/)
 /////////////////////////////////////////////////////////////////////////
 // Cook Stew state
 /////////////////////////////////////////////////////////////////////////
-CookStewBuilder::CookStewBuilder()
-	:ComponentBuilder()
-{}
-
-CustomComponent* CookStewBuilder::CreateComponent(Object* _pOwner) const
-{
-	return new CookStew(_pOwner);
-}
-
 CookStew::CookStew(Object* _pObject)
 	:CustomComponent(_pObject)
 {}
@@ -162,15 +140,6 @@ bool CookStew::OnMessage(Telegram& msg)
 /////////////////////////////////////////////////////////////////////////
 // GoToBathroom state
 /////////////////////////////////////////////////////////////////////////
-GoToBathroomBuilder::GoToBathroomBuilder()
-	:ComponentBuilder()
-{}
-
-CustomComponent* GoToBathroomBuilder::CreateComponent(Object* _pOwner) const
-{
-	return new GoToBathroom(_pOwner);
-}
-
 GoToBathroom::GoToBathroom(Object* _pObject)
 	:CustomComponent(_pObject)
 {}
