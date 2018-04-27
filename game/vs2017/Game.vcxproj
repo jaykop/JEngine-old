@@ -73,28 +73,28 @@
     <OutDir>$(SolutionDir)..\..\bin\game\Debug\x86\</OutDir>
     <IntDir>$(SolutionDir)..\..\temp\game\Debug\x86\</IntDir>
     <TargetName>demo</TargetName>
-    <LibraryPath>$(SolutionDir)..\..\lib\GL\x86;$(SolutionDir)..\..\lib\SDL2\x86;$(SolutionDir)..\..\lib\JEngine\Debug\x86;$(LibraryPath);$(SolutionDir)..\..\lib\freetype\x86</LibraryPath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
     <SourcePath>$(VC_SourcePath);</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)..\..\bin\game\Release\x86\</OutDir>
     <IntDir>$(SolutionDir)..\..\temp\game\Release\x86\</IntDir>
     <TargetName>demo</TargetName>
-    <LibraryPath>$(SolutionDir)..\..\lib\GL\x86;$(SolutionDir)..\..\lib\SDL2\x86;$(SolutionDir)..\..\lib\JEngine\Release\x86;$(LibraryPath);$(SolutionDir)..\..\lib\freetype\x86</LibraryPath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
     <SourcePath>$(VC_SourcePath);</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)..\..\bin\game\Debug\x64\</OutDir>
     <IntDir>$(SolutionDir)..\..\temp\game\Debug\x64\</IntDir>
     <TargetName>demo</TargetName>
-    <LibraryPath>$(SolutionDir)..\..\lib\GL\x64;$(SolutionDir)..\..\lib\SDL2\x64;$(SolutionDir)..\..\lib\JEngine\Debug\x64;$(LibraryPath);$(SolutionDir)..\..\lib\freetype\x64</LibraryPath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
     <SourcePath>$(VC_SourcePath);</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)..\..\bin\game\Release\x64\</OutDir>
     <IntDir>$(SolutionDir)..\..\temp\game\Release\x64\</IntDir>
     <TargetName>demo</TargetName>
-    <LibraryPath>$(SolutionDir)..\..\lib\GL\x64;$(SolutionDir)..\..\lib\SDL2\x64;$(SolutionDir)..\..\lib\JEngine\Release\x64;$(LibraryPath);$(SolutionDir)..\..\lib\freetype\x64</LibraryPath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
     <SourcePath>$(VC_SourcePath);</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -107,10 +107,10 @@
     <Link>
       <AdditionalDependencies>JEngine_d.lib;SDL2.lib;SDL2main.lib;freetype.lib;opengl32.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
-      <AdditionalLibraryDirectories>$(SolutionDir)..\..\lib\GL\x86;$(SolutionDir)..\..\lib\SDL2\x86;$(SolutionDir)..\..\lib\Python36\libs\Debug\x86;$(SolutionDir)..\..\lib\JEngine\Debug\x86;$(LibraryPath);$(SolutionDir)..\..\lib\freetype\x86</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\..\lib\GL\x86;$(SolutionDir)..\..\lib\SDL2\x86;$(SolutionDir)..\..\lib\JEngine\Debug\x86;$(LibraryPath);$(SolutionDir)..\..\lib\freetype\x86</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "..\lib\dll\x86\*.dll" "$(TargetDir)"</Command>
+      <Command>xcopy /y /d "..\..\lib\dll\x86\*.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -123,10 +123,10 @@
     <Link>
       <AdditionalDependencies>JEngine_d.lib;SDL2.lib;SDL2main.lib;freetype.lib;opengl32.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
-      <AdditionalLibraryDirectories>$(SolutionDir)..\..\lib\GL\x64;$(SolutionDir)..\..\lib\SDL2\x64;$(SolutionDir)..\..\lib\Python36\libs\Debug\x64;$(SolutionDir)..\..\lib\JEngine\Debug\x64;$(LibraryPath);$(SolutionDir)..\..\lib\freetype\x64</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\..\lib\GL\x64;$(SolutionDir)..\..\lib\SDL2\x64;$(SolutionDir)..\..\lib\JEngine\Debug\x64;$(LibraryPath);$(SolutionDir)..\..\lib\freetype\x64</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "..\lib\dll\x64\*.dll" "$(TargetDir)"</Command>
+      <Command>xcopy /y /d "..\..\lib\dll\x64\*.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -143,10 +143,10 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>JEngine.lib;SDL2.lib;SDL2main.lib;freetype.lib;opengl32.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
-      <AdditionalLibraryDirectories>$(SolutionDir)..\..\lib\GL\x86;$(SolutionDir)..\..\lib\SDL2\x86;$(SolutionDir)..\..\lib\Python36\libs\Release\x86;$(SolutionDir)..\..\lib\JEngine\Release\x86;$(LibraryPath);$(SolutionDir)..\..\lib\freetype\x86</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\..\lib\GL\x86;$(SolutionDir)..\..\lib\SDL2\x86;$(SolutionDir)..\..\lib\JEngine\Release\x86;$(LibraryPath);$(SolutionDir)..\..\lib\freetype\x86</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "..\lib\dll\x86\*.dll" "$(TargetDir)"</Command>
+      <Command>xcopy /y /d "..\..\lib\dll\x86\*.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -163,44 +163,40 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>JEngine.lib;SDL2.lib;SDL2main.lib;freetype.lib;opengl32.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
-      <AdditionalLibraryDirectories>$(SolutionDir)..\..\lib\GL\x64;$(SolutionDir)..\..\lib\SDL2\x64;$(SolutionDir)..\..\lib\Python36\libs\Release\x64;$(SolutionDir)..\..\lib\JEngine\Release\x64;$(LibraryPath);$(SolutionDir)..\..\lib\freetype\x64</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\..\lib\GL\x64;$(SolutionDir)..\..\lib\SDL2\x64;$(SolutionDir)..\..\lib\JEngine\Release\x64;$(LibraryPath);$(SolutionDir)..\..\lib\freetype\x64</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "..\lib\dll\x64\*.dll" "$(TargetDir)"</Command>
+      <Command>xcopy /y /d "..\..\lib\dll\x64\*.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BullyState.cpp" />
-    <ClCompile Include="CameraController.cpp" />
-    <ClCompile Include="JEngine.cpp">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
-    </ClCompile>
-    <ClCompile Include="LightController.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="LevelController.cpp" />
-    <ClCompile Include="MinerState.cpp" />
-    <ClCompile Include="StateMachine.cpp" />
-    <ClCompile Include="TestLogic.cpp" />
-    <ClCompile Include="WifeState.cpp" />
+    <ClCompile Include="..\BullyState.cpp" />
+    <ClCompile Include="..\CameraController.cpp" />
+    <ClCompile Include="..\JEngine.cpp" />
+    <ClCompile Include="..\LevelController.cpp" />
+    <ClCompile Include="..\LightController.cpp" />
+    <ClCompile Include="..\main.cpp" />
+    <ClCompile Include="..\MinerState.cpp" />
+    <ClCompile Include="..\StateMachine.cpp" />
+    <ClCompile Include="..\TestLogic.cpp" />
+    <ClCompile Include="..\WifeState.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BullyState.h" />
-    <ClInclude Include="CameraController.h" />
-    <ClInclude Include="CustomLogic.h" />
-    <ClInclude Include="JEngine.h" />
-    <ClInclude Include="LightController.h" />
-    <ClInclude Include="LevelController.h" />
-    <ClInclude Include="Location.h" />
-    <ClInclude Include="MinerState.h" />
-    <ClInclude Include="StateMachine.h" />
-    <ClInclude Include="TestLogic.h" />
-    <ClInclude Include="WifeState.h" />
+    <ClInclude Include="..\BullyState.h" />
+    <ClInclude Include="..\CameraController.h" />
+    <ClInclude Include="..\CustomLogic.h" />
+    <ClInclude Include="..\CustomLogicHeader.h" />
+    <ClInclude Include="..\JEngine.h" />
+    <ClInclude Include="..\LevelController.h" />
+    <ClInclude Include="..\LightController.h" />
+    <ClInclude Include="..\Location.h" />
+    <ClInclude Include="..\MinerState.h" />
+    <ClInclude Include="..\StateMachine.h" />
+    <ClInclude Include="..\TestLogic.h" />
+    <ClInclude Include="..\WifeState.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\build\vs2017\JEngine.vcxproj">
+    <ProjectReference Include="..\..\build\vs2017\JEngine.vcxproj">
       <Project>{51d36ca1-1daa-44c3-896b-86690f8bc886}</Project>
     </ProjectReference>
   </ItemGroup>

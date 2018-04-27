@@ -1,21 +1,21 @@
 {
 	"Font" : [
-		{"Key" : "Default", "Size" : 48, "Directory" : "resource/font/Default.ttf"}
+		{"Key" : "Default", "Size" : 48, "Directory" : "../resource/font/Default.ttf"}
 	],
 	
 	"Texture" : [
 
-		{"Key" : "rect", 			"Directory" : "resource/texture/rect.png"},
-		{"Key" : "circle", 			"Directory" : "resource/texture/circle.png"},
-		{"Key" : "testTexture", 	"Directory" : "resource/texture/images.png"},
-		{"Key" : "uvtemplate", 		"Directory" : "resource/texture/uvtemplate.png"},
-		{"Key" : "fire", 			"Directory" : "resource/texture/fire.png"},
-		{"Key" : "smoke", 			"Directory" : "resource/texture/smoke.png"},
-		{"Key" : "particle", 		"Directory" : "resource/texture/particle.png"},
-		{"Key" : "skybox", 			"Directory" : "resource/texture/skybox.png"},
-		{"Key" : "testAnimation", 	"Directory" : "resource/texture/testAnimation.png"},
-		{"Key" : "miner", 			"Directory" : "resource/texture/Miner.png"},
-		{"Key" : "wife", 			"Directory" : "resource/texture/Wife.png"},
-		{"Key" : "bully", 			"Directory" : "resource/texture/Bully.png"}
+		{"Key" : "rect", 			"Directory" : "../resource/texture/rect.png"},
+		{"Key" : "circle", 			"Directory" : "../resource/texture/circle.png"},
+		{"Key" : "testTexture", 	"Directory" : "../resource/texture/images.png"},
+		{"Key" : "uvtemplate", 		"Directory" : "../resource/texture/uvtemplate.png"},
+		{"Key" : "fire", 			"Directory" : "../resource/texture/fire.png"},
+		{"Key" : "smoke", 			"Directory" : "../resource/texture/smoke.png"},
+		{"Key" : "particle", 		"Directory" : "../resource/texture/particle.png"},
+		{"Key" : "skybox", 			"Directory" : "../resource/texture/skybox.png"},
+		{"Key" : "testAnimation", 	"Directory" : "../resource/texture/testAnimation.png"},
+		{"Key" : "miner", 			"Directory" : "../resource/texture/Miner.png"},
+		{"Key" : "wife", 			"Directory" : "../resource/texture/Wife.png"},
+		{"Key" : "bully", 			"Directory" : "../resource/texture/Bully.png"}
 	]
 }

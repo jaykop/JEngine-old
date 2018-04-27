@@ -1,5 +1,5 @@
 #include "LightController.h"
-#include "GameLogicHeader.h"
+#include "CustomLogicHeader.h"
 
 #include "Light.h"
 

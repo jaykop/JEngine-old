@@ -1,6 +1,6 @@
 //#include <thread>
 #include "TestLogic.h"
-#include "GameLogicHeader.h"
+#include "CustomLogicHeader.h"
 
 JE_BEGIN
 

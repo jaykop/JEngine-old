@@ -1,5 +1,5 @@
 #include "BullyState.h"
-#include "GameLogicHeader.h"
+#include "CustomLogicHeader.h"
 #include "MinerState.h"
 
 JE_BEGIN
