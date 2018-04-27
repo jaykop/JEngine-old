@@ -77,7 +77,7 @@ public:
 private:
 
 	// Private member functions
-	static bool	initSDL_GL();
+	static bool	InitSDL_GL();
 	static void	CloseSDL_GL();
 	static void	RegisterUniform();
 	static void	InitGLEnvironment();
@@ -88,7 +88,7 @@ private:
 	static void Resize(int _width, int _height);
 	static void SetVAO(GLuint &_vao, GLuint &_vbo, GLuint &_ebo,
 		const unsigned _verticeSize, const unsigned _elementSize,
-		const float _vertices[], const unsigned _elements[]);
+		const float _vertices[], const unsigned _elements[], int _draw = GL_STATIC_DRAW);
 
 	static void EditorUpdate(const float _dt);
 

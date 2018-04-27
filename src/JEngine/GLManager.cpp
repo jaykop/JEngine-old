@@ -220,7 +220,7 @@ const unsigned		GLManager::m_indicesSize[] = {
 //////////////////////////////////////////////////////////////////////////
 // GLManager functio bodies
 //////////////////////////////////////////////////////////////////////////
-bool GLManager::initSDL_GL()
+bool GLManager::InitSDL_GL()
 {
 	// force GLEW to use a modern OpenGL method
 	glewExperimental = GL_TRUE;
@@ -293,6 +293,19 @@ void GLManager::InitVBO()
 	// Generate vertex buffer object(VBO)
 	glGenBuffers(1, &m_vbo[SHAPE_TEXT]);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo[SHAPE_TEXT]);
+	glBufferData(GL_ARRAY_BUFFER, m_verticesSize[SHAPE_PLANE], nullptr, GL_DYNAMIC_DRAW);
+
+	// vertex position
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	// texture coordinate position
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+
+	// normals of vertices
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
+	glEnableVertexAttribArray(2);
 
 	glBindVertexArray(0);
 }
@@ -336,7 +349,6 @@ void GLManager::InitFBO()
 		JE_DEBUG_PRINT("!GLManager - Framebuffer is not created properly.\n");
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
 }
 
 void GLManager::InitGLEnvironment()
@@ -495,7 +507,7 @@ void GLManager::Resize(int _width, int _height)
 
 void GLManager::SetVAO(GLuint &_vao, GLuint &_vbo, GLuint &_ebo,
 	const unsigned _verticeSize, const unsigned _elementSize,
-	const float _vertices[], const unsigned _elements[])
+	const float _vertices[], const unsigned _elements[], int _draw)
 {
 	// Generate vertexy array object
 	glGenVertexArrays(1, &_vao);
@@ -504,7 +516,7 @@ void GLManager::SetVAO(GLuint &_vao, GLuint &_vbo, GLuint &_ebo,
 	// Generate vertex buffer object(VBO)
 	glGenBuffers(1, &_vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-	glBufferData(GL_ARRAY_BUFFER, _verticeSize, _vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, _verticeSize, _vertices, _draw);
 
 	// Interpret vertex attributes data (s_vertices)
 	// vertex position
@@ -522,7 +534,7 @@ void GLManager::SetVAO(GLuint &_vao, GLuint &_vbo, GLuint &_ebo,
 	// Generate element buffer object
 	glGenBuffers(1, &_ebo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, _elementSize, _elements, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, _elementSize, _elements, _draw);
 }
 
 void GLManager::EditorUpdate(const float /*_dt*/)

@@ -16,9 +16,7 @@ WifeState::WifeState(Object* _pObject)
 {}
 
 void WifeState::Register()
-{
-	SYSTEM::GetBehaviorSystem()->AddBehavior(this);
-}
+{}
 
 void WifeState::Load(CR_RJValue /*_data*/)
 {}
@@ -54,9 +52,7 @@ DoHousework::DoHousework(Object* _pObject)
 {}
 
 void DoHousework::Register()
-{
-	SYSTEM::GetBehaviorSystem()->AddBehavior(this);
-}
+{}
 
 void DoHousework::Load(CR_RJValue /*_data*/)
 {}
@@ -85,9 +81,7 @@ CookStew::CookStew(Object* _pObject)
 {}
 
 void CookStew::Register()
-{
-	SYSTEM::GetBehaviorSystem()->AddBehavior(this);
-}
+{}
 
 void CookStew::Load(CR_RJValue /*_data*/)
 {}
@@ -145,9 +139,7 @@ GoToBathroom::GoToBathroom(Object* _pObject)
 {}
 
 void GoToBathroom::Register()
-{
-	SYSTEM::GetBehaviorSystem()->AddBehavior(this);
-}
+{}
 
 void GoToBathroom::Load(CR_RJValue /*_data*/)
 {}

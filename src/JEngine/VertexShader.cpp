@@ -147,7 +147,6 @@ std::string Shader::m_vertexShader[] = {
 
 		vec4 newPosition = vec4(position, 1);
 		mat4 model =  m4_scale * m4_rotate * m4_translate;
-		vec4 newTexCoord;
 	
 		// Calculate mvp transform matrix
 		mat4 modelview = transpose(m4_viewport) * transpose(model);

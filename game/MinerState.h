@@ -3,10 +3,13 @@
 #include "ComponentBuilder.h"
 #include "Location.h"
 
+#include "Vector3.h"
+
 JE_BEGIN
 
 class Text;
 class Object;
+class Transform;
 struct Telegram;
 
 JE_DECLARE_COMPONENT_BUILDER(MinerState)
@@ -29,8 +32,11 @@ public:
 
 	Location	m_location;
 	int			m_gold, m_money, m_thirst, m_fatigue, m_saved;
-	const char* m_content = nullptr;
-	Text*		m_text = nullptr;
+	const char	*m_content = nullptr;
+	Object		*m_minerTalks = nullptr, *m_minerInfo = nullptr;
+	Text		*m_talkText = nullptr, *m_infoText = nullptr;
+	Transform	*m_pTransform = nullptr, *m_talkTransform = nullptr;
+	vec3		m_talkOffset{ 0.f, 0.f, 1.f };
 
 private:
 

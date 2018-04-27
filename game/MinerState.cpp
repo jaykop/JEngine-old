@@ -19,36 +19,157 @@ MinerState::MinerState(Object* _pObject)
 {}
 
 void MinerState::Register()
-{
-	SYSTEM::GetBehaviorSystem()->AddBehavior(this);
-}
+{}
 
 void MinerState::Load(CR_RJValue /*_data*/)
 {}
 
 void MinerState::Init()
 {
-	m_text = m_pOwner->GetComponent<Text>();
+	m_pTransform = m_pOwner->GetComponent<Transform>();
+
+	// Add child object
+	// Miner talks object
+	FACTORY::CreateObject("MinerTalks");
+	FACTORY::AddCreatedObject();
+	m_minerTalks= FACTORY::GetCreatedObject();
+	m_minerTalks->AddComponent<Transform>();
+	m_minerTalks->AddComponent<Text>();
+	m_talkTransform = m_minerTalks->GetComponent<Transform>();
+	m_talkTransform->m_scale.Set(.5f, .5f, 0.f);
+	m_talkText = m_minerTalks->GetComponent<Text>();
+	m_talkText->Register();
+	m_pOwner->AddChild(m_minerTalks);
+
+	// Miner info object
+	FACTORY::CreateObject("MinerInfo");
+	FACTORY::AddCreatedObject();
+	m_minerInfo = FACTORY::GetCreatedObject();
+	m_minerInfo->AddComponent<Transform>();
+	m_minerInfo->AddComponent<Text>();
+	m_infoText = m_minerTalks->GetComponent<Text>();
+	m_infoText->Register();
+	m_pOwner->AddChild(m_minerInfo);
+
+	// Set font
+	m_talkText->m_pFont = m_infoText->m_pFont = ASSET::GetFont("Default");
 }
 
 void MinerState::Update(const float /*_dt*/)
-{	
-	// Check thirsty
-	if (m_thirst >= 10)
-		m_pOwner->ChangeState<QuenchThirst>();
+{
+	static vec3 position;
+	if (INPUT::KeyPressed(JE_LEFT))
+		position.x--;
+	if (INPUT::KeyPressed(JE_RIGHT))
+		position.x++;
+	if (INPUT::KeyPressed(JE_DOWN))
+		position.y--;
+	if (INPUT::KeyPressed(JE_UP))
+		position.y++;
 
-	// Check fatigue
-	if (m_fatigue >= 10)
-		m_pOwner->ChangeState<GoHomeAndSleepTilRested>();
+	m_pTransform->m_position.Set(position);
+	m_talkTransform->m_position.Set(m_pTransform->m_position + m_talkOffset);
+	//// Check thirsty
+	//if (m_thirst >= 10)
+	//	m_pOwner->ChangeState<QuenchThirst>();
 
-	m_text->SetText("Location: %s", m_content);
+	//// Check fatigue
+	//else if (m_fatigue >= 10)
+	//	m_pOwner->ChangeState<GoHomeAndSleepTilRested>();
+
+	//m_talkText->SetText("%s", m_content);
 }
 
 void MinerState::Close()
-{
-}
+{}
 
 bool MinerState::OnMessage(Telegram& /*msg*/)
+{
+	return false;
+}
+
+/////////////////////////////////////////////////////////////////////////
+// GoHomeAndSleepTilRested state
+/////////////////////////////////////////////////////////////////////////
+GoHomeAndSleepTilRested::GoHomeAndSleepTilRested(Object* _pObject)
+	:CustomComponent(_pObject)
+{}
+
+void GoHomeAndSleepTilRested::Register()
+{}
+
+void GoHomeAndSleepTilRested::Load(CR_RJValue /*_data*/)
+{}
+
+void GoHomeAndSleepTilRested::Init()
+{
+	m_globalState = (MinerState*)m_pOwner->GetGlobalState();
+	m_globalState->m_location = HOME;
+	m_globalState->m_content = "Location: Home\nGetting sleep...";
+	m_globalState->m_talkTransform->m_position.Set(
+		m_globalState->m_pTransform->m_position + m_globalState->m_talkOffset);
+	m_globalState->m_talkText->SetText("%s", m_globalState->m_content);
+}
+
+void GoHomeAndSleepTilRested::Update(const float /*_dt*/)
+{
+	m_globalState->m_fatigue--;
+	m_globalState->m_content = "Location: Home\nGetting sleep...";
+
+	//if (m_globalState->m_fatigue <= 0) {
+	//	m_globalState->m_fatigue = 0;
+	//	m_pOwner->ChangeState<EnterMineAndDigForNugget>();
+	//}
+
+	m_globalState->m_talkTransform->m_position.Set(
+		m_globalState->m_pTransform->m_position + m_globalState->m_talkOffset);
+}
+
+void GoHomeAndSleepTilRested::Close()
+{}
+
+bool GoHomeAndSleepTilRested::OnMessage(Telegram& /*msg*/)
+{
+	return false;
+}
+
+/////////////////////////////////////////////////////////////////////////
+// EnterMineAndDigForNugget state
+/////////////////////////////////////////////////////////////////////////
+EnterMineAndDigForNugget::EnterMineAndDigForNugget(Object* _pObject)
+	:CustomComponent(_pObject)
+{}
+
+void EnterMineAndDigForNugget::Register()
+{}
+
+void EnterMineAndDigForNugget::Load(CR_RJValue /*_data*/)
+{}
+
+void EnterMineAndDigForNugget::Init()
+{
+	m_globalState = (MinerState*)m_pOwner->GetGlobalState();
+	m_globalState->m_location = GOLD_MINE;
+	m_globalState->m_pTransform->m_position.Set(0.f, 0.f, 0.f);
+	m_globalState->m_talkTransform->m_position.Set(
+		m_globalState->m_pTransform->m_position + m_globalState->m_talkOffset);
+	m_globalState->m_content = "Location: Mine\nDigging nugget...";
+}
+
+void EnterMineAndDigForNugget::Update(const float /*_dt*/)
+{
+	m_globalState->m_gold++;
+	m_globalState->m_fatigue++;
+	m_globalState->m_thirst++;
+
+	if (m_globalState->m_gold >= 10)
+		m_pOwner->ChangeState<VisitBankAndDepositGold>();
+}
+
+void EnterMineAndDigForNugget::Close()
+{}
+
+bool EnterMineAndDigForNugget::OnMessage(Telegram& /*msg*/)
 {
 	return false;
 }
@@ -61,15 +182,15 @@ BeatBully::BeatBully(Object* _pObject)
 {}
 
 void BeatBully::Register()
-{
-	SYSTEM::GetBehaviorSystem()->AddBehavior(this);
-}
+{}
 
 void BeatBully::Load(CR_RJValue /*_data*/)
 {}
 
 void BeatBully::Init()
-{}
+{
+	m_globalState = (MinerState*)m_pOwner->GetGlobalState();
+}
 
 void BeatBully::Update(const float /*_dt*/)
 {
@@ -98,15 +219,15 @@ EatStew::EatStew(Object* _pObject)
 {}
 
 void EatStew::Register()
-{
-	SYSTEM::GetBehaviorSystem()->AddBehavior(this);
-}
+{}
 
 void EatStew::Load(CR_RJValue /*_data*/)
 {}
 
 void EatStew::Init()
-{}
+{
+	m_globalState = (MinerState*)m_pOwner->GetGlobalState();
+}
 
 void EatStew::Update(const float /*_dt*/)
 {
@@ -122,42 +243,6 @@ bool EatStew::OnMessage(Telegram& /*msg*/)
 }
 
 /////////////////////////////////////////////////////////////////////////
-// GoHomeAndSleepTilRested state
-/////////////////////////////////////////////////////////////////////////
-GoHomeAndSleepTilRested::GoHomeAndSleepTilRested(Object* _pObject)
-	:CustomComponent(_pObject)
-{}
-
-void GoHomeAndSleepTilRested::Register()
-{
-	SYSTEM::GetBehaviorSystem()->AddBehavior(this);
-}
-
-void GoHomeAndSleepTilRested::Load(CR_RJValue /*_data*/)
-{}
-
-void GoHomeAndSleepTilRested::Init()
-{
-	m_pOwner->GetComponent<MinerState>()->m_location = HOME;
-}
-
-void GoHomeAndSleepTilRested::Update(const float /*_dt*/)
-{
-	m_pOwner->GetComponent<MinerState>()->m_fatigue--;
-
-	if (m_pOwner->GetComponent<MinerState>()->m_fatigue <= 0)
-		m_pOwner->ChangeState<EnterMineAndDigForNugget>();
-}
-
-void GoHomeAndSleepTilRested::Close()
-{}
-
-bool GoHomeAndSleepTilRested::OnMessage(Telegram& /*msg*/)
-{
-	return false;
-}
-
-/////////////////////////////////////////////////////////////////////////
 // QuenchThirst state
 /////////////////////////////////////////////////////////////////////////
 QuenchThirst::QuenchThirst(Object* _pObject)
@@ -165,21 +250,20 @@ QuenchThirst::QuenchThirst(Object* _pObject)
 {}
 
 void QuenchThirst::Register()
-{
-	SYSTEM::GetBehaviorSystem()->AddBehavior(this);
-}
+{}
 
 void QuenchThirst::Load(CR_RJValue /*_data*/)
 {}
 
 void QuenchThirst::Init()
 {
-	m_pOwner->GetComponent<MinerState>()->m_location = RIVER;
+	m_globalState = (MinerState*)m_pOwner->GetGlobalState();
+	m_globalState->m_location = RIVER;
 }
 
 void QuenchThirst::Update(const float /*_dt*/)
 {
-	m_pOwner->GetComponent<MinerState>()->m_thirst = 0;
+	m_globalState->m_thirst = 0;
 	m_pOwner->ChangeState<EnterMineAndDigForNugget>();
 }
 
@@ -199,25 +283,23 @@ VisitBankAndDepositGold::VisitBankAndDepositGold(Object* _pObject)
 {}
 
 void VisitBankAndDepositGold::Register()
-{
-	SYSTEM::GetBehaviorSystem()->AddBehavior(this);
-}
+{}
 
 void VisitBankAndDepositGold::Load(CR_RJValue /*_data*/)
 {}
 
 void VisitBankAndDepositGold::Init()
 {
-	m_pOwner->GetComponent<MinerState>()->m_location = BANK;
+	m_globalState = (MinerState*)m_pOwner->GetGlobalState();
+	m_globalState->m_location = BANK;
 }
 
 void VisitBankAndDepositGold::Update(const float /*_dt*/)
 {
-	m_pOwner->GetComponent<MinerState>()->m_saved 
-		= m_pOwner->GetComponent<MinerState>()->m_gold;
-	m_pOwner->GetComponent<MinerState>()->m_gold = 0;
+	m_globalState->m_saved = m_globalState->m_gold;
+	m_globalState->m_gold = 0;
 
-	if (m_pOwner->GetComponent<MinerState>()->m_saved >= 100)
+	if (m_globalState->m_saved >= 100)
 		m_pOwner->ChangeState<GoHomeAndSleepTilRested>();
 	else
 		m_pOwner->ChangeState<EnterMineAndDigForNugget>();
@@ -227,45 +309,6 @@ void VisitBankAndDepositGold::Close()
 {}
 
 bool VisitBankAndDepositGold::OnMessage(Telegram& /*msg*/)
-{
-	return false;
-}
-
-/////////////////////////////////////////////////////////////////////////
-// EnterMineAndDigForNugget state
-/////////////////////////////////////////////////////////////////////////
-EnterMineAndDigForNugget::EnterMineAndDigForNugget(Object* _pObject)
-	:CustomComponent(_pObject)
-{}
-
-void EnterMineAndDigForNugget::Register()
-{
-	SYSTEM::GetBehaviorSystem()->AddBehavior(this);
-}
-
-void EnterMineAndDigForNugget::Load(CR_RJValue /*_data*/)
-{}
-
-void EnterMineAndDigForNugget::Init()
-{
-	m_pOwner->GetComponent<MinerState>()->m_location = GOLD_MINE;
-}
-
-void EnterMineAndDigForNugget::Update(const float /*_dt*/)
-{
-	MinerState* pGlobalState = m_pOwner->GetComponent<MinerState>();
-	pGlobalState->m_gold++;
-	pGlobalState->m_fatigue++;
-	pGlobalState->m_thirst++;
-
-	if (pGlobalState->m_gold >= 10)
-		m_pOwner->ChangeState<VisitBankAndDepositGold>();
-}
-
-void EnterMineAndDigForNugget::Close()
-{}
-
-bool EnterMineAndDigForNugget::OnMessage(Telegram& /*msg*/)
 {
 	return false;
 }

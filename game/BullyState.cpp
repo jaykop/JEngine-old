@@ -4,21 +4,19 @@
 
 JE_BEGIN
 
-/////////////////////////////////////////////////////////////////////////
-// Global bully state
-/////////////////////////////////////////////////////////////////////////
 JE_DEFINE_COMPONENT_BUILDER(BullyState)
 JE_DEFINE_COMPONENT_BUILDER(JustHatingMiner)
 JE_DEFINE_COMPONENT_BUILDER(GoFight)
 
+/////////////////////////////////////////////////////////////////////////
+// Global bully state
+/////////////////////////////////////////////////////////////////////////
 BullyState::BullyState(Object* _pObject)
 	:CustomComponent(_pObject)
 {}
 
 void BullyState::Register()
-{
-	SYSTEM::GetBehaviorSystem()->AddBehavior(this);
-}
+{}
 
 void BullyState::Load(CR_RJValue /*_data*/)
 {}
@@ -51,9 +49,7 @@ JustHatingMiner::JustHatingMiner(Object* _pObject)
 {}
 
 void JustHatingMiner::Register()
-{
-	SYSTEM::GetBehaviorSystem()->AddBehavior(this);
-}
+{}
 
 void JustHatingMiner::Load(CR_RJValue /*_data*/)
 {}
@@ -83,9 +79,7 @@ GoFight::GoFight(Object* _pObject)
 {}
 
 void GoFight::Register()
-{
-	SYSTEM::GetBehaviorSystem()->AddBehavior(this);
-}
+{}
 
 void GoFight::Load(CR_RJValue /*_data*/)
 {}
