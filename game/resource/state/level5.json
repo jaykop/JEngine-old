@@ -37,7 +37,7 @@
 			"Component" : [
 				{
 					"Type": "Transform",
-					"Values": {"Position" : [0, 0, 0], "Scale" : [0.5, 0.5, 0]}
+					"Values": {"Position" : [-79.5, 0, 0], "Scale" : [0.5, 0.5, 0]}
 				},
 				{
 					"Type": "Text",

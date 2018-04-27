@@ -14,6 +14,13 @@ void StateMachine::Register()
 
 void StateMachine::Load(CR_RJValue _data)
 {
+	if (_data.HasMember("StateList"))
+	{
+		CR_RJValue stateList = _data["StateList"];
+		for (rapidjson::SizeType i = 0; i < stateList.Size(); ++i) 
+			m_pOwner->AddComponent(stateList[i].GetString());
+	}
+
 	if (_data.HasMember("Current")) {
 		CR_RJValue currentState = _data["Current"];
 		m_pOwner->SetCurrentState(currentState.GetString());
@@ -26,10 +33,18 @@ void StateMachine::Load(CR_RJValue _data)
 }
 
 void StateMachine::Init()
-{}
+{
+	m_pOwner->GetGlobalState()->Init();
+	m_pOwner->GetCurrentState()->Init();
+}
 
-void StateMachine::Update(const float /*_dt*/)
-{}
+void StateMachine::Update(const float _dt)
+{
+	//if (INPUT::KeyTriggered(JE_ENTER)) {
+		//m_pOwner->GetCurrentState()->Update(_dt);
+		m_pOwner->GetGlobalState()->Update(_dt);
+	//}
+}
 
 void StateMachine::Close()
 {}

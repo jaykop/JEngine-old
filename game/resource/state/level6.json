@@ -28,20 +28,17 @@
 			"Component" : [
 				{
 					"Type": "Transform",
-					"Values": { "Position" : [-80, 0, 0], "Scale" : [25, 25, 0] }
+					"Values": { "Position" : [-80, 0, 1], "Scale" : [25, 25, 0] }
 				},
 				{
 					"Type": "Sprite",
 					"Values": { "Texture" : "miner" }
 				},
 				{
-					"Type": "Text",
-					"Values": { "Font" : "Default",
-								"Text" : ""}
-				},
-				{
 					"Type": "StateMachine",
-					"Values": { "Current" : "GoHomeAndSleepTilRested", "Global" : "MinerState"}
+					"Values": { "StateList" : ["MinerState", "GoHomeAndSleepTilRested", "BeatBully",
+								"EatStew", "EnterMineAndDigForNugget", "QuenchThirst", "VisitBankAndDepositGold" ],
+								"Current" : "GoHomeAndSleepTilRested", "Global" : "MinerState"}
 				}
 			]
 		}

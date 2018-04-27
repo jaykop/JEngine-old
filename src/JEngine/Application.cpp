@@ -115,7 +115,7 @@ bool Application::Initialize()
 
 	/*************** Open GL **************/
 	GLM::Resize(m_Data.m_width, m_Data.m_height);
-	GLM::initSDL_GL();
+	GLM::InitSDL_GL();
 	
 	/**************** IMGUI **************/
 	IMGUI::Init(m_pWindow);

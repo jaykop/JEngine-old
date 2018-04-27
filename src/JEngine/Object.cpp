@@ -15,7 +15,6 @@ Object::Object(const char* _name)
 
 Object::~Object()
 {
-	ClearStateMachine();
 	ClearChildren();
 	ClearComponents();
 }
@@ -142,7 +141,7 @@ void Object::ClearComponents()
 	for (auto component : m_componentMap) {
 
 		if (component.second) {
-			IMGUI::AddComponentEditor(component.second);
+			IMGUI::RemoveComponentEditor(component.second);
 			delete component.second;
 			component.second = nullptr;
 		}
@@ -255,27 +254,14 @@ void Object::RevertToPreviousState()
 		JE_DEBUG_PRINT("!Object - Set next state of %s to nullptr.\n", m_name.c_str());
 }
 
-void Object::ClearStateMachine()
+CustomComponent* Object::GetGlobalState() const
 {
-	// Remove every allocated states
+	return m_StateMachine.m_pGlobalState;
+}
 
-	// Current one
-	if (m_StateMachine.m_pCurrentState) {
-		delete m_StateMachine.m_pCurrentState;
-		m_StateMachine.m_pCurrentState = nullptr;
-	}
-
-	// Previous one
-	if (m_StateMachine.m_pPreviousState) {
-		delete m_StateMachine.m_pPreviousState;
-		m_StateMachine.m_pPreviousState = nullptr;
-	}
-
-	// Global one
-	if (m_StateMachine.m_pGlobalState) {
-		delete m_StateMachine.m_pGlobalState;
-		m_StateMachine.m_pGlobalState = nullptr;
-	}
+CustomComponent* Object::GetCurrentState() const
+{
+	return m_StateMachine.m_pCurrentState;
 }
 
 void Object::SetGlobalState(const char* _componentName)
@@ -285,12 +271,10 @@ void Object::SetGlobalState(const char* _componentName)
 		s_name = COMPONENT::KeyToTypeTranslator(_componentName);
 		auto found = m_componentMap.find(s_name);
 
-		// Found nothing exsting component type
-		// Insert new component to the list
-		if (found == m_componentMap.end())
-			m_StateMachine.m_pGlobalState 
-				= (CustomComponent*)COMPONENT::CreateComponent(
-					COMPONENT::KeyToTypeTranslator(_componentName), this);
+		// Found same name of component,
+		// then put that to global state
+		if (found != m_componentMap.end())
+			m_StateMachine.m_pGlobalState = (CustomComponent*)found->second;
 
 		else
 			JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", _componentName);
@@ -307,12 +291,10 @@ void Object::SetCurrentState(const char* _componentName)
 		s_name = COMPONENT::KeyToTypeTranslator(_componentName);
 		auto found = m_componentMap.find(s_name);
 
-		// Found nothing exsting component type
-		// Insert new component to the list
-		if (found == m_componentMap.end())
-			m_StateMachine.m_pCurrentState
-				= (CustomComponent*)COMPONENT::CreateComponent(
-					COMPONENT::KeyToTypeTranslator(_componentName), this);
+		// Found same name of component,
+		// then put that to current state
+		if (found != m_componentMap.end())
+			m_StateMachine.m_pCurrentState = (CustomComponent*)found->second;
 
 		else
 			JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", _componentName);

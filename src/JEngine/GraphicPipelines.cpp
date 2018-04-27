@@ -373,9 +373,6 @@ void GraphicSystem::TextPipeline(Text * _text)
 	GLM::m_shader[GLM::SHADER_TEXT]->Use();
 
 	GLM::m_shader[GLM::SHADER_TEXT]->SetMatrix(
-		GLM::UNIFORM_TEXT_TRANSLATE, mat4::Translate(s_pTransform->m_position));
-
-	GLM::m_shader[GLM::SHADER_TEXT]->SetMatrix(
 		GLM::UNIFORM_TEXT_SCALE, mat4::Scale(s_pTransform->m_scale));
 
 	GLM::m_shader[GLM::SHADER_TEXT]->SetMatrix(
@@ -407,7 +404,7 @@ void GraphicSystem::TextPipeline(Text * _text)
 	// Send camera info to shader
 	GLM::m_shader[GLM::SHADER_TEXT]->SetMatrix(
 		GLM::UNIFORM_TEXT_CAMERA, m_viewport);
-
+	
 	// TODO
 	// It so, not draw
 	//if (!_sprite->m_culled) {
@@ -450,18 +447,15 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 
 		static GLuint					s_vao, s_elementSize;
 		static vec3						s_velocity, s_colorDiff;
-		static float					s_doubleDt;
 		static bool						s_changeColor, s_rotation;
 		static vec4						s_color;
 		static unsigned					s_texture;
 		static Transform*				s_pTransform;
-		static Emitter::ParticleType	s_type;
 
 		s_vao = *(_emitter->m_vao);
 		s_elementSize = _emitter->m_elementSize;
 		s_rotation = _emitter->m_rotationSpeed == 0 ? false : true;
 		s_changeColor = _emitter->m_changeColor;
-		s_type = _emitter->m_type;
 		s_pTransform = _emitter->m_transform;
 		s_texture = _emitter->m_mainTex;
 		s_velocity = _dt * _emitter->m_velocity;
@@ -549,54 +543,46 @@ void GraphicSystem::Render(const unsigned &_vao, const int _elementSize, unsigne
 
 void GraphicSystem::Render(Font* _font, const std::string& _text, Transform* _transform)
 {
-	static vec3 s_position, s_scale;
+	static vec3 s_position, s_scale, s_realPosition;
 
 	s_scale = _transform->m_scale;
 	s_position = _transform->m_position;
 
-	glBindVertexArray(GLM::m_vao[GLM::SHAPE_TEXT]);
-	glBindBuffer(GL_ARRAY_BUFFER, GLM::m_vbo[GLM::SHAPE_TEXT]);
-
 	GLfloat new_x = GLfloat(s_position.x);
 	GLfloat init_x = new_x, lower_y = 0;
 	int num_newline = 1;
+
+	glBindVertexArray(GLM::m_vao[GLM::SHAPE_TEXT]);
 
 	// Iterate all character
 	std::string::const_iterator c;
 	for (c = _text.begin(); c != _text.end(); ++c)
 	{
 		Font::Character ch = _font->m_data[*c];
-		GLfloat xpos = new_x + ch.m_bearing.x * s_scale.x;
-		GLfloat ypos = s_position.y - (ch.m_size.y - ch.m_bearing.y) * s_scale.y - lower_y;
-		GLfloat zpos = s_position.z;
+		s_realPosition.x = new_x + ch.m_bearing.x * s_scale.x;
+		s_realPosition.y = s_position.y - (ch.m_size.y - ch.m_bearing.y) * s_scale.y - lower_y;
+		s_realPosition.z = s_position.z;
 
-		GLfloat w = ch.m_size.x * s_scale.x;
-		GLfloat h = ch.m_size.y * s_scale.y;
+		GLM::m_shader[GLM::SHADER_TEXT]->SetMatrix(
+			GLM::UNIFORM_TEXT_TRANSLATE, mat4::Translate(s_realPosition));
+
+		GLfloat w = ch.m_size.x;
+		GLfloat h = ch.m_size.y;
 
 		//Update vbo
 		GLfloat vertices[4][8] = {
-		{ xpos,		ypos + h,	zpos, 0.f, 0.f, 0.f, 0.f, 1.f },
-		{ xpos + w, ypos + h,	zpos, 1.f, 0.f, 0.f, 0.f, 1.f },
-		{ xpos,		ypos,		zpos, 0.f, 1.f, 0.f, 0.f, 1.f },
-		{ xpos + w, ypos,		zpos, 1.f, 1.f ,0.f, 0.f, 1.f }
+			{ 0.f,	h,		0.f, 0.f, 0.f, 0.f, 0.f, 1.f },
+			{ w,	h,		0.f, 1.f, 0.f, 0.f, 0.f, 1.f },
+			{ 0.f,	0.f,	0.f, 0.f, 1.f, 0.f, 0.f, 1.f },
+			{ w,	0.f,	0.f, 1.f, 1.f ,0.f, 0.f, 1.f }
 		};
 
+		const static auto sizeOfVertices = sizeof(vertices);
+
 		glBindTexture(GL_TEXTURE_2D, ch.m_texture);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-		// vertex position
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(0);
-
-		// texture coordinate position
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-		glEnableVertexAttribArray(1);
-
-		// normals of vertices
-		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
-		glEnableVertexAttribArray(2);
-
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4); 
+		glBindBuffer(GL_ARRAY_BUFFER, GLM::m_vbo[GLM::SHAPE_TEXT]);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeOfVertices, vertices);
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 		const char newline = *c;
 		if (newline == '\n')
@@ -608,9 +594,8 @@ void GraphicSystem::Render(Font* _font, const std::string& _text, Transform* _tr
 
 		else
 			new_x += (ch.m_advance >> 6) * s_scale.x;
-	}
 
-	glBindVertexArray(0);
+	}
 }
 
 JE_END

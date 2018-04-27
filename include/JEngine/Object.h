@@ -65,6 +65,11 @@ public:
 	template<typename ComponentType>
 	inline void				RemoveComponent();
 
+	void		AddComponent(const char* _componentName);
+	Component*	GetComponent(const char* _componentName);
+	bool		HasComponent(const char* _componentName) const;
+	void		RemoveComponent(const char* _componentName);
+
 	template<typename ComponentType>
 	inline void				SetGlobalState();
 	
@@ -74,9 +79,12 @@ public:
 	template<typename ComponentType>
 	inline void				ChangeState();
 	
-	void	SetGlobalState(const char* _componentName);
-	void	SetCurrentState(const char* _componentName);
-	void	RevertToPreviousState();
+	CustomComponent* GetGlobalState() const;
+	CustomComponent* GetCurrentState() const;
+
+	void SetGlobalState(const char* _componentName);
+	void SetCurrentState(const char* _componentName);
+	void RevertToPreviousState();
 
 private:
 
@@ -86,13 +94,7 @@ private:
 	void ClearComponents();
 	void ClearChildren();
 
-	void		AddComponent(const char* _componentName);
-	Component*	GetComponent(const char* _componentName);
-	bool		HasComponent(const char* _componentName) const;
-	void		RemoveComponent(const char* _componentName);
-
-	bool	HandleMessage(Telegram& _message);
-	void	ClearStateMachine();
+	bool HandleMessage(Telegram& _message);
 
 	unsigned			m_id;
 	bool				m_active;
