@@ -544,12 +544,13 @@ void GraphicSystem::Render(const unsigned &_vao, const int _elementSize, unsigne
 void GraphicSystem::Render(Font* _font, const std::string& _text, Transform* _transform)
 {
 	const static int shift = 6;
+	const GLfloat nextLineInverval = _font->m_newLineInterval * _font->m_fontSize / 125.f;
+
 	static vec3 s_position, s_scale, s_realPosition, s_realScale;
+
 	s_scale = _transform->m_scale;
 	s_position = _transform->m_position;
-	const GLfloat nextLineInverval = _font->m_newLineInterval * _font->m_fontSize * s_scale.y / 50.f;
 
-	
 	GLfloat initX = GLfloat(s_position.x), newX = initX, intervalY = 0.f;
 	int num_newline = 1;
 
@@ -559,6 +560,35 @@ void GraphicSystem::Render(Font* _font, const std::string& _text, Transform* _tr
 	std::string::const_iterator letter;
 	for (letter = _text.begin(); letter != _text.end(); ++letter)
 	{
+		Font::Character character = _font->m_data[*letter];
+		s_realPosition.x = newX + character.m_bearing.x * s_scale.x;
+		s_realPosition.y = s_position.y - (character.m_size.y - character.m_bearing.y) * s_scale.y - intervalY;
+		s_realPosition.z = s_position.z;
+
+		GLfloat width = character.m_size.x;
+		GLfloat height = character.m_size.y;
+
+		GLM::m_shader[GLM::SHADER_TEXT]->SetMatrix(
+			GLM::UNIFORM_TEXT_TRANSLATE, mat4::Translate(s_realPosition));
+
+		GLM::m_shader[GLM::SHADER_TEXT]->SetMatrix(
+			GLM::UNIFORM_TEXT_SCALE, mat4::Scale(s_pTransform->m_scale));
+
+		//Update vbo
+		GLfloat vertices[4][8] = {
+			{ 0.f,	height,	0.f, 0.f, 0.f, 0.f, 0.f, 1.f },
+			{ width,height,	0.f, 1.f, 0.f, 0.f, 0.f, 1.f },
+			{ 0.f,	0.f,	0.f, 0.f, 1.f, 0.f, 0.f, 1.f },
+			{ width,0.f,	0.f, 1.f, 1.f ,0.f, 0.f, 1.f }
+		};
+
+		const static auto sizeOfVertices = sizeof(vertices);
+
+		glBindTexture(GL_TEXTURE_2D, character.m_texture);
+		glBindBuffer(GL_ARRAY_BUFFER, GLM::m_vbo[GLM::SHAPE_TEXT]);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeOfVertices, vertices);
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
 		const char newline = *letter;
 		if (newline == '\n') {
 			newX = initX;
@@ -566,40 +596,9 @@ void GraphicSystem::Render(Font* _font, const std::string& _text, Transform* _tr
 			++num_newline;
 		}
 
-		else {
-			Font::Character character = _font->m_data[*letter];
-			s_realPosition.x = newX + character.m_bearing.x * s_scale.x;
-			s_realPosition.y = s_position.y - (character.m_size.y - character.m_bearing.y) * s_scale.y - intervalY;
-			s_realPosition.z = s_position.z;
-
-			s_realScale.x = character.m_size.x;
-			s_realScale.y = character.m_size.y;
-			GLfloat width = character.m_size.x;
-			GLfloat height = character.m_size.y;
-
-			GLM::m_shader[GLM::SHADER_TEXT]->SetMatrix(
-				GLM::UNIFORM_TEXT_TRANSLATE, mat4::Translate(s_realPosition));
-
-			GLM::m_shader[GLM::SHADER_TEXT]->SetMatrix(
-				GLM::UNIFORM_TEXT_SCALE, mat4::Scale(s_scale));
-
-			//Update vbo
-			GLfloat vertices[4][8] = {
-				{ 0.f, height, 0.f, 0.f, 0.f, 0.f, 0.f, 1.f },
-				{ width, height, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f },
-				{ 0.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 1.f },
-				{ width, 0.f, 0.f, 1.f, 1.f ,0.f, 0.f, 1.f }
-			};
-
-			const static auto sizeOfVertices = sizeof(vertices);
-
-			glBindTexture(GL_TEXTURE_2D, character.m_texture);
-			glBindBuffer(GL_ARRAY_BUFFER, GLM::m_vbo[GLM::SHAPE_TEXT]);
-			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeOfVertices, vertices);
-			glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-
+		else
 			newX += (character.m_advance >> shift) * s_scale.x;
-		}
+
 	}
 }
 

@@ -1,6 +1,7 @@
 {
 	"Font" : [
-		{"Key" : "Default", "Size" : 48, "Directory" : "../resource/font/Default.ttf"}
+		{"Key" : "Default", "Size" : 48, "Directory" : "../resource/font/Default.ttf"},
+		{"Key" : "JKDot", 	"Size" : 48, "Directory" : "../resource/font/JKDot.ttf"}
 	],
 	
 	"Texture" : [
