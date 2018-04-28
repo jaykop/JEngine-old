@@ -26,6 +26,7 @@ void MinerState::Load(CR_RJValue /*_data*/)
 
 void MinerState::Init()
 {
+	m_talkOffset.Set( -30.f, 40.f, 1.f);
 	m_pTransform = m_pOwner->GetComponent<Transform>();
 
 	// Add child object
@@ -57,27 +58,16 @@ void MinerState::Init()
 
 void MinerState::Update(const float /*_dt*/)
 {
-	static vec3 position;
-	if (INPUT::KeyPressed(JE_LEFT))
-		position.x--;
-	if (INPUT::KeyPressed(JE_RIGHT))
-		position.x++;
-	if (INPUT::KeyPressed(JE_DOWN))
-		position.y--;
-	if (INPUT::KeyPressed(JE_UP))
-		position.y++;
+	// Check thirsty
+	if (m_thirst >= 10)
+		m_pOwner->ChangeState<QuenchThirst>();
 
-	m_pTransform->m_position.Set(position);
-	m_talkTransform->m_position.Set(m_pTransform->m_position + m_talkOffset);
-	//// Check thirsty
-	//if (m_thirst >= 10)
-	//	m_pOwner->ChangeState<QuenchThirst>();
+	// Check fatigue
+	else if (m_fatigue >= 10)
+		m_pOwner->ChangeState<GoHomeAndSleepTilRested>();
 
-	//// Check fatigue
-	//else if (m_fatigue >= 10)
-	//	m_pOwner->ChangeState<GoHomeAndSleepTilRested>();
-
-	//m_talkText->SetText("%s", m_content);
+	m_talkTransform->m_position.Set(
+		m_pTransform->m_position + m_talkOffset);
 }
 
 void MinerState::Close()
@@ -106,23 +96,21 @@ void GoHomeAndSleepTilRested::Init()
 	m_globalState = (MinerState*)m_pOwner->GetGlobalState();
 	m_globalState->m_location = HOME;
 	m_globalState->m_content = "Location: Home\nGetting sleep...";
+	m_globalState->m_pTransform->m_position.Set(-80.f, 0.f, 0.f);
 	m_globalState->m_talkTransform->m_position.Set(
-		m_globalState->m_pTransform->m_position + m_globalState->m_talkOffset);
-	m_globalState->m_talkText->SetText("%s", m_globalState->m_content);
+		m_globalState->m_pTransform->m_position + m_globalState->m_talkOffset); 
+	m_globalState->m_talkText->SetText("%s\nFatigue: %d", m_globalState->m_content, m_globalState->m_fatigue);
 }
 
 void GoHomeAndSleepTilRested::Update(const float /*_dt*/)
 {
 	m_globalState->m_fatigue--;
-	m_globalState->m_content = "Location: Home\nGetting sleep...";
+	m_globalState->m_talkText->SetText("%s\nFatigue: %d", m_globalState->m_content, m_globalState->m_fatigue);
 
-	//if (m_globalState->m_fatigue <= 0) {
-	//	m_globalState->m_fatigue = 0;
-	//	m_pOwner->ChangeState<EnterMineAndDigForNugget>();
-	//}
-
-	m_globalState->m_talkTransform->m_position.Set(
-		m_globalState->m_pTransform->m_position + m_globalState->m_talkOffset);
+	if (m_globalState->m_fatigue <= 0) {
+		m_globalState->m_fatigue = 0;
+		m_pOwner->ChangeState<EnterMineAndDigForNugget>();
+	}
 }
 
 void GoHomeAndSleepTilRested::Close()
@@ -154,6 +142,7 @@ void EnterMineAndDigForNugget::Init()
 	m_globalState->m_talkTransform->m_position.Set(
 		m_globalState->m_pTransform->m_position + m_globalState->m_talkOffset);
 	m_globalState->m_content = "Location: Mine\nDigging nugget...";
+	m_globalState->m_talkText->SetText("%s\nGold: %d", m_globalState->m_content, m_globalState->m_gold);
 }
 
 void EnterMineAndDigForNugget::Update(const float /*_dt*/)
@@ -161,6 +150,7 @@ void EnterMineAndDigForNugget::Update(const float /*_dt*/)
 	m_globalState->m_gold++;
 	m_globalState->m_fatigue++;
 	m_globalState->m_thirst++;
+	m_globalState->m_talkText->SetText("%s\nGold: %d", m_globalState->m_content, m_globalState->m_gold);
 
 	if (m_globalState->m_gold >= 10)
 		m_pOwner->ChangeState<VisitBankAndDepositGold>();
@@ -170,6 +160,48 @@ void EnterMineAndDigForNugget::Close()
 {}
 
 bool EnterMineAndDigForNugget::OnMessage(Telegram& /*msg*/)
+{
+	return false;
+}
+
+/////////////////////////////////////////////////////////////////////////
+// VisitBankAndDepositGold state
+/////////////////////////////////////////////////////////////////////////
+VisitBankAndDepositGold::VisitBankAndDepositGold(Object* _pObject)
+	:CustomComponent(_pObject)
+{}
+
+void VisitBankAndDepositGold::Register()
+{}
+
+void VisitBankAndDepositGold::Load(CR_RJValue /*_data*/)
+{}
+
+void VisitBankAndDepositGold::Init()
+{
+	m_globalState = (MinerState*)m_pOwner->GetGlobalState();
+	m_globalState->m_location = BANK;
+	m_globalState->m_pTransform->m_position.Set(50.f, -50.f, 0.f);
+	m_globalState->m_talkTransform->m_position.Set(
+		m_globalState->m_pTransform->m_position + m_globalState->m_talkOffset);
+	m_globalState->m_content = "Location: Bank\nSave ma golds!";
+	m_globalState->m_saved += m_globalState->m_gold;
+	m_globalState->m_gold = 0;
+	m_globalState->m_talkText->SetText("%s\nSaved: %d", m_globalState->m_content, m_globalState->m_saved);
+}
+
+void VisitBankAndDepositGold::Update(const float /*_dt*/)
+{
+	if (m_globalState->m_saved >= 100)
+		m_pOwner->ChangeState<GoHomeAndSleepTilRested>();
+	else
+		m_pOwner->ChangeState<EnterMineAndDigForNugget>();
+}
+
+void VisitBankAndDepositGold::Close()
+{}
+
+bool VisitBankAndDepositGold::OnMessage(Telegram& /*msg*/)
 {
 	return false;
 }
@@ -271,44 +303,6 @@ void QuenchThirst::Close()
 {}
 
 bool QuenchThirst::OnMessage(Telegram& /*msg*/)
-{
-	return false;
-}
-
-/////////////////////////////////////////////////////////////////////////
-// VisitBankAndDepositGold state
-/////////////////////////////////////////////////////////////////////////
-VisitBankAndDepositGold::VisitBankAndDepositGold(Object* _pObject)
-	:CustomComponent(_pObject)
-{}
-
-void VisitBankAndDepositGold::Register()
-{}
-
-void VisitBankAndDepositGold::Load(CR_RJValue /*_data*/)
-{}
-
-void VisitBankAndDepositGold::Init()
-{
-	m_globalState = (MinerState*)m_pOwner->GetGlobalState();
-	m_globalState->m_location = BANK;
-}
-
-void VisitBankAndDepositGold::Update(const float /*_dt*/)
-{
-	m_globalState->m_saved = m_globalState->m_gold;
-	m_globalState->m_gold = 0;
-
-	if (m_globalState->m_saved >= 100)
-		m_pOwner->ChangeState<GoHomeAndSleepTilRested>();
-	else
-		m_pOwner->ChangeState<EnterMineAndDigForNugget>();
-}
-
-void VisitBankAndDepositGold::Close()
-{}
-
-bool VisitBankAndDepositGold::OnMessage(Telegram& /*msg*/)
 {
 	return false;
 }

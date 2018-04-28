@@ -40,10 +40,10 @@ void StateMachine::Init()
 
 void StateMachine::Update(const float _dt)
 {
-	//if (INPUT::KeyTriggered(JE_ENTER)) {
-		//m_pOwner->GetCurrentState()->Update(_dt);
+	if (INPUT::KeyTriggered(JE_ENTER)) {
+		m_pOwner->GetCurrentState()->Update(_dt);
 		m_pOwner->GetGlobalState()->Update(_dt);
-	//}
+	}
 }
 
 void StateMachine::Close()
