@@ -372,8 +372,8 @@ void GraphicSystem::TextPipeline(Text * _text)
 
 	GLM::m_shader[GLM::SHADER_TEXT]->Use();
 
-	//GLM::m_shader[GLM::SHADER_TEXT]->SetMatrix(
-	//	GLM::UNIFORM_TEXT_SCALE, mat4::Scale(s_pTransform->m_scale));
+	GLM::m_shader[GLM::SHADER_TEXT]->SetMatrix(
+		GLM::UNIFORM_TEXT_SCALE, mat4::Scale(s_pTransform->m_scale));
 
 	GLM::m_shader[GLM::SHADER_TEXT]->SetMatrix(
 		GLM::UNIFORM_TEXT_ROTATE, mat4::Rotate(Math::RadToDeg(s_pTransform->m_rotation), s_pTransform->m_rotationAxis));
@@ -532,6 +532,8 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 		glDepthMask(GL_TRUE);	// Enable depth buffer writing
 		glDisable(GL_BLEND);	// Disable blend
 	}
+
+	glBindVertexArray(0);
 }
 
 void GraphicSystem::Render(const unsigned &_vao, const int _elementSize, unsigned _mode)
@@ -544,12 +546,11 @@ void GraphicSystem::Render(const unsigned &_vao, const int _elementSize, unsigne
 void GraphicSystem::Render(Font* _font, const std::string& _text, Transform* _transform)
 {
 	const static int shift = 6;
-	static vec3 s_position, s_scale, s_realPosition, s_realScale;
+	static vec3 s_position, s_scale, s_realPosition;
 	s_scale = _transform->m_scale;
 	s_position = _transform->m_position;
 	const GLfloat nextLineInverval = _font->m_newLineInterval * _font->m_fontSize * s_scale.y / 50.f;
 
-	
 	GLfloat initX = GLfloat(s_position.x), newX = initX, intervalY = 0.f;
 	int num_newline = 1;
 
@@ -572,16 +573,11 @@ void GraphicSystem::Render(Font* _font, const std::string& _text, Transform* _tr
 			s_realPosition.y = s_position.y - (character.m_size.y - character.m_bearing.y) * s_scale.y - intervalY;
 			s_realPosition.z = s_position.z;
 
-			s_realScale.x = character.m_size.x;
-			s_realScale.y = character.m_size.y;
 			GLfloat width = character.m_size.x;
 			GLfloat height = character.m_size.y;
 
 			GLM::m_shader[GLM::SHADER_TEXT]->SetMatrix(
 				GLM::UNIFORM_TEXT_TRANSLATE, mat4::Translate(s_realPosition));
-
-			GLM::m_shader[GLM::SHADER_TEXT]->SetMatrix(
-				GLM::UNIFORM_TEXT_SCALE, mat4::Scale(s_scale));
 
 			//Update vbo
 			GLfloat vertices[4][8] = {
@@ -601,6 +597,8 @@ void GraphicSystem::Render(Font* _font, const std::string& _text, Transform* _tr
 			newX += (character.m_advance >> shift) * s_scale.x;
 		}
 	}
+
+	glBindVertexArray(0);
 }
 
 JE_END
