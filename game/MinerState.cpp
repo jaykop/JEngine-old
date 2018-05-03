@@ -1,4 +1,4 @@
-#include "MinerState.h"
+﻿#include "MinerState.h"
 #include "CustomLogicHeader.h"
 
 JE_BEGIN

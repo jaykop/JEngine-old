@@ -401,11 +401,11 @@ void GLManager::SetDrawMode(DrawMode _mode)
 	switch (_mode)
 	{
 	case DRAW_POINT:
-		m_drawMode = GL_POINTS;
+		m_drawMode = GL_POINT;
 		glPointSize(5);
 		break;
 	case DRAW_LINE:
-		m_drawMode = GL_LINES;
+		m_drawMode = GL_LINE;
 		break;
 	case DRAW_FILL:
 		m_drawMode = GL_TRIANGLES;

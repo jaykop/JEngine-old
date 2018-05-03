@@ -102,7 +102,11 @@ void GraphicSystem::LightSourcePipeline()
 {
 	if (m_isLight) {
 
-		glEnable(GL_BLEND);
+		if (GLM::m_mode == GLM::DRAW_FILL)
+			glEnable(GL_BLEND);
+		else
+			glDisable(GL_BLEND);
+
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_DEPTH_TEST);
 
@@ -217,7 +221,11 @@ void GraphicSystem::SpritePipeline(Sprite *_sprite)
 	if (_sprite->m_hasMaterial && m_isLight)
 		LightingEffectPipeline(_sprite->m_material);
 	
-	glEnable(GL_BLEND);
+	if (GLM::m_mode == GLM::DRAW_FILL)
+		glEnable(GL_BLEND);
+	else
+		glDisable(GL_BLEND);
+
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_DEPTH_TEST);
 
@@ -409,7 +417,11 @@ void GraphicSystem::TextPipeline(Text * _text)
 	// It so, not draw
 	//if (!_sprite->m_culled) {
 
-	glEnable(GL_BLEND); 
+	if (GLM::m_mode == GLM::DRAW_FILL)
+		glEnable(GL_BLEND);
+	else
+		glDisable(GL_BLEND);
+
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_DEPTH_TEST);
 
@@ -427,7 +439,12 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 		static GLenum s_mode;
 
 		// Particle render attributes setting
-		glEnable(GL_BLEND);
+		if (GLM::m_mode == GLM::DRAW_FILL)
+			glEnable(GL_BLEND);
+		else
+			glDisable(GL_BLEND);
+
+
 		glDepthMask(GL_FALSE);	
 
 		// Points
@@ -539,7 +556,7 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 void GraphicSystem::Render(const unsigned &_vao, const int _elementSize, unsigned _mode)
 {
 	glBindVertexArray(_vao);
-	glDrawElements(_mode, _elementSize, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, _elementSize, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 }
 

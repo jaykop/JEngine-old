@@ -134,7 +134,6 @@ void AssetManager::LoadFont(const char * _path, const char* _key, unsigned _size
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 	static float s_newLineLevel = 0;
-	static FT_ULong numOfChars;
 
 	// Load first 128 characters of ASCII set
 	for (GLubyte c = 0; c < 128; c++)

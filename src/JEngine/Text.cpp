@@ -57,7 +57,30 @@ const std::string& Text::GetText(void) const
 	return m_text;
 }
 
-void Text::Load(CR_RJValue _data)
+void Text::SetText(const wchar_t* _wText, ...)
+{
+	if (!_wText)
+		m_wText.assign(0);
+
+	else {
+		va_list ap;
+
+		va_start(ap, _wText);
+		vswprintf_s(m_wTextStorage, _wText, ap);
+		va_end(ap);
+
+		m_wText = m_wTextStorage;
+		if (m_wText.length() > 1024)
+			JE_DEBUG_PRINT("!Text - Too long text content. Must be shorter than 1024.\n");
+	}
+}
+
+const std::wstring& Text::GetWText() const
+{
+	return m_wText;
+}
+
+	void Text::Load(CR_RJValue _data)
 {
 	if (_data.HasMember("Text")) {
 		CR_RJValue text = _data["Text"];
