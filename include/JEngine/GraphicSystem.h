@@ -82,7 +82,7 @@ private:
 	void LightingEffectPipeline(Material* _material);
 	void ParticlePipeline(Emitter* _emitter, const float _dt);
 
-	void Render(const unsigned &_vao, const int _elementSize, unsigned _mode = 0x0004 /*GL_TRIANGLES*/);
+	void Render(const unsigned &_vao, const int _elementSize);
 	void Render(Font* _font, const std::string& _text, Transform* _transform);
 	void SortSprites();
 	void UpdateMousePosition();

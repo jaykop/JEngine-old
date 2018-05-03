@@ -157,7 +157,7 @@ void GraphicSystem::LightSourcePipeline()
 				GLM::UNIFORM_LIGHT_COLOR,
 				light->m_color);
 
-			Render(GLM::m_vao[GLM::SHAPE_CONE], GLM::m_elementSize[GLM::SHAPE_CONE], GLM::m_drawMode);
+			Render(GLM::m_vao[GLM::SHAPE_CONE], GLM::m_elementSize[GLM::SHAPE_CONE]);
 
 		} // for (auto light : m_lights) {
 	} // if (m_isLight) {
@@ -229,7 +229,7 @@ void GraphicSystem::SpritePipeline(Sprite *_sprite)
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_DEPTH_TEST);
 
-	Render(*(_sprite->m_vao), _sprite->m_elementSize, GLM::m_drawMode);
+	Render(*(_sprite->m_vao), _sprite->m_elementSize);
 
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
@@ -436,8 +436,6 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 	// Check emitter's active toggle
 	if (_emitter->m_active) {
 
-		static GLenum s_mode;
-
 		// Particle render attributes setting
 		if (GLM::m_mode == GLM::DRAW_FILL)
 			glEnable(GL_BLEND);
@@ -449,7 +447,6 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 
 		// Points
 		if (_emitter->m_renderType == Emitter::PARTICLERENDER_POINT) {	
-			s_mode = GL_POINTS;
 			glPointSize(_emitter->m_pointSize);
 			glEnable(GL_POINT_SMOOTH);
 			glBlendFunc(GL_ONE, GL_ONE);
@@ -457,7 +454,6 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 
 		// Plane 2d and 3d form
 		else {
-			s_mode = GL_TRIANGLES;
 			glDisable(GL_POINT_SMOOTH);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 		}
@@ -542,7 +538,7 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 				GLM::m_shader[GLM::SHADER_PARTICLE]->SetBool(
 					GLM::UNIFORM_PARTICLE_HIDE, particle->m_hidden);
 
-				Render(s_vao, s_elementSize, s_mode);
+				Render(s_vao, s_elementSize);
 			}
 		}
 
@@ -553,7 +549,7 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 	glBindVertexArray(0);
 }
 
-void GraphicSystem::Render(const unsigned &_vao, const int _elementSize, unsigned _mode)
+void GraphicSystem::Render(const unsigned &_vao, const int _elementSize)
 {
 	glBindVertexArray(_vao);
 	glDrawElements(GL_TRIANGLES, _elementSize, GL_UNSIGNED_INT, 0);
