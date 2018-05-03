@@ -31,10 +31,10 @@ class MinerState : public CustomComponent
 public:
 
 	Location	m_location;
-	int			m_gold, m_money, m_thirst, m_fatigue, m_saved;
+	int			m_gold, m_thirst, m_fatigue, m_saved;
 	const char	*m_content = nullptr;
-	Object		*m_minerTalks = nullptr, *m_minerInfo = nullptr;
-	Text		*m_talkText = nullptr, *m_infoText = nullptr;
+	Object		*m_minerTalks = nullptr;
+	Text		*m_talkText = nullptr;
 	Transform	*m_pTransform = nullptr, *m_talkTransform = nullptr;
 	vec3		m_talkOffset;
 

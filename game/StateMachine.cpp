@@ -34,15 +34,22 @@ void StateMachine::Load(CR_RJValue _data)
 
 void StateMachine::Init()
 {
-	m_pOwner->GetGlobalState()->Init();
-	m_pOwner->GetCurrentState()->Init();
+	if (m_pOwner->GetGlobalState())
+		m_pOwner->GetGlobalState()->Init();
+
+	if (m_pOwner->GetCurrentState())
+		m_pOwner->GetCurrentState()->Init();
 }
 
 void StateMachine::Update(const float _dt)
 {
 	if (INPUT::KeyTriggered(JE_ENTER)) {
-		m_pOwner->GetCurrentState()->Update(_dt);
-		m_pOwner->GetGlobalState()->Update(_dt);
+
+		if (m_pOwner->GetGlobalState())
+			m_pOwner->GetGlobalState()->Update(_dt);
+
+		if (m_pOwner->GetCurrentState())
+			m_pOwner->GetCurrentState()->Update(_dt);
 	}
 }
 
