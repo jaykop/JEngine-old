@@ -100,9 +100,12 @@ void GraphicSystem::Update(const float _dt)
 	RenderToFramebuffer();
 
 	// Sort orthogonal objects and perspective objects
+
+	glPolygonMode(GL_FRONT_AND_BACK, GLM::m_drawMode);
 	SortSprites();
 	UpdatePipelines(_dt);
 
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	RenderToScreen();
 	UpdateMousePosition();
 }

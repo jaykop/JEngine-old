@@ -10,6 +10,9 @@
 JE_BEGIN
 
 class Font {
+	
+	friend class AssetManager;
+	friend class GraphicSystem;
 
 	struct Character {
 		unsigned	m_texture;	// ID handle of the glyph texture
@@ -18,10 +21,7 @@ class Font {
 		vec2		m_bearing;	// Offset from baseline to left/top of glyph
 	};
 
-	typedef std::map<char, Character> FontData;
-
-	friend class AssetManager;
-	friend class GraphicSystem;
+	using FontData = std::map<char, Character>;
 
 private:
 
@@ -30,11 +30,11 @@ private:
 	Font(const Font& /*_copy*/) = delete;
 	void operator = (const Font& /*_copy*/) = delete;
 
-	FontData m_data;
-	FT_Face m_face;
-	FT_Library m_lib;
-	unsigned m_fontSize;
-	float m_newLineInterval;
+	FontData	m_data;
+	FT_Face		m_face;
+	FT_Library	m_lib;
+	unsigned	m_fontSize;
+	float		m_newLineInterval;
 };
 
 class TextBuilder : public ComponentBuilder
@@ -68,10 +68,16 @@ public:
 	void				SetText(const char* _text, ...);
 	const std::string&	GetText(void) const;
 
+	void				SetText(const wchar_t* _wText, ...);
+	const std::wstring& GetWText() const;
+
 	Font* m_pFont;
 
 private:
 	
+	wchar_t			m_wTextStorage[1024];
+	std::wstring	m_wText;
+
 	char		m_textStorage[1024];
 	std::string m_text;
 
