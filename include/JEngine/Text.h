@@ -9,26 +9,27 @@
 
 JE_BEGIN
 
+struct Character {
+	unsigned	m_texture;	// ID handle of the glyph texture
+	unsigned	m_advance;	// Horizontal offset to advance to next glyph
+	vec2		m_size;		// Size of glyph
+	vec2		m_bearing;	// Offset from baseline to left/top of glyph
+};
+
 class Font {
 	
 	friend class AssetManager;
 	friend class GraphicSystem;
 
-	struct Character {
-		unsigned	m_texture;	// ID handle of the glyph texture
-		unsigned	m_advance;	// Horizontal offset to advance to next glyph
-		vec2		m_size;		// Size of glyph
-		vec2		m_bearing;	// Offset from baseline to left/top of glyph
-	};
-
-	using FontData = std::map<char, Character>;
+	using FontData = std::map<unsigned long, Character>;
 
 private:
 
 	Font();
 	~Font() {};
 	Font(const Font& /*_copy*/) = delete;
-	void operator = (const Font& /*_copy*/) = delete;
+	void operator= (const Font& /*_copy*/) = delete;
+	void operator= (Font&& /*_copy*/) = delete;
 
 	FontData	m_data;
 	FT_Face		m_face;
@@ -66,7 +67,7 @@ public:
 	void Register() override;
 
 	void				SetText(const char* _text, ...);
-	const std::string&	GetText(void) const;
+	const std::string&	GetText() const;
 
 	void				SetText(const wchar_t* _wText, ...);
 	const std::wstring& GetWText() const;
@@ -74,23 +75,24 @@ public:
 	Font* m_pFont;
 
 private:
-	
+
+	bool m_printWide = false;
+
 	wchar_t			m_wTextStorage[1024];
 	std::wstring	m_wText;
 
-	char		m_textStorage[1024];
-	std::string m_text;
+	char			m_textStorage[1024];
+	std::string		m_text;
 
 	Text(Object* pObject);
 	~Text();
 	void operator=(const Text& _copy);
-
 	void Load(CR_RJValue _data) override;
-
 	void EditorUpdate(const float _dt) override;
 
 	Text() = delete;
 	Text(const Text& /*_copy*/) = delete;
+	Text(Text&& /*_copy*/) = delete;
 };
 
 JE_END
