@@ -25,6 +25,8 @@ void Text::operator=(const Text & _copy)
 {
 	m_pFont = _copy.m_pFont;
 	m_text = _copy.m_text;
+	m_wText = _copy.m_wText;
+	m_printWide = _copy.m_printWide;
 }
 
 void Text::Register()
@@ -36,8 +38,14 @@ void Text::Register()
 
 void Text::SetText(const char * _text, ...)
 {
-	if (_text == NULL)
-		m_text.assign(0);
+	// Set render to print ascii characters
+	m_printWide = false;
+
+	// Clear wide character conatiner
+	m_wText.clear();
+
+	if (!_text)
+		m_text.assign(_text);
 
 	else {
 		va_list ap;
@@ -59,8 +67,14 @@ const std::string& Text::GetText(void) const
 
 void Text::SetText(const wchar_t* _wText, ...)
 {
+	// Set render to print wide characters
+	m_printWide = true;
+
+	// Clear ascii texts container
+	m_text.clear();
+
 	if (!_wText)
-		m_wText.assign(0);
+		m_wText.assign(_wText);
 
 	else {
 		va_list ap;
@@ -80,7 +94,7 @@ const std::wstring& Text::GetWText() const
 	return m_wText;
 }
 
-	void Text::Load(CR_RJValue _data)
+void Text::Load(CR_RJValue _data)
 {
 	if (_data.HasMember("Text")) {
 		CR_RJValue text = _data["Text"];

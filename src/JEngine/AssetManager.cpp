@@ -123,10 +123,12 @@ void AssetManager::LoadFont(const char * _path, const char* _key, unsigned _size
 		JE_DEBUG_PRINT("!AssetManager - Could not init freetype library: %s\n", _path);
 
 	// Check freetype face init
-	if (!FT_New_Face(newFont->m_lib, _path, 0, &newFont->m_face))
+	if (bool a = !FT_New_Face(newFont->m_lib, _path, 0, &newFont->m_face))
 		JE_DEBUG_PRINT("*AssetManager - Loaded font: %s\n", _path);
 	else
 		JE_DEBUG_PRINT("!AssetManager - Failed to load font: %s\n", _path);
+
+	FT_Select_Charmap(newFont->m_face, FT_ENCODING_UNICODE);
 
 	FT_Set_Pixel_Sizes(newFont->m_face, 0, _size);
 
@@ -136,8 +138,9 @@ void AssetManager::LoadFont(const char * _path, const char* _key, unsigned _size
 	static float s_newLineLevel = 0;
 
 	// Load first 128 characters of ASCII set
-	for (GLubyte c = 0; c < 128; c++)
+	for (unsigned long c = 0xAC00; c < 0xAD00; c++)
 	{
+
 		// Load character glyph 
 		if (FT_Load_Char(newFont->m_face, c, FT_LOAD_RENDER))
 		{
@@ -168,7 +171,7 @@ void AssetManager::LoadFont(const char * _path, const char* _key, unsigned _size
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 		// Now store character for later use
-		Font::Character character = {
+		Character character = {
 			texture, GLuint(newFont->m_face->glyph->advance.x),
 			vec2(float(newFont->m_face->glyph->bitmap.width), float(newFont->m_face->glyph->bitmap.rows)),
 			vec2(float(newFont->m_face->glyph->bitmap_left), float(newFont->m_face->glyph->bitmap_top))

@@ -10,6 +10,7 @@ class Shader;
 class Material;
 class Transform;
 class Animation;
+struct Character;
 
 enum ProjectType  { PROJECTION_PERSPECTIVE, PROJECTION_ORTHOGONAL };
 
@@ -83,7 +84,9 @@ private:
 	void ParticlePipeline(Emitter* _emitter, const float _dt);
 
 	void Render(const unsigned &_vao, const int _elementSize);
-	void Render(Font* _font, const std::string& _text, Transform* _transform);
+	void Render(Font* _font, Text*_text, Transform* _transform, bool _printUnicode); 
+	void RenderCharacter(Character& _character, const vec3& _position,
+		const vec3& _scale, float& _newX, float _intervalY);
 	void SortSprites();
 	void UpdateMousePosition();
 

@@ -25,6 +25,7 @@ bool			APP::m_IMGUI = false;
 
 void Application::Run(bool _imgui)
 {
+
 	m_IMGUI = _imgui;
 
 	// Pop console window 

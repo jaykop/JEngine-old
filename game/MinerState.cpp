@@ -43,7 +43,7 @@ void MinerState::Init()
 	m_pOwner->AddChild(m_minerTalks);
 
 	// Set font
-	m_talkText->m_pFont = ASSET::GetFont("JKDot"); 
+	m_talkText->m_pFont = ASSET::GetFont("Default"); 
 
 }
 
@@ -147,9 +147,10 @@ void EnterMineAndDigForNugget::Update(const float /*_dt*/)
 
 		m_globalState->m_pTransform->m_position.Set(0.f, 0.f, 0.f);
 		m_globalState->m_content = "Location: Mine\nDigging nugget...";
-		m_globalState->m_talkText->SetText("%s\nFatigue: %d\nThirst: %d\nGold: %d\nSaved: %d",
+		m_globalState->m_talkText->SetText(L"가\n가각가각간");
+		/*m_globalState->m_talkText->SetText("%s\nFatigue: %d\nThirst: %d\nGold: %d\nSaved: %d",
 			m_globalState->m_content, m_globalState->m_fatigue, m_globalState->m_thirst,
-			m_globalState->m_gold, m_globalState->m_saved);
+			m_globalState->m_gold, m_globalState->m_saved);*/
 		m_globalState->m_talkTransform->m_position.Set(
 			m_globalState->m_pTransform->m_position + m_globalState->m_talkOffset);
 	}
