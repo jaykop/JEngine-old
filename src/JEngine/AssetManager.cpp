@@ -47,8 +47,13 @@ void AssetManager::Load()
 
 	// Load font
 	CR_RJValue fonts = JSON::GetDocument()["Font"];
-	for (rapidjson::SizeType i = 0; i < fonts.Size(); ++i)
-		LoadFont(fonts[i]["Directory"].GetString(), fonts[i]["Key"].GetString(), fonts[i]["Size"].GetUint());
+	for (rapidjson::SizeType i = 0; i < fonts.Size(); ++i) {
+		for (unsigned j = 0; j < fonts[i]["Range"].Size(); ++j) {
+			LoadFont(fonts[i]["Directory"].GetString(), fonts[i]["Key"].GetString(), fonts[i]["Size"].GetUint(),
+				static_cast<unsigned long>(fonts[i]["Range"][j][0].GetUint64()),
+				static_cast<unsigned long>(fonts[i]["Range"][j][1].GetUint64()));
+		}
+	}
 
 	// Load engine components
 	COMPONENT::m_loadingCustomLogic = false;
@@ -113,36 +118,72 @@ void AssetManager::LoadBuiltInComponents()
 }
 
 
-void AssetManager::LoadFont(const char * _path, const char* _key, unsigned _size)
+void AssetManager::LoadFont(const char * _path, const char* _key, unsigned _size,
+	unsigned long _start, unsigned long _end)
 {
-	Font* newFont = new Font;
-	newFont->m_fontSize = _size;
-
-	// Init freetype
-	if (FT_Init_FreeType(&newFont->m_lib))
-		JE_DEBUG_PRINT("!AssetManager - Could not init freetype library: %s\n", _path);
-
-	// Check freetype face init
-	if (bool a = !FT_New_Face(newFont->m_lib, _path, 0, &newFont->m_face))
-		JE_DEBUG_PRINT("*AssetManager - Loaded font: %s\n", _path);
-	else
-		JE_DEBUG_PRINT("!AssetManager - Failed to load font: %s\n", _path);
-
-	FT_Select_Charmap(newFont->m_face, FT_ENCODING_UNICODE);
-
-	FT_Set_Pixel_Sizes(newFont->m_face, 0, _size);
-
-	// Disable byte-alignment restriction
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
+	// Set pointer to new font
+	Font* newFont = nullptr;
+	static bool s_existing = false;
 	static float s_newLineLevel = 0;
+	auto found = m_fontMap.find(_key);
 
+	if (found != m_fontMap.end()) {
+		// There is existing font map
+		s_existing = true;
+		// Then get that one
+		newFont = found->second;
+		// Load the size of that font
+		s_newLineLevel = newFont->m_newLineInterval;
+	}
+
+	else {
+
+		// No existing font
+		s_existing = false;
+		// Then get a new font 
+		newFont = new Font;
+		
+		// Init freetype
+		if (FT_Init_FreeType(&newFont->m_lib))
+			JE_DEBUG_PRINT("!AssetManager - Could not init freetype library: %s\n", _path);
+
+		// Check freetype face init
+		if (bool a = !FT_New_Face(newFont->m_lib, _path, 0, &newFont->m_face))
+			JE_DEBUG_PRINT("*AssetManager - Loaded font: %s\n", _path);
+		else
+			JE_DEBUG_PRINT("!AssetManager - Failed to load font: %s\n", _path);
+
+		// Select unicode range
+		FT_Select_Charmap(newFont->m_face, FT_ENCODING_UNICODE);
+
+		// Set pixel size
+		FT_Set_Pixel_Sizes(newFont->m_face, 0, _size);
+		// Set size of the font
+		newFont->m_fontSize = _size;
+
+		// Disable byte-alignment restriction
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+	}
+
+	LoadCharacters(newFont, s_newLineLevel, _start, _end);
+
+	// If there is not existing font in the list,
+	// add new one
+	if (!s_existing) {
+		newFont->m_newLineInterval = s_newLineLevel;
+		m_fontMap.insert(FontMap::value_type(_key, newFont));
+	}
+}
+
+void AssetManager::LoadCharacters(Font* _pFont, float& _newLineLevel,
+	unsigned long _start, unsigned long _end)
+{
 	// Load first 128 characters of ASCII set
-	for (unsigned long c = 0xAC00; c < 0xAD00; c++)
+	for (unsigned long c = _start; c < _end; c++)
 	{
-
 		// Load character glyph 
-		if (FT_Load_Char(newFont->m_face, c, FT_LOAD_RENDER))
+		if (FT_Load_Char(_pFont->m_face, c, FT_LOAD_RENDER))
 		{
 			JE_DEBUG_PRINT("!AssetManager - Failed to load Glyph.\n");
 			continue;
@@ -156,12 +197,12 @@ void AssetManager::LoadFont(const char * _path, const char* _key, unsigned _size
 			GL_TEXTURE_2D,
 			0,
 			GL_RED,
-			newFont->m_face->glyph->bitmap.width,
-			newFont->m_face->glyph->bitmap.rows,
+			_pFont->m_face->glyph->bitmap.width,
+			_pFont->m_face->glyph->bitmap.rows,
 			0,
 			GL_RED,
 			GL_UNSIGNED_BYTE,
-			newFont->m_face->glyph->bitmap.buffer
+			_pFont->m_face->glyph->bitmap.buffer
 		);
 
 		// Set texture options
@@ -172,19 +213,16 @@ void AssetManager::LoadFont(const char * _path, const char* _key, unsigned _size
 
 		// Now store character for later use
 		Character character = {
-			texture, GLuint(newFont->m_face->glyph->advance.x),
-			vec2(float(newFont->m_face->glyph->bitmap.width), float(newFont->m_face->glyph->bitmap.rows)),
-			vec2(float(newFont->m_face->glyph->bitmap_left), float(newFont->m_face->glyph->bitmap_top))
+			texture, GLuint(_pFont->m_face->glyph->advance.x),
+			vec2(float(_pFont->m_face->glyph->bitmap.width), float(_pFont->m_face->glyph->bitmap.rows)),
+			vec2(float(_pFont->m_face->glyph->bitmap_left), float(_pFont->m_face->glyph->bitmap_top))
 		};
-		if (s_newLineLevel < character.m_size.y)
-			s_newLineLevel = character.m_size.y;
-		newFont->m_data.insert(Font::FontData::value_type(c, character));
+		if (_newLineLevel < character.m_size.y)
+			_newLineLevel = character.m_size.y;
+		_pFont->m_data.insert(Font::FontData::value_type(c, character));
 	}
-	newFont->m_newLineInterval = s_newLineLevel;
 
 	glBindTexture(GL_TEXTURE_2D, 0);
-
-	m_fontMap.insert(FontMap::value_type(_key, newFont));
 }
 
 void AssetManager::LoadAudio(const char* /*_path*/, const char* /*_audioKey*/)
