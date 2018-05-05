@@ -40,7 +40,9 @@ private:
 	static std::string m_initDirectory, m_assetDirectory,
 		m_stateDirectory, m_archeDirectory;
 	
-	static void LoadFont(const char* _path, const char* _audioKey, unsigned _size);
+	static void LoadFont(const char* _path, const char* _audioKey, unsigned _size,
+		unsigned long start, unsigned long end);
+	static void LoadCharacters(Font* _pFont, float& _newLineLevel, unsigned long _start, unsigned long _end);
 	static void LoadAudio(const char* _path, const char* _audioKey);
 	static void LoadImage(const char* _path, const char* _textureKey);
 	static void LoadArchetype(const char* _path, const char* _archetypeKey);

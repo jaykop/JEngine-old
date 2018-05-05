@@ -147,7 +147,7 @@ void EnterMineAndDigForNugget::Update(const float /*_dt*/)
 
 		m_globalState->m_pTransform->m_position.Set(0.f, 0.f, 0.f);
 		m_globalState->m_content = "Location: Mine\nDigging nugget...";
-		m_globalState->m_talkText->SetText(L"가\n가각가각간");
+		m_globalState->m_talkText->SetText(L"솔직히 이정도만 나와도 상타치 아니냐\n인정?\n어 인정");
 		/*m_globalState->m_talkText->SetText("%s\nFatigue: %d\nThirst: %d\nGold: %d\nSaved: %d",
 			m_globalState->m_content, m_globalState->m_fatigue, m_globalState->m_thirst,
 			m_globalState->m_gold, m_globalState->m_saved);*/
