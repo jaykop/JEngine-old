@@ -1,10 +1,18 @@
+// This file contains asset information
 {
+	// Font info
 	"Font" : [
-		{"Key" : "Default", "Size" : 48, "Directory" : "../resource/font/Default.ttf",
-			"Additional": [[44032, 55215]]},
-		{"Key" : "JKDot", 	"Size" : 48, "Directory" : "../resource/font/JKDot.ttf"}
+		{"Key" : "Default", 
+			"Directory" : "../resource/font/Default.ttf",
+			"Size" : 48, 									// Font size
+			"Additional": [[44032, 55215]]}					// Unicode info to load specific selection
+		
+		{"Key" : "JKDot", 
+			"Directory" : "../resource/font/JKDot.ttf",
+			"Size" : 48}
 	],
 	
+	// Texture info
 	"Texture" : [
 
 		{"Key" : "rect", 			"Directory" : "../resource/texture/rect.png"},
@@ -20,4 +28,13 @@
 		{"Key" : "wife", 			"Directory" : "../resource/texture/Wife.png"},
 		{"Key" : "bully", 			"Directory" : "../resource/texture/Bully.png"}
 	]
+	
+	// Audio info
+	/*
+	"Audio" : [
+
+		{"Key" : "soundEffect", 	"Directory" : "../resource/audio/se_sample.mp3"},
+		{"Key" : "backgorunMusic", 	"Directory" : "../resource/audio/bgm_sample.mp3"}
+	]
+	*/ 
 }
