@@ -83,7 +83,11 @@ class InputHandler {
 
 	friend class StateManager;
 	friend class GraphicSystem;
+
 	using KeyMap = std::map<unsigned, bool> ;
+
+	// Locked constuctor, destructor, assign operator
+	JE_THIS_IS_STATIC_CLASS(InputHandler)
 
 public:
 	
@@ -96,11 +100,6 @@ public:
 
 private:
 
-	InputHandler();
-	~InputHandler() = delete;
-	InputHandler(const InputHandler& _handle) = delete;
-	void operator=(const InputHandler& _handle) = delete;
-
 	// Keyboard
 	static void KeyUp();
 	static void KeyDown();
@@ -109,6 +108,7 @@ private:
 	static void MouseUp();
 	static void MouseDown();
 
+	static void Init();
 	static void Update(SDL_Event* _event);
 
 	static JE_KEY	KeyTranslator(SDL_Event* _event);

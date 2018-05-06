@@ -7,6 +7,9 @@ class ObjectFactory {
 
 	friend class Object;
 
+	// Locked constuctor, destructor, assign operator
+	JE_THIS_IS_STATIC_CLASS(ObjectFactory)
+
 public:
 
 	static void		CreateObject(const char* _name);
@@ -14,11 +17,6 @@ public:
 	static void		AddCreatedObject();
 
 private:
-
-	~ObjectFactory() = delete;
-	ObjectFactory() = delete;
-	ObjectFactory(const ObjectFactory& /*_copy*/) = delete;
-	void operator=(const ObjectFactory& /*_copy*/) = delete;
 
 	static bool			m_added;
 	static unsigned		m_registerNumber;

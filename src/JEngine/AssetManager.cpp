@@ -32,7 +32,7 @@ void AssetManager::ShowLoadingPercentage(unsigned _loadedPercentage, unsigned _s
 	SDL_SetWindowTitle(APP::m_pWindow, title.c_str());
 }
 
-void AssetManager::Load()
+void AssetManager::LoadAssets()
 {
 	// Read state info
 	JSON::ReadFile(ASSET::m_stateDirectory.c_str());
@@ -62,7 +62,7 @@ void AssetManager::Load()
 
 	// Set first state
 	STATE::SetStartingState(fristStates.GetString());
-	JE_DEBUG_PRINT("*AssetManager - First state is %s.\n", fristStates.GetString());
+	JE_DEBUG_PRINT("*AssetManager - The first state is %s.\n", fristStates.GetString());
 
 	// Load images
 	for (rapidjson::SizeType i = 0; i < textureSize; ++i) {
@@ -80,7 +80,7 @@ void AssetManager::Load()
 			0, 128);
 
 		// Load additional unicode set
-		for (unsigned j = 0; j < fonts[i]["Range"].Size(); ++j) {
+		for (unsigned j = 0; j < fonts[i]["Additional"].Size(); ++j) {
 			LoadFont(fonts[i]["Directory"].GetString(), fonts[i]["Key"].GetString(), fonts[i]["Size"].GetUint(),
 				static_cast<unsigned long>(fonts[i]["Additional"][j][0].GetUint64()),
 				static_cast<unsigned long>(fonts[i]["Additional"][j][1].GetUint64()));
@@ -93,11 +93,9 @@ void AssetManager::Load()
 
 	// Load engine components
 	COMPONENT::m_loadingCustomLogic = false;
-
-	LoadBuiltInComponents();
 }
 
-void AssetManager::Unload()
+void AssetManager::UnloadAssets()
 {
 	// Clear audio map
 	//for (auto audio : m_audioMap) {
@@ -133,24 +131,26 @@ void AssetManager::Unload()
 	COMPONENT::ClearBuilders();
 }
 
-void AssetManager::LoadBuiltInComponents()
+bool AssetManager::SetBuiltInComponents()
 {
 	// Load built-in components
 
 	// Physics components
-	JE_REGISTER_COMPONENT(Transform);
+	JE_CHECK_REGISTRATION(JE_REGISTER_COMPONENT(Transform))
 
 	// Graphic components
-	JE_REGISTER_COMPONENT(Text);
-	JE_REGISTER_COMPONENT(Model);
-	JE_REGISTER_COMPONENT(Camera);
-	JE_REGISTER_COMPONENT(Sprite);
-	JE_REGISTER_COMPONENT(Emitter);
-	JE_REGISTER_COMPONENT(Light);
-	JE_REGISTER_COMPONENT(Material);
-	JE_REGISTER_COMPONENT(Animation);
+	JE_CHECK_REGISTRATION(JE_REGISTER_COMPONENT(Text))
+	JE_CHECK_REGISTRATION(JE_REGISTER_COMPONENT(Model))
+	JE_CHECK_REGISTRATION(JE_REGISTER_COMPONENT(Camera))
+	JE_CHECK_REGISTRATION(JE_REGISTER_COMPONENT(Sprite))
+	JE_CHECK_REGISTRATION(JE_REGISTER_COMPONENT(Emitter))
+	JE_CHECK_REGISTRATION(JE_REGISTER_COMPONENT(Light))
+	JE_CHECK_REGISTRATION(JE_REGISTER_COMPONENT(Material))
+	JE_CHECK_REGISTRATION(JE_REGISTER_COMPONENT(Animation))
 
 	JE_DEBUG_PRINT("*AssetManager - Loaded bulit-in components.\n");
+
+	return true;
 }
 
 

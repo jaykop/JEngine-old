@@ -15,10 +15,12 @@ public:
 
 private:
 
-	Timer(const Timer& /*_cpoy*/) = delete;
-	void operator=(const Timer& /*_cpoy*/) = delete;
-
 	float m_time;
+
+	Timer(Timer&&) = delete;
+	Timer(const Timer&) = delete;
+	Timer& operator=(Timer&&) = delete;
+	Timer& operator=(const Timer&) = delete;
 
 };
 

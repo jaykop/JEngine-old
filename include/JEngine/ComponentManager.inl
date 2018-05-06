@@ -4,7 +4,7 @@
 JE_BEGIN
 
 template <class ComponentType>
-void ComponentManager::RegisterBuilder(
+bool ComponentManager::RegisterBuilder(
 	const char* _componentName, ComponentBuilder* _pBuilder)
 {
 	static const char* s_name;
@@ -14,9 +14,11 @@ void ComponentManager::RegisterBuilder(
 
 	// If there is existing like that,
 	// don't add new builder
-	if (foundName != m_builderMap.end()) 
+	if (foundName != m_builderMap.end()) {
 		JE_DEBUG_PRINT("!ComponentManager - No such name of enrolled component: %s\n", s_name);
-	
+		return false;
+	}
+
 	// Unless, add new builder
 	else {
 		m_builderMap.insert(
@@ -33,6 +35,7 @@ void ComponentManager::RegisterBuilder(
 		if (m_loadingCustomLogic)
 			JE_DEBUG_PRINT("*ComponentManager - Loaded custom logic: %s\n", _componentName);
 
+		return true;
 	}
 
 }

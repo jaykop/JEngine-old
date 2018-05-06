@@ -20,6 +20,9 @@ class StateManager {
 	enum StateStatus  {
 		STATE_NONE, STATE_RESTART, STATE_PAUSE, STATE_RESUME, STATE_CHANGE, STATE_RESUME_AND_CHANGE, STATE_QUIT };
 
+	// Locked constuctor, destructor, assign operator
+	JE_THIS_IS_STATIC_CLASS(StateManager)
+
 public:
 
 	static void Quit();
@@ -39,14 +42,8 @@ public:
 
 private:
 
-	// Locked contsturctord and destructor
-	StateManager() = delete;
-	~StateManager() = delete;
-	StateManager(const StateManager& /*_copy*/) = delete;
-	void operator=(const StateManager& /*_copy*/) = delete;
-
 	// Private member functions
-	static void Init(SDL_Window* _pWindow);
+	static bool Init(SDL_Window* _pWindow);
 	static void Update(SDL_Event* _event);
 	static void Close();
 

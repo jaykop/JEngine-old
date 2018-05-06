@@ -18,6 +18,9 @@ class ComponentManager {
 	friend class Object;
 	friend class AssetManager;
 
+	// Locked constuctor, destructor, assign operator
+	JE_THIS_IS_STATIC_CLASS(ComponentManager)
+
 public:
 
 	static const char* KeyToTypeTranslator(const char* _name);
@@ -31,7 +34,7 @@ private:
 	static void			ClearBuilders();
 
 	template <class ComponentType>
-	inline static void RegisterBuilder(
+	inline static bool RegisterBuilder(
 		const char* _componentName, ComponentBuilder* _pBuilder);
 
 	static BuilderMap			m_builderMap;
@@ -49,3 +52,4 @@ JE_END
 #define JE_STRINGFY(x)						#x
 #define JE_CONCAT(a, b)						a ## b
 #define JE_REGISTER_COMPONENT(c)			COMPONENT::RegisterBuilder<c>(JE_STRINGFY(c), new JE_CONCAT(c, Builder))
+#define JE_CHECK_REGISTRATION(c)			if (!(c)) { return false; } 

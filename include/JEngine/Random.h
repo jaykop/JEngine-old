@@ -9,6 +9,9 @@ class Random {
 
 	friend class Application;
 
+	// Locked constuctor, destructor, assign operator
+	JE_THIS_IS_STATIC_CLASS(Random)
+
 public:
 
 	static float	GetRandomFloat(float _min, float _max);
@@ -24,10 +27,6 @@ private:
 	static void	PlantSeed(); 
 	
 	static std::mt19937	m_randomObject;
-
-	Random() = delete;
-	Random(const Random& /*_copy*/) = delete;
-	void operator=(const Random& /*_copy*/) = delete;
 
 };
 

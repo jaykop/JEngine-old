@@ -10,18 +10,14 @@ using CR_RJDoc		= const RJDoc&;
 
 class JsonParser {
 
-public:
-
 	friend class State;
 	friend class Application;
 	friend class AssetManager;
 
-private:
+	// Locked constuctor, destructor, assign operator
+	JE_THIS_IS_STATIC_CLASS(JsonParser)
 
-	JsonParser() = delete;
-	~JsonParser() = delete;
-	JsonParser(const JsonParser& /*_copy*/) = delete;
-	void operator=(const JsonParser& /*_copy*/) = delete;
+private:
 
 	static void		ReadFile(const char* _dir);
 	static CR_RJDoc GetDocument();

@@ -27,17 +27,19 @@ bool				STATE::m_showUpdateMessage = true;
 //////////////////////////////////////////////////////////////////////////
 // funciton bodues
 //////////////////////////////////////////////////////////////////////////
-void StateManager::Init(SDL_Window* _pWindow)
+bool StateManager::Init(SDL_Window* _pWindow)
 {
 	if (_pWindow) {
 		m_pWindow = _pWindow;
 
-		// Allocate systems in advance
-		SYSTEM::Bind();	
+		INPUT::Init();	// Init input keys
+		SYSTEM::Bind();	// Allocate systems in advance
+		return true;
 	}
 
-	else
-		JE_DEBUG_PRINT("!StateManager: Window pointer is null.\n");
+	JE_DEBUG_PRINT("!StateManager: Window pointer is null.\n");
+	return false;
+	
 }
 
 void StateManager::Update(SDL_Event* _event)
