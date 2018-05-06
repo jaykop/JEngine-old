@@ -14,7 +14,7 @@ protected:
 	virtual void Unload() = 0;
 
 	System() {};
-	~System() {};
+	virtual ~System() {};
 
 private:
 
