@@ -1,7 +1,7 @@
 {
 	"Font" : [
 		{"Key" : "Default", "Size" : 48, "Directory" : "../resource/font/Default.ttf",
-			"Range":[[0, 128], [44032, 55215]]},
+			"Additional": [[44032, 55215]]},
 		{"Key" : "JKDot", 	"Size" : 48, "Directory" : "../resource/font/JKDot.ttf"}
 	],
 	

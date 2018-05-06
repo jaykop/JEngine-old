@@ -74,10 +74,16 @@ void AssetManager::Load()
 
 	// Load font
 	for (rapidjson::SizeType i = 0; i < fontSize; ++i) {
+		
+		// Load default ascii characters (0 - 128)
+		LoadFont(fonts[i]["Directory"].GetString(), fonts[i]["Key"].GetString(), fonts[i]["Size"].GetUint(),
+			0, 128);
+
+		// Load additional unicode set
 		for (unsigned j = 0; j < fonts[i]["Range"].Size(); ++j) {
 			LoadFont(fonts[i]["Directory"].GetString(), fonts[i]["Key"].GetString(), fonts[i]["Size"].GetUint(),
-				static_cast<unsigned long>(fonts[i]["Range"][j][0].GetUint64()),
-				static_cast<unsigned long>(fonts[i]["Range"][j][1].GetUint64()));
+				static_cast<unsigned long>(fonts[i]["Additional"][j][0].GetUint64()),
+				static_cast<unsigned long>(fonts[i]["Additional"][j][1].GetUint64()));
 		}
 		realLoadingPercentage++;
 		ShowLoadingPercentage(realLoadingPercentage, loadingPercentage);
