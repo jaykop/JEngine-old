@@ -22,6 +22,9 @@ class AssetManager {
 	using TextureMap =		std::unordered_map<std::string, unsigned>;
 	using ArchetypeMap =	std::unordered_map<std::string, Archetype*>;
 
+	// Locked constuctor, destructor, assign operator
+	JE_THIS_IS_STATIC_CLASS(AssetManager)
+
 public:
 
 	static void			SetInitDirectory(const char* _dir);
@@ -49,16 +52,10 @@ private:
 	static void LoadImage(const char* _path, const char* _textureKey);
 	static void LoadArchetype(const char* _path, const char* _archetypeKey);
 
-	// Locked constructors and destructor
-	AssetManager() = delete;
-	~AssetManager() = delete;
-	AssetManager(const AssetManager& /*_copy*/) = delete;
-	void operator=(const AssetManager& /*_copy*/) = delete;
-
 	// Private member functions
-	static void LoadBuiltInComponents();
-	static void Load();
-	static void Unload();
+	static bool SetBuiltInComponents();
+	static void LoadAssets();
+	static void UnloadAssets();
 
 	// Private member variables
 	static FontMap		m_fontMap;

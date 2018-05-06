@@ -23,17 +23,15 @@ class ImguiManager {
 	using ComponentEditorMap = std::vector<Component*>;
 	using ObjectEditorMap	 = std::vector<Object*>;
 
+	// Locked constuctor, destructor, assign operator
+	JE_THIS_IS_STATIC_CLASS(ImguiManager)
+
 private:
 
-	static void Init(SDL_Window* _window);
+	static bool Init(SDL_Window* _window);
 	static void EventUpdate(SDL_Event* _event);
 	static void Update(const float _dt);
 	static void Close();
-
-	ImguiManager() = delete;
-	~ImguiManager() = delete;
-	ImguiManager(const ImguiManager& /*_copy*/) = delete;
-	void operator=(const ImguiManager& /*_copy*/) = delete;
 
 	static void AddEditorFunc(const EditorUpdateFunc& _pFunc);
 	static void AddComponentEditor(Component* _component);

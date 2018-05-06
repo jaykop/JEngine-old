@@ -13,6 +13,11 @@ class ObjectContainer {
 	friend class StateManager;
 	friend class ObjectFactory;
 
+	ObjectContainer(ObjectContainer&&) = delete;
+	ObjectContainer(const ObjectContainer&) = delete;
+	ObjectContainer& operator=(ObjectContainer&&) = delete;
+	ObjectContainer& operator=(const ObjectContainer&) = delete;
+
 public:
 
 	void		RemoveObject(const char* _name);
@@ -32,8 +37,6 @@ private:
 
 	~ObjectContainer();
 	ObjectContainer() {};
-	ObjectContainer(const ObjectContainer& /*_copy*/) = delete;
-	void operator=(const ObjectContainer& /*_copy*/) = delete;
 
 	void ClearObjectMap();
 

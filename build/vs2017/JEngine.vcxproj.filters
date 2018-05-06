@@ -332,6 +332,9 @@
     <ClCompile Include="..\..\src\JEngine\MessageDispatcher.cpp">
       <Filter>System\Behavior</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\JEngine\SystemBlock.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">

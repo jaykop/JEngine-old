@@ -220,7 +220,7 @@ const unsigned		GLManager::m_indicesSize[] = {
 //////////////////////////////////////////////////////////////////////////
 // GLManager functio bodies
 //////////////////////////////////////////////////////////////////////////
-bool GLManager::InitSDL_GL()
+bool GLManager::Init()
 {
 	// force GLEW to use a modern OpenGL method
 	glewExperimental = GL_TRUE;
@@ -242,7 +242,7 @@ bool GLManager::InitSDL_GL()
 	return true;
 }
 
-void GLManager::CloseSDL_GL()
+void GLManager::Close()
 {
 	// Clear shaders
 	for (auto shader : m_shader) {

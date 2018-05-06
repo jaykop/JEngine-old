@@ -8,6 +8,7 @@
 #include "ImguiManager.h"
 #include "imgui.h"
 #include "Debug.h"
+#include "InputHandler.h"
 
 JE_BEGIN
 
@@ -70,8 +71,65 @@ bool Application::Initialize()
 		return false;
 	}
 
-	/*************** SDL **************/
+	// Plant random seed
+	Random::PlantSeed();
 
+	/*************** SDL **************/
+	bool initedSDL = InitSDL();
+
+	/*************** OpenGL **************/
+	GLM::Resize(m_Data.m_width, m_Data.m_height);
+	bool initedGL = GLM::Init();
+
+	/**************** IMGUI **************/
+	bool initedIMGUI = IMGUI::Init(m_pWindow);
+	IMGUI::AddEditorFunc(APP::EditorUpdate);
+	IMGUI::AddEditorFunc(GLM::EditorUpdate);
+	IMGUI::AddEditorFunc(STATE::EditorUpdate);
+
+	/**************** Assets **************/
+	// Load info from json files
+	ASSET::LoadAssets();		
+
+	// Generate built-in components
+	bool initedBuiltInComponents = ASSET::SetBuiltInComponents();
+	
+	// Load state info
+	// Bind systems here
+	bool initedStates = STATE::Init(m_pWindow);	
+
+	return initedSDL && initedGL && initedIMGUI 
+		&& initedBuiltInComponents && initedStates;
+}
+
+void Application::Update()
+{
+	// Update the surface
+	while (STATE::GetStatus()
+		!= STATE::StateStatus::STATE_QUIT) {
+
+		// Update state manager
+		STATE::Update(&m_pEvent);
+
+		// Update sdl window
+		SDL_UpdateWindowSurface(m_pWindow);
+
+	}	// while (STATE::GetStatus()
+		// != STATE::StateStatus::S_QUIT) {
+}
+
+void Application::Close()
+{
+	STATE::Close();			// Remove systems and states
+	ASSET::UnloadAssets();	// Clear loaded assets
+	JSON::Close();			// Clear document
+	GLM::Close();			// Close SDL GL
+	IMGUI::Close();			// Close imgui manager
+	CloseSDL();				// Close sdl window
+}
+
+bool Application::InitSDL()
+{
 	// Check right init
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0) {
 		// Print error message
@@ -114,48 +172,11 @@ bool Application::Initialize()
 	// Fill the surface white
 	SDL_FillRect(m_pSurface, nullptr, SDL_MapRGB(m_pSurface->format, 0xFF, 0xFF, 0xFF));
 
-	/*************** Open GL **************/
-	GLM::Resize(m_Data.m_width, m_Data.m_height);
-	GLM::InitSDL_GL();
-	
-	/**************** IMGUI **************/
-	IMGUI::Init(m_pWindow);
-	IMGUI::AddEditorFunc(APP::EditorUpdate);
-	IMGUI::AddEditorFunc(GLM::EditorUpdate);
-	IMGUI::AddEditorFunc(STATE::EditorUpdate);
-	
-	/**************** Built-in **************/
-	Random::PlantSeed();	// Plant random seed
-	ASSET::Load();			// Load info from json files
-	STATE::Init(m_pWindow);	// Bind systems here
-
 	return true;
 }
 
-void Application::Update()
-{	
-	// Update the surface
-	while (STATE::GetStatus()
-		!= STATE::StateStatus::STATE_QUIT) {
-		
-		// Update state manager
-		STATE::Update(&m_pEvent);
-	
-		// Update sdl window
-		SDL_UpdateWindowSurface(m_pWindow);
-		
-	}	// while (STATE::GetStatus()
-		// != STATE::StateStatus::S_QUIT) {
-}
-
-void Application::Close()
+void Application::CloseSDL()
 {
-	STATE::Close();		// Remove systems and states
-	ASSET::Unload();	// Clear loaded assets
-	JSON::Close();		// Clear document
-	GLM::CloseSDL_GL(); // Close SDL GL
-	IMGUI::Close(); 	// Close imgui manager
-	
 	// Destroy
 	SDL_GL_DeleteContext(m_pContext);
 
@@ -167,7 +188,7 @@ void Application::Close()
 }
 
 void Application::EditorUpdate(const float /*_dt*/)
-{		
+{
 	// Basic debug window
 	ImGui::Begin("Debug");
 	ImGui::Text("*JEngine Frame Time: %.11f", STATE::m_frameTime);

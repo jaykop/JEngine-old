@@ -5,7 +5,7 @@
 		{"Key" : "Default", 
 			"Directory" : "../resource/font/Default.ttf",
 			"Size" : 48, 									// Font size
-			"Additional": [[44032, 55215]]}					// Unicode info to load specific selection
+			"Additional": [[44032, 55215]]},				// Unicode info to load specific selection
 		
 		{"Key" : "JKDot", 
 			"Directory" : "../resource/font/JKDot.ttf",

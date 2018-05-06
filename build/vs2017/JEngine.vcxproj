@@ -198,7 +198,16 @@
     <ClInclude Include="..\..\include\JEngine\Sprite.h" />
     <ClInclude Include="..\..\include\JEngine\State.h" />
     <ClInclude Include="..\..\include\JEngine\StateManager.h" />
-    <ClInclude Include="..\..\include\JEngine\System.h" />
+    <ClInclude Include="..\..\include\JEngine\System.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\..\include\JEngine\SystemManager.h" />
     <ClInclude Include="..\..\include\JEngine\Telegram.h" />
     <ClInclude Include="..\..\include\JEngine\Text.h" />
@@ -259,6 +268,7 @@
     <ClCompile Include="..\..\src\JEngine\Random.cpp" />
     <ClCompile Include="..\..\src\JEngine\Rigidbody.cpp" />
     <ClCompile Include="..\..\src\JEngine\Shader.cpp" />
+    <ClCompile Include="..\..\src\JEngine\SystemBlock.cpp" />
     <ClCompile Include="..\..\src\JEngine\VertexShader.cpp" />
     <ClCompile Include="..\..\src\JEngine\SoundSystem.cpp" />
     <ClCompile Include="..\..\src\JEngine\Sprite.cpp" />

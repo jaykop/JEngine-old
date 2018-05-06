@@ -13,6 +13,13 @@ vec3			INPUT::m_screenPosition = vec3::ZERO;
 INPUT::KeyMap	INPUT::m_keys, INPUT::m_triggerList;
 int				INPUT::m_mouseWheel = 0;
 
+void InputHandler::Init()
+{
+	// Refresh all keys' status
+	for (unsigned i = 0; i < JE_KEY_END; ++i)
+		m_triggerList[i] = m_keys[i] = false;
+}
+
 bool InputHandler::KeyPressed(JE_KEY _pressed)
 {
 	return m_keys[_pressed];
@@ -47,13 +54,6 @@ void InputHandler::MouseUp()
 void InputHandler::MouseDown()
 {
 	m_mousePressed = true;
-}
-
-InputHandler::InputHandler()
-{
-	// Refresh all keys' status
-	for (unsigned i = 0; i < JE_KEY_END; ++i)
-		m_triggerList[i] = m_keys[i] = false;
 }
 
 JE_KEY InputHandler::KeyTranslator(SDL_Event* _event)

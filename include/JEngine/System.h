@@ -5,8 +5,6 @@ JE_BEGIN
 
 class System {
 
-public:
-
 protected:
 
 	virtual void Load(CR_RJDoc _data) = 0;
@@ -20,8 +18,11 @@ protected:
 
 private:
 
-	System(const System& /*_copy*/) = delete;
-	void operator=(const System& /*_copy*/) = delete;
+	System(System&&) = delete;
+	System(const System&) = delete;
+	System& operator=(System&&) = delete;
+	System& operator=(const System&) = delete;
+
 };
 
 JE_END

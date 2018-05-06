@@ -50,24 +50,29 @@ void ImguiManager::RemoveObjectEditor(Object* _object)
 	}
 }
 
-	void ImguiManager::ClearComponentEditor()
-	{
-		if (!m_cptEditors.empty())
-			m_cptEditors.clear();
-	}
+void ImguiManager::ClearComponentEditor()
+{
+	if (!m_cptEditors.empty())
+		m_cptEditors.clear();
+}
 
-	void ImguiManager::ClearObjectEditor()
-	{
-		if (!m_objEditors.empty())
-			m_objEditors.clear();
-	}
+void ImguiManager::ClearObjectEditor()
+{
+	if (!m_objEditors.empty())
+		m_objEditors.clear();
+}
 
-	void ImguiManager::Init(SDL_Window* _window)
+bool ImguiManager::Init(SDL_Window* _window)
 {
 	if (APP::m_IMGUI) {
 		m_pWindow = _window;
-		ImGui_ImplSdlGL3_Init(_window);
+		bool result = ImGui_ImplSdlGL3_Init(_window);
+		if (!result)
+			JE_DEBUG_PRINT("!ImguiManager: Could not initialize IMGUI.\n");
+		return result;
 	}
+
+	return true;
 }
 
 void ImguiManager::EventUpdate(SDL_Event* _event)
@@ -79,7 +84,7 @@ void ImguiManager::EventUpdate(SDL_Event* _event)
 void ImguiManager::Update(const float _dt)
 {
 	if (APP::m_IMGUI) {
-				
+
 		ImVec4 clear_color = ImColor(114, 144, 154);
 		ImGui_ImplSdlGL3_NewFrame(m_pWindow);
 

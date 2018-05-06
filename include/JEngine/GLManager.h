@@ -21,6 +21,9 @@ class GLManager {
 
 	using Shaders = std::vector<Shader*>;
 
+	// Locked constuctor, destructor, assign operator
+	JE_THIS_IS_STATIC_CLASS(GLManager)
+
 	enum DrawMode  { DRAW_POINT, DRAW_LINE, DRAW_FILL };
 	enum ShaderType  {SHADER_MODEL, SHADER_TEXT, SHADER_LIGHTING, SHADER_PARTICLE, SHADER_SCREEN, SHADER_END};
 	enum ShapeType  { SHAPE_POINT, SHAPE_PLANE, SHAPE_PLANE3D, SHAPE_CUBE, SHAPE_TEXT, SHAPE_CONE, SHAPE_END};
@@ -77,8 +80,8 @@ public:
 private:
 
 	// Private member functions
-	static bool	InitSDL_GL();
-	static void	CloseSDL_GL();
+	static bool	Init();
+	static void	Close();
 	static void	RegisterUniform();
 	static void	InitGLEnvironment();
 	static void InitVBO();
@@ -106,12 +109,6 @@ private:
 	static const float		m_verticesPoint[8], m_verticesPlane[32], m_verticesPlane3D[96], m_verticesCube[192], m_verticesCone[128];
 	static const unsigned	m_indicesPoint[1], m_indicesPlane[6], m_indicesPlane3D[18], m_indicesCube[36], m_indicesCone[18],
 							m_elementSize[SHAPE_END], m_verticesSize[SHAPE_END], m_indicesSize[SHAPE_END];
-
-	// Locked functions
-	GLManager() = delete;
-	~GLManager() = delete;
-	GLManager(const GLManager& /*_copy*/) = delete;
-	void operator=(const GLManager& /*_copy*/) = delete;
 
 };
 

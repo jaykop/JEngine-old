@@ -8,19 +8,22 @@ class Component;
 
 class ComponentBuilder {
 
+	friend class AssetManager;
+	friend class ComponentManager;
+
+	ComponentBuilder(ComponentBuilder&&) = delete;
+	ComponentBuilder(const ComponentBuilder&) = delete;
+	ComponentBuilder& operator=(ComponentBuilder&&) = delete;
+	ComponentBuilder& operator=(const ComponentBuilder&) = delete;
+
 public:
 
 	virtual Component* CreateComponent(Object* _pOwner) const = 0;
 
 protected:
 
-	friend class AssetManager;
-	friend class ComponentManager;
-
 	ComponentBuilder() {};
 	~ComponentBuilder() {};
-	ComponentBuilder(const ComponentBuilder& /*_copy*/) = delete;
-	void operator=(const ComponentBuilder& /*_copy*/) = delete;
 
 };
 

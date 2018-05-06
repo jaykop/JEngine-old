@@ -26,6 +26,9 @@ class Application {
 	friend class ImguiManager;
 	friend class AssetManager;
 
+	// Locked constuctor, destructor, assign operator
+	JE_THIS_IS_STATIC_CLASS(Application)
+
 public:
 
 	static void Run(bool _imgui);
@@ -47,13 +50,10 @@ private:
 	static void	Update();
 	static void	Close();
 
-	static void EditorUpdate(const float _dt);
+	static bool InitSDL();
+	static void CloseSDL();
 
-	// Locked functions
-	Application() = delete; 
-	~Application() = delete;
-	Application(const Application& /*app*/) = delete;
-	void operator=(const Application& /*app*/) = delete;
+	static void EditorUpdate(const float _dt);
 
 	// Private variables
 	static InitData			m_Data;		// Window config

@@ -11,16 +11,17 @@ class BehaviorSystem;
 
 class SystemManager {
 
-	class Systems {
+	// Locked constuctor, destructor, assign operator
+	JE_THIS_IS_STATIC_CLASS(SystemManager)
+
+	class SystemBlock {
 
 		friend class SystemManager;
 
 	private:
 
-		Systems();
-		~Systems() {};
-		Systems(const Systems& /*_cpoy*/) = delete;
-		void operator=(const Systems& /*_cpoy*/) = delete;
+		SystemBlock();
+		~SystemBlock();
 
 		void Bind();
 		void Unbind();
@@ -36,16 +37,23 @@ class SystemManager {
 		PhysicsSystem	*m_pPhysicsSystem;
 		BehaviorSystem	*m_pBehaviorSystem;
 
+	private:
+
+		SystemBlock(SystemBlock&&) = delete;
+		SystemBlock(const SystemBlock&) = delete;
+		SystemBlock& operator=(SystemBlock&&) = delete;
+		SystemBlock& operator=(const SystemBlock&) = delete;
+
 	};
 
 	friend class State;
 	friend class StateManager;
 
-	using SystemStack = std::stack<Systems*> ;
+	using SystemStack = std::stack<SystemBlock*> ;
 
 public:
 
-	static Systems				*m_systems;
+	static SystemBlock			*m_systems;
 
 	static SoundSystem*			GetSoundSystem();
 	static GraphicSystem*		GetGraphicSystem();
@@ -65,11 +73,6 @@ private:
 
 	static void Bind();
 	static void Unbind();
-
-	SystemManager() = delete;
-	~SystemManager() = delete;
-	SystemManager(const SystemManager& /*_copy*/) = delete;
-	void operator=(const SystemManager& /*_copy*/) = delete;
 
 	static SystemStack	m_pauseStack;
 };
