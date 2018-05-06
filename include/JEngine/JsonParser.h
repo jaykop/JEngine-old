@@ -25,6 +25,7 @@ private:
 
 	static void		ReadFile(const char* _dir);
 	static CR_RJDoc GetDocument();
+	static void		Close();
 
 	static void LoadObjects();
 	static void LoadComponents(CR_RJValue _data);
