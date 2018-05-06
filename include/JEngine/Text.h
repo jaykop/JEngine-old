@@ -78,10 +78,10 @@ private:
 
 	bool m_printWide = false;
 
-	wchar_t			m_wTextStorage[1024];
+	wchar_t			*m_wTextStorage = nullptr;
 	std::wstring	m_wText;
 
-	char			m_textStorage[1024];
+	char			*m_textStorage = nullptr;
 	std::string		m_text;
 
 	Text(Object* pObject);
