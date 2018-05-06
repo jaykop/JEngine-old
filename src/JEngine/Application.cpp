@@ -152,6 +152,7 @@ void Application::Close()
 {
 	STATE::Close();		// Remove systems and states
 	ASSET::Unload();	// Clear loaded assets
+	JSON::Close();		// Clear document
 	GLM::CloseSDL_GL(); // Close SDL GL
 	IMGUI::Close(); 	// Close imgui manager
 	

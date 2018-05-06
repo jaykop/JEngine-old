@@ -2,27 +2,32 @@
 #include "JsonParser.h"
 #include "ObjectFactory.h"
 #include "stringbuffer.h"
-#include "FileReadStream.h"
-#include "imgui.h"
+#include "filereadstream.h"
 #include "ImguiManager.h"
+#include "istreamwrapper.h"
+#include <fstream>
 
 JE_BEGIN
 
-RJDoc		JsonParser::m_document;
+RJDoc JsonParser::m_document;
 
 void JsonParser::ReadFile(const char * _dir)
 {
-	m_document.Clear();
-	FILE* pFile;
-	fopen_s(&pFile, _dir, "rb");
-	char buffer[65536];
-	rapidjson::FileReadStream read(pFile, buffer, sizeof(buffer));
-	m_document.ParseStream<0, rapidjson::UTF8<>, rapidjson::FileReadStream>(read);
+	Close();
+
+	std::ifstream read(_dir);
+	rapidjson::IStreamWrapper toInputStream(read);
+	m_document.ParseStream(toInputStream);
 }
 
 CR_RJDoc JsonParser::GetDocument()
 {
 	return m_document;
+}
+
+void JsonParser::Close()
+{
+	m_document.Clear();
 }
 
 void JsonParser::LoadObjects()
