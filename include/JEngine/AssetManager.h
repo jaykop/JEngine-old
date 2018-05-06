@@ -40,6 +40,8 @@ private:
 	static std::string m_initDirectory, m_assetDirectory,
 		m_stateDirectory, m_archeDirectory;
 	
+	static void ShowLoadingPercentage(unsigned _loadedPercentage, unsigned _size);
+
 	static void LoadFont(const char* _path, const char* _audioKey, unsigned _size,
 		unsigned long start, unsigned long end);
 	static void LoadCharacters(Font* _pFont, float& _newLineLevel, unsigned long _start, unsigned long _end);

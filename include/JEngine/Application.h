@@ -24,6 +24,7 @@ JE_BEGIN
 class Application {
 
 	friend class ImguiManager;
+	friend class AssetManager;
 
 public:
 

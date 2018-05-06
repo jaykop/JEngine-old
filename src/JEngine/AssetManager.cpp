@@ -6,6 +6,8 @@
 #include "StateManager.h"
 #include "ComponentManager.h"
 #include "imgui.h"
+#include "Application.h"
+#include "SDL.h"
 
 // Built-In Component Headers
 #include "GraphicComponents.h"
@@ -23,37 +25,65 @@ ASSET::ArchetypeMap	ASSET::m_archetypeMap;
 std::string			ASSET::m_initDirectory, ASSET::m_assetDirectory,
 					ASSET::m_stateDirectory, ASSET::m_archeDirectory;
 
+void AssetManager::ShowLoadingPercentage(unsigned _loadedPercentage, unsigned _size)
+{
+	std::string title;
+	title.assign(APP::m_Data.m_title + " - Loading... " + std::to_string((float)_loadedPercentage / _size * 100.f) + "%");
+	SDL_SetWindowTitle(APP::m_pWindow, title.c_str());
+}
+
 void AssetManager::Load()
 {
-	// Load states
+	// Read state info
 	JSON::ReadFile(ASSET::m_stateDirectory.c_str());
 	CR_RJValue states = JSON::GetDocument()["State"];
-	for (rapidjson::SizeType i = 0; i < states.Size(); ++i) {
+	CR_RJValue fristStates = JSON::GetDocument()["FirstState"];
+
+	// Read asset info
+	JSON::ReadFile(ASSET::m_assetDirectory.c_str());
+	CR_RJValue textures = JSON::GetDocument()["Texture"];
+
+	// Read font info
+	CR_RJValue fonts = JSON::GetDocument()["Font"];
+
+	// Get sizes of them
+	unsigned stateSize = states.Size(), textureSize = textures.Size(),
+		fontSize = fonts.Size(),
+		realLoadingPercentage = 0,
+		loadingPercentage = stateSize + textureSize + fontSize;
+
+	// Load states
+	for (rapidjson::SizeType i = 0; i < stateSize; ++i) {
 		STATE::PushState(states[i]["Directory"].GetString(), states[i]["Key"].GetString());
 		JE_DEBUG_PRINT("*AssetManager - Loaded state: %s.\n", states[i]["Directory"].GetString());
+		realLoadingPercentage++;
+		ShowLoadingPercentage(realLoadingPercentage, loadingPercentage);
 	}
 
-	CR_RJValue fristStates = JSON::GetDocument()["FirstState"];
+	// Set first state
 	STATE::SetStartingState(fristStates.GetString());
 	JE_DEBUG_PRINT("*AssetManager - First state is %s.\n", fristStates.GetString());
 
 	// Load images
-	JSON::ReadFile(ASSET::m_assetDirectory.c_str());
-	CR_RJValue textures = JSON::GetDocument()["Texture"];
-	for (rapidjson::SizeType i = 0; i < textures.Size(); ++i) {
+	for (rapidjson::SizeType i = 0; i < textureSize; ++i) {
 		LoadImage(textures[i]["Directory"].GetString(), textures[i]["Key"].GetString());
 		JE_DEBUG_PRINT("*AssetManager - Loaded texture: %s.\n", textures[i]["Directory"].GetString());
+		realLoadingPercentage++;
+		ShowLoadingPercentage(realLoadingPercentage, loadingPercentage);
 	}
 
 	// Load font
-	CR_RJValue fonts = JSON::GetDocument()["Font"];
-	for (rapidjson::SizeType i = 0; i < fonts.Size(); ++i) {
+	for (rapidjson::SizeType i = 0; i < fontSize; ++i) {
 		for (unsigned j = 0; j < fonts[i]["Range"].Size(); ++j) {
 			LoadFont(fonts[i]["Directory"].GetString(), fonts[i]["Key"].GetString(), fonts[i]["Size"].GetUint(),
 				static_cast<unsigned long>(fonts[i]["Range"][j][0].GetUint64()),
 				static_cast<unsigned long>(fonts[i]["Range"][j][1].GetUint64()));
 		}
+		realLoadingPercentage++;
+		ShowLoadingPercentage(realLoadingPercentage, loadingPercentage);
 	}
+
+	SDL_SetWindowTitle(APP::m_pWindow, APP::m_Data.m_title.c_str());
 
 	// Load engine components
 	COMPONENT::m_loadingCustomLogic = false;

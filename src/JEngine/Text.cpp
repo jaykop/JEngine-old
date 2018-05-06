@@ -18,6 +18,12 @@ Text::Text(Object* _pOwner)
 
 Text::~Text()
 {
+	delete[] m_textStorage;
+	delete[] m_wTextStorage;
+
+	m_textStorage = nullptr;
+	m_wTextStorage = nullptr;
+	
 	SYSTEM::GetGraphicSystem()->RemoveSprite(this);
 }
 
@@ -44,19 +50,31 @@ void Text::SetText(const char * _text, ...)
 	// Clear wide character conatiner
 	m_wText.clear();
 
-	if (!_text)
-		m_text.assign(_text);
+	if (_text)
+	{
+		static size_t size = 0, newSize = 0;
+		m_text.assign(_text); 
+		va_list argumens;
 
-	else {
-		va_list ap;
+		va_start(argumens, _text);
+		
+		// Get size of new text
+		newSize = _vscprintf(_text, argumens) + 1;
 
-		va_start(ap, _text);
-		vsprintf_s(m_textStorage, _text, ap);
-		va_end(ap);
+		// If the new size is greater than old one,
+		// delete existing one and reallocate heap memories
+		if (size < newSize) {
+			size = newSize;						// Refresh the size info
+			delete[] m_textStorage;				// Delete heap
+			m_textStorage = nullptr;
+			m_textStorage = new char[size];		// Reallocate memory
+		}
 
+		vsprintf_s(m_textStorage, size,_text, argumens);
+		va_end(argumens);
+
+		// Refresh the text with additional arguments
 		m_text = m_textStorage;
-		if (m_text.length() > 1024)
-			JE_DEBUG_PRINT("!Text - Too long text content. Must be shorter than 1024.\n");
 	}
 }
 
@@ -73,19 +91,30 @@ void Text::SetText(const wchar_t* _wText, ...)
 	// Clear ascii texts container
 	m_text.clear();
 
-	if (!_wText)
+	if (_wText)
+	{
+		static size_t size = 0, newSize = 0;
 		m_wText.assign(_wText);
+		va_list argumens;
 
-	else {
-		va_list ap;
+		va_start(argumens, _wText);
+		// Get new size of the new text
+		newSize = _vscwprintf(_wText, argumens) + 1;
 
-		va_start(ap, _wText);
-		vswprintf_s(m_wTextStorage, _wText, ap);
-		va_end(ap);
+		// If new size is greater than one,
+		// reallocate the new heap memories
+		if (size < newSize) {
+			size = newSize;						// Initialize new size
+			delete[] m_wTextStorage;			// Deallocate heap memories
+			m_wTextStorage = nullptr;
+			m_wTextStorage = new wchar_t[size];	// Reallocate new memories
+		}
 
+		vswprintf_s(m_wTextStorage, size, _wText, argumens);
+		va_end(argumens);
+
+		// Refresh the text with additional arguments
 		m_wText = m_wTextStorage;
-		if (m_wText.length() > 1024)
-			JE_DEBUG_PRINT("!Text - Too long text content. Must be shorter than 1024.\n");
 	}
 }
 
