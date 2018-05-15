@@ -17,29 +17,29 @@ JE_DECLARE_COMPONENT_BUILDER(GoFight)
 /////////////////////////////////////////////////////////////////////////
 class BullyState : public CustomComponent
 {
-	friend class ComponentManager;
-	friend class BullyStateBuilder;
+    friend class ComponentManager;
+    friend class BullyStateBuilder;
 
 public:
 
-	Location	m_location = PUB;
-	int			m_hateMiner = 0;
-	int			m_minerId = 0;
+    Location	m_location = PUB;
+    int		m_hateMiner = 0;
+    int		m_minerId = 0;
 
 private:
 
-	BullyState(Object* pObject);
-	~BullyState() {};
+    BullyState(Object* pObject);
+    ~BullyState() {};
 
-	void Register() override;
-	void Load(CR_RJValue _data) override;
-	void Init() override;
-	void Update(const float _dt) override;
-	void Close() override;
-	void Unload() override {};
-	bool OnMessage(Telegram& msg) override;
+    void Register() override;
+    void Load(CR_RJValue _data) override;
+    void Init() override;
+    void Update(const float _dt) override;
+    void Close() override;
+    void Unload() override {};
+    bool OnMessage(Telegram& msg) override;
 
-	void EditorUpdate(const float /*_dt*/) override {};
+    void EditorUpdate(const float /*_dt*/) override {};
 
 };
 
@@ -48,25 +48,25 @@ private:
 /////////////////////////////////////////////////////////////////////////
 class JustHatingMiner : public CustomComponent
 {
-	friend class ComponentManager;
-	friend class JustHatingMinerBuilder;
+    friend class ComponentManager;
+    friend class JustHatingMinerBuilder;
 
 public:
 
 private:
 
-	JustHatingMiner(Object* pObject);
-	~JustHatingMiner() {};
+    JustHatingMiner(Object* pObject);
+    ~JustHatingMiner() {};
 
-	void Register() override;
-	void Load(CR_RJValue _data) override;
-	void Init() override;
-	void Update(const float _dt) override;
-	void Close() override;
-	void Unload() override {};
-	bool OnMessage(Telegram& msg) override;
+    void Register() override;
+    void Load(CR_RJValue _data) override;
+    void Init() override;
+    void Update(const float _dt) override;
+    void Close() override;
+    void Unload() override {};
+    bool OnMessage(Telegram& msg) override;
 
-	void EditorUpdate(const float /*_dt*/) override {};
+    void EditorUpdate(const float /*_dt*/) override {};
 
 };
 
@@ -75,27 +75,27 @@ private:
 /////////////////////////////////////////////////////////////////////////
 class GoFight : public CustomComponent
 {
-	friend class ComponentManager;
-	friend class GoFightBuilder;
+    friend class ComponentManager;
+    friend class GoFightBuilder;
 
 public:
-	
-	unsigned receiverId;
+
+    unsigned receiverId;
 
 private:
 
-	GoFight(Object* pObject);
-	~GoFight() {};
+    GoFight(Object* pObject);
+    ~GoFight() {};
 
-	void Register() override;
-	void Load(CR_RJValue _data) override;
-	void Init() override;
-	void Update(const float _dt) override;
-	void Close() override;
-	void Unload() override {};
-	bool OnMessage(Telegram& msg) override;
+    void Register() override;
+    void Load(CR_RJValue _data) override;
+    void Init() override;
+    void Update(const float _dt) override;
+    void Close() override;
+    void Unload() override {};
+    bool OnMessage(Telegram& msg) override;
 
-	void EditorUpdate(const float /*_dt*/) override {};
+    void EditorUpdate(const float /*_dt*/) override {};
 
 };
 

@@ -2,11 +2,11 @@
 
 enum Location
 {
-	GOLD_MINE,
-	HOME,
-	BANK,
-	RIVER,
-	PUB,
+    GOLD_MINE,
+    HOME,
+    BANK,
+    RIVER,
+    PUB,
 
-	BATHROOM,
+    BATHROOM,
 };

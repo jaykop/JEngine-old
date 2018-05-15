@@ -2,10 +2,13 @@
 #include "CustomComponent.h"
 #include "ComponentBuilder.h"
 #include "Location.h"
+#include "Vector3.h"
 
 JE_BEGIN
 
+class Text;
 class Object;
+class Transform;
 struct Telegram;
 
 JE_DECLARE_COMPONENT_BUILDER(WifeState)
@@ -24,9 +27,15 @@ class WifeState : public CustomComponent
 public:
 
 	Location	m_location;
-	int			m_natureCalling, m_chores;
+	int			m_natureCalling = 0, m_chores = 10;
 	int			m_minerId = 0;
 	bool		m_isCooking = false;
+	const char	*m_content = nullptr;
+
+	Object*		m_wifeTalks = nullptr;
+	Text*		m_talkText = nullptr;
+	Transform*	m_pTransform = nullptr, *m_pTalkTransform = nullptr;
+	vec3		m_talkOffset;
 
 private:
 
@@ -55,6 +64,8 @@ class DoHousework : public CustomComponent
 
 public:
 
+	WifeState * m_globalState = nullptr;
+
 private:
 
 	DoHousework(Object* pObject);
@@ -82,7 +93,8 @@ class CookStew : public CustomComponent
 
 public:
 
-	unsigned receiverId;
+	WifeState	*m_globalState = nullptr;
+	unsigned	receiverId = 0;
 
 private:
 
@@ -110,6 +122,8 @@ class GoToBathroom : public CustomComponent
 	friend class GoToBathroomBuilder;
 
 public:
+
+	WifeState * m_globalState = nullptr;
 
 private:
 

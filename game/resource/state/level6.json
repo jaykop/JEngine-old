@@ -24,6 +24,24 @@
 			]
 		},
 		{
+			"Name" : "Wife",
+			"Component" : [
+				{
+					"Type": "Transform",
+					"Values": { "Position" : [-90, 65, 1], "Scale" : [25, 25, 0] }
+				},
+				{
+					"Type": "Sprite",
+					"Values": { "Texture" : "wife" }
+				},
+				{
+					"Type": "StateMachine",
+					"Values": { "StateList" : ["WifeState", "DoHousework", "CookStew", "GoToBathroom" ],
+								"Current" : "DoHousework", "Global" : "WifeState"}
+				}
+			]
+		},
+		{
 			"Name" : "Miner",
 			"Component" : [
 				{

@@ -102,14 +102,14 @@ public:
 		const Vector3& _lineStart, const Vector3& _lineEnd);
 
 	static bool		IsRayIntersection(
-		const Vector3& _position,const Vector3& _direction,
+		const Vector3& _position, const Vector3& _direction,
 		const Vector3& _lineStart, const Vector3& _lineEnd);
 
 	// Memver variables
 	float x, y, z;
 
 private:
-	
+
 };
 
 using vec3 = Vector3;
