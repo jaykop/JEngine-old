@@ -31,7 +31,8 @@ class MinerState : public CustomComponent
 public:
 
     Location	m_location;
-    int			m_gold, m_thirst, m_fatigue, m_saved;
+	bool		m_ateStew = false;
+    int			m_gold = 0, m_thirst = 0, m_fatigue = 0, m_saved = 0;
     const char	*m_content = nullptr;
     Object		*m_minerTalks = nullptr;
     Text		*m_talkText = nullptr;

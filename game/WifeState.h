@@ -94,7 +94,6 @@ class CookStew : public CustomComponent
 public:
 
 	WifeState	*m_globalState = nullptr;
-	unsigned	receiverId = 0;
 
 private:
 

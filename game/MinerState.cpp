@@ -1,5 +1,6 @@
 ﻿#include "MinerState.h"
 #include "CustomLogicHeader.h"
+#include "WifeState.h"
 
 JE_BEGIN
 
@@ -73,7 +74,19 @@ void GoHomeAndSleepTilRested::Load(CR_RJValue /*_data*/)
 
 void GoHomeAndSleepTilRested::Init()
 {
-    m_globalState = (MinerState*)m_pOwner->GetGlobalState();
+	m_globalState = (MinerState*)m_pOwner->GetGlobalState();
+
+	static bool firstTIme = true;
+
+	if (!firstTIme) {
+		if (!m_globalState->m_ateStew)
+			DISPATCHER::DispatchMessage(0.0,			//time delay
+				m_pOwnerId,								//sender ID
+				CONTAINER->GetObject("Wife")->GetId(),	//receiver ID
+				"HoneyI'mHome",							//msg
+				nullptr);
+	}
+
     m_globalState->m_location = HOME;
 
 	m_globalState->m_pTransform->m_position.Set(-80.f, 0.f, 0.f);
@@ -83,29 +96,36 @@ void GoHomeAndSleepTilRested::Init()
 		m_globalState->m_gold, m_globalState->m_saved);
 	m_globalState->m_talkTransform->m_position.Set(
 		m_globalState->m_pTransform->m_position + m_globalState->m_talkOffset);
+
+	m_globalState->m_ateStew = firstTIme = false;
 }
 
 void GoHomeAndSleepTilRested::Update(const float /*_dt*/)
 {
-    m_globalState->m_fatigue--;
-    if (m_globalState->m_fatigue < 0)
-        m_globalState->m_fatigue = 0;
-
-    m_globalState->m_talkText->SetText("%s\nFatigue: %d\nThirst: %d\nGold: %d\nSaved: %d",
-        m_globalState->m_content, m_globalState->m_fatigue, m_globalState->m_thirst,
-        m_globalState->m_gold, m_globalState->m_saved);
-
     if (m_globalState->m_fatigue <= 0) 
         m_pOwner->ChangeState<EnterMineAndDigForNugget>();
-    
+
+	m_globalState->m_fatigue--;
+	if (m_globalState->m_fatigue < 0)
+		m_globalState->m_fatigue = 0;
+
+	m_globalState->m_talkText->SetText("%s\nFatigue: %d\nThirst: %d\nGold: %d\nSaved: %d",
+		m_globalState->m_content, m_globalState->m_fatigue, m_globalState->m_thirst,
+		m_globalState->m_gold, m_globalState->m_saved);
 }
 
 void GoHomeAndSleepTilRested::Close()
 {}
 
-bool GoHomeAndSleepTilRested::OnMessage(Telegram& /*msg*/)
+bool GoHomeAndSleepTilRested::OnMessage(Telegram& msg)
 {
-    return false;
+	if (!strcmp(msg.message, "StewReady"))
+	{
+		m_pOwner->ChangeState<EatStew>();
+		return true;
+	}
+
+	return false;
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -328,6 +348,11 @@ void EatStew::Load(CR_RJValue /*_data*/)
 void EatStew::Init()
 {
     m_globalState = (MinerState*)m_pOwner->GetGlobalState();
+
+	m_globalState->m_content = "Location: Home\nGod! What did you cook?\nA Tree?";
+	m_globalState->m_talkText->SetText("%s", m_globalState->m_content);
+
+	m_globalState->m_ateStew = true;
 }
 
 void EatStew::Update(const float /*_dt*/)

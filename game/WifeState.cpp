@@ -54,9 +54,12 @@ void WifeState::Close()
 
 bool WifeState::OnMessage(Telegram& msg)
 {
-    if (!strcmp(msg.message, "HoneyImHome")) {
+    if (!strcmp(msg.message, "HoneyI'mHome")) {
 
-        //TODO 
+		m_content = "My dear! Let me cook for you!";
+		m_talkText->SetText("%s", m_content);
+		m_pOwner->ChangeState<CookStew>();
+		
         return true;
     }
 
@@ -123,19 +126,18 @@ void CookStew::Load(CR_RJValue /*_data*/)
 void CookStew::Init()
 {
 	m_globalState = (WifeState*)m_pOwner->GetGlobalState();
-	receiverId = CONTAINER->GetObject("Miner")->GetId();
 
     if (!m_globalState->m_isCooking)
     {
         //send a delayed message myself so that I know when to take the stew
         //out of the oven
-        DISPATCHER::DispatchMessage(1.5,    //time delay
-            m_pOwnerId,			    //sender ID
-            receiverId,			    //receiver ID
-            "StewReady",		    //msg
+        DISPATCHER::DispatchMessage(1.5,	//time delay
+            m_pOwnerId,						//sender ID
+			m_pOwnerId,						//receiver ID
+            "StewReady",					//msg
             nullptr);
 
-        m_pOwner->GetComponent<WifeState>()->m_isCooking = true;
+        m_globalState->m_isCooking = true;
     }
 }
 
@@ -149,15 +151,14 @@ bool CookStew::OnMessage(Telegram& msg)
 {
     if (!strcmp(msg.message, "StewReady"))
     {
-        //TODO
-        //let hubby know the stew is ready
+        //let miner know the stew is ready
         DISPATCHER::DispatchMessage(0.0,
             m_pOwnerId,
-            receiverId,
+			CONTAINER->GetObject("Miner")->GetId(),
             "StewReady",
             nullptr);
 
-        m_pOwner->GetComponent<WifeState>()->m_isCooking = false;
+		m_globalState->m_isCooking = false;
         m_pOwner->ChangeState<DoHousework>();
 
         return true;

@@ -243,15 +243,16 @@ bool Object::HandleMessage(Telegram& _message)
 void Object::RevertToPreviousState()
 {
 	if (m_StateMachine.m_pPreviousState) {
-		m_StateMachine.m_pPreviousState = m_StateMachine.m_pCurrentState;
-		m_StateMachine.m_pPreviousState->Close();
-		m_StateMachine.m_pPreviousState->Unload();
+		m_StateMachine.m_pCurrentState->Close();
+		m_StateMachine.m_pCurrentState->Unload();
+		CustomComponent* pTempState = m_StateMachine.m_pCurrentState;
 		m_StateMachine.m_pCurrentState = m_StateMachine.m_pPreviousState;
+		m_StateMachine.m_pPreviousState = pTempState;
 		m_StateMachine.m_pCurrentState->Init();
 	}
 
 	else
-		JE_DEBUG_PRINT("!Object - Set next state of %s to nullptr.\n", m_name.c_str());
+		JE_DEBUG_PRINT("!Object - There is not previous state.\n");
 }
 
 CustomComponent* Object::GetGlobalState() const
