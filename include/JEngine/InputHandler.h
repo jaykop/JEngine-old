@@ -113,6 +113,7 @@ private:
 
 	static JE_KEY	KeyTranslator(SDL_Event* _event);
 
+	static unsigned m_triggerCalled;
 	static int		m_mouseWheel;
 	static vec3		m_screenPosition, m_rawPosition;
 	static bool		m_keyPressed, m_mousePressed;

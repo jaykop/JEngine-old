@@ -25,33 +25,33 @@ JE_DECLARE_COMPONENT_BUILDER(EnterMineAndDigForNugget)
 /////////////////////////////////////////////////////////////////////////
 class MinerState : public CustomComponent
 {
-	friend class ComponentManager;
-	friend class MinerStateBuilder;
+    friend class ComponentManager;
+    friend class MinerStateBuilder;
 
 public:
 
-	Location	m_location;
-	int			m_gold, m_thirst, m_fatigue, m_saved;
-	const char	*m_content = nullptr;
-	Object		*m_minerTalks = nullptr;
-	Text		*m_talkText = nullptr;
-	Transform	*m_pTransform = nullptr, *m_talkTransform = nullptr;
-	vec3		m_talkOffset;
+    Location	m_location;
+    int			m_gold, m_thirst, m_fatigue, m_saved;
+    const char	*m_content = nullptr;
+    Object		*m_minerTalks = nullptr;
+    Text		*m_talkText = nullptr;
+    Transform	*m_pTransform = nullptr, *m_talkTransform = nullptr;
+    vec3		m_talkOffset;
 
 private:
 
-	MinerState(Object* pObject);
-	~MinerState() {};
+    MinerState(Object* pObject);
+    ~MinerState() {};
 
-	void Register() override;
-	void Load(CR_RJValue _data) override;
-	void Init() override;
-	void Update(const float _dt) override;
-	void Close() override;
-	void Unload() override {};
-	bool OnMessage(Telegram& msg) override;
+    void Register() override;
+    void Load(CR_RJValue _data) override;
+    void Init() override;
+    void Update(const float _dt) override;
+    void Close() override;
+    void Unload() override {};
+    bool OnMessage(Telegram& msg) override;
 
-	void EditorUpdate(const float /*_dt*/) override {};
+    void EditorUpdate(const float /*_dt*/) override {};
 
 };
 
@@ -60,28 +60,28 @@ private:
 /////////////////////////////////////////////////////////////////////////
 class BeatBully : public CustomComponent
 {
-	friend class ComponentManager;
-	friend class BeatBullyBuilder;
+    friend class ComponentManager;
+    friend class BeatBullyBuilder;
 
 public:
 
-	unsigned m_receiverId;
-	MinerState * m_globalState = nullptr;
+    unsigned m_receiverId;
+    MinerState * m_globalState = nullptr;
 
 private:
 
-	BeatBully(Object* pObject);
-	~BeatBully() {};
+    BeatBully(Object* pObject);
+    ~BeatBully() {};
 
-	void Register() override;
-	void Load(CR_RJValue _data) override;
-	void Init() override;
-	void Update(const float _dt) override;
-	void Close() override;
-	void Unload() override {};
-	bool OnMessage(Telegram& msg) override;
+    void Register() override;
+    void Load(CR_RJValue _data) override;
+    void Init() override;
+    void Update(const float _dt) override;
+    void Close() override;
+    void Unload() override {};
+    bool OnMessage(Telegram& msg) override;
 
-	void EditorUpdate(const float /*_dt*/) override {};
+    void EditorUpdate(const float /*_dt*/) override {};
 
 };
 
@@ -90,27 +90,27 @@ private:
 /////////////////////////////////////////////////////////////////////////
 class EatStew : public CustomComponent
 {
-	friend class ComponentManager;
-	friend class EatStewBuilder;
+    friend class ComponentManager;
+    friend class EatStewBuilder;
 
 public:
 
-	MinerState * m_globalState = nullptr;
+    MinerState *m_globalState = nullptr;
 
 private:
 
-	EatStew(Object* pObject);
-	~EatStew() {};
+    EatStew(Object* pObject);
+    ~EatStew() {};
 
-	void Register() override;
-	void Load(CR_RJValue _data) override;
-	void Init() override;
-	void Update(const float _dt) override;
-	void Close() override;
-	void Unload() override {};
-	bool OnMessage(Telegram& msg) override;
+    void Register() override;
+    void Load(CR_RJValue _data) override;
+    void Init() override;
+    void Update(const float _dt) override;
+    void Close() override;
+    void Unload() override {};
+    bool OnMessage(Telegram& msg) override;
 
-	void EditorUpdate(const float /*_dt*/) override {};
+    void EditorUpdate(const float /*_dt*/) override {};
 
 };
 
@@ -119,27 +119,27 @@ private:
 /////////////////////////////////////////////////////////////////////////
 class GoHomeAndSleepTilRested : public CustomComponent
 {
-	friend class ComponentManager;
-	friend class GoHomeAndSleepTilRestedBuilder;
+    friend class ComponentManager;
+    friend class GoHomeAndSleepTilRestedBuilder;
 
 public:
 
-	MinerState * m_globalState = nullptr;
+    MinerState *m_globalState = nullptr;
 
 private:
 
-	GoHomeAndSleepTilRested(Object* pObject);
-	~GoHomeAndSleepTilRested() {};
+    GoHomeAndSleepTilRested(Object* pObject);
+    ~GoHomeAndSleepTilRested() {};
 
-	void Register() override;
-	void Load(CR_RJValue _data) override;
-	void Init() override;
-	void Update(const float _dt) override;
-	void Close() override;
-	void Unload() override {};
-	bool OnMessage(Telegram& msg) override;
+    void Register() override;
+    void Load(CR_RJValue _data) override;
+    void Init() override;
+    void Update(const float _dt) override;
+    void Close() override;
+    void Unload() override {};
+    bool OnMessage(Telegram& msg) override;
 
-	void EditorUpdate(const float /*_dt*/) override {};
+    void EditorUpdate(const float /*_dt*/) override {};
 
 };
 
@@ -148,27 +148,27 @@ private:
 /////////////////////////////////////////////////////////////////////////
 class QuenchThirst : public CustomComponent
 {
-	friend class ComponentManager;
-	friend class QuenchThirstBuilder;
+    friend class ComponentManager;
+    friend class QuenchThirstBuilder;
 
 public:
 
-	MinerState * m_globalState = nullptr;
+    MinerState *m_globalState = nullptr;
 
 private:
 
-	QuenchThirst(Object* pObject);
-	~QuenchThirst() {};
+    QuenchThirst(Object* pObject);
+    ~QuenchThirst() {};
 
-	void Register() override;
-	void Load(CR_RJValue _data) override;
-	void Init() override;
-	void Update(const float _dt) override;
-	void Close() override;
-	void Unload() override {};
-	bool OnMessage(Telegram& msg) override;
+    void Register() override;
+    void Load(CR_RJValue _data) override;
+    void Init() override;
+    void Update(const float _dt) override;
+    void Close() override;
+    void Unload() override {};
+    bool OnMessage(Telegram& msg) override;
 
-	void EditorUpdate(const float /*_dt*/) override {};
+    void EditorUpdate(const float /*_dt*/) override {};
 
 };
 
@@ -177,27 +177,27 @@ private:
 /////////////////////////////////////////////////////////////////////////
 class VisitBankAndDepositGold : public CustomComponent
 {
-	friend class ComponentManager;
-	friend class VisitBankAndDepositGoldBuilder;
+    friend class ComponentManager;
+    friend class VisitBankAndDepositGoldBuilder;
 
 public:
 
-	MinerState * m_globalState = nullptr;
+    MinerState *m_globalState = nullptr;
 
 private:
 
-	VisitBankAndDepositGold(Object* pObject);
-	~VisitBankAndDepositGold() {};
+    VisitBankAndDepositGold(Object* pObject);
+    ~VisitBankAndDepositGold() {};
 
-	void Register() override;
-	void Load(CR_RJValue _data) override;
-	void Init() override;
-	void Update(const float _dt) override;
-	void Close() override;
-	void Unload() override {};
-	bool OnMessage(Telegram& msg) override;
+    void Register() override;
+    void Load(CR_RJValue _data) override;
+    void Init() override;
+    void Update(const float _dt) override;
+    void Close() override;
+    void Unload() override {};
+    bool OnMessage(Telegram& msg) override;
 
-	void EditorUpdate(const float /*_dt*/) override {};
+    void EditorUpdate(const float /*_dt*/) override {};
 
 };
 
@@ -206,28 +206,27 @@ private:
 /////////////////////////////////////////////////////////////////////////
 class EnterMineAndDigForNugget : public CustomComponent
 {
-	friend class ComponentManager;
-	friend class EnterMineAndDigForNuggetBuilder;
+    friend class ComponentManager;
+    friend class EnterMineAndDigForNuggetBuilder;
 
 public:
 
-	MinerState * m_globalState = nullptr;
+    MinerState *m_globalState = nullptr;
 
 private:
 
-	EnterMineAndDigForNugget(Object* pObject);
-	~EnterMineAndDigForNugget() {};
+    EnterMineAndDigForNugget(Object* pObject);
+    ~EnterMineAndDigForNugget() {};
 
-	void Register() override;
-	void Load(CR_RJValue _data) override;
-	void Init() override;
-	void Update(const float _dt) override;
-	void Close() override;
-	void Unload() override {};
-	bool OnMessage(Telegram& msg) override;
+    void Register() override;
+    void Load(CR_RJValue _data) override;
+    void Init() override;
+    void Update(const float _dt) override;
+    void Close() override;
+    void Unload() override {};
+    bool OnMessage(Telegram& msg) override;
 
-	void EditorUpdate(const float /*_dt*/) override {};
-
+    void EditorUpdate(const float /*_dt*/) override {};
 };
 
 JE_END

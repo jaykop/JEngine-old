@@ -18,12 +18,16 @@ Text::Text(Object* _pOwner)
 
 Text::~Text()
 {
-	delete[] m_textStorage;
-	delete[] m_wTextStorage;
+	if (m_textStorage) {
+		delete[] m_textStorage;
+		m_textStorage = nullptr;
+	}
 
-	m_textStorage = nullptr;
-	m_wTextStorage = nullptr;
-	
+	if (m_wTextStorage) {
+		delete[] m_wTextStorage;
+		m_wTextStorage = nullptr;
+	}
+
 	SYSTEM::GetGraphicSystem()->RemoveSprite(this);
 }
 
@@ -48,11 +52,15 @@ void Text::SetText(const char * _text, ...)
 	m_printWide = false;
 
 	// Clear wide character conatiner
-	m_wText.clear();
+	if (!m_wText.empty()) {
+		m_wText.clear();
+		delete[] m_wTextStorage;
+		m_wTextStorage = nullptr;
+	}
 
 	if (_text)
 	{
-		static size_t size = 0, newSize = 0;
+		static unsigned newSize = 0;
 		m_text.assign(_text); 
 		va_list argumens;
 
@@ -63,14 +71,14 @@ void Text::SetText(const char * _text, ...)
 
 		// If the new size is greater than old one,
 		// delete existing one and reallocate heap memories
-		if (size < newSize) {
-			size = newSize;						// Refresh the size info
+		if (m_size < newSize) {
+			m_size = newSize;					// Refresh the size info
 			delete[] m_textStorage;				// Delete heap
 			m_textStorage = nullptr;
-			m_textStorage = new char[size];		// Reallocate memory
+			m_textStorage = new char[m_size];	// Reallocate memory
 		}
 
-		vsprintf_s(m_textStorage, size,_text, argumens);
+		vsprintf_s(m_textStorage, m_size, _text, argumens);
 		va_end(argumens);
 
 		// Refresh the text with additional arguments
@@ -89,11 +97,15 @@ void Text::SetText(const wchar_t* _wText, ...)
 	m_printWide = true;
 
 	// Clear ascii texts container
-	m_text.clear();
+	if (!m_text.empty()) {
+		m_text.clear();
+		delete[] m_textStorage;
+		m_textStorage = nullptr;
+	}
 
 	if (_wText)
 	{
-		static size_t size = 0, newSize = 0;
+		static size_t newSize = 0;
 		m_wText.assign(_wText);
 		va_list argumens;
 
@@ -103,14 +115,14 @@ void Text::SetText(const wchar_t* _wText, ...)
 
 		// If new size is greater than one,
 		// reallocate the new heap memories
-		if (size < newSize) {
-			size = newSize;						// Initialize new size
-			delete[] m_wTextStorage;			// Deallocate heap memories
+		if (m_size < newSize) {
+			m_size = newSize;						// Initialize new size
+			delete[] m_wTextStorage;				// Deallocate heap memories
 			m_wTextStorage = nullptr;
-			m_wTextStorage = new wchar_t[size];	// Reallocate new memories
+			m_wTextStorage = new wchar_t[m_size];	// Reallocate new memories
 		}
 
-		vswprintf_s(m_wTextStorage, size, _wText, argumens);
+		vswprintf_s(m_wTextStorage, m_size, _wText, argumens);
 		va_end(argumens);
 
 		// Refresh the text with additional arguments

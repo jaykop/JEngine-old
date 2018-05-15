@@ -33,7 +33,7 @@ void JEngine::RegisterAssets()
 
 	// States for wife
 	JE_REGISTER_COMPONENT(WifeState);
-	JE_REGISTER_COMPONENT(DoHousework); 
+	JE_REGISTER_COMPONENT(DoHousework);
 	JE_REGISTER_COMPONENT(CookStew);
 	JE_REGISTER_COMPONENT(GoToBathroom);
 

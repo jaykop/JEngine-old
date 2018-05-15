@@ -12,6 +12,7 @@ vec3			INPUT::m_rawPosition = vec3::ZERO;
 vec3			INPUT::m_screenPosition = vec3::ZERO;
 INPUT::KeyMap	INPUT::m_keys, INPUT::m_triggerList;
 int				INPUT::m_mouseWheel = 0;
+unsigned		INPUT::m_triggerCalled = 0;
 
 void InputHandler::Init()
 {
@@ -27,9 +28,10 @@ bool InputHandler::KeyPressed(JE_KEY _pressed)
 
 bool InputHandler::KeyTriggered(JE_KEY _trigger)
 {
-	if (!m_triggerList[_trigger]			// First press, trigger must be false
-		&& m_keys[_trigger]) {				// Key pressed, so this must be true
-		m_triggerList[_trigger] = true;		// Set trigger is activated -> no more access here
+	if ((m_triggerCalled || !m_triggerList[_trigger])	// First press, trigger must be false or check trigger call is on the same frame
+		&& m_keys[_trigger]) {							// Key pressed, so this must be true
+		m_triggerList[_trigger] = true;					// Set trigger is activated -> no more access here
+		m_triggerCalled++;								// Increase the number of calling trigger
 		return true;
 	}
 
@@ -271,6 +273,9 @@ JE_KEY InputHandler::KeyTranslator(SDL_Event* _event)
 
 void InputHandler::Update(SDL_Event* _event)
 {	
+	// Initialize the number of calling trigger
+	m_triggerCalled = 0;
+
 	// Refresh the mouse wheel toggles
 	switch (m_mouseWheel) {
 	case 0:
