@@ -1,5 +1,6 @@
 #include "WifeState.h"
 #include "CustomLogicHeader.h"
+#include "Random.h"
 
 JE_BEGIN
 
@@ -33,8 +34,8 @@ void WifeState::Init()
 	m_wifeTalks->AddComponent<Transform>();
 	m_wifeTalks->AddComponent<Text>();
 	m_pTalkTransform = m_wifeTalks->GetComponent<Transform>();
-	m_pTalkTransform->m_scale.Set(.125f, .125f, 0.f);
-	m_talkOffset.Set(20.f, 0.f, 1.f);
+	m_pTalkTransform->m_scale.Set(.15f, .15f, 0.f);
+	m_talkOffset.Set(15.f, 0.f, 1.f);
 	m_talkText = m_wifeTalks->GetComponent<Text>();
 	m_talkText->Register();
 	m_pOwner->AddChild(m_wifeTalks);
@@ -84,7 +85,7 @@ void DoHousework::Init()
 	m_globalState = (WifeState*)m_pOwner->GetGlobalState();
 
 	m_globalState->m_content = "Doing houseworks...";
-	m_globalState->m_talkText->SetText("%s\nChores: %d\nNeed to pee?: %d",
+	m_globalState->m_talkText->SetText("%s\nChoresToDo: %d\nNeed to pee?: %d",
 		m_globalState->m_content, m_globalState->m_chores, m_globalState->m_natureCalling);
 }
 
@@ -93,9 +94,9 @@ void DoHousework::Update(const float /*_dt*/)
 	m_globalState->m_natureCalling++;
 	m_globalState->m_chores--;
 	if (m_globalState->m_chores < 0)
-		m_globalState->m_chores = 0;
+		m_globalState->m_chores = RAND::GetRandomInt(1, 10);
 
-	m_globalState->m_talkText->SetText("%s\nChores: %d\nNeed to pee?: %d",
+	m_globalState->m_talkText->SetText("%s\nChoresToDo: %d\nNeed to pee?: %d",
 		m_globalState->m_content, m_globalState->m_chores, m_globalState->m_natureCalling);
 
 	if (m_globalState->m_natureCalling > 10)
@@ -186,9 +187,11 @@ void GoToBathroom::Init()
 	m_globalState = (WifeState*)m_pOwner->GetGlobalState();
 
 	m_globalState->m_natureCalling = 0;
-	m_globalState->m_chores = 10;
+
+	m_globalState->m_chores = RAND::GetRandomInt(1, 10);
+
 	m_globalState->m_content = "Nature is calling me!!!!";
-	m_globalState->m_talkText->SetText("%s\nChores: %d\nNeed to pee?: %d",
+	m_globalState->m_talkText->SetText("%s\nChoresToDo: %d\nNeed to pee?: %d",
 		m_globalState->m_content, m_globalState->m_chores, m_globalState->m_natureCalling);
 }
 

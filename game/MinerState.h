@@ -66,8 +66,9 @@ class BeatBully : public CustomComponent
 
 public:
 
-    unsigned m_receiverId;
-    MinerState * m_globalState = nullptr;
+	bool		m_beaten = false;
+    unsigned	m_receiverId;
+    MinerState	*m_globalState = nullptr;
 
 private:
 

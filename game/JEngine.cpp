@@ -37,7 +37,7 @@ void JEngine::RegisterAssets()
 	JE_REGISTER_COMPONENT(CookStew);
 	JE_REGISTER_COMPONENT(GoToBathroom);
 
-	//Existing logics
+	// Existing logics
 	JE_REGISTER_COMPONENT(CameraController);
 	JE_REGISTER_COMPONENT(LevelController);
 	JE_REGISTER_COMPONENT(LightController);

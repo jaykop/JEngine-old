@@ -42,6 +42,24 @@
 			]
 		},
 		{
+			"Name" : "Bully",
+			"Component" : [
+				{
+					"Type": "Transform",
+					"Values": { "Position" : [-80, -50, 1], "Scale" : [12.5, 25, 0] }
+				},
+				{
+					"Type": "Sprite",
+					"Values": { "Texture" : "bully" }
+				},
+				{
+					"Type": "StateMachine",
+					"Values": { "StateList" : ["BullyState", "JustHatingMiner", "GoFight" ],
+								"Current" : "JustHatingMiner", "Global" : "BullyState"}
+				}
+			]
+		},
+		{
 			"Name" : "Miner",
 			"Component" : [
 				{

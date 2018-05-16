@@ -37,8 +37,8 @@ void MinerState::Init()
     m_minerTalks->AddComponent<Transform>();
     m_minerTalks->AddComponent<Text>();
     m_talkTransform = m_minerTalks->GetComponent<Transform>();
-    m_talkTransform->m_scale.Set(.125f, .125f, 0.f);
-    m_talkOffset.Set(-10.f, 40.f, 1.f);
+    m_talkTransform->m_scale.Set(.15f, .15f, 0.f);
+    m_talkOffset.Set(15.f, 10.f, 1.f);
     m_talkText = m_minerTalks->GetComponent<Text>();
     m_talkText->Register();
     m_pOwner->AddChild(m_minerTalks);
@@ -289,9 +289,14 @@ void QuenchThirst::Update(const float /*_dt*/)
 void QuenchThirst::Close()
 {}
 
-bool QuenchThirst::OnMessage(Telegram& /*msg*/)
+bool QuenchThirst::OnMessage(Telegram& msg)
 {
-    return false;
+	if (!strcmp(msg.message, "Fight")) {
+		m_pOwner->ChangeState<BeatBully>();
+		return true;
+	}
+
+	return false;
 }
 
 
@@ -311,25 +316,37 @@ void BeatBully::Load(CR_RJValue /*_data*/)
 void BeatBully::Init()
 {
     m_globalState = (MinerState*)m_pOwner->GetGlobalState();
+
+	m_globalState->m_content = "You damn loser!\nYou cannot take me down!\nGet lost!";
+	m_globalState->m_talkText->SetText("%s", m_globalState->m_content);
 }
 
 void BeatBully::Update(const float /*_dt*/)
 {
-    DISPATCHER::DispatchMessage(0.0,	//time delay
-        m_pOwnerId,						//sender ID
-        m_receiverId,					//receiver ID
-        "Fight",						//msg
-        nullptr);
+	if (!m_beaten) 
+		m_beaten = true;
 
-    m_pOwner->RevertToPreviousState();
+	else {
+		DISPATCHER::DispatchMessage(0.0,			//time delay
+			m_pOwnerId,								//sender ID
+			CONTAINER->GetObject("Bully")->GetId(),	//receiver ID
+			"Fight",								//msg
+			nullptr);
+	}
 }
 
 void BeatBully::Close()
 {}
 
-bool BeatBully::OnMessage(Telegram& /*msg*/)
+bool BeatBully::OnMessage(Telegram& msg)
 {
-    return false;
+	if (!strcmp(msg.message, "Surrender")) {
+		m_beaten = false;
+		m_pOwner->RevertToPreviousState();
+		return true;
+	}
+
+	return false;
 }
 
 /////////////////////////////////////////////////////////////////////////
