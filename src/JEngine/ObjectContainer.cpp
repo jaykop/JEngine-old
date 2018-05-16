@@ -22,6 +22,7 @@ void ObjectContainer::RemoveObject(const char* _name)
 		IMGUI::RemoveObjectEditor(toRemove->second);
 		delete toRemove->second;
 		toRemove->second = nullptr;
+		m_objectMap.erase(toRemove);	
 	}
 
 	else
@@ -31,12 +32,18 @@ void ObjectContainer::RemoveObject(const char* _name)
 void ObjectContainer::RemoveObject(unsigned _id)
 {
 	bool notFound = true;
-	for (auto object : m_objectMap) {
-		if (_id == object.second->GetId()) {
-			IMGUI::RemoveObjectEditor(object.second);
-			delete object.second;
+	for (auto object = m_objectMap.begin();
+		object != m_objectMap.end(); ++object) {
+
+		Object* theOne = object->second;
+		if (_id == theOne->GetId()) {
 			notFound = false;
-			object.second = nullptr;
+			IMGUI::RemoveObjectEditor(theOne);
+			delete theOne;
+			theOne = nullptr;
+			m_objectMap.erase(object);
+
+			break;
 		}
 	}
 
@@ -44,7 +51,7 @@ void ObjectContainer::RemoveObject(unsigned _id)
 		JE_DEBUG_PRINT("!ObjectContainer - No such name of enrolled object: %i\n", _id);
 }
 
-	Object* ObjectContainer::GetObject(const char *_name)
+Object* ObjectContainer::GetObject(const char *_name)
 {
 	// Find the one to remove
 	auto found = m_objectMap.find(_name);
@@ -109,7 +116,7 @@ void ObjectContainer::ClearObjectMap()
 {
 	for (auto obj : m_objectMap)
 	{
-		if (obj.second) {
+		if (obj.second && !obj.second->m_pParent) {
 			IMGUI::RemoveObjectEditor(obj.second);
 			delete obj.second;
 			obj.second = nullptr;

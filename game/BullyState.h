@@ -1,11 +1,13 @@
 #pragma once
 #include "CustomComponent.h"
 #include "ComponentBuilder.h"
-#include "Location.h"
+#include "Vector3.h"
 
 JE_BEGIN
 
+class Text;
 class Object;
+class Transform;
 struct Telegram;
 
 JE_DECLARE_COMPONENT_BUILDER(BullyState)
@@ -22,9 +24,15 @@ class BullyState : public CustomComponent
 
 public:
 
-    Location	m_location = PUB;
-    int		m_hateMiner = 0;
-    int		m_minerId = 0;
+	unsigned	m_hateMiner = 0;
+	int			m_minerId = 0;
+
+	const char	*m_content = nullptr;
+
+	Object		*m_bullyTalks = nullptr, *m_pMiner = nullptr;
+	Text*		m_talkText = nullptr;
+	Transform*	m_pTransform = nullptr, *m_pTalkTransform = nullptr;
+	vec3		m_talkOffset;
 
 private:
 
@@ -53,6 +61,8 @@ class JustHatingMiner : public CustomComponent
 
 public:
 
+	BullyState * m_globalState = nullptr;
+
 private:
 
     JustHatingMiner(Object* pObject);
@@ -80,7 +90,8 @@ class GoFight : public CustomComponent
 
 public:
 
-    unsigned receiverId;
+	BullyState	*m_globalState = nullptr;
+	bool		m_beaten = false;
 
 private:
 

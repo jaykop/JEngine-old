@@ -30,4 +30,6 @@ private:
 
 };
 
+using RAND = Random;
+
 JE_END
