@@ -41,6 +41,7 @@ private:
 	struct InitData
 	{
 		std::string	m_title;		// Title
+		std::string m_icon;			// Icon directory
 		bool		m_isFullScreen;	// Flag of fullscr
 		int			m_width;		// Width size
 		int			m_height;		// Height size
@@ -56,11 +57,11 @@ private:
 	static void EditorUpdate(const float _dt);
 
 	// Private variables
-	static InitData			m_Data;		// Window config
-	static SDL_Window*		m_pWindow;	// SDL window
-	static SDL_Event		m_pEvent;	// SDL Event
-	static SDL_GLContext	m_pContext;	// SDL GL context
-	static SDL_Surface*		m_pSurface; // SDL screen surface
+	static InitData			m_Data;					// Window config
+	static SDL_Window*		m_pWindow;				// SDL window
+	static SDL_Event		m_pEvent;				// SDL Event
+	static SDL_GLContext	m_pContext;				// SDL GL context
+	static SDL_Surface		*m_pSurface, *m_pIcon;	// SDL screen surface
 	static int				m_buffers, m_samples;
 	static bool				m_IMGUI;
 };

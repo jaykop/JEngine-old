@@ -3,5 +3,6 @@
 	"Title" : "demo",
 	"Fullscreen" : false,
 	"Width" : 800,
-	"Height" : 600	
+	"Height" : 600,
+	"Icon" : "../resource/ico/main.ico"
 }
