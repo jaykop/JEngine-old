@@ -20,7 +20,7 @@ Custom Matrix looks like this...
 #include "Vector2.h"
 #include <iostream>
 
-JE_BEGIN
+jeBegin
 
 //! Matrix2x2 struct
 struct Matrix2x2
@@ -69,4 +69,4 @@ struct Matrix2x2
 using mat2 = Matrix2x2;
 using CR_mat2 = const mat2&;
 
-JE_END
+jeEnd

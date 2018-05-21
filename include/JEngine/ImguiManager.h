@@ -5,7 +5,7 @@
 union SDL_Event;
 struct SDL_Window;
 
-JE_BEGIN
+jeBegin
 
 class Component;
 
@@ -24,7 +24,7 @@ class ImguiManager {
 	using ObjectEditorMap	 = std::vector<Object*>;
 
 	// Locked constuctor, destructor, assign operator
-	JE_THIS_IS_STATIC_CLASS(ImguiManager)
+	jeStaticClassDeclaration(ImguiManager)
 
 private:
 
@@ -49,4 +49,4 @@ private:
 
 using IMGUI = ImguiManager;
 
-JE_END
+jeEnd

@@ -1,7 +1,7 @@
 #pragma once
 #include "Sprite.h"
 
-JE_BEGIN
+jeBegin
 
 class ModelBuilder : public ComponentBuilder
 {
@@ -41,4 +41,4 @@ private:
 	void EditorUpdate(const float _dt) override;
 };
 
-JE_END
+jeEnd

@@ -4,7 +4,7 @@
 #include "ComponentManager.h"
 #include "CustomLogic.h"
 
-USING_NS_JE;
+jeUsingNamespace;
 
 void JEngine::RegisterAssets()
 {
@@ -15,33 +15,33 @@ void JEngine::RegisterAssets()
 	ASSET::SetArchetypeDirectory("../resource/register/archetype.json");
 
 	// Load customized components
-	JE_REGISTER_COMPONENT(StateMachine);
+	jeRegisterComponent(StateMachine);
 
 	// States for bully
-	JE_REGISTER_COMPONENT(BullyState);
-	JE_REGISTER_COMPONENT(GoFight);
-	JE_REGISTER_COMPONENT(JustHatingMiner);
+	jeRegisterComponent(BullyState);
+	jeRegisterComponent(GoFight);
+	jeRegisterComponent(JustHatingMiner);
 
 	// States for miner
-	JE_REGISTER_COMPONENT(MinerState);
-	JE_REGISTER_COMPONENT(EnterMineAndDigForNugget);
-	JE_REGISTER_COMPONENT(VisitBankAndDepositGold);
-	JE_REGISTER_COMPONENT(QuenchThirst);
-	JE_REGISTER_COMPONENT(GoHomeAndSleepTilRested);
-	JE_REGISTER_COMPONENT(EatStew);
-	JE_REGISTER_COMPONENT(BeatBully);
+	jeRegisterComponent(MinerState);
+	jeRegisterComponent(EnterMineAndDigForNugget);
+	jeRegisterComponent(VisitBankAndDepositGold);
+	jeRegisterComponent(QuenchThirst);
+	jeRegisterComponent(GoHomeAndSleepTilRested);
+	jeRegisterComponent(EatStew);
+	jeRegisterComponent(BeatBully);
 
 	// States for wife
-	JE_REGISTER_COMPONENT(WifeState);
-	JE_REGISTER_COMPONENT(DoHousework);
-	JE_REGISTER_COMPONENT(CookStew);
-	JE_REGISTER_COMPONENT(GoToBathroom);
+	jeRegisterComponent(WifeState);
+	jeRegisterComponent(DoHousework);
+	jeRegisterComponent(CookStew);
+	jeRegisterComponent(GoToBathroom);
 
 	// Existing logics
-	JE_REGISTER_COMPONENT(CameraController);
-	JE_REGISTER_COMPONENT(LevelController);
-	JE_REGISTER_COMPONENT(LightController);
-	JE_REGISTER_COMPONENT(TestLogic);
+	jeRegisterComponent(CameraController);
+	jeRegisterComponent(LevelController);
+	jeRegisterComponent(LightController);
+	jeRegisterComponent(TestLogic);
 }
 
 void JEngine::Run(bool _imguiToggle)

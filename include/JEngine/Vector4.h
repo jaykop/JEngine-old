@@ -13,7 +13,7 @@ Contains Vector4's template class
 #include "Macro.h"
 #include <iostream>
 
-JE_BEGIN
+jeBegin
 
 // class template Vector4
 class Vector4
@@ -88,4 +88,4 @@ private:
 using vec4 = Vector4;
 using CR_vec4 = const vec4&;
 
-JE_END
+jeEnd

@@ -3,7 +3,7 @@
 
 #include "Light.h"
 
-JE_BEGIN
+jeBegin
 
 LightController::LightController(Object* _pObject)
 	:CustomComponent(_pObject)
@@ -65,4 +65,4 @@ CustomComponent* LightControllerBuilder::CreateComponent(Object* _pOwner) const
 	return new LightController(_pOwner);
 }
 
-JE_END
+jeEnd

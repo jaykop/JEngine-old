@@ -3,7 +3,7 @@
 #include "Macro.h"
 #include <unordered_map>
 
-JE_BEGIN
+jeBegin
 
 struct Telegram;
 class Object;
@@ -114,6 +114,6 @@ private:
 
 };
 
-JE_END
+jeEnd
 
 #include "Object.inl"

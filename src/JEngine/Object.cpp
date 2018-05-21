@@ -6,7 +6,7 @@
 #include "Telegram.h"
 #include "imgui.h"
 
-JE_BEGIN
+jeBegin
 
 Object::Object(const char* _name)
 	:m_name(_name), m_active(true), m_pParent(nullptr),
@@ -56,7 +56,7 @@ void Object::AddChild(Object* _child)
 
 	// Unless...
 	else
-		JE_DEBUG_PRINT("!Object - Existing child: %s\n", _child->GetName().c_str());
+		jeDebugPrint("!Object - Existing child: %s\n", _child->GetName().c_str());
 }
 
 void Object::RemoveChild(const char* _name)
@@ -71,7 +71,7 @@ void Object::RemoveChild(const char* _name)
 	}
 		
 	else 
-		JE_DEBUG_PRINT("!Object - No such name of enrolled object: %s\n", _name);
+		jeDebugPrint("!Object - No such name of enrolled object: %s\n", _name);
 }
 
 Object* Object::GetChild(const char* _name)
@@ -85,7 +85,7 @@ Object* Object::GetChild(const char* _name)
 
 	// Unless...
 	else {
-		JE_DEBUG_PRINT("!Object - No such name of enrolled object: %s\n", _name);
+		jeDebugPrint("!Object - No such name of enrolled object: %s\n", _name);
 		return nullptr;
 	}
 }
@@ -100,7 +100,7 @@ bool Object::HasChild(const char* _name)
 		return true;
 
 	// Unless...
-	JE_DEBUG_PRINT("!Object - No such name of enrolled object: %s\n", _name);
+	jeDebugPrint("!Object - No such name of enrolled object: %s\n", _name);
 	return false;
 
 }
@@ -176,7 +176,7 @@ void Object::AddComponent(const char* _componentName)
 	}
 
 	else
-		JE_DEBUG_PRINT("!Object - Cannot add identical component again: %s\n", _componentName);
+		jeDebugPrint("!Object - Cannot add identical component again: %s\n", _componentName);
 }
 
 Component* Object::GetComponent(const char* _componentName)
@@ -190,7 +190,7 @@ Component* Object::GetComponent(const char* _componentName)
 	if (found != m_componentMap.end())
 		return found->second;
 
-	JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", _componentName);
+	jeDebugPrint("!Object - No such name of enrolled component: %s\n", _componentName);
 	return nullptr;
 }
 
@@ -205,7 +205,7 @@ bool Object::HasComponent(const char* _componentName) const
 	if (found != m_componentMap.end())
 		return true;
 
-	JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", _componentName);
+	jeDebugPrint("!Object - No such name of enrolled component: %s\n", _componentName);
 	return false;
 
 }
@@ -223,7 +223,7 @@ void Object::RemoveComponent(const char* _componentName)
 	}
 
 	else 
-		JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", _componentName);
+		jeDebugPrint("!Object - No such name of enrolled component: %s\n", _componentName);
 	
 }
 
@@ -252,7 +252,7 @@ void Object::RevertToPreviousState()
 	}
 
 	else
-		JE_DEBUG_PRINT("!Object - There is not previous state.\n");
+		jeDebugPrint("!Object - There is not previous state.\n");
 }
 
 CustomComponent* Object::GetGlobalState() const
@@ -278,11 +278,11 @@ void Object::SetGlobalState(const char* _componentName)
 			m_StateMachine.m_pGlobalState = (CustomComponent*)found->second;
 
 		else
-			JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", _componentName);
+			jeDebugPrint("!Object - No such name of enrolled component: %s\n", _componentName);
 	}
 
 	else
-		JE_DEBUG_PRINT("!Object - There is an allocated global state already: %s\n", _componentName);
+		jeDebugPrint("!Object - There is an allocated global state already: %s\n", _componentName);
 }
 
 void Object::SetCurrentState(const char* _componentName)
@@ -298,11 +298,11 @@ void Object::SetCurrentState(const char* _componentName)
 			m_StateMachine.m_pCurrentState = (CustomComponent*)found->second;
 
 		else
-			JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", _componentName);
+			jeDebugPrint("!Object - No such name of enrolled component: %s\n", _componentName);
 	}
 
 	else
-		JE_DEBUG_PRINT("!Object - There is an allocated current state already: %s\n", _componentName);
+		jeDebugPrint("!Object - There is an allocated current state already: %s\n", _componentName);
 }
 
 void Object::EditorUpdate(const float /*_dt*/)
@@ -343,4 +343,4 @@ void Object::EditorUpdate(const float /*_dt*/)
 	}
 }
 
-JE_END
+jeEnd

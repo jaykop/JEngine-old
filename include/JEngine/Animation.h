@@ -3,7 +3,7 @@
 #include "Component.h"
 #include "ComponentBuilder.h"
 
-JE_BEGIN
+jeBegin
 
 class AnimationBuilder : public ComponentBuilder
 {
@@ -66,4 +66,4 @@ private:
 
 };
 
-JE_END
+jeEnd

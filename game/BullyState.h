@@ -3,16 +3,16 @@
 #include "ComponentBuilder.h"
 #include "Vector3.h"
 
-JE_BEGIN
+jeBegin
 
 class Text;
 class Object;
 class Transform;
 struct Telegram;
 
-JE_DECLARE_COMPONENT_BUILDER(BullyState)
-JE_DECLARE_COMPONENT_BUILDER(JustHatingMiner)
-JE_DECLARE_COMPONENT_BUILDER(GoFight)
+jeComponentBuilderDeclaration(BullyState)
+jeComponentBuilderDeclaration(JustHatingMiner)
+jeComponentBuilderDeclaration(GoFight)
 
 /////////////////////////////////////////////////////////////////////////
 // Global bully state
@@ -110,4 +110,4 @@ private:
 
 };
 
-JE_END
+jeEnd

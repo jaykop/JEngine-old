@@ -3,7 +3,7 @@
 #include "Sprite.h"
 #include "Vector3.h"
 
-JE_BEGIN
+jeBegin
 
 class EmitterBuilder : public ComponentBuilder
 {
@@ -98,4 +98,4 @@ private:
 
 };
 
-JE_END
+jeEnd

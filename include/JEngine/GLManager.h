@@ -4,7 +4,7 @@
 #include <vector>
 #include "Macro.h"
 
-JE_BEGIN
+jeBegin
 
 class GLManager {
 
@@ -22,7 +22,7 @@ class GLManager {
 	using Shaders = std::vector<Shader*>;
 
 	// Locked constuctor, destructor, assign operator
-	JE_THIS_IS_STATIC_CLASS(GLManager)
+	jeStaticClassDeclaration(GLManager)
 
 	enum DrawMode  { DRAW_POINT, DRAW_LINE, DRAW_FILL };
 	enum ShaderType  {SHADER_MODEL, SHADER_TEXT, SHADER_LIGHTING, SHADER_PARTICLE, SHADER_SCREEN, SHADER_END};
@@ -114,4 +114,4 @@ private:
 
 using GLM = GLManager;
 
-JE_END
+jeEnd

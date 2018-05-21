@@ -2,7 +2,7 @@
 #include "Macro.h"
 #include <unordered_map>
 
-JE_BEGIN
+jeBegin
 
 class Font;
 class Audio;
@@ -23,7 +23,7 @@ class AssetManager {
 	using ArchetypeMap =	std::unordered_map<std::string, Archetype*>;
 
 	// Locked constuctor, destructor, assign operator
-	JE_THIS_IS_STATIC_CLASS(AssetManager)
+	jeStaticClassDeclaration(AssetManager)
 
 public:
 
@@ -68,4 +68,4 @@ private:
 
 using ASSET = AssetManager;
 
-JE_END
+jeEnd

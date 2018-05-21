@@ -9,8 +9,9 @@
 #include "imgui.h"
 #include "Debug.h"
 #include "InputHandler.h"
+#include "MemoryAllocator.h"
 
-JE_BEGIN
+jeBegin
 
 //////////////////////////////////////////////////////////////////////////
 // static variables
@@ -49,6 +50,10 @@ bool Application::Initialize()
 {
 	/*************** Init Data **************/
 
+	MEMORY::AllocateNewPage();
+	MEMORY::AllocateNewPage();
+	MEMORY::AllocateNewPage();
+
 	// Assign app init data
 	JSON::ReadFile(ASSET::m_initDirectory.c_str());
 
@@ -67,7 +72,7 @@ bool Application::Initialize()
 	}
 
 	else {
-		JE_DEBUG_PRINT("!Application - Wrong init data.\n");
+		jeDebugPrint("!Application - Wrong init data.\n");
 		return false;
 	}
 
@@ -125,6 +130,9 @@ void Application::Close()
 	JSON::Close();			// Clear document
 	GLM::Close();			// Close SDL GL
 	IMGUI::Close();			// Close imgui manager
+
+	MEMORY::ClearPages();
+
 	CloseSDL();				// Close sdl window
 }
 
@@ -133,7 +141,7 @@ bool Application::InitSDL()
 	// Check right init
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0) {
 		// Print error message
-		JE_DEBUG_PRINT("!Application - SDL could not initialize. SDL_Error: %s\n", SDL_GetError());
+		jeDebugPrint("!Application - SDL could not initialize. SDL_Error: %s\n", SDL_GetError());
 		return false;
 	}
 
@@ -157,7 +165,7 @@ bool Application::InitSDL()
 		m_Data.m_width, m_Data.m_height, SDL_WINDOW_OPENGL);
 
 	if (!m_pWindow) {
-		JE_DEBUG_PRINT("!Application - Window could not be created. SDL_Error: %s\n", SDL_GetError());
+		jeDebugPrint("!Application - Window could not be created. SDL_Error: %s\n", SDL_GetError());
 		return false;
 	}
 
@@ -213,4 +221,4 @@ void Application::EditorUpdate(const float /*_dt*/)
 	ImGui::End();
 }
 
-JE_END
+jeEnd

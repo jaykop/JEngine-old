@@ -1,7 +1,7 @@
 #pragma once
 #include "JsonParser.h"
 
-JE_BEGIN
+jeBegin
 
 class System {
 
@@ -25,4 +25,4 @@ private:
 
 };
 
-JE_END
+jeEnd

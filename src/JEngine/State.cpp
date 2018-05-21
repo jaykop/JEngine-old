@@ -3,7 +3,7 @@
 #include "SystemManager.h"
 #include "ObjectContainer.h"
 
-JE_BEGIN
+jeBegin
 
 State::State(const char* _name)
 	:m_pLastStage(nullptr)
@@ -13,7 +13,7 @@ State::State(const char* _name)
 
 void State::Load()
 {
-	JE_DEBUG_PRINT("*State - Loading %s...\n", m_name.c_str());
+	jeDebugPrint("*State - Loading %s...\n", m_name.c_str());
 	
 	// Allocate new object container;
 	OBJECT::m_pSharedContainer 
@@ -33,7 +33,7 @@ void State::Init()
 		STATE::m_showUpdateMessage = true;
 #endif // _DEBUG
 
-	JE_DEBUG_PRINT("*State - Initializing %s...\n", m_name.c_str());
+	jeDebugPrint("*State - Initializing %s...\n", m_name.c_str());
 	SYSTEM::Init();
 }
 
@@ -41,7 +41,7 @@ void State::Update(const float _dt)
 {
 #if defined(_DEBUG)
 	if (STATE::m_showUpdateMessage) {
-		JE_DEBUG_PRINT("*State - Updating %s...\n", m_name.c_str());
+		jeDebugPrint("*State - Updating %s...\n", m_name.c_str());
 		STATE::m_showUpdateMessage = false;
 	}
 #endif // _DEBUG
@@ -57,13 +57,13 @@ void State::Close()
 
 	OBJECT::m_pSharedContainer = STATE::GetCurrentState()->m_objContainer;
 
-	JE_DEBUG_PRINT("*State - Closing %s...\n", m_name.c_str());
+	jeDebugPrint("*State - Closing %s...\n", m_name.c_str());
 	SYSTEM::Close();
 }
 
 void State::Unload()
 {
-	JE_DEBUG_PRINT("*State - Unloading %s...\n", m_name.c_str());
+	jeDebugPrint("*State - Unloading %s...\n", m_name.c_str());
 	SYSTEM::Unload();
 	ClearObjectContainer();
 }
@@ -77,5 +77,5 @@ void State::ClearObjectContainer()
 	}
 }
 
-JE_END
+jeEnd
 

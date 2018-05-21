@@ -2,7 +2,7 @@
 #include "Macro.h"
 #include "document.h"
 
-JE_BEGIN
+jeBegin
 
 using CR_RJValue	= const rapidjson::Value&;
 using RJDoc			= rapidjson::Document;
@@ -15,7 +15,7 @@ class JsonParser {
 	friend class AssetManager;
 
 	// Locked constuctor, destructor, assign operator
-	JE_THIS_IS_STATIC_CLASS(JsonParser)
+	jeStaticClassDeclaration(JsonParser)
 
 private:
 
@@ -32,4 +32,4 @@ private:
 
 using JSON = JsonParser;
 
-JE_END
+jeEnd

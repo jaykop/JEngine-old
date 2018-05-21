@@ -5,20 +5,20 @@
 #include "Location.h"
 #include "Vector3.h"
 
-JE_BEGIN
+jeBegin
 
 class Text;
 class Object;
 class Transform;
 struct Telegram;
 
-JE_DECLARE_COMPONENT_BUILDER(MinerState)
-JE_DECLARE_COMPONENT_BUILDER(BeatBully)
-JE_DECLARE_COMPONENT_BUILDER(EatStew)
-JE_DECLARE_COMPONENT_BUILDER(GoHomeAndSleepTilRested)
-JE_DECLARE_COMPONENT_BUILDER(QuenchThirst)
-JE_DECLARE_COMPONENT_BUILDER(VisitBankAndDepositGold)
-JE_DECLARE_COMPONENT_BUILDER(EnterMineAndDigForNugget)
+jeComponentBuilderDeclaration(MinerState)
+jeComponentBuilderDeclaration(BeatBully)
+jeComponentBuilderDeclaration(EatStew)
+jeComponentBuilderDeclaration(GoHomeAndSleepTilRested)
+jeComponentBuilderDeclaration(QuenchThirst)
+jeComponentBuilderDeclaration(VisitBankAndDepositGold)
+jeComponentBuilderDeclaration(EnterMineAndDigForNugget)
 
 /////////////////////////////////////////////////////////////////////////
 // Global miner state
@@ -231,4 +231,4 @@ private:
     void EditorUpdate(const float /*_dt*/) override {};
 };
 
-JE_END
+jeEnd

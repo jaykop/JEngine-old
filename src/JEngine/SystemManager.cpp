@@ -1,6 +1,6 @@
 #include "SystemManager.h"
 
-JE_BEGIN
+jeBegin
 
 //////////////////////////////////////////////////////////////////////////
 // static variables
@@ -98,4 +98,4 @@ void SystemManager::Unbind()
 	}
 }
 
-JE_END
+jeEnd

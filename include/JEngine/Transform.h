@@ -3,7 +3,7 @@
 #include "Component.h"
 #include "ComponentBuilder.h"
 
-JE_BEGIN
+jeBegin
 
 class TransformBuilder : public ComponentBuilder
 {
@@ -50,4 +50,4 @@ private:
 
 };
 
-JE_END
+jeEnd

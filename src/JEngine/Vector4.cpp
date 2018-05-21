@@ -13,7 +13,7 @@ Contains Vector4's template class and member function
 /******************************************************************************/
 #include "Vector4.h"
 
-JE_BEGIN
+jeBegin
 
 //////////////////////////////////////////////////////////////////////////
 // static variables
@@ -210,7 +210,7 @@ Vector4 Vector4::operator / (float _constant) const
 
 	// Unless.
 	else
-		JE_DEBUG_PRINT("!Vector4 - Cannot devide by 0.\n");
+		jeDebugPrint("!Vector4 - Cannot devide by 0.\n");
 
 	return result;
 }
@@ -395,7 +395,7 @@ Vector4& Vector4::operator/=(float _constant)
 
 	// Unless.
 	else
-		JE_DEBUG_PRINT("!Vector4 - Cannot devide by 0.\n");
+		jeDebugPrint("!Vector4 - Cannot devide by 0.\n");
 
 	return *this;
 }
@@ -493,7 +493,7 @@ Vector4& Vector4::Normalize(void)
 
 	// Unless.
 	else
-		JE_DEBUG_PRINT("!Vector4 - Cannot devide by 0.\n");
+		jeDebugPrint("!Vector4 - Cannot devide by 0.\n");
 
 	return *this;
 }
@@ -508,7 +508,7 @@ Vector4 Vector4::GetNormalize() const
 
 	// Unless.
 	else
-		JE_DEBUG_PRINT("!Vector4 - Cannot devide by 0.\n");
+		jeDebugPrint("!Vector4 - Cannot devide by 0.\n");
 
 	return result;
 }
@@ -595,4 +595,4 @@ bool Vector4::operator!=(const vec4& _rhs) const
 	return true;
 }
 
-JE_END
+jeEnd

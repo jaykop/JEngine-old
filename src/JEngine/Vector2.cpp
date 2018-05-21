@@ -13,7 +13,7 @@ Contains Vector2's class and member function
 
 #include "Vector2.h"
 
-JE_BEGIN
+jeBegin
 
 //////////////////////////////////////////////////////////////////////////
 // static variables
@@ -275,7 +275,7 @@ Vector2& Vector2::operator/=(float _constant)
 
 	// Unless.
 	else
-		JE_DEBUG_PRINT("!Vector2 - Cannot devide by 0.\n");
+		jeDebugPrint("!Vector2 - Cannot devide by 0.\n");
 
 	return *this;
 }
@@ -394,7 +394,7 @@ Vector2 Vector2::operator/(float _constant) const
 
 	// Unless.
 	else
-		JE_DEBUG_PRINT("!Vector2 - Cannot devide by 0.\n");
+		jeDebugPrint("!Vector2 - Cannot devide by 0.\n");
 
 	return result;
 }
@@ -453,7 +453,7 @@ Vector2& Vector2::Normalize(void)
 
 	// Unless.
 	else
-		JE_DEBUG_PRINT("!Vector2 - Cannot devide by 0.\n");
+		jeDebugPrint("!Vector2 - Cannot devide by 0.\n");
 
 	return *this;
 }
@@ -468,7 +468,7 @@ Vector2 Vector2::GetNormalize() const
 
 	// Unless.
 	else
-		JE_DEBUG_PRINT("!Vector2 - Cannot devide by 0.\n");
+		jeDebugPrint("!Vector2 - Cannot devide by 0.\n");
 
 	return result;
 }
@@ -548,4 +548,4 @@ float Vector2::GetAngle()
 	return atan2(y, x);
 }
 
-JE_END
+jeEnd

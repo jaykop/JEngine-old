@@ -6,7 +6,7 @@
 #include "istreamwrapper.h"
 #include <fstream>
 
-JE_BEGIN
+jeBegin
 
 RJDoc JsonParser::m_document;
 
@@ -49,19 +49,19 @@ void JsonParser::LoadObjects()
 					if (component[j].HasMember("Type"))
 						LoadComponents(component[j]);
 					else
-						JE_DEBUG_PRINT("!JsonParser - Wrong component type or values.\n");
+						jeDebugPrint("!JsonParser - Wrong component type or values.\n");
 
 				} // for (rapidjson::SizeType j = 0; j < component.Size(); ++j) {
 			} // if (object[i].HasMember("Component")) {
 
 			else
-				JE_DEBUG_PRINT("!JsonParser - No component in this object: %s\n", object[i]["Name"].GetString());
+				jeDebugPrint("!JsonParser - No component in this object: %s\n", object[i]["Name"].GetString());
 
 			FACTORY::AddCreatedObject();
 		} // if (object[i]["Name"].IsString()) {
 
 		else // if (object[i]["Name"].IsString()) {
-			JE_DEBUG_PRINT("!JsonParser - Wrong type of object name.\n");
+			jeDebugPrint("!JsonParser - Wrong type of object name.\n");
 
 	} // for (rapidjson::SizeType i = 0; i < object.Size(); ++i) {
 }
@@ -76,4 +76,4 @@ void JsonParser::LoadComponents(CR_RJValue _data)
 			found->Load(_data["Values"]);
 }
 
-JE_END
+jeEnd

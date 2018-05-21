@@ -1,6 +1,6 @@
 #include "Shader.h"
 
-JE_BEGIN
+jeBegin
 
 //////////////////////////////////////////////////////////////////////////
 // Vectex shaders
@@ -275,4 +275,4 @@ std::string Shader::m_vertexShader[] = {
 	)glsl",
 };
 
-JE_END
+jeEnd

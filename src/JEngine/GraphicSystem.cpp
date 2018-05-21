@@ -8,7 +8,7 @@
 #include "Light.h"
 #include "Camera.h"
 
-JE_BEGIN
+jeBegin
 
 GraphicSystem::GraphicSystem()
 	:System(), m_pMainCamera(nullptr),
@@ -67,7 +67,7 @@ void GraphicSystem::Load(CR_RJDoc _data)
 			if (effect.HasMember("SobelAmount")) {
 				m_sobelAmount = effect["SobelAmount"].GetFloat();
 				if (m_sobelAmount > s_recommend)
-					JE_DEBUG_PRINT("!GraphicSystem - Recommend to set sobel amount less than %f.\n", s_recommend);
+					jeDebugPrint("!GraphicSystem - Recommend to set sobel amount less than %f.\n", s_recommend);
 			}
 		}
 		else if (!strcmp("Blur", type.GetString())) {
@@ -78,7 +78,7 @@ void GraphicSystem::Load(CR_RJDoc _data)
 				m_blurSize= effect["BlurSize"].GetFloat();
 		}
 		else
-			JE_DEBUG_PRINT("!GraphicSystem - Wrong type of screen effect.\n");
+			jeDebugPrint("!GraphicSystem - Wrong type of screen effect.\n");
 	}
 }
 
@@ -203,7 +203,7 @@ void GraphicSystem::AddLight(Light * _light)
 		m_lights.push_back(_light);
 
 	else
-		JE_DEBUG_PRINT("!GraphicSystem: JEngine cannot support the number of lights more than %d.", m_maxLights);
+		jeDebugPrint("!GraphicSystem: JEngine cannot support the number of lights more than %d.", m_maxLights);
 }
 
 void GraphicSystem::RemoveLight(Light * _light)
@@ -265,11 +265,11 @@ void GraphicSystem::UpdateMousePosition() {
 
 	if (INPUT::KeyPressed(JE_MOUSE_WHEEL_UP)) {
 		m_mouseZ++;
-		JE_DEBUG_PRINT("*GraphicSystem: Mouse screen position - [ %f, %f, %f ]\n", INPUT::m_screenPosition.x, INPUT::m_screenPosition.y, m_mouseZ);
+		jeDebugPrint("*GraphicSystem: Mouse screen position - [ %f, %f, %f ]\n", INPUT::m_screenPosition.x, INPUT::m_screenPosition.y, m_mouseZ);
 	}
 	else if (INPUT::KeyPressed(JE_MOUSE_WHEEL_DOWN)) {
 		m_mouseZ--;
-		JE_DEBUG_PRINT("*GraphicSystem: Mouse screen position - [ %f, %f, %f ]\n", INPUT::m_screenPosition.x, INPUT::m_screenPosition.y, m_mouseZ);
+		jeDebugPrint("*GraphicSystem: Mouse screen position - [ %f, %f, %f ]\n", INPUT::m_screenPosition.x, INPUT::m_screenPosition.y, m_mouseZ);
 	}
 	
 	// Set mouse;s screen position 
@@ -282,7 +282,7 @@ void GraphicSystem::UpdateMousePosition() {
 void GraphicSystem::Ray(Sprite* _sprite, Transform* _transform)
 {
 	if (_sprite->GetOwnerId() != _transform->GetOwnerId())
-		JE_DEBUG_PRINT("!The owners of sprite and transform are not identical.\n");
+		jeDebugPrint("!The owners of sprite and transform are not identical.\n");
 
 	static mat4 s_translate, s_scale, s_rotation,
 		s_viewport, s_projection;
@@ -313,4 +313,4 @@ void GraphicSystem::Ray(Sprite* _sprite, Transform* _transform)
 	// http://goguri.tistory.com/entry/3D-%ED%94%BC%ED%82%B9
 }
 
-JE_END
+jeEnd

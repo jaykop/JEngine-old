@@ -1,8 +1,8 @@
 #pragma once
 #include "Macro.h"
 
-JE_BEGIN
+jeBegin
 
 //TODO
 
-JE_END
+jeEnd

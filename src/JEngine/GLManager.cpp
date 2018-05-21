@@ -2,7 +2,7 @@
 #include "Shader.h"
 #include "imgui.h"
 
-JE_BEGIN
+jeBegin
 
 //////////////////////////////////////////////////////////////////////////
 // static variables
@@ -346,7 +346,7 @@ void GLManager::InitFBO()
 
 	// Always check that our framebuffer is ok
 	if (GL_FRAMEBUFFER_COMPLETE != glCheckFramebufferStatus(GL_FRAMEBUFFER))
-		JE_DEBUG_PRINT("!GLManager - Framebuffer is not created properly.\n");
+		jeDebugPrint("!GLManager - Framebuffer is not created properly.\n");
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
@@ -393,7 +393,7 @@ void GLManager::InitShaders()
 		m_shader[i]->CombineShaders();
 	}
 
-	JE_DEBUG_PRINT("*GLManager - Compiled and linked shaders.\n");
+	jeDebugPrint("*GLManager - Compiled and linked shaders.\n");
 }
 
 void GLManager::SetDrawMode(DrawMode _mode)
@@ -475,7 +475,7 @@ void GLManager::RegisterUniform()
 	m_shader[SHADER_SCREEN]->ConnectUniform(UNIFORM_SCREEN_BLUR_AMOUNT, "float_blurAmount");
 	m_shader[SHADER_SCREEN]->ConnectUniform(UNIFORM_SCREEN_SOBEL, "float_sobelAmount");
 
-	JE_DEBUG_PRINT("*GLManager - Registered uniforms.\n");
+	jeDebugPrint("*GLManager - Registered uniforms.\n");
 }
 
 void GLManager::ShowGLVersion()
@@ -489,14 +489,14 @@ void GLManager::ShowGLVersion()
 	glGetIntegerv(GL_SAMPLE_BUFFERS, &m_buffers);
 	glGetIntegerv(GL_SAMPLES, &m_samples);
 
-	JE_DEBUG_PRINT("*GLManager - GL Vendor: %s / GL Renderer: %s\n", m_vendor, m_renderer);
-	JE_DEBUG_PRINT("*GLManager - GL Version: %s\n", m_version);
-	JE_DEBUG_PRINT("*GLManager - GLSL Version: %s\n", m_glslVersion);
-	JE_DEBUG_PRINT("*GLManager - GL Samples: %d / GL Sample Buffers: %d\n", m_samples, m_buffers);
+	jeDebugPrint("*GLManager - GL Vendor: %s / GL Renderer: %s\n", m_vendor, m_renderer);
+	jeDebugPrint("*GLManager - GL Version: %s\n", m_version);
+	jeDebugPrint("*GLManager - GLSL Version: %s\n", m_glslVersion);
+	jeDebugPrint("*GLManager - GL Samples: %d / GL Sample Buffers: %d\n", m_samples, m_buffers);
 
 	// Show how much attributes are available
 	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &m_Attributes);
-	JE_DEBUG_PRINT("*GLManager - Maximum number of vertex attributes supported: %d\n", m_Attributes);
+	jeDebugPrint("*GLManager - Maximum number of vertex attributes supported: %d\n", m_Attributes);
 }
 
 void GLManager::Resize(int _width, int _height)
@@ -574,5 +574,5 @@ void GLManager::EditorUpdate(const float /*_dt*/)
 	ImGui::End();
 }
 
-JE_END
+jeEnd
 

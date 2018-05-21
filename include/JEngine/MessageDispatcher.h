@@ -2,7 +2,7 @@
 #include <set>
 #include "Macro.h"
 
-JE_BEGIN
+jeBegin
 
 class	Object;
 struct	Telegram;
@@ -34,4 +34,4 @@ private:
 
 using DISPATCHER = MessageDispatcher;
 
-JE_END
+jeEnd

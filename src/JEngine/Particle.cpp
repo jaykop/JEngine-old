@@ -4,7 +4,7 @@
 #include "SystemManager.h"
 #include "Random.h"
 
-JE_BEGIN
+jeBegin
 
 const unsigned	Emitter::m_maxSize = 1000;
 
@@ -291,7 +291,7 @@ void Emitter::SetQuantity(unsigned _quantity)
 
 		if (m_maxSize < _quantity) {
 			_quantity = m_maxSize;
-			JE_DEBUG_PRINT("!Emitter - The quantity of particle must be less than 1000.\n");
+			jeDebugPrint("!Emitter - The quantity of particle must be less than 1000.\n");
 		}
 
 		for (unsigned i = 0; i < _quantity; ++i)
@@ -300,7 +300,7 @@ void Emitter::SetQuantity(unsigned _quantity)
 	}
 
 	else
-		JE_DEBUG_PRINT("!Emitter - Already allocated.\n");
+		jeDebugPrint("!Emitter - Already allocated.\n");
 }
 
 void Emitter::SetColors(const vec3& _start, const vec3& _end)
@@ -337,4 +337,4 @@ Component* EmitterBuilder::CreateComponent(Object * _pOwner) const
 	return new Emitter(_pOwner);
 }
 
-JE_END
+jeEnd

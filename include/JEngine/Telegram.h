@@ -2,7 +2,7 @@
 #include <iostream>
 #include "Macro.h"
 
-JE_BEGIN;
+jeBegin;
 
 struct Telegram
 {
@@ -46,7 +46,7 @@ inline std::ostream& operator<< (std::ostream& os, const Telegram& msg)
 
 inline void PrintMessageInfo(const Telegram& msg)
 {
-	JE_DEBUG_PRINT("*Telegram - Time: %f / Sender: %i / Receiver: %i / Message: %s\n", 
+	jeDebugPrint("*Telegram - Time: %f / Sender: %i / Receiver: %i / Message: %s\n", 
 		msg.dispatchTime, msg.senderId, msg.receiverId, msg.message);
 }
 
@@ -59,4 +59,4 @@ inline T DereferenceToType(void *p)
 	return *(T*)(p);
 }
 
-JE_END;
+jeEnd;

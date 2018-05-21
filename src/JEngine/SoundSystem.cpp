@@ -1,7 +1,7 @@
 #include "SoundSystem.h"
 #include "SoundComponents.h"
 
-JE_BEGIN
+jeBegin
 
 SoundSystem::SoundSystem()
 	:System()
@@ -30,4 +30,4 @@ void SoundSystem::Unload()
 {
 }
 
-JE_END
+jeEnd

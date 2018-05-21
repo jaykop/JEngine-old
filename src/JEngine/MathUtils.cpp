@@ -15,7 +15,7 @@ Contains MathUtils's class and member function
 #include <cmath>
 #include <iomanip>
 
-JE_BEGIN
+jeBegin
 
 namespace Math
 {
@@ -44,4 +44,4 @@ namespace Math
 	}
 }
 
-JE_END
+jeEnd

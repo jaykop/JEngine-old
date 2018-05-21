@@ -20,8 +20,8 @@ Contains Process' main flow
 
 int main(int argc, char* args[]) {
 
-	JE_UNUSED_PARAM(argc);	// No argc - Block the warnings
-	JE_UNUSED_PARAM(args);	// No args - Block the warnings
+	jeUnusedParam(argc);	// No argc - Block the warnings
+	jeUnusedParam(args);	// No args - Block the warnings
 
 	bool imguiToggle = false;
 

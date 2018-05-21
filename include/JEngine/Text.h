@@ -7,7 +7,7 @@
 #include "Sprite.h"
 #include "Vector2.h"
 
-JE_BEGIN
+jeBegin
 
 struct Character {
     unsigned	m_texture;	// ID handle of the glyph texture
@@ -97,4 +97,4 @@ private:
     Text(Text&& /*_copy*/) = delete;
 };
 
-JE_END
+jeEnd

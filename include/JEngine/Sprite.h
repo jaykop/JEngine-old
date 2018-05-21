@@ -6,7 +6,7 @@
 // For enum ProjectType
 #include "GraphicSystem.h"
 
-JE_BEGIN
+jeBegin
 
 class Transform;
 
@@ -84,4 +84,4 @@ private:
 	void EditorUpdate(const float _dt) override;
 };
 
-JE_END
+jeEnd

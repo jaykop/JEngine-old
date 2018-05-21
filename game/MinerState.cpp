@@ -2,15 +2,15 @@
 #include "CustomLogicHeader.h"
 #include "WifeState.h"
 
-JE_BEGIN
+jeBegin
 
-JE_DEFINE_COMPONENT_BUILDER(MinerState)
-JE_DEFINE_COMPONENT_BUILDER(BeatBully)
-JE_DEFINE_COMPONENT_BUILDER(EatStew)
-JE_DEFINE_COMPONENT_BUILDER(GoHomeAndSleepTilRested)
-JE_DEFINE_COMPONENT_BUILDER(QuenchThirst)
-JE_DEFINE_COMPONENT_BUILDER(VisitBankAndDepositGold)
-JE_DEFINE_COMPONENT_BUILDER(EnterMineAndDigForNugget)
+jeComponentBuilderDefinition(MinerState)
+jeComponentBuilderDefinition(BeatBully)
+jeComponentBuilderDefinition(EatStew)
+jeComponentBuilderDefinition(GoHomeAndSleepTilRested)
+jeComponentBuilderDefinition(QuenchThirst)
+jeComponentBuilderDefinition(VisitBankAndDepositGold)
+jeComponentBuilderDefinition(EnterMineAndDigForNugget)
 
 /////////////////////////////////////////////////////////////////////////
 // Global miner state
@@ -385,4 +385,4 @@ bool EatStew::OnMessage(Telegram& /*msg*/)
     return false;
 }
 
-JE_END
+jeEnd

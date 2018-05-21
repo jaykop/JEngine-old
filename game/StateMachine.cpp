@@ -1,7 +1,7 @@
 #include "StateMachine.h"
 #include "CustomLogicHeader.h"
 
-JE_BEGIN
+jeBegin
 
 StateMachine::StateMachine(Object* _pObject)
     :CustomComponent(_pObject)
@@ -73,4 +73,4 @@ CustomComponent* StateMachineBuilder::CreateComponent(Object* _pOwner) const
     return new StateMachine(_pOwner);
 }
 
-JE_END
+jeEnd

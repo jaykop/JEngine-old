@@ -1,7 +1,7 @@
 #pragma once
 #include "Macro.h"
 
-JE_BEGIN
+jeBegin
 
 class Object;
 class Component;
@@ -27,7 +27,7 @@ protected:
 
 };
 
-#define JE_DECLARE_COMPONENT_BUILDER(c) class JE_CONCAT(c, Builder) : public ComponentBuilder {	friend class JEngine; JE_CONCAT(c, Builder)();	~JE_CONCAT(c, Builder)() {}; JE_CONCAT(c, Builder)(const JE_CONCAT(c, Builder)& /*_copy*/) = delete; void operator=(const JE_CONCAT(c, Builder)& /*_copy*/) = delete; JE_CONCAT(c, Builder)(JE_CONCAT(c, Builder) && /*_copy*/) = delete; void operator=(JE_CONCAT(c, Builder) && /*_copy*/) = delete; CustomComponent* CreateComponent(Object* _pOwner) const override; };
-#define JE_DEFINE_COMPONENT_BUILDER(c)	JE_CONCAT(c, Builder)::JE_CONCAT(c, Builder)() {} CustomComponent* JE_CONCAT(c, Builder)::CreateComponent(Object* _pOwner) const {	return new (c)(_pOwner);}
+#define jeComponentBuilderDeclaration(c) class jeConcat(c, Builder) : public ComponentBuilder {	friend class JEngine; jeConcat(c, Builder)();	~jeConcat(c, Builder)() {}; jeConcat(c, Builder)(const jeConcat(c, Builder)& /*_copy*/) = delete; void operator=(const jeConcat(c, Builder)& /*_copy*/) = delete; jeConcat(c, Builder)(jeConcat(c, Builder) && /*_copy*/) = delete; void operator=(jeConcat(c, Builder) && /*_copy*/) = delete; CustomComponent* CreateComponent(Object* _pOwner) const override; };
+#define jeComponentBuilderDefinition(c)	jeConcat(c, Builder)::jeConcat(c, Builder)() {} CustomComponent* jeConcat(c, Builder)::CreateComponent(Object* _pOwner) const {	return new (c)(_pOwner);}
 
-JE_END
+jeEnd

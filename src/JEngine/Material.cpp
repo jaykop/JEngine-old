@@ -2,7 +2,7 @@
 #include "Object.h"
 #include "Material.h"
 
-JE_BEGIN
+jeBegin
 
 Material::Material(Object* _pOwner)
 	:Component(_pOwner), m_diffuse(0), 
@@ -22,7 +22,7 @@ Material::Material(Object* _pOwner)
 	}
 
 	else
-		JE_DEBUG_PRINT("!Material - This object has no sprite componnet: %s\n", _pOwner->GetName().c_str());
+		jeDebugPrint("!Material - This object has no sprite componnet: %s\n", _pOwner->GetName().c_str());
 }
 
 void Material::operator=(const Material & _copy)
@@ -76,4 +76,4 @@ Component* MaterialBuilder::CreateComponent(Object* _pOwner) const
 	return new Material(_pOwner);
 }
 
-JE_END
+jeEnd

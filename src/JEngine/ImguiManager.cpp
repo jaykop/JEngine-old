@@ -6,7 +6,7 @@
 #include "GLManager.h"
 #include "Component.h"
 
-JE_BEGIN
+jeBegin
 
 SDL_Window*					IMGUI::m_pWindow = nullptr;
 IMGUI::EditorList			IMGUI::m_editors;
@@ -68,7 +68,7 @@ bool ImguiManager::Init(SDL_Window* _window)
 		m_pWindow = _window;
 		bool result = ImGui_ImplSdlGL3_Init(_window);
 		if (!result)
-			JE_DEBUG_PRINT("!ImguiManager: Could not initialize IMGUI.\n");
+			jeDebugPrint("!ImguiManager: Could not initialize IMGUI.\n");
 		return result;
 	}
 
@@ -155,4 +155,4 @@ void ImguiManager::Close()
 //	ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiCond_FirstUseEver); // Normally user code doesn't need/want to call this because positions are saved in .ini file anyway. Here we just want to make the demo initial state a bit more friendly!
 //}
 
-JE_END
+jeEnd

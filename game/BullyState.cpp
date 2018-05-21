@@ -2,11 +2,11 @@
 #include "CustomLogicHeader.h"
 #include "MinerState.h"
 
-JE_BEGIN
+jeBegin
 
-JE_DEFINE_COMPONENT_BUILDER(BullyState)
-JE_DEFINE_COMPONENT_BUILDER(JustHatingMiner)
-JE_DEFINE_COMPONENT_BUILDER(GoFight)
+jeComponentBuilderDefinition(BullyState)
+jeComponentBuilderDefinition(JustHatingMiner)
+jeComponentBuilderDefinition(GoFight)
 
 /////////////////////////////////////////////////////////////////////////
 // Global bully state
@@ -77,7 +77,7 @@ void JustHatingMiner::Init()
 	m_globalState = (BullyState*)m_pOwner->GetGlobalState();
 
 	m_globalState->m_content = "I hate that miner!";
-	m_globalState->m_talkText->SetText("%s\nWould like to punch: %d",
+	m_globalState->m_talkText->SetText("%s\Wish to punch: %d",
 		m_globalState->m_content, m_globalState->m_hateMiner);
 }
 
@@ -93,7 +93,7 @@ void JustHatingMiner::Update(const float /*_dt*/)
 	else {
 		m_globalState->m_hateMiner++;
 
-		m_globalState->m_talkText->SetText("%s\nWould like to punch: %d",
+		m_globalState->m_talkText->SetText("%s\Wish to punch: %d",
 			m_globalState->m_content, m_globalState->m_hateMiner);
 	}
 }
@@ -165,4 +165,4 @@ bool GoFight::OnMessage(Telegram& msg)
     return false;
 }
 
-JE_END
+jeEnd

@@ -3,7 +3,7 @@
 #include "System.h"
 #include "Matrix4x4.h"
 
-JE_BEGIN
+jeBegin
 
 class Font;
 class Shader;
@@ -112,4 +112,4 @@ private:
     void operator=(const GraphicSystem& /*_copy*/) = delete;
 };
 
-JE_END
+jeEnd

@@ -7,7 +7,7 @@
 #include "imgui.h"
 #include "ImguiManager.h"
 
-JE_BEGIN
+jeBegin
 
 //////////////////////////////////////////////////////////////////////////
 // static variables
@@ -37,7 +37,7 @@ bool StateManager::Init(SDL_Window* _pWindow)
 		return true;
 	}
 
-	JE_DEBUG_PRINT("!StateManager: Window pointer is null.\n");
+	jeDebugPrint("!StateManager: Window pointer is null.\n");
 	return false;
 	
 }
@@ -181,7 +181,7 @@ void StateManager::PushState(const char* _path, const char* _stateName)
 		// mark toggle
 		if (!strcmp((*it)->m_name.c_str(), _stateName)) {
 			sameOne = true;
-			JE_DEBUG_PRINT("!StateManager - Existing state: %s\n", _stateName);
+			jeDebugPrint("!StateManager - Existing state: %s\n", _stateName);
 			break;
 		}
 	}	
@@ -235,7 +235,7 @@ void StateManager::Quit()
 void StateManager::Restart()
 {
 	if (IsPaused())
-		JE_DEBUG_PRINT("!StateManager - Cannot restart on pause state.\n");
+		jeDebugPrint("!StateManager - Cannot restart on pause state.\n");
 	else
 		m_status = STATE_RESTART;
 }
@@ -254,7 +254,7 @@ void StateManager::SetNextState(const char* _nextState)
 {
 	// Current state is the state
 	if (!strcmp(m_pCurrent->m_name.c_str(), _nextState))
-		JE_DEBUG_PRINT("!StateManager - As same as current state: %s\n", _nextState);
+		jeDebugPrint("!StateManager - As same as current state: %s\n", _nextState);
 
 	else {
 		// Check if there is no state to resume
@@ -267,7 +267,7 @@ void StateManager::SetNextState(const char* _nextState)
 		}
 
 		else
-			JE_DEBUG_PRINT("!StateManager - Cannot move on paused status.\n");
+			jeDebugPrint("!StateManager - Cannot move on paused status.\n");
 	}
 }
 
@@ -275,7 +275,7 @@ void StateManager::Pause(const char* _nextState)
 {
 	// Current state is the state
 	if (!strcmp(m_pCurrent->m_name.c_str(), _nextState))
-		JE_DEBUG_PRINT("!StateManager - As same as current state: %s\n", _nextState);
+		jeDebugPrint("!StateManager - As same as current state: %s\n", _nextState);
 
 	else if (HasState(_nextState)) {
 		m_pNext = GetState(_nextState);
@@ -291,7 +291,7 @@ void StateManager::Resume()
 		m_status = STATE_RESUME;
 
 	else
-		JE_DEBUG_PRINT("!StateManager - No state to resume.\n");
+		jeDebugPrint("!StateManager - No state to resume.\n");
 }
 
 void StateManager::ResumeAndNext(const char* _nextState)
@@ -315,7 +315,7 @@ State* StateManager::GetState(const char* _stateName)
 			return it;
 
 	// If there is no,
-	JE_DEBUG_PRINT("!StateManager - No such name of enrolled state: %s\n", _stateName);
+	jeDebugPrint("!StateManager - No such name of enrolled state: %s\n", _stateName);
 	return nullptr;
 }
 
@@ -332,7 +332,7 @@ bool StateManager::HasState(const char *_stateName)
 	}
 
 	if (!found)
-		JE_DEBUG_PRINT("!StateManager - No such name of enrolled state: %s\n", _stateName);
+		jeDebugPrint("!StateManager - No such name of enrolled state: %s\n", _stateName);
 
 	return found;
 }
@@ -400,6 +400,6 @@ void StateManager::EditorUpdate(const float /*_dt*/)
 	}
 }
 
-JE_END
+jeEnd
 
 

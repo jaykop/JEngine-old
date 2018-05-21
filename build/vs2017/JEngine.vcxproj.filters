@@ -154,9 +154,6 @@
     <ClInclude Include="..\..\external\lodePNG\lodepng.h">
       <Filter>Utils\lodePNG</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\MemoryAllocater.h">
-      <Filter>Core\Memory</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\JEngine\GLManager.h">
       <Filter>Core\OpenGL</Filter>
     </ClInclude>
@@ -171,6 +168,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\JEngine\Telegram.h">
       <Filter>System\Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\MemoryAllocator.h">
+      <Filter>Core\Memory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -311,9 +311,6 @@
     <ClCompile Include="..\..\src\lodePNG\lodepng.cpp">
       <Filter>Utils\lodePNG</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\MemoryAllocater.cpp">
-      <Filter>Core\Memory</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\JEngine\GLManager.cpp">
       <Filter>Core\OpenGL</Filter>
     </ClCompile>
@@ -334,6 +331,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\JEngine\SystemBlock.cpp">
       <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JEngine\MemoryAllocator.cpp">
+      <Filter>Core\Memory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -2,7 +2,7 @@
 #include "Component.h"
 #include "ComponentBuilder.h"
 
-JE_BEGIN
+jeBegin
 
 class MaterialBuilder : public ComponentBuilder
 {
@@ -48,4 +48,4 @@ private:
 	void EditorUpdate(const float _dt) override;
 };
 
-JE_END
+jeEnd

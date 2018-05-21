@@ -2,7 +2,7 @@
 #include "TestLogic.h"
 #include "CustomLogicHeader.h"
 
-JE_BEGIN
+jeBegin
 
 TestLogic::TestLogic(Object* _pObject)
 	:CustomComponent(_pObject)
@@ -85,4 +85,4 @@ CustomComponent* TestLogicBuilder::CreateComponent(Object* _pOwner) const
 	return new TestLogic(_pOwner);
 }
 
-JE_END
+jeEnd

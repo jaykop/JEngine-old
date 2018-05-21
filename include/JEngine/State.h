@@ -2,7 +2,7 @@
 #include <string>
 #include "Macro.h"
 
-JE_BEGIN
+jeBegin
 
 class ObjectContainer;
 
@@ -35,4 +35,4 @@ private:
 	ObjectContainer*	m_objContainer;
 };
 
-JE_END
+jeEnd

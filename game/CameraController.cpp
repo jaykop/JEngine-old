@@ -3,7 +3,7 @@
 #include "Camera.h"
 #include "Vector4.h"
 
-JE_BEGIN
+jeBegin
 
 CameraController::CameraController(Object* _pObject)
 	:CustomComponent(_pObject), m_camera(nullptr),
@@ -99,4 +99,4 @@ CustomComponent* CameraControllerBuilder::CreateComponent(Object* _pOwner) const
 	return new CameraController(_pOwner);
 }
 
-JE_END
+jeEnd

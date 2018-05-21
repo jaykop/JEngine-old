@@ -4,7 +4,7 @@
 
 #include "Vector3.h"
 
-JE_BEGIN
+jeBegin
 
 struct Telegram;
 
@@ -54,4 +54,4 @@ private:
 	void EditorUpdate(const float _dt) override;
 };
 
-JE_END
+jeEnd

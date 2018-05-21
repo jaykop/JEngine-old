@@ -4,7 +4,7 @@
 
 union SDL_Event;
 
-JE_BEGIN
+jeBegin
 
 enum JE_KEY  {
 
@@ -44,7 +44,7 @@ enum JE_KEY  {
 	JE_HOME = SDLK_HOME,
 	JE_PAGEUP = SDLK_PAGEUP,
 	JE_DELETE = SDLK_DELETE,
-	JE_END = SDLK_END,
+	jeEnd = SDLK_END,
 	JE_PAGEDOWN = SDLK_PAGEDOWN,*/
 	//JE_F1 = SDLK_F1,
 	//JE_F2 = SDLK_F2,
@@ -87,7 +87,7 @@ class InputHandler {
 	using KeyMap = std::map<unsigned, bool> ;
 
 	// Locked constuctor, destructor, assign operator
-	JE_THIS_IS_STATIC_CLASS(InputHandler)
+	jeStaticClassDeclaration(InputHandler)
 
 public:
 	
@@ -122,4 +122,4 @@ private:
 
 using INPUT = InputHandler;
 
-JE_END
+jeEnd

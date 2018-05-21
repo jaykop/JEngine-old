@@ -2,7 +2,7 @@
 #include <string>
 #include "Shader.h"
 
-JE_BEGIN
+jeBegin
 
 Shader::Shader()
 	:m_programId(0), m_vertexId(0),
@@ -44,7 +44,7 @@ void Shader::CreateShader(std::string& _shaderContents, Type _type)
 	if (m_infoLogLength > 0) {
 		std::vector<char> ShaderErrorMessage(m_infoLogLength + 1);
 		glGetShaderInfoLog(*pShader, m_infoLogLength, nullptr, &ShaderErrorMessage[0]);
-		JE_DEBUG_PRINT("!Shader - %4s\n", &ShaderErrorMessage[0]);
+		jeDebugPrint("!Shader - %4s\n", &ShaderErrorMessage[0]);
 	}
 }
 
@@ -53,7 +53,7 @@ void Shader::CombineShaders()
 	m_programId = glCreateProgram();
 
 	if (m_programId == 0)
-		JE_DEBUG_PRINT("!Shader - Shader couldn't get program id.\n");
+		jeDebugPrint("!Shader - Shader couldn't get program id.\n");
 
 	else {
 
@@ -75,7 +75,7 @@ void Shader::CombineShaders()
 		if (m_infoLogLength > 0) {
 			std::vector<char> ProgramErrorMessage(m_infoLogLength + 1);
 			glGetShaderInfoLog(m_programId, m_infoLogLength, nullptr, &ProgramErrorMessage[0]);
-			JE_DEBUG_PRINT("!Shader: %4s\n", &ProgramErrorMessage[0]);
+			jeDebugPrint("!Shader: %4s\n", &ProgramErrorMessage[0]);
 
 		}	// if (infoLogLength > 0) {
 
@@ -236,4 +236,4 @@ void Shader::SetEnum(const char* _name, int _enum)
 	glUniform1i(glGetUniformLocation(m_programId, _name), _enum);
 }
 
-JE_END
+jeEnd
