@@ -1,5 +1,6 @@
 #include "GLManager.h"
 #include "SDL_opengl.h"
+#include "SDL_image.h"
 #include "Application.h"
 #include "StateManager.h"
 #include "AssetManager.h"
@@ -20,9 +21,9 @@ int				APP::m_samples = 0;
 int				APP::m_buffers = 0;
 SDL_Event		APP::m_pEvent;
 SDL_Window*		APP::m_pWindow = nullptr;
-SDL_Surface*	APP::m_pSurface = nullptr;
+SDL_Surface		*APP::m_pSurface = nullptr, *APP::m_pIcon= nullptr;
 SDL_GLContext	APP::m_pContext = nullptr;
-APP::InitData	APP::m_Data = { "demo", false, 800, 600 };
+APP::InitData	APP::m_Data = { "demo", "../resource/ico/main.ico", false, 800, 600 };
 bool			APP::m_IMGUI = false;
 
 void Application::Run(bool _imgui)
@@ -41,7 +42,7 @@ void Application::Run(bool _imgui)
 		Update();
 
 	Close();
-
+	
 	// Delete console window
 	DEBUG_DESTROY_CONSOLE();
 }
@@ -61,11 +62,14 @@ bool Application::Initialize()
 	CR_RJValue fullscreen = JSON::GetDocument()["Fullscreen"];
 	CR_RJValue width = JSON::GetDocument()["Width"];
 	CR_RJValue height = JSON::GetDocument()["Height"];
+	CR_RJValue icon = JSON::GetDocument()["Icon"];
 
 	if (title.IsString() && fullscreen.IsBool()
-		&& width.IsInt() && height.IsInt()) {
+		&& width.IsInt() && height.IsInt()
+		&& icon.IsString()) {
 
 		m_Data.m_title.assign(title.GetString());
+		m_Data.m_icon.assign(icon.GetString());
 		m_Data.m_isFullScreen = fullscreen.GetBool();
 		m_Data.m_width = width.GetInt();
 		m_Data.m_height = height.GetInt();
@@ -120,7 +124,7 @@ void Application::Update()
 		SDL_UpdateWindowSurface(m_pWindow);
 
 	}	// while (STATE::GetStatus()
-		// != STATE::StateStatus::S_QUIT) {
+		// != STATE::StateStatus::STATE_QUIT) {
 }
 
 void Application::Close()
@@ -142,6 +146,13 @@ bool Application::InitSDL()
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0) {
 		// Print error message
 		jeDebugPrint("!Application - SDL could not initialize. SDL_Error: %s\n", SDL_GetError());
+		return false;
+	}
+
+	// Initialize png loading
+	if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG))
+	{
+		jeDebugPrint("!Application - SDL_image could not initialize. SDL_image Error: %s\n", IMG_GetError());
 		return false;
 	}
 
@@ -169,6 +180,11 @@ bool Application::InitSDL()
 		return false;
 	}
 
+	// Set window icon
+	m_pIcon = IMG_Load(m_Data.m_icon.c_str());
+
+	SDL_SetWindowIcon(m_pWindow, m_pIcon);
+
 	// Get context
 	m_pContext = SDL_GL_CreateContext(m_pWindow);
 
@@ -185,6 +201,9 @@ bool Application::InitSDL()
 
 void Application::CloseSDL()
 {
+	// Delete m_pIcon
+	SDL_FreeSurface(m_pIcon);
+
 	// Destroy
 	SDL_GL_DeleteContext(m_pContext);
 
