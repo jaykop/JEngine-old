@@ -16,7 +16,7 @@ Contains Vector3's template class
 #include "Macro.h"
 #include <iostream>
 
-JE_BEGIN
+jeBegin
 
 // Vector3 class
 class Vector3
@@ -115,4 +115,4 @@ private:
 using vec3 = Vector3;
 using CR_vec3 = const vec3&;
 
-JE_END
+jeEnd

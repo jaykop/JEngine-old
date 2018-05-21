@@ -1,6 +1,6 @@
 #include "Shader.h"
 
-JE_BEGIN
+jeBegin
 
 //////////////////////////////////////////////////////////////////////////
 // Fragment shaders
@@ -290,4 +290,4 @@ std::string Shader::m_fragmentShader[] = {
 	)glsl",
 };
 
-JE_END
+jeEnd

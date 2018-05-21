@@ -4,14 +4,14 @@
 #include "StateManager.h"
 #include "ObjectContainer.h"
 
-JE_BEGIN
+jeBegin
 
 MessageDispatcher::Priority MessageDispatcher::m_messageQue;
 
 void MessageDispatcher::Discharge(Object* _pReceiver, Telegram& msg)
 {
 	if (!_pReceiver->HandleMessage(msg))
-		JE_DEBUG_PRINT("!MessageDispatcher - Message not handled!\n");
+		jeDebugPrint("!MessageDispatcher - Message not handled!\n");
 }
 
 void MessageDispatcher::DispatchMessage(float _delay, unsigned _sender, unsigned _receiver, const char* _MessageType, void *_extraInfo)
@@ -49,4 +49,4 @@ void MessageDispatcher::DispatchDelayedMessage()
 	}
 }
 
-JE_END
+jeEnd

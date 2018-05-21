@@ -2,7 +2,7 @@
 #include "Macro.h"
 #include <unordered_map>
 
-JE_BEGIN
+jeBegin
 
 class Object;
 using ObjectMap = std::unordered_map<std::string, Object*>;
@@ -49,7 +49,7 @@ private:
 
 using OBJECT = ObjectContainer;
 
-JE_END
+jeEnd
 
 #include "ObjectContainer.inl"
 

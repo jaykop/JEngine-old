@@ -1,7 +1,7 @@
 #include "LevelController.h"
 #include "CustomLogicHeader.h"
 
-JE_BEGIN
+jeBegin
 
 LevelController::LevelController(Object* _pObject)
 	:CustomComponent(_pObject)
@@ -50,7 +50,7 @@ void LevelController::Update(const float /*_dt*/)
 		STATE::Restart();
 
 	if (INPUT::KeyPressed(JE_ESC)) {
-		JE_DEBUG_PRINT("Quit\n");
+		jeDebugPrint("Quit\n");
 		STATE::Quit();
 	}
 }
@@ -75,4 +75,4 @@ CustomComponent* LevelControllerBuilder::CreateComponent(Object* _pOwner) const
 	return new LevelController(_pOwner);
 }
 
-JE_END
+jeEnd

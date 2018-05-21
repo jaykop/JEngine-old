@@ -14,7 +14,7 @@
 #include "PhysicsComponents.h"
 #include "SoundComponents.h"
 
-JE_BEGIN
+jeBegin
 
 // Declare static member variables
 ASSET::FontMap		ASSET::m_fontMap;
@@ -55,19 +55,19 @@ void AssetManager::LoadAssets()
     // Load states
     for (rapidjson::SizeType i = 0; i < stateSize; ++i) {
         STATE::PushState(states[i]["Directory"].GetString(), states[i]["Key"].GetString());
-        JE_DEBUG_PRINT("*AssetManager - Loaded state: %s.\n", states[i]["Directory"].GetString());
+        jeDebugPrint("*AssetManager - Loaded state: %s.\n", states[i]["Directory"].GetString());
         realLoadingPercentage++;
         ShowLoadingPercentage(realLoadingPercentage, loadingPercentage);
     }
 
     // Set first state
     STATE::SetStartingState(fristStates.GetString());
-    JE_DEBUG_PRINT("*AssetManager - The first state is %s.\n", fristStates.GetString());
+    jeDebugPrint("*AssetManager - The first state is %s.\n", fristStates.GetString());
 
     // Load images
     for (rapidjson::SizeType i = 0; i < textureSize; ++i) {
         LoadImage(textures[i]["Directory"].GetString(), textures[i]["Key"].GetString());
-        JE_DEBUG_PRINT("*AssetManager - Loaded texture: %s.\n", textures[i]["Directory"].GetString());
+        jeDebugPrint("*AssetManager - Loaded texture: %s.\n", textures[i]["Directory"].GetString());
         realLoadingPercentage++;
         ShowLoadingPercentage(realLoadingPercentage, loadingPercentage);
     }
@@ -136,19 +136,19 @@ bool AssetManager::SetBuiltInComponents()
     // Load built-in components
 
     // Physics components
-    JE_CHECK_REGISTRATION(JE_REGISTER_COMPONENT(Transform))
+	jeCheckComponentRegistration(jeRegisterComponent(Transform))
 
-        // Graphic components
-        JE_CHECK_REGISTRATION(JE_REGISTER_COMPONENT(Text))
-        JE_CHECK_REGISTRATION(JE_REGISTER_COMPONENT(Model))
-        JE_CHECK_REGISTRATION(JE_REGISTER_COMPONENT(Camera))
-        JE_CHECK_REGISTRATION(JE_REGISTER_COMPONENT(Sprite))
-        JE_CHECK_REGISTRATION(JE_REGISTER_COMPONENT(Emitter))
-        JE_CHECK_REGISTRATION(JE_REGISTER_COMPONENT(Light))
-        JE_CHECK_REGISTRATION(JE_REGISTER_COMPONENT(Material))
-        JE_CHECK_REGISTRATION(JE_REGISTER_COMPONENT(Animation))
-
-        JE_DEBUG_PRINT("*AssetManager - Loaded bulit-in components.\n");
+	// Graphic components
+	jeCheckComponentRegistration(jeRegisterComponent(Text))
+	jeCheckComponentRegistration(jeRegisterComponent(Model))
+	jeCheckComponentRegistration(jeRegisterComponent(Camera))
+	jeCheckComponentRegistration(jeRegisterComponent(Sprite))
+	jeCheckComponentRegistration(jeRegisterComponent(Emitter))
+	jeCheckComponentRegistration(jeRegisterComponent(Light))
+	jeCheckComponentRegistration(jeRegisterComponent(Material))
+	jeCheckComponentRegistration(jeRegisterComponent(Animation))
+		
+	jeDebugPrint("*AssetManager - Loaded bulit-in components.\n");
 
     return true;
 }
@@ -181,13 +181,13 @@ void AssetManager::LoadFont(const char * _path, const char* _key, unsigned _size
 
         // Init freetype
         if (FT_Init_FreeType(&newFont->m_lib))
-            JE_DEBUG_PRINT("!AssetManager - Could not init freetype library: %s\n", _path);
+            jeDebugPrint("!AssetManager - Could not init freetype library: %s\n", _path);
 
         // Check freetype face init
         if (bool a = !FT_New_Face(newFont->m_lib, _path, 0, &newFont->m_face))
-            JE_DEBUG_PRINT("*AssetManager - Loaded font: %s\n", _path);
+            jeDebugPrint("*AssetManager - Loaded font: %s\n", _path);
         else
-            JE_DEBUG_PRINT("!AssetManager - Failed to load font: %s\n", _path);
+            jeDebugPrint("!AssetManager - Failed to load font: %s\n", _path);
 
         // Select unicode range
         FT_Select_Charmap(newFont->m_face, FT_ENCODING_UNICODE);
@@ -221,7 +221,7 @@ void AssetManager::LoadCharacters(Font* _pFont, float& _newLineLevel,
         // Load character glyph 
         if (FT_Load_Char(_pFont->m_face, c, FT_LOAD_RENDER))
         {
-            JE_DEBUG_PRINT("!AssetManager - Failed to load Glyph.\n");
+            jeDebugPrint("!AssetManager - Failed to load Glyph.\n");
             continue;
         }
 
@@ -275,7 +275,7 @@ void AssetManager::LoadImage(const char *_path, const char *_textureKey)
     unsigned		error = lodepng::decode(image, width, height, _path);
 
     if (error)
-        JE_DEBUG_PRINT("!AssetManager - Decoder error %d / %s.\n", error, lodepng_error_text(error));
+        jeDebugPrint("!AssetManager - Decoder error %d / %s.\n", error, lodepng_error_text(error));
 
     // Enable the texture for OpenGL.
     glEnable(GL_TEXTURE_2D);
@@ -323,7 +323,7 @@ Font* AssetManager::GetFont(const char *_key)
     if (found != m_fontMap.end())
         return found->second;
 
-    JE_DEBUG_PRINT("!AssetManager - Cannot find such name of font resource: %s.\n", _key);
+    jeDebugPrint("!AssetManager - Cannot find such name of font resource: %s.\n", _key);
     return nullptr;
 }
 
@@ -333,7 +333,7 @@ State* AssetManager::GetState(const char *_key)
     if (found != m_stateMap.end())
         return found->second;
 
-    JE_DEBUG_PRINT("!AssetManager - Cannot find such name of state resource: %s.\n", _key);
+    jeDebugPrint("!AssetManager - Cannot find such name of state resource: %s.\n", _key);
     return nullptr;
 }
 
@@ -343,7 +343,7 @@ Audio* AssetManager::GetAudio(const char *_key)
     if (found != m_audioMap.end())
         return found->second;
 
-    JE_DEBUG_PRINT("!AssetManager - Cannot find such name of audio resource: %s.\n", _key);
+    jeDebugPrint("!AssetManager - Cannot find such name of audio resource: %s.\n", _key);
     return nullptr;
 }
 
@@ -353,7 +353,7 @@ unsigned AssetManager::GetTexture(const char *_key)
     if (found != m_textureMap.end())
         return found->second;
 
-    JE_DEBUG_PRINT("!AssetManager - Cannot find such name of texture resource: %s.\n", _key);
+    jeDebugPrint("!AssetManager - Cannot find such name of texture resource: %s.\n", _key);
     return 0;
 }
 
@@ -363,8 +363,8 @@ Archetype* AssetManager::GetArchetype(const char *_key)
     if (found != m_archetypeMap.end())
         return found->second;
 
-    JE_DEBUG_PRINT("!AssetManager: Cannot find such name of archetype resource: %s.\n", _key);
+    jeDebugPrint("!AssetManager: Cannot find such name of archetype resource: %s.\n", _key);
     return nullptr;
 }
 
-JE_END
+jeEnd

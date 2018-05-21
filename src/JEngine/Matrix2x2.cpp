@@ -18,7 +18,7 @@ Custom Matrix looks like this...
 
 #include "Matrix2x2.h"
 
-JE_BEGIN
+jeBegin
 
 /******************************************************************************/
 /*!
@@ -299,7 +299,7 @@ Matrix2x2 Matrix2x2::GetInverse() const
 	}
 
 	else
-		JE_DEBUG_PRINT("!Matrix2x2 - Determine is 0.\n");
+		jeDebugPrint("!Matrix2x2 - Determine is 0.\n");
 
 	return result;
 
@@ -323,7 +323,7 @@ Matrix2x2& Matrix2x2::Inverse()
 	}
 
 	else
-		JE_DEBUG_PRINT("!Matrix2x2 - Determine is 0.\n");
+		jeDebugPrint("!Matrix2x2 - Determine is 0.\n");
 
 	return (*this);
 }
@@ -410,4 +410,4 @@ std::ostream& operator<<(std::ostream& _os, const mat2& _contents)
 	return _os;
 }
 
-JE_END
+jeEnd

@@ -1,7 +1,7 @@
 #include <ctime>
 #include "Timer.h"
 
-JE_BEGIN
+jeBegin
 
 /******************************************************************************/
 /*!
@@ -23,5 +23,5 @@ float Timer::GetTime(void)
 	return (static_cast<float>(clock()) - m_time) / static_cast<float>(CLOCKS_PER_SEC);
 }
 
-JE_END
+jeEnd
 

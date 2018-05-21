@@ -2,7 +2,7 @@
 #include <vector>
 #include "System.h"
 
-JE_BEGIN
+jeBegin
 
 class Object;
 class CustomComponent;
@@ -35,4 +35,4 @@ private:
 
 };
 
-JE_END
+jeEnd

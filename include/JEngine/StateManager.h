@@ -5,7 +5,7 @@
 union SDL_Event;
 struct SDL_Window;
 
-JE_BEGIN
+jeBegin
 
 class State;
 class ObjectContainer;
@@ -21,7 +21,7 @@ class StateManager {
 		STATE_NONE, STATE_RESTART, STATE_PAUSE, STATE_RESUME, STATE_CHANGE, STATE_RESUME_AND_CHANGE, STATE_QUIT };
 
 	// Locked constuctor, destructor, assign operator
-	JE_THIS_IS_STATIC_CLASS(StateManager)
+	jeStaticClassDeclaration(StateManager)
 
 public:
 
@@ -71,4 +71,4 @@ private:
 
 using STATE = StateManager;
 
-JE_END
+jeEnd

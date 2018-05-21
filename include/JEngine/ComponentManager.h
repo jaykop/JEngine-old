@@ -2,7 +2,7 @@
 #include "Macro.h"
 #include <unordered_map>
 
-JE_BEGIN
+jeBegin
 
 class ComponentBuilder;
 using ComponentTypeMap = std::unordered_map<std::string, std::string>;
@@ -19,7 +19,7 @@ class ComponentManager {
 	friend class AssetManager;
 
 	// Locked constuctor, destructor, assign operator
-	JE_THIS_IS_STATIC_CLASS(ComponentManager)
+	jeStaticClassDeclaration(ComponentManager)
 
 public:
 
@@ -44,12 +44,12 @@ private:
 
 using COMPONENT = ComponentManager;
 
-JE_END
+jeEnd
 
 #include "ComponentManager.inl"
 
 // Component manager macro
-#define JE_STRINGFY(x)						#x
-#define JE_CONCAT(a, b)						a ## b
-#define JE_REGISTER_COMPONENT(c)			COMPONENT::RegisterBuilder<c>(JE_STRINGFY(c), new JE_CONCAT(c, Builder))
-#define JE_CHECK_REGISTRATION(c)			if (!(c)) { return false; } 
+#define jeStringfy(x)					#x
+#define jeConcat(a, b)					a ## b
+#define jeRegisterComponent(c)			COMPONENT::RegisterBuilder<c>(jeStringfy(c), new jeConcat(c, Builder))
+#define jeCheckComponentRegistration(c)	if (!(c)) { return false; } 

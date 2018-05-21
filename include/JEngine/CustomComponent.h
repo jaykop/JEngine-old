@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
 
-JE_BEGIN
+jeBegin
 
 struct Telegram;
 
@@ -32,4 +32,4 @@ private:
 	void operator=(const CustomComponent& /*_copy*/) = delete;
 };
 
-JE_END
+jeEnd

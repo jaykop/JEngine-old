@@ -1,7 +1,7 @@
 #include "imgui.h"
 #include "Transform.h"
 
-JE_BEGIN
+jeBegin
 
 Transform::Transform(Object* _pOwner)
 	:Component(_pOwner), 
@@ -76,4 +76,4 @@ Component* TransformBuilder::CreateComponent(Object* _pOwner) const
 	return new Transform(_pOwner);
 }
 
-JE_END
+jeEnd

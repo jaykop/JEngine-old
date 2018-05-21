@@ -1,7 +1,7 @@
 #include "SDL.h"
 #include "InputHandler.h"
 
-JE_BEGIN
+jeBegin
 
 //////////////////////////////////////////////////////////////////////////
 // static variables
@@ -353,4 +353,4 @@ vec3& InputHandler::GetOrhtoPosition()
 	return m_screenPosition;
 }
 
-JE_END
+jeEnd

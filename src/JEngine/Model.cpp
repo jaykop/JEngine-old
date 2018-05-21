@@ -2,7 +2,7 @@
 #include "GLManager.h"
 #include "SystemManager.h"
 
-JE_BEGIN
+jeBegin
 
 Model::Model(Object* _pOwner)
 	:Sprite(_pOwner)
@@ -35,5 +35,5 @@ Component* ModelBuilder::CreateComponent(Object* _pOwner) const
 	return new Model(_pOwner);
 }
 
-JE_END
+jeEnd
 

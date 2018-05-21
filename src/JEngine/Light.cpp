@@ -1,7 +1,7 @@
 #include "Light.h"
 #include "SystemManager.h"
 
-JE_BEGIN
+jeBegin
 
 Light::Light(Object * _pOwner)
 	:Component(_pOwner), m_color(vec4::ONE),
@@ -122,4 +122,4 @@ Component* LightBuilder::CreateComponent(Object* _pOwner) const
 	return new Light(_pOwner);
 }
 
-JE_END
+jeEnd

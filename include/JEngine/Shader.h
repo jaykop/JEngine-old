@@ -4,7 +4,7 @@
 #include "Matrix4x4.h"
 #include "GLManager.h"
 
-JE_BEGIN
+jeBegin
 
 class Shader {
 
@@ -65,4 +65,4 @@ private:
 
 };
 
-JE_END
+jeEnd

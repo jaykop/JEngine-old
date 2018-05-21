@@ -3,7 +3,7 @@
 #include "imgui.h"
 #include "ImguiManager.h"
 
-JE_BEGIN
+jeBegin
 
 ObjectContainer* OBJECT::m_pSharedContainer = nullptr;
 
@@ -26,7 +26,7 @@ void ObjectContainer::RemoveObject(const char* _name)
 	}
 
 	else
-		JE_DEBUG_PRINT("!ObjectContainer - No such name of enrolled object: %s\n", _name);
+		jeDebugPrint("!ObjectContainer - No such name of enrolled object: %s\n", _name);
 }
 
 void ObjectContainer::RemoveObject(unsigned _id)
@@ -48,7 +48,7 @@ void ObjectContainer::RemoveObject(unsigned _id)
 	}
 
 	if (notFound)
-		JE_DEBUG_PRINT("!ObjectContainer - No such name of enrolled object: %i\n", _id);
+		jeDebugPrint("!ObjectContainer - No such name of enrolled object: %i\n", _id);
 }
 
 Object* ObjectContainer::GetObject(const char *_name)
@@ -60,7 +60,7 @@ Object* ObjectContainer::GetObject(const char *_name)
 	if (found != m_objectMap.end())
 		return found->second;
 
-	JE_DEBUG_PRINT("!ObjectContainer - No such name of enrolled object: %s\n", _name);
+	jeDebugPrint("!ObjectContainer - No such name of enrolled object: %s\n", _name);
 	return nullptr;
 	
 }
@@ -73,7 +73,7 @@ Object* ObjectContainer::GetObject(unsigned _id)
 		}
 	}
 
-	JE_DEBUG_PRINT("!ObjectContainer - No such name of enrolled object: %i\n", _id);
+	jeDebugPrint("!ObjectContainer - No such name of enrolled object: %i\n", _id);
 	return nullptr;
 }
 
@@ -91,7 +91,7 @@ bool ObjectContainer::HasObject(const char* _name)
 	if (found != m_objectMap.end()) 
 		return true;
 
-	JE_DEBUG_PRINT("!ObjectContainer - No such name of enrolled object: %s\n", _name);
+	jeDebugPrint("!ObjectContainer - No such name of enrolled object: %s\n", _name);
 	return false;
 }
 
@@ -103,7 +103,7 @@ bool ObjectContainer::HasObject(unsigned _id)
 		}
 	}
 
-	JE_DEBUG_PRINT("!ObjectContainer - No such name of enrolled object: %i\n", _id);
+	jeDebugPrint("!ObjectContainer - No such name of enrolled object: %i\n", _id);
 	return false;
 }
 
@@ -159,5 +159,5 @@ void ObjectContainer::EditorUpdate(const float /*_dt*/)
 
 }
 
-JE_END
+jeEnd
 

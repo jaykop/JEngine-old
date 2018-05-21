@@ -1,7 +1,7 @@
 #include "Rigidbody.h"
 
-JE_BEGIN
+jeBegin
 
 //TODO
 
-JE_END
+jeEnd

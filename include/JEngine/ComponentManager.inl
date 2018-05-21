@@ -1,7 +1,7 @@
 #include <typeinfo>
 #include "ComponentManager.h"
 
-JE_BEGIN
+jeBegin
 
 template <class ComponentType>
 bool ComponentManager::RegisterBuilder(
@@ -15,7 +15,7 @@ bool ComponentManager::RegisterBuilder(
 	// If there is existing like that,
 	// don't add new builder
 	if (foundName != m_builderMap.end()) {
-		JE_DEBUG_PRINT("!ComponentManager - No such name of enrolled component: %s\n", s_name);
+		jeDebugPrint("!ComponentManager - No such name of enrolled component: %s\n", s_name);
 		return false;
 	}
 
@@ -33,11 +33,11 @@ bool ComponentManager::RegisterBuilder(
 			ComponentTypeMap::value_type(typeid(ComponentType).name(), _componentName));
 
 		if (m_loadingCustomLogic)
-			JE_DEBUG_PRINT("*ComponentManager - Loaded custom logic: %s\n", _componentName);
+			jeDebugPrint("*ComponentManager - Loaded custom logic: %s\n", _componentName);
 
 		return true;
 	}
 
 }
 
-JE_END
+jeEnd

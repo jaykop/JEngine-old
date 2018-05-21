@@ -22,7 +22,7 @@ Custom Matrix looks like this...
 #include "Vector3.h"
 #include "Vector4.h"
 
-JE_BEGIN
+jeBegin
 
 // Matrix 4x4 template class
 class Matrix4x4
@@ -102,4 +102,4 @@ private:
 using mat4 = Matrix4x4;
 using CR_mat4 = const mat4&;
 
-JE_END
+jeEnd

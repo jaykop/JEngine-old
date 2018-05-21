@@ -2,7 +2,7 @@
 #include "CustomComponent.h"
 #include "ComponentBuilder.h"
 
-JE_BEGIN
+jeBegin
 
 struct Telegram;
 
@@ -48,4 +48,4 @@ private:
 	void EditorUpdate(const float _dt) override;
 };
 
-JE_END
+jeEnd

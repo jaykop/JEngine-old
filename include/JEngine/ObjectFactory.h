@@ -1,14 +1,14 @@
 #pragma once
 #include "Macro.h"
 
-JE_BEGIN
+jeBegin
 
 class ObjectFactory {
 
 	friend class Object;
 
 	// Locked constuctor, destructor, assign operator
-	JE_THIS_IS_STATIC_CLASS(ObjectFactory)
+	jeStaticClassDeclaration(ObjectFactory)
 
 public:
 
@@ -26,4 +26,4 @@ private:
 
 using FACTORY = ObjectFactory;
 
-JE_END
+jeEnd

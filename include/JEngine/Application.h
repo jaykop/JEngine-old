@@ -16,7 +16,7 @@ Contains Application's class and member functions
 #include <string>
 #include "SDL.h"
 
-JE_BEGIN
+jeBegin
 
 //////////////////////////////////////////////////////////////////////////
 // Main application class
@@ -27,7 +27,7 @@ class Application {
 	friend class AssetManager;
 
 	// Locked constuctor, destructor, assign operator
-	JE_THIS_IS_STATIC_CLASS(Application)
+	jeStaticClassDeclaration(Application)
 
 public:
 
@@ -67,4 +67,4 @@ private:
 
 using APP = Application;
 
-JE_END
+jeEnd

@@ -2,7 +2,7 @@
 #include "ObjectContainer.h"
 #include "ImguiManager.h"
 
-JE_BEGIN
+jeBegin
 
 //////////////////////////////////////////////////////////////////////////
 // static variables
@@ -16,7 +16,7 @@ void ObjectFactory::CreateObject(const char* _name)
 	// If there is ex-created and non-added object 
 	// give user warning
 	if (!m_added)
-		JE_DEBUG_PRINT("!ObjectFactory - Holding not added object yet: %s\n", _name);
+		jeDebugPrint("!ObjectFactory - Holding not added object yet: %s\n", _name);
 
 	// unless just make new object
 	else {
@@ -43,4 +43,4 @@ void ObjectFactory::AddCreatedObject()
 	m_added = true;
 }
 
-JE_END
+jeEnd

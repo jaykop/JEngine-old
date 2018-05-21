@@ -4,17 +4,17 @@
 #include "Location.h"
 #include "Vector3.h"
 
-JE_BEGIN
+jeBegin
 
 class Text;
 class Object;
 class Transform;
 struct Telegram;
 
-JE_DECLARE_COMPONENT_BUILDER(WifeState)
-JE_DECLARE_COMPONENT_BUILDER(DoHousework)
-JE_DECLARE_COMPONENT_BUILDER(CookStew)
-JE_DECLARE_COMPONENT_BUILDER(GoToBathroom)
+jeComponentBuilderDeclaration(WifeState)
+jeComponentBuilderDeclaration(DoHousework)
+jeComponentBuilderDeclaration(CookStew)
+jeComponentBuilderDeclaration(GoToBathroom)
 
 /////////////////////////////////////////////////////////////////////////
 // Global wife state
@@ -141,4 +141,4 @@ private:
 
 };
 
-JE_END
+jeEnd

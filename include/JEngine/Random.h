@@ -3,14 +3,14 @@
 #include "Vector3.h"
 #include "Vector4.h"
 
-JE_BEGIN
+jeBegin
 
 class Random {
 
 	friend class Application;
 
 	// Locked constuctor, destructor, assign operator
-	JE_THIS_IS_STATIC_CLASS(Random)
+	jeStaticClassDeclaration(Random)
 
 public:
 
@@ -32,4 +32,4 @@ private:
 
 using RAND = Random;
 
-JE_END
+jeEnd

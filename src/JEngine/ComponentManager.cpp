@@ -1,7 +1,7 @@
 #include "ComponentBuilder.h"
 #include "ComponentManager.h"
 
-JE_BEGIN
+jeBegin
 
 BuilderMap			COMPONENT::m_builderMap;
 ComponentTypeMap	COMPONENT::m_typeMap,
@@ -17,7 +17,7 @@ Component* ComponentManager::CreateComponent(
 	// If there is nothing like that,
 	// return null
 	if (found == m_builderMap.end()) {
-		JE_DEBUG_PRINT("!ComponentManager - No such name of enrolled component: %s\n", _componentName);
+		jeDebugPrint("!ComponentManager - No such name of enrolled component: %s\n", _componentName);
 		return nullptr;
 	}
 
@@ -55,6 +55,6 @@ void ComponentManager::ClearBuilders()
 	m_typeMap.clear();
 }
 
-JE_END
+jeEnd
 
 

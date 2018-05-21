@@ -6,7 +6,7 @@
 #include "MathUtils.h"
 #include "Transform.h"
 
-JE_BEGIN
+jeBegin
 
 void GraphicSystem::UpdatePipelines(const float _dt)
 {
@@ -653,4 +653,4 @@ void GraphicSystem::Render(Font* _font, Text*_text, Transform* _transform, bool 
 }
 
 
-JE_END
+jeEnd

@@ -3,7 +3,7 @@
 #include "Component.h"
 #include "ComponentBuilder.h"
 
-JE_BEGIN
+jeBegin
 
 class CameraBuilder : public ComponentBuilder
 {
@@ -50,4 +50,4 @@ private:
 	void EditorUpdate(const float _dt) override;
 };
 
-JE_END
+jeEnd

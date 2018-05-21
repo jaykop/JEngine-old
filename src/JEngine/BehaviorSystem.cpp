@@ -2,7 +2,7 @@
 #include "BehaviorSystem.h"
 #include "MessageDispatcher.h"
 
-JE_BEGIN
+jeBegin
 
 BehaviorSystem::BehaviorSystem()
 	:System()
@@ -62,4 +62,4 @@ void BehaviorSystem::Unload()
 	m_behaviors.clear();
 }
 
-JE_END
+jeEnd

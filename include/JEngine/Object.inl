@@ -2,7 +2,7 @@
 #include "ComponentManager.h"
 #include "ImguiManager.h"
 
-JE_BEGIN
+jeBegin
 
 template<typename ComponentType>
 inline void Object::AddComponent()
@@ -22,7 +22,7 @@ inline void Object::AddComponent()
 	}
 
 	else
-		JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", s_componentName);
+		jeDebugPrint("!Object - No such name of enrolled component: %s\n", s_componentName);
 }
 
 template<typename ComponentType>
@@ -39,7 +39,7 @@ inline ComponentType* Object::GetComponent()
 		return static_cast<ComponentType*>(found->second);
 
 	else {
-		JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", s_componentName);
+		jeDebugPrint("!Object - No such name of enrolled component: %s\n", s_componentName);
 		return nullptr;
 	}
 }
@@ -57,7 +57,7 @@ inline bool Object::HasComponent()
 		return true;
 
 	else {
-		JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", s_componentName);
+		jeDebugPrint("!Object - No such name of enrolled component: %s\n", s_componentName);
 		return false;
 	}
 }
@@ -78,7 +78,7 @@ inline void Object::RemoveComponent()
 	}
 
 	else
-		JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", s_componentName);
+		jeDebugPrint("!Object - No such name of enrolled component: %s\n", s_componentName);
 }
 
 template<typename ComponentType>
@@ -96,11 +96,11 @@ inline void Object::SetGlobalState()
 			m_StateMachine.m_pGlobalState = (CustomComponent*)found->second;
 
 		else
-			JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", s_componentName);
+			jeDebugPrint("!Object - No such name of enrolled component: %s\n", s_componentName);
 	}
 
 	else
-		JE_DEBUG_PRINT("!Object - There is an allocated global state already: %s\n", s_componentName);
+		jeDebugPrint("!Object - There is an allocated global state already: %s\n", s_componentName);
 }
 
 template<typename ComponentType>
@@ -119,11 +119,11 @@ inline void Object::SetCurrentState()
 			m_StateMachine.m_pCurrentState = (CustomComponent*)found->second;
 
 		else
-			JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", s_componentName);
+			jeDebugPrint("!Object - No such name of enrolled component: %s\n", s_componentName);
 	}
 
 	else
-		JE_DEBUG_PRINT("!Object - There is an allocated current state already: %s\n", s_componentName);
+		jeDebugPrint("!Object - There is an allocated current state already: %s\n", s_componentName);
 }
 
 template<typename ComponentType>
@@ -144,7 +144,7 @@ inline void Object::ChangeState()
 	}
 
 	else
-		JE_DEBUG_PRINT("!Object - No such name of enrolled component: %s\n", s_componentName);
+		jeDebugPrint("!Object - No such name of enrolled component: %s\n", s_componentName);
 }
 
-JE_END
+jeEnd

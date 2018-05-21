@@ -2,7 +2,7 @@
 #include "Object.h"
 #include "ObjectContainer.h"
 
-JE_BEGIN
+jeBegin
 
 template<typename ComponentType>
 inline ObjectMap ObjectContainer::GetObjects()
@@ -19,4 +19,4 @@ inline ObjectMap ObjectContainer::GetObjects()
 	return container;
 }
 
-JE_END
+jeEnd

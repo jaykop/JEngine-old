@@ -22,7 +22,7 @@ Custom Matrix looks like this...
 #include "MathUtils.h"
 #include "Matrix4x4.h"
 
-JE_BEGIN
+jeBegin
 
 /******************************************************************************/
 /*!
@@ -167,7 +167,7 @@ void Matrix4x4::operator/=(float constant)
 				m[i][j] /= constant;
 
 	else
-		JE_DEBUG_PRINT("!Matrix4x4 - Cannot devide by 0.\n");
+		jeDebugPrint("!Matrix4x4 - Cannot devide by 0.\n");
 }
 
 /******************************************************************************/
@@ -736,7 +736,7 @@ Matrix4x4& Matrix4x4::Inverse()
 
 	// No inverse in this case
 	if (det == 0) {
-		JE_DEBUG_PRINT("!Matrix4x4 - Cannot devide by 0.\n");
+		jeDebugPrint("!Matrix4x4 - Cannot devide by 0.\n");
 		return *this;
 	}
 
@@ -804,7 +804,7 @@ Matrix4x4 Matrix4x4::LookAt(const Vector3& _eye, const Vector3& _target, const V
 	Vector3 look, up, right;
 
 	if (_eye == _target)
-		JE_DEBUG_PRINT("!Matrix4x4 - LookAt's position and target are identical.\n");
+		jeDebugPrint("!Matrix4x4 - LookAt's position and target are identical.\n");
 
 	look = (_eye - _target).GetNormalize();
 	up = _up;
@@ -932,4 +932,4 @@ Matrix4x4 Matrix4x4::Rotate(float _radian, const vec3& _vec)
 	return Result;
 }
 
-JE_END
+jeEnd

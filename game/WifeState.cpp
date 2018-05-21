@@ -2,12 +2,12 @@
 #include "CustomLogicHeader.h"
 #include "Random.h"
 
-JE_BEGIN
+jeBegin
 
-JE_DEFINE_COMPONENT_BUILDER(WifeState)
-JE_DEFINE_COMPONENT_BUILDER(DoHousework)
-JE_DEFINE_COMPONENT_BUILDER(CookStew)
-JE_DEFINE_COMPONENT_BUILDER(GoToBathroom)
+jeComponentBuilderDefinition(WifeState)
+jeComponentBuilderDefinition(DoHousework)
+jeComponentBuilderDefinition(CookStew)
+jeComponentBuilderDefinition(GoToBathroom)
 
 /////////////////////////////////////////////////////////////////////////
 // Global wife state
@@ -209,4 +209,4 @@ bool GoToBathroom::OnMessage(Telegram& /*msg*/)
     return false;
 }
 
-JE_END
+jeEnd

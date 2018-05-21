@@ -2,7 +2,7 @@
 #include "CustomComponent.h"
 #include "ComponentBuilder.h"
 
-JE_BEGIN
+jeBegin
 
 class Object;
 struct Telegram;
@@ -52,4 +52,4 @@ private:
 
 };
 
-JE_END
+jeEnd

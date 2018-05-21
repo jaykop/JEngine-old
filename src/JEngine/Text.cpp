@@ -4,7 +4,7 @@
 #include "AssetManager.h"
 #include "SystemManager.h"
 
-JE_BEGIN
+jeBegin
 
 Font::Font()
 	:m_fontSize(0), m_newLineInterval(0.f)
@@ -164,7 +164,7 @@ void Text::Load(CR_RJValue _data)
 			m_projection = PROJECTION_ORTHOGONAL;
 		}
 		else
-			JE_DEBUG_PRINT("!Sprite - Wrong projection type: %s\n", projection.GetString());
+			jeDebugPrint("!Sprite - Wrong projection type: %s\n", projection.GetString());
 	}
 }
 
@@ -182,5 +182,5 @@ Component* TextBuilder::CreateComponent(Object* _pOwner) const
 	return new Text(_pOwner);
 }
 
-JE_END
+jeEnd
 

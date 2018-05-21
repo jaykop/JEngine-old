@@ -5,7 +5,7 @@
 #include "AssetManager.h"
 #include "SystemManager.h"
 
-JE_BEGIN
+jeBegin
 
 Sprite::Sprite(Object* _pOwner)
 	:Component(_pOwner), m_color(vec4::ONE), m_projection(PROJECTION_PERSPECTIVE),
@@ -25,7 +25,7 @@ void Sprite::AddTexture(const char *_key)
 {
 	auto found = m_textureMap.find(_key);
 	if (found != m_textureMap.end())
-		JE_DEBUG_PRINT("!Sprite - Existing texture: %s.\n", _key);
+		jeDebugPrint("!Sprite - Existing texture: %s.\n", _key);
 
 	else {
 		unsigned newTexture = ASSET::GetTexture(_key);
@@ -60,7 +60,7 @@ unsigned Sprite::GetTexutre(const char *_key)
 	if (found != m_textureMap.end())
 		return found->second;
 
-	JE_DEBUG_PRINT("!Sprite - No such name of enrolled texture: %s.\n", _key);
+	jeDebugPrint("!Sprite - No such name of enrolled texture: %s.\n", _key);
 	return 0;
 }
 
@@ -112,7 +112,7 @@ void Sprite::Load(CR_RJValue _data)
 			m_projection = PROJECTION_ORTHOGONAL;
 		}
 		else
-			JE_DEBUG_PRINT("!Sprite - Wrong projection type: %s\n", projection.GetString());
+			jeDebugPrint("!Sprite - Wrong projection type: %s\n", projection.GetString());
 	}
 
 	if (_data.HasMember("Texture")) {
@@ -138,5 +138,5 @@ Component* SpriteBuilder::CreateComponent(Object* _pOwner) const
 	return new Sprite(_pOwner);
 }
 
-JE_END
+jeEnd
 

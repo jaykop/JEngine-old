@@ -2,7 +2,7 @@
 #include <stack>
 #include "JsonParser.h"
 
-JE_BEGIN
+jeBegin
 
 class SoundSystem;
 class GraphicSystem;
@@ -12,7 +12,7 @@ class BehaviorSystem;
 class SystemManager {
 
     // Locked constuctor, destructor, assign operator
-    JE_THIS_IS_STATIC_CLASS(SystemManager)
+    jeStaticClassDeclaration(SystemManager)
 
     class SystemBlock {
 
@@ -79,4 +79,4 @@ private:
 
 using SYSTEM = SystemManager;
 
-JE_END
+jeEnd

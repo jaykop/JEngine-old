@@ -1,6 +1,6 @@
 #include "Shader.h"
 
-JE_BEGIN
+jeBegin
 
 std::string  Shader::m_geometryShader[] = {
 
@@ -72,4 +72,4 @@ std::string  Shader::m_geometryShader[] = {
 	)glsl",
 };
 
-JE_END
+jeEnd

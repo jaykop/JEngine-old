@@ -2,7 +2,7 @@
 #include "GraphicSystem.h"
 #include "Sprite.h"
 
-JE_BEGIN
+jeBegin
 
 Animation::Animation(Object* _pOwner)
 	: Component(_pOwner), m_currentFrame(0.f), m_animationSpeed(0.f),
@@ -17,7 +17,7 @@ Animation::Animation(Object* _pOwner)
 	}
 
 	else
-		JE_DEBUG_PRINT("!Animation - This object has no sprite componnet: %s\n", _pOwner->GetName().c_str());
+		jeDebugPrint("!Animation - This object has no sprite componnet: %s\n", _pOwner->GetName().c_str());
 }
 
 Animation::~Animation() {
@@ -125,4 +125,4 @@ Component* AnimationBuilder::CreateComponent(Object* _pOwner) const
 	return new Animation(_pOwner);
 }
 
-JE_END
+jeEnd

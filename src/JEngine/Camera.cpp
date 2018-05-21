@@ -2,7 +2,7 @@
 #include "SystemManager.h"
 #include "GraphicSystem.h"
 
-JE_BEGIN
+jeBegin
 
 Camera::Camera(Object* _pOwner)
 	: Component(_pOwner),
@@ -54,4 +54,4 @@ Component* CameraBuilder::CreateComponent(Object* _pOwner) const
 	return new Camera(_pOwner);
 }
 
-JE_END
+jeEnd

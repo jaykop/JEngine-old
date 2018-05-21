@@ -4,7 +4,7 @@
 #include "SoundSystem.h"
 #include "BehaviorSystem.h"
 
-JE_BEGIN
+jeBegin
 
 //////////////////////////////////////////////////////////////////////////
 // class SystemManager::Systems's funciton bodues
@@ -91,4 +91,4 @@ void SystemManager::SystemBlock::Unload()
 	m_pBehaviorSystem->Unload();
 }
 
-JE_END
+jeEnd

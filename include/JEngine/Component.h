@@ -2,7 +2,7 @@
 #include "Object.h"
 #include "JsonParser.h"
 
-JE_BEGIN
+jeBegin
 
 class Object;
 class Component {
@@ -40,4 +40,4 @@ private:
 
 };
 
-JE_END
+jeEnd
