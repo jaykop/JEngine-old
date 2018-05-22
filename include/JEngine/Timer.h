@@ -3,6 +3,10 @@
 
 jeBegin
 
+struct Time{
+	int year, month, day, hour, minute, second;
+};
+
 class Timer {
 
 public:
@@ -11,7 +15,9 @@ public:
 	~Timer() {};
 
 	void	Start(void);
-	float	GetTime(void);
+	float	GetTime(void) const;
+
+	static  Time GetCurrentTimeInfo(void);
 
 private:
 

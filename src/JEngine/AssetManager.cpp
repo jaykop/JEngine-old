@@ -13,6 +13,7 @@
 #include "GraphicComponents.h"
 #include "PhysicsComponents.h"
 #include "SoundComponents.h"
+#include <algorithm>
 
 jeBegin
 
@@ -23,7 +24,8 @@ ASSET::StateMap		ASSET::m_stateMap;
 ASSET::TextureMap	ASSET::m_textureMap;
 ASSET::ArchetypeMap	ASSET::m_archetypeMap;
 std::string			ASSET::m_initDirectory, ASSET::m_assetDirectory,
-ASSET::m_stateDirectory, ASSET::m_archeDirectory;
+					ASSET::m_stateDirectory, ASSET::m_archeDirectory;
+unsigned char*		ASSET::m_pPixelChunk = nullptr;
 
 void AssetManager::ShowLoadingPercentage(unsigned _loadedPercentage, unsigned _size)
 {
@@ -273,8 +275,8 @@ void AssetManager::LoadImage(const char *_path, const char *_textureKey)
     Sprite::Image	image;
     unsigned		width, height;
     unsigned		error = lodepng::decode(image, width, height, _path);
-
-    if (error)
+	
+	if (error)
         jeDebugPrint("!AssetManager - Decoder error %d / %s.\n", error, lodepng_error_text(error));
 
     // Enable the texture for OpenGL.
@@ -295,6 +297,84 @@ void AssetManager::LoadArchetype(const char* /*_path*/, const char* /*_archetype
 {
     // TODO
     // load archetpye assets
+}
+
+void AssetManager::TakeAScreenshot(const char* _directory)
+{
+	// Get the total size of image
+	unsigned width = APP::m_Data.m_width, height = APP::m_Data.m_height, size = width * height * 4;
+
+	// Send the pixel info to the image vector
+	std::vector<unsigned char> image;
+	m_pPixelChunk = new unsigned char[size];
+	//image.resize(size);
+
+	// Read pixel from window screen
+	glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, &m_pPixelChunk[0]);
+
+	// Invert the image vertucally
+	for (unsigned y = 0; y < height / 2; y++)
+		for (unsigned x = 0; x < width; x++)
+		{
+			unsigned index = 4 * (width * y + x);
+			unsigned invertedInder = 4 * (width * (height - y - 1) + x);
+
+			std::swap(m_pPixelChunk[index + 0], m_pPixelChunk[invertedInder + 0]);
+			std::swap(m_pPixelChunk[index + 1], m_pPixelChunk[invertedInder + 1]);
+			std::swap(m_pPixelChunk[index + 2], m_pPixelChunk[invertedInder + 2]);
+			std::swap(m_pPixelChunk[index + 3], m_pPixelChunk[invertedInder + 3]);
+
+		}
+
+	// Check error
+	unsigned error = lodepng::encode(image, m_pPixelChunk, width, height);
+	if (!error) {
+
+		std::string fileName;
+		
+		if (!_directory) {
+
+			Time currentTimeInfo = Timer::GetCurrentTimeInfo();
+
+			fileName += std::to_string(currentTimeInfo.year);
+			
+			if (currentTimeInfo.month < 10)
+				fileName += "0" + std::to_string(currentTimeInfo.month);
+			else
+				fileName += std::to_string(currentTimeInfo.month);
+
+			if (currentTimeInfo.day < 10)
+				fileName += "0" + std::to_string(currentTimeInfo.day);
+			else
+				fileName += std::to_string(currentTimeInfo.day);
+			
+			if (currentTimeInfo.hour < 10)
+				fileName += "0" + std::to_string(currentTimeInfo.hour);
+			else
+				fileName += std::to_string(currentTimeInfo.hour);
+
+			if (currentTimeInfo.minute < 10)
+				fileName += "0" + std::to_string(currentTimeInfo.minute);
+			else
+				fileName += std::to_string(currentTimeInfo.minute);
+
+			if (currentTimeInfo.second < 10)
+				fileName += "0" + std::to_string(currentTimeInfo.second);
+			else
+				fileName += std::to_string(currentTimeInfo.second);
+
+			fileName += ".png";
+		}
+
+		lodepng::save_file(image, fileName);
+	}
+
+	else
+		jeDebugPrint("!AssetManager - Cannot export screenshot image : %i", error);
+
+
+	delete[] m_pPixelChunk;
+	m_pPixelChunk = nullptr;
 }
 
 void AssetManager::SetInitDirectory(const char * _dir)

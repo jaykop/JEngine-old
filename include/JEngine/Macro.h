@@ -53,7 +53,7 @@ Contains Engine's generic macros
 
 // Delete macro
 #define jeSafeDelete(p)			do { if(p) { delete(p);  (p) = nullptr;}} while(0)
-#define jeSafeDeleteArray(p)		do { if(p) { delete[] (p); (p) = nullptr;}} while(0)
+#define jeSafeDeleteArray(p)	do { if(p) { delete[] (p); (p) = nullptr;}} while(0)
 
 // Simplify static setting
 #define jeStaticClassDeclaration(c) c() = delete; ~c() = delete; c& operator=(const c&) = delete; c& operator=(c&&) = delete; c(const c&) = delete; c(c&&) = delete;
