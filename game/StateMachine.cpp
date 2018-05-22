@@ -50,6 +50,9 @@ void StateMachine::Update(const float _dt)
 
         if (m_pOwner->GetCurrentState())
             m_pOwner->GetCurrentState()->Update(_dt);
+
+		//TODO: TEMP 
+		ASSET::TakeAScreenshot();
     }
 }
 

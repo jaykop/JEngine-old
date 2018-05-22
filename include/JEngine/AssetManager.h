@@ -27,6 +27,8 @@ class AssetManager {
 
 public:
 
+	static void			TakeAScreenshot(const char* _directory = nullptr);
+
 	static void			SetInitDirectory(const char* _dir);
 	static void			SetAssetDirectory(const char* _dir);
 	static void			SetStateDirectory(const char* _dir);
@@ -58,6 +60,8 @@ private:
 	static void UnloadAssets();
 
 	// Private member variables
+	static unsigned char* m_pPixelChunk;
+
 	static FontMap		m_fontMap;
 	static AudioMap		m_audioMap;
 	static StateMap		m_stateMap;
