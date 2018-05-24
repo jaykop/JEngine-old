@@ -3,21 +3,66 @@
 
 jeBegin
 
-using p_unitMemory = unsigned char *;
+// If the client doesn't specify these:
+//! Default number of objects per page
+static const int DEFAULT_OBJECTS_PER_PAGE = 100;
+//! Default Max Pages
+static const int DEFAULT_MAX_PAGES = 0;
 
 struct Node{
 
-	Node* pNext = nullptr;
+	template <class T>
+	friend class MemoryAllocator;
 
+private:
+	Node* pNext = nullptr;
 };
 
+struct MAStats
+{
+	template <class T>
+	friend class MemoryAllocator;
+
+private:
+	// The size of each node
+	unsigned	m_nodeSize = 0;
+	// The number of nodes in the free list (available nodes)
+	unsigned	m_freeNodes = 0;
+	// The number of nodes in use (occupied nodes)
+	unsigned	m_nodesInUse = 0;
+	// The size of a page
+	unsigned	m_pageSize = 0;
+	// The nuber of pages in use (occupied pages)
+	unsigned	m_pagesInUse = 0;
+	// Total requests to allocate memory
+	unsigned	m_allocations = 0;
+	// Total requests to free memory
+	unsigned	m_deallocations = 0;
+	// The most nodes in use by client at one time
+	unsigned	m_mostNodes = 0;
+};
+
+struct MAConfig
+{
+	// By-pass the functionality of the MA and use new/delete
+	bool		useCPPMemoryManager = false;
+	// The number of node on each page
+	unsigned	nodePerPage = DEFAULT_OBJECTS_PER_PAGE;
+	// Maximum number of pages the MA can allocate (0 = unlimited)
+	unsigned	maxPages = DEFAULT_MAX_PAGES;
+};
+
+template <class T>
 class MemoryAllocator {
 	
 	friend struct Page;
 	friend class Application;
 
 	// Locked constuctor, destructor, assign operator
-	jeStaticClassDeclaration(MemoryAllocator)
+	MemoryAllocator& operator=(const MemoryAllocator&) = delete; 
+	MemoryAllocator& operator=(MemoryAllocator&&) = delete; 
+	MemoryAllocator(const MemoryAllocator&) = delete; 
+	MemoryAllocator(MemoryAllocator&&) = delete;
 
 	enum STATUS : int {
 
@@ -30,29 +75,25 @@ class MemoryAllocator {
 
 public:
 
+	MemoryAllocator();
+	~MemoryAllocator();
+
+	T*		Allocate();
+	void	Free(T* _toReturn);
+
 private:
 
-	static void AllocateNewPage();
-	static void DeallocatePage();
-	static void ClearPages();
+	void AllocateNewPage();
+	void DeallocatePage();
+	void ClearPages();
 
-	static Node*	Allocate();
-	static void		Free(Node* _toReturn);
+	MAConfig	m_config {};
+	MAStats		m_stats {};
 
-	static bool					m_useDefaultkeyword;
-	static constexpr unsigned	m_defaultNumOfNodes = 100;
-	static unsigned				m_freeNodes, m_objectInUse, m_allocations, m_deallocations, m_mostObjects;
-
-	static p_unitMemory m_freelist;
-	static p_unitMemory m_pages;
-	static p_unitMemory m_firstPage;
+	Node* m_freelist = nullptr;
+	Node* m_pagelist = nullptr;
 };
 
-using MEMORY = MemoryAllocator;
-
-//struct Page {
-//	Page* pNext = nullptr;
-//};
-
-
 jeEnd
+
+#include "MemoryAllocator.h"

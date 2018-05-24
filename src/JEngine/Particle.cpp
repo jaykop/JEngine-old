@@ -120,6 +120,8 @@ Emitter::Emitter(Object* _pOwner)
 	m_deadCount(0), m_renderType(PARTICLERENDER_3D), m_pointSize(0.f),
 	m_range(vec3::ZERO), m_size(0), m_colorDiff(vec3::ZERO), m_rotationSpeed(0.f)
 {
+	m_sfactor = GL_SRC_ALPHA;
+	m_dfactor = GL_ONE;
 	m_isEmitter = true;
 }
 

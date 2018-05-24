@@ -6,6 +6,8 @@
 
 jeUsingNamespace;
 
+bool JEngine::imguiToggle = false;
+
 void JEngine::RegisterAssets()
 {
 	// Get assets ready 
@@ -44,7 +46,7 @@ void JEngine::RegisterAssets()
 	jeRegisterComponent(TestLogic);
 }
 
-void JEngine::Run(bool _imguiToggle)
+void JEngine::Run()
 {
-	APP::Run(_imguiToggle);
+	APP::Run(imguiToggle);
 }

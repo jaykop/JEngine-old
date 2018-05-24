@@ -10,7 +10,6 @@
 #include "imgui.h"
 #include "Debug.h"
 #include "InputHandler.h"
-#include "MemoryAllocator.h"
 
 jeBegin
 
@@ -28,7 +27,6 @@ bool			APP::m_IMGUI = false;
 
 void Application::Run(bool _imgui)
 {
-
 	m_IMGUI = _imgui;
 
 	// Pop console window 
@@ -50,10 +48,6 @@ void Application::Run(bool _imgui)
 bool Application::Initialize()
 {
 	/*************** Init Data **************/
-
-	MEMORY::AllocateNewPage();
-	MEMORY::AllocateNewPage();
-	MEMORY::AllocateNewPage();
 
 	// Assign app init data
 	JSON::ReadFile(ASSET::m_initDirectory.c_str());
@@ -134,8 +128,6 @@ void Application::Close()
 	JSON::Close();			// Clear document
 	GLM::Close();			// Close SDL GL
 	IMGUI::Close();			// Close imgui manager
-
-	MEMORY::ClearPages();
 
 	CloseSDL();				// Close sdl window
 }

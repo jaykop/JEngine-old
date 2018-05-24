@@ -107,7 +107,6 @@ void GraphicSystem::LightSourcePipeline()
         else
             glDisable(GL_BLEND);
 
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glEnable(GL_DEPTH_TEST);
 
         static float s_lightDeg = 0.f;
@@ -157,6 +156,7 @@ void GraphicSystem::LightSourcePipeline()
                 GLM::UNIFORM_LIGHT_COLOR,
                 light->m_color);
 
+			glBlendFunc(light->m_sfactor, light->m_dfactor);
             Render(GLM::m_vao[GLM::SHAPE_CONE], GLM::m_elementSize[GLM::SHAPE_CONE]);
 
         } // for (auto light : m_lights) {
@@ -226,8 +226,8 @@ void GraphicSystem::SpritePipeline(Sprite *_sprite)
     else
         glDisable(GL_BLEND);
 
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_DEPTH_TEST);
+	glBlendFunc(_sprite->m_sfactor, _sprite->m_dfactor);
 
     Render(*(_sprite->m_vao), _sprite->m_elementSize);
 
@@ -422,8 +422,8 @@ void GraphicSystem::TextPipeline(Text * _text)
     else
         glDisable(GL_BLEND);
 
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_DEPTH_TEST);
+	glBlendFunc(_text->m_sfactor, _text->m_dfactor);
 
     Render(_text->m_pFont, _text, s_pTransform, _text->m_printWide);
 
@@ -442,21 +442,18 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
         else
             glDisable(GL_BLEND);
 
-
         glDepthMask(GL_FALSE);
+		glBlendFunc(_emitter->m_sfactor, _emitter->m_dfactor);
 
         // Points
-        if (_emitter->m_renderType == Emitter::PARTICLERENDER_POINT) {
-            glPointSize(_emitter->m_pointSize);
-            glEnable(GL_POINT_SMOOTH);
-            glBlendFunc(GL_ONE, GL_ONE);
-        }
+		if (_emitter->m_renderType == Emitter::PARTICLERENDER_POINT) {
+			glPointSize(_emitter->m_pointSize);
+			glEnable(GL_POINT_SMOOTH);
+		}
 
         // Plane 2d and 3d form
-        else {
+        else 
             glDisable(GL_POINT_SMOOTH);
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-        }
 
         static GLuint					s_vao, s_elementSize;
         static vec3						s_velocity, s_colorDiff;
@@ -556,8 +553,7 @@ void GraphicSystem::Render(const unsigned &_vao, const int _elementSize)
     glBindVertexArray(0);
 }
 
-void GraphicSystem::RenderCharacter(
-    Character& _character, const vec3& _position,
+void GraphicSystem::RenderCharacter(Character& _character, const vec3& _position,
     const vec3& _scale, float& _newX, float _intervalY)
 {
     const static int sc_shift = 6;

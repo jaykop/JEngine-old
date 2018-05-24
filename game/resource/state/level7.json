@@ -1,0 +1,82 @@
+{
+
+	"Background" : [ 0.5, 0.5, 0.5, 1.0 ],
+	"Screen" : [ 1.0, 1.0, 1.0, 1.0 ],
+	"Effect" : { "Type" : "None" },
+	"Object" : [
+		{
+			"Name" : "Camera",
+			"Component" : [
+				{
+					"Type": "Camera",
+					"Values": {"Position" : [0, 0, 150], "Target" : [0, 0, 0],
+						"Up" : [0, 1, 0]}
+				}
+			]
+		},	
+		{
+			"Name" : "LevelController",
+			"Component" : [
+				{
+					"Type": "LevelController",
+					"Values": {}
+				}
+			]
+		},
+		{
+			"Name" : "Wife",
+			"Component" : [
+				{
+					"Type": "Transform",
+					"Values": { "Position" : [-90, 65, 1], "Scale" : [25, 25, 0] }
+				},
+				{
+					"Type": "Sprite",
+					"Values": { "Texture" : "wife" }
+				},
+				{
+					"Type": "StateMachine",
+					"Values": { "StateList" : ["WifeState", "DoHousework", "CookStew", "GoToBathroom" ],
+								"Current" : "DoHousework", "Global" : "WifeState"}
+				}
+			]
+		},
+		{
+			"Name" : "Bully",
+			"Component" : [
+				{
+					"Type": "Transform",
+					"Values": { "Position" : [-80, -50, 1], "Scale" : [12.5, 25, 0] }
+				},
+				{
+					"Type": "Sprite",
+					"Values": { "Texture" : "bully" }
+				},
+				{
+					"Type": "StateMachine",
+					"Values": { "StateList" : ["BullyState", "JustHatingMiner", "GoFight" ],
+								"Current" : "JustHatingMiner", "Global" : "BullyState"}
+				}
+			]
+		},
+		{
+			"Name" : "Miner",
+			"Component" : [
+				{
+					"Type": "Transform",
+					"Values": { "Position" : [-80, 0, 1], "Scale" : [25, 25, 0] }
+				},
+				{
+					"Type": "Sprite",
+					"Values": { "Texture" : "miner" }
+				},
+				{
+					"Type": "StateMachine",
+					"Values": { "StateList" : ["MinerState", "GoHomeAndSleepTilRested", "BeatBully",
+								"EatStew", "EnterMineAndDigForNugget", "QuenchThirst", "VisitBankAndDepositGold" ],
+								"Current" : "GoHomeAndSleepTilRested", "Global" : "MinerState"}
+				}
+			]
+		}
+	]
+}

@@ -1,6 +1,6 @@
 // This file contains state information
 {
-	"FirstState" : "level6",
+	"FirstState" : "level2",
 	
 	"State" : [
 		{"Key" : "level1", 	"Directory" : "../resource/state/level1.json"},
@@ -8,6 +8,7 @@
 		{"Key" : "level3", 	"Directory" : "../resource/state/level3.json"},
 		{"Key" : "level4", 	"Directory" : "../resource/state/level4.json"},
 		{"Key" : "level5", 	"Directory" : "../resource/state/level5.json"},
-		{"Key" : "level6", 	"Directory" : "../resource/state/level6.json"}
+		{"Key" : "level6", 	"Directory" : "../resource/state/level6.json"},
+		{"Key" : "level7", 	"Directory" : "../resource/state/level7.json"}
 	]
 }

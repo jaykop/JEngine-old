@@ -183,6 +183,9 @@
     <None Include="..\..\include\JEngine\ComponentManager.inl">
       <Filter>Core\Component</Filter>
     </None>
+    <None Include="..\..\include\JEngine\MemoryAllocator.inl">
+      <Filter>Core\Memory</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\JEngine\SystemManager.cpp">
