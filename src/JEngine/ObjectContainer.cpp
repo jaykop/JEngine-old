@@ -2,6 +2,8 @@
 #include "ObjectContainer.h"
 #include "imgui.h"
 #include "ImguiManager.h"
+#include "ObjectFactory.h"
+#include "MemoryAllocator.h"
 
 jeBegin
 
@@ -20,8 +22,9 @@ void ObjectContainer::RemoveObject(const char* _name)
 	// If found the one
 	if (toRemove != m_objectMap.end()) {
 		IMGUI::RemoveObjectEditor(toRemove->second);
-		delete toRemove->second;
-		toRemove->second = nullptr;
+		FACTORY::allocator.Free(toRemove->second);
+		//delete toRemove->second;
+		//toRemove->second = nullptr;
 		m_objectMap.erase(toRemove);	
 	}
 
@@ -39,8 +42,9 @@ void ObjectContainer::RemoveObject(unsigned _id)
 		if (_id == theOne->GetId()) {
 			notFound = false;
 			IMGUI::RemoveObjectEditor(theOne);
-			delete theOne;
-			theOne = nullptr;
+			FACTORY::allocator.Free(theOne);
+			//delete theOne;
+			//theOne = nullptr;
 			m_objectMap.erase(object);
 
 			break;
@@ -118,8 +122,9 @@ void ObjectContainer::ClearObjectMap()
 	{
 		if (obj.second && !obj.second->m_pParent) {
 			IMGUI::RemoveObjectEditor(obj.second);
-			delete obj.second;
-			obj.second = nullptr;
+			FACTORY::allocator.Free(obj.second);
+			//delete obj.second;
+			//obj.second = nullptr;
 		}
 	}
 

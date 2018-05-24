@@ -3,12 +3,18 @@
 
 jeBegin
 
+template <class T>
+class MemoryAllocator;
+
 class ObjectFactory {
 
 	friend class Object;
+	friend class ObjectContainer;
 
 	// Locked constuctor, destructor, assign operator
 	jeStaticClassDeclaration(ObjectFactory)
+
+	static MemoryAllocator<Object> allocator;
 
 public:
 
@@ -18,10 +24,9 @@ public:
 
 private:
 
-
-	static bool			m_added;
-	static unsigned		m_registerNumber;
-	static Object*		m_pLastMade;
+	static bool		m_added;
+	static unsigned	m_registerNumber;
+	static Object*	m_pLastMade;
 
 };
 

@@ -1,14 +1,18 @@
 #include "ObjectFactory.h"
 #include "ObjectContainer.h"
 #include "ImguiManager.h"
+#include "MemoryAllocator.h"
+// #include "Object.h"
+
 jeBegin
 
 //////////////////////////////////////////////////////////////////////////
 // static variables
 //////////////////////////////////////////////////////////////////////////
-Object*		FACTORY::m_pLastMade = nullptr;
-unsigned	FACTORY::m_registerNumber = 0;
-bool		FACTORY::m_added = true;
+Object*					FACTORY::m_pLastMade = nullptr;
+unsigned				FACTORY::m_registerNumber = 0;
+bool					FACTORY::m_added = true;
+MemoryAllocator<Object> FACTORY::allocator;
 
 void ObjectFactory::CreateObject(const char* _name)
 {
@@ -21,7 +25,7 @@ void ObjectFactory::CreateObject(const char* _name)
 	else {
 		m_added = false;
 		++m_registerNumber;
-		m_pLastMade = new Object(_name);
+		m_pLastMade = allocator.Allocate();//new Object(_name);
 	}
 }
 

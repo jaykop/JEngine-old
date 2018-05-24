@@ -258,7 +258,12 @@
     <ClCompile Include="..\..\src\JEngine\MathUtils.cpp" />
     <ClCompile Include="..\..\src\JEngine\Matrix2x2.cpp" />
     <ClCompile Include="..\..\src\JEngine\Matrix4x4.cpp" />
-    <ClCompile Include="..\..\src\JEngine\MemoryAllocator.cpp" />
+    <ClCompile Include="..\..\src\JEngine\MemoryAllocator.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\src\JEngine\MessageDispatcher.cpp" />
     <ClCompile Include="..\..\src\JEngine\Model.cpp" />
     <ClCompile Include="..\..\src\JEngine\Object.cpp" />

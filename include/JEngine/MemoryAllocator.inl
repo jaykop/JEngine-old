@@ -1,4 +1,3 @@
-#include "MemoryAllocator.h"
 #include <cstdlib>
 #include <cstring>
 
@@ -8,6 +7,7 @@
 jeBegin
 
 const unsigned sizeOfPointer = sizeof(void*);
+const unsigned sizeOfNode = sizeof(Node);
 
 template <class T>
 MemoryAllocator<T>::MemoryAllocator()
@@ -38,16 +38,14 @@ void MemoryAllocator<T>::AllocateNewPage()
 		Node* newPageHeader = jeCastToNodePointer(newPage);
 
 		// If there were existing pages
-		if (m_pagelist) {
-			// Connect the current one and newly allocated page
+		// Connect the current one and newly allocated page
+		if (m_pagelist) 
 			newPageHeader->pNext = jeCastToNodePointer(m_pagelist);
-		}
-		// Otherwise, just connect the new page
 
 		// Move the m_pages to new page's starting point
 		m_pagelist = newPageHeader;
 		memset(m_pagelist, JE_NULL, sizeOfPointer);
-		memset(m_pagelist + sizeOfPointer, JE_UNALLOCATED, m_stats.m_pageSize - sizeOfPointer);
+		memset(jeCastToUnsignedCharPointer(m_pagelist) + sizeOfPointer, JE_UNALLOCATED, m_stats.m_pageSize - sizeOfPointer);
 
 		// Split the new page into node and connect them each other
 		// by setting their pNext
@@ -138,12 +136,13 @@ T* MemoryAllocator<T>::Allocate()
 		m_stats.m_mostNodes = total;
 
 	// Return the memory;
-	return reinterpret_cast<T>(toReturn);
+	return new(toReturn) T();
 }
 
 template <class T>
 void MemoryAllocator<T>::Free(T* _toReturn)
 {
+	_toReturn->~T();
 	Node* newHeadFreelist = jeCastToNodePointer(_toReturn);
 	// Set freed pattern
 	std::memset(newHeadFreelist, JE_FREED, m_stats.m_nodeSize);

@@ -24,12 +24,16 @@ class Object {
 
 public:
 
+	template <class T>
+	friend class MemoryAllocator;
+
 	friend class JsonParser;
 	friend class ObjectFactory;
 	friend class ObjectContainer;
 	friend class ImguiManager;
 	friend class MessageDispatcher;
 
+	Object();
 	Object(const char* _name);
 	~Object();
 
@@ -108,7 +112,6 @@ private:
 	void	EditorUpdate(const float _dt);
 	bool	m_showEditor;
 
-	Object() = delete;
 	Object(const Object& /*_copy*/) = delete;
 	void operator=(const Object& /*_copy*/) = delete;
 
