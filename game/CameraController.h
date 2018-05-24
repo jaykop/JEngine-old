@@ -6,7 +6,6 @@
 #include "LevelController.h"
 
 jeBegin
-
 jeDeclareCustomComponentBuilder(CameraController);
 
 struct Telegram;

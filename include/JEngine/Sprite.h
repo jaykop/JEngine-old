@@ -7,29 +7,14 @@
 #include "GraphicSystem.h"
 
 jeBegin
+jeDeclareComponentBuilder(Sprite);
 
 class Transform;
 
-class SpriteBuilder : public ComponentBuilder
-{
-	friend class AssetManager;
-
-public:
-
-private:
-
-	SpriteBuilder();
-	~SpriteBuilder() {};
-	SpriteBuilder(const SpriteBuilder& /*_copy*/) = delete;
-	void operator=(const SpriteBuilder& /*_copy*/) = delete;
-
-	Component* CreateComponent(Object* _pOwner) const override;
-
-};
-
 class Sprite : public Component
 {
-	jeDeclareStaticAllocator(Sprite);
+	template <class T>
+	friend class MemoryAllocator;
 
 	// Keyword Definitions
 	friend class	Material;

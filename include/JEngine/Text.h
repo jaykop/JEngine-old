@@ -8,6 +8,7 @@
 #include "Vector2.h"
 
 jeBegin
+jeDeclareComponentBuilder(Text);
 
 struct Character {
     unsigned	m_texture;	// ID handle of the glyph texture
@@ -38,27 +39,11 @@ private:
     float		m_newLineInterval;
 };
 
-class TextBuilder : public ComponentBuilder
-{
-
-    friend class AssetManager;
-
-public:
-
-private:
-
-    TextBuilder();
-    ~TextBuilder() {};
-    TextBuilder(const TextBuilder& /*_copy*/) = delete;
-    void operator=(const TextBuilder& /*_copy*/) = delete;
-
-    Component* CreateComponent(Object* _pOwner) const override;
-
-};
-
 class Text : public Sprite
 {
-	jeDeclareStaticAllocator(Text);
+	template <class T>
+	friend class MemoryAllocator;
+
     friend class ComponentManager;
     friend class GraphicSystem;
     friend class TextBuilder;

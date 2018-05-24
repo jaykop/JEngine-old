@@ -4,8 +4,7 @@
 #include "MemoryAllocator.h"
 
 jeBegin
-
-jeDefineStaticAllocator(Camera);
+jeDefineComponentBuilder(Camera);
 
 Camera::Camera(Object* _pOwner)
 	: Component(_pOwner),
@@ -46,15 +45,6 @@ void Camera::Load(CR_RJValue _data)
 void Camera::EditorUpdate(const float /*_dt*/)
 {
 	// TODO
-}
-
-CameraBuilder::CameraBuilder()
-	:ComponentBuilder()
-{}
-
-Component* CameraBuilder::CreateComponent(Object* _pOwner) const
-{
-	return new Camera(_pOwner);
 }
 
 jeEnd

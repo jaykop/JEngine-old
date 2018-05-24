@@ -4,27 +4,12 @@
 #include "Vector3.h"
 
 jeBegin
-
-class EmitterBuilder : public ComponentBuilder
-{
-	friend class AssetManager;
-
-public:
-
-private:
-
-	EmitterBuilder();
-	~EmitterBuilder() {};
-	EmitterBuilder(const EmitterBuilder& /*_copy*/) = delete;
-	void operator=(const EmitterBuilder& /*_copy*/) = delete;
-
-	Component* CreateComponent(Object* _pOwner) const override;
-
-};
+jeDeclareComponentBuilder(Emitter);
 
 class Emitter : public Sprite 
 {
-	jeDeclareStaticAllocator(Emitter);
+	template <class T>
+	friend class MemoryAllocator;
 
 	friend class ComponentManager;
 	friend class EmitterBuilder;

@@ -23,6 +23,8 @@ private:
 	TestLogic(Object* pObject);
 	~TestLogic() {};
 
+	static int a;
+
 	void Register() override;
 	void Load(CR_RJValue _data) override;
 	void Init() override;

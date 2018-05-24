@@ -4,8 +4,7 @@
 #include "MemoryAllocator.h"
 
 jeBegin
-
-jeDefineStaticAllocator(Light);
+jeDefineComponentBuilder(Light);
 
 Light::Light(Object * _pOwner)
 	:Component(_pOwner), m_color(vec4::ONE),
@@ -116,15 +115,6 @@ void Light::Load(CR_RJValue _data)
 void Light::EditorUpdate(const float /*_dt*/)
 {
 	// TODO
-}
-
-LightBuilder::LightBuilder()
-	:ComponentBuilder()
-{}
-
-Component* LightBuilder::CreateComponent(Object* _pOwner) const
-{
-	return new Light(_pOwner);
 }
 
 jeEnd

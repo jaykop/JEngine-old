@@ -4,8 +4,7 @@
 #include "MemoryAllocator.h"
 
 jeBegin
-
-jeDefineStaticAllocator(Material);
+jeDefineComponentBuilder(Material);
 
 Material::Material(Object* _pOwner)
 	:Component(_pOwner), m_diffuse(0), 
@@ -68,15 +67,6 @@ void Material::Load(CR_RJValue _data)
 void Material::EditorUpdate(const float /*_dt*/)
 {
 	// TODO
-}
-
-MaterialBuilder::MaterialBuilder()
-	:ComponentBuilder()
-{}
-
-Component* MaterialBuilder::CreateComponent(Object* _pOwner) const
-{
-	return new Material(_pOwner);
 }
 
 jeEnd

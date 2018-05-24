@@ -2,28 +2,13 @@
 #include "Sprite.h"
 
 jeBegin
-
-class ModelBuilder : public ComponentBuilder
-{
-
-	friend class AssetManager;
-
-public:
-
-private:
-
-	ModelBuilder();
-	~ModelBuilder() {};
-	ModelBuilder(const ModelBuilder& /*_copy*/) = delete;
-	void operator=(const ModelBuilder& /*_copy*/) = delete;
-
-	Component* CreateComponent(Object* _pOwner) const override;
-
-};
+jeDeclareComponentBuilder(Model);
 
 class Model : public Sprite
 {
-	jeDeclareStaticAllocator(Model);
+	template <class T>
+	friend class MemoryAllocator;
+
 	friend class ComponentManager;
 	friend class GraphicSystem;
 	friend class ModelBuilder;

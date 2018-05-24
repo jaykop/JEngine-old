@@ -29,6 +29,9 @@ public:
 	static Component*	CreateComponent(
 		const char* _componentName, Object* _pOwner);
 
+	template <class ComponentType>
+	static void	RemoveComponent(Component* _component);
+
 private:
 
 	static void			ClearBuilders();

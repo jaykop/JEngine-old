@@ -6,8 +6,7 @@
 #include "MemoryAllocator.h"
 
 jeBegin
-
-jeDefineStaticAllocator(Text);
+jeDefineComponentBuilder(Text);
 
 Font::Font()
 	:m_fontSize(0), m_newLineInterval(0.f)
@@ -174,15 +173,6 @@ void Text::Load(CR_RJValue _data)
 void Text::EditorUpdate(const float /*_dt*/)
 {
 	// TODO
-}
-
-TextBuilder::TextBuilder()
-	:ComponentBuilder()
-{}
-
-Component* TextBuilder::CreateComponent(Object* _pOwner) const
-{
-	return new Text(_pOwner);
 }
 
 jeEnd

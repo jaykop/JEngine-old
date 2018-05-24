@@ -5,30 +5,10 @@
 
 jeBegin
 
-template <class T>
-class MemoryAllocator;
-
-class CameraBuilder : public ComponentBuilder
-{
-
-	friend class AssetManager;
-
-public:
-
-private:
-
-	CameraBuilder();
-	~CameraBuilder() {};
-	CameraBuilder(const CameraBuilder& /*_copy*/) = delete;
-	void operator=(const CameraBuilder& /*_copy*/) = delete;
-
-	Component* CreateComponent(Object* _pOwner) const override;
-
-};
-
 class Camera : public Component
 {
-	jeDeclareStaticAllocator(Camera);
+	template <class T>
+	friend class MemoryAllocator;
 
 	friend class ComponentManager;
 	friend class GraphicSystem;
@@ -54,4 +34,5 @@ private:
 	void EditorUpdate(const float _dt) override;
 };
 
+jeDeclareComponentBuilder(Camera);
 jeEnd

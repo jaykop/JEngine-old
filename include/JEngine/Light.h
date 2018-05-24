@@ -8,28 +8,12 @@
 #include "GraphicSystem.h"
 
 jeBegin
-
-class LightBuilder : public ComponentBuilder
-{
-
-	friend class AssetManager;
-
-public:
-
-private:
-
-	LightBuilder();
-	~LightBuilder() {};
-	LightBuilder(const LightBuilder& /*_copy*/) = delete;
-	void operator=(const LightBuilder& /*_copy*/) = delete;
-
-	Component* CreateComponent(Object* _pOwner) const override;
-
-};
+jeDeclareComponentBuilder(Light);
 
 class Light : public Component
 {
-	jeDeclareStaticAllocator(Light);
+	template <class T>
+	friend class MemoryAllocator;
 
 	enum LightType  {NORMALLIGHT, DIRECTIONALLIGHT, SPOTLIGHT, POINTLIGHT};
 

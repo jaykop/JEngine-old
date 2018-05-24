@@ -5,15 +5,12 @@
 
 jeBegin
 
-template <class T>
-class MemoryAllocator;
-
-jeDeclareComponentBuilder(Animation);
-
 class Animation : public Component
 {
 	// Keyword Definitions
-	jeDeclareStaticAllocator(Animation);
+	template <class T>
+	friend class MemoryAllocator;
+
 	friend class ComponentManager;
 	friend class GraphicSystem;
 	friend class AnimationBuilder;
@@ -53,5 +50,7 @@ private:
 	void	EditorUpdate(const float _dt) override;
 
 };
+
+jeDeclareComponentBuilder(Animation);
 
 jeEnd
