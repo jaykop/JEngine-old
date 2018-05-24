@@ -1,8 +1,11 @@
 #include "Camera.h"
 #include "SystemManager.h"
 #include "GraphicSystem.h"
+#include "MemoryAllocator.h"
 
 jeBegin
+
+jeDefineStaticAllocator(Camera);
 
 Camera::Camera(Object* _pOwner)
 	: Component(_pOwner),

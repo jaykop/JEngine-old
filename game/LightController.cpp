@@ -1,9 +1,10 @@
 #include "LightController.h"
 #include "CustomLogicHeader.h"
-
 #include "Light.h"
 
 jeBegin
+
+jeDefineCustomComponentBuilder(LightController);
 
 LightController::LightController(Object* _pObject)
 	:CustomComponent(_pObject)
@@ -54,15 +55,6 @@ void LightController::Unload()
 void LightController::EditorUpdate(const float /*_dt*/)
 {
 	// TODO
-}
-
-LightControllerBuilder::LightControllerBuilder()
-	:ComponentBuilder()
-{}
-
-CustomComponent* LightControllerBuilder::CreateComponent(Object* _pOwner) const
-{
-	return new LightController(_pOwner);
 }
 
 jeEnd

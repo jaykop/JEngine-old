@@ -3,8 +3,11 @@
 #include "GLManager.h"
 #include "AssetManager.h"
 #include "SystemManager.h"
+#include "MemoryAllocator.h"
 
 jeBegin
+
+jeDefineStaticAllocator(Text);
 
 Font::Font()
 	:m_fontSize(0), m_newLineInterval(0.f)

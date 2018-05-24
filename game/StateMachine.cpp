@@ -3,6 +3,8 @@
 
 jeBegin
 
+jeDefineCustomComponentBuilder(StateMachine);
+
 StateMachine::StateMachine(Object* _pObject)
     :CustomComponent(_pObject)
 {}
@@ -62,15 +64,6 @@ void StateMachine::Unload()
 void StateMachine::EditorUpdate(const float /*_dt*/)
 {
     // TODO
-}
-
-StateMachineBuilder::StateMachineBuilder()
-    :ComponentBuilder()
-{}
-
-CustomComponent* StateMachineBuilder::CreateComponent(Object* _pOwner) const
-{
-    return new StateMachine(_pOwner);
 }
 
 jeEnd

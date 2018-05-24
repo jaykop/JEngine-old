@@ -25,6 +25,7 @@ private:
 
 class Transform : public Component
 {
+	jeDeclareStaticAllocator(Transform);
 	friend class ComponentManager;
 	friend class PhysicsSystem;
 	friend class TransformBuilder;

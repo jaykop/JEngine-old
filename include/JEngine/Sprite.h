@@ -29,6 +29,8 @@ private:
 
 class Sprite : public Component
 {
+	jeDeclareStaticAllocator(Sprite);
+
 	// Keyword Definitions
 	friend class	Material;
 	friend class	Animation;

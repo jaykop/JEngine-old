@@ -3,6 +3,8 @@
 
 jeBegin
 
+jeDefineCustomComponentBuilder(LevelController);
+
 LevelController::LevelController(Object* _pObject)
 	:CustomComponent(_pObject)
 {}
@@ -64,15 +66,6 @@ void LevelController::Unload()
 void LevelController::EditorUpdate(const float /*_dt*/)
 {
 	// TODO
-}
-
-LevelControllerBuilder::LevelControllerBuilder()
-	:ComponentBuilder()
-{}
-
-CustomComponent* LevelControllerBuilder::CreateComponent(Object* _pOwner) const
-{
-	return new LevelController(_pOwner);
 }
 
 jeEnd

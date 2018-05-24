@@ -138,17 +138,17 @@ bool AssetManager::SetBuiltInComponents()
     // Load built-in components
 
     // Physics components
-	jeCheckComponentRegistration(jeRegisterComponent(Transform))
+	jeCheckComponentRegistration(jeRegisterComponent(Transform));
 
 	// Graphic components
-	jeCheckComponentRegistration(jeRegisterComponent(Text))
-	jeCheckComponentRegistration(jeRegisterComponent(Model))
-	jeCheckComponentRegistration(jeRegisterComponent(Camera))
-	jeCheckComponentRegistration(jeRegisterComponent(Sprite))
-	jeCheckComponentRegistration(jeRegisterComponent(Emitter))
-	jeCheckComponentRegistration(jeRegisterComponent(Light))
-	jeCheckComponentRegistration(jeRegisterComponent(Material))
-	jeCheckComponentRegistration(jeRegisterComponent(Animation))
+	jeCheckComponentRegistration(jeRegisterComponent(Text));
+	jeCheckComponentRegistration(jeRegisterComponent(Model));
+	jeCheckComponentRegistration(jeRegisterComponent(Camera));
+	jeCheckComponentRegistration(jeRegisterComponent(Sprite));
+	jeCheckComponentRegistration(jeRegisterComponent(Emitter));
+	jeCheckComponentRegistration(jeRegisterComponent(Light));
+	jeCheckComponentRegistration(jeRegisterComponent(Material));
+	jeCheckComponentRegistration(jeRegisterComponent(Animation));
 		
 	jeDebugPrint("*AssetManager - Loaded bulit-in components.\n");
 

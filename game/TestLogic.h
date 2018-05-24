@@ -7,25 +7,8 @@ jeBegin
 class Object;
 struct Telegram;
 
-class TestLogicBuilder : public ComponentBuilder
-{
+jeDeclareCustomComponentBuilder(TestLogic);
 
-	friend class JEngine;
-
-public:
-
-private:
-
-	TestLogicBuilder();
-	~TestLogicBuilder() {};
-	TestLogicBuilder(const TestLogicBuilder& /*_copy*/) = delete;
-	void operator=(const TestLogicBuilder& /*_copy*/) = delete;
-
-	CustomComponent* CreateComponent(Object* _pOwner) const override;
-
-};
-
-void threadTest(int a);
 class TestLogic : public CustomComponent
 {
 	friend class ComponentManager;

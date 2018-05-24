@@ -4,8 +4,11 @@
 #include "Transform.h"
 #include "AssetManager.h"
 #include "SystemManager.h"
+#include "MemoryAllocator.h"
 
 jeBegin
+
+jeDefineStaticAllocator(Sprite);
 
 Sprite::Sprite(Object* _pOwner)
 	:Component(_pOwner), m_color(vec4::ONE), m_projection(PROJECTION_PERSPECTIVE),

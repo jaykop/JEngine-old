@@ -3,8 +3,11 @@
 #include "Transform.h"
 #include "SystemManager.h"
 #include "Random.h"
+#include "MemoryAllocator.h"
 
 jeBegin
+
+jeDefineStaticAllocator(Emitter);
 
 const unsigned	Emitter::m_maxSize = 1000;
 

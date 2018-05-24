@@ -4,13 +4,13 @@
 
 jeBegin
 
-jeComponentBuilderDefinition(MinerState)
-jeComponentBuilderDefinition(BeatBully)
-jeComponentBuilderDefinition(EatStew)
-jeComponentBuilderDefinition(GoHomeAndSleepTilRested)
-jeComponentBuilderDefinition(QuenchThirst)
-jeComponentBuilderDefinition(VisitBankAndDepositGold)
-jeComponentBuilderDefinition(EnterMineAndDigForNugget)
+jeDefineCustomComponentBuilder(MinerState);
+jeDefineCustomComponentBuilder(BeatBully);
+jeDefineCustomComponentBuilder(EatStew);
+jeDefineCustomComponentBuilder(GoHomeAndSleepTilRested);
+jeDefineCustomComponentBuilder(QuenchThirst);
+jeDefineCustomComponentBuilder(VisitBankAndDepositGold);
+jeDefineCustomComponentBuilder(EnterMineAndDigForNugget);
 
 /////////////////////////////////////////////////////////////////////////
 // Global miner state

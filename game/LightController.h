@@ -7,23 +7,7 @@ jeBegin
 class Light;
 struct Telegram;
 
-class LightControllerBuilder : public ComponentBuilder
-{
-
-	friend class JEngine;
-
-public:
-
-private:
-
-	LightControllerBuilder();
-	~LightControllerBuilder() {};
-	LightControllerBuilder(const LightControllerBuilder& _copy) = delete;
-	void operator=(const LightControllerBuilder& _copy) = delete;
-
-	CustomComponent* CreateComponent(Object* _pOwner) const override;
-
-};
+jeDeclareCustomComponentBuilder(LightController);
 
 class LightController : public CustomComponent
 {

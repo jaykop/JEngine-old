@@ -1,7 +1,10 @@
 #include "imgui.h"
 #include "Transform.h"
+#include "MemoryAllocator.h"
 
 jeBegin
+
+jeDefineStaticAllocator(Transform);
 
 Transform::Transform(Object* _pOwner)
 	:Component(_pOwner), 

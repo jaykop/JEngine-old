@@ -40,4 +40,7 @@ private:
 
 };
 
+#define jeDeclareStaticAllocator(x)	template <class T> friend class MemoryAllocator; static MemoryAllocator<x> allocator
+#define jeDefineStaticAllocator(x)	MemoryAllocator<x> x::allocator
+
 jeEnd

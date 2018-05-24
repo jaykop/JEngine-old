@@ -1,8 +1,12 @@
 #include "Animation.h"
 #include "GraphicSystem.h"
 #include "Sprite.h"
+#include "MemoryAllocator.h"
 
 jeBegin
+
+jeDefineComponentBuilder(Animation);
+jeDefineStaticAllocator(Animation);
 
 Animation::Animation(Object* _pOwner)
 	: Component(_pOwner), m_currentFrame(0.f), m_animationSpeed(0.f),
@@ -114,15 +118,6 @@ int Animation::GetAnimationFrame()
 float Animation::GetAnimationSpeed()
 {
 	return m_animationSpeed;
-}
-
-AnimationBuilder::AnimationBuilder()
-	:ComponentBuilder()
-{}
-
-Component* AnimationBuilder::CreateComponent(Object* _pOwner) const
-{
-	return new Animation(_pOwner);
 }
 
 jeEnd

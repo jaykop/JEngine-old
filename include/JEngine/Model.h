@@ -23,6 +23,7 @@ private:
 
 class Model : public Sprite
 {
+	jeDeclareStaticAllocator(Model);
 	friend class ComponentManager;
 	friend class GraphicSystem;
 	friend class ModelBuilder;

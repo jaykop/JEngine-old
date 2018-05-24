@@ -7,25 +7,8 @@ jeBegin
 class Object;
 struct Telegram;
 
-class StateMachineBuilder : public ComponentBuilder
-{
+jeDeclareCustomComponentBuilder(StateMachine);
 
-    friend class JEngine;
-
-public:
-
-private:
-
-    StateMachineBuilder();
-    ~StateMachineBuilder() {};
-    StateMachineBuilder(const StateMachineBuilder& /*_copy*/) = delete;
-    void operator=(const StateMachineBuilder& /*_copy*/) = delete;
-
-    CustomComponent* CreateComponent(Object* _pOwner) const override;
-
-};
-
-void threadTest(int a);
 class StateMachine : public CustomComponent
 {
     friend class ComponentManager;

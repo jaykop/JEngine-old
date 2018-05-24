@@ -5,27 +5,15 @@
 
 jeBegin
 
-class AnimationBuilder : public ComponentBuilder
-{
+template <class T>
+class MemoryAllocator;
 
-	friend class AssetManager;
-
-public:
-
-private:
-
-	AnimationBuilder();
-	~AnimationBuilder() {};
-	AnimationBuilder(const AnimationBuilder& /*_copy*/) = delete;
-	void operator=(const AnimationBuilder& /*_copy*/) = delete;
-
-	Component* CreateComponent(Object* _pOwner) const override;
-
-};
+jeDeclareComponentBuilder(Animation);
 
 class Animation : public Component
 {
 	// Keyword Definitions
+	jeDeclareStaticAllocator(Animation);
 	friend class ComponentManager;
 	friend class GraphicSystem;
 	friend class AnimationBuilder;

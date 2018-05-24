@@ -11,10 +11,10 @@ class Object;
 class Transform;
 struct Telegram;
 
-jeComponentBuilderDeclaration(WifeState)
-jeComponentBuilderDeclaration(DoHousework)
-jeComponentBuilderDeclaration(CookStew)
-jeComponentBuilderDeclaration(GoToBathroom)
+jeDeclareCustomComponentBuilder(WifeState);
+jeDeclareCustomComponentBuilder(DoHousework);
+jeDeclareCustomComponentBuilder(CookStew);
+jeDeclareCustomComponentBuilder(GoToBathroom);
 
 /////////////////////////////////////////////////////////////////////////
 // Global wife state

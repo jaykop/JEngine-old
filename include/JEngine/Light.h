@@ -29,6 +29,7 @@ private:
 
 class Light : public Component
 {
+	jeDeclareStaticAllocator(Light);
 
 	enum LightType  {NORMALLIGHT, DIRECTIONALLIGHT, SPOTLIGHT, POINTLIGHT};
 

@@ -5,6 +5,9 @@
 
 jeBegin
 
+template <class T>
+class MemoryAllocator;
+
 class CameraBuilder : public ComponentBuilder
 {
 
@@ -25,6 +28,7 @@ private:
 
 class Camera : public Component
 {
+	jeDeclareStaticAllocator(Camera);
 
 	friend class ComponentManager;
 	friend class GraphicSystem;

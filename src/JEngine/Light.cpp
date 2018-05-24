@@ -1,8 +1,11 @@
 #include "Light.h"
 #include "SystemManager.h"
 #include "GLManager.h"
+#include "MemoryAllocator.h"
 
 jeBegin
+
+jeDefineStaticAllocator(Light);
 
 Light::Light(Object * _pOwner)
 	:Component(_pOwner), m_color(vec4::ONE),

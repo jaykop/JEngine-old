@@ -3,30 +3,15 @@
 #include "ComponentBuilder.h"
 
 #include "Vector3.h"
+#include "LevelController.h"
 
 jeBegin
 
+jeDeclareCustomComponentBuilder(CameraController);
+
 struct Telegram;
-
-class CameraControllerBuilder : public ComponentBuilder
-{
-
-	friend class JEngine;
-
-public:
-
-private:
-
-	CameraControllerBuilder();
-	~CameraControllerBuilder() {};
-	CameraControllerBuilder(const CameraControllerBuilder& _copy) = delete;
-	void operator=(const CameraControllerBuilder& _copy) = delete;
-
-	CustomComponent* CreateComponent(Object* _pOwner) const override;
-
-};
-
 class Camera;
+
 class CameraController : public CustomComponent
 {
 
