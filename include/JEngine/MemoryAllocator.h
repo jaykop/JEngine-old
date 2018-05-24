@@ -96,4 +96,4 @@ private:
 
 jeEnd
 
-#include "MemoryAllocator.h"
+#include "MemoryAllocator.inl"

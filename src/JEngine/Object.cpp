@@ -5,8 +5,15 @@
 #include "ComponentManager.h"
 #include "Telegram.h"
 #include "imgui.h"
+#include <string>
 
 jeBegin
+
+Object::Object()
+	:Object("Unknown")
+{
+	m_name += std::to_string(m_id);
+}
 
 Object::Object(const char* _name)
 	:m_name(_name), m_active(true), m_pParent(nullptr),
