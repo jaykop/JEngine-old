@@ -6,8 +6,7 @@
 #include "MemoryAllocator.h"
 
 jeBegin
-
-jeDefineStaticAllocator(Emitter);
+jeDefineComponentBuilder(Emitter);
 
 const unsigned	Emitter::m_maxSize = 1000;
 
@@ -331,15 +330,6 @@ void Emitter::Refresh(Particle *_particle)
 void Emitter::EditorUpdate(const float /*_dt*/)
 {
 	// TODO
-}
-
-EmitterBuilder::EmitterBuilder()
-	:ComponentBuilder()
-{}
-
-Component* EmitterBuilder::CreateComponent(Object * _pOwner) const
-{
-	return new Emitter(_pOwner);
 }
 
 jeEnd

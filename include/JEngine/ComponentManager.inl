@@ -40,4 +40,15 @@ bool ComponentManager::RegisterBuilder(
 
 }
 
+template <class ComponentType>
+void ComponentManager::RemoveComponent(Component* _component)
+{
+	static const char* s_name;
+	s_name = typeid(ComponentType).name();
+	// Check if either there is a existing component builder 
+	auto found = m_builderMap.find(s_name);
+
+	found->second->;
+}
+
 jeEnd

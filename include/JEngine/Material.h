@@ -4,27 +4,10 @@
 
 jeBegin
 
-class MaterialBuilder : public ComponentBuilder
-{
-
-	friend class AssetManager;
-
-public:
-
-private:
-
-	MaterialBuilder();
-	~MaterialBuilder() {};
-	MaterialBuilder(const MaterialBuilder& /*_copy*/) = delete;
-	void operator=(const MaterialBuilder& /*_copy*/) = delete;
-
-	Component* CreateComponent(Object* _pOwner) const override;
-
-};
-
 class Material : public Component {
 
-	jeDeclareStaticAllocator(Material);
+	template <class T>
+	friend class MemoryAllocator;
 
 	friend class ComponentManager;
 	friend class MaterialBuilder;
@@ -50,4 +33,5 @@ private:
 	void EditorUpdate(const float _dt) override;
 };
 
+jeDeclareComponentBuilder(Material);
 jeEnd

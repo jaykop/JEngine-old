@@ -111,7 +111,7 @@ void MemoryAllocator<T>::ClearPages()
 }
 
 template <class T>
-T* MemoryAllocator<T>::Allocate()
+Node* MemoryAllocator<T>::Allocate()
 {
 	// If there not enough memory to return,
 	// make new page
@@ -136,7 +136,8 @@ T* MemoryAllocator<T>::Allocate()
 		m_stats.m_mostNodes = total;
 
 	// Return the memory;
-	return new(toReturn) T();
+	// return new(toReturn) T();
+	return toReturn;
 }
 
 template <class T>

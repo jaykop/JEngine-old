@@ -78,7 +78,7 @@ public:
 	MemoryAllocator();
 	~MemoryAllocator();
 
-	T*		Allocate();
+	Node*	Allocate();
 	void	Free(T* _toReturn);
 
 private:

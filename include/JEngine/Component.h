@@ -18,6 +18,7 @@ public:
 
 protected:
 
+	Component() {};
 	Component(Object* _pOwner, bool _byUser = false)
 		: m_pOwner(_pOwner), m_pOwnerId(_pOwner->GetId()), 
 		m_byUser(_byUser), m_showEditor(false) {};
@@ -34,8 +35,7 @@ protected:
 	unsigned	m_pOwnerId;
 
 private:
-
-	Component() = delete;
+;
 	Component(const Component& /*_copy*/) = delete;
 
 };

@@ -4,8 +4,9 @@
 #include "MemoryAllocator.h"
 
 jeBegin
-
 jeDefineCustomComponentBuilder(TestLogic);
+
+int TestLogic::a = 0;
 
 TestLogic::TestLogic(Object* _pObject)
 	:CustomComponent(_pObject)
@@ -34,8 +35,13 @@ void TestLogic::Init()
 
 	m_ortho = CONTAINER->GetObject("OrthogonalSprite");
 	m_pers = CONTAINER->GetObject("PerspectiveModel");
-	CONTAINER->GET_COMPONENT("Model", Sprite);
-	CONTAINER->GET_COMPONENT(5, Sprite);
+	//CONTAINER->GET_COMPONENT("Model", Sprite);
+	//CONTAINER->GET_COMPONENT(5, Sprite);
+
+	//std::vector<A*> b;
+	//b.push_back(&A);
+
+	//int* c = b[0];
 }
 
 void TestLogic::Update(const float /*_dt*/)

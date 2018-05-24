@@ -4,8 +4,7 @@
 #include "MemoryAllocator.h"
 
 jeBegin
-
-jeDefineStaticAllocator(Model);
+jeDefineComponentBuilder(Model);
 
 Model::Model(Object* _pOwner)
 	:Sprite(_pOwner)
@@ -27,15 +26,6 @@ void Model::operator=(const Model & _copy)
 void Model::EditorUpdate(const float /*_dt*/)
 {
 	// TODO
-}
-
-ModelBuilder::ModelBuilder()
-	:ComponentBuilder()
-{}
-
-Component* ModelBuilder::CreateComponent(Object* _pOwner) const
-{
-	return new Model(_pOwner);
 }
 
 jeEnd

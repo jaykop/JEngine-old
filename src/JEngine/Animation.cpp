@@ -4,9 +4,7 @@
 #include "MemoryAllocator.h"
 
 jeBegin
-
 jeDefineComponentBuilder(Animation);
-jeDefineStaticAllocator(Animation);
 
 Animation::Animation(Object* _pOwner)
 	: Component(_pOwner), m_currentFrame(0.f), m_animationSpeed(0.f),

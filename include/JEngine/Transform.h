@@ -5,27 +5,11 @@
 
 jeBegin
 
-class TransformBuilder : public ComponentBuilder
-{
-	
-	friend class AssetManager;
-
-public:
-	
-
-private:
-
-	TransformBuilder();
-	~TransformBuilder() {};
-	TransformBuilder(const TransformBuilder& /*_copy*/) = delete;
-	void operator=(const TransformBuilder& /*_copy*/) = delete;
-
-	Component* CreateComponent(Object* _pOwner) const override;
-};
-
 class Transform : public Component
 {
-	jeDeclareStaticAllocator(Transform);
+	template <class T>
+	friend class MemoryAllocator;
+
 	friend class ComponentManager;
 	friend class PhysicsSystem;
 	friend class TransformBuilder;
@@ -51,4 +35,5 @@ private:
 
 };
 
+jeDeclareComponentBuilder(Transform);
 jeEnd

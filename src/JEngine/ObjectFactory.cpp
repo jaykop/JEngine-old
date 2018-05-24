@@ -25,7 +25,9 @@ void ObjectFactory::CreateObject(const char* _name)
 	else {
 		m_added = false;
 		++m_registerNumber;
-		m_pLastMade = allocator.Allocate();//new Object(_name);
+		m_pLastMade = new(allocator.Allocate()) Object(_name);
+		//new Object(_name);
+		//m_pLastMade->m_name.assign(_name);
 	}
 }
 

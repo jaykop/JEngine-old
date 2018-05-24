@@ -3,8 +3,7 @@
 #include "MemoryAllocator.h"
 
 jeBegin
-
-jeDefineStaticAllocator(Transform);
+jeDefineComponentBuilder(Transform);
 
 Transform::Transform(Object* _pOwner)
 	:Component(_pOwner), 
@@ -68,15 +67,6 @@ void Transform::EditorUpdate(const float /*_dt*/)
 		m_rotation = s_rotation;
 
 	}
-}
-
-TransformBuilder::TransformBuilder()
-	:ComponentBuilder()
-{}
-
-Component* TransformBuilder::CreateComponent(Object* _pOwner) const
-{
-	return new Transform(_pOwner);
 }
 
 jeEnd

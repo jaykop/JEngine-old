@@ -4,7 +4,6 @@
 #include "Vector4.h"
 
 jeBegin
-
 jeDefineCustomComponentBuilder(CameraController);
 
 CameraController::CameraController(Object* _pObject)
