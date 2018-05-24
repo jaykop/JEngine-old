@@ -1,5 +1,6 @@
 #include "Light.h"
 #include "SystemManager.h"
+#include "GLManager.h"
 
 jeBegin
 
@@ -9,7 +10,8 @@ Light::Light(Object * _pOwner)
 	m_specular(vec4::ONE), m_position(vec3(0.f, 0.f, 1.f)),
 	m_direction(vec3::ZERO), m_constant(0.f), m_linear(0.f),
 	m_quadratic(0.f), m_cutOff(0.f), m_outerCutOff(0.f),
-	m_projection(PROJECTION_PERSPECTIVE)
+	m_projection(PROJECTION_PERSPECTIVE),
+	m_sfactor(GL_SRC_ALPHA), m_dfactor(GL_ONE_MINUS_SRC_ALPHA)
 {}
 
 Light::~Light()

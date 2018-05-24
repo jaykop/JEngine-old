@@ -56,6 +56,7 @@ public:
 	vec4		m_color;
 	ProjectType m_projection;
 
+	unsigned	m_sfactor, m_dfactor;
 	unsigned	*m_vao, m_elementSize;
 
 protected:

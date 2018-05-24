@@ -39,13 +39,13 @@ public:
     int		GetWidth() const;
     int		GetHeight() const;
     void	SetMainCamera(Camera* _camera);
-    Camera*     GetMainCamera();
+    Camera* GetMainCamera();
 
-    vec3	    m_lightScale;
-    vec4	    m_backgroundColor, m_screenColor;
-    bool	    m_orthoComesFirst;
-    float	    m_sobelAmount, m_blurSize, m_blurAmount, m_sobelSize, m_fovy, m_aspect, m_zNear, m_zFar;
-    Alias	    m_aliasMode;
+    vec3			m_lightScale;
+    vec4			m_backgroundColor, m_screenColor;
+    bool			m_orthoComesFirst;
+    float			m_sobelAmount, m_blurSize, m_blurAmount, m_sobelSize, m_fovy, m_aspect, m_zNear, m_zFar;
+    Alias			m_aliasMode;
     ScreenEffect    m_screenEffect;
 
 private:

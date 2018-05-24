@@ -18,6 +18,7 @@ public:
 
 private:
 
+
 	static bool			m_added;
 	static unsigned		m_registerNumber;
 	static Object*		m_pLastMade;
