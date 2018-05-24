@@ -1,8 +1,11 @@
 #include "Model.h"
 #include "GLManager.h"
 #include "SystemManager.h"
+#include "MemoryAllocator.h"
 
 jeBegin
+
+jeDefineStaticAllocator(Model);
 
 Model::Model(Object* _pOwner)
 	:Sprite(_pOwner)

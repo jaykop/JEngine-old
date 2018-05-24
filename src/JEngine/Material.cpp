@@ -1,8 +1,11 @@
 #include "Model.h"
 #include "Object.h"
 #include "Material.h"
+#include "MemoryAllocator.h"
 
 jeBegin
+
+jeDefineStaticAllocator(Material);
 
 Material::Material(Object* _pOwner)
 	:Component(_pOwner), m_diffuse(0), 

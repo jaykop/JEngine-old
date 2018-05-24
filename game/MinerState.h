@@ -12,13 +12,13 @@ class Object;
 class Transform;
 struct Telegram;
 
-jeComponentBuilderDeclaration(MinerState)
-jeComponentBuilderDeclaration(BeatBully)
-jeComponentBuilderDeclaration(EatStew)
-jeComponentBuilderDeclaration(GoHomeAndSleepTilRested)
-jeComponentBuilderDeclaration(QuenchThirst)
-jeComponentBuilderDeclaration(VisitBankAndDepositGold)
-jeComponentBuilderDeclaration(EnterMineAndDigForNugget)
+jeDeclareCustomComponentBuilder(MinerState);
+jeDeclareCustomComponentBuilder(BeatBully);
+jeDeclareCustomComponentBuilder(EatStew);
+jeDeclareCustomComponentBuilder(GoHomeAndSleepTilRested);
+jeDeclareCustomComponentBuilder(QuenchThirst);
+jeDeclareCustomComponentBuilder(VisitBankAndDepositGold);
+jeDeclareCustomComponentBuilder(EnterMineAndDigForNugget);
 
 /////////////////////////////////////////////////////////////////////////
 // Global miner state

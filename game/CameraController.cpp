@@ -5,6 +5,8 @@
 
 jeBegin
 
+jeDefineCustomComponentBuilder(CameraController);
+
 CameraController::CameraController(Object* _pObject)
 	:CustomComponent(_pObject), m_camera(nullptr),
 	m_position(vec3::ZERO), m_target(vec3::ZERO)
@@ -88,15 +90,6 @@ void CameraController::Unload()
 void CameraController::EditorUpdate(const float /*_dt*/)
 {
 	// TODO
-}
-
-CameraControllerBuilder::CameraControllerBuilder()
-	:ComponentBuilder()
-{}
-
-CustomComponent* CameraControllerBuilder::CreateComponent(Object* _pOwner) const
-{
-	return new CameraController(_pOwner);
 }
 
 jeEnd

@@ -24,6 +24,8 @@ private:
 
 class Material : public Component {
 
+	jeDeclareStaticAllocator(Material);
+
 	friend class ComponentManager;
 	friend class MaterialBuilder;
 	friend class GraphicSystem;

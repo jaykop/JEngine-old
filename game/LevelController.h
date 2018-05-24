@@ -4,27 +4,11 @@
 
 jeBegin
 
+jeDeclareCustomComponentBuilder(LevelController);
+
 struct Telegram;
-
-class LevelControllerBuilder : public ComponentBuilder
-{
-
-	friend class JEngine;
-
-public:
-
-private:
-
-	LevelControllerBuilder();
-	~LevelControllerBuilder() {};
-	LevelControllerBuilder(const LevelControllerBuilder& _copy) = delete;
-	void operator=(const LevelControllerBuilder& _copy) = delete;
-
-	CustomComponent* CreateComponent(Object* _pOwner) const override;
-
-};
-
 class Camera;
+
 class LevelController : public CustomComponent
 {
 	friend class ComponentManager;

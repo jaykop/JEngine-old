@@ -10,9 +10,9 @@ class Object;
 class Transform;
 struct Telegram;
 
-jeComponentBuilderDeclaration(BullyState)
-jeComponentBuilderDeclaration(JustHatingMiner)
-jeComponentBuilderDeclaration(GoFight)
+jeDeclareCustomComponentBuilder(BullyState);
+jeDeclareCustomComponentBuilder(JustHatingMiner);
+jeDeclareCustomComponentBuilder(GoFight);
 
 /////////////////////////////////////////////////////////////////////////
 // Global bully state

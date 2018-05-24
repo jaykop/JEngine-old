@@ -4,9 +4,9 @@
 
 jeBegin
 
-jeComponentBuilderDefinition(BullyState)
-jeComponentBuilderDefinition(JustHatingMiner)
-jeComponentBuilderDefinition(GoFight)
+jeDefineCustomComponentBuilder(BullyState);
+jeDefineCustomComponentBuilder(JustHatingMiner);
+jeDefineCustomComponentBuilder(GoFight);
 
 /////////////////////////////////////////////////////////////////////////
 // Global bully state

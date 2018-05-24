@@ -24,6 +24,7 @@ private:
 
 class Emitter : public Sprite 
 {
+	jeDeclareStaticAllocator(Emitter);
 
 	friend class ComponentManager;
 	friend class EmitterBuilder;

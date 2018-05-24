@@ -4,10 +4,10 @@
 
 jeBegin
 
-jeComponentBuilderDefinition(WifeState)
-jeComponentBuilderDefinition(DoHousework)
-jeComponentBuilderDefinition(CookStew)
-jeComponentBuilderDefinition(GoToBathroom)
+jeDefineCustomComponentBuilder(WifeState);
+jeDefineCustomComponentBuilder(DoHousework);
+jeDefineCustomComponentBuilder(CookStew);
+jeDefineCustomComponentBuilder(GoToBathroom);
 
 /////////////////////////////////////////////////////////////////////////
 // Global wife state

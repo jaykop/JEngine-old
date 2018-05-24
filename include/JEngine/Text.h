@@ -58,6 +58,7 @@ private:
 
 class Text : public Sprite
 {
+	jeDeclareStaticAllocator(Text);
     friend class ComponentManager;
     friend class GraphicSystem;
     friend class TextBuilder;

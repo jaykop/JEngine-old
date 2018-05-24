@@ -5,6 +5,8 @@
 
 jeBegin
 
+jeDefineCustomComponentBuilder(TestLogic);
+
 TestLogic::TestLogic(Object* _pObject)
 	:CustomComponent(_pObject)
 {}
@@ -75,15 +77,6 @@ void TestLogic::Unload()
 void TestLogic::EditorUpdate(const float /*_dt*/)
 {
 	// TODO
-}
-
-TestLogicBuilder::TestLogicBuilder()
-	:ComponentBuilder()
-{}
-
-CustomComponent* TestLogicBuilder::CreateComponent(Object* _pOwner) const
-{
-	return new TestLogic(_pOwner);
 }
 
 jeEnd
