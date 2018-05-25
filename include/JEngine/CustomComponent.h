@@ -21,7 +21,7 @@ public:
 
 protected:
 
-	CustomComponent(Object* _pOwner = nullptr)
+	CustomComponent(Object* _pOwner)
 		: Component(_pOwner, true) {};
 	virtual	~CustomComponent() {};
 

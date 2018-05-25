@@ -6,10 +6,12 @@
 #include "InputHandler.h"
 #include "StateManager.h"
 #include "State.h"
+#include "Object.h"
 #include "ObjectFactory.h"
 #include "ObjectContainer.h"
 #include "AssetManager.h"
 #include "SystemManager.h"
+#include "MemoryAllocator.h"
 
 /////////////////////////////////////////////////////////////////////////
 // Systems

@@ -7,6 +7,7 @@
 #include "Sprite.h"
 #include "Light.h"
 #include "Camera.h"
+#include "Object.h"
 
 jeBegin
 
@@ -152,7 +153,7 @@ void GraphicSystem::RemoveSprite(Sprite* _sprite)
 {
 	for (Sprites::iterator it = m_sprites.begin();
 		it != m_sprites.end(); ++it) {
-		if ((*it)->m_pOwnerId == _sprite->m_pOwnerId) {
+		if ((*it)->m_pOwner->GetId() == _sprite->m_pOwner->GetId()) {
 			m_sprites.erase(it);
 			break;
 		}
@@ -190,7 +191,7 @@ void GraphicSystem::RemoveCamera(Camera* _camera)
 {	
 	for (Cameras::iterator it = m_cameras.begin();
 		it != m_cameras.end(); ++it) {
-		if ((*it)->m_pOwnerId == _camera->m_pOwnerId) {
+		if ((*it)->m_pOwner->GetId() == _camera->m_pOwner->GetId()) {
 			m_cameras.erase(it);
 			break;
 		}
@@ -210,7 +211,7 @@ void GraphicSystem::RemoveLight(Light * _light)
 {
 	for (Lights::iterator it = m_lights.begin();
 		it != m_lights.end(); ++it) {
-		if ((*it)->m_pOwnerId == _light->m_pOwnerId) {
+		if ((*it)->m_pOwner->GetId() == _light->m_pOwner->GetId()) {
 			m_lights.erase(it);
 			break;
 		}
@@ -279,38 +280,38 @@ void GraphicSystem::UpdateMousePosition() {
 }
 
 
-void GraphicSystem::Ray(Sprite* _sprite, Transform* _transform)
+void GraphicSystem::Ray(Sprite* /*_sprite*/, Transform* /*_transform*/)
 {
-	if (_sprite->GetOwnerId() != _transform->GetOwnerId())
-		jeDebugPrint("!The owners of sprite and transform are not identical.\n");
+	//if (_sprite->GetOwnerId() != _transform->GetOwnerId())
+	//	jeDebugPrint("!The owners of sprite and transform are not identical.\n");
 
-	static mat4 s_translate, s_scale, s_rotation,
-		s_viewport, s_projection;
-	static vec4 s_final, s_position4;
-	static vec3 s_position3;
+	//static mat4 s_translate, s_scale, s_rotation,
+	//	s_viewport, s_projection;
+	//static vec4 s_final, s_position4;
+	//static vec3 s_position3;
 
-	s_position3 = _transform->m_position;
-	s_position4.Set(s_position3.x, s_position3.y, s_position3.z, 1.f);
-	s_translate = mat4::Translate(s_position3);
-	s_scale = mat4::Scale(_transform->m_scale);
-	s_rotation = mat4::Rotate(_transform->m_rotation, _transform->m_rotationAxis);
-	
-	if (_sprite->m_projection == PROJECTION_PERSPECTIVE) {
-		s_projection = m_perspective;
-		s_viewport = mat4::LookAt(
-			m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
-	}
+	//s_position3 = _transform->m_position;
+	//s_position4.Set(s_position3.x, s_position3.y, s_position3.z, 1.f);
+	//s_translate = mat4::Translate(s_position3);
+	//s_scale = mat4::Scale(_transform->m_scale);
+	//s_rotation = mat4::Rotate(_transform->m_rotation, _transform->m_rotationAxis);
+	//
+	//if (_sprite->m_projection == PROJECTION_PERSPECTIVE) {
+	//	s_projection = m_perspective;
+	//	s_viewport = mat4::LookAt(
+	//		m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
+	//}
 
-	else {	// PROJECTION_ORTHOGONAL
-		s_projection = m_orthogonal;
-		s_viewport.SetIdentity();
-		s_viewport = mat4::Scale(m_resolutionScaler);
-	}
+	//else {	// PROJECTION_ORTHOGONAL
+	//	s_projection = m_orthogonal;
+	//	s_viewport.SetIdentity();
+	//	s_viewport = mat4::Scale(m_resolutionScaler);
+	//}
 
-	s_final = s_projection * s_viewport * (s_scale * s_rotation * s_translate) * s_position4;
+	//s_final = s_projection * s_viewport * (s_scale * s_rotation * s_translate) * s_position4;
 
-	// TODO...
-	// http://goguri.tistory.com/entry/3D-%ED%94%BC%ED%82%B9
+	//// TODO...
+	//// http://goguri.tistory.com/entry/3D-%ED%94%BC%ED%82%B9
 }
 
 jeEnd

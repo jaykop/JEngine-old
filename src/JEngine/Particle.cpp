@@ -4,6 +4,7 @@
 #include "SystemManager.h"
 #include "Random.h"
 #include "MemoryAllocator.h"
+#include "Object.h"
 
 jeBegin
 jeDefineComponentBuilder(Emitter);

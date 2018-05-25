@@ -1,16 +1,18 @@
 #pragma once
 #include "CustomComponent.h"
+#include "ComponentManager.h"
 #include "ComponentBuilder.h"
 
 jeBegin
-
-jeDeclareCustomComponentBuilder(LevelController);
 
 struct Telegram;
 class Camera;
 
 class LevelController : public CustomComponent
 {
+	template <class T>
+	friend class MemoryAllocator;
+
 	friend class ComponentManager;
 	friend class LevelControllerBuilder;
 
@@ -32,4 +34,5 @@ private:
 	void EditorUpdate(const float _dt) override;
 };
 
+jeDeclareCustomComponentBuilder(LevelController);
 jeEnd

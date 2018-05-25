@@ -133,8 +133,8 @@ void CookStew::Init()
         //send a delayed message myself so that I know when to take the stew
         //out of the oven
         DISPATCHER::DispatchMessage(1.5,	//time delay
-            m_pOwnerId,						//sender ID
-			m_pOwnerId,						//receiver ID
+            m_pOwner->GetId(),				//sender ID
+			m_pOwner->GetId(),				//receiver ID
             "StewReady",					//msg
             nullptr);
 
@@ -154,7 +154,7 @@ bool CookStew::OnMessage(Telegram& msg)
     {
         //let miner know the stew is ready
         DISPATCHER::DispatchMessage(0.0,
-            m_pOwnerId,
+            m_pOwner->GetId(),
 			CONTAINER->GetObject("Miner")->GetId(),
             "StewReady",
             nullptr);

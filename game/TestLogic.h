@@ -1,16 +1,18 @@
 #pragma once
 #include "CustomComponent.h"
 #include "ComponentBuilder.h"
+#include "ComponentManager.h"
 
 jeBegin
 
 class Object;
 struct Telegram;
 
-jeDeclareCustomComponentBuilder(TestLogic);
-
 class TestLogic : public CustomComponent
 {
+	template <class T>
+	friend class MemoryAllocator;
+
 	friend class ComponentManager;
 	friend class TestLogicBuilder;
 
@@ -37,4 +39,5 @@ private:
 
 };
 
+jeDeclareCustomComponentBuilder(TestLogic);
 jeEnd

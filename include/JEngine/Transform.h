@@ -1,6 +1,7 @@
 #pragma once
 #include "Vector3.h"
 #include "Component.h"
+#include "ComponentManager.h"
 #include "ComponentBuilder.h"
 
 jeBegin

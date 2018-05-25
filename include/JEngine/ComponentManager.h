@@ -29,15 +29,14 @@ public:
 	static Component*	CreateComponent(
 		const char* _componentName, Object* _pOwner);
 
-	template <class ComponentType>
 	static void	RemoveComponent(Component* _component);
 
 private:
 
-	static void			ClearBuilders();
+	static void	ClearBuilders();
 
 	template <class ComponentType>
-	inline static bool RegisterBuilder(
+	static bool RegisterBuilder(
 		const char* _componentName, ComponentBuilder* _pBuilder);
 
 	static BuilderMap			m_builderMap;
@@ -47,12 +46,12 @@ private:
 
 using COMPONENT = ComponentManager;
 
-jeEnd
-
-#include "ComponentManager.inl"
-
 // Component manager macro
 #define jeStringfy(x)					#x
 #define jeConcat(a, b)					a ## b
 #define jeRegisterComponent(c)			COMPONENT::RegisterBuilder<c>(jeStringfy(c), new jeConcat(c, Builder))
 #define jeCheckComponentRegistration(c)	if (!(c)) { return false; } 
+
+jeEnd
+
+#include "ComponentManager.inl"

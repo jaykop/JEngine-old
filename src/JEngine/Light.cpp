@@ -5,6 +5,17 @@
 
 jeBegin
 jeDefineComponentBuilder(Light);
+//MemoryAllocator<Light> LightBuilder::m_allocator; 
+//LightBuilder::LightBuilder() {} 
+//Component* LightBuilder::CreateComponent(Object* _pOwner) const
+//{
+//	return new (m_allocator.Allocate()) Light(_pOwner);
+//	/*return new (c)(_pOwner);*/
+//} 
+//void LightBuilder::RemoveComponent(Component* _pComponent)
+//{
+//	m_allocator.Free(_pComponent);
+//}
 
 Light::Light(Object * _pOwner)
 	:Component(_pOwner), m_color(vec4::ONE),

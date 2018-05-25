@@ -1,6 +1,7 @@
 #include "CustomComponent.h"
 #include "BehaviorSystem.h"
 #include "MessageDispatcher.h"
+#include "Object.h"
 
 jeBegin
 
@@ -17,7 +18,7 @@ void BehaviorSystem::RemoveBehavior(CustomComponent* _behavior)
 {
 	for (Behaviors::iterator it = m_behaviors.begin();
 		it != m_behaviors.end(); ++it) {
-		if ((*it)->m_pOwnerId == _behavior->m_pOwnerId) {
+		if ((*it)->m_pOwner->GetId() == _behavior->m_pOwner->GetId()) {
 			m_behaviors.erase(it);
 			break;
 		}

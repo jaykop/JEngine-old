@@ -143,7 +143,9 @@ Node* MemoryAllocator<T>::Allocate()
 template <class T>
 void MemoryAllocator<T>::Free(T* _toReturn)
 {
+	// Call its destructor
 	_toReturn->~T();
+	// Cast to node type
 	Node* newHeadFreelist = jeCastToNodePointer(_toReturn);
 	// Set freed pattern
 	std::memset(newHeadFreelist, JE_FREED, m_stats.m_nodeSize);

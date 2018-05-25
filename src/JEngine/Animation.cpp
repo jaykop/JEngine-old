@@ -2,6 +2,7 @@
 #include "GraphicSystem.h"
 #include "Sprite.h"
 #include "MemoryAllocator.h"
+#include "Object.h"
 
 jeBegin
 jeDefineComponentBuilder(Animation);
