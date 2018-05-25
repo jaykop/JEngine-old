@@ -12,12 +12,6 @@ TestLogic::TestLogic(Object* _pObject)
 	:CustomComponent(_pObject)
 {}
 
-void threadTest(int a)
-{
-	for (int index = 0; index < a; ++index)
-		printf("%d ", index);
-}
-
 void TestLogic::Register()
 {
 	SYSTEM::GetBehaviorSystem()->AddBehavior(this);
@@ -32,7 +26,19 @@ void TestLogic::Init()
 
 	//if (a.joinable())
 	//	a.join();
+	t.Start();
 
+	for (int index = 0; index < 10000 ; index++)
+	{
+		FACTORY::CreateObject(std::to_string(index).c_str());
+		FACTORY::AddCreatedObject();
+		m_list.push_back(FACTORY::GetCreatedObject());
+	}
+
+	for (auto obj : m_list) {
+		CONTAINER->RemoveObject(obj);
+	}
+	jeDebugPrint("%f\n", t.GetTime());
 	//unsigned a = sizeof(std::string);
 
 	m_ortho = CONTAINER->GetObject("OrthogonalSprite");

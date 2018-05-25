@@ -2,6 +2,7 @@
 #include "CustomComponent.h"
 #include "ComponentBuilder.h"
 #include "ComponentManager.h"
+#include "Timer.h"
 
 jeBegin
 
@@ -22,6 +23,8 @@ public:
 
 private:
 
+	std::vector <Object*> m_list;
+
 	TestLogic(Object* pObject);
 	~TestLogic() {};
 
@@ -37,6 +40,7 @@ private:
 
 	void EditorUpdate(const float _dt) override;
 
+	Timer t;
 };
 
 jeDeclareCustomComponentBuilder(TestLogic);

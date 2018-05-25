@@ -20,6 +20,7 @@ class ObjectContainer {
 
 public:
 
+	void		RemoveObject(Object* _pObj);
 	void		RemoveObject(const char* _name);
 	void		RemoveObject(unsigned _id);
 	Object*		GetObject(const char* _name);
