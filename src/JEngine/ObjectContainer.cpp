@@ -32,6 +32,28 @@ void ObjectContainer::RemoveObject(const char* _name)
 		jeDebugPrint("!ObjectContainer - No such name of enrolled object: %s\n", _name);
 }
 
+void ObjectContainer::RemoveObject(Object* _pObj)
+{
+	bool notFound = true;
+	for (auto object = m_objectMap.begin();
+		object != m_objectMap.end(); ++object) {
+
+		if (_pObj == object->second) {
+			notFound = false;
+			IMGUI::RemoveObjectEditor(object->second);
+			FACTORY::allocator.Free(object->second);
+			//delete object->second;
+			//object->second = nullptr;
+			m_objectMap.erase(object);
+
+			break;
+		}
+	}
+
+	if (notFound)
+		jeDebugPrint("!ObjectContainer - No such name of enrolled object: %s\n", _pObj->GetName().c_str());
+}
+
 void ObjectContainer::RemoveObject(unsigned _id)
 {
 	bool notFound = true;

@@ -30,7 +30,6 @@ void ComponentManager::RemoveComponent(Component* _component)
 	// Check if either there is a existing component builder 
 	auto found = m_builderMap.find(_component->m_typeName);
 	found->second->RemoveComponent(_component);
-	_component = nullptr;
 }
 
 const char* ComponentManager::KeyToTypeTranslator(const char* _name)

@@ -154,9 +154,9 @@ void Object::ClearComponents()
 
 void Object::ClearChildren()
 {
-	for (auto child : m_childObjs)
-		CONTAINER->RemoveObject(child.second->GetName().c_str());
-
+	for (auto child : m_childObjs) 
+		CONTAINER->RemoveObject(child.second);
+	
 	m_childObjs.clear();
 }
 
