@@ -1,5 +1,6 @@
 #pragma once
 #include "CustomComponent.h"
+#include "ComponentManager.h"
 #include "ComponentBuilder.h"
 
 #include "Location.h"
@@ -12,19 +13,14 @@ class Object;
 class Transform;
 struct Telegram;
 
-jeDeclareCustomComponentBuilder(MinerState);
-jeDeclareCustomComponentBuilder(BeatBully);
-jeDeclareCustomComponentBuilder(EatStew);
-jeDeclareCustomComponentBuilder(GoHomeAndSleepTilRested);
-jeDeclareCustomComponentBuilder(QuenchThirst);
-jeDeclareCustomComponentBuilder(VisitBankAndDepositGold);
-jeDeclareCustomComponentBuilder(EnterMineAndDigForNugget);
-
 /////////////////////////////////////////////////////////////////////////
 // Global miner state
 /////////////////////////////////////////////////////////////////////////
 class MinerState : public CustomComponent
 {
+	template <class T>
+	friend class MemoryAllocator;
+
     friend class ComponentManager;
     friend class MinerStateBuilder;
 
@@ -61,6 +57,9 @@ private:
 /////////////////////////////////////////////////////////////////////////
 class BeatBully : public CustomComponent
 {
+	template <class T>
+	friend class MemoryAllocator;
+
     friend class ComponentManager;
     friend class BeatBullyBuilder;
 
@@ -92,6 +91,9 @@ private:
 /////////////////////////////////////////////////////////////////////////
 class EatStew : public CustomComponent
 {
+	template <class T>
+	friend class MemoryAllocator;
+
     friend class ComponentManager;
     friend class EatStewBuilder;
 
@@ -121,6 +123,9 @@ private:
 /////////////////////////////////////////////////////////////////////////
 class GoHomeAndSleepTilRested : public CustomComponent
 {
+	template <class T>
+	friend class MemoryAllocator;
+
     friend class ComponentManager;
     friend class GoHomeAndSleepTilRestedBuilder;
 
@@ -150,6 +155,9 @@ private:
 /////////////////////////////////////////////////////////////////////////
 class QuenchThirst : public CustomComponent
 {
+	template <class T>
+	friend class MemoryAllocator;
+
     friend class ComponentManager;
     friend class QuenchThirstBuilder;
 
@@ -179,6 +187,9 @@ private:
 /////////////////////////////////////////////////////////////////////////
 class VisitBankAndDepositGold : public CustomComponent
 {
+	template <class T>
+	friend class MemoryAllocator;
+
     friend class ComponentManager;
     friend class VisitBankAndDepositGoldBuilder;
 
@@ -208,6 +219,9 @@ private:
 /////////////////////////////////////////////////////////////////////////
 class EnterMineAndDigForNugget : public CustomComponent
 {
+	template <class T>
+	friend class MemoryAllocator;
+
     friend class ComponentManager;
     friend class EnterMineAndDigForNuggetBuilder;
 
@@ -230,5 +244,13 @@ private:
 
     void EditorUpdate(const float /*_dt*/) override {};
 };
+
+jeDeclareCustomComponentBuilder(MinerState);
+jeDeclareCustomComponentBuilder(BeatBully);
+jeDeclareCustomComponentBuilder(EatStew);
+jeDeclareCustomComponentBuilder(GoHomeAndSleepTilRested);
+jeDeclareCustomComponentBuilder(QuenchThirst);
+jeDeclareCustomComponentBuilder(VisitBankAndDepositGold);
+jeDeclareCustomComponentBuilder(EnterMineAndDigForNugget);
 
 jeEnd

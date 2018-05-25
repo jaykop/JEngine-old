@@ -4,6 +4,7 @@
 #include "AssetManager.h"
 #include "SystemManager.h"
 #include "MemoryAllocator.h"
+#include "Object.h"
 
 jeBegin
 jeDefineComponentBuilder(Text);

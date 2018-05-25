@@ -1,5 +1,6 @@
 #pragma once
 #include "CustomComponent.h"
+#include "ComponentManager.h"
 #include "ComponentBuilder.h"
 #include "Location.h"
 #include "Vector3.h"
@@ -11,16 +12,14 @@ class Object;
 class Transform;
 struct Telegram;
 
-jeDeclareCustomComponentBuilder(WifeState);
-jeDeclareCustomComponentBuilder(DoHousework);
-jeDeclareCustomComponentBuilder(CookStew);
-jeDeclareCustomComponentBuilder(GoToBathroom);
-
 /////////////////////////////////////////////////////////////////////////
 // Global wife state
 /////////////////////////////////////////////////////////////////////////
 class WifeState : public CustomComponent
 {
+	template <class T>
+	friend class MemoryAllocator;
+
 	friend class ComponentManager;
 	friend class WifeStateBuilder;
 
@@ -59,6 +58,9 @@ private:
 /////////////////////////////////////////////////////////////////////////
 class DoHousework : public CustomComponent
 {
+	template <class T>
+	friend class MemoryAllocator;
+
 	friend class ComponentManager;
 	friend class DoHouseworkBuilder;
 
@@ -88,6 +90,9 @@ private:
 /////////////////////////////////////////////////////////////////////////
 class CookStew : public CustomComponent
 {
+	template <class T>
+	friend class MemoryAllocator;
+
 	friend class ComponentManager;
 	friend class CookStewBuilder;
 
@@ -117,6 +122,9 @@ private:
 /////////////////////////////////////////////////////////////////////////
 class GoToBathroom : public CustomComponent
 {
+	template <class T>
+	friend class MemoryAllocator;
+
 	friend class ComponentManager;
 	friend class GoToBathroomBuilder;
 
@@ -140,5 +148,10 @@ private:
 	void EditorUpdate(const float /*_dt*/) override {};
 
 };
+
+jeDeclareCustomComponentBuilder(WifeState);
+jeDeclareCustomComponentBuilder(DoHousework);
+jeDeclareCustomComponentBuilder(CookStew);
+jeDeclareCustomComponentBuilder(GoToBathroom);
 
 jeEnd

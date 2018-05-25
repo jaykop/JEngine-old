@@ -81,7 +81,7 @@ void GoHomeAndSleepTilRested::Init()
 	if (!firstTIme) {
 		if (!m_globalState->m_ateStew)
 			DISPATCHER::DispatchMessage(0.0,			//time delay
-				m_pOwnerId,								//sender ID
+				m_pOwner->GetId(),								//sender ID
 				CONTAINER->GetObject("Wife")->GetId(),	//receiver ID
 				"HoneyI'mHome",							//msg
 				nullptr);
@@ -328,7 +328,7 @@ void BeatBully::Update(const float /*_dt*/)
 
 	else {
 		DISPATCHER::DispatchMessage(0.0,			//time delay
-			m_pOwnerId,								//sender ID
+			m_pOwner->GetId(),								//sender ID
 			CONTAINER->GetObject("Bully")->GetId(),	//receiver ID
 			"Fight",								//msg
 			nullptr);

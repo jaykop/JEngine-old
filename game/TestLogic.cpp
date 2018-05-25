@@ -33,6 +33,8 @@ void TestLogic::Init()
 	//if (a.joinable())
 	//	a.join();
 
+	//unsigned a = sizeof(std::string);
+
 	m_ortho = CONTAINER->GetObject("OrthogonalSprite");
 	m_pers = CONTAINER->GetObject("PerspectiveModel");
 	//CONTAINER->GET_COMPONENT("Model", Sprite);

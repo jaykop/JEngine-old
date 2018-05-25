@@ -1,5 +1,6 @@
 #pragma once
 #include "CustomComponent.h"
+#include "ComponentManager.h"
 #include "ComponentBuilder.h"
 #include "Vector3.h"
 
@@ -10,15 +11,14 @@ class Object;
 class Transform;
 struct Telegram;
 
-jeDeclareCustomComponentBuilder(BullyState);
-jeDeclareCustomComponentBuilder(JustHatingMiner);
-jeDeclareCustomComponentBuilder(GoFight);
-
 /////////////////////////////////////////////////////////////////////////
 // Global bully state
 /////////////////////////////////////////////////////////////////////////
 class BullyState : public CustomComponent
 {
+	template <class T>
+	friend class MemoryAllocator;
+
     friend class ComponentManager;
     friend class BullyStateBuilder;
 
@@ -56,6 +56,9 @@ private:
 /////////////////////////////////////////////////////////////////////////
 class JustHatingMiner : public CustomComponent
 {
+	template <class T>
+	friend class MemoryAllocator;
+
     friend class ComponentManager;
     friend class JustHatingMinerBuilder;
 
@@ -85,6 +88,9 @@ private:
 /////////////////////////////////////////////////////////////////////////
 class GoFight : public CustomComponent
 {
+	template <class T>
+	friend class MemoryAllocator;
+
     friend class ComponentManager;
     friend class GoFightBuilder;
 
@@ -109,5 +115,9 @@ private:
     void EditorUpdate(const float /*_dt*/) override {};
 
 };
+
+jeDeclareCustomComponentBuilder(BullyState);
+jeDeclareCustomComponentBuilder(JustHatingMiner);
+jeDeclareCustomComponentBuilder(GoFight);
 
 jeEnd

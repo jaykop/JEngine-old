@@ -124,7 +124,7 @@ void GoFight::Init()
 	m_globalState = (BullyState*)m_pOwner->GetGlobalState();
 
 	DISPATCHER::DispatchMessage(0.0,			//time delay
-		m_pOwnerId,								//sender ID
+		m_pOwner->GetId(),								//sender ID
 		CONTAINER->GetObject("Miner")->GetId(),	//receiver ID
 		"Fight",								//msg
 		nullptr);
@@ -153,7 +153,7 @@ bool GoFight::OnMessage(Telegram& msg)
 		m_globalState->m_talkText->SetText("%s", m_globalState->m_content);
 
 		DISPATCHER::DispatchMessage(0.0,			//time delay
-			m_pOwnerId,								//sender ID
+			m_pOwner->GetId(),								//sender ID
 			CONTAINER->GetObject("Miner")->GetId(),	//receiver ID
 			"Surrender",								//msg
 			nullptr);

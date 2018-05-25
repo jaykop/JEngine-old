@@ -1,6 +1,7 @@
 #pragma once
 #include "Vector4.h"
 #include "Component.h"
+#include "ComponentManager.h"
 #include "ComponentBuilder.h"
 
 // For enum ProjectType

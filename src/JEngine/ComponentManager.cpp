@@ -1,6 +1,6 @@
+#include "Component.h"
 #include "ComponentBuilder.h"
 #include "ComponentManager.h"
-
 jeBegin
 
 BuilderMap			COMPONENT::m_builderMap;
@@ -22,7 +22,15 @@ Component* ComponentManager::CreateComponent(
 	}
 
 	// Unless, return new component
-	return found->second->CreateComponent(_pOwner);
+	return found->second->CreateComponent(_pOwner, _componentName);
+}
+
+void ComponentManager::RemoveComponent(Component* _component)
+{
+	// Check if either there is a existing component builder 
+	auto found = m_builderMap.find(_component->m_typeName);
+	found->second->RemoveComponent(_component);
+	_component = nullptr;
 }
 
 const char* ComponentManager::KeyToTypeTranslator(const char* _name)
@@ -48,7 +56,7 @@ void ComponentManager::ClearBuilders()
 	// Delete instance
 	for (auto it = m_builderMap.begin();
 		it != m_builderMap.end(); )
-		delete ((it++)->second);
+		delete (it++)->second;
 	
 	// Clear nodes
 	m_builderMap.clear();

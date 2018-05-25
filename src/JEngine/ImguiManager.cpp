@@ -5,6 +5,7 @@
 #include "ImguiManager.h"
 #include "GLManager.h"
 #include "Component.h"
+#include "Object.h"
 
 jeBegin
 

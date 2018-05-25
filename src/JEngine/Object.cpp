@@ -9,12 +9,6 @@
 
 jeBegin
 
-Object::Object()
-	:Object("Unknown")
-{
-	m_name += std::to_string(m_id);
-}
-
 Object::Object(const char* _name)
 	:m_name(_name), m_active(true), m_pParent(nullptr),
 	m_id(ObjectFactory::m_registerNumber), m_showEditor(false)
@@ -109,7 +103,6 @@ bool Object::HasChild(const char* _name)
 	// Unless...
 	jeDebugPrint("!Object - No such name of enrolled object: %s\n", _name);
 	return false;
-
 }
 
 void Object::SetParent(Object* _pObject)
@@ -149,8 +142,9 @@ void Object::ClearComponents()
 
 		if (component.second) {
 			IMGUI::RemoveComponentEditor(component.second);
-			delete component.second;
-			component.second = nullptr;
+			COMPONENT::RemoveComponent(component.second);
+			//delete component.second;
+			//component.second = nullptr;
 		}
 	}
 
@@ -225,8 +219,9 @@ void Object::RemoveComponent(const char* _componentName)
 	// If there is, remove it
 	if (found != m_componentMap.end()) {
 		IMGUI::RemoveComponentEditor(found->second); 
-		delete found->second;
-		found->second = nullptr;
+		COMPONENT::RemoveComponent(found->second);
+		//delete found->second;
+		//found->second = nullptr;
 	}
 
 	else 
