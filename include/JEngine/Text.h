@@ -13,8 +13,8 @@ jeDeclareComponentBuilder(Text);
 struct Character {
     unsigned	m_texture;	// ID handle of the glyph texture
     unsigned	m_advance;	// Horizontal offset to advance to next glyph
-    vec2		m_size;		// Size of glyph
-    vec2		m_bearing;	// Offset from baseline to left/top of glyph
+    vec2	m_size;		// Size of glyph
+    vec2	m_bearing;	// Offset from baseline to left/top of glyph
 };
 
 class Font {
@@ -33,29 +33,25 @@ private:
     void operator= (Font&& /*_copy*/) = delete;
 
     FontData	m_data;
-    FT_Face		m_face;
+    FT_Face	m_face;
     FT_Library	m_lib;
     unsigned	m_fontSize;
-    float		m_newLineInterval;
+    float	m_newLineInterval;
 };
 
 class Text : public Sprite
 {
-	template <class T>
-	friend class MemoryAllocator;
-
-    friend class ComponentManager;
+    jeBaseFriends(Text);
     friend class GraphicSystem;
-    friend class TextBuilder;
 
 public:
 
     void Register() override;
 
-    void				SetText(const char* _text, ...);
+    void SetText(const char* _text, ...);
     const std::string&	GetText() const;
 
-    void				SetText(const wchar_t* _wText, ...);
+    void SetText(const wchar_t* _wText, ...);
     const std::wstring& GetWText() const;
 
     Font* m_pFont;
@@ -64,13 +60,13 @@ private:
 
     bool m_printWide = false;
 
-    wchar_t			*m_wTextStorage = nullptr;
-    std::wstring	m_wText;
+    wchar_t	 *m_wTextStorage = nullptr;
+    std::wstring m_wText;
 
-    char			*m_textStorage = nullptr;
-    std::string		m_text;
+    char	*m_textStorage = nullptr;
+    std::string	m_text;
 
-	size_t			m_size = 0;
+    size_t m_size = 0;
 
     Text(Object* pObject);
     ~Text();

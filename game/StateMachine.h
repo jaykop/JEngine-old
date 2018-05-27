@@ -10,11 +10,7 @@ struct Telegram;
 
 class StateMachine : public CustomComponent
 {
-	template <class T>
-	friend class MemoryAllocator;
-
-    friend class ComponentManager;
-    friend class StateMachineBuilder;
+    jeBaseFriends(StateMachine);
 
 public:
 

@@ -16,23 +16,19 @@ struct Telegram;
 /////////////////////////////////////////////////////////////////////////
 class BullyState : public CustomComponent
 {
-	template <class T>
-	friend class MemoryAllocator;
-
-    friend class ComponentManager;
-    friend class BullyStateBuilder;
+    jeBaseFriends(BullyState);
 
 public:
 
-	unsigned	m_hateMiner = 0;
-	int			m_minerId = 0;
+    unsigned	m_hateMiner = 0;
+    int		m_minerId = 0;
 
-	const char	*m_content = nullptr;
+    const char	*m_content = nullptr;
 
-	Object		*m_bullyTalks = nullptr, *m_pMiner = nullptr;
-	Text*		m_talkText = nullptr;
-	Transform*	m_pTransform = nullptr, *m_pTalkTransform = nullptr;
-	vec3		m_talkOffset;
+    Object	*m_bullyTalks = nullptr, *m_pMiner = nullptr;
+    Text*	m_talkText = nullptr;
+    Transform*	m_pTransform = nullptr, *m_pTalkTransform = nullptr;
+    vec3	m_talkOffset;
 
 private:
 
@@ -56,15 +52,11 @@ private:
 /////////////////////////////////////////////////////////////////////////
 class JustHatingMiner : public CustomComponent
 {
-	template <class T>
-	friend class MemoryAllocator;
-
-    friend class ComponentManager;
-    friend class JustHatingMinerBuilder;
+    jeBaseFriends(JustHatingMiner);
 
 public:
 
-	BullyState * m_globalState = nullptr;
+    BullyState * m_globalState = nullptr;
 
 private:
 
@@ -88,16 +80,12 @@ private:
 /////////////////////////////////////////////////////////////////////////
 class GoFight : public CustomComponent
 {
-	template <class T>
-	friend class MemoryAllocator;
-
-    friend class ComponentManager;
-    friend class GoFightBuilder;
+    jeBaseFriends(GoFight);
 
 public:
 
-	BullyState	*m_globalState = nullptr;
-	bool		m_beaten = false;
+    BullyState * m_globalState = nullptr;
+    bool	m_beaten = false;
 
 private:
 

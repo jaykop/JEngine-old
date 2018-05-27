@@ -32,7 +32,7 @@ Contains Engine's generic macros
 #include <cstdio>
 #define jeDebugPrint(...) printf(__VA_ARGS__)
 #else
-#define jeDebugPrint(...)	jeUnusedParam(__VA_ARGS__)
+#define jeDebugPrint(...)jeUnusedParam(__VA_ARGS__)
 #endif // defined(_DEBUG) && defined(JE_DO_PRINT)
 
 // Define NULL pointer
@@ -52,8 +52,11 @@ Contains Engine's generic macros
 #define jeUnusedParam(unused)    (void)unused
 
 // Delete macro
-#define jeSafeDelete(p)			do { if(p) { delete(p);  (p) = nullptr;}} while(0)
+#define jeSafeDelete(p)		do { if(p) { delete(p);  (p) = nullptr;}} while(0)
 #define jeSafeDeleteArray(p)	do { if(p) { delete[] (p); (p) = nullptr;}} while(0)
 
 // Simplify static setting
 #define jeStaticClassDeclaration(c) c() = delete; ~c() = delete; c& operator=(const c&) = delete; c& operator=(c&&) = delete; c(const c&) = delete; c(c&&) = delete;
+
+// Use bulit int allocator
+// #defin jeBuiltInAllocator
