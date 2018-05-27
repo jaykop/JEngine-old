@@ -17,39 +17,35 @@ struct Telegram;
 /////////////////////////////////////////////////////////////////////////
 class WifeState : public CustomComponent
 {
-	template <class T>
-	friend class MemoryAllocator;
-
-	friend class ComponentManager;
-	friend class WifeStateBuilder;
+    jeBaseFriends(WifeState);
 
 public:
 
-	Location	m_location;
-	int			m_natureCalling = 0, m_chores = 10;
-	int			m_minerId = 0;
-	bool		m_isCooking = false;
-	const char	*m_content = nullptr;
+    Location	m_location;
+    int		m_natureCalling = 0, m_chores = 10;
+    int		m_minerId = 0;
+    bool	m_isCooking = false;
+    const char	*m_content = nullptr;
 
-	Object*		m_wifeTalks = nullptr;
-	Text*		m_talkText = nullptr;
-	Transform*	m_pTransform = nullptr, *m_pTalkTransform = nullptr;
-	vec3		m_talkOffset;
+    Object*	m_wifeTalks = nullptr;
+    Text*	m_talkText = nullptr;
+    Transform*	m_pTransform = nullptr, *m_pTalkTransform = nullptr;
+    vec3	m_talkOffset;
 
 private:
 
-	WifeState(Object* pObject);
-	~WifeState() {};
+    WifeState(Object* pObject);
+    ~WifeState() {};
 
-	void Register() override;
-	void Load(CR_RJValue _data) override;
-	void Init() override;
-	void Update(const float _dt) override;
-	void Close() override;
-	void Unload() override {};
-	bool OnMessage(Telegram& msg) override;
+    void Register() override;
+    void Load(CR_RJValue _data) override;
+    void Init() override;
+    void Update(const float _dt) override;
+    void Close() override;
+    void Unload() override {};
+    bool OnMessage(Telegram& msg) override;
 
-	void EditorUpdate(const float /*_dt*/) override {};
+    void EditorUpdate(const float /*_dt*/) override {};
 
 };
 
@@ -58,30 +54,26 @@ private:
 /////////////////////////////////////////////////////////////////////////
 class DoHousework : public CustomComponent
 {
-	template <class T>
-	friend class MemoryAllocator;
-
-	friend class ComponentManager;
-	friend class DoHouseworkBuilder;
+    jeBaseFriends(DoHousework);
 
 public:
 
-	WifeState * m_globalState = nullptr;
+    WifeState * m_globalState = nullptr;
 
 private:
 
-	DoHousework(Object* pObject);
-	~DoHousework() {};
+    DoHousework(Object* pObject);
+    ~DoHousework() {};
 
-	void Register() override;
-	void Load(CR_RJValue _data) override;
-	void Init() override;
-	void Update(const float _dt) override;
-	void Close() override;
-	void Unload() override {};
-	bool OnMessage(Telegram& msg) override;
+    void Register() override;
+    void Load(CR_RJValue _data) override;
+    void Init() override;
+    void Update(const float _dt) override;
+    void Close() override;
+    void Unload() override {};
+    bool OnMessage(Telegram& msg) override;
 
-	void EditorUpdate(const float /*_dt*/) override {};
+    void EditorUpdate(const float /*_dt*/) override {};
 
 };
 
@@ -90,30 +82,26 @@ private:
 /////////////////////////////////////////////////////////////////////////
 class CookStew : public CustomComponent
 {
-	template <class T>
-	friend class MemoryAllocator;
-
-	friend class ComponentManager;
-	friend class CookStewBuilder;
+    jeBaseFriends(CookStew);
 
 public:
 
-	WifeState	*m_globalState = nullptr;
+    WifeState * m_globalState = nullptr;
 
 private:
 
-	CookStew(Object* pObject);
-	~CookStew() {};
+    CookStew(Object* pObject);
+    ~CookStew() {};
 
-	void Register() override;
-	void Load(CR_RJValue _data) override;
-	void Init() override;
-	void Update(const float _dt) override;
-	void Close() override;
-	void Unload() override {};
-	bool OnMessage(Telegram& msg) override;
+    void Register() override;
+    void Load(CR_RJValue _data) override;
+    void Init() override;
+    void Update(const float _dt) override;
+    void Close() override;
+    void Unload() override {};
+    bool OnMessage(Telegram& msg) override;
 
-	void EditorUpdate(const float /*_dt*/) override {};
+    void EditorUpdate(const float /*_dt*/) override {};
 
 };
 
@@ -122,30 +110,26 @@ private:
 /////////////////////////////////////////////////////////////////////////
 class GoToBathroom : public CustomComponent
 {
-	template <class T>
-	friend class MemoryAllocator;
-
-	friend class ComponentManager;
-	friend class GoToBathroomBuilder;
+    jeBaseFriends(GoToBathroom);
 
 public:
 
-	WifeState * m_globalState = nullptr;
+    WifeState * m_globalState = nullptr;
 
 private:
 
-	GoToBathroom(Object* pObject);
-	~GoToBathroom() {};
+    GoToBathroom(Object* pObject);
+    ~GoToBathroom() {};
 
-	void Register() override;
-	void Load(CR_RJValue _data) override;
-	void Init() override;
-	void Update(const float _dt) override;
-	void Close() override;
-	void Unload() override {};
-	bool OnMessage(Telegram& msg) override;
+    void Register() override;
+    void Load(CR_RJValue _data) override;
+    void Init() override;
+    void Update(const float _dt) override;
+    void Close() override;
+    void Unload() override {};
+    bool OnMessage(Telegram& msg) override;
 
-	void EditorUpdate(const float /*_dt*/) override {};
+    void EditorUpdate(const float /*_dt*/) override {};
 
 };
 

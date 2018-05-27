@@ -17,9 +17,9 @@ class Object {
 
 	struct StateMachine
 	{
-		CustomComponent* m_pPreviousState = nullptr;
-		CustomComponent* m_pCurrentState = nullptr;
-		CustomComponent* m_pGlobalState = nullptr;
+	    CustomComponent* m_pPreviousState = nullptr;
+	    CustomComponent* m_pCurrentState = nullptr;
+	    CustomComponent* m_pGlobalState = nullptr;
 	};
 
 public:
@@ -40,8 +40,8 @@ public:
 
 	void RegisterComponents();
 
-	const std::string&	GetName(void) const;
-	void				SetName(const char* _name);
+	const std::string&  GetName(void) const;
+	void		    SetName(const char* _name);
 
 	void	AddChild(Object* _child);
 	void	RemoveChild(const char* _name);
@@ -57,30 +57,30 @@ public:
 	ComponentMap& GetComponentMap();
 
 	template<typename ComponentType>
-	inline void				AddComponent();
+	inline void AddComponent();
 
 	template <typename ComponentType>
 	inline ComponentType*	GetComponent();
 
 	template<typename ComponentType>
-	inline bool				HasComponent();
+	inline bool HasComponent();
 
 	template<typename ComponentType>
-	inline void				RemoveComponent();
+	inline void RemoveComponent();
 
-	void		AddComponent(const char* _componentName);
-	Component*	GetComponent(const char* _componentName);
-	bool		HasComponent(const char* _componentName) const;
-	void		RemoveComponent(const char* _componentName);
+	void	    AddComponent(const char* _componentName);
+	Component*  GetComponent(const char* _componentName);
+	bool	    HasComponent(const char* _componentName) const;
+	void	    RemoveComponent(const char* _componentName);
 
 	template<typename ComponentType>
-	inline void				SetGlobalState();
+	inline void SetGlobalState();
 	
 	template<typename ComponentType>
-	inline void				SetCurrentState();
+	inline void SetCurrentState();
 	
 	template<typename ComponentType>
-	inline void				ChangeState();
+	inline void ChangeState();
 	
 	CustomComponent* GetGlobalState() const;
 	CustomComponent* GetCurrentState() const;
@@ -99,13 +99,13 @@ private:
 
 	bool HandleMessage(Telegram& _message);
 
-	unsigned			m_id;
-	bool				m_active;
-	Object*				m_pParent;
-	StateMachine		m_StateMachine;
-	std::string			m_name;
-	ChildObjects		m_childObjs;
-	ComponentMap		m_componentMap;
+        unsigned	m_id;
+        bool		m_active;
+        Object*		m_pParent;
+        StateMachine	m_StateMachine;
+        std::string	m_name;
+        ChildObjects	m_childObjs;
+        ComponentMap	m_componentMap;
 	
 	// statiic editor variable and function
 	void	EditorUpdate(const float _dt);

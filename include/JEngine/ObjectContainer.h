@@ -30,7 +30,7 @@ public:
 	ObjectMap&	GetObjectMap();
 
 	template <typename ComponentType>
-	inline ObjectMap		GetObjects();
+	inline ObjectMap        GetObjects();
 
 	static ObjectContainer* GetCurrentContainer();
 
@@ -43,7 +43,7 @@ private:
 
 	// Static variable and function
 	static ObjectContainer* m_pSharedContainer;
-	static void				EditorUpdate(const float _dt);
+	static void		EditorUpdate(const float _dt);
 
 	ObjectMap	m_objectMap;
 };
@@ -54,8 +54,8 @@ jeEnd
 
 #include "ObjectContainer.inl"
 
-#define CONTAINER				OBJECT::GetCurrentContainer()
-#define ADD_COMPONENT(o, c)		GetObject(o)->AddComponent<c>()
-#define GET_COMPONENT(o, c)		GetObject(o)->GetComponent<c>()
+#define CONTAINER		OBJECT::GetCurrentContainer()
+#define ADD_COMPONENT(o, c)	GetObject(o)->AddComponent<c>()
+#define GET_COMPONENT(o, c)	GetObject(o)->GetComponent<c>()
 #define REMOVE_COMPONENT(o, c)	GetObject(o)->RemoveComponent<c>()
-#define HAS_COMPONENT(o, c)		GetObject(o)->HasComponent<c>()
+#define HAS_COMPONENT(o, c)	GetObject(o)->HasComponent<c>()

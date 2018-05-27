@@ -18,22 +18,18 @@ struct Telegram;
 /////////////////////////////////////////////////////////////////////////
 class MinerState : public CustomComponent
 {
-	template <class T>
-	friend class MemoryAllocator;
-
-    friend class ComponentManager;
-    friend class MinerStateBuilder;
+    jeBaseFriends(MinerState);
 
 public:
 
     Location	m_location;
-	bool		m_ateStew = false;
-    int			m_gold = 0, m_thirst = 0, m_fatigue = 0, m_saved = 0;
+    bool	m_ateStew = false;
+    int		m_gold = 0, m_thirst = 0, m_fatigue = 0, m_saved = 0;
     const char	*m_content = nullptr;
-    Object		*m_minerTalks = nullptr;
-    Text		*m_talkText = nullptr;
+    Object	*m_minerTalks = nullptr;
+    Text	*m_talkText = nullptr;
     Transform	*m_pTransform = nullptr, *m_talkTransform = nullptr;
-    vec3		m_talkOffset;
+    vec3	m_talkOffset;
 
 private:
 
@@ -57,15 +53,11 @@ private:
 /////////////////////////////////////////////////////////////////////////
 class BeatBully : public CustomComponent
 {
-	template <class T>
-	friend class MemoryAllocator;
-
-    friend class ComponentManager;
-    friend class BeatBullyBuilder;
+    jeBaseFriends(BeatBully);
 
 public:
 
-	bool		m_beaten = false;
+    bool	m_beaten = false;
     unsigned	m_receiverId;
     MinerState	*m_globalState = nullptr;
 
@@ -91,11 +83,7 @@ private:
 /////////////////////////////////////////////////////////////////////////
 class EatStew : public CustomComponent
 {
-	template <class T>
-	friend class MemoryAllocator;
-
-    friend class ComponentManager;
-    friend class EatStewBuilder;
+    jeBaseFriends(EatStew);
 
 public:
 
@@ -123,11 +111,7 @@ private:
 /////////////////////////////////////////////////////////////////////////
 class GoHomeAndSleepTilRested : public CustomComponent
 {
-	template <class T>
-	friend class MemoryAllocator;
-
-    friend class ComponentManager;
-    friend class GoHomeAndSleepTilRestedBuilder;
+    jeBaseFriends(GoHomeAndSleepTilRested);
 
 public:
 
@@ -155,11 +139,7 @@ private:
 /////////////////////////////////////////////////////////////////////////
 class QuenchThirst : public CustomComponent
 {
-	template <class T>
-	friend class MemoryAllocator;
-
-    friend class ComponentManager;
-    friend class QuenchThirstBuilder;
+    jeBaseFriends(QuenchThirst);
 
 public:
 
@@ -187,11 +167,7 @@ private:
 /////////////////////////////////////////////////////////////////////////
 class VisitBankAndDepositGold : public CustomComponent
 {
-	template <class T>
-	friend class MemoryAllocator;
-
-    friend class ComponentManager;
-    friend class VisitBankAndDepositGoldBuilder;
+    jeBaseFriends(VisitBankAndDepositGold);
 
 public:
 

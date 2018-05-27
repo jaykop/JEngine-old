@@ -335,9 +335,6 @@
     <ClCompile Include="..\..\src\JEngine\SystemBlock.cpp">
       <Filter>System</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\MemoryAllocator.cpp">
-      <Filter>Core\Memory</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">

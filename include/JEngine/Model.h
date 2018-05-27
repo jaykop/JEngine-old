@@ -6,25 +6,21 @@ jeDeclareComponentBuilder(Model);
 
 class Model : public Sprite
 {
-	template <class T>
-	friend class MemoryAllocator;
-
-	friend class ComponentManager;
-	friend class GraphicSystem;
-	friend class ModelBuilder;
+    jeBaseFriends(Model);
+    friend class GraphicSystem;
 
 public:
 
 private:
 
-	Model(Object* pObject);
-	~Model();
-	void operator=(const Model& _copy);
+    Model(Object* pObject);
+    ~Model();
+    void operator=(const Model& _copy);
 
-	Model() = delete;
-	Model(const Model& /*_copy*/) = delete;
+    Model() = delete;
+    Model(const Model& /*_copy*/) = delete;
 
-	void EditorUpdate(const float _dt) override;
+    void EditorUpdate(const float _dt) override;
 };
 
 jeEnd

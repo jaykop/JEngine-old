@@ -7,31 +7,27 @@ jeBegin
 
 class Material : public Component {
 
-	template <class T>
-	friend class MemoryAllocator;
-
-	friend class ComponentManager;
-	friend class MaterialBuilder;
-	friend class GraphicSystem;
+    jeBaseFriends(Material);
+    friend class GraphicSystem;
 
 public:
 
-	int m_diffuse, m_specular;
-	float m_shininess;
+    int m_diffuse, m_specular;
+    float m_shininess;
 
 private:
 
-	Material(Object* _pOwner);
-	~Material() {};
-	void operator= (const Material& _copy);
+    Material(Object* _pOwner);
+    ~Material() {};
+    void operator= (const Material& _copy);
 
-	Material() = delete;
-	Material(const Material& /*_copy*/) = delete;
+    Material() = delete;
+    Material(const Material& /*_copy*/) = delete;
 
-	void Load(CR_RJValue _data) override;
-	void Register() override {};
+    void Load(CR_RJValue _data) override;
+    void Register() override {};
 
-	void EditorUpdate(const float _dt) override;
+    void EditorUpdate(const float _dt) override;
 };
 
 jeDeclareComponentBuilder(Material);
