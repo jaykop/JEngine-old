@@ -8,16 +8,16 @@
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="..\WifeState.cpp">
-      <Filter>CustomLogic\AIExamples</Filter>
+      <Filter>CustomLogic\AIExamples_message</Filter>
     </ClCompile>
     <ClCompile Include="..\StateMachine.cpp">
-      <Filter>CustomLogic\AIExamples</Filter>
+      <Filter>CustomLogic\AIExamples_message</Filter>
     </ClCompile>
     <ClCompile Include="..\MinerState.cpp">
-      <Filter>CustomLogic\AIExamples</Filter>
+      <Filter>CustomLogic\AIExamples_message</Filter>
     </ClCompile>
     <ClCompile Include="..\BullyState.cpp">
-      <Filter>CustomLogic\AIExamples</Filter>
+      <Filter>CustomLogic\AIExamples_message</Filter>
     </ClCompile>
     <ClCompile Include="..\CameraController.cpp">
       <Filter>CustomLogic\ExistingLogics</Filter>
@@ -31,25 +31,31 @@
     <ClCompile Include="..\TestLogic.cpp">
       <Filter>CustomLogic\ExistingLogics</Filter>
     </ClCompile>
+    <ClCompile Include="..\Steering.cpp">
+      <Filter>CustomLogic\AIExamples_behaviors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MovingEntity.cpp">
+      <Filter>CustomLogic\AIExamples_behaviors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\JEngine.h">
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="..\WifeState.h">
-      <Filter>CustomLogic\AIExamples</Filter>
+      <Filter>CustomLogic\AIExamples_message</Filter>
     </ClInclude>
     <ClInclude Include="..\StateMachine.h">
-      <Filter>CustomLogic\AIExamples</Filter>
+      <Filter>CustomLogic\AIExamples_message</Filter>
     </ClInclude>
     <ClInclude Include="..\MinerState.h">
-      <Filter>CustomLogic\AIExamples</Filter>
+      <Filter>CustomLogic\AIExamples_message</Filter>
     </ClInclude>
     <ClInclude Include="..\Location.h">
-      <Filter>CustomLogic\AIExamples</Filter>
+      <Filter>CustomLogic\AIExamples_message</Filter>
     </ClInclude>
     <ClInclude Include="..\BullyState.h">
-      <Filter>CustomLogic\AIExamples</Filter>
+      <Filter>CustomLogic\AIExamples_message</Filter>
     </ClInclude>
     <ClInclude Include="..\CameraController.h">
       <Filter>CustomLogic\ExistingLogics</Filter>
@@ -69,6 +75,12 @@
     <ClInclude Include="..\CustomLogic.h">
       <Filter>CustomLogic</Filter>
     </ClInclude>
+    <ClInclude Include="..\MovingEntity.h">
+      <Filter>CustomLogic\AIExamples_behaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Steering.h">
+      <Filter>CustomLogic\AIExamples_behaviors</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="CustomLogic">
@@ -80,8 +92,11 @@
     <Filter Include="CustomLogic\ExistingLogics">
       <UniqueIdentifier>{1ebec2de-1ad8-4275-a90a-5f69dfef5652}</UniqueIdentifier>
     </Filter>
-    <Filter Include="CustomLogic\AIExamples">
+    <Filter Include="CustomLogic\AIExamples_message">
       <UniqueIdentifier>{2e717668-a6fc-4c4d-aac3-f018fed5fd36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CustomLogic\AIExamples_behaviors">
+      <UniqueIdentifier>{e17a3ab1-77fa-4041-9853-03682cf2efcc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -27,7 +27,7 @@ void MinerState::Load(CR_RJValue /*_data*/)
 
 void MinerState::Init()
 {
-    m_pTransform = m_pOwner->GetComponent<Transform>();
+    m_pTransform = GetOwner()->GetComponent<Transform>();
 
     // Add child object
     // Miner talks object
@@ -41,7 +41,7 @@ void MinerState::Init()
     m_talkOffset.Set(15.f, 10.f, 1.f);
     m_talkText = m_minerTalks->GetComponent<Text>();
     m_talkText->Register();
-    m_pOwner->AddChild(m_minerTalks);
+    GetOwner()->AddChild(m_minerTalks);
 
     // Set font
     m_talkText->m_pFont = ASSET::GetFont("Default");
@@ -74,14 +74,14 @@ void GoHomeAndSleepTilRested::Load(CR_RJValue /*_data*/)
 
 void GoHomeAndSleepTilRested::Init()
 {
-	m_globalState = (MinerState*)m_pOwner->GetGlobalState();
+	m_globalState = (MinerState*)GetOwner()->GetGlobalState();
 
 	static bool firstTIme = true;
 
 	if (!firstTIme) {
 		if (!m_globalState->m_ateStew)
 			DISPATCHER::DispatchMessage(0.0,			//time delay
-				m_pOwner->GetId(),								//sender ID
+				GetOwner()->GetId(),								//sender ID
 				CONTAINER->GetObject("Wife")->GetId(),	//receiver ID
 				"HoneyI'mHome",							//msg
 				nullptr);
@@ -103,7 +103,7 @@ void GoHomeAndSleepTilRested::Init()
 void GoHomeAndSleepTilRested::Update(const float /*_dt*/)
 {
     if (m_globalState->m_fatigue <= 0) 
-        m_pOwner->ChangeState<EnterMineAndDigForNugget>();
+        GetOwner()->ChangeState<EnterMineAndDigForNugget>();
 
 	m_globalState->m_fatigue--;
 	if (m_globalState->m_fatigue < 0)
@@ -121,7 +121,7 @@ bool GoHomeAndSleepTilRested::OnMessage(Telegram& msg)
 {
 	if (!strcmp(msg.message, "StewReady"))
 	{
-		m_pOwner->ChangeState<EatStew>();
+		GetOwner()->ChangeState<EatStew>();
 		return true;
 	}
 
@@ -143,18 +143,18 @@ void EnterMineAndDigForNugget::Load(CR_RJValue /*_data*/)
 
 void EnterMineAndDigForNugget::Init()
 {
-    m_globalState = (MinerState*)m_pOwner->GetGlobalState();
+    m_globalState = (MinerState*)GetOwner()->GetGlobalState();
  
 	if (m_globalState->m_gold >= 10)
-		m_pOwner->ChangeState<VisitBankAndDepositGold>();
+		GetOwner()->ChangeState<VisitBankAndDepositGold>();
 
 	// Check thirsty
 	else if (m_globalState->m_thirst >= 10)
-		m_pOwner->ChangeState<QuenchThirst>();
+		GetOwner()->ChangeState<QuenchThirst>();
 
 	// Check fatigue
 	else if (m_globalState->m_fatigue >= 10)
-		m_pOwner->ChangeState<GoHomeAndSleepTilRested>();
+		GetOwner()->ChangeState<GoHomeAndSleepTilRested>();
 	
 	else {
 		m_globalState->m_location = GOLD_MINE;
@@ -172,15 +172,15 @@ void EnterMineAndDigForNugget::Init()
 void EnterMineAndDigForNugget::Update(const float /*_dt*/)
 {
     if (m_globalState->m_gold >= 10)
-        m_pOwner->ChangeState<VisitBankAndDepositGold>();
+        GetOwner()->ChangeState<VisitBankAndDepositGold>();
 
     // Check thirsty
     else if (m_globalState->m_thirst >= 10)
-        m_pOwner->ChangeState<QuenchThirst>();
+        GetOwner()->ChangeState<QuenchThirst>();
 
     // Check fatigue
     else if (m_globalState->m_fatigue >= 10)
-        m_pOwner->ChangeState<GoHomeAndSleepTilRested>();
+        GetOwner()->ChangeState<GoHomeAndSleepTilRested>();
 
     else
     {
@@ -217,7 +217,7 @@ void VisitBankAndDepositGold::Load(CR_RJValue /*_data*/)
 
 void VisitBankAndDepositGold::Init()
 {
-    m_globalState = (MinerState*)m_pOwner->GetGlobalState();
+    m_globalState = (MinerState*)GetOwner()->GetGlobalState();
     m_globalState->m_location = BANK;
 
 	m_globalState->m_pTransform->m_position.Set(50.f, -50.f, 0.f);	
@@ -236,10 +236,10 @@ void VisitBankAndDepositGold::Init()
 void VisitBankAndDepositGold::Update(const float /*_dt*/)
 {
     if (m_globalState->m_saved >= 100)
-        m_pOwner->ChangeState<GoHomeAndSleepTilRested>();
+        GetOwner()->ChangeState<GoHomeAndSleepTilRested>();
 
     else
-        m_pOwner->ChangeState<EnterMineAndDigForNugget>();
+        GetOwner()->ChangeState<EnterMineAndDigForNugget>();
 
 }
 
@@ -266,7 +266,7 @@ void QuenchThirst::Load(CR_RJValue /*_data*/)
 
 void QuenchThirst::Init()
 {
-    m_globalState = (MinerState*)m_pOwner->GetGlobalState();
+    m_globalState = (MinerState*)GetOwner()->GetGlobalState();
     m_globalState->m_location = PUB;
 
 	m_globalState->m_pTransform->m_position.Set(-50.f, -50.f, 0.f);
@@ -283,7 +283,7 @@ void QuenchThirst::Init()
 void QuenchThirst::Update(const float /*_dt*/)
 {
 	if (m_globalState->m_thirst == 0)
-		m_pOwner->ChangeState<EnterMineAndDigForNugget>();
+		GetOwner()->ChangeState<EnterMineAndDigForNugget>();
 }
 
 void QuenchThirst::Close()
@@ -292,7 +292,7 @@ void QuenchThirst::Close()
 bool QuenchThirst::OnMessage(Telegram& msg)
 {
 	if (!strcmp(msg.message, "Fight")) {
-		m_pOwner->ChangeState<BeatBully>();
+		GetOwner()->ChangeState<BeatBully>();
 		return true;
 	}
 
@@ -315,7 +315,7 @@ void BeatBully::Load(CR_RJValue /*_data*/)
 
 void BeatBully::Init()
 {
-    m_globalState = (MinerState*)m_pOwner->GetGlobalState();
+    m_globalState = (MinerState*)GetOwner()->GetGlobalState();
 
 	m_globalState->m_content = "You damn loser!\nYou cannot take me down!\nGet lost!";
 	m_globalState->m_talkText->SetText("%s", m_globalState->m_content);
@@ -328,7 +328,7 @@ void BeatBully::Update(const float /*_dt*/)
 
 	else {
 		DISPATCHER::DispatchMessage(0.0,			//time delay
-			m_pOwner->GetId(),								//sender ID
+			GetOwner()->GetId(),								//sender ID
 			CONTAINER->GetObject("Bully")->GetId(),	//receiver ID
 			"Fight",								//msg
 			nullptr);
@@ -342,7 +342,7 @@ bool BeatBully::OnMessage(Telegram& msg)
 {
 	if (!strcmp(msg.message, "Surrender")) {
 		m_beaten = false;
-		m_pOwner->RevertToPreviousState();
+		GetOwner()->RevertToPreviousState();
 		return true;
 	}
 
@@ -364,7 +364,7 @@ void EatStew::Load(CR_RJValue /*_data*/)
 
 void EatStew::Init()
 {
-    m_globalState = (MinerState*)m_pOwner->GetGlobalState();
+    m_globalState = (MinerState*)GetOwner()->GetGlobalState();
 
 	m_globalState->m_content = "Location: Home\nGod! What did you cook?\nA Tree?";
 	m_globalState->m_talkText->SetText("%s", m_globalState->m_content);
@@ -374,7 +374,7 @@ void EatStew::Init()
 
 void EatStew::Update(const float /*_dt*/)
 {
-    m_pOwner->RevertToPreviousState();
+    GetOwner()->RevertToPreviousState();
 }
 
 void EatStew::Close()

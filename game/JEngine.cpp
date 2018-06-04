@@ -10,43 +10,46 @@ bool JEngine::imguiToggle = false;
 
 void JEngine::RegisterAssets()
 {
-	// Get assets ready 
-	ASSET::SetInitDirectory("../resource/register/initData.json");
-	ASSET::SetStateDirectory("../resource/register/state.json");
-	ASSET::SetAssetDirectory("../resource/register/asset.json");
-	ASSET::SetArchetypeDirectory("../resource/register/archetype.json");
+    // Get assets ready 
+    ASSET::SetInitDirectory("../resource/register/initData.json");
+    ASSET::SetStateDirectory("../resource/register/state.json");
+    ASSET::SetAssetDirectory("../resource/register/asset.json");
+    ASSET::SetArchetypeDirectory("../resource/register/archetype.json");
 
-	// Load customized components
-	jeRegisterComponent(StateMachine);
+    // Load customized components
+    jeRegisterComponent(StateMachine);
 
-	// States for bully
-	jeRegisterComponent(BullyState);
-	jeRegisterComponent(GoFight);
-	jeRegisterComponent(JustHatingMiner);
+    // States for bully
+    jeRegisterComponent(BullyState);
+    jeRegisterComponent(GoFight);
+    jeRegisterComponent(JustHatingMiner);
 
-	// States for miner
-	jeRegisterComponent(MinerState);
-	jeRegisterComponent(EnterMineAndDigForNugget);
-	jeRegisterComponent(VisitBankAndDepositGold);
-	jeRegisterComponent(QuenchThirst);
-	jeRegisterComponent(GoHomeAndSleepTilRested);
-	jeRegisterComponent(EatStew);
-	jeRegisterComponent(BeatBully);
+    // States for miner
+    jeRegisterComponent(MinerState);
+    jeRegisterComponent(EnterMineAndDigForNugget);
+    jeRegisterComponent(VisitBankAndDepositGold);
+    jeRegisterComponent(QuenchThirst);
+    jeRegisterComponent(GoHomeAndSleepTilRested);
+    jeRegisterComponent(EatStew);
+    jeRegisterComponent(BeatBully);
 
-	// States for wife
-	jeRegisterComponent(WifeState);
-	jeRegisterComponent(DoHousework);
-	jeRegisterComponent(CookStew);
-	jeRegisterComponent(GoToBathroom);
+    // States for wife
+    jeRegisterComponent(WifeState);
+    jeRegisterComponent(DoHousework);
+    jeRegisterComponent(CookStew);
+    jeRegisterComponent(GoToBathroom);
 
-	// Existing logics
-	jeRegisterComponent(CameraController);
-	jeRegisterComponent(LevelController);
-	jeRegisterComponent(LightController);
-	jeRegisterComponent(TestLogic);
+    // Moving entity
+    jeRegisterComponent(Steering);
+
+    // Existing logics
+    jeRegisterComponent(CameraController);
+    jeRegisterComponent(LevelController);
+    jeRegisterComponent(LightController);
+    jeRegisterComponent(TestLogic);
 }
 
 void JEngine::Run()
 {
-	APP::Run(imguiToggle);
+    APP::Run(imguiToggle);
 }

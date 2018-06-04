@@ -156,7 +156,7 @@ void GraphicSystem::LightSourcePipeline()
                 GLM::UNIFORM_LIGHT_COLOR,
                 light->m_color);
 
-			glBlendFunc(light->m_sfactor, light->m_dfactor);
+            glBlendFunc(light->m_sfactor, light->m_dfactor);
             Render(GLM::m_vao[GLM::SHAPE_CONE], GLM::m_elementSize[GLM::SHAPE_CONE]);
 
         } // for (auto light : m_lights) {
@@ -183,7 +183,7 @@ void GraphicSystem::SpritePipeline(Sprite *_sprite)
         GLM::UNIFORM_SCALE, mat4::Scale(s_pTransform->m_scale));
 
     GLM::m_shader[GLM::SHADER_MODEL]->SetMatrix(
-        GLM::UNIFORM_ROTATE, mat4::Rotate(Math::RadToDeg(s_pTransform->m_rotation), s_pTransform->m_rotationAxis));
+        GLM::UNIFORM_ROTATE, mat4::Rotate(s_pTransform->m_rotation, s_pTransform->m_rotationAxis));
 
     GLM::m_shader[GLM::SHADER_MODEL]->SetVector3(
         GLM::UNIFORM_CAMERA_POSITION, m_pMainCamera->m_position);
@@ -227,7 +227,7 @@ void GraphicSystem::SpritePipeline(Sprite *_sprite)
         glDisable(GL_BLEND);
 
     glEnable(GL_DEPTH_TEST);
-	glBlendFunc(_sprite->m_sfactor, _sprite->m_dfactor);
+    glBlendFunc(_sprite->m_sfactor, _sprite->m_dfactor);
 
     Render(*(_sprite->m_vao), _sprite->m_elementSize);
 
@@ -423,7 +423,7 @@ void GraphicSystem::TextPipeline(Text * _text)
         glDisable(GL_BLEND);
 
     glEnable(GL_DEPTH_TEST);
-	glBlendFunc(_text->m_sfactor, _text->m_dfactor);
+    glBlendFunc(_text->m_sfactor, _text->m_dfactor);
 
     Render(_text->m_pFont, _text, s_pTransform, _text->m_printWide);
 
@@ -443,24 +443,24 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
             glDisable(GL_BLEND);
 
         glDepthMask(GL_FALSE);
-		glBlendFunc(_emitter->m_sfactor, _emitter->m_dfactor);
+        glBlendFunc(_emitter->m_sfactor, _emitter->m_dfactor);
 
         // Points
-		if (_emitter->m_renderType == Emitter::PARTICLERENDER_POINT) {
-			glPointSize(_emitter->m_pointSize);
-			glEnable(GL_POINT_SMOOTH);
-		}
+        if (_emitter->m_renderType == Emitter::PARTICLERENDER_POINT) {
+            glPointSize(_emitter->m_pointSize);
+            glEnable(GL_POINT_SMOOTH);
+        }
 
         // Plane 2d and 3d form
-        else 
+        else
             glDisable(GL_POINT_SMOOTH);
 
-        static GLuint					s_vao, s_elementSize;
-        static vec3						s_velocity, s_colorDiff;
-        static bool						s_changeColor, s_rotation;
-        static vec4						s_color;
-        static unsigned					s_texture;
-        static Transform*				s_pTransform;
+        static GLuint	    s_vao, s_elementSize;
+        static vec3	    s_velocity, s_colorDiff;
+        static bool	    s_changeColor, s_rotation;
+        static vec4	    s_color;
+        static unsigned	    s_texture;
+        static Transform*   s_pTransform;
 
         s_vao = *(_emitter->m_vao);
         s_elementSize = _emitter->m_elementSize;
@@ -589,63 +589,63 @@ void GraphicSystem::RenderCharacter(Character& _character, const vec3& _position
 
 void GraphicSystem::Render(Font* _font, Text*_text, Transform* _transform, bool _printUnicode)
 {
-	const std::wstring c_wcontent = _text->GetWText();
-	const std::string c_content = _text->GetText();
+    const std::wstring c_wcontent = _text->GetWText();
+    const std::string c_content = _text->GetText();
 
-	// Check there are contents to print out
-	if (!c_wcontent.empty() || !c_content.empty()) {
+    // Check there are contents to print out
+    if (!c_wcontent.empty() || !c_content.empty()) {
 
-		static vec3 s_position, s_scale;
-		s_scale = _transform->m_scale;
-		s_position = _transform->m_position;
-		const GLfloat nextLineInverval = _font->m_newLineInterval * _font->m_fontSize * s_scale.y / 50.f;
+        static vec3 s_position, s_scale;
+        s_scale = _transform->m_scale;
+        s_position = _transform->m_position;
+        const GLfloat nextLineInverval = _font->m_newLineInterval * _font->m_fontSize * s_scale.y / 50.f;
 
-		GLfloat initX = GLfloat(s_position.x), newX = initX, intervalY = 0.f;
-		int num_newline = 1;
+        GLfloat initX = GLfloat(s_position.x), newX = initX, intervalY = 0.f;
+        int num_newline = 1;
 
-		glBindVertexArray(GLM::m_vao[GLM::SHAPE_TEXT]);
+        glBindVertexArray(GLM::m_vao[GLM::SHAPE_TEXT]);
 
-		// Iterate all character
-		if (_printUnicode) {
-			std::wstring::const_iterator letter;
-			for (letter = c_wcontent.begin(); letter != c_wcontent.end(); ++letter)
-			{
-				const wchar_t newline = *letter;
-				if (newline == L'\n') {
-					newX = initX;
-					intervalY = nextLineInverval * num_newline;
-					++num_newline;
-				}
+        // Iterate all character
+        if (_printUnicode) {
+            std::wstring::const_iterator letter;
+            for (letter = c_wcontent.begin(); letter != c_wcontent.end(); ++letter)
+            {
+                const wchar_t newline = *letter;
+                if (newline == L'\n') {
+                    newX = initX;
+                    intervalY = nextLineInverval * num_newline;
+                    ++num_newline;
+                }
 
-				else {
-					Character character = _font->m_data[*letter];
-					RenderCharacter(character, s_position, s_scale, newX, intervalY);
-				}
-			}
-		}
+                else {
+                    Character character = _font->m_data[*letter];
+                    RenderCharacter(character, s_position, s_scale, newX, intervalY);
+                }
+            }
+        }
 
-		else
-		{
-			std::string::const_iterator letter;
-			// Iterate all character
-			for (letter = c_content.begin(); letter != c_content.end(); ++letter)
-			{
-				const wchar_t newline = *letter;
-				if (newline == '\n') {
-					newX = initX;
-					intervalY = nextLineInverval * num_newline;
-					++num_newline;
-				}
+        else
+        {
+            std::string::const_iterator letter;
+            // Iterate all character
+            for (letter = c_content.begin(); letter != c_content.end(); ++letter)
+            {
+                const wchar_t newline = *letter;
+                if (newline == '\n') {
+                    newX = initX;
+                    intervalY = nextLineInverval * num_newline;
+                    ++num_newline;
+                }
 
-				else {
-					Character character = _font->m_data[*letter];
-					RenderCharacter(character, s_position, s_scale, newX, intervalY);
-				}
-			}
-		}
+                else {
+                    Character character = _font->m_data[*letter];
+                    RenderCharacter(character, s_position, s_scale, newX, intervalY);
+                }
+            }
+        }
 
-		glBindVertexArray(0);
-	}
+        glBindVertexArray(0);
+    }
 }
 
 

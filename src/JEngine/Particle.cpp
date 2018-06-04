@@ -15,7 +15,7 @@ Emitter::Particle::Particle(Emitter* _emitter)
 	: m_emitter(_emitter), m_dead(false)
 {
 	static Transform* s_pTransform;
-	s_pTransform = m_emitter->m_pOwner->GetComponent<Transform>();
+	s_pTransform = m_emitter->GetOwner()->GetComponent<Transform>();
 	
 	m_life		= Random::GetRandomFloat(0.f, m_emitter->m_life);
 	m_velocity	= Random::GetRandVec3(vec3::ZERO, m_emitter->m_velocity);
@@ -42,7 +42,7 @@ Emitter::Particle::Particle(Emitter* _emitter)
 void Emitter::Particle::operator=(const Particle & _copy)
 {
 	static Transform* s_pTransform;
-	s_pTransform = m_emitter->m_pOwner->GetComponent<Transform>();
+	s_pTransform = m_emitter->GetOwner()->GetComponent<Transform>();
 
 	m_dead = _copy.m_dead;
 	m_life = _copy.m_life;
@@ -60,7 +60,7 @@ void Emitter::Particle::operator=(const Particle & _copy)
 void Emitter::Particle::Refresh()
 {
 	static Transform* s_pTransform;
-	s_pTransform = m_emitter->m_pOwner->GetComponent<Transform>();
+	s_pTransform = m_emitter->GetOwner()->GetComponent<Transform>();
 
 	m_rotation = Random::GetRandomFloat(0.f, 360.f);
 	m_rotationSpeed = Random::GetRandomFloat(0., m_emitter->m_rotationSpeed);
@@ -169,8 +169,8 @@ void Emitter::operator=(const Emitter & _copy)
 void Emitter::Register()
 {
 	SYSTEM::GetGraphicSystem()->AddSprite(this);
-	if (m_pOwner->HasComponent<Transform>()) 
-		m_transform = m_pOwner->GetComponent<Transform>();
+	if (GetOwner()->HasComponent<Transform>()) 
+		m_transform = GetOwner()->GetComponent<Transform>();
 }
 
 void Emitter::ManualRefresh()

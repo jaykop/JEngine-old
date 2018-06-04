@@ -23,7 +23,7 @@ void BullyState::Load(CR_RJValue /*_data*/)
 
 void BullyState::Init()
 {
-	m_pTransform = m_pOwner->GetComponent<Transform>();
+	m_pTransform = GetOwner()->GetComponent<Transform>();
 
 	// Add child object
 	// Wife talks object
@@ -37,7 +37,7 @@ void BullyState::Init()
 	m_talkOffset.Set(-25.f, -20.f, 1.f);
 	m_talkText = m_bullyTalks->GetComponent<Text>();
 	m_talkText->Register();
-	m_pOwner->AddChild(m_bullyTalks);
+	GetOwner()->AddChild(m_bullyTalks);
 
 	// Set font
 	m_talkText->m_pFont = ASSET::GetFont("Default");
@@ -74,7 +74,7 @@ void JustHatingMiner::Load(CR_RJValue /*_data*/)
 
 void JustHatingMiner::Init()
 {
-	m_globalState = (BullyState*)m_pOwner->GetGlobalState();
+	m_globalState = (BullyState*)GetOwner()->GetGlobalState();
 
 	m_globalState->m_content = "I hate that miner!";
 	m_globalState->m_talkText->SetText("%s\nWish to punch: %d",
@@ -87,7 +87,7 @@ void JustHatingMiner::Update(const float /*_dt*/)
 	if (m_globalState->m_hateMiner > 10
 		&& pMinerState->m_location == PUB) {
 		m_globalState->m_hateMiner = 0;
-		m_pOwner->ChangeState<GoFight>();
+		GetOwner()->ChangeState<GoFight>();
 	}
 
 	else {
@@ -121,10 +121,10 @@ void GoFight::Load(CR_RJValue /*_data*/)
 
 void GoFight::Init()
 {
-	m_globalState = (BullyState*)m_pOwner->GetGlobalState();
+	m_globalState = (BullyState*)GetOwner()->GetGlobalState();
 
 	DISPATCHER::DispatchMessage(0.0,			//time delay
-		m_pOwner->GetId(),								//sender ID
+		GetOwner()->GetId(),								//sender ID
 		CONTAINER->GetObject("Miner")->GetId(),	//receiver ID
 		"Fight",								//msg
 		nullptr);
@@ -138,7 +138,7 @@ void GoFight::Update(const float /*_dt*/)
 {
 	if (m_beaten) {
 		m_beaten = false;
-		m_pOwner->RevertToPreviousState();
+		GetOwner()->RevertToPreviousState();
 	}
 }
 
@@ -153,7 +153,7 @@ bool GoFight::OnMessage(Telegram& msg)
 		m_globalState->m_talkText->SetText("%s", m_globalState->m_content);
 
 		DISPATCHER::DispatchMessage(0.0,			//time delay
-			m_pOwner->GetId(),								//sender ID
+			GetOwner()->GetId(),								//sender ID
 			CONTAINER->GetObject("Miner")->GetId(),	//receiver ID
 			"Surrender",								//msg
 			nullptr);

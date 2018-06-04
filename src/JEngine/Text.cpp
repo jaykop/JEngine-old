@@ -45,8 +45,8 @@ void Text::operator=(const Text & _copy)
 void Text::Register()
 {
 	SYSTEM::GetGraphicSystem()->AddSprite(this);
-	if (m_pOwner->HasComponent<Transform>())
-		m_transform = m_pOwner->GetComponent<Transform>();
+	if (GetOwner()->HasComponent<Transform>())
+		m_transform = GetOwner()->GetComponent<Transform>();
 }
 
 void Text::SetText(const char * _text, ...)

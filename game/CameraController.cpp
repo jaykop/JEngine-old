@@ -21,7 +21,7 @@ void CameraController::Load(CR_RJValue /*_data*/)
 
 void CameraController::Init()
 {
-	m_camera = m_pOwner->GetComponent<Camera>();
+	m_camera = GetOwner()->GetComponent<Camera>();
 	m_position = m_camera->m_position;
 	m_camera->m_target = m_camera->m_position + vec3::UNIT_Z/*m_camera->m_position.GetNormalize()*/;
 }

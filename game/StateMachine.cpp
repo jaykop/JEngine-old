@@ -20,38 +20,38 @@ void StateMachine::Load(CR_RJValue _data)
     {
         CR_RJValue stateList = _data["StateList"];
         for (rapidjson::SizeType i = 0; i < stateList.Size(); ++i)
-            m_pOwner->AddComponent(stateList[i].GetString());
+            GetOwner()->AddComponent(stateList[i].GetString());
     }
 
     if (_data.HasMember("Current")) {
         CR_RJValue currentState = _data["Current"];
-        m_pOwner->SetCurrentState(currentState.GetString());
+        GetOwner()->SetCurrentState(currentState.GetString());
     }
 
     if (_data.HasMember("Global")) {
         CR_RJValue globalState = _data["Global"];
-        m_pOwner->SetGlobalState(globalState.GetString());
+        GetOwner()->SetGlobalState(globalState.GetString());
     }
 }
 
 void StateMachine::Init()
 {
-    if (m_pOwner->GetGlobalState())
-        m_pOwner->GetGlobalState()->Init();
+    if (GetOwner()->GetGlobalState())
+        GetOwner()->GetGlobalState()->Init();
 
-    if (m_pOwner->GetCurrentState())
-        m_pOwner->GetCurrentState()->Init();
+    if (GetOwner()->GetCurrentState())
+        GetOwner()->GetCurrentState()->Init();
 }
 
 void StateMachine::Update(const float _dt)
 {
     if (INPUT::KeyTriggered(JE_ENTER)) {
 		
-        if (m_pOwner->GetGlobalState())
-            m_pOwner->GetGlobalState()->Update(_dt);
+        if (GetOwner()->GetGlobalState())
+            GetOwner()->GetGlobalState()->Update(_dt);
 
-        if (m_pOwner->GetCurrentState())
-            m_pOwner->GetCurrentState()->Update(_dt);
+        if (GetOwner()->GetCurrentState())
+            GetOwner()->GetCurrentState()->Update(_dt);
     }
 }
 

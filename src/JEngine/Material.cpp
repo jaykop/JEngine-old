@@ -33,15 +33,15 @@ void Material::operator=(const Material & _copy)
 	m_specular = _copy.m_specular;
 	m_shininess = _copy.m_shininess;
 	
-	if (m_pOwner->HasComponent<Sprite>()
-		&& !m_pOwner->GetComponent<Sprite>()->m_hasMaterial) {
-		m_pOwner->GetComponent<Sprite>()->m_material = this;
-		m_pOwner->GetComponent<Sprite>()->m_hasMaterial = true;
+	if (GetOwner()->HasComponent<Sprite>()
+		&& !GetOwner()->GetComponent<Sprite>()->m_hasMaterial) {
+		GetOwner()->GetComponent<Sprite>()->m_material = this;
+		GetOwner()->GetComponent<Sprite>()->m_hasMaterial = true;
 	}
-	else if (m_pOwner->HasComponent<Model>()
-		&& !m_pOwner->GetComponent<Model>()->m_hasMaterial) {
-		m_pOwner->GetComponent<Model>()->m_material = this;
-		m_pOwner->GetComponent<Model>()->m_hasMaterial = true;
+	else if (GetOwner()->HasComponent<Model>()
+		&& !GetOwner()->GetComponent<Model>()->m_hasMaterial) {
+		GetOwner()->GetComponent<Model>()->m_material = this;
+		GetOwner()->GetComponent<Model>()->m_hasMaterial = true;
 	}
 
 }

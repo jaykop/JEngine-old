@@ -37,7 +37,7 @@ Vector3::~Vector3(void)
 
 bool Vector3::operator<(const vec3& _rhs) const
 {
-	return this->GetLengthSq() < _rhs.GetLengthSq();
+    return this->GetLengthSq() < _rhs.GetLengthSq();
 }
 
 /******************************************************************************/
@@ -49,7 +49,7 @@ bool Vector3::operator<(const vec3& _rhs) const
 */
 /******************************************************************************/
 Vector3::Vector3(float _x, float _y, float _z)
-: x(_x), y(_y), z(_z)
+    : x(_x), y(_y), z(_z)
 {}
 
 /******************************************************************************/
@@ -60,12 +60,12 @@ Vector3::Vector3(float _x, float _y, float _z)
 /******************************************************************************/
 Vector3::Vector3(const vec3& _copy)
 {
-	if (this != &_copy)
-	{
-		x = _copy.x;
-		y = _copy.y;
-		z = _copy.z;
-	}
+    if (this != &_copy)
+    {
+        x = _copy.x;
+        y = _copy.y;
+        z = _copy.z;
+    }
 }
 
 /******************************************************************************/
@@ -77,14 +77,14 @@ Vector3::Vector3(const vec3& _copy)
 /******************************************************************************/
 Vector3& Vector3::operator=(const vec3& _rhs)
 {
-	if (this != &_rhs)
-	{
-		x = _rhs.x;
-		y = _rhs.y;
-		z = _rhs.z;
-	}
+    if (this != &_rhs)
+    {
+        x = _rhs.x;
+        y = _rhs.y;
+        z = _rhs.z;
+    }
 
-	return *this;
+    return *this;
 }
 
 /******************************************************************************/
@@ -96,13 +96,13 @@ Vector3& Vector3::operator=(const vec3& _rhs)
 /******************************************************************************/
 Vector3 Vector3::operator-(void)
 {
-	vec3 Result;
+    vec3 Result;
 
-	Result.x = -x;
-	Result.y = -y;
-	Result.z = -z;
+    Result.x = -x;
+    Result.y = -y;
+    Result.z = -z;
 
-	return Result;
+    return Result;
 }
 
 /******************************************************************************/
@@ -114,13 +114,13 @@ Vector3 Vector3::operator-(void)
 /******************************************************************************/
 Vector3 Vector3::operator+(float _constant) const
 {
-	Vector3 result;
+    Vector3 result;
 
-	result.x = x + _constant;
-	result.y = y + _constant;
-	result.z = z + _constant;
+    result.x = x + _constant;
+    result.y = y + _constant;
+    result.z = z + _constant;
 
-	return result;
+    return result;
 }
 
 /******************************************************************************/
@@ -132,13 +132,13 @@ Vector3 Vector3::operator+(float _constant) const
 /******************************************************************************/
 Vector3 Vector3::operator+(const vec3& _rhs) const
 {
-	Vector3 result;
+    Vector3 result;
 
-	result.x = x + _rhs.x;
-	result.y = y + _rhs.y;
-	result.z = z + _rhs.z;
+    result.x = x + _rhs.x;
+    result.y = y + _rhs.y;
+    result.z = z + _rhs.z;
 
-	return result;
+    return result;
 }
 
 /******************************************************************************/
@@ -150,13 +150,13 @@ Vector3 Vector3::operator+(const vec3& _rhs) const
 /******************************************************************************/
 Vector3 Vector3::operator-(float _constant) const
 {
-	Vector3 result;
+    Vector3 result;
 
-	result.x = x - _constant;
-	result.y = y - _constant;
-	result.z = z - _constant;
+    result.x = x - _constant;
+    result.y = y - _constant;
+    result.z = z - _constant;
 
-	return result;
+    return result;
 }
 
 /******************************************************************************/
@@ -168,13 +168,13 @@ Vector3 Vector3::operator-(float _constant) const
 /******************************************************************************/
 Vector3 Vector3::operator-(const vec3& _rhs) const
 {
-	Vector3 result;
+    Vector3 result;
 
-	result.x = x - _rhs.x;
-	result.y = y - _rhs.y;
-	result.z = z - _rhs.z;
+    result.x = x - _rhs.x;
+    result.y = y - _rhs.y;
+    result.z = z - _rhs.z;
 
-	return result;
+    return result;
 }
 
 /******************************************************************************/
@@ -186,24 +186,24 @@ Vector3 Vector3::operator-(const vec3& _rhs) const
 /******************************************************************************/
 Vector3 Vector3::operator*(float _constant) const
 {
-	Vector3 result;
+    Vector3 result;
 
-	result.x = x * _constant;
-	result.y = y * _constant;
-	result.z = z * _constant;
+    result.x = x * _constant;
+    result.y = y * _constant;
+    result.z = z * _constant;
 
-	return result;
+    return result;
 }
 
 Vector3 Vector3::operator*(const vec3& _rhs) const
 {
-	Vector3 result;
+    Vector3 result;
 
-	result.x = x * _rhs.x;
-	result.y = y * _rhs.y;
-	result.z = z * _rhs.z;
+    result.x = x * _rhs.x;
+    result.y = y * _rhs.y;
+    result.z = z * _rhs.z;
 
-	return result;
+    return result;
 }
 
 /******************************************************************************/
@@ -215,20 +215,20 @@ Vector3 Vector3::operator*(const vec3& _rhs) const
 /******************************************************************************/
 Vector3 Vector3::operator/(float _constant) const
 {
-	Vector3 result;
+    Vector3 result;
 
-	// If _constant is not zero,
-	if (_constant) {
-		result.x = x / _constant;
-		result.y = y / _constant;
-		result.z = z / _constant;
-	}
+    // If _constant is not zero,
+    if (_constant) {
+        result.x = x / _constant;
+        result.y = y / _constant;
+        result.z = z / _constant;
+    }
 
-	// Unless.
-	else
-		jeDebugPrint("!Vector3 - Cannot devide by 0.\n");
+    // Unless.
+    else
+        jeDebugPrint("!Vector3 - Cannot devide by 0.\n");
 
-	return result;
+    return result;
 }
 
 /******************************************************************************/
@@ -241,11 +241,11 @@ Vector3 Vector3::operator/(float _constant) const
 /******************************************************************************/
 Vector3 operator+(float _constant, const vec3& _rhs)
 {
-	Vector3 result;
+    Vector3 result;
 
-	result = _rhs + _constant;
+    result = _rhs + _constant;
 
-	return result;
+    return result;
 }
 
 /******************************************************************************/
@@ -258,11 +258,11 @@ Vector3 operator+(float _constant, const vec3& _rhs)
 /******************************************************************************/
 Vector3 operator*(float _constant, const vec3& _rhs)
 {
-	Vector3 result;
+    Vector3 result;
 
-	result = _rhs * _constant;
+    result = _rhs * _constant;
 
-	return result;
+    return result;
 }
 
 /******************************************************************************/
@@ -275,8 +275,8 @@ Vector3 operator*(float _constant, const vec3& _rhs)
 /******************************************************************************/
 std::ostream& operator<<(std::ostream& os, const vec3& contents)
 {
-	os << "Vector3[ " << contents.x << ", " << contents.y << ", " << contents.z << " ]";
-	return os;
+    os << "Vector3[ " << contents.x << ", " << contents.y << ", " << contents.z << " ]";
+    return os;
 }
 
 /******************************************************************************/
@@ -288,7 +288,7 @@ std::ostream& operator<<(std::ostream& os, const vec3& contents)
 /******************************************************************************/
 float Vector3::DotProduct(const vec3& _rhs)
 {
-	return x * _rhs.x + y * _rhs.y + z * _rhs.z;
+    return x * _rhs.x + y * _rhs.y + z * _rhs.z;
 }
 
 /******************************************************************************/
@@ -300,13 +300,13 @@ float Vector3::DotProduct(const vec3& _rhs)
 /******************************************************************************/
 Vector3 Vector3::CrossProduct(const vec3& _rhs)
 {
-	Vector3 result;
+    Vector3 result;
 
-	result.x = y * _rhs.z - z * _rhs.y;
-	result.y = z * _rhs.x - x * _rhs.z;
-	result.z = x * _rhs.y - y * _rhs.x;
+    result.x = y * _rhs.z - z * _rhs.y;
+    result.y = z * _rhs.x - x * _rhs.z;
+    result.z = x * _rhs.y - y * _rhs.x;
 
-	return result;
+    return result;
 }
 
 /******************************************************************************/
@@ -318,11 +318,11 @@ Vector3 Vector3::CrossProduct(const vec3& _rhs)
 /******************************************************************************/
 Vector3& Vector3::operator+=(const vec3& _rhs)
 {
-	x += _rhs.x;
-	y += _rhs.y;
-	z += _rhs.z;
+    x += _rhs.x;
+    y += _rhs.y;
+    z += _rhs.z;
 
-	return *this;
+    return *this;
 }
 
 /******************************************************************************/
@@ -334,11 +334,11 @@ Vector3& Vector3::operator+=(const vec3& _rhs)
 /******************************************************************************/
 Vector3& Vector3::operator+=(float _constant)
 {
-	x += _constant;
-	y += _constant;
-	z += _constant;
+    x += _constant;
+    y += _constant;
+    z += _constant;
 
-	return *this;
+    return *this;
 }
 
 /******************************************************************************/
@@ -350,11 +350,11 @@ Vector3& Vector3::operator+=(float _constant)
 /******************************************************************************/
 Vector3& Vector3::operator-=(const vec3& _rhs)
 {
-	x -= _rhs.x;
-	y -= _rhs.y;
-	z -= _rhs.z;
+    x -= _rhs.x;
+    y -= _rhs.y;
+    z -= _rhs.z;
 
-	return *this;
+    return *this;
 }
 
 /******************************************************************************/
@@ -366,20 +366,20 @@ Vector3& Vector3::operator-=(const vec3& _rhs)
 /******************************************************************************/
 Vector3& Vector3::operator-=(float _constant)
 {
-	x -= _constant;
-	y -= _constant;
-	z -= _constant;
+    x -= _constant;
+    y -= _constant;
+    z -= _constant;
 
-	return *this;
+    return *this;
 }
 
 Vector3& Vector3::operator*=(const vec3& _rhs)
 {
-	x *= _rhs.x;
-	y *= _rhs.y;
-	z *= _rhs.z;
+    x *= _rhs.x;
+    y *= _rhs.y;
+    z *= _rhs.z;
 
-	return *this;
+    return *this;
 }
 
 /******************************************************************************/
@@ -391,93 +391,93 @@ Vector3& Vector3::operator*=(const vec3& _rhs)
 /******************************************************************************/
 Vector3& Vector3::operator*=(float _constant)
 {
-	x *= _constant;
-	y *= _constant;
-	z *= _constant;
+    x *= _constant;
+    y *= _constant;
+    z *= _constant;
 
-	return *this;
+    return *this;
 }
 
 Vector3& Vector3::operator/=(float _constant)
 {
-	// If _constant is not zero,
-	if (_constant) {
-		x /= _constant;
-		y /= _constant;
-		y /= _constant;
-	}
+    // If _constant is not zero,
+    if (_constant) {
+        x /= _constant;
+        y /= _constant;
+        y /= _constant;
+    }
 
-	// Unless.
-	else
-		jeDebugPrint("!Vector3 - Cannot devide by 0.\n");
+    // Unless.
+    else
+        jeDebugPrint("!Vector3 - Cannot devide by 0.\n");
 
-	return *this;
+    return *this;
 }
 
 void Vector3::Set(const vec3& _copy)
 {
-	x = _copy.x;
-	y = _copy.y;
-	z = _copy.z;
+    x = _copy.x;
+    y = _copy.y;
+    z = _copy.z;
 }
 
 void Vector3::Set(float _x, float _y, float _z)
 {
-	x = _x;
-	y = _y;
-	z = _z;
+    x = _x;
+    y = _y;
+    z = _z;
 }
 
 
 void Vector3::SetZero()
 {
-	x = y = z = 0.f;
+    x = y = z = 0.f;
 }
 
 void Vector3::SetOne()
 {
-	x = y = z = 1.f;
+    x = y = z = 1.f;
 }
 
 void Vector3::SetUnitX()
 {
-	x = 1.f;
-	y = 0.f;
-	z = 0.f;
+    x = 1.f;
+    y = 0.f;
+    z = 0.f;
 }
 
 void Vector3::SetUnitY()
 {
-	x = 0.f;
-	y = 1.f;
-	z = 0.f;
+    x = 0.f;
+    y = 1.f;
+    z = 0.f;
 }
 
 void Vector3::SetUnitZ()
 {
-	x = 0.f;
-	y = 0.f;
-	z = 1.f;
+    x = 0.f;
+    y = 0.f;
+    z = 1.f;
 }
 
 bool Vector3::IsZero() const
 {
-	// If both x y z are not 0,
-	if (x || y || z)
-		return false;
+    // If both x y z are not 0,
+    if (x || y || z)
+        return false;
 
-	// Unless,
-	return true;
+    // Unless,
+    return true;
 }
 
 bool Vector3::IsOne() const
 {
-	// If both x y z are not 1,
-	if (x != 1.f || y != 1.f || z != 1.f)
-		return false;
+    // If both x y z are not 1,
+    if (x != 1.f || y != 1.f || z != 1.f)
+        return false;
 
-	// Unless,
-	return true;
+    // Unless,
+    return true;
 }
 /******************************************************************************/
 /*!
@@ -487,28 +487,28 @@ bool Vector3::IsOne() const
 /******************************************************************************/
 void Vector3::Normalize(void)
 {
-		// If this is not zero,
-		if (!IsZero())
-			*this = *this / GetLength();
+    // If this is not zero,
+    if (!IsZero())
+        *this = *this / GetLength();
 
-		// Unless.
-		else
-			jeDebugPrint("!Vector3 - Cannot devide by 0.\n");
+    // Unless.
+    else
+        jeDebugPrint("!Vector3 - Cannot devide by 0.\n");
 }
 
 Vector3 Vector3::GetNormalize() const
 {
-	Vector3 result(*this);
+    Vector3 result(*this);
 
-	// If this is not zero,
-	if (!IsZero())
-		result = result / GetLength();
+    // If this is not zero,
+    if (!IsZero())
+        result = result / GetLength();
 
-	// Unless.
-	else
-		jeDebugPrint("!Vector3 - Cannot devide by 0.\n");
+    // Unless.
+    else
+        jeDebugPrint("!Vector3 - Cannot devide by 0.\n");
 
-	return result;
+    return result;
 }
 
 /******************************************************************************/
@@ -519,12 +519,12 @@ Vector3 Vector3::GetNormalize() const
 /******************************************************************************/
 float Vector3::GetLength(void) const
 {
-	return sqrt(GetLengthSq());
+    return sqrt(GetLengthSq());
 }
 
 float Vector3::GetLengthSq() const
 {
-	return x*x + y*y + z*z;
+    return x * x + y * y + z * z;
 }
 
 /******************************************************************************/
@@ -535,26 +535,26 @@ float Vector3::GetLengthSq() const
 /******************************************************************************/
 void Vector3::Absolute()
 {
-	if (x < 0)
-		x = -x;
-	if (y < 0)
-		y = -y;
-	if (z < 0)
-		z = -z;
+    if (x < 0)
+        x = -x;
+    if (y < 0)
+        y = -y;
+    if (z < 0)
+        z = -z;
 }
 
 Vector3 Vector3::GetAbsolute() const
 {
-	Vector3 result(x, y, z);
+    Vector3 result(x, y, z);
 
-	if (result.x < 0)
-		result.x = -result.x;
-	if (result.y < 0)
-		result.y = -result.y;
-	if (result.z < 0)
-		result.z = -result.z;
+    if (result.x < 0)
+        result.x = -result.x;
+    if (result.y < 0)
+        result.y = -result.y;
+    if (result.z < 0)
+        result.z = -result.z;
 
-	return result;
+    return result;
 }
 
 /******************************************************************************/
@@ -567,17 +567,17 @@ Vector3 Vector3::GetAbsolute() const
 /******************************************************************************/
 void Vector3::Rotation(float angle, const vec3& pivot)
 {
-	float s = sinf(Math::DegToRad(angle));
-	float c = cosf(Math::DegToRad(angle));
+    float s = sinf(Math::DegToRad(angle));
+    float c = cosf(Math::DegToRad(angle));
 
-	x -= pivot.x;
-	y -= pivot.y;
+    x -= pivot.x;
+    y -= pivot.y;
 
-	float new_x = x * c - y * s;
-	float new_y = x * s + y * c;
+    float new_x = x * c - y * s;
+    float new_y = x * s + y * c;
 
-	x = new_x + pivot.x;
-	y = new_y + pivot.y;
+    x = new_x + pivot.x;
+    y = new_y + pivot.y;
 }
 
 /******************************************************************************/
@@ -589,34 +589,34 @@ void Vector3::Rotation(float angle, const vec3& pivot)
 /******************************************************************************/
 void Vector3::Reflection(const vec3&  _rhs)
 {
-	Vector3 reflected;
-	Vector3 norm = _rhs.GetNormalize();
-	
-	(*this) = (*this) - 2 * ((*this).DotProduct(norm)) * norm;
+    Vector3 reflected;
+    Vector3 norm = _rhs.GetNormalize();
+
+    (*this) = (*this) - 2 * (DotProduct(norm)) * norm;
 }
 
 /******************************************************************************/
 /*!
 \brief - Calculate 2 vectors' included angle
-\param other - 2nd vector
+\param _other - 2nd vector
 \return Math::RadToDeg(radian)
 */
 /******************************************************************************/
 float Vector3::GetAngle(const vec3& _other)
 {
-	float radian = atan2(x * _other.y - _other.x * y, (*this).DotProduct(_other));
+    float radian = atan2(x * _other.y - _other.x * y, DotProduct(_other));
 
-	return Math::RadToDeg(radian);
+    return Math::RadToDeg(radian);
 }
 
 float Vector3::GetDistance(const vec3& _rhs)
 {
-	return ((*this) - _rhs).GetLength();
+    return ((*this) - _rhs).GetLength();
 }
 
 float Vector3::GetDistanceSq(const Vector3 & _rhs)
 {
-	return ((*this) - _rhs).GetLengthSq();
+    return ((*this) - _rhs).GetLengthSq();
 }
 
 /******************************************************************************/
@@ -629,30 +629,30 @@ float Vector3::GetDistanceSq(const Vector3 & _rhs)
 /******************************************************************************/
 float Vector3::DistanceToLine(const vec3& _lineStart, const vec3& _lineEnd)
 {
-	// segment is nit a segment; a point
-	float length = vec3(_lineStart).GetDistance(_lineEnd);
-	if (!length)
-		return  (*this).GetDistance(_lineStart);
+    // segment is nit a segment; a point
+    float length = vec3(_lineStart).GetDistance(_lineEnd);
+    if (!length)
+        return  (*this).GetDistance(_lineStart);
 
-	// Unless...
-	float projection = (((*this).x - _lineStart.x) * (_lineEnd.x - _lineStart.x) +
-		((*this).y - _lineStart.y) * (_lineEnd.y - _lineStart.y)) / length;
+    // Unless...
+    float projection = (((*this).x - _lineStart.x) * (_lineEnd.x - _lineStart.x) +
+        ((*this).y - _lineStart.y) * (_lineEnd.y - _lineStart.y)) / length;
 
-	//
-	//	1st case		2nd case		3rd case
-	//		*				*				*
-	//		   A						 B
-	//			=========================
+    //
+    //	1st case		2nd case		3rd case
+    //	*			*			*
+    //		        A			B
+    //			=========================
 
-	// 1st case
-	if (projection < 0)
-		return (*this).GetDistance(_lineStart);
-	// 3rd case
-	else if (projection > length)
-		return (*this).GetDistance(_lineEnd);
-	// 2nd case
-	else return abs(((*this).y - _lineStart.y) * (_lineEnd.x - _lineStart.x)
-		- ((*this).x - _lineStart.x) * (_lineEnd.y - _lineStart.y)) / length;
+    // 1st case
+    if (projection < 0)
+        return (*this).GetDistance(_lineStart);
+    // 3rd case
+    else if (projection > length)
+        return (*this).GetDistance(_lineEnd);
+    // 2nd case
+    else return abs(((*this).y - _lineStart.y) * (_lineEnd.x - _lineStart.x)
+        - ((*this).x - _lineStart.x) * (_lineEnd.y - _lineStart.y)) / length;
 }
 
 /******************************************************************************/
@@ -664,12 +664,12 @@ float Vector3::DistanceToLine(const vec3& _lineStart, const vec3& _lineEnd)
 /******************************************************************************/
 void Vector3::Rotation(float _angle)
 {
-	Vector3 result(*this);
+    Vector3 result(*this);
 
-	result.x = x * cosf(Math::DegToRad(_angle)) - y * sinf(Math::DegToRad(_angle));
-	result.y = x * sinf(Math::DegToRad(_angle)) + y * cosf(Math::DegToRad(_angle));
+    result.x = x * cosf(Math::DegToRad(_angle)) - y * sinf(Math::DegToRad(_angle));
+    result.y = x * sinf(Math::DegToRad(_angle)) + y * cosf(Math::DegToRad(_angle));
 
-	*this = result;
+    *this = result;
 }
 
 /******************************************************************************/
@@ -681,10 +681,10 @@ void Vector3::Rotation(float _angle)
 /******************************************************************************/
 bool Vector3::operator==(const vec3& _rhs) const
 {
-	if (x != _rhs.x || y != _rhs.y || z != _rhs.z)
-		return false;
+    if (x != _rhs.x || y != _rhs.y || z != _rhs.z)
+        return false;
 
-	return true;
+    return true;
 }
 
 /******************************************************************************/
@@ -696,10 +696,10 @@ bool Vector3::operator==(const vec3& _rhs) const
 /******************************************************************************/
 bool Vector3::operator!=(const vec3& _rhs) const
 {
-	if ((*this) == _rhs)
-		return false;
+    if ((*this) == _rhs)
+        return false;
 
-	return true;
+    return true;
 }
 
 /******************************************************************************/
@@ -712,22 +712,22 @@ bool Vector3::operator!=(const vec3& _rhs) const
 /******************************************************************************/
 Vector3 Vector3::GetRotated(float angle, const vec3& pivot)
 {
-	vec3 new_point(*this);
-	float radian = Math::DegToRad(angle);
+    vec3 new_point(*this);
+    float radian = Math::DegToRad(angle);
 
-	float s = sinf(radian);
-	float c = cosf(radian);
+    float s = sinf(radian);
+    float c = cosf(radian);
 
-	new_point.x -= pivot.x;
-	new_point.y -= pivot.y;
+    new_point.x -= pivot.x;
+    new_point.y -= pivot.y;
 
-	float new_x = new_point.x * c - new_point.y * s;
-	float new_y = new_point.x * s + new_point.y * c;
+    float new_x = new_point.x * c - new_point.y * s;
+    float new_y = new_point.x * s + new_point.y * c;
 
-	new_point.x = new_x + pivot.x;
-	new_point.y = new_y + pivot.y;
+    new_point.x = new_x + pivot.x;
+    new_point.y = new_y + pivot.y;
 
-	return new_point;
+    return new_point;
 }
 
 /******************************************************************************/
@@ -741,25 +741,25 @@ Vector3 Vector3::GetRotated(float angle, const vec3& pivot)
 */
 /******************************************************************************/
 Vector3  GetSegmentIntersection(
-	const vec3& line1_start, const vec3& line1_end,
-	const vec3& line2_start, const vec3& line2_end)
+    const vec3& line1_start, const vec3& line1_end,
+    const vec3& line2_start, const vec3& line2_end)
 {
-	//Get Coefficients
-	float a2 = line2_end.y - line2_start.y;
-	float b2 = line2_start.x - line2_end.x;
-	float c2 = line2_end.x * line2_start.y - line2_start.x * line2_end.y;
+    //Get Coefficients
+    float a2 = line2_end.y - line2_start.y;
+    float b2 = line2_start.x - line2_end.x;
+    float c2 = line2_end.x * line2_start.y - line2_start.x * line2_end.y;
 
-	float a1 = line1_end.y - line1_start.y;
-	float b1 = line1_start.x - line1_end.x;
-	float c1 = line1_end.x * line1_start.y - line1_start.x * line1_end.y;
+    float a1 = line1_end.y - line1_start.y;
+    float b1 = line1_start.x - line1_end.x;
+    float c1 = line1_end.x * line1_start.y - line1_start.x * line1_end.y;
 
-	//Check if they are parallel
-	float D = a1 * b2 - a2 * b1;
-	
-	if (!D)
-		jeDebugPrint("!Vector3 - Determine is 0.\n");
+    //Check if they are parallel
+    float D = a1 * b2 - a2 * b1;
 
-	return Vector3((b1*c2 - b2*c1) / D, (a2*c1 - a1*c2) / D);
+    if (!D)
+        jeDebugPrint("!Vector3 - Determine is 0.\n");
+
+    return Vector3((b1*c2 - b2 * c1) / D, (a2*c1 - a1 * c2) / D);
 }
 
 /******************************************************************************/
@@ -773,18 +773,18 @@ Vector3  GetSegmentIntersection(
 */
 /******************************************************************************/
 bool IsSegmentIntersection(
-	const vec3& line1_start, const vec3& line1_end,
-	const vec3& line2_start, const vec3& line2_end)
+    const vec3& line1_start, const vec3& line1_end,
+    const vec3& line2_start, const vec3& line2_end)
 {
-	float denominator = ((line1_end.x - line1_start.x) * (line2_end.y - line2_start.y)) - ((line1_end.y - line1_start.y) * (line2_end.x - line2_start.x));
-	float numerator1 = ((line1_start.y - line2_start.y) * (line2_end.x - line2_start.x)) - ((line1_start.x - line2_start.x) * (line2_end.y - line2_start.y));
-	float numerator2 = ((line1_start.y - line2_start.y) * (line1_end.x - line1_start.x)) - ((line1_start.x - line2_start.x) * (line1_end.y - line1_start.y));
+    float denominator = ((line1_end.x - line1_start.x) * (line2_end.y - line2_start.y)) - ((line1_end.y - line1_start.y) * (line2_end.x - line2_start.x));
+    float numerator1 = ((line1_start.y - line2_start.y) * (line2_end.x - line2_start.x)) - ((line1_start.x - line2_start.x) * (line2_end.y - line2_start.y));
+    float numerator2 = ((line1_start.y - line2_start.y) * (line1_end.x - line1_start.x)) - ((line1_start.x - line2_start.x) * (line1_end.y - line1_start.y));
 
-	if (!denominator) return numerator1 == 0 && numerator2 == 0;
-	float r = numerator1 / denominator;
-	float s = numerator2 / denominator;
+    if (!denominator) return numerator1 == 0 && numerator2 == 0;
+    float r = numerator1 / denominator;
+    float s = numerator2 / denominator;
 
-	return (r >= 0 && r <= 1) && (s >= 0 && s <= 1);
+    return (r >= 0 && r <= 1) && (s >= 0 && s <= 1);
 }
 
 
