@@ -24,57 +24,32 @@
 			]
 		},
 		{
-			"Name" : "Wife",
+			"Name" : "Target",
 			"Component" : [
 				{
 					"Type": "Transform",
-					"Values": { "Position" : [-90, 65, 1], "Scale" : [25, 25, 0] }
+					"Values": {"Position" : [50, 50, 0], "Scale" : [5, 5, 0]}
 				},
 				{
-					"Type": "Sprite",
-					"Values": { "Texture" : "wife" }
-				},
-				{
-					"Type": "StateMachine",
-					"Values": { "StateList" : ["WifeState", "DoHousework", "CookStew", "GoToBathroom" ],
-								"Current" : "DoHousework", "Global" : "WifeState"}
+					"Type" : "Sprite",
+					"Values" : {"Texture" : "circle", "Color" : [0, 0, 1, 1] }
 				}
 			]
 		},
 		{
-			"Name" : "Bully",
+			"Name" : "Entity",
 			"Component" : [
 				{
 					"Type": "Transform",
-					"Values": { "Position" : [-80, -50, 1], "Scale" : [12.5, 25, 0] }
+					"Values": {"Position" : [0, 0, 0], "Scale" : [5, 5, 0]}
 				},
 				{
-					"Type": "Sprite",
-					"Values": { "Texture" : "bully" }
+					"Type" : "Sprite",
+					"Values" : {"Texture" : "arrow", "Color" : [1, 0, 0, 1] }
 				},
 				{
-					"Type": "StateMachine",
-					"Values": { "StateList" : ["BullyState", "JustHatingMiner", "GoFight" ],
-								"Current" : "JustHatingMiner", "Global" : "BullyState"}
-				}
-			]
-		},
-		{
-			"Name" : "Miner",
-			"Component" : [
-				{
-					"Type": "Transform",
-					"Values": { "Position" : [-80, 0, 1], "Scale" : [25, 25, 0] }
-				},
-				{
-					"Type": "Sprite",
-					"Values": { "Texture" : "miner" }
-				},
-				{
-					"Type": "StateMachine",
-					"Values": { "StateList" : ["MinerState", "GoHomeAndSleepTilRested", "BeatBully",
-								"EatStew", "EnterMineAndDigForNugget", "QuenchThirst", "VisitBankAndDepositGold" ],
-								"Current" : "GoHomeAndSleepTilRested", "Global" : "MinerState"}
+					"Type" : "Steering",
+					"Values" : {}
 				}
 			]
 		}

@@ -21,8 +21,8 @@ Sprite::Sprite(Object* _pOwner)
 void Sprite::Register()
 {
 	SYSTEM::GetGraphicSystem()->AddSprite(this);
-	if (m_pOwner->HasComponent<Transform>())
-		m_transform = m_pOwner->GetComponent<Transform>();
+	if (GetOwner()->HasComponent<Transform>())
+		m_transform = GetOwner()->GetComponent<Transform>();
 }
 
 void Sprite::AddTexture(const char *_key)
@@ -80,11 +80,11 @@ void Sprite::operator=(const Sprite & _copy)
 	m_color.Set(_copy.m_color); 
 	m_projection = _copy.m_projection,
 	m_mainTex = _copy.m_mainTex; 
-	m_transform = m_pOwner->GetComponent<Transform>(); 
+	m_transform = GetOwner()->GetComponent<Transform>(); 
 	m_flip = _copy.m_flip; 
 	m_culled = _copy.m_culled; 
 	m_bilboard = _copy.m_bilboard;
-	m_material = m_pOwner->GetComponent<Material>();
+	m_material = GetOwner()->GetComponent<Material>();
 	m_hasMaterial = _copy.m_hasMaterial;
 	m_isEmitter = _copy.m_isEmitter;
 	m_isText = _copy.m_isText;

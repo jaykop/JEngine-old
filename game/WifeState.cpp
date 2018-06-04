@@ -24,7 +24,7 @@ void WifeState::Load(CR_RJValue /*_data*/)
 
 void WifeState::Init()
 {
-	m_pTransform = m_pOwner->GetComponent<Transform>();
+	m_pTransform = GetOwner()->GetComponent<Transform>();
 
 	// Add child object
 	// Wife talks object
@@ -38,7 +38,7 @@ void WifeState::Init()
 	m_talkOffset.Set(15.f, 0.f, 1.f);
 	m_talkText = m_wifeTalks->GetComponent<Text>();
 	m_talkText->Register();
-	m_pOwner->AddChild(m_wifeTalks);
+	GetOwner()->AddChild(m_wifeTalks);
 
 	// Set font
 	m_talkText->m_pFont = ASSET::GetFont("Default");
@@ -59,7 +59,7 @@ bool WifeState::OnMessage(Telegram& msg)
 
 		m_content = "My dear! Let me cook for you!";
 		m_talkText->SetText("%s", m_content);
-		m_pOwner->ChangeState<CookStew>();
+		GetOwner()->ChangeState<CookStew>();
 		
         return true;
     }
@@ -82,7 +82,7 @@ void DoHousework::Load(CR_RJValue /*_data*/)
 
 void DoHousework::Init()
 {
-	m_globalState = (WifeState*)m_pOwner->GetGlobalState();
+	m_globalState = (WifeState*)GetOwner()->GetGlobalState();
 
 	m_globalState->m_content = "Doing houseworks...";
 	m_globalState->m_talkText->SetText("%s\nChoresToDo: %d\nNeed to pee?: %d",
@@ -100,7 +100,7 @@ void DoHousework::Update(const float /*_dt*/)
 		m_globalState->m_content, m_globalState->m_chores, m_globalState->m_natureCalling);
 
 	if (m_globalState->m_natureCalling > 10)
-		m_pOwner->ChangeState<GoToBathroom>();
+		GetOwner()->ChangeState<GoToBathroom>();
 }
 
 void DoHousework::Close()
@@ -126,15 +126,15 @@ void CookStew::Load(CR_RJValue /*_data*/)
 
 void CookStew::Init()
 {
-	m_globalState = (WifeState*)m_pOwner->GetGlobalState();
+	m_globalState = (WifeState*)GetOwner()->GetGlobalState();
 
     if (!m_globalState->m_isCooking)
     {
         //send a delayed message myself so that I know when to take the stew
         //out of the oven
         DISPATCHER::DispatchMessage(1.5,	//time delay
-            m_pOwner->GetId(),				//sender ID
-			m_pOwner->GetId(),				//receiver ID
+            GetOwner()->GetId(),				//sender ID
+			GetOwner()->GetId(),				//receiver ID
             "StewReady",					//msg
             nullptr);
 
@@ -154,13 +154,13 @@ bool CookStew::OnMessage(Telegram& msg)
     {
         //let miner know the stew is ready
         DISPATCHER::DispatchMessage(0.0,
-            m_pOwner->GetId(),
+            GetOwner()->GetId(),
 			CONTAINER->GetObject("Miner")->GetId(),
             "StewReady",
             nullptr);
 
 		m_globalState->m_isCooking = false;
-        m_pOwner->ChangeState<DoHousework>();
+        GetOwner()->ChangeState<DoHousework>();
 
         return true;
 
@@ -184,7 +184,7 @@ void GoToBathroom::Load(CR_RJValue /*_data*/)
 
 void GoToBathroom::Init()
 {
-	m_globalState = (WifeState*)m_pOwner->GetGlobalState();
+	m_globalState = (WifeState*)GetOwner()->GetGlobalState();
 
 	m_globalState->m_natureCalling = 0;
 
@@ -198,7 +198,7 @@ void GoToBathroom::Init()
 void GoToBathroom::Update(const float /*_dt*/)
 {
 	if (!m_globalState->m_natureCalling)
-		m_pOwner->ChangeState<DoHousework>();
+		GetOwner()->ChangeState<DoHousework>();
 }
 
 void GoToBathroom::Close()

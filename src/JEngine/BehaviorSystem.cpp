@@ -18,7 +18,7 @@ void BehaviorSystem::RemoveBehavior(CustomComponent* _behavior)
 {
 	for (Behaviors::iterator it = m_behaviors.begin();
 		it != m_behaviors.end(); ++it) {
-		if ((*it)->m_pOwner->GetId() == _behavior->m_pOwner->GetId()) {
+		if ((*it)->GetOwner()->GetId() == _behavior->GetOwner()->GetId()) {
 			m_behaviors.erase(it);
 			break;
 		}

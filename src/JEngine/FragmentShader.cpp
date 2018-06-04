@@ -89,6 +89,9 @@ std::string Shader::m_fragmentShader[] = {
 		else
 			finalTexture = texture(Texture, v2_outTexCoord)* v4_color;
 		
+                if (finalTexture.a <= 0.0)
+                    discard;
+
 		v4_fragColor = finalTexture;
 	}
 
@@ -168,7 +171,11 @@ std::string Shader::m_fragmentShader[] = {
 	////////////////////////////
 	void main() {
 
-		v4_fragColor = texture(Texture, v2_outTexCoord).r * v4_color;
+                 vec4 finalTexture = texture(Texture, v2_outTexCoord).r * v4_color;
+                 if (finalTexture.a <= 0.0)
+                    discard;
+
+		v4_fragColor = finalTexture;
 	
 	}
 	)glsl",
@@ -182,10 +189,12 @@ std::string Shader::m_fragmentShader[] = {
 
 	void main()
 	{
-		v4_fragColor = v4_color;
+                if (v4_color.a <= 0.0)
+                    discard;
+		
+                v4_fragColor = v4_color;
 	}
 	)glsl",
-	/*************** Lighting Shader **************/
 
 	/*************** Particle Shader **************/
 	R"glsl(
@@ -202,7 +211,11 @@ std::string Shader::m_fragmentShader[] = {
 
 	void main(){
 
-		color = texture( Texture, v2_outTexCoord ) * v4_outColor;
+                vec4 finalTexture = texture( Texture, v2_outTexCoord ) * v4_outColor;
+                if (finalTexture.a <= 0.0)
+                    discard;
+
+		color = finalTexture;
 
 	}
 	)glsl",
@@ -239,7 +252,10 @@ std::string Shader::m_fragmentShader[] = {
 		// Impose visual effect here...
 		if (enum_effectType != EFFECT_NONE)
 			VisualEffect(finalScreen, textureCoord);
-		
+
+		if (finalScreen.a <= 0.0)
+                    discard;
+
 		v4_fragColor = finalScreen;
 	}
 
