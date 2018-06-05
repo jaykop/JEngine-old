@@ -28,6 +28,15 @@ class Sprite : public Component
     using Image = std::vector<unsigned char>;
     using TextureMap = std::unordered_map<std::string, unsigned>;
 
+protected:
+
+	const static int HAS_ANIMATION = 0x0001;
+	const static int HAS_MATERIAL = 0x0010;
+	const static int IS_EMITTER = 0x0100;
+	const static int IS_TEXT = 0x1000;
+
+	int m_status;
+
 public:
 
     void Register() override;
@@ -54,7 +63,7 @@ protected:
     void Load(CR_RJValue _data) override;
 
     bool m_culled;
-    bool m_hasMaterial, m_hasAnimation, m_isEmitter, m_isText;
+    //bool m_hasMaterial, m_hasAnimation, m_isEmitter, m_isText;
 
     unsigned	m_mainTex;
     TextureMap	m_textureMap;

@@ -4,8 +4,11 @@
 #include "Transform.h"
 #include "AssetManager.h"
 #include "SystemManager.h"
-#include "MemoryAllocator.h"
 #include "Object.h"
+
+#ifdef  jeUseBuiltInAllocator
+#include "MemoryAllocator.h"
+#endif
 
 jeBegin
 jeDefineComponentBuilder(Sprite);
@@ -13,9 +16,9 @@ jeDefineComponentBuilder(Sprite);
 Sprite::Sprite(Object* _pOwner)
 	:Component(_pOwner), m_color(vec4::ONE), m_projection(PROJECTION_PERSPECTIVE),
 	m_mainTex(0), m_transform(nullptr), m_flip(false), m_culled(false), m_bilboard(false),
-	m_material(nullptr), m_hasMaterial(false), m_isEmitter(false), m_isText(false),
+	m_material(nullptr), m_sfactor(GL_SRC_ALPHA), m_dfactor(GL_ONE_MINUS_SRC_ALPHA), m_animation(nullptr),
 	m_vao(&(GLM::m_vao[GLM::SHAPE_PLANE])), m_elementSize(GLM::m_elementSize[GLM::SHAPE_PLANE]),
-	m_sfactor(GL_SRC_ALPHA), m_dfactor(GL_ONE_MINUS_SRC_ALPHA), m_animation(nullptr), m_hasAnimation(false)
+	m_status(0x0000)
 {}
 
 void Sprite::Register()
@@ -85,9 +88,7 @@ void Sprite::operator=(const Sprite & _copy)
 	m_culled = _copy.m_culled; 
 	m_bilboard = _copy.m_bilboard;
 	m_material = GetOwner()->GetComponent<Material>();
-	m_hasMaterial = _copy.m_hasMaterial;
-	m_isEmitter = _copy.m_isEmitter;
-	m_isText = _copy.m_isText;
+	m_status = _copy.m_status;
 	m_vao = _copy.m_vao; 
 	m_elementSize = _copy.m_elementSize;
 }
@@ -108,13 +109,12 @@ void Sprite::Load(CR_RJValue _data)
 	if (_data.HasMember("Projection")) {
 		CR_RJValue projection = _data["Projection"];
 
-		if (!strcmp("Perspective", projection.GetString())) {
+		if (!strcmp("Perspective", projection.GetString())) 
 			m_projection = PROJECTION_PERSPECTIVE;
-		}
-
-		else if (!strcmp("Orthogonal", projection.GetString())) {
+		
+		else if (!strcmp("Orthogonal", projection.GetString())) 
 			m_projection = PROJECTION_ORTHOGONAL;
-		}
+		
 		else
 			jeDebugPrint("!Sprite - Wrong projection type: %s\n", projection.GetString());
 	}

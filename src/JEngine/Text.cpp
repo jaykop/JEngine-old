@@ -3,8 +3,11 @@
 #include "GLManager.h"
 #include "AssetManager.h"
 #include "SystemManager.h"
-#include "MemoryAllocator.h"
 #include "Object.h"
+
+#ifdef  jeUseBuiltInAllocator
+#include "MemoryAllocator.h"
+#endif
 
 jeBegin
 jeDefineComponentBuilder(Text);
@@ -16,7 +19,7 @@ Font::Font()
 Text::Text(Object* _pOwner)
 	:Sprite(_pOwner)
 {
-	m_isText = true;
+	m_status |= IS_TEXT;
 }
 
 Text::~Text()

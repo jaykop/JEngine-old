@@ -1,7 +1,10 @@
 #include "Model.h"
 #include "GLManager.h"
 #include "SystemManager.h"
+
+#ifdef  jeUseBuiltInAllocator
 #include "MemoryAllocator.h"
+#endif
 
 jeBegin
 jeDefineComponentBuilder(Model);

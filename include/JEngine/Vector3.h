@@ -40,7 +40,7 @@ public:
 	Vector3		operator*(const Vector3& _rhs) const;
 	Vector3		operator/(float _constant) const;
 	Vector3&	operator=(const Vector3& _rhs);
-	Vector3	operator-(void);
+	Vector3		operator-(void);
 	Vector3&	operator+=(const Vector3& _rhs);
 	Vector3&	operator+=(float _constant);
 	Vector3&	operator-=(const Vector3& _rhs);
@@ -59,10 +59,12 @@ public:
 	void		SetUnitZ();
 	bool		IsZero() const;
 	bool		IsOne() const;
+	Vector3		GetPerpendicular() const;
+	void		Truncate(float _max);
 	float		GetLength() const;
 	float		GetLengthSq() const;
-	float		DotProduct(const Vector3& _rhs);
-	Vector3		CrossProduct(const Vector3& _rhs);
+	float		DotProduct(const Vector3& _rhs) const;
+	Vector3		CrossProduct(const Vector3& _rhs) const;
 	void		Normalize();
 	Vector3		GetNormalize() const;
 	void		Reflection(const Vector3& _rhs);
@@ -70,10 +72,10 @@ public:
 	Vector3		GetAbsolute() const;
 	void		Rotation(float _angle, const Vector3& _pivot);
 	void		Rotation(float _angle);
-	float		GetAngle(const Vector3& _other);
-	Vector3		GetRotated(float _angle, const Vector3& _pivot);
-	float		GetDistance(const Vector3& _rhs);
-	float		GetDistanceSq(const Vector3& _rhs);
+	float		GetAngle(const Vector3& _other) const;
+	Vector3		GetRotated(float _angle, const Vector3& _pivot) const;
+	float		GetDistance(const Vector3& _rhs) const;
+	float		GetDistanceSq(const Vector3& _rhs) const;
 	float		DistanceToLine(const Vector3& _lineStart, const Vector3& _lineEnd);
 
 	// Friend Functions
@@ -105,8 +107,8 @@ public:
 		const Vector3& _position, const Vector3& _direction,
 		const Vector3& _lineStart, const Vector3& _lineEnd);
 
-	// Memver variables
-	float x, y, z;
+	// Member variables
+	float x = 0.f, y = 0.f, z = 0.f;
 
 private:
 

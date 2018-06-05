@@ -88,7 +88,7 @@ private:
     void RenderCharacter(Character& _character, const vec3& _position,
         const vec3& _scale, float& _newX, float _intervalY);
     void SortSprites();
-    void UpdateMousePosition();
+    //void UpdateMousePosition();
 
     // Member variables
     Lights		m_lights;
@@ -105,9 +105,7 @@ private:
     mat4	m_perspective, m_orthogonal, m_viewport;
     vec3	m_aniScale, m_aniTranslate;
     float	m_left, m_right, m_top, m_bottom, m_mouseZ;
-
-    //std::function<bool(Sprite*, Sprite*)> m_sorter;
-
+	
     GraphicSystem(const GraphicSystem& /*_copy*/) = delete;
     void operator=(const GraphicSystem& /*_copy*/) = delete;
 };

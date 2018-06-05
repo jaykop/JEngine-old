@@ -1,17 +1,22 @@
 #pragma once
 
-#include "MovingEntity.h"
+#include "CustomComponent.h"
+#include "ComponentManager.h"
+#include "ComponentBuilder.h"
+#include "Vector3.h"
 
 jeBegin;
 
 class Object;
-class Steering : public MovingEntity
+class Steering : public CustomComponent
 {
     jeBaseFriends(Steering);
 
 public:
 
     vec3 Seek(const vec3& _targetPos);
+	vec3 Flee(const vec3& _targetPos);
+
     bool AccumulateForce(const vec3& forceToAdd);
     vec3 Calculate();
 
@@ -20,13 +25,13 @@ public:
     vec3 velocity;
     vec3 heading;
     vec3 side;
+	
+	vec3 steeringForce;
 
     float mass;
     float maxSpeed;
     float maxForce;
     float maxTurnRate;
-
-
 
 private:
 

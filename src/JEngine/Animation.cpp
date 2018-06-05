@@ -1,8 +1,11 @@
 #include "Animation.h"
 #include "GraphicSystem.h"
 #include "Sprite.h"
-#include "MemoryAllocator.h"
 #include "Object.h"
+
+#ifdef  jeUseBuiltInAllocator
+#include "MemoryAllocator.h"
+#endif
 
 jeBegin
 jeDefineComponentBuilder(Animation);
@@ -14,9 +17,10 @@ Animation::Animation(Object* _pOwner)
 {	
 	// Connect to sprite's pointer
 	if (_pOwner->HasComponent<Sprite>()
-		&& !_pOwner->GetComponent<Sprite>()->m_hasAnimation) {
+		&& (_pOwner->GetComponent<Sprite>()->m_status & Sprite::HAS_ANIMATION)
+		== Sprite::HAS_ANIMATION) {
 		_pOwner->GetComponent<Sprite>()->m_animation = this;
-		_pOwner->GetComponent<Sprite>()->m_hasAnimation = true;
+		_pOwner->GetComponent<Sprite>()->m_status |= Sprite::HAS_ANIMATION;
 	}
 
 	else
@@ -28,7 +32,7 @@ Animation::~Animation() {
 	// Turn off the toggle
 	if (GetOwner()->HasComponent<Sprite>()) {
 		GetOwner()->GetComponent<Sprite>()->m_animation = nullptr;
-		GetOwner()->GetComponent<Sprite>()->m_hasAnimation = false;
+		GetOwner()->GetComponent<Sprite>()->m_status &= ~Sprite::HAS_ANIMATION;
 	}
 }
 
@@ -44,9 +48,10 @@ void Animation::operator=(const Animation & _copy)
 
 	// Connect to sprite's pointer
 	if (GetOwner()->HasComponent<Sprite>()
-		&& !GetOwner()->GetComponent<Sprite>()->m_hasAnimation) {
+		&& (GetOwner()->GetComponent<Sprite>()->m_status & Sprite::HAS_ANIMATION)
+		== Sprite::HAS_ANIMATION) {
 		GetOwner()->GetComponent<Sprite>()->m_animation = this;
-		GetOwner()->GetComponent<Sprite>()->m_hasAnimation = true;
+		GetOwner()->GetComponent<Sprite>()->m_status |= Sprite::HAS_ANIMATION;
 	}
 }
 

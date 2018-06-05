@@ -1,6 +1,9 @@
 #include "imgui.h"
 #include "Transform.h"
+
+#ifdef  jeUseBuiltInAllocator
 #include "MemoryAllocator.h"
+#endif
 
 jeBegin
 jeDefineComponentBuilder(Transform);

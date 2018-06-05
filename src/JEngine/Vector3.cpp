@@ -90,7 +90,6 @@ Vector3& Vector3::operator=(const vec3& _rhs)
 /******************************************************************************/
 /*!
 \brief - Vector3 unary - operator
-\param _rhs - Vector3 to be assigned
 \return Result.
 */
 /******************************************************************************/
@@ -108,7 +107,7 @@ Vector3 Vector3::operator-(void)
 /******************************************************************************/
 /*!
 \brief - Vector3 + operator
-\param _rhs - number to be added
+\param _constant - number to be added
 \return result
 */
 /******************************************************************************/
@@ -144,7 +143,7 @@ Vector3 Vector3::operator+(const vec3& _rhs) const
 /******************************************************************************/
 /*!
 \brief - Vector3 - operator
-\param _rhs - number to be subtracted
+\param _constant - number to be subtracted
 \return result
 */
 /******************************************************************************/
@@ -180,7 +179,7 @@ Vector3 Vector3::operator-(const vec3& _rhs) const
 /******************************************************************************/
 /*!
 \brief - Vector3 * operator
-\param _rhs - number to be nultiplied
+\param _constant - number to be nultiplied
 \return result
 */
 /******************************************************************************/
@@ -209,7 +208,7 @@ Vector3 Vector3::operator*(const vec3& _rhs) const
 /******************************************************************************/
 /*!
 \brief - Vector3 / operator
-\param _rhs - number to be divided
+\param _constant - number to be divided
 \return result
 */
 /******************************************************************************/
@@ -268,8 +267,8 @@ Vector3 operator*(float _constant, const vec3& _rhs)
 /******************************************************************************/
 /*!
 \brief - Friend function, << operator
-\param _constant - storage to put contents in
-\param _rhs - *this
+\param os - storage to put contents in
+\param contents - *this
 \return os
 */
 /******************************************************************************/
@@ -286,7 +285,7 @@ std::ostream& operator<<(std::ostream& os, const vec3& contents)
 \return x * _rhs.x + y * _rhs.y;
 */
 /******************************************************************************/
-float Vector3::DotProduct(const vec3& _rhs)
+float Vector3::DotProduct(const vec3& _rhs) const
 {
     return x * _rhs.x + y * _rhs.y + z * _rhs.z;
 }
@@ -298,7 +297,7 @@ float Vector3::DotProduct(const vec3& _rhs)
 \return x * x * _rhs.y - y * _rhs.x;
 */
 /******************************************************************************/
-Vector3 Vector3::CrossProduct(const vec3& _rhs)
+Vector3 Vector3::CrossProduct(const vec3& _rhs) const
 {
     Vector3 result;
 
@@ -328,7 +327,7 @@ Vector3& Vector3::operator+=(const vec3& _rhs)
 /******************************************************************************/
 /*!
 \brief - Vector3 += operator
-\param _rhs - number to be added
+\param _constant - number to be added
 \return *this
 */
 /******************************************************************************/
@@ -360,7 +359,7 @@ Vector3& Vector3::operator-=(const vec3& _rhs)
 /******************************************************************************/
 /*!
 \brief - Vector3 -= operator
-\param _rhs - number to be subtracted
+\param _constant - number to be subtracted
 \return *this
 */
 /******************************************************************************/
@@ -385,7 +384,7 @@ Vector3& Vector3::operator*=(const vec3& _rhs)
 /******************************************************************************/
 /*!
 \brief - Vector3 *= operator
-\param _rhs - Vector3 to be multiplied
+\param _constant - Vector3 to be multiplied
 \return *this
 */
 /******************************************************************************/
@@ -479,6 +478,20 @@ bool Vector3::IsOne() const
     // Unless,
     return true;
 }
+
+Vector3 Vector3::GetPerpendicular() const
+{
+	return vec3(-y, x);
+}
+
+void Vector3::Truncate(float _max)
+{
+	if (GetLength() > _max)	{
+		Normalize();
+		*this *= _max;
+	}
+}
+
 /******************************************************************************/
 /*!
 \brief - Get normalized vector3
@@ -602,19 +615,19 @@ void Vector3::Reflection(const vec3&  _rhs)
 \return Math::RadToDeg(radian)
 */
 /******************************************************************************/
-float Vector3::GetAngle(const vec3& _other)
+float Vector3::GetAngle(const vec3& _other) const
 {
     float radian = atan2(x * _other.y - _other.x * y, DotProduct(_other));
 
     return Math::RadToDeg(radian);
 }
 
-float Vector3::GetDistance(const vec3& _rhs)
+float Vector3::GetDistance(const vec3& _rhs) const
 {
     return ((*this) - _rhs).GetLength();
 }
 
-float Vector3::GetDistanceSq(const Vector3 & _rhs)
+float Vector3::GetDistanceSq(const Vector3 & _rhs) const
 {
     return ((*this) - _rhs).GetLengthSq();
 }
@@ -710,7 +723,7 @@ bool Vector3::operator!=(const vec3& _rhs) const
 \return new_point
 */
 /******************************************************************************/
-Vector3 Vector3::GetRotated(float angle, const vec3& pivot)
+Vector3 Vector3::GetRotated(float angle, const vec3& pivot) const
 {
     vec3 new_point(*this);
     float radian = Math::DegToRad(angle);
@@ -742,7 +755,7 @@ Vector3 Vector3::GetRotated(float angle, const vec3& pivot)
 /******************************************************************************/
 Vector3  GetSegmentIntersection(
     const vec3& line1_start, const vec3& line1_end,
-    const vec3& line2_start, const vec3& line2_end)
+    const vec3& line2_start, const vec3& line2_end) 
 {
     //Get Coefficients
     float a2 = line2_end.y - line2_start.y;

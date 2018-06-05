@@ -3,8 +3,11 @@
 #include "Transform.h"
 #include "SystemManager.h"
 #include "Random.h"
-#include "MemoryAllocator.h"
 #include "Object.h"
+
+#ifdef  jeUseBuiltInAllocator
+#include "MemoryAllocator.h"
+#endif
 
 jeBegin
 jeDefineComponentBuilder(Emitter);
@@ -125,7 +128,7 @@ Emitter::Emitter(Object* _pOwner)
 {
 	m_sfactor = GL_SRC_ALPHA;
 	m_dfactor = GL_ONE;
-	m_isEmitter = true;
+	m_status |= IS_EMITTER;
 }
 
 Emitter::~Emitter() 

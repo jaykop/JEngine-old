@@ -771,10 +771,6 @@ Matrix4x4 Matrix4x4::Orthogonal(float _left, float _right, float _bottom, float 
 {
 	Matrix4x4 Result;
 
-	// TODO
-	// Need offset here to consider resolution?
-	// I don't know...
-
 	Result.m[0][0] = 2.f / (_right - _left);
 	Result.m[1][1] = 2.f / (_top - _bottom);
 	Result.m[2][2] = 2.f / (_zNear - _zFar);
@@ -793,8 +789,8 @@ Matrix4x4 Matrix4x4::Orthogonal(float _left, float _right, float _bottom, float 
 	Result.m[0][0] = 2.f / (_right - _left);
 	Result.m[1][1] = 2.f / (_top - _bottom);
 	Result.m[2][2] = 1.f;
-	Result.m[0][3] = -(_right + _left) / (_right - _left);
-	Result.m[1][3] = -(_top + _bottom) / (_top - _bottom);
+	Result.m[0][3] = (_right + _left) / (_left - _right);
+	Result.m[1][3] = (_top + _bottom) / (_bottom - _top);
 	Result.m[3][3] = 1.f;
 	return Result;
 }
