@@ -62,28 +62,27 @@ void StateManager::Update(SDL_Event* _event)
         INPUT::Update(_event);		// Get input by input handler
 
         s_newTime = m_timer.GetTime();	// Get delta time
-        m_frameTime			// Get frame time
+        m_frameTime						// Get frame time
             = s_newTime - s_currentTime;
 
         if (m_frameTime > 0.25f)	// Lock the frame time
             m_frameTime = 0.25f;
 
-        s_currentTime = s_newTime;	// Refresh current time
         s_stack += m_frameTime;		// Stack frame time
 
         // Fixed timestep
         if (s_stack >= s_dt) {		// Refresh every sec
 
+			s_currentTime = s_newTime;	// Refresh current time
             INPUT::m_mouseWheel = 0;	// Reset mouse wheel session
 
 #ifdef jeFixedFrameRate
             m_pCurrent->Update(s_dt);	// Update state
-            IMGUI::Update(s_dt);	// Update imgui renderer
+            IMGUI::Update(s_dt);		// Update imgui renderer
 #else
-            m_pCurrent->Update(m_frameTime);	// Update state
+            m_pCurrent->Update(m_frameTime);// Update state
             IMGUI::Update(m_frameTime);		// Update imgui renderer
 #endif
-
             /* Update rendrer with physics together
             so makes rendering scene more smoothly */
             SDL_GL_SwapWindow(m_pWindow);

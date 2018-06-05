@@ -30,10 +30,10 @@ void GraphicSystem::UpdatePipelines(const float _dt)
     for (auto sprite : m_sprites) {
 
         // Emitter
-        if (sprite->m_isEmitter)
+        if ((sprite->m_status & Sprite::IS_EMITTER) == Sprite::IS_EMITTER)
             ParticlePipeline(static_cast<Emitter*>(sprite), _dt);
 
-        else if (sprite->m_isText)
+        else if ((sprite->m_status & Sprite::IS_TEXT) == Sprite::IS_TEXT)
             TextPipeline(static_cast<Text*>(sprite));
 
         // Normal models
@@ -183,7 +183,7 @@ void GraphicSystem::SpritePipeline(Sprite *_sprite)
         GLM::UNIFORM_SCALE, mat4::Scale(s_pTransform->m_scale));
 
     GLM::m_shader[GLM::SHADER_MODEL]->SetMatrix(
-        GLM::UNIFORM_ROTATE, mat4::Rotate(s_pTransform->m_rotation, s_pTransform->m_rotationAxis));
+        GLM::UNIFORM_ROTATE, mat4::Rotate(Math::DegToRad(s_pTransform->m_rotation), s_pTransform->m_rotationAxis));
 
     GLM::m_shader[GLM::SHADER_MODEL]->SetVector3(
         GLM::UNIFORM_CAMERA_POSITION, m_pMainCamera->m_position);
@@ -384,7 +384,7 @@ void GraphicSystem::TextPipeline(Text * _text)
         GLM::UNIFORM_TEXT_SCALE, mat4::Scale(s_pTransform->m_scale));
 
     GLM::m_shader[GLM::SHADER_TEXT]->SetMatrix(
-        GLM::UNIFORM_TEXT_ROTATE, mat4::Rotate(Math::RadToDeg(s_pTransform->m_rotation), s_pTransform->m_rotationAxis));
+        GLM::UNIFORM_TEXT_ROTATE, mat4::Rotate(Math::DegToRad(s_pTransform->m_rotation), s_pTransform->m_rotationAxis));
 
     GLM::m_shader[GLM::SHADER_TEXT]->SetBool(
         GLM::UNIFORM_TEXT_BILBOARD, _text->m_bilboard);
@@ -526,7 +526,7 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
                     GLM::UNIFORM_PARTICLE_TRANSLATE, mat4::Translate(particle->m_position));
 
                 GLM::m_shader[GLM::SHADER_PARTICLE]->SetMatrix(
-                    GLM::UNIFORM_PARTICLE_ROTATE, mat4::Rotate(Math::RadToDeg(particle->m_rotation), s_pTransform->m_rotationAxis));
+                    GLM::UNIFORM_PARTICLE_ROTATE, mat4::Rotate(Math::DegToRad(particle->m_rotation), s_pTransform->m_rotationAxis));
 
                 // Send color info to shader
                 GLM::m_shader[GLM::SHADER_PARTICLE]->SetVector4(

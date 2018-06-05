@@ -17,8 +17,6 @@ void MovingEntity::Init()
 {
 }
 
-
-
 void MovingEntity::Update(const float _dt)
 {
 

@@ -1,5 +1,6 @@
 #include "SDL.h"
 #include "InputHandler.h"
+#include "GLManager.h"
 
 jeBegin
 
@@ -350,6 +351,8 @@ vec3& InputHandler::GetRawPosition()
 
 vec3& InputHandler::GetOrhtoPosition()
 {
+	float width = GLM::m_width* .5f, height = GLM::m_height* .5f;
+	m_screenPosition.Set(m_rawPosition.x - width, height - m_rawPosition.y, 0./*m_mouseZ*/);
 	return m_screenPosition;
 }
 

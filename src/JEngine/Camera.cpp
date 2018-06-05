@@ -1,7 +1,10 @@
 #include "Camera.h"
 #include "SystemManager.h"
 #include "GraphicSystem.h"
+
+#ifdef  jeUseBuiltInAllocator
 #include "MemoryAllocator.h"
+#endif
 
 jeBegin
 jeDefineComponentBuilder(Camera);

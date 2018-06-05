@@ -13,7 +13,18 @@ vec3 Steering::Seek(const vec3& _targetPos)
         return desiredVel - velocity;
     }
 
-    return vec3();
+    return vec3::ZERO;
+}
+
+vec3 Steering::Flee(const vec3& _targetPos)
+{
+	if (GetOwner()->HasComponent<Transform>()) {
+		Transform *transform = GetOwner()->GetComponent<Transform>();
+		vec3 desiredVel = (transform->m_position - _targetPos) * maxSpeed;
+
+		return desiredVel - velocity;
+	}
+	return vec3::ZERO;
 }
 
 vec3 Steering::Calculate()
@@ -21,32 +32,43 @@ vec3 Steering::Calculate()
     vec3 force;
 
     // case: Seek
-    force = Seek(m_target->GetComponent<Transform>()->m_position) * 1.f/*m_dWeightSeek*/;
+    force = Seek(m_target->GetComponent<Transform>()->m_position) /** 1.f*/;
 
-    if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;;
+    if (!AccumulateForce(force)) 
+		return steeringForce;
+
+	return steeringForce;
 }
 
-bool Steering::AccumulateForce(vec3& runningTot, const vec3& forceToAdd)
+bool Steering::AccumulateForce(const vec3& forceToAdd)
 {
-    float magnitudeSoFar = runningTot.GetLength();
+	// Get the current magnitude
+    float magnitudeSoFar = steeringForce.GetLength();
 
+	// Get the remaining magnitude
     float magnitudeRemaining = maxForce - magnitudeSoFar;
 
-    if (magnitudeRemaining < 0.f) return false;
+	// If there is no more remaining magnitude to add,
+	// return false
+    if (magnitudeRemaining <= 0.f) return false;
 
+	// Otherwise, get force to add
     float magnitudeToAdd = forceToAdd.GetLength();
 
+	// If that valuse is lower than capable remaining magnitude,
+	// just add it
     if (magnitudeToAdd < magnitudeRemaining)
-        runningTot += forceToAdd;
+		steeringForce = forceToAdd;
 
+	// If not, modify its length and add it
     else
-        runningTot += forceToAdd.GetNormalize() * magnitudeRemaining;
+		steeringForce = forceToAdd.GetNormalize() * maxForce;
 
     return true;
 }
 
     Steering::Steering(Object* _pObject)
-    :MovingEntity(_pObject)
+    :CustomComponent(_pObject)
 {}
 
 void Steering::Register()
@@ -61,7 +83,9 @@ void Steering::Init()
 {
     m_target = CONTAINER->GetObject("Target");
     mass = 1.f;
-    maxSpeed = 150.f;
+    maxSpeed = 50.f;
+	maxForce = 250.f;
+	velocity.SetZero();
 }
 
 void Truncate(float& value, float max)
@@ -70,32 +94,68 @@ void Truncate(float& value, float max)
         value = max;
 }
 
+void ControlPosition(vec3& _position)
+{
+	const float halfWidth = SYSTEM::GetGraphicSystem()->GetWidth() / 2.f;
+	const float halfHeight = SYSTEM::GetGraphicSystem()->GetHeight() / 2.f;
+	
+	if (_position.x > halfWidth)
+		_position.x = -halfWidth;
+
+	else if (_position.x < -halfWidth)
+		_position.x = halfWidth;
+
+	if (_position.y > halfHeight)
+		_position.y = -halfHeight;
+
+	else if (_position.y < -halfHeight)
+		_position.y = halfHeight;
+
+}
+
 void Steering::Update(const float _dt)
 {
-    heading = Seek(m_target->GetComponent<Transform>()->m_position);
+	Transform* targetTransform = nullptr;
+	if (m_target->GetComponent<Transform>())
+		targetTransform = m_target->GetComponent<Transform>();
 
-    if (INPUT::KeyTriggered(JE_ENTER)) {
-        m_target->GetComponent<Transform>()->m_position.Set(
-            RAND::GetRandVec3(vec3(-75, -75, 0.f), vec3(75, 75, 0)));
-    }
-    
-    vec3 acceleration = heading.GetNormalize();
-    velocity += acceleration * _dt * maxSpeed;
+	if (INPUT::KeyTriggered(JE_MOUSE_LEFT))
+		m_target->GetComponent<Transform>()->m_position.Set(INPUT::GetOrhtoPosition());
 
-    Truncate(velocity.x, maxSpeed);
-    Truncate(velocity.y, maxSpeed);
+	if (GetOwner()->HasComponent<Transform>())	{
+		Transform* transform = GetOwner()->GetComponent<Transform>();
 
-    if (GetOwner()->HasComponent<Transform>()) {
+		velocity += Flee(targetTransform->m_position).GetNormalize() * _dt * maxForce;
 
-        vec3 toAdd = velocity * _dt;
-        toAdd.z = 0.f;
-        GetOwner()->GetComponent<Transform>()->m_position += toAdd;
-    }
+		velocity.Truncate(maxSpeed);
+		velocity.z = 0.f;
 
-    if (velocity.GetLengthSq() > 0.00000001) {
-        heading = velocity.GetNormalize();
-        side = heading.GetRotated(90, heading);
-    }
+		transform->m_rotation = vec3::UNIT_X.GetAngle(velocity);
+		transform->m_position += velocity * _dt;
+
+		ControlPosition(transform->m_position);
+	}
+
+	//Calculate();
+
+	//vec3 acceleration = steeringForce.GetNormalize() / mass;
+
+	//velocity += acceleration * _dt;
+
+	//velocity.Truncate(maxSpeed);
+
+	//// Update position
+	//if (GetOwner()->HasComponent<Transform>()) {
+
+	//	vec3 toAdd = velocity * _dt;
+	//	toAdd.z = 0.f;
+	//	GetOwner()->GetComponent<Transform>()->m_position += toAdd;
+	//}
+
+	//if (velocity.GetLengthSq() > 0.00000001) {
+	//	heading = velocity.GetNormalize();
+	//	side = heading.Perpendicular();
+	//}
 }
 
 void Steering::Close()

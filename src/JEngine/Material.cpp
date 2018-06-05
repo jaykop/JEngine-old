@@ -1,7 +1,10 @@
 #include "Model.h"
 #include "Object.h"
 #include "Material.h"
+
+#ifdef  jeUseBuiltInAllocator
 #include "MemoryAllocator.h"
+#endif
 
 jeBegin
 jeDefineComponentBuilder(Material);
@@ -14,13 +17,13 @@ Material::Material(Object* _pOwner)
 	if (_pOwner->HasComponent<Sprite>()
 		&& !_pOwner->GetComponent<Sprite>()->m_hasMaterial) {
 		_pOwner->GetComponent<Sprite>()->m_material = this;
-		_pOwner->GetComponent<Sprite>()->m_hasMaterial = true;
+		_pOwner->GetComponent<Sprite>()->m_status |= Sprite::HAS_MATERIAL;
 	}
 
 	else if (_pOwner->HasComponent<Model>()
 		&& !_pOwner->GetComponent<Model>()->m_hasMaterial) {
 		_pOwner->GetComponent<Model>()->m_material = this;
-		_pOwner->GetComponent<Model>()->m_hasMaterial = true;
+		_pOwner->GetComponent<Sprite>()->m_status |= Sprite::HAS_MATERIAL;
 	}
 
 	else
@@ -36,12 +39,12 @@ void Material::operator=(const Material & _copy)
 	if (GetOwner()->HasComponent<Sprite>()
 		&& !GetOwner()->GetComponent<Sprite>()->m_hasMaterial) {
 		GetOwner()->GetComponent<Sprite>()->m_material = this;
-		GetOwner()->GetComponent<Sprite>()->m_hasMaterial = true;
+		GetOwner()->GetComponent<Sprite>()->m_status |= Sprite::HAS_MATERIAL;
 	}
 	else if (GetOwner()->HasComponent<Model>()
 		&& !GetOwner()->GetComponent<Model>()->m_hasMaterial) {
 		GetOwner()->GetComponent<Model>()->m_material = this;
-		GetOwner()->GetComponent<Model>()->m_hasMaterial = true;
+		GetOwner()->GetComponent<Sprite>()->m_status |= Sprite::HAS_MATERIAL;
 	}
 
 }

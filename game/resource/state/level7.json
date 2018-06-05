@@ -9,7 +9,7 @@
 			"Component" : [
 				{
 					"Type": "Camera",
-					"Values": {"Position" : [0, 0, 150], "Target" : [0, 0, 0],
+					"Values": {"Position" : [0, 0, 1], "Target" : [0, 0, 0],
 						"Up" : [0, 1, 0]}
 				}
 			]
@@ -28,11 +28,11 @@
 			"Component" : [
 				{
 					"Type": "Transform",
-					"Values": {"Position" : [50, 50, 0], "Scale" : [5, 5, 0]}
+					"Values": {"Position" : [-250, 250, 0], "Scale" : [15, 15, 0]}
 				},
 				{
 					"Type" : "Sprite",
-					"Values" : {"Texture" : "circle", "Color" : [0, 0, 1, 1] }
+					"Values" : {"Texture" : "circle", "Color" : [0, 0, 1, 1], "Projection" : "Orthogonal" }
 				}
 			]
 		},
@@ -41,11 +41,11 @@
 			"Component" : [
 				{
 					"Type": "Transform",
-					"Values": {"Position" : [0, 0, 0], "Scale" : [5, 5, 0]}
+					"Values": {"Position" : [0, 0, 0], "Scale" : [50, 50, 0]}
 				},
 				{
 					"Type" : "Sprite",
-					"Values" : {"Texture" : "arrow", "Color" : [1, 0, 0, 1] }
+					"Values" : {"Texture" : "arrow", "Color" : [1, 0, 0, 1], "Projection" : "Orthogonal" }
 				},
 				{
 					"Type" : "Steering",
