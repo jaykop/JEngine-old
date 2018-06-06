@@ -15,19 +15,30 @@ Material::Material(Object* _pOwner)
 {
 	// Connect to sprite's pointer
 	if (_pOwner->HasComponent<Sprite>()
-		&& !_pOwner->GetComponent<Sprite>()->m_hasMaterial) {
+		&& (_pOwner->GetComponent<Sprite>()->m_status & Sprite::HAS_MATERIAL)
+			== Sprite::HAS_MATERIAL) {
 		_pOwner->GetComponent<Sprite>()->m_material = this;
 		_pOwner->GetComponent<Sprite>()->m_status |= Sprite::HAS_MATERIAL;
 	}
 
 	else if (_pOwner->HasComponent<Model>()
-		&& !_pOwner->GetComponent<Model>()->m_hasMaterial) {
+		&& (_pOwner->GetComponent<Model>()->m_status & Sprite::HAS_MATERIAL)
+		== Sprite::HAS_MATERIAL) {
 		_pOwner->GetComponent<Model>()->m_material = this;
 		_pOwner->GetComponent<Sprite>()->m_status |= Sprite::HAS_MATERIAL;
 	}
 
 	else
 		jeDebugPrint("!Material - This object has no sprite componnet: %s\n", _pOwner->GetName().c_str());
+}
+
+Material::~Material()
+{
+	// Turn off the toggle
+	if (GetOwner()->HasComponent<Sprite>()) {
+		GetOwner()->GetComponent<Sprite>()->m_material = nullptr;
+		GetOwner()->GetComponent<Sprite>()->m_status &= ~Sprite::HAS_MATERIAL;
+	}
 }
 
 void Material::operator=(const Material & _copy)
@@ -37,12 +48,14 @@ void Material::operator=(const Material & _copy)
 	m_shininess = _copy.m_shininess;
 	
 	if (GetOwner()->HasComponent<Sprite>()
-		&& !GetOwner()->GetComponent<Sprite>()->m_hasMaterial) {
+		&& (GetOwner()->GetComponent<Sprite>()->m_status & Sprite::HAS_MATERIAL)
+		== Sprite::HAS_MATERIAL) {
 		GetOwner()->GetComponent<Sprite>()->m_material = this;
 		GetOwner()->GetComponent<Sprite>()->m_status |= Sprite::HAS_MATERIAL;
 	}
 	else if (GetOwner()->HasComponent<Model>()
-		&& !GetOwner()->GetComponent<Model>()->m_hasMaterial) {
+		&& (GetOwner()->GetComponent<Model>()->m_status & Sprite::HAS_MATERIAL)
+		== Sprite::HAS_MATERIAL) {
 		GetOwner()->GetComponent<Model>()->m_material = this;
 		GetOwner()->GetComponent<Sprite>()->m_status |= Sprite::HAS_MATERIAL;
 	}

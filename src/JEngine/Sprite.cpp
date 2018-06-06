@@ -37,7 +37,7 @@ void Sprite::AddTexture(const char *_key)
 	else {
 		unsigned newTexture = ASSET::GetTexture(_key);
 
-		if (!m_textureMap.size())
+		if (m_textureMap.empty())
 			m_mainTex = newTexture;
 
 		m_textureMap.insert(

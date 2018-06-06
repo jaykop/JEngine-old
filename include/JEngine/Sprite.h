@@ -30,10 +30,11 @@ class Sprite : public Component
 
 protected:
 
-	const static int HAS_ANIMATION = 0x0001;
-	const static int HAS_MATERIAL = 0x0010;
-	const static int IS_EMITTER = 0x0100;
-	const static int IS_TEXT = 0x1000;
+	//const static int IS_MODEL = 0x00001;
+	const static int IS_TEXT = 0x00010;
+	const static int IS_EMITTER = 0x00100;
+	const static int HAS_ANIMATION = 0x01000;
+	const static int HAS_MATERIAL = 0x10000;
 
 	int m_status;
 
