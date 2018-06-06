@@ -14,6 +14,7 @@ Model::Model(Object* _pOwner)
 {
 	m_vao = &(GLM::m_vao[GLM::SHAPE_CUBE]);
 	m_elementSize = GLM::m_elementSize[GLM::SHAPE_CUBE];
+	//m_status |= Sprite::IS_MODEL;
 }
 
 Model::~Model()

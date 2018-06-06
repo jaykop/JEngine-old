@@ -218,7 +218,8 @@ void GraphicSystem::SpritePipeline(Sprite *_sprite)
 
     MappingPipeline(_sprite);
 
-    if (_sprite->m_hasMaterial && m_isLight)
+    if (((_sprite->m_status & Sprite::HAS_MATERIAL) == Sprite::HAS_MATERIAL)
+		&& m_isLight)
         LightingEffectPipeline(_sprite->m_material);
 
     if (GLM::m_mode == GLM::DRAW_FILL)
@@ -239,7 +240,7 @@ void GraphicSystem::MappingPipeline(Sprite* _sprite)
 {
     glBindTexture(GL_TEXTURE_2D, _sprite->GetCurrentTexutre());
 
-    if (_sprite->m_hasAnimation) {
+    if ( ( _sprite->m_status & Sprite::HAS_ANIMATION ) == Sprite::HAS_ANIMATION) {
 
         static Animation* animation;
         animation = _sprite->m_animation;
