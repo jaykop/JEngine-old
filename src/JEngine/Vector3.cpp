@@ -479,19 +479,6 @@ bool Vector3::IsOne() const
     return true;
 }
 
-Vector3 Vector3::GetPerpendicular() const
-{
-	return vec3(-y, x);
-}
-
-void Vector3::Truncate(float _max)
-{
-	if (GetLength() > _max)	{
-		Normalize();
-		*this *= _max;
-	}
-}
-
 /******************************************************************************/
 /*!
 \brief - Get normalized vector3

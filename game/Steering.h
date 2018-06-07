@@ -8,18 +8,27 @@
 jeBegin;
 
 class Object;
+class Transform;
+
 class Steering : public CustomComponent
 {
     jeBaseFriends(Steering);
+
+	enum behavior{ none, seek, flee, arrive, pursuit, 
+		evade, wander };
 
 public:
 
     vec3 Seek(const vec3& _targetPos);
 	vec3 Flee(const vec3& _targetPos);
+	vec3 Arrive(const vec3& _targetPos);
+	vec3 Evade(const Steering * _pursuer);
+	vec3 Pursuit(const Steering * _evader);
+	vec3 Wander();
 
     bool AccumulateForce(const vec3& forceToAdd);
     vec3 Calculate();
-
+	
     Object* m_target = nullptr;
 
     vec3 velocity;
@@ -31,7 +40,17 @@ public:
     float mass;
     float maxSpeed;
     float maxForce;
-    float maxTurnRate;
+	float deceleration;
+
+	float wanderRadius;
+	float wanderJitter;
+	float wanderDistance;
+	
+	vec3 wanderTarget;
+
+	Steering *m_evader, *m_pursuer;
+	Transform *m_transform, *targetTransform;
+	behavior m_behavior;
 
 private:
 

@@ -27,7 +27,8 @@
 		{"Key" : "miner", 			"Directory" : "../resource/texture/Miner.png"},
 		{"Key" : "wife", 			"Directory" : "../resource/texture/Wife.png"},
 		{"Key" : "bully", 			"Directory" : "../resource/texture/Bully.png"},
-		{"Key" : "arrow", 			"Directory" : "../resource/texture/Arrow.png"}
+		{"Key" : "arrow", 			"Directory" : "../resource/texture/Arrow.png"},
+		{"Key" : "crosshair",		"Directory" : "../resource/texture/Crosshair.png"}	
 	]
 	
 	// Audio info

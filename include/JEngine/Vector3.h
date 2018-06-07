@@ -59,8 +59,6 @@ public:
 	void		SetUnitZ();
 	bool		IsZero() const;
 	bool		IsOne() const;
-	Vector3		GetPerpendicular() const;
-	void		Truncate(float _max);
 	float		GetLength() const;
 	float		GetLengthSq() const;
 	float		DotProduct(const Vector3& _rhs) const;
