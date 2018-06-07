@@ -170,6 +170,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Behaviors.cpp" />
     <ClCompile Include="..\BullyState.cpp" />
     <ClCompile Include="..\CameraController.cpp" />
     <ClCompile Include="..\JEngine.cpp" />
@@ -177,12 +178,6 @@
     <ClCompile Include="..\LightController.cpp" />
     <ClCompile Include="..\main.cpp" />
     <ClCompile Include="..\MinerState.cpp" />
-    <ClCompile Include="..\MovingEntity.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="..\StateMachine.cpp" />
     <ClCompile Include="..\Steering.cpp" />
     <ClCompile Include="..\TestLogic.cpp" />
@@ -198,12 +193,6 @@
     <ClInclude Include="..\LightController.h" />
     <ClInclude Include="..\Location.h" />
     <ClInclude Include="..\MinerState.h" />
-    <ClInclude Include="..\MovingEntity.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="..\StateMachine.h" />
     <ClInclude Include="..\Steering.h" />
     <ClInclude Include="..\TestLogic.h" />

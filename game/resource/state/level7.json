@@ -28,20 +28,20 @@
 			"Component" : [
 				{
 					"Type": "Transform",
-					"Values": {"Position" : [-250, 250, 0], "Scale" : [15, 15, 0]}
+					"Values": {"Position" : [0, 250, 0], "Scale" : [15, 15, 0]}
 				},
 				{
 					"Type" : "Sprite",
-					"Values" : {"Texture" : "circle", "Color" : [0, 0, 1, 1], "Projection" : "Orthogonal" }
+					"Values" : {"Texture" : "crosshair", "Color" : [0, 0, 0, 1], "Projection" : "Orthogonal" }
 				}
 			]
 		},
 		{
-			"Name" : "Entity",
+			"Name" : "Evader",
 			"Component" : [
 				{
 					"Type": "Transform",
-					"Values": {"Position" : [0, 0, 0], "Scale" : [50, 50, 0]}
+					"Values": {"Position" : [250, 0, 0], "Scale" : [50, 50, 0]}
 				},
 				{
 					"Type" : "Sprite",
@@ -49,7 +49,41 @@
 				},
 				{
 					"Type" : "Steering",
-					"Values" : {}
+					"Values" : {"Behavior" : "Evade"}
+				}
+			]
+		},
+		{
+			"Name" : "Pursuer",
+			"Component" : [
+				{
+					"Type": "Transform",
+					"Values": {"Position" : [-250, 0, 0], "Scale" : [50, 50, 0]}
+				},
+				{
+					"Type" : "Sprite",
+					"Values" : {"Texture" : "arrow", "Color" : [0, 0, 1, 1], "Projection" : "Orthogonal" }
+				},
+				{
+					"Type" : "Steering",
+					"Values" : {"Behavior" : "Pursuit"}
+				}
+			]
+		},
+		{
+			"Name" : "Wanderer",
+			"Component" : [
+				{
+					"Type": "Transform",
+					"Values": {"Position" : [0, 0, 0], "Scale" : [50, 50, 0]}
+				},
+				{
+					"Type" : "Sprite",
+					"Values" : {"Texture" : "arrow", "Color" : [1, 1, 1, 1], "Projection" : "Orthogonal" }
+				},
+				{
+					"Type" : "Steering",
+					"Values" : {"Behavior" : "Wander"}
 				}
 			]
 		}

@@ -34,7 +34,7 @@
     <ClCompile Include="..\Steering.cpp">
       <Filter>CustomLogic\AIExamples_behaviors</Filter>
     </ClCompile>
-    <ClCompile Include="..\MovingEntity.cpp">
+    <ClCompile Include="..\Behaviors.cpp">
       <Filter>CustomLogic\AIExamples_behaviors</Filter>
     </ClCompile>
   </ItemGroup>
@@ -74,9 +74,6 @@
     </ClInclude>
     <ClInclude Include="..\CustomLogic.h">
       <Filter>CustomLogic</Filter>
-    </ClInclude>
-    <ClInclude Include="..\MovingEntity.h">
-      <Filter>CustomLogic\AIExamples_behaviors</Filter>
     </ClInclude>
     <ClInclude Include="..\Steering.h">
       <Filter>CustomLogic\AIExamples_behaviors</Filter>
