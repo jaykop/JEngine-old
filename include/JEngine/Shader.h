@@ -19,19 +19,6 @@ private:
 
     void CreateShader(std::string& _shaderContents, Type _type);
     void CombineShaders();
-	
-    //void ConnectUniform(GLManager::UniformType _uniform, const char* _name);
-    //
-    //// By enum
-    //void SetInt(GLManager::UniformType _uniform, int _int);
-    //void SetEnum(GLManager::UniformType _uniform, int _enum);
-    //void SetBool(GLManager::UniformType _uniform, bool _bool);
-    //void SetFloat(GLManager::UniformType _uniform, float _float);
-    //void SetuInt(GLManager::UniformType _uniform, unsigned _uInt);
-    //void SetVector2(GLManager::UniformType _uniform, float x, float y);
-    //void SetMatrix(GLManager::UniformType _uniform, const mat4& _matrix);
-    //void SetVector3(GLManager::UniformType _uniform, const vec3& _vector);
-    //void SetVector4(GLManager::UniformType _uniform, const vec4& _vector);
 
     // By const character
     void SetInt(const char * _name, int _int);
@@ -42,16 +29,6 @@ private:
     void SetFloat(const char * _name, float _float);
     void SetVector3(const char * _name, const vec3& _vector);
     void SetVector4(const char * _name, const vec4& _vector);
-
-    // By buffer
-    void SetInt(GLint& _buffer, int _int);
-    void SetEnum(GLint& _buffer, int _enum);
-    void SetBool(GLint& _buffer, bool _bool);
-    void SetFloat(GLint& _buffer, float _float);
-    void SetuInt(GLint& _buffer, unsigned _uInt);
-    void SetVector2(GLint& _buffer, float _x, float _y);
-    void SetVector3(GLint& _buffer, const vec3& _vector);
-    void SetVector4(GLint& _buffer, const vec4& _vector);
 
     Shader();
     ~Shader();

@@ -14,18 +14,14 @@ Material::Material(Object* _pOwner)
 	specular(0), shininess(1.f)
 {
 	// Connect to sprite's pointer
-	if (_pOwner->HasComponent<Sprite>()
-		&& (_pOwner->GetComponent<Sprite>()->m_hiddenStatus & Sprite::HAS_MATERIAL)
-			== Sprite::HAS_MATERIAL) {
+	if (_pOwner->HasComponent<Sprite>()) {
 		_pOwner->GetComponent<Sprite>()->m_pMaterial = this;
 		_pOwner->GetComponent<Sprite>()->m_hiddenStatus |= Sprite::HAS_MATERIAL;
 	}
 
-	else if (_pOwner->HasComponent<Model>()
-		&& (_pOwner->GetComponent<Model>()->m_hiddenStatus & Sprite::HAS_MATERIAL)
-		== Sprite::HAS_MATERIAL) {
+	else if (_pOwner->HasComponent<Model>()) {
 		_pOwner->GetComponent<Model>()->m_pMaterial = this;
-		_pOwner->GetComponent<Sprite>()->m_hiddenStatus |= Sprite::HAS_MATERIAL;
+		_pOwner->GetComponent<Model>()->m_hiddenStatus |= Sprite::HAS_MATERIAL;
 	}
 
 	else
@@ -39,6 +35,11 @@ Material::~Material()
 		GetOwner()->GetComponent<Sprite>()->m_pMaterial = nullptr;
 		GetOwner()->GetComponent<Sprite>()->m_hiddenStatus &= ~Sprite::HAS_MATERIAL;
 	}
+
+	else if (GetOwner()->HasComponent<Model>()) {
+		GetOwner()->GetComponent<Model>()->m_pMaterial = nullptr;
+		GetOwner()->GetComponent<Model>()->m_hiddenStatus &= ~Sprite::HAS_MATERIAL;
+	}
 }
 
 void Material::operator=(const Material & _copy)
@@ -47,17 +48,14 @@ void Material::operator=(const Material & _copy)
 	specular = _copy.specular;
 	shininess = _copy.shininess;
 	
-	if (GetOwner()->HasComponent<Sprite>()
-		&& (GetOwner()->GetComponent<Sprite>()->m_hiddenStatus & Sprite::HAS_MATERIAL)
-		== Sprite::HAS_MATERIAL) {
+	if (GetOwner()->HasComponent<Sprite>()) {
 		GetOwner()->GetComponent<Sprite>()->m_pMaterial = this;
 		GetOwner()->GetComponent<Sprite>()->m_hiddenStatus |= Sprite::HAS_MATERIAL;
 	}
-	else if (GetOwner()->HasComponent<Model>()
-		&& (GetOwner()->GetComponent<Model>()->m_hiddenStatus & Sprite::HAS_MATERIAL)
-		== Sprite::HAS_MATERIAL) {
+
+	else if (GetOwner()->HasComponent<Model>()) {
 		GetOwner()->GetComponent<Model>()->m_pMaterial = this;
-		GetOwner()->GetComponent<Sprite>()->m_hiddenStatus |= Sprite::HAS_MATERIAL;
+		GetOwner()->GetComponent<Model>()->m_hiddenStatus |= Sprite::HAS_MATERIAL;
 	}
 
 }
