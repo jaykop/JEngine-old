@@ -98,30 +98,36 @@ vec3 Steering::Pursuit(const Steering* _evader)
 
 vec3 Steering::Wander()
 {
-	//// Random vector to the target's position
-	//wanderTarget += vec3(RandomClamped() * wanderJitter,
-	//	RandomClamped() * wanderJitter, 0.f);
+	// Get the random direction from current wander target position
 
-	//// Reporject this new vector back onto a unit circle
-	//wanderTarget.Normalize();
+	// Get a direction to go next frame first
+	// Get random degree
+	static float randomDegree = RAND::GetRandomFloat(0, 360.F);
+	static const float room = 45.f;
+	static const float wanderForce = 100.f;
+	// Get near random degree from last one
+	randomDegree = RAND::GetRandomFloat(randomDegree - room, randomDegree + room);
+	float randomRadian = Math::DegToRad(randomDegree);
+	// Get random point on the circle
+	vec3 nextPointToGo;
+	nextPointToGo.Set(cosf(randomRadian), sinf(randomRadian), 0.f);
+	nextPointToGo.Normalize();
+	nextPointToGo *= wanderRadius;
 
-	//// Increase the length of the vector to the same as the radius 
-	//// of the wander circle
-	//wanderTarget *= wanderRadius;
-
-	//// Move the target inot a position wanderr distance in fornt of the agent
-	//vec3 targetLocal = wanderTarget + vec3(wanderDistance, 0, 0);
-
-	//// Porject the target into world space
-	//vec3 targetWorld = ;
-
-	vec3 wanderCenter = heading.GetNormalize() * (m_transform->m_scale.x + wanderRadius);
-	float randomDegree = RAND::GetRandomFloat(0, 360.F);
+	// Set the wandar center
+	vec3 wanderCenter;
+	wanderCenter.Set(m_transform->m_position);
+	wanderCenter += heading * (m_transform->m_scale.x / 2.f + wanderRadius);
+	// Put the circle on the correct position
+	circleTransform->m_position.Set(wanderCenter);
+	// Set the wander target position
 	wanderTarget.Set(
-		wanderCenter.x * cosf(randomDegree), wanderCenter.y * sinf(randomDegree), 0.f);
-	wanderTarget *= wanderRadius;
+		wanderCenter.x + nextPointToGo.x, wanderCenter.y + nextPointToGo.y, 0.f);
+	// Put the haircross on the correct position 
+	targetTransform->m_position.Set(wanderTarget);
 
-	return wanderTarget;
+	// Return the velocity
+	return (wanderTarget - m_transform->m_position).GetNormalize() * wanderForce;
 }
 
 vec3 Steering::Calculate()
@@ -156,7 +162,9 @@ vec3 Steering::Calculate()
 
 	case wander:
 		force = Wander();
+		jeDebugPrint("%f %f\n", force.x, force.y);
 		break;
+
 	default:
 		break;
 	}

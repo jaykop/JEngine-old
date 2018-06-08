@@ -16,8 +16,8 @@ void Truncate(vec3& vector, float _max)
 
 void ControlPosition(vec3& _position)
 {
-	const float halfWidth = SYSTEM::GetGraphicSystem()->GetWidth() / 2.f;
-	const float halfHeight = SYSTEM::GetGraphicSystem()->GetHeight() / 2.f;
+	static const float halfWidth = SYSTEM::GetGraphicSystem()->GetWidth() / 2.f;
+	static const float halfHeight = SYSTEM::GetGraphicSystem()->GetHeight() / 2.f;
 
 	if (_position.x > halfWidth)
 		_position.x = -halfWidth;
@@ -60,10 +60,19 @@ void Steering::Load(CR_RJValue _data)
 
 void Steering::Init()
 {
+	// Setting for each behavior mode
 	if (m_behavior == pursuit)
 		m_evader = CONTAINER->GetObject("Evader")->GetComponent<Steering>();
+	
 	else if (m_behavior == evade)
 		m_pursuer = CONTAINER->GetObject("Pursuer")->GetComponent<Steering>();
+	
+	else if (m_behavior == wander)
+	{
+		m_circle = CONTAINER->GetObject("Circle");
+		circleTransform = m_circle->GetComponent<Transform>();
+		wanderRadius = circleTransform->m_scale.x / 2.f;
+	}
 
 	// Get target transform
     m_target = CONTAINER->GetObject("Target");
@@ -72,11 +81,10 @@ void Steering::Init()
 	// Get owner's transform
 	m_transform = GetOwner()->GetComponent<Transform>();
 
-
 	mass = 1.f;
     maxSpeed = 50.f;
 	maxForce = 250.f;
-	heading.SetUnitX();
+
 	deceleration = 2.f;
 
 	wanderTarget.SetZero();
