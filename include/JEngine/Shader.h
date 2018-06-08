@@ -19,10 +19,10 @@ private:
 
     void CreateShader(std::string& _shaderContents, Type _type);
     void CombineShaders();
-
+	
     void ConnectUniform(GLManager::UniformType _uniform, const char* _name);
-
-    // By enum	
+    
+    // By enum
     void SetInt(GLManager::UniformType _uniform, int _int);
     void SetEnum(GLManager::UniformType _uniform, int _enum);
     void SetBool(GLManager::UniformType _uniform, bool _bool);
@@ -62,7 +62,7 @@ private:
     GLint   m_result;
 
     static std::string  m_vertexShader[GLM::SHADER_END], m_fragmentShader[GLM::SHADER_END], 
-	m_geometryShader[GLM::SHADER_END];
+		m_geometryShader[GLM::SHADER_END];
 
     Shader(const Shader& /*_copy*/) = delete;
     void operator=(const Shader& /*_copy*/) = delete;

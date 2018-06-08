@@ -7,8 +7,8 @@ jeBegin
 //////////////////////////////////////////////////////////////////////////
 std::string Shader::m_vertexShader[] = {
 
-	/*************** Model Shader **************/
-	R"glsl(
+    /*************** Model Shader **************/
+    R"glsl(
 	#version 450 core
 
 	layout(location = 0) in vec3 position;
@@ -34,6 +34,10 @@ std::string Shader::m_vertexShader[] = {
 	uniform bool boolean_flip;
 	uniform bool boolean_light;
 	uniform bool boolean_bilboard;
+	
+	uniform bool hasParent;
+	uniform mat4 m4_parentTransform,
+		m4_parentScale, m4_parentRotation;
 
 	////////////////////////////
 	// out variables
@@ -69,6 +73,10 @@ std::string Shader::m_vertexShader[] = {
 	////////////////////////////
 	void Transforming(vec4 _position, mat4 _model) {
 
+		if (hasParent) {
+		        _model *= m4_parentScale * m4_parentRotation * m4_parentTransform;
+		}
+		
 		// Calculate mvp transform matrix
 		mat4 modelview = transpose(m4_viewport) * transpose(_model);
 
@@ -117,8 +125,8 @@ std::string Shader::m_vertexShader[] = {
 	};
 	)glsl",
 
-	/*************** Text Shader **************/
-	R"glsl(
+    /*************** Text Shader **************/
+    R"glsl(
 	#version 450 core
 
 	layout (location = 0) in vec3 position;
@@ -172,8 +180,8 @@ std::string Shader::m_vertexShader[] = {
 	}
 	)glsl",
 
-	/*************** Lighting Shader **************/
-	R"glsl(
+    /*************** Lighting Shader **************/
+    R"glsl(
 	#version 450 core
 
 	layout (location = 0) in vec3 position;
@@ -197,8 +205,8 @@ std::string Shader::m_vertexShader[] = {
 	}
 	)glsl",
 
-	/*************** Particle Shader **************/
-	R"glsl(
+    /*************** Particle Shader **************/
+    R"glsl(
 	#version 450 core
 
 	// Input vertex data, different for all executions of this shader.
@@ -255,8 +263,8 @@ std::string Shader::m_vertexShader[] = {
 	}
 	)glsl",
 
-	/*************** Screen Shader **************/
-	R"glsl(
+    /*************** Screen Shader **************/
+    R"glsl(
 	#version 450 core
 
 	layout (location = 0) in vec3 position;
