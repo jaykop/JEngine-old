@@ -29,7 +29,7 @@ public:
     bool AccumulateForce(const vec3& forceToAdd);
     vec3 Calculate();
 	
-    Object* m_target = nullptr;
+    Object* m_target = nullptr, *m_circle= nullptr;
 
     vec3 velocity;
     vec3 heading;
@@ -49,7 +49,7 @@ public:
 	vec3 wanderTarget;
 
 	Steering *m_evader, *m_pursuer;
-	Transform *m_transform, *targetTransform;
+	Transform *m_transform, *targetTransform, *circleTransform;
 	behavior m_behavior;
 
 private:

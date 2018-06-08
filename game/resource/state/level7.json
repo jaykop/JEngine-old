@@ -37,6 +37,19 @@
 			]
 		},
 		{
+			"Name" : "Circle",
+			"Component" : [
+				{
+					"Type": "Transform",
+					"Values": {"Position" : [0, 0, 0], "Scale" : [50, 50, 0]}
+				},
+				{
+					"Type" : "Sprite",
+					"Values" : {"Texture" : "circle_line", "Color" : [1, 1, 1, 1], "Projection" : "Orthogonal" }
+				}
+			]
+		},
+/*		{
 			"Name" : "Evader",
 			"Component" : [
 				{
@@ -70,7 +83,7 @@
 				}
 			]
 		},
-		{
+*/		{
 			"Name" : "Wanderer",
 			"Component" : [
 				{
