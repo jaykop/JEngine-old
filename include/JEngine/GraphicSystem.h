@@ -34,18 +34,19 @@ class GraphicSystem : public System
 public:
 
     // TODO
-    void	Ray(Sprite* _sprite, Transform* _transform);
+    void    Ray(Sprite* _sprite, Transform* _transform);
 
-    int		GetWidth() const;
-    int		GetHeight() const;
-    void	SetMainCamera(Camera* _camera);
+    int	    GetWidth() const;
+    int	    GetHeight() const;
+    void    SetMainCamera(Camera* _camera);
+
     Camera* GetMainCamera();
 
-    vec3			lightScale;
-    vec4			backgroundColor, screenColor;
-    bool			orthoComesFirst;
-    float			sobelAmount, blurSize, blurAmount, sobelSize, aspect, zNear, zFar;
-    Alias			aliasMode;
+    vec3	    lightScale;
+    vec4	    backgroundColor, screenColor;
+    bool	    orthoComesFirst;
+    float	    sobelAmount, blurSize, blurAmount, sobelSize, aspect, zNear, zFar;
+    Alias	    aliasMode;
     ScreenEffect    screenEffect;
 
 private:
@@ -79,6 +80,7 @@ private:
     void LightSourcePipeline();
     void TextPipeline(Text * _text);
     void SpritePipeline(Sprite * _sprite);
+    void ParentPipeline(Transform* _pTransform);
     void MappingPipeline(Sprite* _sprite);
     void LightingEffectPipeline(Material* _material);
     void ParticlePipeline(Emitter* _emitter, const float _dt);
@@ -98,7 +100,7 @@ private:
 
     vec3	m_resolutionScaler;
 
-    unsigned m_maxLights;
+    unsigned	m_maxLights;
 
     int		m_width, m_height;
     bool	m_inside, m_isLight;

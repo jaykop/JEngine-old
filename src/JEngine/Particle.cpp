@@ -128,7 +128,7 @@ Emitter::Emitter(Object* _pOwner)
 {
 	sfactor = GL_SRC_ALPHA;
 	dfactor = GL_ONE;
-	status |= IS_EMITTER;
+	m_hiddenStatus |= IS_EMITTER;
 }
 
 Emitter::~Emitter() 
@@ -188,8 +188,9 @@ void Emitter::Load(CR_RJValue _data)
 	if (_data.HasMember("Active"))
 		active = _data["Active"].GetBool();
 
-	if (_data.HasMember("Bilboard"))
-		bilboard = _data["Bilboard"].GetBool();
+	if (_data.HasMember("Bilboard")
+		&& _data["Bilboard"].GetBool())
+		status |= Sprite::IS_BILBOARD;
 
 	if (_data.HasMember("Iis2d"))
 		is2d = _data["Iis2d"].GetBool();

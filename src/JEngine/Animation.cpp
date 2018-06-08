@@ -17,10 +17,10 @@ Animation::Animation(Object* _pOwner)
 {	
 	// Connect to sprite's pointer
 	if (_pOwner->HasComponent<Sprite>()
-		&& (_pOwner->GetComponent<Sprite>()->status & Sprite::HAS_ANIMATION)
+		&& (_pOwner->GetComponent<Sprite>()->m_hiddenStatus & Sprite::HAS_ANIMATION)
 		== Sprite::HAS_ANIMATION) {
 		_pOwner->GetComponent<Sprite>()->m_pAnimation = this;
-		_pOwner->GetComponent<Sprite>()->status |= Sprite::HAS_ANIMATION;
+		_pOwner->GetComponent<Sprite>()->m_hiddenStatus |= Sprite::HAS_ANIMATION;
 	}
 
 	else
@@ -32,7 +32,7 @@ Animation::~Animation() {
 	// Turn off the toggle
 	if (GetOwner()->HasComponent<Sprite>()) {
 		GetOwner()->GetComponent<Sprite>()->m_pAnimation = nullptr;
-		GetOwner()->GetComponent<Sprite>()->status &= ~Sprite::HAS_ANIMATION;
+		GetOwner()->GetComponent<Sprite>()->m_hiddenStatus &= ~Sprite::HAS_ANIMATION;
 	}
 }
 
@@ -48,10 +48,10 @@ void Animation::operator=(const Animation & _copy)
 
 	// Connect to sprite's pointer
 	if (GetOwner()->HasComponent<Sprite>()
-		&& (GetOwner()->GetComponent<Sprite>()->status & Sprite::HAS_ANIMATION)
+		&& (GetOwner()->GetComponent<Sprite>()->m_hiddenStatus & Sprite::HAS_ANIMATION)
 		== Sprite::HAS_ANIMATION) {
 		GetOwner()->GetComponent<Sprite>()->m_pAnimation = this;
-		GetOwner()->GetComponent<Sprite>()->status |= Sprite::HAS_ANIMATION;
+		GetOwner()->GetComponent<Sprite>()->m_hiddenStatus |= Sprite::HAS_ANIMATION;
 	}
 }
 
