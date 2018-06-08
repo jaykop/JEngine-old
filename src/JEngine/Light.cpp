@@ -10,13 +10,13 @@ jeBegin
 jeDefineComponentBuilder(Light);
 
 Light::Light(Object * _pOwner)
-	:Component(_pOwner), m_color(vec4::ONE),
-	m_ambient(vec4::ONE), m_diffuse(vec4::ONE),
-	m_specular(vec4::ONE), m_position(vec3(0.f, 0.f, 1.f)),
-	m_direction(vec3::ZERO), m_constant(0.f), m_linear(0.f),
-	m_quadratic(0.f), m_cutOff(0.f), m_outerCutOff(0.f),
-	m_projection(PROJECTION_PERSPECTIVE),
-	m_sfactor(GL_SRC_ALPHA), m_dfactor(GL_ONE_MINUS_SRC_ALPHA)
+	:Component(_pOwner), color(vec4::ONE),
+	ambient(vec4::ONE), diffuse(vec4::ONE),
+	specular(vec4::ONE), position(vec3(0.f, 0.f, 1.f)),
+	direction(vec3::ZERO), constant(0.f), linear(0.f),
+	quadratic(0.f), cutOff(0.f), outerCutOff(0.f),
+	projection(PROJECTION_PERSPECTIVE),
+	sfactor(GL_SRC_ALPHA), dfactor(GL_ONE_MINUS_SRC_ALPHA)
 {}
 
 Light::~Light()
@@ -26,18 +26,18 @@ Light::~Light()
 
 void Light::operator=(const Light & _copy)
 {
-	m_color.Set(_copy.m_color);
-	m_ambient.Set(_copy.m_ambient); 
-	m_diffuse.Set(_copy.m_diffuse);
-	m_specular.Set(_copy.m_specular); 
-	m_position.Set(_copy.m_position);
-	m_direction.Set(_copy.m_direction); 
-	m_constant = _copy.m_constant; 
-	m_linear = _copy.m_linear;
-	m_quadratic = _copy.m_quadratic;
-	m_cutOff = _copy.m_cutOff;
-	m_outerCutOff = _copy.m_outerCutOff;
-	m_projection = _copy.m_projection;
+	color.Set(_copy.color);
+	ambient.Set(_copy.ambient); 
+	diffuse.Set(_copy.diffuse);
+	specular.Set(_copy.specular); 
+	position.Set(_copy.position);
+	direction.Set(_copy.direction); 
+	constant = _copy.constant; 
+	linear = _copy.linear;
+	quadratic = _copy.quadratic;
+	cutOff = _copy.cutOff;
+	outerCutOff = _copy.outerCutOff;
+	projection = _copy.projection;
 }
 
 void Light::Register()
@@ -48,70 +48,70 @@ void Light::Register()
 void Light::Load(CR_RJValue _data)
 {
 	if (_data.HasMember("Type")) {
-		CR_RJValue type = _data["Type"];
-		if (!strcmp(type.GetString(), "Normal"))
+		CR_RJValue loadedType = _data["Type"];
+		if (!strcmp(loadedType.GetString(), "Normal"))
 			m_type = NORMALLIGHT;
-		else if (!strcmp(type.GetString(), "Directional"))
+		else if (!strcmp(loadedType.GetString(), "Directional"))
 			m_type = DIRECTIONALLIGHT;
-		else if (!strcmp(type.GetString(), "Spot"))
+		else if (!strcmp(loadedType.GetString(), "Spot"))
 			m_type = SPOTLIGHT;
-		else if (!strcmp(type.GetString(), "Point"))
+		else if (!strcmp(loadedType.GetString(), "Point"))
 			m_type = POINTLIGHT;
 	}
 
 	if (_data.HasMember("CutOff")) {
-		CR_RJValue cutOff = _data["CutOff"];
-		m_cutOff = cutOff.GetFloat();
+		CR_RJValue loadedCutOff = _data["CutOff"];
+		cutOff = loadedCutOff.GetFloat();
 	}
 
 	if (_data.HasMember("OuterCutOff")) {
-		CR_RJValue outCutOff = _data["OuterCutOff"];
-		m_outerCutOff = outCutOff.GetFloat();
+		CR_RJValue loadedOutCutOff = _data["OuterCutOff"];
+		outerCutOff = loadedOutCutOff.GetFloat();
 	}
 
 	if (_data.HasMember("Constant")) {
-		CR_RJValue constant = _data["Constant"];
-		m_constant = constant.GetFloat();
+		CR_RJValue loadedConstant = _data["Constant"];
+		constant = loadedConstant.GetFloat();
 	}
 
 	if (_data.HasMember("Linear")) {
-		CR_RJValue linear = _data["Linear"];
-		m_linear = linear.GetFloat();
+		CR_RJValue loadedlinear = _data["Linear"];
+		linear = loadedlinear.GetFloat();
 	}
 
 	if (_data.HasMember("Quadratic")) {
-		CR_RJValue quadratic = _data["Quadratic"];
-		m_quadratic = quadratic.GetFloat();
+		CR_RJValue loadedQuadratic = _data["Quadratic"];
+		quadratic = loadedQuadratic.GetFloat();
 	}
 
 	if (_data.HasMember("Direction")) {
-		CR_RJValue direction = _data["Direction"];
-		m_direction.Set(direction[0].GetFloat(), direction[1].GetFloat(), direction[2].GetFloat());
+		CR_RJValue loadedDirection = _data["Direction"];
+		direction.Set(loadedDirection[0].GetFloat(), loadedDirection[1].GetFloat(), loadedDirection[2].GetFloat());
 	}
 
 	if (_data.HasMember("Color")) {
-		CR_RJValue color = _data["Color"];
-		m_color.Set(color[0].GetFloat(), color[1].GetFloat(), color[2].GetFloat(), color[3].GetFloat());
+		CR_RJValue loadedColor = _data["Color"];
+		color.Set(loadedColor[0].GetFloat(), loadedColor[1].GetFloat(), loadedColor[2].GetFloat(), loadedColor[3].GetFloat());
 	}
 
 	if (_data.HasMember("Ambient")) {
-		CR_RJValue ambient = _data["Ambient"];
-		m_ambient.Set(ambient[0].GetFloat(), ambient[1].GetFloat(), ambient[2].GetFloat(), ambient[3].GetFloat());
+		CR_RJValue loadedAmbient = _data["Ambient"];
+		ambient.Set(loadedAmbient[0].GetFloat(), loadedAmbient[1].GetFloat(), loadedAmbient[2].GetFloat(), loadedAmbient[3].GetFloat());
 	}
 	
 	if (_data.HasMember("Diffuse")) {
-		CR_RJValue diffuse = _data["Diffuse"];
-		m_diffuse.Set(diffuse[0].GetFloat(), diffuse[1].GetFloat(), diffuse[2].GetFloat(), diffuse[3].GetFloat());
+		CR_RJValue loadedDiffuse = _data["Diffuse"];
+		diffuse.Set(loadedDiffuse[0].GetFloat(), loadedDiffuse[1].GetFloat(), loadedDiffuse[2].GetFloat(), loadedDiffuse[3].GetFloat());
 	}
 	
 	if (_data.HasMember("Specular")) {
-		CR_RJValue specular = _data["Specular"];
-		m_specular.Set(specular[0].GetFloat(), specular[1].GetFloat(), specular[2].GetFloat(), specular[3].GetFloat());
+		CR_RJValue loadedSpecular = _data["Specular"];
+		specular.Set(loadedSpecular[0].GetFloat(), loadedSpecular[1].GetFloat(), loadedSpecular[2].GetFloat(), loadedSpecular[3].GetFloat());
 	}
 	
 	if (_data.HasMember("Position")) {
-		CR_RJValue position = _data["Position"];
-		m_position.Set(position[0].GetFloat(), position[1].GetFloat(), position[2].GetFloat());
+		CR_RJValue loadedPosition = _data["Position"];
+		position.Set(loadedPosition[0].GetFloat(), loadedPosition[1].GetFloat(), loadedPosition[2].GetFloat());
 	}
 }
 

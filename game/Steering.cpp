@@ -72,7 +72,7 @@ void Steering::Init()
 	{
 		m_circle = CONTAINER->GetObject("Circle");
 		circleTransform = m_circle->GetComponent<Transform>();
-		wanderRadius = circleTransform->m_scale.x / 2.f;
+		wanderRadius = circleTransform->scale.x / 2.f;
 	}
 
 	// Get target transform
@@ -81,7 +81,7 @@ void Steering::Init()
 	
 	// Get owner's transform
 	m_transform = GetOwner()->GetComponent<Transform>();
-	zPos = m_transform->m_position.z;
+	zPos = m_transform->position.z;
 
 	mass = 1.f;
     maxSpeed = 50.f;
@@ -106,11 +106,11 @@ void Steering::Update(const float _dt)
 {
 	// By mouse
 	if (INPUT::KeyTriggered(JE_MOUSE_LEFT))
-		targetTransform->m_position.Set(INPUT::GetOrhtoPosition());
+		targetTransform->position.Set(INPUT::GetOrhtoPosition());
 	
 	// By keyboard
 	if (INPUT::KeyTriggered(JE_ENTER))
-		targetTransform->m_position.Set(
+		targetTransform->position.Set(
 			Random::GetRandVec3(-350.f, -250.f, 0.f, 350.f, 250.f, 0.f));
 
 	// Calculate the force to add
@@ -126,15 +126,15 @@ void Steering::Update(const float _dt)
 	// Update position
 	vec3 toAdd = velocity * _dt;
 	toAdd.z = 0.f;
-	m_transform->m_position += toAdd;
-	m_transform->m_rotation = vec3::UNIT_X.GetAngle(velocity);
+	m_transform->position += toAdd;
+	m_transform->rotation = vec3::UNIT_X.GetAngle(velocity);
 
 	if (velocity.GetLengthSq() > 0.00000001) {
 		heading = velocity.GetNormalize();
 		side = GetPerpendicular(heading);
 	}
 
-	ControlPosition(m_transform->m_position);
+	ControlPosition(m_transform->position);
 }
 
 void Steering::Close()

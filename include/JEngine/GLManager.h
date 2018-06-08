@@ -104,7 +104,7 @@ private:
 	static GLint		m_uniform[UNIFORM_END], m_Attributes, m_buffers, m_samples;
 	static GLuint		m_vao[SHAPE_END], m_vbo[SHAPE_END], m_ebo[SHAPE_END], m_fbo, m_renderTarget, m_depthBuffer;
 	
-	static const GLubyte	*m_renderer, *m_vendor, *m_version, *m_glslVersion;
+	static const GLubyte	*m_pRenderer, *m_pVendor, *m_pVersion, *m_pGlslVersion;
 
 	// Basic indices and vertices sets
 	static const float		m_verticesPoint[8], m_verticesPlane[32], m_verticesPlane3D[96], m_verticesCube[192], m_verticesCone[128];

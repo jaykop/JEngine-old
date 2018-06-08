@@ -55,7 +55,7 @@ private:
 	~Shader();
 
 	GLuint	m_programId, m_vertexId, m_fragmentId, m_geometryId;
-	int	m_infoLogLength;
+	int		m_infoLogLength;
 	GLint	m_result;
 
 	static std::string  m_vertexShader[GLM::SHADER_END], m_fragmentShader[GLM::SHADER_END], m_geometryShader[GLM::SHADER_END];

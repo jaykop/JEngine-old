@@ -33,7 +33,7 @@ protected:
 private:
     
     Object      *m_pOwner;
-    bool	m_byUser;
+    bool		m_byUser;
     std::string m_typeName;
 
     Component() = delete;;

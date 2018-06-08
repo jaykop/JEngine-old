@@ -17,7 +17,7 @@ void State::Load()
 	
 	// Allocate new object container;
 	OBJECT::m_pSharedContainer 
-		= m_objContainer = new ObjectContainer;
+		= m_pObjContainer = new ObjectContainer;
 	
 	// Read flie from json state file
 	JSON::ReadFile(m_loadDirectory.c_str());
@@ -55,7 +55,7 @@ void State::Close()
 	STATE::m_showUpdateMessage = true;
 #endif // _DEBUG
 
-	OBJECT::m_pSharedContainer = STATE::GetCurrentState()->m_objContainer;
+	OBJECT::m_pSharedContainer = STATE::GetCurrentState()->m_pObjContainer;
 
 	jeDebugPrint("*State - Closing %s...\n", m_name.c_str());
 	SYSTEM::Close();
@@ -70,10 +70,10 @@ void State::Unload()
 
 void State::ClearObjectContainer()
 {
-	if (m_objContainer) {
-		m_objContainer->ClearObjectMap();
-		delete m_objContainer;
-		m_objContainer = nullptr;
+	if (m_pObjContainer) {
+		m_pObjContainer->ClearObjectMap();
+		delete m_pObjContainer;
+		m_pObjContainer = nullptr;
 	}
 }
 

@@ -23,12 +23,12 @@ class Light : public Component
 public:
 
     LightType	m_type;
-    ProjectType	m_projection;
+    ProjectType	projection;
 
-    vec3	m_position, m_direction;
-    vec4	m_ambient, m_specular, m_diffuse, m_color;
-    float	m_constant, m_linear, m_quadratic, m_cutOff, m_outerCutOff;
-    unsigned	m_sfactor, m_dfactor;
+    vec3		position, direction;
+    vec4		ambient, specular, diffuse, color;
+    float		constant, linear, quadratic, cutOff, outerCutOff;
+    unsigned	sfactor, dfactor;
 
     void Register() override;
 

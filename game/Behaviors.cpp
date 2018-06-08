@@ -16,7 +16,7 @@ vec3 Steering::Seek(const vec3& _targetPos)
 {
 	if (m_transform) {
 		Transform *transform = GetOwner()->GetComponent<Transform>();
-		vec3 desiredVel = (_targetPos - transform->m_position) * maxSpeed;
+		vec3 desiredVel = (_targetPos - transform->position) * maxSpeed;
 
 		return desiredVel - velocity;
 	}
@@ -28,7 +28,7 @@ vec3 Steering::Flee(const vec3& _targetPos)
 {
 	if (GetOwner()->HasComponent<Transform>()) {
 		Transform *transform = GetOwner()->GetComponent<Transform>();
-		vec3 desiredVel = (transform->m_position - _targetPos) * maxSpeed;
+		vec3 desiredVel = (transform->position - _targetPos) * maxSpeed;
 
 		return desiredVel - velocity;
 	}
@@ -37,7 +37,7 @@ vec3 Steering::Flee(const vec3& _targetPos)
 
 vec3 Steering::Arrive(const vec3& _targetPos)
 {
-	vec3 toTarget = _targetPos - m_transform->m_position;
+	vec3 toTarget = _targetPos - m_transform->position;
 
 	float distance = toTarget.GetLength();
 
@@ -61,25 +61,25 @@ vec3 Steering::Arrive(const vec3& _targetPos)
 
 vec3 Steering::Evade(const Steering* _pursuer)
 {
-	vec3 toPursuer = _pursuer->m_transform->m_position - m_transform->m_position;
+	vec3 toPursuer = _pursuer->m_transform->position - m_transform->position;
 
 	float lookAheadTime = toPursuer.GetLength() / (maxSpeed + _pursuer->velocity.GetLength());
 
 	// now seek to the pridicted future position of the evader
-	return Flee(_pursuer->m_transform->m_position + _pursuer->velocity * lookAheadTime);
+	return Flee(_pursuer->m_transform->position + _pursuer->velocity * lookAheadTime);
 }
 
 vec3 Steering::Pursuit(const Steering* _evader)
 {
 	// If the evader is ahead and facing the agent then we can just seek
 	// for the evader's current position
-	vec3 toEvader = _evader->m_transform->m_position - m_transform->m_position;
+	vec3 toEvader = _evader->m_transform->position - m_transform->position;
 
 	float relativeHeading = heading.DotProduct(_evader->heading);
 
 	if (toEvader.DotProduct(heading) > 0
 		&& (relativeHeading < -0.95)) // acos(0.95)=18 degs
-		return Seek(_evader->m_transform->m_position);
+		return Seek(_evader->m_transform->position);
 
 	// Otherwise, this object predict where the evader will be.
 
@@ -88,7 +88,7 @@ vec3 Steering::Pursuit(const Steering* _evader)
 	float lookAheadTime = toEvader.GetLength() / (maxSpeed + _evader->velocity.GetLength());
 
 	// now seek to the pridicted future position of the evader
-	return Seek(_evader->m_transform->m_position + _evader->velocity * lookAheadTime);
+	return Seek(_evader->m_transform->position + _evader->velocity * lookAheadTime);
 }
 
 vec3 Steering::Wander()
@@ -111,19 +111,19 @@ vec3 Steering::Wander()
 
 	// Set the wandar center
 	vec3 wanderCenter;
-	wanderCenter.Set(m_transform->m_position);
-	wanderCenter += heading * (m_transform->m_scale.x / 2.f + wanderRadius);
+	wanderCenter.Set(m_transform->position);
+	wanderCenter += heading * (m_transform->scale.x / 2.f + wanderRadius);
 	wanderCenter.z = zPos;
 	// Put the circle on the correct position
-	circleTransform->m_position.Set(wanderCenter);
+	circleTransform->position.Set(wanderCenter);
 	// Set the wander target position
 	wanderTarget.Set(
 		wanderCenter.x + nextPointToGo.x, wanderCenter.y + nextPointToGo.y, zPos);
 	// Put the haircross on the correct position 
-	targetTransform->m_position.Set(wanderTarget);
+	targetTransform->position.Set(wanderTarget);
 
 	// Return the velocity
-	return (wanderTarget - m_transform->m_position).GetNormalize() * wanderForce;
+	return (wanderTarget - m_transform->position).GetNormalize() * wanderForce;
 }
 
 vec3 Steering::Calculate()
@@ -137,15 +137,15 @@ vec3 Steering::Calculate()
 	// case: Seek
 	switch (m_behavior) {
 	case seek:
-		force = Seek(targetTransform->m_position);
+		force = Seek(targetTransform->position);
 		break;
 
 	case flee:
-		force = Flee(targetTransform->m_position);
+		force = Flee(targetTransform->position);
 		break;
 
 	case arrive:
-		force = Arrive(targetTransform->m_position);
+		force = Arrive(targetTransform->position);
 		break;
 
 	case pursuit:
