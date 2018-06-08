@@ -27,8 +27,7 @@ void GraphicSystem::UpdatePipelines(const float _dt)
 	Shader::Use(GLM::SHADER_MODEL);
 
 	// Inform that there are lights
-	Shader::m_pCurrentShader->SetBool(
-		GLM::UNIFORM_IS_LIGHT, m_isLight);
+	Shader::m_pCurrentShader->SetBool("boolean_light", m_isLight);
 
 	for (auto sprite : m_sprites) {
 
@@ -78,17 +77,17 @@ void GraphicSystem::RenderToScreen()
 	// Render to plane 2d
 	glBindVertexArray(GLM::m_vao[GLM::SHAPE_PLANE]);
 	Shader::m_pCurrentShader->Use(GLM::SHADER_SCREEN);
-	Shader::m_pCurrentShader->SetVector4(GLM::UNIFORM_SCREEN_COLOR, screenColor);
+	Shader::m_pCurrentShader->SetVector4("v4_screenColor", screenColor);
 
 	// Impose screen effect 
-	Shader::m_pCurrentShader->SetEnum(GLM::UNIFORM_SCREEN_EFFECT, screenEffect);
+	Shader::m_pCurrentShader->SetEnum("enum_effectType", screenEffect);
 
 	if (screenEffect == EFFECT_BLUR) {
-		Shader::m_pCurrentShader->SetFloat(GLM::UNIFORM_SCREEN_BLUR_SIZE, blurSize);
-		Shader::m_pCurrentShader->SetFloat(GLM::UNIFORM_SCREEN_BLUR_AMOUNT, blurAmount);
+		Shader::m_pCurrentShader->SetFloat("float_blurSize", blurSize);
+		Shader::m_pCurrentShader->SetFloat("float_blurAmount", blurAmount);
 	}
 	else if (screenEffect == EFFECT_SOBEL)
-		Shader::m_pCurrentShader->SetFloat(GLM::UNIFORM_SCREEN_SOBEL, sobelAmount);
+		Shader::m_pCurrentShader->SetFloat("float_sobelAmount", sobelAmount);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, GLM::m_renderTarget);
@@ -116,47 +115,34 @@ void GraphicSystem::LightSourcePipeline()
 
 		Shader::m_pCurrentShader->Use(GLM::SHADER_LIGHTING);
 
-		Shader::m_pCurrentShader->SetMatrix(
-			GLM::UNIFORM_LIGHT_SCALE,
-			mat4::Scale(lightScale));
+		Shader::m_pCurrentShader->SetMatrix("m4_scale", mat4::Scale(lightScale));
 
 		for (auto light : m_lights) {
 
 			Shader::m_pCurrentShader->SetMatrix(
-				GLM::UNIFORM_LIGHT_TRANSLATE,
-				mat4::Translate(light->position));
+				"m4_translate", mat4::Translate(light->position));
 
 			Shader::m_pCurrentShader->SetMatrix(
-				GLM::UNIFORM_LIGHT_ROTATEZ,
-				mat4::RotateZ(atan2(light->direction.y, light->direction.x)));
+				"m4_rotateZ", mat4::RotateZ(atan2(light->direction.y, light->direction.x)));
 
 			Shader::m_pCurrentShader->SetMatrix(
-				GLM::UNIFORM_LIGHT_ROTATEY,
-				mat4::RotateY(-atan2(light->direction.z, light->direction.x)));
+				"m4_rotateY", mat4::RotateY(-atan2(light->direction.z, light->direction.x)));
 
 			if (light->projection == PROJECTION_PERSPECTIVE) {
-				Shader::m_pCurrentShader->SetMatrix(
-					GLM::UNIFORM_LIGHT_PROJECTION, m_perspective);
+				Shader::m_pCurrentShader->SetMatrix("m4_projection", m_perspective);
 
-				m_viewport = mat4::LookAt(
-					m_pMainCamera->position, m_pMainCamera->target, m_pMainCamera->up);
+				m_viewport = mat4::LookAt(m_pMainCamera->position, m_pMainCamera->target, m_pMainCamera->up);
 			}
 
 			else {
-				Shader::m_pCurrentShader->SetMatrix(
-					GLM::UNIFORM_LIGHT_PROJECTION, m_orthogonal);
+				Shader::m_pCurrentShader->SetMatrix("m4_projection", m_orthogonal);
 
 				m_viewport.SetIdentity();
 				m_viewport = mat4::Scale(m_resolutionScaler);
 			}
 
-			Shader::m_pCurrentShader->SetMatrix(
-				GLM::UNIFORM_LIGHT_CAMERA,
-				m_viewport);
-
-			Shader::m_pCurrentShader->SetVector4(
-				GLM::UNIFORM_LIGHT_COLOR,
-				light->color);
+			Shader::m_pCurrentShader->SetMatrix("m4_viewport", m_viewport);
+			Shader::m_pCurrentShader->SetVector4("v4_color", light->color);
 
 			glBlendFunc(light->sfactor, light->dfactor);
 			Render(GLM::m_vao[GLM::SHAPE_CONE], GLM::m_elementSize[GLM::SHAPE_CONE]);
@@ -178,41 +164,29 @@ void GraphicSystem::SpritePipeline(Sprite *_sprite)
 
 	Shader::m_pCurrentShader->Use(GLM::SHADER_MODEL);
 
-	Shader::m_pCurrentShader->SetMatrix(
-		GLM::UNIFORM_TRANSLATE, mat4::Translate(s_pTransform->position));
+	Shader::m_pCurrentShader->SetMatrix("m4_translate", mat4::Translate(s_pTransform->position));
+	Shader::m_pCurrentShader->SetMatrix("m4_scale", mat4::Scale(s_pTransform->scale));
+	Shader::m_pCurrentShader->SetMatrix("m4_rotate", mat4::Rotate(Math::DegToRad(s_pTransform->rotation), s_pTransform->rotationAxis));
 
-	Shader::m_pCurrentShader->SetMatrix(
-		GLM::UNIFORM_SCALE, mat4::Scale(s_pTransform->scale));
-
-	Shader::m_pCurrentShader->SetMatrix(
-		GLM::UNIFORM_ROTATE, mat4::Rotate(Math::DegToRad(s_pTransform->rotation), s_pTransform->rotationAxis));
-
-	Shader::m_pCurrentShader->SetVector3(
-		GLM::UNIFORM_CAMERA_POSITION, m_pMainCamera->position);
-
-	Shader::m_pCurrentShader->SetBool(
-		GLM::UNIFORM_BILBOARD, (_sprite->status & Sprite::IS_BILBOARD) == Sprite::IS_BILBOARD);
+	Shader::m_pCurrentShader->SetVector3("v3_cameraPosition", m_pMainCamera->position);
+	Shader::m_pCurrentShader->SetBool("boolean_bilboard", (_sprite->status & Sprite::IS_BILBOARD) == Sprite::IS_BILBOARD);
 
 	// Send projection info to shader
 	if (_sprite->projection == PROJECTION_PERSPECTIVE) {
-		GLM::m_shader[GLM::SHADER_MODEL]->SetMatrix(
-			GLM::UNIFORM_PROJECTION, m_perspective);
+		Shader::m_pCurrentShader->SetMatrix("boolean_bilboard", m_perspective);
 
-		m_viewport = mat4::LookAt(
-			m_pMainCamera->position, m_pMainCamera->target, m_pMainCamera->up);
+		m_viewport = mat4::LookAt(m_pMainCamera->position, m_pMainCamera->target, m_pMainCamera->up);
 	}
 
 	else {
-		GLM::m_shader[GLM::SHADER_MODEL]->SetMatrix(
-			GLM::UNIFORM_PROJECTION, m_orthogonal);
+		Shader::m_pCurrentShader->SetMatrix("m4_projection", m_orthogonal);
 
 		m_viewport.SetIdentity();
 		m_viewport = mat4::Scale(m_resolutionScaler);
 	}
 
 	// Send camera info to shader
-	Shader::m_pCurrentShader->SetMatrix(
-		GLM::UNIFORM_CAMERA, m_viewport);
+	Shader::m_pCurrentShader->SetMatrix("m4_viewport", m_viewport);
 
 	// TODO
 	// It so, not draw
@@ -245,7 +219,6 @@ void GraphicSystem::SpritePipeline(Sprite *_sprite)
 
 void GraphicSystem::ParentPipeline(Transform* _pTransform)
 {
-	
 	glUniformMatrix4fv(glGetUniformLocation(Shader::m_pCurrentShader->m_programId, "m4_parentTransform"),
 		1, GL_FALSE, &mat4::Translate(_pTransform->position).m[0][0]);
 
@@ -298,40 +271,21 @@ void GraphicSystem::MappingPipeline(Sprite* _sprite)
 	}
 
 	// Send color info to shader
-	Shader::m_pCurrentShader->SetVector4(
-		GLM::UNIFORM_COLOR,
-		_sprite->color);
-
+	Shader::m_pCurrentShader->SetVector4("v4_color", _sprite->color);
 	Shader::m_pCurrentShader->SetBool(
-		GLM::UNIFORM_FLIP,
-		(_sprite->status & Sprite::IS_FLIPPED) == Sprite::IS_FLIPPED);
-
-	Shader::m_pCurrentShader->SetMatrix(
-		GLM::UNIFORM_ANI_SCALE,
-		mat4::Scale(m_aniScale));
-
-	Shader::m_pCurrentShader->SetMatrix(
-		GLM::UNIFORM_ANI_TRANSLATE,
-		mat4::Translate(m_aniTranslate));
+		"boolean_flip", (_sprite->status & Sprite::IS_FLIPPED) == Sprite::IS_FLIPPED);
+	Shader::m_pCurrentShader->SetMatrix("m4_aniScale", mat4::Scale(m_aniScale));
+	Shader::m_pCurrentShader->SetMatrix("m4_aniTranslate", mat4::Translate(m_aniTranslate));
 }
 
 void GraphicSystem::LightingEffectPipeline(Material *_material)
 {
-	Shader::m_pCurrentShader->SetInt(
-		GLM::UNIFORM_LIGHT_SIZE, int(m_lights.size()));
+	Shader::m_pCurrentShader->SetInt("int_lightSize", int(m_lights.size()));
 
 	// Send material info to shader
-	Shader::m_pCurrentShader->SetInt(
-		GLM::UNIFORM_MATERIAL_SPECULAR,
-		_material->specular);
-
-	Shader::m_pCurrentShader->SetInt(
-		GLM::UNIFORM_MATERIAL_DIFFUSE,
-		_material->diffuse);
-
-	Shader::m_pCurrentShader->SetFloat(
-		GLM::UNIFORM_MATERIAL_SHININESS,
-		_material->shininess);
+	Shader::m_pCurrentShader->SetInt("material.m_specular", _material->specular);
+	Shader::m_pCurrentShader->SetInt("material.m_diffuse", _material->diffuse);
+	Shader::m_pCurrentShader->SetFloat("material.m_shininess", _material->shininess);
 
 	static int s_lightIndex;
 	static std::string s_index, s_color, s_light, s_input,
@@ -401,38 +355,28 @@ void GraphicSystem::TextPipeline(Text * _text)
 
 	Shader::Use(GLM::SHADER_TEXT);
 
-	Shader::m_pCurrentShader->SetMatrix(
-		GLM::UNIFORM_TEXT_SCALE, mat4::Scale(s_pTransform->scale));
-
-	Shader::m_pCurrentShader->SetMatrix(
-		GLM::UNIFORM_TEXT_ROTATE, mat4::Rotate(Math::DegToRad(s_pTransform->rotation), s_pTransform->rotationAxis));
-
-	Shader::m_pCurrentShader->SetBool(
-		GLM::UNIFORM_TEXT_BILBOARD, (_text->status & Sprite::IS_BILBOARD) == Sprite::IS_BILBOARD);
-
-	Shader::m_pCurrentShader->SetVector4(
-		GLM::UNIFORM_TEXT_COLOR, _text->color);
+	Shader::m_pCurrentShader->SetMatrix("m4_scale", mat4::Scale(s_pTransform->scale));
+	Shader::m_pCurrentShader->SetMatrix("m4_rotate", mat4::Rotate(Math::DegToRad(s_pTransform->rotation), s_pTransform->rotationAxis));
+	Shader::m_pCurrentShader->SetBool("boolean_bilboard", (_text->status & Sprite::IS_BILBOARD) == Sprite::IS_BILBOARD);
+	Shader::m_pCurrentShader->SetVector4("v4_color", _text->color);
 
 	// Send projection info to shader
 	if (_text->projection == PROJECTION_PERSPECTIVE) {
-		Shader::m_pCurrentShader->SetMatrix(
-			GLM::UNIFORM_TEXT_PROJECTION, m_perspective);
+		Shader::m_pCurrentShader->SetMatrix("m4_projection", m_perspective);
 
 		m_viewport = mat4::LookAt(
 			m_pMainCamera->position, m_pMainCamera->target, m_pMainCamera->up);
 	}
 
 	else {
-		Shader::m_pCurrentShader->SetMatrix(
-			GLM::UNIFORM_TEXT_PROJECTION, m_orthogonal);
+		Shader::m_pCurrentShader->SetMatrix("m4_projection", m_orthogonal);
 
 		m_viewport.SetIdentity();
 		m_viewport = mat4::Scale(m_resolutionScaler);
 	}
 
 	// Send camera info to shader
-	Shader::m_pCurrentShader->SetMatrix(
-		GLM::UNIFORM_TEXT_CAMERA, m_viewport);
+	Shader::m_pCurrentShader->SetMatrix("m4_viewport", m_viewport);
 
 	// TODO
 	// It so, not draw
@@ -494,32 +438,26 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 
 		Shader::Use(GLM::SHADER_PARTICLE);
 
-		Shader::m_pCurrentShader->SetMatrix(
-			GLM::UNIFORM_PARTICLE_SCALE, mat4::Scale(s_pTransform->scale));
-
-		Shader::m_pCurrentShader->SetBool(
-			GLM::UNIFORM_PARTICLE_BILBOARD, (_emitter->status & Sprite::IS_BILBOARD) == Sprite::IS_BILBOARD);
+		Shader::m_pCurrentShader->SetMatrix("m4_scale", mat4::Scale(s_pTransform->scale));
+		Shader::m_pCurrentShader->SetBool("boolean_bilboard", (_emitter->status & Sprite::IS_BILBOARD) == Sprite::IS_BILBOARD);
 
 		// Send projection info to shader
 		if (_emitter->projection == PROJECTION_PERSPECTIVE) {
-			Shader::m_pCurrentShader->SetMatrix(
-				GLM::UNIFORM_PARTICLE_PROJECTION, m_perspective);
+			Shader::m_pCurrentShader->SetMatrix("m4_projection", m_perspective);
 
 			m_viewport = mat4::LookAt(
 				m_pMainCamera->position, m_pMainCamera->target, m_pMainCamera->up);
 		}
 
 		else {
-			Shader::m_pCurrentShader->SetMatrix(
-				GLM::UNIFORM_PARTICLE_PROJECTION, m_orthogonal);
+			Shader::m_pCurrentShader->SetMatrix("m4_projection", m_orthogonal);
 
 			m_viewport.SetIdentity();
 			m_viewport = mat4::Scale(m_resolutionScaler);
 		}
 
 		// Send camera info to shader
-		Shader::m_pCurrentShader->SetMatrix(
-			GLM::UNIFORM_PARTICLE_CAMERA, m_viewport);
+		Shader::m_pCurrentShader->SetMatrix("m4_viewport", m_viewport);
 
 		glBindTexture(GL_TEXTURE_2D, s_texture);
 
@@ -543,18 +481,12 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 					particle->life);
 
 				// Send transform info to shader
-				Shader::m_pCurrentShader->SetMatrix(
-					GLM::UNIFORM_PARTICLE_TRANSLATE, mat4::Translate(particle->position));
-
-				Shader::m_pCurrentShader->SetMatrix(
-					GLM::UNIFORM_PARTICLE_ROTATE, mat4::Rotate(Math::DegToRad(particle->rotation), s_pTransform->rotationAxis));
+				Shader::m_pCurrentShader->SetMatrix("m4_translate", mat4::Translate(particle->position));
+				Shader::m_pCurrentShader->SetMatrix("m4_rotate", mat4::Rotate(Math::DegToRad(particle->rotation), s_pTransform->rotationAxis));
 
 				// Send color info to shader
-				Shader::m_pCurrentShader->SetVector4(
-					GLM::UNIFORM_PARTICLE_COLOR, s_color);
-
-				Shader::m_pCurrentShader->SetBool(
-					GLM::UNIFORM_PARTICLE_HIDE, particle->hidden);
+				Shader::m_pCurrentShader->SetVector4("v4_color", s_color);
+				Shader::m_pCurrentShader->SetBool("boolean_hide", particle->hidden);
 
 				Render(s_vao, s_elementSize);
 			}
@@ -587,8 +519,7 @@ void GraphicSystem::RenderCharacter(Character& _character, const vec3& _position
 	GLfloat width = _character.size.x;
 	GLfloat height = _character.size.y;
 
-	Shader::m_pCurrentShader->SetMatrix(
-		GLM::UNIFORM_TEXT_TRANSLATE, mat4::Translate(s_realPosition));
+	Shader::m_pCurrentShader->SetMatrix("m4_translate", mat4::Translate(s_realPosition));
 
 	//Update vbo
 	GLfloat vertices[4][8] = {
