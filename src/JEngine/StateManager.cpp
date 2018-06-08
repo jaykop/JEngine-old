@@ -165,18 +165,18 @@ void StateManager::ChangeState()
     else if (m_status == STATE_RESUME) {
         State* release = m_pCurrent;
         m_pCurrent = m_pNext = m_pCurrent->m_pLastStage;
-        OBJECT::m_pSharedContainer = m_pCurrent->m_objContainer;
+        OBJECT::m_pSharedContainer = m_pCurrent->m_pObjContainer;
         release->m_pLastStage = nullptr;
     }
 
     // Resume and change
     else if (m_status == STATE_RESUME_AND_CHANGE) {
         m_pCurrent = m_pCurrent->m_pLastStage;
-        OBJECT::m_pSharedContainer = m_pCurrent->m_objContainer;
+        OBJECT::m_pSharedContainer = m_pCurrent->m_pObjContainer;
         m_status = STATE_CHANGE;
     }
 
-    // Refresh the status
+    // Refresh the m_status
     if (m_pCurrent == m_pNext)
         m_status = STATE_NONE;
 }
@@ -276,7 +276,7 @@ void StateManager::SetNextState(const char* _nextState)
         }
 
         else
-            jeDebugPrint("!StateManager - Cannot move on paused status.\n");
+            jeDebugPrint("!StateManager - Cannot move on paused m_status.\n");
     }
 }
 

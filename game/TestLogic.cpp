@@ -74,7 +74,7 @@ void TestLogic::Update(const float _dt)
     //std::cout << INPUT::GetPerspPosition() << std::endl;
 
     //mat4 viewProjectionMatrix 
-    //	= mat4::LookAt(SYSTEM::GetGraphicSystem()->GetMainCamera()->m_position,
+    //	= mat4::LookAt(SYSTEM::GetGraphicSystem()->GetMainCamera()->position,
     //		SYSTEM::GetGraphicSystem()->GetMainCamera()->m_target,
     //		SYSTEM::GetGraphicSystem()->GetMainCamera()->m_up).Transpose()
     //	* mat4::Perspective(SYSTEM::GetGraphicSystem()->m_fovy,

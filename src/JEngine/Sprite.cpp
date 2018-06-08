@@ -14,18 +14,18 @@ jeBegin
 jeDefineComponentBuilder(Sprite);
 
 Sprite::Sprite(Object* _pOwner)
-	:Component(_pOwner), m_color(vec4::ONE), m_projection(PROJECTION_PERSPECTIVE),
-	m_mainTex(0), m_transform(nullptr), m_flip(false), m_culled(false), m_bilboard(false),
-	m_material(nullptr), m_sfactor(GL_SRC_ALPHA), m_dfactor(GL_ONE_MINUS_SRC_ALPHA), m_animation(nullptr),
-	m_vao(&(GLM::m_vao[GLM::SHAPE_PLANE])), m_elementSize(GLM::m_elementSize[GLM::SHAPE_PLANE]),
-	m_status(0x0000)
+	:Component(_pOwner), color(vec4::ONE), projection(PROJECTION_PERSPECTIVE),
+	m_mainTex(0), m_pTransform(nullptr), flip(false), m_culled(false), bilboard(false),
+	m_pMaterial(nullptr), sfactor(GL_SRC_ALPHA), dfactor(GL_ONE_MINUS_SRC_ALPHA), m_pAnimation(nullptr),
+	pVao(&(GLM::m_vao[GLM::SHAPE_PLANE])), elementSize(GLM::m_elementSize[GLM::SHAPE_PLANE]),
+	status(0x0000)
 {}
 
 void Sprite::Register()
 {
 	SYSTEM::GetGraphicSystem()->AddSprite(this);
 	if (GetOwner()->HasComponent<Transform>())
-		m_transform = GetOwner()->GetComponent<Transform>();
+		m_pTransform = GetOwner()->GetComponent<Transform>();
 }
 
 void Sprite::AddTexture(const char *_key)
@@ -80,52 +80,52 @@ Sprite::~Sprite()
 
 void Sprite::operator=(const Sprite & _copy)
 {
-	m_color.Set(_copy.m_color); 
-	m_projection = _copy.m_projection,
+	color.Set(_copy.color); 
+	projection = _copy.projection,
 	m_mainTex = _copy.m_mainTex; 
-	m_transform = GetOwner()->GetComponent<Transform>(); 
-	m_flip = _copy.m_flip; 
+	m_pTransform = GetOwner()->GetComponent<Transform>(); 
+	flip = _copy.flip; 
 	m_culled = _copy.m_culled; 
-	m_bilboard = _copy.m_bilboard;
-	m_material = GetOwner()->GetComponent<Material>();
-	m_status = _copy.m_status;
-	m_vao = _copy.m_vao; 
-	m_elementSize = _copy.m_elementSize;
+	bilboard = _copy.bilboard;
+	m_pMaterial = GetOwner()->GetComponent<Material>();
+	status = _copy.status;
+	pVao = _copy.pVao; 
+	elementSize = _copy.elementSize;
 }
 
 void Sprite::Load(CR_RJValue _data)
 {
 	if (_data.HasMember("Flip")) {
-		CR_RJValue flip = _data["Flip"];
-		m_flip = flip.GetBool();
+		CR_RJValue loadedFlip = _data["Flip"];
+		flip = loadedFlip.GetBool();
 	}
 
 	if (_data.HasMember("Color")) {
-		CR_RJValue color = _data["Color"];
-		m_color.Set(color[0].GetFloat(), color[1].GetFloat(),
-			color[2].GetFloat(), color[3].GetFloat());
+		CR_RJValue loadedColor = _data["Color"];
+		color.Set(loadedColor[0].GetFloat(), loadedColor[1].GetFloat(),
+			loadedColor[2].GetFloat(), loadedColor[3].GetFloat());
 	}
 
 	if (_data.HasMember("Projection")) {
-		CR_RJValue projection = _data["Projection"];
+		CR_RJValue loadedProjection = _data["Projection"];
 
-		if (!strcmp("Perspective", projection.GetString())) 
-			m_projection = PROJECTION_PERSPECTIVE;
+		if (!strcmp("Perspective", loadedProjection.GetString()))
+			projection = PROJECTION_PERSPECTIVE;
 		
-		else if (!strcmp("Orthogonal", projection.GetString())) 
-			m_projection = PROJECTION_ORTHOGONAL;
+		else if (!strcmp("Orthogonal", loadedProjection.GetString()))
+			projection = PROJECTION_ORTHOGONAL;
 		
 		else
-			jeDebugPrint("!Sprite - Wrong projection type: %s\n", projection.GetString());
+			jeDebugPrint("!Sprite - Wrong projection type: %s\n", loadedProjection.GetString());
 	}
 
 	if (_data.HasMember("Texture")) {
-		CR_RJValue texture = _data["Texture"];
-		AddTexture(texture.GetString());
+		CR_RJValue loadedTexture = _data["Texture"];
+		AddTexture(loadedTexture.GetString());
 	}
 
 	if (_data.HasMember("Bilboard"))
-		m_bilboard = _data["Bilboard"].GetBool();
+		bilboard = _data["Bilboard"].GetBool();
 }
 
 void Sprite::EditorUpdate(const float /*_dt*/)

@@ -33,7 +33,7 @@ std::string Shader::m_fragmentShader[] = {
 	struct Light {
 
 		int m_type;
-		vec3 m_position;
+		vec3 position;
 		vec3 m_direction;
 	
 		vec4 m_ambient;
@@ -103,7 +103,7 @@ std::string Shader::m_fragmentShader[] = {
 		for (int index = 0; index < int_lightSize ; index++) {
 	
 			float 	attenuation = 1.f;
-			vec3 	gap = light[index].m_position - v3_outFragmentPosition;
+			vec3 	gap = light[index].position - v3_outFragmentPosition;
 			vec3 	lightDirection = normalize(gap);
 			float 	theta = 0.f;
 			float 	intensity = 1.f;

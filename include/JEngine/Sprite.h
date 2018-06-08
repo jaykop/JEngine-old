@@ -36,24 +36,24 @@ protected:
 	const static int HAS_ANIMATION = 0x01000;
 	const static int HAS_MATERIAL = 0x10000;
 
-	int m_status;
+	int status;
 
 public:
 
     void Register() override;
 
-    void	AddTexture(const char* _key);
-    void	RemoveTexture(const char* _key);
-    void	SetCurrentTexutre(const char* _key);
+    void		AddTexture(const char* _key);
+    void		RemoveTexture(const char* _key);
+    void		SetCurrentTexutre(const char* _key);
     unsigned	GetCurrentTexutre();
     unsigned	GetTexutre(const char* _key);
 
-    bool	m_flip, m_bilboard;
-    vec4	m_color;
-    ProjectType m_projection;
+    bool		flip, bilboard;
+    vec4		color;
+    ProjectType projection;
 
-    unsigned	m_sfactor, m_dfactor;
-    unsigned	*m_vao, m_elementSize;
+    unsigned	sfactor, dfactor;
+    unsigned	*pVao, elementSize;
 
 protected:
 
@@ -63,14 +63,12 @@ protected:
 
     void Load(CR_RJValue _data) override;
 
-    bool m_culled;
-    //bool m_hasMaterial, m_hasAnimation, m_isEmitter, m_isText;
-
+    bool		m_culled;
     unsigned	m_mainTex;
     TextureMap	m_textureMap;
-    Transform	*m_transform;
-    Material	*m_material;
-    Animation	*m_animation;
+    Transform	*m_pTransform;
+    Material	*m_pMaterial;
+    Animation	*m_pAnimation;
 
 private:
 

@@ -41,7 +41,7 @@ public:
 	void RegisterComponents();
 
 	const std::string&  GetName(void) const;
-	void		    SetName(const char* _name);
+	void				SetName(const char* _name);
 
 	void	AddChild(Object* _child);
 	void	RemoveChild(const char* _name);
@@ -99,11 +99,11 @@ private:
 
 	bool HandleMessage(Telegram& _message);
 
-        unsigned	m_id;
-        bool		m_active;
-        Object*		m_pParent;
+        unsigned		m_id;
+        bool			m_active;
+        Object*			m_pParent;
         StateMachine	m_StateMachine;
-        std::string	m_name;
+        std::string		m_name;
         ChildObjects	m_childObjs;
         ComponentMap	m_componentMap;
 	

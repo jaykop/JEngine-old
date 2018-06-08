@@ -43,15 +43,15 @@ private:
 
     static BuilderMap	    m_builderMap;
     static ComponentTypeMap m_typeMap, m_nameMap;
-    static bool		    m_loadingCustomLogic;
+    static bool				m_loadingCustomLogic;
 };
 
 using COMPONENT = ComponentManager;
 
 // Component manager macro
-#define jeStringfy(x)			#x
-#define jeConcat(a, b)			a ## b
-#define jeRegisterComponent(c)		COMPONENT::RegisterBuilder<c>(jeStringfy(c), new jeConcat(c, Builder))
+#define jeStringfy(x)					#x
+#define jeConcat(a, b)					a ## b
+#define jeRegisterComponent(c)			COMPONENT::RegisterBuilder<c>(jeStringfy(c), new jeConcat(c, Builder))
 #define jeCheckComponentRegistration(c)	if (!(c)) { return false; } 
 
 jeEnd

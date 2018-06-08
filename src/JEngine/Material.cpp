@@ -10,22 +10,22 @@ jeBegin
 jeDefineComponentBuilder(Material);
 
 Material::Material(Object* _pOwner)
-	:Component(_pOwner), m_diffuse(0), 
-	m_specular(0), m_shininess(1.f)
+	:Component(_pOwner), diffuse(0), 
+	specular(0), shininess(1.f)
 {
 	// Connect to sprite's pointer
 	if (_pOwner->HasComponent<Sprite>()
-		&& (_pOwner->GetComponent<Sprite>()->m_status & Sprite::HAS_MATERIAL)
+		&& (_pOwner->GetComponent<Sprite>()->status & Sprite::HAS_MATERIAL)
 			== Sprite::HAS_MATERIAL) {
-		_pOwner->GetComponent<Sprite>()->m_material = this;
-		_pOwner->GetComponent<Sprite>()->m_status |= Sprite::HAS_MATERIAL;
+		_pOwner->GetComponent<Sprite>()->m_pMaterial = this;
+		_pOwner->GetComponent<Sprite>()->status |= Sprite::HAS_MATERIAL;
 	}
 
 	else if (_pOwner->HasComponent<Model>()
-		&& (_pOwner->GetComponent<Model>()->m_status & Sprite::HAS_MATERIAL)
+		&& (_pOwner->GetComponent<Model>()->status & Sprite::HAS_MATERIAL)
 		== Sprite::HAS_MATERIAL) {
-		_pOwner->GetComponent<Model>()->m_material = this;
-		_pOwner->GetComponent<Sprite>()->m_status |= Sprite::HAS_MATERIAL;
+		_pOwner->GetComponent<Model>()->m_pMaterial = this;
+		_pOwner->GetComponent<Sprite>()->status |= Sprite::HAS_MATERIAL;
 	}
 
 	else
@@ -36,28 +36,28 @@ Material::~Material()
 {
 	// Turn off the toggle
 	if (GetOwner()->HasComponent<Sprite>()) {
-		GetOwner()->GetComponent<Sprite>()->m_material = nullptr;
-		GetOwner()->GetComponent<Sprite>()->m_status &= ~Sprite::HAS_MATERIAL;
+		GetOwner()->GetComponent<Sprite>()->m_pMaterial = nullptr;
+		GetOwner()->GetComponent<Sprite>()->status &= ~Sprite::HAS_MATERIAL;
 	}
 }
 
 void Material::operator=(const Material & _copy)
 {
-	m_diffuse = _copy.m_diffuse;
-	m_specular = _copy.m_specular;
-	m_shininess = _copy.m_shininess;
+	diffuse = _copy.diffuse;
+	specular = _copy.specular;
+	shininess = _copy.shininess;
 	
 	if (GetOwner()->HasComponent<Sprite>()
-		&& (GetOwner()->GetComponent<Sprite>()->m_status & Sprite::HAS_MATERIAL)
+		&& (GetOwner()->GetComponent<Sprite>()->status & Sprite::HAS_MATERIAL)
 		== Sprite::HAS_MATERIAL) {
-		GetOwner()->GetComponent<Sprite>()->m_material = this;
-		GetOwner()->GetComponent<Sprite>()->m_status |= Sprite::HAS_MATERIAL;
+		GetOwner()->GetComponent<Sprite>()->m_pMaterial = this;
+		GetOwner()->GetComponent<Sprite>()->status |= Sprite::HAS_MATERIAL;
 	}
 	else if (GetOwner()->HasComponent<Model>()
-		&& (GetOwner()->GetComponent<Model>()->m_status & Sprite::HAS_MATERIAL)
+		&& (GetOwner()->GetComponent<Model>()->status & Sprite::HAS_MATERIAL)
 		== Sprite::HAS_MATERIAL) {
-		GetOwner()->GetComponent<Model>()->m_material = this;
-		GetOwner()->GetComponent<Sprite>()->m_status |= Sprite::HAS_MATERIAL;
+		GetOwner()->GetComponent<Model>()->m_pMaterial = this;
+		GetOwner()->GetComponent<Sprite>()->status |= Sprite::HAS_MATERIAL;
 	}
 
 }
@@ -65,18 +65,18 @@ void Material::operator=(const Material & _copy)
 void Material::Load(CR_RJValue _data)
 {
 	if (_data.HasMember("Diffuse")) {
-		CR_RJValue diffuse = _data["Diffuse"];
-		m_diffuse = diffuse.GetInt();
+		CR_RJValue loadedDiffuse = _data["Diffuse"];
+		diffuse = loadedDiffuse.GetInt();
 	}
 
 	if (_data.HasMember("Specular")) {
-		CR_RJValue specular = _data["Specular"];
-		m_specular = specular.GetInt();
+		CR_RJValue loadedSpecular = _data["Specular"];
+		specular = loadedSpecular.GetInt();
 	}
 	
 	if (_data.HasMember("Shininess")) {
-		CR_RJValue shininess = _data["Shininess"];
-		m_shininess = shininess.GetFloat();
+		CR_RJValue loadedShininess = _data["Shininess"];
+		shininess = loadedShininess.GetFloat();
 	}
 }
 

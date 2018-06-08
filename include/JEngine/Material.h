@@ -12,8 +12,8 @@ class Material : public Component {
 
 public:
 
-    int m_diffuse, m_specular;
-    float m_shininess;
+    int diffuse, specular;
+    float shininess;
 
 private:
 

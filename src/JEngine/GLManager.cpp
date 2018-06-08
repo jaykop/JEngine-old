@@ -22,8 +22,8 @@ GLM::m_renderTarget = 0;
 
 GLM::Shaders	GLM::m_shader;
 GLM::DrawMode	GLM::m_mode = DrawMode::DRAW_FILL;
-const GLubyte	*GLM::m_renderer = nullptr, *GLM::m_vendor = nullptr,
-*GLM::m_version = nullptr, *GLM::m_glslVersion = nullptr;
+const GLubyte	*GLM::m_pRenderer = nullptr, *GLM::m_pVendor = nullptr,
+				*GLM::m_pVersion = nullptr, *GLM::m_pGlslVersion = nullptr;
 unsigned		GLM::m_drawMode = GL_TRIANGLES;
 
 const float GLManager::m_verticesPoint[] =
@@ -482,17 +482,17 @@ void GLManager::RegisterUniform()
 void GLManager::ShowGLVersion()
 {
     // Show GL version info
-    m_renderer = glGetString(GL_RENDERER);
-    m_vendor = glGetString(GL_VENDOR);
-    m_version = glGetString(GL_VERSION);
-    m_glslVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
+	m_pRenderer = glGetString(GL_RENDERER);
+	m_pVendor = glGetString(GL_VENDOR);
+	m_pVersion = glGetString(GL_VERSION);
+	m_pGlslVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
 
     glGetIntegerv(GL_SAMPLE_BUFFERS, &m_buffers);
     glGetIntegerv(GL_SAMPLES, &m_samples);
 
-    jeDebugPrint("*GLManager - GL Vendor: %s / GL Renderer: %s\n", m_vendor, m_renderer);
-    jeDebugPrint("*GLManager - GL Version: %s\n", m_version);
-    jeDebugPrint("*GLManager - GLSL Version: %s\n", m_glslVersion);
+    jeDebugPrint("*GLManager - GL Vendor: %s / GL Renderer: %s\n", m_pVendor, m_pRenderer);
+    jeDebugPrint("*GLManager - GL Version: %s\n", m_pVersion);
+    jeDebugPrint("*GLManager - GLSL Version: %s\n", m_pGlslVersion);
     jeDebugPrint("*GLManager - GL Samples: %d / GL Sample Buffers: %d\n", m_samples, m_buffers);
 
     // Show how much attributes are available
@@ -543,8 +543,8 @@ void GLManager::EditorUpdate(const float /*_dt*/)
     ImGui::Begin("OpenGL");
 
     //ImGui::Text("*GL Vendor: %s", m_vendor);
-    ImGui::Text("*GL Renderer: %s", m_renderer);
-    ImGui::Text("*GL Version: %s", m_version);
+    ImGui::Text("*GL Renderer: %s", m_pRenderer);
+    ImGui::Text("*GL Version: %s", m_pVersion);
     /*	ImGui::Text("*GLSL Version: %s", m_glslVersion);
     ImGui::Text("*GL Samples: %d", m_samples);
     ImGui::Text("*GL Sample Buffers: %d", m_buffers);

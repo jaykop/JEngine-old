@@ -44,7 +44,7 @@ struct MAConfig
 {
     bool        debugOn = false;
     // By-pass the functionality of the MA and use new/delete
-    bool	useCPPMemoryManager = false;
+    bool		useCPPMemoryManager = false;
     // The number of node on each page
     unsigned	nodePerPage = DEFAULT_OBJECTS_PER_PAGE;
     // Maximum number of pages the MA can allocate (0 = unlimited)

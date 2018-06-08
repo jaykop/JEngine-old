@@ -255,8 +255,8 @@ void AssetManager::LoadCharacters(Font* _pFont, float& _newLineLevel,
                 vec2(float(_pFont->m_face->glyph->bitmap.width), float(_pFont->m_face->glyph->bitmap.rows)),
                 vec2(float(_pFont->m_face->glyph->bitmap_left), float(_pFont->m_face->glyph->bitmap_top))
         };
-        if (_newLineLevel < character.m_size.y)
-            _newLineLevel = character.m_size.y;
+        if (_newLineLevel < character.size.y)
+            _newLineLevel = character.size.y;
         _pFont->m_data.insert(Font::FontData::value_type(c, character));
     }
 

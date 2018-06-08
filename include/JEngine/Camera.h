@@ -13,7 +13,7 @@ class Camera : public Component
 
 public:
 
-    vec3 m_position, m_up, m_target;
+    vec3 position, up, target;
 	float zoom;
 	
     void Register() override;

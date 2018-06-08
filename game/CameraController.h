@@ -34,7 +34,7 @@ private:
 	bool OnMessage(Telegram& msg) override { msg; return false; }
 
 	Camera* m_camera;
-	vec3 m_position, m_target;
+	vec3 position, m_target;
 
 	void EditorUpdate(const float _dt) override;
 };

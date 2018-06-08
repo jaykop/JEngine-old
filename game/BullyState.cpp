@@ -33,17 +33,17 @@ void BullyState::Init()
 	m_bullyTalks->AddComponent<Transform>();
 	m_bullyTalks->AddComponent<Text>();
 	m_pTalkTransform = m_bullyTalks->GetComponent<Transform>();
-	m_pTalkTransform->m_scale.Set(.15f, .15f, 0.f);
+	m_pTalkTransform->scale.Set(.15f, .15f, 0.f);
 	m_talkOffset.Set(-25.f, -20.f, 1.f);
 	m_talkText = m_bullyTalks->GetComponent<Text>();
 	m_talkText->Register();
 	GetOwner()->AddChild(m_bullyTalks);
 
 	// Set font
-	m_talkText->m_pFont = ASSET::GetFont("Default");
+	m_talkText->pFont = ASSET::GetFont("Default");
 
-	m_pTalkTransform->m_position.Set(
-		m_pTransform->m_position + m_talkOffset);
+	m_pTalkTransform->position.Set(
+		m_pTransform->position + m_talkOffset);
 
 	m_pMiner = CONTAINER->GetObject("Miner");
 }
@@ -147,7 +147,7 @@ void GoFight::Close()
 
 bool GoFight::OnMessage(Telegram& msg)
 {
-    if (!strcmp(msg.message, "Fight")) {
+    if (!strcmp(msg.pMessage, "Fight")) {
 
 		m_globalState->m_content = "Shoot it hurts...\n";
 		m_globalState->m_talkText->SetText("%s", m_globalState->m_content);

@@ -32,11 +32,7 @@
 				},
 				{
 					"Type" : "Sprite",
-					"Values" : {"Texture" : "ground", "Color" : [1, 1, 1, 1], "Projection" : "Perpective" }
-				},
-				{
-					"Type" : "TestLogic",
-					"Values" : {}
+					"Values" : {"Texture" : "ground", "Color" : [1, 1, 1, 1], "Projection" : "Orthogonal" }
 				}
 			]
 		},
@@ -49,7 +45,7 @@
 				},
 				{
 					"Type" : "Sprite",
-					"Values" : {"Texture" : "crosshair", "Color" : [0, 0, 0, 1], "Projection" : "Perpective" }
+					"Values" : {"Texture" : "crosshair", "Color" : [0, 0, 0, 1], "Projection" : "Orthogonal" }
 				}
 			]
 		},
@@ -62,7 +58,7 @@
 				},
 				{
 					"Type" : "Sprite",
-					"Values" : {"Texture" : "circle_line", "Color" : [1, 1, 1, 1], "Projection" : "Perpective" }
+					"Values" : {"Texture" : "circle_line", "Color" : [1, 1, 1, 1], "Projection" : "Orthogonal" }
 				}
 			]
 		},
@@ -109,7 +105,7 @@
 				},
 				{
 					"Type" : "Sprite",
-					"Values" : {"Texture" : "arrow", "Color" : [1, 1, 1, 1], "Projection" : "Perpective" }
+					"Values" : {"Texture" : "arrow", "Color" : [1, 1, 1, 1], "Projection" : "Orthogonal" }
 				},
 				{
 					"Type" : "Steering",
