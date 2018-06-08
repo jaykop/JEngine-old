@@ -11,11 +11,6 @@ void Truncate(float& value, float max)
 		value = max;
 }
 
-//float RandomClamped()
-//{
-//	return RAND::GetRandomFloat(-1.F, 1.F);
-//}
-
 // Steering functions body
 vec3 Steering::Seek(const vec3& _targetPos)
 {
@@ -118,11 +113,12 @@ vec3 Steering::Wander()
 	vec3 wanderCenter;
 	wanderCenter.Set(m_transform->m_position);
 	wanderCenter += heading * (m_transform->m_scale.x / 2.f + wanderRadius);
+	wanderCenter.z = zPos;
 	// Put the circle on the correct position
 	circleTransform->m_position.Set(wanderCenter);
 	// Set the wander target position
 	wanderTarget.Set(
-		wanderCenter.x + nextPointToGo.x, wanderCenter.y + nextPointToGo.y, 0.f);
+		wanderCenter.x + nextPointToGo.x, wanderCenter.y + nextPointToGo.y, zPos);
 	// Put the haircross on the correct position 
 	targetTransform->m_position.Set(wanderTarget);
 
@@ -162,7 +158,6 @@ vec3 Steering::Calculate()
 
 	case wander:
 		force = Wander();
-		jeDebugPrint("%f %f\n", force.x, force.y);
 		break;
 
 	default:

@@ -60,6 +60,7 @@ void Steering::Load(CR_RJValue _data)
 
 void Steering::Init()
 {
+	
 	// Setting for each behavior mode
 	if (m_behavior == pursuit)
 		m_evader = CONTAINER->GetObject("Evader")->GetComponent<Steering>();
@@ -80,6 +81,7 @@ void Steering::Init()
 	
 	// Get owner's transform
 	m_transform = GetOwner()->GetComponent<Transform>();
+	zPos = m_transform->m_position.z;
 
 	mass = 1.f;
     maxSpeed = 50.f;

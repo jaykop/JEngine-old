@@ -23,9 +23,9 @@ bool			    STATE::m_showUpdateMessage = true;
 SDL_Window*		    STATE::m_pWindow = nullptr;
 Timer			    STATE::m_timer;
 States			    STATE::m_states;
-STATE::StateStatus	    STATE::m_status = STATE_CHANGE;
+STATE::StateStatus	STATE::m_status = STATE_CHANGE;
 State			    *STATE::m_pCurrent = nullptr,
-*STATE::m_pNext = nullptr;
+					*STATE::m_pNext = nullptr;
 float			    STATE::m_frameTime = 0.f;
 
 //////////////////////////////////////////////////////////////////////////

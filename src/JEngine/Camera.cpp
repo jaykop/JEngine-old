@@ -12,7 +12,7 @@ jeDefineComponentBuilder(Camera);
 Camera::Camera(Object* _pOwner)
 	: Component(_pOwner),
 	m_position(vec3::ZERO), m_up(vec3::UNIT_Y),
-	m_target(vec3::ZERO)
+	m_target(vec3::ZERO), zoom(45.f)
 {}
 
 void Camera::Register()
