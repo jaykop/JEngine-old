@@ -19,7 +19,7 @@ Font::Font()
 Text::Text(Object* _pOwner)
 	:Sprite(_pOwner)
 {
-	status |= IS_TEXT;
+	m_hiddenStatus |= IS_TEXT;
 }
 
 Text::~Text()

@@ -23,8 +23,8 @@ GLM::m_renderTarget = 0;
 GLM::Shaders	GLM::m_shader;
 GLM::DrawMode	GLM::m_mode = DrawMode::DRAW_FILL;
 const GLubyte	*GLM::m_pRenderer = nullptr, *GLM::m_pVendor = nullptr,
-				*GLM::m_pVersion = nullptr, *GLM::m_pGlslVersion = nullptr;
-unsigned		GLM::m_drawMode = GL_TRIANGLES;
+		*GLM::m_pVersion = nullptr, *GLM::m_pGlslVersion = nullptr;
+unsigned	GLM::m_drawMode = GL_TRIANGLES;
 
 const float GLManager::m_verticesPoint[] =
 {	// position				// uv		// normals
@@ -35,10 +35,10 @@ const unsigned GLManager::m_indicesPoint[] = { 0 };
 const float GLManager::m_verticesPlane[] = {
 
     // vertic position	// uv		// normals
-    -.5f, .5f, 0.f,	0.f, 0.f,	0.0f,  0.0f, 1.0f,	// top left	
-    .5f, .5f, 0.f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,	// top right
-    .5f, -.5f,	0.f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,	// bottom right
-    -.5f, -.5f, 0.f,	0.f, 1.f,	0.0f,  0.0f, 1.0f	// bottom left
+    -.5f, .5f, 0.f,	0.f, 0.f,	0.0f,  0.0f, 1.0f,	
+    .5f, .5f, 0.f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,	
+    .5f, -.5f,	0.f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,	
+    -.5f, -.5f, 0.f,	0.f, 1.f,	0.0f,  0.0f, 1.0f	
 };
 
 const unsigned GLManager::m_indicesPlane[] = {
@@ -52,169 +52,156 @@ const unsigned GLManager::m_indicesPlane[] = {
 
     // front
     0, 2, 3,	// first triangle
-    2, 0, 1		// second triangle
+    2, 0, 1	// second triangle
 };
 
 const float GLManager::m_verticesPlane3D[] = {
 
-    // position				// uv		// normals
-    -.5f,	.5f,	0.f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,		// top left	
-    .5f,	.5f,	0.f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,		// top right
-    .5f,	-.5f,	0.f,	0.f, 1.f,	0.0f,  0.0f, 1.0f,		// bottom right
-    -.5f,	-.5f,	0.f,	0.f, 0.f,	0.0f,  0.0f, 1.0f,		// bottom left
+    // position			// uv		// normals
+    -.5f,	.5f,	0.f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,		
+    .5f,	.5f,	0.f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,	
+    .5f,	-.5f,	0.f,	0.f, 1.f,	0.0f,  0.0f, 1.0f,	
+    -.5f,	-.5f,	0.f,	0.f, 0.f,	0.0f,  0.0f, 1.0f,	
 
-    0.f,	.5f,	.5f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,		// top left	
-    0.f,	.5f,	-.5f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,		// top right
-    0.f,	-.5f,	-.5f,	0.f, 1.f,	0.0f,  0.0f, 1.0f,		// bottom right
-    0.f,	-.5f,	.5f,	0.f, 0.f,	0.0f,  0.0f, 1.0f,		// bottom left
+    0.f,	.5f,	.5f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,	
+    0.f,	.5f,	-.5f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,	
+    0.f,	-.5f,	-.5f,	0.f, 1.f,	0.0f,  0.0f, 1.0f,	
+    0.f,	-.5f,	.5f,	0.f, 0.f,	0.0f,  0.0f, 1.0f,	
 
-    -.5f,	0.f,	-.5f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,		// top left	
-    .5f,	0.f,	-.5f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,		// top right
-    .5f,	0.f,	.5f,	0.f, 1.f,	0.0f,  0.0f, 1.0f,		// bottom right
-    -.5f,	0.f,	.5f,	0.f, 0.f,	0.0f,  0.0f, 1.0f,		// bottom left
+    -.5f,	0.f,	-.5f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,		
+    .5f,	0.f,	-.5f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,	
+    .5f,	0.f,	.5f,	0.f, 1.f,	0.0f,  0.0f, 1.0f,	
+    -.5f,	0.f,	.5f,	0.f, 0.f,	0.0f,  0.0f, 1.0f,	
 
 };
 const unsigned GLManager::m_indicesPlane3D[] = {
     // front
-    0, 2, 3,	// first triangle
-    2, 0, 1,	// second triangle
+    0, 2, 3,	
+    2, 0, 1,	
 
     // back
-    5, 7, 6,	// first triangle
-    7, 5, 4,	// second triangle
+    5, 7, 6,	
+    7, 5, 4,	
 
     // left
-    8, 10, 11,	// first triangle
-    10, 8, 9	// second triangle
+    8, 10, 11,	
+    10, 8, 9	
 };
 
 const float GLManager::m_verticesCube[] =
 {
     // front
-    // position				// uv		// normals
-    -.5f,	.5f,	.5f,	.25f, .25f,	0.0f,  0.0f, 1.0f,		// top left	
-    .5f,	.5f,	.5f,	.5f, .25f,	0.0f,  0.0f, 1.0f,		// top right
-    .5f,	-.5f,	.5f,	.5f, .5f,	0.0f,  0.0f, 1.0f,		// bottom right
-    -.5f,	-.5f,	.5f,	.25f, .5f,	0.0f,  0.0f, 1.0f,		// bottom left
+    -.5f,	.5f,	.5f,	.25f, .25f,	0.0f,  0.0f, 1.0f,	
+    .5f,	.5f,	.5f,	.5f, .25f,	0.0f,  0.0f, 1.0f,	
+    .5f,	-.5f,	.5f,	.5f, .5f,	0.0f,  0.0f, 1.0f,	
+    -.5f,	-.5f,	.5f,	.25f, .5f,	0.0f,  0.0f, 1.0f,	
 
     // back
-    .5f,	.5f,	-.5f,	.75f, .25f,	0.0f,  0.0f, -1.0f,		// top left	
-    -.5f,	.5f,	-.5f,	1.f, .25f,	0.0f,  0.0f, -1.0f,		// top right
-    -.5f,	-.5f,	-.5f,	1.f, .5f,	0.0f,  0.0f, -1.0f,		// bottom right
-    .5f,	-.5f,	-.5f,	.75f, .5f,	0.0f,  0.0f, -1.0f,		// bottom left
+    .5f,	.5f,	-.5f,	.75f, .25f,	0.0f,  0.0f, -1.0f,		
+    -.5f,	.5f,	-.5f,	1.f, .25f,	0.0f,  0.0f, -1.0f,	
+    -.5f,	-.5f,	-.5f,	1.f, .5f,	0.0f,  0.0f, -1.0f,	
+    .5f,	-.5f,	-.5f,	.75f, .5f,	0.0f,  0.0f, -1.0f,	
 
     // left
-    -.5f,	.5f,	-.5f,	0.f, .25f,	-1.0f,  0.0f,  0.0f,	// top left	
-    -.5f,	.5f,	.5f,	.25f, .25f,	-1.0f,  0.0f,  0.0f,	// top right
-    -.5f,	-.5f,	.5f,	.25f, .5f,	-1.0f,  0.0f,  0.0f,	// bottom right
-    -.5f,	-.5f,	-.5f,	0.f, .5f,	-1.0f,  0.0f,  0.0f,	// bottom left
+    -.5f,	.5f,	-.5f,	0.f, .25f,	-1.0f,  0.0f,  0.0f,	
+    -.5f,	.5f,	.5f,	.25f, .25f,	-1.0f,  0.0f,  0.0f,	
+    -.5f,	-.5f,	.5f,	.25f, .5f,	-1.0f,  0.0f,  0.0f,	
+    -.5f,	-.5f,	-.5f,	0.f, .5f,	-1.0f,  0.0f,  0.0f,	
 
     // right
-    .5f,	.5f,	.5f,	.5f, .25f,	1.0f,  0.0f,  0.0f,		// top left	
-    .5f,	.5f,	-.5f,	.75f, .25f,	1.0f,  0.0f,  0.0f,		// top right
-    .5f,	-.5f,	-.5f,	.75f, .5f,	1.0f,  0.0f,  0.0f,		// bottom right
-    .5f,	-.5f,	.5f,	.5f, .5f,	1.0f,  0.0f,  0.0f,		// bottom left
+    .5f,	.5f,	.5f,	.5f, .25f,	1.0f,  0.0f,  0.0f,			
+    .5f,	.5f,	-.5f,	.75f, .25f,	1.0f,  0.0f,  0.0f,
+    .5f,	-.5f,	-.5f,	.75f, .5f,	1.0f,  0.0f,  0.0f,	
+    .5f,	-.5f,	.5f,	.5f, .5f,	1.0f,  0.0f,  0.0f,		
 
     // down
-    -.5f,	-.5f,	.5f,	.25f, .5f,	0.0f, -1.0f,  0.0f,		// top left	
-    .5f,	-.5f,	.5f,	.5f, .5f,	0.0f, -1.0f,  0.0f,		// top right
-    .5f,	-.5f,	-.5f,	.5f, .75f,	0.0f, -1.0f,  0.0f,		// bottom right
-    -.5f,	-.5f,	-.5f,	.25f, .75f,	0.0f, -1.0f,  0.0f,		// bottom left
+    -.5f,	-.5f,	.5f,	.25f, .5f,	0.0f, -1.0f,  0.0f,	
+    .5f,	-.5f,	.5f,	.5f, .5f,	0.0f, -1.0f,  0.0f,	
+    .5f,	-.5f,	-.5f,	.5f, .75f,	0.0f, -1.0f,  0.0f,	
+    -.5f,	-.5f,	-.5f,	.25f, .75f,	0.0f, -1.0f,  0.0f,	
 
     // up
-    -.5f,	.5f,	-.5f,	.25f, 0.f,	0.0f,  1.0f,  0.0f,		// top left	
-    .5f,	.5f,	-.5f,	.5f, 0.f,	0.0f,  1.0f,  0.0f,		// top right
-    .5f,	.5f,	.5f,	.5f, .25f,	0.0f,  1.0f,  0.0f,		// bottom right
-    -.5f,	.5f,	.5f,	.25f, .25f,	0.0f,  1.0f,  0.0f		// bottom left
+    -.5f,	.5f,	-.5f,	.25f, 0.f,	0.0f,  1.0f,  0.0f,		
+    .5f,	.5f,	-.5f,	.5f, 0.f,	0.0f,  1.0f,  0.0f,	
+    .5f,	.5f,	.5f,	.5f, .25f,	0.0f,  1.0f,  0.0f,	
+    -.5f,	.5f,	.5f,	.25f, .25f,	0.0f,  1.0f,  0.0f	
 };
 
 const unsigned GLManager::m_indicesCube[] =
 {
-    //				 4					5
-    //				  ****************
-    //			  *				 *	 */
-    //		0 *				 *		 */
-    //		/***************/ 1		 */
-    //		/*  *   second */		 */
-    //		/*     *       */		 */
-    //		/*        *    */		 */ 6
-    //		/*  first    * */	 *
-    //		/***************/*
-    //		3				2
 
     // front
-    3, 0, 2,	// first triangle
-    1, 2, 0,	// second triangle
+    3, 0, 2,	
+    1, 2, 0,
 
     // back
-    6, 7, 5,	// first triangle
-    4, 5, 7,	// second triangle
+    6, 7, 5,	
+    4, 5, 7,
 
     // left
-    8, 10, 11,	// first triangle
-    10, 8, 9,	// second triangle
+    8, 10, 11,
+    10, 8, 9,	
 
     // right
-    14, 15, 13,	// first triangle
-    12, 13, 15,	// second triangle
+    14, 15, 13,
+    12, 13, 15,	
 
     // down
-    16, 18, 19,	// first triangle
-    18, 16, 17,	// second triangle
+    16, 18, 19,
+    18, 16, 17,
 
     // up
-    20 ,22, 23,	// first triangle
-    22, 20, 21	// second triangle
+    20 ,22, 23,	
+    22, 20, 21	
 };
 
 const float GLManager::m_verticesCone[] = {
 
-    // position				// uv		// normals
-    -.5f,	0.f,	0.f,	0.f, 0.f,	0.f,  1.f, 0.f,		// front
-    .5f,	.5f,	-.5f,	0.f, 0.f,	0.f,  1.f, 0.f,		// front
-    .5f,	.5f,	.5f,	0.f, 0.f,	0.f,  1.f, 0.f,		// front
+    -.5f,	0.f,	0.f,	0.f, 0.f,	0.f,  1.f, 0.f,		
+    .5f,	.5f,	-.5f,	0.f, 0.f,	0.f,  1.f, 0.f,		
+    .5f,	.5f,	.5f,	0.f, 0.f,	0.f,  1.f, 0.f,		
 
-    -.5f,	0.f,	0.f,	0.f, 0.f,	-1.f,  0.f, 0.f,	// right
-    .5f,	.5f,	.5f,	0.f, 0.f,	-1.f,  0.f, 0.f,	// right
-    .5f,	-.5f,	.5f,	0.f, 0.f,	-1.f,  0.f, 0.f,	// right
+    -.5f,	0.f,	0.f,	0.f, 0.f,	-1.f,  0.f, 0.f,	
+    .5f,	.5f,	.5f,	0.f, 0.f,	-1.f,  0.f, 0.f,	
+    .5f,	-.5f,	.5f,	0.f, 0.f,	-1.f,  0.f, 0.f,	
 
-    -.5f,	0.f,	0.f,	0.f, 0.f,	1.f,  0.f, 0.f,		// left
-    .5f,	-.5f,	.5f,	0.f, 0.f,	1.f,  0.f, 0.f,		// left
-    .5f,	-.5f,	-.5f,	0.f, 0.f,	1.f,  0.f, 0.f,		// left
+    -.5f,	0.f,	0.f,	0.f, 0.f,	1.f,  0.f, 0.f,		
+    .5f,	-.5f,	.5f,	0.f, 0.f,	1.f,  0.f, 0.f,		
+    .5f,	-.5f,	-.5f,	0.f, 0.f,	1.f,  0.f, 0.f,		
 
-    -.5f,	0.f,	0.f,	0.f, 0.f,	0.f,  -1.f, 0.f,	// back
-    .5f,	-.5f,	-.5f,	0.f, 0.f,	0.f,  -1.f, 0.f,	// back
-    .5f,	.5f,	-.5f,	0.f, 0.f,	0.f,  -1.f, 0.f,	// back
+    -.5f,	0.f,	0.f,	0.f, 0.f,	0.f,  -1.f, 0.f,	
+    .5f,	-.5f,	-.5f,	0.f, 0.f,	0.f,  -1.f, 0.f,	
+    .5f,	.5f,	-.5f,	0.f, 0.f,	0.f,  -1.f, 0.f,	
 
-    .5f,	.5f,	-.5f,	1.f, 0.f,	0.f,  0.f, -1.f,	// botom - top left	
-    .5f,	.5f,	.5f,	1.f, 1.f,	0.f,  0.f, -1.f,	// botom - top right
-    .5f,	-.5f,	.5f,	0.f, 1.f,	0.f,  0.f, -1.f,	// botom - bottom right
-    .5f,	-.5f,	-.5f,	0.f, 0.f,	0.f,  0.f, -1.f,	// botom - bottom left
+    .5f,	.5f,	-.5f,	1.f, 0.f,	0.f,  0.f, -1.f,		
+    .5f,	.5f,	.5f,	1.f, 1.f,	0.f,  0.f, -1.f,	
+    .5f,	-.5f,	.5f,	0.f, 1.f,	0.f,  0.f, -1.f,	
+    .5f,	-.5f,	-.5f,	0.f, 0.f,	0.f,  0.f, -1.f,	
 };
 
 const unsigned GLManager::m_indicesCone[] = {
 
-        0,	1,	2,
-        3,	4,	5,
-        6,	7,	8,
-        9,	10,	11,
+        0, 1,	2,
+        3, 4,	5,
+        6, 7,	8,
+        9, 10,	11,
         15, 14, 12,
         13, 12, 14
 };
 
-const unsigned		GLManager::m_elementSize[] = { 1, 6, 72, 144, 6, 18 };
-const unsigned		GLManager::m_verticesSize[] = {
+const unsigned	GLManager::m_elementSize[] = { 1, 6, 72, 144, 6, 18 };
+const unsigned	GLManager::m_verticesSize[] = {
 
-        sizeof(GLM::m_verticesPoint), sizeof(GLM::m_verticesPlane),
-        sizeof(GLM::m_verticesPlane3D), sizeof(GLM::m_verticesCube),
-        sizeof(GLM::m_verticesPlane), sizeof(GLM::m_verticesCone)
+	sizeof(GLM::m_verticesPoint), sizeof(GLM::m_verticesPlane),
+	sizeof(GLM::m_verticesPlane3D), sizeof(GLM::m_verticesCube),
+	sizeof(GLM::m_verticesPlane), sizeof(GLM::m_verticesCone)
 
 };
-const unsigned		GLManager::m_indicesSize[] = {
+const unsigned	GLManager::m_indicesSize[] = {
 
-        sizeof(GLM::m_indicesPoint), sizeof(GLM::m_indicesPlane),
-        sizeof(GLM::m_verticesPlane3D), sizeof(GLM::m_indicesCube),
-        sizeof(GLM::m_indicesPlane),sizeof(GLM::m_indicesCone)
+	sizeof(GLM::m_indicesPoint), sizeof(GLM::m_indicesPlane),
+	sizeof(GLM::m_verticesPlane3D), sizeof(GLM::m_indicesCube),
+	sizeof(GLM::m_indicesPlane),sizeof(GLM::m_indicesCone)
 
 };
 
