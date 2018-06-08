@@ -111,8 +111,6 @@ void GraphicSystem::LightSourcePipeline()
 
 		glEnable(GL_DEPTH_TEST);
 
-		static float s_lightDeg = 0.f;
-
 		Shader::m_pCurrentShader->Use(GLM::SHADER_LIGHTING);
 
 		Shader::m_pCurrentShader->SetMatrix("m4_scale", mat4::Scale(lightScale));
@@ -173,8 +171,8 @@ void GraphicSystem::SpritePipeline(Sprite *_sprite)
 
 	// Send projection info to shader
 	if (_sprite->projection == PROJECTION_PERSPECTIVE) {
-		Shader::m_pCurrentShader->SetMatrix("boolean_bilboard", m_perspective);
 
+		Shader::m_pCurrentShader->SetMatrix("m4_projection", m_perspective);
 		m_viewport = mat4::LookAt(m_pMainCamera->position, m_pMainCamera->target, m_pMainCamera->up);
 	}
 
@@ -192,12 +190,12 @@ void GraphicSystem::SpritePipeline(Sprite *_sprite)
 	// It so, not draw
 	//if (!_sprite->m_culled) {
 
+	MappingPipeline(_sprite);
+
 	bool hasParent = (_sprite->status & Sprite::IS_INHERITED ) == Sprite::IS_INHERITED;
 	glUniform1i(glGetUniformLocation(Shader::m_pCurrentShader->m_programId, "hasParent"), hasParent);
 	if (hasParent)
 		ParentPipeline(_sprite->m_pTransform);
-
-	MappingPipeline(_sprite);
 
 	if (((_sprite->m_hiddenStatus & Sprite::HAS_MATERIAL) == Sprite::HAS_MATERIAL)
 		&& m_isLight)
@@ -288,9 +286,9 @@ void GraphicSystem::LightingEffectPipeline(Material *_material)
 	Shader::m_pCurrentShader->SetFloat("material.m_shininess", _material->shininess);
 
 	static int s_lightIndex;
-	static std::string s_index, s_color, s_light, s_input,
+	static std::string s_index, s_light,
 		amb("m_ambient"), spec("m_specular"), diff("m_diffuse"),
-		type("m_type"), constant("m_constant"), linear("m_linear"), dir("direction"), pos("position"),
+		type("m_type"), constant("m_constant"), linear("m_linear"), dir("m_direction"), pos("m_position"),
 		cut("m_cutOff"), outcut("m_outerCutOff"), quad("m_quadratic");
 	s_lightIndex = 0;
 
@@ -298,51 +296,40 @@ void GraphicSystem::LightingEffectPipeline(Material *_material)
 
 		s_index = std::to_string(s_lightIndex);
 
-		s_color = "v4_lightColor[" + s_index + "]";
 		Shader::m_pCurrentShader->SetVector4(
-			s_color.c_str(), _light->color);
+			("v4_lightColor[" + s_index + "]").c_str(), _light->color);
 
 		s_light = "light[" + s_index + "].";
 
-		s_input = s_light + spec;
 		Shader::m_pCurrentShader->SetVector4(
-			s_input.c_str(), _light->specular);
+			(s_light + spec).c_str(), _light->specular);
 
-		s_input = s_light + diff;
 		Shader::m_pCurrentShader->SetVector4(
-			s_input.c_str(), _light->diffuse);
+			(s_light + diff).c_str(), _light->diffuse);
 
-		s_input = s_light + type;
 		Shader::m_pCurrentShader->SetEnum(
-			s_input.c_str(), _light->m_type);
+			(s_light + type).c_str(), _light->m_type);
 
-		s_input = s_light + dir;
 		Shader::m_pCurrentShader->SetVector3(
-			s_input.c_str(), _light->direction);
+			(s_light + dir).c_str(), _light->direction);
 
-		s_input = s_light + constant;
 		Shader::m_pCurrentShader->SetFloat(
-			s_input.c_str(), _light->constant);
+			(s_light + constant).c_str(), _light->constant);
 
-		s_input = s_light + linear;
 		Shader::m_pCurrentShader->SetFloat(
-			s_input.c_str(), _light->linear);
+			(s_light + linear).c_str(), _light->linear);
 
-		s_input = s_light + quad;
 		Shader::m_pCurrentShader->SetFloat(
-			s_input.c_str(), _light->quadratic);
+			(s_light + quad).c_str(), _light->quadratic);
 
-		s_input = s_light + pos;
 		Shader::m_pCurrentShader->SetVector3(
-			s_input.c_str(), _light->position);
+			(s_light + pos).c_str(), _light->position);
 
-		s_input = s_light + cut;
 		Shader::m_pCurrentShader->SetFloat(
-			s_input.c_str(), cosf(Math::DegToRad(_light->cutOff)));
+			(s_light + cut).c_str(), cosf(Math::DegToRad(_light->cutOff)));
 
-		s_input = s_light + outcut;
 		Shader::m_pCurrentShader->SetFloat(
-			s_input.c_str(), cosf(Math::DegToRad(_light->outerCutOff)));
+			(s_light + outcut).c_str(), cosf(Math::DegToRad(_light->outerCutOff)));
 
 		s_lightIndex++;
 	}

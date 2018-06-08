@@ -16,9 +16,7 @@ Animation::Animation(Object* _pOwner)
 	m_realFrame(1.f), m_activeAnimation(false)
 {	
 	// Connect to sprite's pointer
-	if (_pOwner->HasComponent<Sprite>()
-		&& (_pOwner->GetComponent<Sprite>()->m_hiddenStatus & Sprite::HAS_ANIMATION)
-		== Sprite::HAS_ANIMATION) {
+	if (_pOwner->HasComponent<Sprite>()) {
 		_pOwner->GetComponent<Sprite>()->m_pAnimation = this;
 		_pOwner->GetComponent<Sprite>()->m_hiddenStatus |= Sprite::HAS_ANIMATION;
 	}
@@ -47,9 +45,7 @@ void Animation::operator=(const Animation & _copy)
 	m_activeAnimation = _copy.m_activeAnimation;
 
 	// Connect to sprite's pointer
-	if (GetOwner()->HasComponent<Sprite>()
-		&& (GetOwner()->GetComponent<Sprite>()->m_hiddenStatus & Sprite::HAS_ANIMATION)
-		== Sprite::HAS_ANIMATION) {
+	if (GetOwner()->HasComponent<Sprite>()) {
 		GetOwner()->GetComponent<Sprite>()->m_pAnimation = this;
 		GetOwner()->GetComponent<Sprite>()->m_hiddenStatus |= Sprite::HAS_ANIMATION;
 	}

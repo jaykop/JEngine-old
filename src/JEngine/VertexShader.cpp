@@ -73,9 +73,9 @@ std::string Shader::m_vertexShader[] = {
 	////////////////////////////
 	void Transforming(vec4 _position, mat4 _model) {
 
-		if (hasParent) {
-		        _model *= m4_parentScale * m4_parentRotation * m4_parentTransform;
-		}
+		//if (hasParent) {
+		//       _model *= m4_parentScale * m4_parentRotation * m4_parentTransform;
+		//}
 		
 		// Calculate mvp transform matrix
 		mat4 modelview = transpose(m4_viewport) * transpose(_model);
