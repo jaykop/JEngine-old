@@ -23,19 +23,7 @@
 				}
 			]
 		},
-		{
-			"Name" : "Ground",
-			"Component" : [
-				{
-					"Type": "Transform",
-					"Values": {"Position" : [0, 0, -5], "Scale" : [800, 600, 0]}
-				},
-				{
-					"Type" : "Sprite",
-					"Values" : {"Texture" : "ground", "Color" : [1, 1, 1, 1], "Projection" : "Orthogonal" }
-				}
-			]
-		},
+
 		{
 			"Name" : "Target",
 			"Component" : [

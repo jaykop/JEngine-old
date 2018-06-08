@@ -49,7 +49,7 @@ public:
     void	AddTexture(const char* _key);
     void	RemoveTexture(const char* _key);
     void	SetCurrentTexutre(const char* _key);
-    unsigned	GetCurrentTexutre();
+    unsigned	GetCurrentTexutre() const;
     unsigned	GetTexutre(const char* _key);
 
     int		status;
