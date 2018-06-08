@@ -103,12 +103,12 @@ void Emitter::Particle::Refresh()
 		direction.y = -1;
 		hidden = false;
 
-		static vec3 pos, range;
-		range = m_pEmitter->range;
-		pos = s_pTransform->position;
-		position.x = Random::GetRandomFloat(pos.x - range.x, pos.x + range.x);
-		position.y = Random::GetRandomFloat(pos.y - range.y, pos.y + range.y);
-		position.z = Random::GetRandomFloat(pos.z - range.z, pos.z + range.z);
+		static vec3 s_position, s_range;
+		s_range = m_pEmitter->range;
+		s_position = s_pTransform->position;
+		position.x = Random::GetRandomFloat(s_position.x - s_range.x, s_position.x + s_range.x);
+		position.y = Random::GetRandomFloat(s_position.y - s_range.y, s_position.y + s_range.y);
+		position.z = Random::GetRandomFloat(s_position.z - s_range.z, s_position.z + s_range.z);
 
 		life = Random::GetRandomFloat(0.f, m_pEmitter->life);
 		color.Set(m_pEmitter->m_startColor);
