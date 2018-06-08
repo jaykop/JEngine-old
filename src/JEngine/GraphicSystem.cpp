@@ -13,7 +13,7 @@ jeBegin
 
 GraphicSystem::GraphicSystem()
 	:System(), m_pMainCamera(nullptr),
-	m_fovy(45.f), m_zNear(.1f), m_zFar(1000.f), m_isLight(false), m_backgroundColor(vec4::ZERO),
+	m_zNear(.1f), m_zFar(1000.f), m_isLight(false), m_backgroundColor(vec4::ZERO),
 	m_orthoComesFirst(true), m_screenColor(vec4::ONE), m_width(int(GLM::m_width)), m_mouseZ(0.f),
 	m_height(int(GLM::m_height)), m_lightScale(vec3(10, 10, 10)), m_aniScale(vec3::ZERO),
 	m_aniTranslate(vec3::ZERO), m_viewport(mat4()), m_sobelAmount(0.f), m_blurSize(0.f),
@@ -26,8 +26,9 @@ GraphicSystem::GraphicSystem()
 	m_top = m_height * .5f;
 	m_bottom = -m_top;
 
-	m_perspective = mat4::Perspective(m_fovy, m_aspect, m_zNear, m_zFar);
-	m_orthogonal = mat4::Orthogonal(m_left, m_right, m_bottom, m_top/*, m_zNear, m_zFar*/);
+	// Fix the orthogonal matrix
+	// because users are not allow to change app size while it is running 
+	m_orthogonal = mat4::Orthogonal(m_left, m_right, m_bottom, m_top, m_zNear, m_zFar);
 }
 
 void GraphicSystem::Load(CR_RJDoc _data)

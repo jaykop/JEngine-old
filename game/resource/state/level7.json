@@ -9,7 +9,7 @@
 			"Component" : [
 				{
 					"Type": "Camera",
-					"Values": {"Position" : [0, 0, 1], "Target" : [0, 0, 0],
+					"Values": {"Position" : [0, 0, 100], "Target" : [0, 0, 0],
 						"Up" : [0, 1, 0]}
 				}
 			]
@@ -24,6 +24,23 @@
 			]
 		},
 		{
+			"Name" : "Ground",
+			"Component" : [
+				{
+					"Type": "Transform",
+					"Values": {"Position" : [0, 0, -5], "Scale" : [800, 600, 0]}
+				},
+				{
+					"Type" : "Sprite",
+					"Values" : {"Texture" : "ground", "Color" : [1, 1, 1, 1], "Projection" : "Perpective" }
+				},
+				{
+					"Type" : "TestLogic",
+					"Values" : {}
+				}
+			]
+		},
+		{
 			"Name" : "Target",
 			"Component" : [
 				{
@@ -32,7 +49,7 @@
 				},
 				{
 					"Type" : "Sprite",
-					"Values" : {"Texture" : "crosshair", "Color" : [0, 0, 0, 1], "Projection" : "Orthogonal" }
+					"Values" : {"Texture" : "crosshair", "Color" : [0, 0, 0, 1], "Projection" : "Perpective" }
 				}
 			]
 		},
@@ -45,7 +62,7 @@
 				},
 				{
 					"Type" : "Sprite",
-					"Values" : {"Texture" : "circle_line", "Color" : [1, 1, 1, 1], "Projection" : "Orthogonal" }
+					"Values" : {"Texture" : "circle_line", "Color" : [1, 1, 1, 1], "Projection" : "Perpective" }
 				}
 			]
 		},
@@ -88,11 +105,11 @@
 			"Component" : [
 				{
 					"Type": "Transform",
-					"Values": {"Position" : [0, 0, 0], "Scale" : [50, 50, 0]}
+					"Values": {"Position" : [0, 0, -1], "Scale" : [50, 50, 0]}
 				},
 				{
 					"Type" : "Sprite",
-					"Values" : {"Texture" : "arrow", "Color" : [1, 1, 1, 1], "Projection" : "Orthogonal" }
+					"Values" : {"Texture" : "arrow", "Color" : [1, 1, 1, 1], "Projection" : "Perpective" }
 				},
 				{
 					"Type" : "Steering",

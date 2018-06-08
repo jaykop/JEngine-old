@@ -16,5 +16,4 @@
 #include "MinerState.h"
 #include "BullyState.h"
 
-#include "MovingEntity.h"
 #include "Steering.h"

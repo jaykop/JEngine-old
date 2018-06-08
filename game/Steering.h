@@ -46,6 +46,8 @@ public:
 	float wanderJitter;
 	float wanderDistance;
 	
+	float zPos;
+
 	vec3 wanderTarget;
 
 	Steering *m_evader, *m_pursuer;

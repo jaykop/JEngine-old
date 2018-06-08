@@ -14,7 +14,8 @@ class Camera : public Component
 public:
 
     vec3 m_position, m_up, m_target;
-
+	float zoom;
+	
     void Register() override;
 
 private:

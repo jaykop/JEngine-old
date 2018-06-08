@@ -10,7 +10,10 @@ jeBegin
 
 void GraphicSystem::UpdatePipelines(const float _dt)
 {
-    // Update projection size by window screen size
+	// Update the perpsective matrix by camera's zoom
+	m_perspective = mat4::Perspective(m_pMainCamera->zoom, m_aspect, m_zNear, m_zFar);
+
+	// Update the projection size by window screen size
     static vec3 s_windowSize, s_resolutionStandard(1.f / 800.f, 1.f / 600.f, 1.f);
     s_windowSize.Set(float(m_width), float(m_height), 1.f);
 

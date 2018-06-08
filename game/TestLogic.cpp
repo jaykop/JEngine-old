@@ -47,8 +47,10 @@ void TestLogic::Init()
 
     //unsigned a = sizeof(std::string);
 
-    m_ortho = CONTAINER->GetObject("OrthogonalSprite");
-    m_pers = CONTAINER->GetObject("PerspectiveModel");
+	camera = CONTAINER->GetObject("Camera")->GetComponent<Camera>();
+
+    /*m_ortho = CONTAINER->GetObject("OrthogonalSprite");
+    m_pers = CONTAINER->GetObject("PerspectiveModel");*/
     //CONTAINER->GET_COMPONENT("Model", Sprite);
     //CONTAINER->GET_COMPONENT(5, Sprite);
 
@@ -58,8 +60,13 @@ void TestLogic::Init()
     //int* c = b[0];
 }
 
-void TestLogic::Update(const float /*_dt*/)
+void TestLogic::Update(const float _dt)
 {
+	if (INPUT::KeyPressed(JE_DOWN))
+		camera->zoom -= _dt;
+	if (INPUT::KeyPressed(JE_UP))
+		camera->zoom += _dt;
+
     //if (INPUT::KeyPressed(JE_MOUSE_LEFT)) 
     //	SYSTEM::GetGraphicSystem()->Ray(m_pers->GetComponent<Model>(), m_pers->GetComponent<Transform>());
 
