@@ -57,13 +57,13 @@ struct Vector2
 	bool		IsOne() const;
 	float		GetLength() const;
 	float		GetLengthSq() const;
-	float		DotProduct(const Vector2& _rhs);
-	Vector2		CrossProduct(const Vector2& _rhs);
+	float		DotProduct(const Vector2& _rhs) const;
+	Vector2		CrossProduct(const Vector2& _rhs) const;
 	Vector2&	Normalize();
 	Vector2		GetNormalize() const;
 	Vector2&	Absolute();
 	Vector2		GetAbsolute() const;
-	float		GetAngle();
+	float		GetAngle() const;
 
 	// Friend functions
 	friend Vector2			operator+(float _constant, const Vector2& _rhs);

@@ -18,8 +18,8 @@ Contains Vector3's template class
 
 jeBegin
 
-// Vector3 class
-class Vector3
+// Vector3 struct
+struct Vector3
 {
 public:
 

@@ -179,9 +179,9 @@
     <ClInclude Include="..\..\include\JEngine\Macro.h" />
     <ClInclude Include="..\..\include\JEngine\Material.h" />
     <ClInclude Include="..\..\include\JEngine\MathUtils.h" />
-    <ClInclude Include="..\..\include\JEngine\Matrix2x2.h" />
     <ClInclude Include="..\..\include\JEngine\Matrix4x4.h" />
     <ClInclude Include="..\..\include\JEngine\MemoryAllocator.h" />
+    <ClInclude Include="..\..\include\JEngine\Mesh.h" />
     <ClInclude Include="..\..\include\JEngine\MessageDispatcher.h" />
     <ClInclude Include="..\..\include\JEngine\Model.h" />
     <ClInclude Include="..\..\include\JEngine\Object.h" />
@@ -256,7 +256,6 @@
     <ClCompile Include="..\..\src\JEngine\Light.cpp" />
     <ClCompile Include="..\..\src\JEngine\Material.cpp" />
     <ClCompile Include="..\..\src\JEngine\MathUtils.cpp" />
-    <ClCompile Include="..\..\src\JEngine\Matrix2x2.cpp" />
     <ClCompile Include="..\..\src\JEngine\Matrix4x4.cpp" />
     <ClCompile Include="..\..\src\JEngine\MessageDispatcher.cpp" />
     <ClCompile Include="..\..\src\JEngine\Model.cpp" />

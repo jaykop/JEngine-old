@@ -24,8 +24,8 @@ Custom Matrix looks like this...
 
 jeBegin
 
-// Matrix 4x4 template class
-class Matrix4x4
+// Matrix 4x4 template struct
+struct Matrix4x4
 {
 public:
 

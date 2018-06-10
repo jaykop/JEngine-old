@@ -422,7 +422,7 @@ float Vector2::GetLengthSq() const
 \return x * _rhs.x + y * _rhs.y;
 */
 /******************************************************************************/
-float Vector2::DotProduct(const vec2& _rhs)
+float Vector2::DotProduct(const vec2& _rhs) const
 {
 	return x * _rhs.x + y * _rhs.y;
 }
@@ -434,7 +434,7 @@ float Vector2::DotProduct(const vec2& _rhs)
 \return x * x * _rhs.y - y * _rhs.x;
 */
 /******************************************************************************/
-Vector2 Vector2::CrossProduct(const vec2& _rhs)
+Vector2 Vector2::CrossProduct(const vec2& _rhs) const
 {
 	return x * _rhs.y - y * _rhs.x;
 }
@@ -543,7 +543,7 @@ std::ostream& operator<<(std::ostream& _os, const vec2& _constents)
 	return _os;
 }
 
-float Vector2::GetAngle()
+float Vector2::GetAngle() const
 {
 	return atan2(y, x);
 }
