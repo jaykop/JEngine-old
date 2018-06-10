@@ -27,14 +27,6 @@ const Vector4 Vector4::UNIT_W(0.f, 0.f, 0.f, 1.f);
 
 /******************************************************************************/
 /*!
-\brief - Vector4 Destructor
-*/
-/******************************************************************************/
-Vector4::~Vector4(void)
-{}
-
-/******************************************************************************/
-/*!
 \brief - Vector4 Constructor
 \param _x - element x
 \param _y - element y
@@ -60,11 +52,10 @@ Vector4::Vector4(const vec4& _copy)
 /******************************************************************************/
 /*!
 \brief - Vector4 unary - operator
-\param _rhs - Vector4 to be assigned
 \return Result
 */
 /******************************************************************************/
-Vector4 Vector4::operator-(void)
+Vector4 Vector4::operator-(void) const
 {
 	vec4 Result;
 
@@ -103,7 +94,7 @@ Vector4 Vector4::operator+(const vec4& _rhs) const
 /******************************************************************************/
 /*!
 \brief - Vector4 + operator
-\param _rhs - Vector4 to be added
+\param _constant - Vector4 to be added
 \return result
 */
 /******************************************************************************/
@@ -141,7 +132,7 @@ Vector4 Vector4::operator-(const vec4& _rhs) const
 /******************************************************************************/
 /*!
 \brief - Vector4 - operator
-\param _rhs - number to be subtracted
+\param _constant - number to be subtracted
 \return result
 */
 /******************************************************************************/
@@ -160,7 +151,7 @@ Vector4 Vector4::operator-(float _constant) const
 /******************************************************************************/
 /*!
 \brief - Vector4 * operator
-\param _rhs - number to be nultiplied
+\param _constant - number to be nultiplied
 \return result
 */
 /******************************************************************************/
@@ -191,7 +182,7 @@ Vector4 Vector4::operator*(const vec4& _rhs) const
 /******************************************************************************/
 /*!
 \brief - Vector4 / operator
-\param _rhs - number to be divided
+\param _constant - number to be divided
 \return result
 */
 /******************************************************************************/
@@ -265,8 +256,8 @@ Vector4 operator*(float _constant, const vec4& _rhs)
 /******************************************************************************/
 /*!
 \brief - Friend function, << operator
-\param _constant - storage to put contents in
-\param _rhs - *this
+\param os - storage to put contents in
+\param contents - *this
 \return os
 */
 /******************************************************************************/
@@ -283,7 +274,7 @@ std::ostream& operator<<(std::ostream& os, const vec4& contents)
 \return x * _rhs.x + y * _rhs.y + z * _rhs.z + w * _rhs.w;
 */
 /******************************************************************************/
-float Vector4::DotProduct(const vec4& _rhs)
+float Vector4::DotProduct(const vec4& _rhs) const
 {
 	return x * _rhs.x + y * _rhs.y + z * _rhs.z + w * _rhs.w;
 }
@@ -308,7 +299,7 @@ Vector4& Vector4::operator+=(const vec4& _rhs)
 /******************************************************************************/
 /*!
 \brief - Vector4 += operator
-\param _rhs - number to be added
+\param _constant - number to be added
 \return *this
 */
 /******************************************************************************/
@@ -342,7 +333,7 @@ Vector4& Vector4::operator-=(const vec4& _rhs)
 /******************************************************************************/
 /*!
 \brief - Vector4 -= operator
-\param _rhs - number to be subtracted
+\param _constant - number to be subtracted
 \return *this
 */
 /******************************************************************************/
@@ -369,7 +360,7 @@ Vector4& Vector4::operator*=(const vec4& _rhs)
 /******************************************************************************/
 /*!
 \brief - Vector4 *= operator
-\param _rhs - Vector4 to be multiplied
+\param _constant - Vector4 to be multiplied
 \return *this
 */
 /******************************************************************************/

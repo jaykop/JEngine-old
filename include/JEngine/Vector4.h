@@ -15,13 +15,12 @@ Contains Vector4's template class
 
 jeBegin
 
-// class template Vector4
-class Vector4
+// Vector4 struct
+struct Vector4
 {
 public:
 
 	// Constructors and destructor
-	~Vector4(void);
 	Vector4(float _x = 0, float _y = 0, float _z = 0, float _w = 0);
 	Vector4(const Vector4& _copy);
 
@@ -37,7 +36,7 @@ public:
 	Vector4		operator*(const Vector4& _rhs) const;
 	Vector4		operator/(float _constant) const;
 	Vector4&	operator=(const Vector4& _rhs);
-	Vector4		operator-(void);
+	Vector4		operator-(void) const;
 	Vector4&	operator+=(const Vector4& _rhs);
 	Vector4&	operator+=(float _constant);
 	Vector4&	operator-=(const Vector4& _rhs);
@@ -59,7 +58,7 @@ public:
 	bool		IsOne() const;
 	float		GetLength() const;
 	float		GetLengthSq() const;
-	float		DotProduct(const Vector4& _rhs);
+	float		DotProduct(const Vector4& _rhs) const;
 	Vector4&	Normalize();
 	Vector4		GetNormalize() const;
 	Vector4&	Absolute();

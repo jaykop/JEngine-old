@@ -55,9 +55,6 @@
     <ClInclude Include="..\..\include\JEngine\MathUtils.h">
       <Filter>Utils\Math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\Matrix2x2.h">
-      <Filter>Utils\Math</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\JEngine\Matrix4x4.h">
       <Filter>Utils\Math</Filter>
     </ClInclude>
@@ -172,6 +169,9 @@
     <ClInclude Include="..\..\include\JEngine\MemoryAllocator.h">
       <Filter>Core\Memory</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\Mesh.h">
+      <Filter>System\Graphic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\include\JEngine\Object.inl">
@@ -228,9 +228,6 @@
       <Filter>Utils\Json</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\JEngine\MathUtils.cpp">
-      <Filter>Utils\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\Matrix2x2.cpp">
       <Filter>Utils\Math</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\JEngine\Matrix4x4.cpp">
