@@ -1,5 +1,4 @@
 #pragma once
-#include "Vector4.h"
 #include "Component.h"
 #include "ComponentManager.h"
 #include "ComponentBuilder.h"
@@ -30,10 +29,8 @@ class Sprite : public Component
 
 protected:
 
-    const static int IS_TEXT = 0x00010;
-    const static int IS_EMITTER = 0x00100;
-    const static int HAS_ANIMATION = 0x01000;
-    const static int HAS_MATERIAL = 0x10000;
+    const static int IS_TEXT = 0x10;
+    const static int IS_EMITTER = 0x01;
 
     int m_hiddenStatus;
 
@@ -45,15 +42,15 @@ public:
 
     void Register() override;
 
-    void	SetParentToFollow(Object* _pObj);
-    void	AddTexture(const char* _key);
-    void	RemoveTexture(const char* _key);
-    void	SetCurrentTexutre(const char* _key);
+    void		SetParentToFollow(Object* _pObj);
+    void		AddTexture(const char* _key);
+    void		RemoveTexture(const char* _key);
+    void		SetCurrentTexutre(const char* _key);
     unsigned	GetCurrentTexutre() const;
     unsigned	GetTexutre(const char* _key);
 
-    int		status;
-    vec4	color;
+    int			status;
+    vec4		color;
     ProjectType projection;
 
     unsigned	sfactor, dfactor;
@@ -67,7 +64,7 @@ protected:
 
     void Load(CR_RJValue _data) override;
 
-    bool	m_culled;
+    bool		m_culled;
     unsigned	m_mainTex;
     TextureMap	m_textureMap;
     Transform	*m_pTransform, *m_pInherited;

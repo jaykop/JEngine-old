@@ -16,10 +16,8 @@ Animation::Animation(Object* _pOwner)
 	m_realFrame(1.f), m_activeAnimation(false)
 {	
 	// Connect to sprite's pointer
-	if (_pOwner->HasComponent<Sprite>()) {
+	if (_pOwner->HasComponent<Sprite>()) 
 		_pOwner->GetComponent<Sprite>()->m_pAnimation = this;
-		_pOwner->GetComponent<Sprite>()->m_hiddenStatus |= Sprite::HAS_ANIMATION;
-	}
 
 	else
 		jeDebugPrint("!Animation - This object has no sprite componnet: %s\n", _pOwner->GetName().c_str());
@@ -28,10 +26,8 @@ Animation::Animation(Object* _pOwner)
 Animation::~Animation() {
 
 	// Turn off the toggle
-	if (GetOwner()->HasComponent<Sprite>()) {
+	if (GetOwner()->HasComponent<Sprite>()) 
 		GetOwner()->GetComponent<Sprite>()->m_pAnimation = nullptr;
-		GetOwner()->GetComponent<Sprite>()->m_hiddenStatus &= ~Sprite::HAS_ANIMATION;
-	}
 }
 
 void Animation::operator=(const Animation & _copy)
@@ -45,10 +41,8 @@ void Animation::operator=(const Animation & _copy)
 	m_activeAnimation = _copy.m_activeAnimation;
 
 	// Connect to sprite's pointer
-	if (GetOwner()->HasComponent<Sprite>()) {
+	if (GetOwner()->HasComponent<Sprite>()) 
 		GetOwner()->GetComponent<Sprite>()->m_pAnimation = this;
-		GetOwner()->GetComponent<Sprite>()->m_hiddenStatus |= Sprite::HAS_ANIMATION;
-	}
 }
 
 void Animation::Load(CR_RJValue _data)
@@ -79,8 +73,8 @@ void Animation::EditorUpdate(const float /*_dt*/)
 	// TODO
 }
 
-bool Animation::GetActiveAnimationToggle()
-{
+bool Animation::GetActiveAnimationToggle() const
+{ 
 	return m_activeAnimation;
 }
 
@@ -110,12 +104,12 @@ void Animation::SetAnimationSpeed(float _speed)
 	m_realSpeed = 1.f / _speed;
 }
 
-int Animation::GetAnimationFrame()
+int Animation::GetAnimationFrame() const
 {
 	return m_animationFrames;
 }
 
-float Animation::GetAnimationSpeed()
+float Animation::GetAnimationSpeed() const
 {
 	return m_animationSpeed;
 }

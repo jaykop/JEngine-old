@@ -8,8 +8,11 @@
 #include "Light.h"
 #include "Camera.h"
 #include "Object.h"
+#include "MathUtils.h"
 
 jeBegin
+
+using namespace Math;
 
 GraphicSystem::GraphicSystem()
 	:System(), m_pMainCamera(nullptr),
@@ -28,7 +31,7 @@ GraphicSystem::GraphicSystem()
 
 	// Fix the orthogonal matrix
 	// because users are not allow to change app size while it is running 
-	m_orthogonal = mat4::Orthogonal(m_left, m_right, m_bottom, m_top, zNear, zFar);
+	m_orthogonal = Orthogonal(m_left, m_right, m_bottom, m_top, zNear, zFar);
 }
 
 void GraphicSystem::Load(CR_RJDoc _data)
@@ -94,7 +97,7 @@ void GraphicSystem::Init()
 	m_mouseZ = m_pMainCamera->position.z;
 
 	for (auto light : m_lights)
-		light->direction.Normalize();
+		Normalize(light->direction);
 }
 
 void GraphicSystem::Update(const float _dt)
@@ -175,7 +178,7 @@ void GraphicSystem::SetMainCamera(Camera* _camera)
 	m_pMainCamera = _camera;
 }
 
-Camera* GraphicSystem::GetMainCamera()
+Camera* GraphicSystem::GetMainCamera() const
 {
 	return m_pMainCamera;
 }

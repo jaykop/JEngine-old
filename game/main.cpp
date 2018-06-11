@@ -23,7 +23,7 @@ int main(int argc, char* args[]) {
 	jeUnusedParam(argc);	// No argc - Block the warnings
 	jeUnusedParam(args);	// No args - Block the warnings
 	
-	JEngine::imguiToggle = true;
+	JEngine::imguiToggle = false;
 
 	JEngine::RegisterAssets();
 	JEngine::Run();

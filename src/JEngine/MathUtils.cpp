@@ -40,7 +40,7 @@ namespace Math
 	/******************************************************************************/
 	float RadToDeg(float radian)
 	{
-		return radian * static_cast<float>(RADIAN_DEGREE);
+		return radian * static_cast<float>(RADIAN_TO_DEGREE);
 	}
 }
 

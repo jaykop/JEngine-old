@@ -36,8 +36,8 @@ std::string Shader::m_vertexShader[] = {
 	uniform bool boolean_bilboard;
 	
 	uniform bool hasParent;
-	uniform mat4 m4_parentTransform,
-		m4_parentScale, m4_parentRotation;
+	uniform mat4 m4_parentTranslate,
+		m4_parentScale, m4_parentRotate;
 
 	////////////////////////////
 	// out variables
@@ -72,13 +72,13 @@ std::string Shader::m_vertexShader[] = {
 	// Fucntion bodies
 	////////////////////////////
 	void Transforming(vec4 _position, mat4 _model) {
-
-		//if (hasParent) {
-		//       _model *= m4_parentScale * m4_parentRotation * m4_parentTransform;
-		//}
 		
+		mat4 newModel = transpose(_model);
+		if (hasParent) 
+			newModel = transpose(m4_parentScale * m4_parentRotate * m4_parentTranslate) * newModel;
+	
 		// Calculate mvp transform matrix
-		mat4 modelview = transpose(m4_viewport) * transpose(_model);
+		mat4 modelview = transpose(m4_viewport) * newModel;
 
 		if (boolean_bilboard) {
 			modelview[0][0]

@@ -11,9 +11,11 @@ Contains Vector2's class and member function
 */
 /******************************************************************************/
 
-#include "Vector2.h"
+#include "MathUtils.h"
 
 jeBegin
+
+using namespace Math;
 
 //////////////////////////////////////////////////////////////////////////
 // static variables
@@ -22,14 +24,6 @@ const Vector2 Vector2::ONE(1.f, 1.f);
 const Vector2 Vector2::ZERO(0.f, 0.f);
 const Vector2 Vector2::UNIT_X(1.f, 0.f);
 const Vector2 Vector2::UNIT_Y(0.f, 1.f);
-
-/******************************************************************************/
-/*!
-\brief - Vector2 Destructor
-*/
-/******************************************************************************/
-Vector2::~Vector2()
-{}
 
 void Vector2::Set(const vec2& _copy)
 {
@@ -63,26 +57,6 @@ void Vector2::SetUnitY()
 {
 	x = 0.f;
 	y = 1.f;
-}
-
-bool Vector2::IsZero() const
-{
-	// If both x y are not 0,
-	if (x || y)
-		return false;
-
-	// Unless,
-	return true;
-}
-
-bool Vector2::IsOne() const
-{
-	// If both x y are not 1,
-	if (x != 1.f || y != 1.f)
-		return false;
-
-	// Unless,
-	return true;
 }
 
 /******************************************************************************/
@@ -120,7 +94,7 @@ Vector2::Vector2(const vec2& _copy)
 /******************************************************************************/
 bool Vector2::operator<(const vec2& _rhs) const
 {
-	return this->GetLengthSq() < _rhs.GetLengthSq();
+	return GetLengthSq(*this) < GetLengthSq(_rhs);
 }
 
 /******************************************************************************/
@@ -401,102 +375,6 @@ Vector2 Vector2::operator/(float _constant) const
 
 /******************************************************************************/
 /*!
-\brief - Get Vector2's length
-\return sqrt(x*x + y*y)
-*/
-/******************************************************************************/
-float Vector2::GetLength() const
-{
-	return sqrt(GetLengthSq());
-}
-
-float Vector2::GetLengthSq() const
-{
-	return x*x + y*y;
-}
-
-/******************************************************************************/
-/*!
-\brief - Get two Vector2s' DotProduct
-\param _rhs - to be calculated
-\return x * _rhs.x + y * _rhs.y;
-*/
-/******************************************************************************/
-float Vector2::DotProduct(const vec2& _rhs) const
-{
-	return x * _rhs.x + y * _rhs.y;
-}
-
-/******************************************************************************/
-/*!
-\brief - Get two Vector2s' CrossProduct
-\param _rhs - to be calculated
-\return x * x * _rhs.y - y * _rhs.x;
-*/
-/******************************************************************************/
-Vector2 Vector2::CrossProduct(const vec2& _rhs) const
-{
-	return x * _rhs.y - y * _rhs.x;
-}
-
-/******************************************************************************/
-/*!
-\brief - Get normalized vector2
-\return result
-*/
-/******************************************************************************/
-Vector2& Vector2::Normalize(void)
-{
-	// If this is not zero,
-	if (!IsZero())
-		*this = *this / GetLength();
-
-	// Unless.
-	else
-		jeDebugPrint("!Vector2 - Cannot devide by 0.\n");
-
-	return *this;
-}
-
-Vector2 Vector2::GetNormalize() const
-{
-	Vector2 result(*this);
-
-	// If this is not zero,
-	if (!IsZero())
-		result = result / GetLength();
-
-	// Unless.
-	else
-		jeDebugPrint("!Vector2 - Cannot devide by 0.\n");
-
-	return result;
-}
-
-Vector2 & Vector2::Absolute()
-{
-	if (x < 0)
-		x = -x;
-	if (y < 0)
-		y = -y;
-
-	return *this;
-}
-
-Vector2 Vector2::GetAbsolute() const
-{
-	Vector2 result(x, y);
-
-	if (result.x < 0)
-		result.x = -result.x;
-	if (result.y < 0)
-		result.y = -result.y;
-
-	return result;
-}
-
-/******************************************************************************/
-/*!
 \brief - Friend function, + operator
 \param _constant - number to be added 
 \param _rhs - *this
@@ -533,7 +411,7 @@ Vector2 operator*(float _constant, const vec2& _rhs)
 /*!
 \brief - Friend function, << operator
 \param _constents - storage to put contents in
-\param _rhs - *this
+\param _constents - *this
 \return _os
 */
 /******************************************************************************/
@@ -541,11 +419,6 @@ std::ostream& operator<<(std::ostream& _os, const vec2& _constents)
 {
 	_os << "Vector2[ " << _constents.x << ", " << _constents.y << " ]";
 	return _os;
-}
-
-float Vector2::GetAngle() const
-{
-	return atan2(y, x);
 }
 
 jeEnd

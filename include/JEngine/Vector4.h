@@ -18,11 +18,20 @@ jeBegin
 // Vector4 struct
 struct Vector4
 {
-public:
+	// Memver variables
+	float x, y, z, w;
 
 	// Constructors and destructor
 	Vector4(float _x = 0, float _y = 0, float _z = 0, float _w = 0);
 	Vector4(const Vector4& _copy);
+
+	// Static variables
+	static const Vector4 ZERO;
+	static const Vector4 ONE;
+	static const Vector4 UNIT_X;
+	static const Vector4 UNIT_Y;
+	static const Vector4 UNIT_Z;
+	static const Vector4 UNIT_W;
 
 	// Operators
 	bool		operator<(const Vector4& _rhs) const;
@@ -54,37 +63,15 @@ public:
 	void		SetUnitY();
 	void		SetUnitZ();
 	void		SetUnitW();
-	bool		IsZero() const;
-	bool		IsOne() const;
-	float		GetLength() const;
-	float		GetLengthSq() const;
-	float		DotProduct(const Vector4& _rhs) const;
-	Vector4&	Normalize();
-	Vector4		GetNormalize() const;
-	Vector4&	Absolute();
-	Vector4		GetAbsolute() const;
 
 	// Friend functions
 	friend Vector4 operator+(float constant, Vector4& rhs);
 	friend Vector4 operator*(float constant, Vector4& rhs);
 	friend std::ostream& operator<<(std::ostream& os, const Vector4& contents);
 
-	// Static variables
-	static const Vector4 ZERO;
-	static const Vector4 ONE;
-	static const Vector4 UNIT_X;
-	static const Vector4 UNIT_Y;
-	static const Vector4 UNIT_Z;
-	static const Vector4 UNIT_W;
-
-	// Memver variables
-	float x, y, z, w;
-
-private:
-	
 };
 
 using vec4 = Vector4;
-using CR_vec4 = const vec4&;
+using CR_Vec4 = const vec4&;
 
 jeEnd

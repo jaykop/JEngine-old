@@ -77,5 +77,11 @@ void State::ClearObjectContainer()
 	}
 }
 
+const char* State::GetName() const
+{
+	return m_name.c_str();
+}
+
+
 jeEnd
 

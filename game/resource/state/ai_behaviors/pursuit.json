@@ -23,13 +23,12 @@
 				}
 			]
 		},
-
 		{
 			"Name" : "Target",
 			"Component" : [
 				{
 					"Type": "Transform",
-					"Values": {"Position" : [0, 250, 0], "Scale" : [15, 15, 0]}
+					"Values": {"Position" : [0, 250, -1], "Scale" : [15, 15, 0]}
 				},
 				{
 					"Type" : "Sprite",
@@ -38,24 +37,11 @@
 			]
 		},
 		{
-			"Name" : "Circle",
+			"Name" : "Seeker",
 			"Component" : [
 				{
 					"Type": "Transform",
-					"Values": {"Position" : [0, 0, 0], "Scale" : [50, 50, 0]}
-				},
-				{
-					"Type" : "Sprite",
-					"Values" : {"Texture" : "circle_line", "Color" : [1, 1, 1, 1], "Projection" : "Orthogonal" }
-				}
-			]
-		},
-/*		{
-			"Name" : "Evader",
-			"Component" : [
-				{
-					"Type": "Transform",
-					"Values": {"Position" : [250, 0, 0], "Scale" : [50, 50, 0]}
+					"Values": {"Position" : [250, 0, -1], "Scale" : [50, 50, 0]}
 				},
 				{
 					"Type" : "Sprite",
@@ -63,7 +49,7 @@
 				},
 				{
 					"Type" : "Steering",
-					"Values" : {"Behavior" : "Evade"}
+					"Values" : {"Behavior" : "Seek"}
 				}
 			]
 		},
@@ -72,7 +58,7 @@
 			"Component" : [
 				{
 					"Type": "Transform",
-					"Values": {"Position" : [-250, 0, 0], "Scale" : [50, 50, 0]}
+					"Values": {"Position" : [-250, 0, -1], "Scale" : [50, 50, 0]}
 				},
 				{
 					"Type" : "Sprite",
@@ -81,23 +67,6 @@
 				{
 					"Type" : "Steering",
 					"Values" : {"Behavior" : "Pursuit"}
-				}
-			]
-		},
-*/		{
-			"Name" : "Wanderer",
-			"Component" : [
-				{
-					"Type": "Transform",
-					"Values": {"Position" : [0, 0, -1], "Scale" : [50, 50, 0]}
-				},
-				{
-					"Type" : "Sprite",
-					"Values" : {"Texture" : "arrow", "Color" : [1, 1, 1, 1], "Projection" : "Orthogonal" }
-				},
-				{
-					"Type" : "Steering",
-					"Values" : {"Behavior" : "Wander"}
 				}
 			]
 		}

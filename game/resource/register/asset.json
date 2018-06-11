@@ -30,7 +30,9 @@
 		{"Key" : "arrow", 			"Directory" : "../resource/texture/Arrow.png"},
 		{"Key" : "crosshair",		"Directory" : "../resource/texture/Crosshair.png"},
 		{"Key" : "circle_line",		"Directory" : "../resource/texture/circle_line.png"},
+		{"Key" : "box_line",		"Directory" : "../resource/texture/box_line.png"},
 		{"Key" : "ground",			"Directory" : "../resource/texture/ground.png"}
+
 	]
 	
 	// Audio info

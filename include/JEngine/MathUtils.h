@@ -10,9 +10,13 @@ Contains MathUtils's class
 
 */
 /******************************************************************************/
-
 #pragma once
+
 #include "Macro.h"
+#include "Vector2.h"
+#include "Vector3.h"
+#include "Vector4.h"
+#include "Matrix4x4.h"
 
 jeBegin
 
@@ -28,11 +32,87 @@ namespace Math
 	static const float ROUND			= 360.F;
 	static const float PI				= 3.1415926535897932F;
 	static const float RADIAN			= 0.01745329251994329576923690768489F;
-	static const float RADIAN_DEGREE	= 57.2958F;
+	static const float RADIAN_TO_DEGREE	= 57.2958F;
 
 	float DegToRad(float degree);
 	float RadToDeg(float radian);
 
+	//////////////////////////////////////////////////////////////////////////
+	// Matrix 4x4
+	//////////////////////////////////////////////////////////////////////////
+	mat4	GetTranspose(CR_Mat4 _mat);
+	mat4&	Transpose(mat4& _mat);
+	mat4	GetInverse(CR_Mat4 _mat);
+	mat4&	Inverse(mat4& _mat);
+	void	SetIdentity(mat4& _mat, float _diagonal = 1.f);
+
+	mat4 Translate(CR_Vec3 _vec);
+	mat4 Scale(CR_Vec3 _vec);
+	mat4 Rotate(float _radian, CR_Vec3 _vec);
+	mat4 RotateX(float _radian);
+	mat4 RotateY(float _radian);
+	mat4 RotateZ(float _radian);
+	mat4 Perspective(float _fovy, float _aspect, float _zNear, float _zFar);
+	mat4 Orthogonal(float _left, float _right, float _bottom, float _top, float _zNear, float _zFar);
+	mat4 Orthogonal(float _left, float _right, float _bottom, float _top);
+	mat4 LookAt(CR_Vec3 _eye, CR_Vec3 _target, CR_Vec3 _up);
+
+	//////////////////////////////////////////////////////////////////////////
+	// Vector 2
+	//////////////////////////////////////////////////////////////////////////
+	bool	IsZero(CR_Vec2 _vec2);
+	bool	IsOne(CR_Vec2 _vec2);
+	float	GetLength(CR_Vec2 _vec2);
+	float	GetLengthSq(CR_Vec2 _vec2);
+	float	DotProduct(CR_Vec2 _rhs);
+	Vector2	CrossProduct(CR_Vec2 _rhs);
+	void	Normalize(vec2& _vec2);
+	Vector2	GetNormalize(CR_Vec2 _vec2);
+	void	Absolute(vec2& _vec2);
+	Vector2	GetAbsolute(CR_Vec2 _vec2);
+	float	GetAngle(CR_Vec2 _vec2);
+
+	//////////////////////////////////////////////////////////////////////////
+	// Vector 3
+	//////////////////////////////////////////////////////////////////////////
+	bool	IsZero(CR_Vec3 _vec3);
+	bool	IsOne(CR_Vec3 _vec3);
+	float	GetLength(CR_Vec3 _vec3);
+	float	GetLengthSq(CR_Vec3 _vec3);
+	float	DotProduct(CR_Vec3 _left, CR_Vec3 _right);
+	Vector3	CrossProduct(CR_Vec3 _left, CR_Vec3 _right);
+	void	Normalize(vec3& _vec3);
+	Vector3	GetNormalize(CR_Vec3 _vec3);
+	void	Absolute(vec3& _vec3);
+	Vector3	GetAbsolute(CR_Vec3 _vec3);
+	void	Rotate(vec3& _vec3, float _angle, CR_Vec3 _pivot = vec3::ZERO);
+	Vector3	GetRotated(CR_Vec3 _vec3, float _angle, CR_Vec3 _pivot = vec3::ZERO);
+	void	Reflected(vec3& _vec3, CR_Vec3 _pivot);
+	Vector3	GetReflected(CR_Vec3 _vec3, CR_Vec3 _pivot);
+	float	GetAngle(CR_Vec3 _vec3, CR_Vec3 _pivot);
+
+	//float	DistanceToLine(CR_Vec3 _vec3, CR_Vec3 _lineStart, CR_Vec3 _lineEnd);
+
+	//Vector3 GetSegmentIntersection(
+	//	CR_Vec3 line1_start, CR_Vec3 line1_end,
+	//	CR_Vec3 line2_start, CR_Vec3 line2_end);
+
+	//bool IsSegmentIntersection(
+	//	CR_Vec3 line1_start, CR_Vec3 line1_end,
+	//	CR_Vec3 line2_start, CR_Vec3 line2_end);
+
+	//////////////////////////////////////////////////////////////////////////
+	// Vector 4
+	//////////////////////////////////////////////////////////////////////////
+	bool		IsZero(CR_Vec4 _vec4);
+	bool		IsOne(CR_Vec4 _vec4);
+	float		GetLength(CR_Vec4 _vec4);
+	float		GetLengthSq(CR_Vec4 _vec4);
+	float		DotProduct(CR_Vec4 _left, CR_Vec4 _right);
+	void		Normalize(vec4& _vec4);
+	Vector4		GetNormalize(CR_Vec4 _vec4);
+	void		Absolute(vec4& _vec4);
+	Vector4		GetAbsolute(CR_Vec4 _vec4);
 }
 
 jeEnd

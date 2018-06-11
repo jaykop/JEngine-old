@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 #include "Sprite.h"
-#include "Vector3.h"
 
 jeBegin
 jeDeclareComponentBuilder(Emitter);
