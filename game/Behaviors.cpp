@@ -128,6 +128,33 @@ vec3 Steering::Wander()
 	return GetNormalize(wanderTarget - m_transform->position) * wanderForce;
 }
 
+vec3 Steering::Avoid()
+{
+	mat4 parentWorld = Scale(m_transform->scale)
+		* Rotate(DegToRad(m_transform->rotation), m_transform->rotationAxis)
+		* Translate(m_transform->position);
+
+	vec3 boxPos = m_pathBox->GetComponent<Transform>()->position;
+	vec4 worldBoxPos(boxPos.x, boxPos.y, boxPos.z, 0.f);
+	worldBoxPos = worldBoxPos * GetTranspose(parentWorld);
+
+	std::cout << worldBoxPos << std::endl;
+
+	//leftTop = ;
+	//leftBot = ;
+	//rightTop = ;
+	//rightBot = ;
+
+	//for (auto obj : m_obstacles)	{
+	//	Transform *transform = obj->GetComponent<Transform>();
+	//	
+	//	transform->position;
+	//	transform->scale.x;
+	//}
+
+	return vec3::ZERO;
+}
+
 vec3 Steering::Calculate()
 {
 	// Refresh the force
@@ -160,6 +187,10 @@ vec3 Steering::Calculate()
 
 	case wander:
 		force = Wander();
+		break;
+
+	case obstacle_avoidance:
+		force = Seek(targetTransform->position);
 		break;
 
 	default:

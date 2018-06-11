@@ -25,6 +25,7 @@ public:
 	vec3 Evade(const Steering * _pursuer);
 	vec3 Pursuit(const Steering * _evader);
 	vec3 Wander();
+	vec3 Avoid();
 
     bool AccumulateForce(const vec3& forceToAdd);
     vec3 Calculate();
@@ -50,9 +51,13 @@ public:
 
 	vec3 wanderTarget;
 
+	float leftTop, leftBot, rightTop, rightBot;
+
 	Steering	*m_evader, *m_pursuer;
 	Transform	*m_transform, *targetTransform, *circleTransform;
 	behavior	m_behavior;
+
+	std::vector<Object*> m_obstacles;
 
 private:
 

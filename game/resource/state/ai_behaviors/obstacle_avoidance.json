@@ -54,7 +54,7 @@
 			"Component" : [
 				{
 					"Type": "Transform",
-					"Values": {"Position" : [0, 0, -1], "Scale" : [50, 50, 0]}
+					"Values": {"Position" : [100, 100, -1], "Scale" : [50, 50, 0]}
 				},
 				{
 					"Type" : "Sprite",
@@ -62,7 +62,7 @@
 				},
 				{
 					"Type" : "Steering",
-					"Values" : {"Behavior" : "Seek"}
+					"Values" : {"Behavior" : "Avoid"}
 				}
 			]
 		}
