@@ -30,13 +30,15 @@ public:
     bool AccumulateForce(const vec3& forceToAdd);
     vec3 Calculate();
 	
-    Object* m_target = nullptr, *m_circle= nullptr, *m_pathBox = nullptr;
+    Object* m_target = nullptr, *m_circle= nullptr, *m_detection = nullptr;
 
     vec3 velocity;
     vec3 heading;
     vec3 side;
 	
 	vec3 steeringForce;
+	vec3 wanderTarget;
+	vec3 leftTop, leftBot, rightTop, rightBot;
 
     float mass;
     float maxSpeed;
@@ -49,12 +51,8 @@ public:
 	
 	float zPos;
 
-	vec3 wanderTarget;
-
-	float leftTop, leftBot, rightTop, rightBot;
-
 	Steering	*m_evader, *m_pursuer;
-	Transform	*m_transform, *targetTransform, *circleTransform;
+	Transform	*m_transform, *targetTransform, *circleTransform, *detectionTransform;
 	behavior	m_behavior;
 
 	std::vector<Object*> m_obstacles;
