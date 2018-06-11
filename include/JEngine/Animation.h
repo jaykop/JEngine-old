@@ -14,9 +14,9 @@ class Animation : public Component
 
 public:
 
-    int	    GetAnimationFrame();
-    float   GetAnimationSpeed();
-    bool    GetActiveAnimationToggle();
+    int	    GetAnimationFrame() const;
+    float   GetAnimationSpeed() const;
+    bool    GetActiveAnimationToggle() const;
     void    ActiveAnimation(bool _toggle);
     void    FixAnimationFrame(int _thFrame);
     void    SetAnimationSpeed(float _speed);

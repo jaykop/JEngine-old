@@ -1,6 +1,6 @@
 #pragma once
 #include "glew.h"
-#include "Vector4.h"
+#include "Vector3.h"
 #include "Matrix4x4.h"
 #include "GLManager.h"
 
@@ -24,7 +24,7 @@ private:
     void SetInt(const char * _name, int _int);
     void SetBool(const char* _name, bool _bool);
     void SetEnum(const char * _name, int _enum);
-	void SetMatrix(const char * _name, const mat4 & _mat4);
+	void SetMatrix(const char * _name, const mat4& _mat4);
     void SetuInt(const char*_name, unsigned _uInt);
     void SetFloat(const char * _name, float _float);
     void SetVector3(const char * _name, const vec3& _vector);

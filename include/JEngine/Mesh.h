@@ -8,7 +8,7 @@ jeBegin
 
 class Mesh
 {
-	std::vector<Point>	Points;
+	std::vector<vec3>	Points;
 	std::vector<vec2>	TextureCoordinates;
 	std::vector<vec3>	Normals;
 };

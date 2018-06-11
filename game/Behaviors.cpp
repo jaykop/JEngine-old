@@ -4,6 +4,8 @@
 
 jeBegin
 
+using namespace Math;
+
 // Helper functions
 void Truncate(float& value, float max)
 {
@@ -39,7 +41,7 @@ vec3 Steering::Arrive(const vec3& _targetPos)
 {
 	vec3 toTarget = _targetPos - m_transform->position;
 
-	float distance = toTarget.GetLength();
+	float distance = GetLength(toTarget);
 
 	if (distance > 0) {
 
@@ -63,7 +65,7 @@ vec3 Steering::Evade(const Steering* _pursuer)
 {
 	vec3 toPursuer = _pursuer->m_transform->position - m_transform->position;
 
-	float lookAheadTime = toPursuer.GetLength() / (maxSpeed + _pursuer->velocity.GetLength());
+	float lookAheadTime = GetLength(toPursuer) / (maxSpeed + GetLength(_pursuer->velocity));
 
 	// now seek to the pridicted future position of the evader
 	return Flee(_pursuer->m_transform->position + _pursuer->velocity * lookAheadTime);
@@ -75,9 +77,9 @@ vec3 Steering::Pursuit(const Steering* _evader)
 	// for the evader's current position
 	vec3 toEvader = _evader->m_transform->position - m_transform->position;
 
-	float relativeHeading = heading.DotProduct(_evader->heading);
+	float relativeHeading = DotProduct(heading, _evader->heading);
 
-	if (toEvader.DotProduct(heading) > 0
+	if (DotProduct(toEvader, heading) > 0
 		&& (relativeHeading < -0.95)) // acos(0.95)=18 degs
 		return Seek(_evader->m_transform->position);
 
@@ -85,7 +87,7 @@ vec3 Steering::Pursuit(const Steering* _evader)
 
 	// the look-ahead time is propotional to the distanc between the evader
 	// and the pursuer - and is inversly porpotional to the sum of the agent's velocities
-	float lookAheadTime = toEvader.GetLength() / (maxSpeed + _evader->velocity.GetLength());
+	float lookAheadTime = GetLength(toEvader) / (maxSpeed + GetLength(_evader->velocity));
 
 	// now seek to the pridicted future position of the evader
 	return Seek(_evader->m_transform->position + _evader->velocity * lookAheadTime);
@@ -106,7 +108,7 @@ vec3 Steering::Wander()
 	// Get random point on the circle
 	vec3 nextPointToGo;
 	nextPointToGo.Set(cosf(randomRadian), sinf(randomRadian), 0.f);
-	nextPointToGo.Normalize();
+	Normalize(nextPointToGo);
 	nextPointToGo *= wanderRadius;
 
 	// Set the wandar center
@@ -123,7 +125,7 @@ vec3 Steering::Wander()
 	targetTransform->position.Set(wanderTarget);
 
 	// Return the velocity
-	return (wanderTarget - m_transform->position).GetNormalize() * wanderForce;
+	return GetNormalize(wanderTarget - m_transform->position) * wanderForce;
 }
 
 vec3 Steering::Calculate()
@@ -173,7 +175,7 @@ vec3 Steering::Calculate()
 bool Steering::AccumulateForce(const vec3& forceToAdd)
 {
 	// Get the current magnitude
-	float magnitudeSoFar = steeringForce.GetLength();
+	float magnitudeSoFar = GetLength(steeringForce);
 
 	// Get the remaining magnitude
 	float magnitudeRemaining = maxForce - magnitudeSoFar;
@@ -183,7 +185,7 @@ bool Steering::AccumulateForce(const vec3& forceToAdd)
 	if (magnitudeRemaining <= 0.f) return false;
 
 	// Otherwise, get force to add
-	float magnitudeToAdd = forceToAdd.GetLength();
+	float magnitudeToAdd = GetLength(forceToAdd);
 
 	// If that valuse is lower than capable remaining magnitude,
 	// just add it
@@ -192,7 +194,7 @@ bool Steering::AccumulateForce(const vec3& forceToAdd)
 
 	// If not, modify its length and add it
 	else
-		steeringForce += forceToAdd.GetNormalize() * maxForce;
+		steeringForce += GetNormalize(forceToAdd) * maxForce;
 
 	return true;
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "System.h"
+#include "Vector3.h"
 #include "Matrix4x4.h"
 
 jeBegin
@@ -40,13 +41,13 @@ public:
     int	    GetHeight() const;
     void    SetMainCamera(Camera* _camera);
 
-    Camera* GetMainCamera();
+    Camera* GetMainCamera() const;
 
-    vec3	    lightScale;
-    vec4	    backgroundColor, screenColor;
-    bool	    orthoComesFirst;
-    float	    sobelAmount, blurSize, blurAmount, sobelSize, aspect, zNear, zFar;
-    Alias	    aliasMode;
+    vec3			lightScale;
+    vec4			backgroundColor, screenColor;
+    bool			orthoComesFirst;
+    float			sobelAmount, blurSize, blurAmount, sobelSize, aspect, zNear, zFar;
+    Alias			aliasMode;
     ScreenEffect    screenEffect;
 
 private:
@@ -80,7 +81,7 @@ private:
     void LightSourcePipeline();
     void TextPipeline(Text * _text);
     void SpritePipeline(Sprite * _sprite);
-    void ParentPipeline(Transform* _pTransform);
+    void ParentPipeline(Transform* _pTransform) const;
     void MappingPipeline(Sprite* _sprite);
     void LightingEffectPipeline(Material* _material);
     void ParticlePipeline(Emitter* _emitter, const float _dt);

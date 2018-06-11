@@ -1,7 +1,5 @@
 #pragma once
 #include "Component.h"
-#include "Vector3.h"
-#include "Vector4.h"
 #include "ComponentManager.h"
 #include "ComponentBuilder.h"
 

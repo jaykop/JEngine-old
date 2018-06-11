@@ -13,6 +13,8 @@ class State {
 
 public:
 
+	const char * GetName() const;
+
 private:
 
 	State(const char* _name);

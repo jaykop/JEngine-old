@@ -1,10 +1,12 @@
 #include "CameraController.h"
 #include "CustomLogicHeader.h"
 #include "Camera.h"
-#include "Vector4.h"
+#include "MathUtils.h"
 
 jeBegin
 jeDefineCustomComponentBuilder(CameraController);
+
+using namespace Math;
 
 CameraController::CameraController(Object* _pObject)
 	:CustomComponent(_pObject), m_camera(nullptr),
@@ -50,34 +52,34 @@ void CameraController::Update(const float _dt)
 		position.z -= s_speedByDt;
 
 	if (INPUT::KeyPressed(JE_A)) {
-		s_v4Target = s_v4Target * mat4::Rotate(s_speedByDt, m_camera->up);
+		s_v4Target = s_v4Target * Rotate(s_speedByDt, m_camera->up);
 		s_v3Target.Set(s_v4Target.x, s_v4Target.y, s_v4Target.z);
 	}
 	
 	if (INPUT::KeyPressed(JE_D)){
-		s_v4Target = s_v4Target * mat4::Rotate(-s_speedByDt, m_camera->up);
+		s_v4Target = s_v4Target * Rotate(-s_speedByDt, m_camera->up);
 		s_v3Target.Set(s_v4Target.x, s_v4Target.y, s_v4Target.z);
 	}
 	
 	if (INPUT::KeyPressed(JE_W)) {
-		s_right = m_camera->up.CrossProduct(s_v3Target.GetNormalize());
+		s_right = CrossProduct(m_camera->up, GetNormalize(s_v3Target));
 		s_v4Target.Set(s_v3Target.x, s_v3Target.y, s_v3Target.z, 1.f);
-		s_v4Target = s_v4Target * mat4::Rotate(-s_speedByDt, s_right);
+		s_v4Target = s_v4Target * Rotate(-s_speedByDt, s_right);
 		s_v3Target.Set(s_v4Target.x, s_v4Target.y, s_v4Target.z);
-		m_camera->up = s_v3Target.CrossProduct(s_right.GetNormalize());
+		m_camera->up = CrossProduct(s_v3Target, GetNormalize(s_right));
 	}
 	
 	if (INPUT::KeyPressed(JE_S)) {
-		s_right = m_camera->up.CrossProduct(s_v3Target.GetNormalize());
+		s_right = CrossProduct(m_camera->up, GetNormalize(s_v3Target));
 		s_v4Target.Set(s_v3Target.x, s_v3Target.y, s_v3Target.z, 1.f);
-		s_v4Target = s_v4Target * mat4::Rotate(s_speedByDt, s_right);
+		s_v4Target = s_v4Target * Rotate(s_speedByDt, s_right);
 		s_v3Target.Set(s_v4Target.x, s_v4Target.y, s_v4Target.z);
-		m_camera->up = s_v3Target.CrossProduct(s_right.GetNormalize());
+		m_camera->up = CrossProduct(s_v3Target, GetNormalize(s_right));
 	}
 
 	//vec3 newTarget = (s_v3Target - position).GetNormalize();
 	m_camera->position = position;
-	m_camera->target.Set(position - s_v3Target.GetNormalize());// (position + vec3::UNIT_Z);
+	m_camera->target.Set(position - GetNormalize(s_v3Target));// (position + vec3::UNIT_Z);
 }
 
 void CameraController::Close()

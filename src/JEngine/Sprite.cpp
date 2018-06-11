@@ -29,8 +29,10 @@ void Sprite::Register()
 
 void Sprite::SetParentToFollow(Object* _pObj)
 {
-	if (_pObj->HasComponent<Transform>())
+	if (_pObj->HasComponent<Transform>()) {
 		m_pInherited = _pObj->GetComponent<Transform>();
+		status |= Sprite::IS_INHERITED;
+	}
 	else
 		jeDebugPrint("!Sprite - Object to be parent does not habe transform component!: %s\n", _pObj->GetName().c_str());
 }

@@ -15,7 +15,7 @@ class Steering : public CustomComponent
     jeBaseFriends(Steering);
 
 	enum behavior{ none, seek, flee, arrive, pursuit, 
-		evade, wander };
+		evade, wander, obstacle_avoidance,  };
 
 public:
 
@@ -29,7 +29,7 @@ public:
     bool AccumulateForce(const vec3& forceToAdd);
     vec3 Calculate();
 	
-    Object* m_target = nullptr, *m_circle= nullptr;
+    Object* m_target = nullptr, *m_circle= nullptr, *m_pathBox = nullptr;
 
     vec3 velocity;
     vec3 heading;
@@ -50,9 +50,9 @@ public:
 
 	vec3 wanderTarget;
 
-	Steering *m_evader, *m_pursuer;
-	Transform *m_transform, *targetTransform, *circleTransform;
-	behavior m_behavior;
+	Steering	*m_evader, *m_pursuer;
+	Transform	*m_transform, *targetTransform, *circleTransform;
+	behavior	m_behavior;
 
 private:
 

@@ -4,6 +4,7 @@
 #include "SystemManager.h"
 #include "Random.h"
 #include "Object.h"
+#include "MathUtils.h"
 
 #ifdef  jeUseBuiltInAllocator
 #include "MemoryAllocator.h"
@@ -11,6 +12,8 @@
 
 jeBegin
 jeDefineComponentBuilder(Emitter);
+
+using namespace Math;
 
 const unsigned	Emitter::m_maxSize = 1000;
 
@@ -25,7 +28,7 @@ Emitter::Particle::Particle(Emitter* _emitter)
 	position	= s_pTransform->position;
 	rotation	= Random::GetRandomFloat(0.f, 360.f);
 	direction	= Random::GetRandVec3(-m_pEmitter->direction, m_pEmitter->direction);
-	direction.Normalize();
+	Normalize(direction);
 	color.Set(m_pEmitter->m_startColor);
 	
 	static float s_rotationSpeed = m_pEmitter->rotationSpeed;
@@ -53,7 +56,7 @@ void Emitter::Particle::operator=(const Particle & _copy)
 	position.Set(s_pTransform->position);
 	rotation = _copy.rotation;
 	direction.Set(_copy.direction);
-	direction.Normalize();
+	Normalize(direction);
 	color.Set(_copy.color);
 	hidden = _copy.hidden;
 	rotationSpeed = _copy.rotationSpeed;
