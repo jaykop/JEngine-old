@@ -91,7 +91,7 @@ void Steering::Init()
 		wanderRadius = circleTransform->scale.x / 2.f;
 	}
 
-	//else if (m_behavior == obstacle_avoidance) {
+	else if (m_behavior == obstacle_avoidance) {
 		
 		m_pathBox = CONTAINER->GetObject("PathBox");
 		
@@ -121,8 +121,10 @@ void Steering::Init()
 			sprite->projection = PROJECTION_ORTHOGONAL;
 
 			FACTORY::AddCreatedObject();
+
+			m_obstacles.push_back(newObstacle);
 		}
-	//}
+	}
 
 	// Get target transform
 	m_target = CONTAINER->GetObject("Target");
@@ -154,6 +156,8 @@ void Steering::Update(const float _dt)
 		targetTransform->position.Set(
 			Random::GetRandVec3(-350.f, -250.f, -1.f, 350.f, 250.f, -1.f));
 
+	Avoid();
+
 	// Calculate the force to add
 	Calculate();
 
@@ -179,7 +183,9 @@ void Steering::Update(const float _dt)
 }
 
 void Steering::Close()
-{}
+{
+	m_obstacles.clear();
+}
 
 bool Steering::OnMessage(Telegram& /*msg*/)
 {
