@@ -130,20 +130,20 @@ vec3 Steering::Wander()
 
 vec3 Steering::Avoid()
 {
-	mat4 parentWorld = Scale(m_transform->scale)
+	mat4 parentWorld = Translate(m_transform->position)
 		* Rotate(DegToRad(m_transform->rotation), m_transform->rotationAxis)
-		* Translate(m_transform->position);
+		* Scale(m_transform->scale);
 
-	vec3 boxPos = m_pathBox->GetComponent<Transform>()->position;
-	vec4 worldBoxPos(boxPos.x, boxPos.y, boxPos.z, 0.f);
-	worldBoxPos = worldBoxPos * GetTranspose(parentWorld);
+	vec3 boxPos = m_detection->GetComponent<Transform>()->position;
+	vec4 worldBoxPos(boxPos.x, boxPos.y, boxPos.z, 1.f);
+	worldBoxPos = worldBoxPos * parentWorld;
 
-	std::cout << worldBoxPos << std::endl;
+	vec3 pathBoxScale(detectionTransform->position.x/ 2.f, detectionTransform->position.y/2.f);
 
-	//leftTop = ;
-	//leftBot = ;
-	//rightTop = ;
-	//rightBot = ;
+	//leftTop.Set(worldBoxPos.x - pathBoxScale.x, worldBoxPos.y + pathBoxScale.y, 1.f);
+	//leftBot.Set(worldBoxPos.x - pathBoxScale.x, worldBoxPos.y - pathBoxScale.y, 1.f);
+	//rightTop.Set(worldBoxPos.x + pathBoxScale.x, worldBoxPos.y + pathBoxScale.y, 1.f);
+	//rightBot.Set(worldBoxPos.x + pathBoxScale.x, worldBoxPos.y - pathBoxScale.y, 1.f);
 
 	//for (auto obj : m_obstacles)	{
 	//	Transform *transform = obj->GetComponent<Transform>();

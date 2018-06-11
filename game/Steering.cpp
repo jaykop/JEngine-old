@@ -93,14 +93,14 @@ void Steering::Init()
 
 	else if (m_behavior == obstacle_avoidance) {
 		
-		m_pathBox = CONTAINER->GetObject("PathBox");
+		m_detection = CONTAINER->GetObject("PathBox");
 		
-		Transform* pathBoxTransform = m_pathBox->GetComponent<Transform>();
-		pathBoxTransform->scale.x = 5.f;
-		pathBoxTransform->scale.y = 1.f;
-		pathBoxTransform->position.x += pathBoxTransform->scale.x / 2.f;
+		detectionTransform = m_detection->GetComponent<Transform>();
+		detectionTransform->scale.x = 5.f;
+		detectionTransform->scale.y = 1.f;
+		detectionTransform->position.x += detectionTransform->scale.x / 2.f;
 
-		Sprite *pathBoxSprite = m_pathBox->GetComponent<Sprite>();
+		Sprite *pathBoxSprite = m_detection->GetComponent<Sprite>();
 		pathBoxSprite->SetParentToFollow(GetOwner());
 		pathBoxSprite->projection = PROJECTION_ORTHOGONAL;
 
@@ -129,6 +129,7 @@ void Steering::Init()
 	// Get target transform
 	m_target = CONTAINER->GetObject("Target");
 	targetTransform = m_target->GetComponent<Transform>();
+
 }
 
 vec3 GetPerpendicular(const vec3& vector)
@@ -148,8 +149,8 @@ void Steering::Update(const float _dt)
 		targetTransform->position.Set(newPos);
 	}
 
-	if (m_pathBox)
-		m_pathBox->GetComponent<Transform>()->position.z = -1.f;
+	if (m_detection)
+		m_detection->GetComponent<Transform>()->position.z = -1.f;
 
 	// By keyboard
 	if (INPUT::KeyTriggered(JE_ENTER))
