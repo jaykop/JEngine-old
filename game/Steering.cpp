@@ -149,6 +149,15 @@ void Steering::Update(const float _dt)
 		targetTransform->position.Set(newPos);
 	}
 
+	if (INPUT::KeyTriggered(JE_SPACE))
+	{
+		static behavior save = none;
+		
+		behavior temp = m_behavior;
+		m_behavior = save;
+		save = temp;
+	}
+
 	if (m_detection)
 		m_detection->GetComponent<Transform>()->position.z = -1.f;
 
@@ -157,30 +166,33 @@ void Steering::Update(const float _dt)
 		targetTransform->position.Set(
 			Random::GetRandVec3(-350.f, -250.f, -1.f, 350.f, 250.f, -1.f));
 
-	Avoid();
+	if (m_behavior != none) {
 
-	// Calculate the force to add
-	Calculate();
+		Avoid();
 
-	// Add force to velocity
-	vec3 acceleration = GetNormalize(steeringForce) / mass;
-	velocity += acceleration * _dt * maxSpeed;
+		// Calculate the force to add
+		Calculate();
 
-	// Limit the velocity magnitude
-	Truncate(velocity, maxSpeed);
+		// Add force to velocity
+		vec3 acceleration = GetNormalize(steeringForce) / mass;
+		velocity += acceleration * _dt * maxSpeed;
 
-	// Update position
-	vec3 toAdd = velocity * _dt;
-	toAdd.z = 0.f;
-	m_transform->position += toAdd;
-	m_transform->rotation = GetAngle(vec3::UNIT_X, velocity);
+		// Limit the velocity magnitude
+		Truncate(velocity, maxSpeed);
 
-	if (GetLengthSq(velocity) > 0.00000001) {
-		heading = GetNormalize(velocity);
-		side = GetPerpendicular(heading);
+		// Update position
+		vec3 toAdd = velocity * _dt;
+		toAdd.z = 0.f;
+		m_transform->position += toAdd;
+		m_transform->rotation = GetAngle(vec3::UNIT_X, velocity);
+
+		if (GetLengthSq(velocity) > 0.00000001) {
+			heading = GetNormalize(velocity);
+			side = GetPerpendicular(heading);
+		}
+
+		ControlPosition(m_transform->position);
 	}
-
-	ControlPosition(m_transform->position);
 }
 
 void Steering::Close()

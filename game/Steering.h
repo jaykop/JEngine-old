@@ -27,8 +27,11 @@ public:
 	vec3 Wander();
 	vec3 Avoid();
 
-    bool AccumulateForce(const vec3& forceToAdd);
+    bool AccumulateForce(const vec3& _forceToAdd);
     vec3 Calculate();
+	vec3 GetPosOriginatedToDitection(Transform* _transform);
+	vec3 GetWorldDetection();
+	void GetIntersectedObstalces();
 	
     Object* m_target = nullptr, *m_circle= nullptr, *m_detection = nullptr;
 
@@ -55,7 +58,7 @@ public:
 	Transform	*m_transform, *targetTransform, *circleTransform, *detectionTransform;
 	behavior	m_behavior;
 
-	std::vector<Object*> m_obstacles;
+	std::vector<Object*> m_obstacles, m_intersected;
 
 private:
 

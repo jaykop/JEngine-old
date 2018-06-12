@@ -130,28 +130,8 @@ vec3 Steering::Wander()
 
 vec3 Steering::Avoid()
 {
-	mat4 parentWorld = Translate(m_transform->position)
-		* Rotate(DegToRad(m_transform->rotation), m_transform->rotationAxis)
-		* Scale(m_transform->scale);
-
-	vec3 boxPos = m_detection->GetComponent<Transform>()->position;
-	vec4 worldBoxPos(boxPos.x, boxPos.y, boxPos.z, 1.f);
-	worldBoxPos = worldBoxPos * parentWorld;
-
-	vec3 pathBoxScale(detectionTransform->position.x/ 2.f, detectionTransform->position.y/2.f);
-
-	//leftTop.Set(worldBoxPos.x - pathBoxScale.x, worldBoxPos.y + pathBoxScale.y, 1.f);
-	//leftBot.Set(worldBoxPos.x - pathBoxScale.x, worldBoxPos.y - pathBoxScale.y, 1.f);
-	//rightTop.Set(worldBoxPos.x + pathBoxScale.x, worldBoxPos.y + pathBoxScale.y, 1.f);
-	//rightBot.Set(worldBoxPos.x + pathBoxScale.x, worldBoxPos.y - pathBoxScale.y, 1.f);
-
-	//for (auto obj : m_obstacles)	{
-	//	Transform *transform = obj->GetComponent<Transform>();
-	//	
-	//	transform->position;
-	//	transform->scale.x;
-	//}
-
+	GetIntersectedObstalces();
+	
 	return vec3::ZERO;
 }
 
@@ -201,6 +181,85 @@ vec3 Steering::Calculate()
 		return steeringForce;
 
 	return steeringForce;
+}
+
+vec3 Steering::GetPosOriginatedToDitection(Transform* _transform)
+{
+	vec3 diff = _transform->position - GetWorldDetection();
+	float degree = DegToRad(detectionTransform->rotation + m_transform->rotation);
+	vec3 vector(cosf(degree), sinf(degree));
+
+	float length = GetLength(diff);
+	float angle = DegToRad(GetAngle(GetNormalize(vector), GetNormalize(diff)));
+
+	float newX = length * cosf(angle), newY = length * sinf(angle);
+	return vec3(newX, newY, -1.f);
+}
+
+vec3 Steering::GetWorldDetection()
+{
+	vec4 output;
+
+	vec3 detectionPos = detectionTransform->position;
+	vec4 detectionPos4(detectionPos.x, detectionPos.y, detectionPos.z, 1.f);
+
+	vec3 parentPos = m_transform->position;
+	vec3 parentScale = m_transform->scale;
+
+	mat4 parent = Translate(parentPos) 
+		* Rotate(DegToRad(m_transform->rotation), m_transform->rotationAxis)
+		* Scale(parentScale);
+
+	output = detectionPos4 * parent;
+
+	return vec3(output.x, output.y, output.z);
+}
+
+void Steering::GetIntersectedObstalces()
+{
+	m_intersected.clear();
+
+	for (auto obstacle : m_obstacles) {
+
+		static const vec2 detectionScale(m_transform->scale.x * detectionTransform->scale.x,
+			m_transform->scale.y * detectionTransform->scale.y);
+
+		Transform *obstacleTransform = obstacle->GetComponent<Transform>();
+
+		vec3 scale = obstacleTransform->scale;
+		vec3 position = GetPosOriginatedToDitection(obstacleTransform);
+
+		// Obstacles' boundaries
+		vec2 obstacleUp, obstacleDown, obstacleLeft, obstacleRight;
+		obstacleUp.Set(position.x, position.y + scale.y);
+		obstacleDown.Set(position.x, position.y -scale.y);
+		obstacleLeft.Set(position.x -scale.x, position.y);
+		obstacleRight.Set(position.x + scale.x, position.y);
+
+		// Box boudaries
+		vec2 up, down, left, right;
+		up.Set(0.f, detectionScale.y);
+		down.Set(0.f, -detectionScale.y);
+		left.Set(-detectionScale.x, 0.f);
+		right.Set(detectionScale.x, 0.f);
+
+		// Check intersection
+		//bool intersected = ((obstacleDown.y < down.y && down.y < obstacleUp.y)
+		//	|| (obstacleDown.y < up.y && up.y < obstacleUp.y))
+		//	&& ((obstacleLeft.x < left.x && left.x < obstacleRight.x)
+		//		|| (obstacleLeft.x < right.x && right.x < obstacleRight.x));
+
+		bool intersected = !(obstacleUp.y < down.y) 
+			&& !(obstacleDown.y > up.y)
+			&& !(obstacleRight.x < left.x)
+			&& !(obstacleLeft.x > right.x);
+
+		// Enroll the intersected ones
+		if (intersected) {
+			jeDebugPrint("%s\n", obstacle->GetName().c_str());
+			m_intersected.push_back(obstacle);
+		}
+	}
 }
 
 bool Steering::AccumulateForce(const vec3& forceToAdd)
