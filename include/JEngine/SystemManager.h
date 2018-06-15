@@ -53,7 +53,7 @@ class SystemManager {
 
 public:
 
-    static SystemBlock	    *m_systems;
+    static SystemBlock	    *m_systemBlock;
 
     static SoundSystem*	    GetSoundSystem();
     static GraphicSystem*   GetGraphicSystem();

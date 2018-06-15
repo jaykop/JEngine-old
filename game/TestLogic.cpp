@@ -48,7 +48,7 @@ void TestLogic::Init()
     //unsigned a = sizeof(std::string);
 
 	camera = CONTAINER->GetObject("Camera")->GetComponent<Camera>();
-
+	pointer = CONTAINER->GetObject("MousePointer")->GetComponent<Transform>();
     /*m_ortho = CONTAINER->GetObject("OrthogonalSprite");
     m_pers = CONTAINER->GetObject("PerspectiveModel");*/
     //CONTAINER->GET_COMPONENT("Model", Sprite);
@@ -93,6 +93,19 @@ void TestLogic::Update(const float _dt)
     ////oriented top->down 
     //int winY = int(((temp.y + 1) * .5) * SYSTEM::GetGraphicSystem()->GetHeight());
     ////int winY = (int)Math.round(((1 - point3D.getY()) / 2.0) *height);
+
+	float aspect = SYSTEM::GetGraphicSystem()->aspect;
+	float zNear = SYSTEM::GetGraphicSystem()->zNear;
+	float zFar = SYSTEM::GetGraphicSystem()->zFar;
+
+	vec4 ray(INPUT::GetOrhtoPosition().x, INPUT::GetOrhtoPosition().y, INPUT::GetOrhtoPosition().z, 1.f);
+	Camera *pMain = SYSTEM::GetGraphicSystem()->GetMainCamera();
+	ray = ray * Math::GetInverse(Math::Perspective(pMain->zoom, aspect, zNear, zFar));
+	ray = ray * Math::GetInverse(Math::LookAt(pMain->position, pMain->target, pMain->up));
+
+	std::cout << ray << std::endl;
+	vec3 ray3(ray.x, ray.y, 1.f);
+	pointer->position.Set(ray3);
 }
 
 void TestLogic::Close()

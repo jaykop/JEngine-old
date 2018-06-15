@@ -5,7 +5,7 @@ jeBegin
 //////////////////////////////////////////////////////////////////////////
 // static variables
 //////////////////////////////////////////////////////////////////////////
-SYSTEM::SystemBlock	*SYSTEM::m_systems = nullptr;
+SYSTEM::SystemBlock	*SYSTEM::m_systemBlock = nullptr;
 SYSTEM::SystemStack	SYSTEM::m_pauseStack;
 
 //////////////////////////////////////////////////////////////////////////
@@ -13,68 +13,68 @@ SYSTEM::SystemStack	SYSTEM::m_pauseStack;
 //////////////////////////////////////////////////////////////////////////
 SoundSystem* SystemManager::GetSoundSystem()
 {
-	return m_systems->m_pSoundSystem;
+	return m_systemBlock->m_pSoundSystem;
 }
 
 GraphicSystem* SystemManager::GetGraphicSystem()
 {
-	return m_systems->m_pGraphicSystem;;
+	return m_systemBlock->m_pGraphicSystem;;
 }
 
 PhysicsSystem* SystemManager::GetPhysicsSystem()
 {
-	return m_systems->m_pPhysicsSystem;
+	return m_systemBlock->m_pPhysicsSystem;
 }
 
 BehaviorSystem* SystemManager::GetBehaviorSystem()
 {
-	return m_systems->m_pBehaviorSystem;
+	return m_systemBlock->m_pBehaviorSystem;
 }
 
 void SystemManager::Load(CR_RJDoc _data)
 {
-	m_systems->Load(_data);
+	m_systemBlock->Load(_data);
 }
 
 void SystemManager::Init()
 {
-	m_systems->Init();
+	m_systemBlock->Init();
 }
 
 void SystemManager::Update(const float _dt)
 {
-	m_systems->Update(_dt);
+	m_systemBlock->Update(_dt);
 }
 
 void SystemManager::Close()
 {
-	m_systems->Close();
+	m_systemBlock->Close();
 }
 
 void SystemManager::Unload()
 {
-	m_systems->Unload();
+	m_systemBlock->Unload();
 }
 
 void SystemManager::Pause()
 {
 	// Push current systems into the storage stack
-	m_pauseStack.push(m_systems);
+	m_pauseStack.push(m_systemBlock);
 
 	// Bind new system
-	m_systems = new SystemBlock;
-	m_systems->Bind();
+	m_systemBlock = new SystemBlock;
+	m_systemBlock->Bind();
 }
 
 void SystemManager::Resume()
 {
 	// Unbind systems
-	m_systems->Unbind();
+	m_systemBlock->Unbind();
 
 	// Delete and get last system
-	delete m_systems;
-	m_systems = nullptr;
-	m_systems = m_pauseStack.top();
+	delete m_systemBlock;
+	m_systemBlock = nullptr;
+	m_systemBlock = m_pauseStack.top();
 
 	// Pop the top(currnet system)
 	m_pauseStack.pop();
@@ -83,18 +83,18 @@ void SystemManager::Resume()
 void SystemManager::Bind()
 {
 	// Check nullptr
-	if (!m_systems) {
-		m_systems = new SystemBlock;
-		m_systems->Bind();
+	if (!m_systemBlock) {
+		m_systemBlock = new SystemBlock;
+		m_systemBlock->Bind();
 	}
 }
 
 void SystemManager::Unbind()
 {
 	// Check valid ptr
-	if (m_systems) {
-		delete m_systems;
-		m_systems = nullptr;
+	if (m_systemBlock) {
+		delete m_systemBlock;
+		m_systemBlock = nullptr;
 	}
 }
 

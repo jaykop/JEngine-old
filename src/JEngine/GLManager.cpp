@@ -1,8 +1,16 @@
 #include "GLManager.h"
 #include "Shader.h"
 #include "imgui.h"
+#include "Vector2.h"
 
 jeBegin
+
+struct jeVertex{
+    
+    vec3 position;
+    vec2 uv;
+    vec3 normal;
+};
 
 //////////////////////////////////////////////////////////////////////////
 // static variables
@@ -354,6 +362,24 @@ void GLManager::InitGLEnvironment()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
 
+}
+
+void GLManager::DescribeVertex()
+{
+    glGenVertexArrays(1, &m_testVAO);
+    glGenBuffers(1, &m_testVBO);
+
+    glBindVertexArray(m_testVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, m_testVBO);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(int), reinterpret_cast<void*>(offsetof(jeVertex, jeVertex::position)));
+    glEnableVertexAttribArray(0);
+
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(int), reinterpret_cast<void*>(offsetof(jeVertex, jeVertex::uv)));
+    glEnableVertexAttribArray(1);
+
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(int), reinterpret_cast<void*>(offsetof(jeVertex, jeVertex::normal)));
+    glEnableVertexAttribArray(2);
 }
 
 void GLManager::InitShaders()

@@ -39,6 +39,9 @@ private:
     static bool Init();
     static void Close();
     static void InitGLEnvironment();
+
+    static void DescribeVertex();
+
     static void InitVBO();
     static void InitFBO();
     static void InitShaders();
@@ -58,6 +61,8 @@ private:
     static unsigned	m_drawMode;
     static GLint	m_Attributes, m_buffers, m_samples;
     static GLuint	m_vao[SHAPE_END], m_vbo[SHAPE_END], m_ebo[SHAPE_END], m_fbo, m_renderTarget, m_depthBuffer;
+
+    static unsigned     m_testVAO, m_testVBO;
 
     static const GLubyte *m_pRenderer, *m_pVendor, *m_pVersion, *m_pGlslVersion;
 

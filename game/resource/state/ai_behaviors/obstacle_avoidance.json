@@ -28,11 +28,11 @@
 			"Component" : [
 				{
 					"Type": "Transform",
-					"Values": {"Position" : [0, 0, 0], "Scale" : [15, 15, 0]}
+					"Values": {"Position" : [0, 0, 0], "Scale" : [1, 1, 0]}
 				},
 				{
 					"Type" : "Sprite",
-					"Values" : {"Texture" : "crosshair", "Color" : [0, 0, 0, 1], "Projection" : "Orthogonal" }
+					"Values" : {"Texture" : "crosshair", "Color" : [0, 0, 0, 1], "Projection" : "Perspective" }
 				}
 			]
 		},
@@ -54,17 +54,40 @@
 			"Component" : [
 				{
 					"Type": "Transform",
-					"Values": {"Position" : [0, 0, -1], "Scale" : [50, 50, 0]}
+					"Values": {"Position" : [0, 0, -1], "Scale" : [5, 5, 0]}
 				},
 				{
 					"Type" : "Sprite",
-					"Values" : {"Texture" : "arrow", "Color" : [1, 1, 1, 1], "Projection" : "Orthogonal" }
+					"Values" : {"Texture" : "arrow", "Color" : [1, 1, 1, 1], "Projection" : "Perspective" }
 				},
 				{
 					"Type" : "Steering",
 					"Values" : {"Behavior" : "Avoid"}
 				}
 			]
+		},
+		{
+			"Name" : "Mouse",
+			"Component" : [
+				{
+					"Type": "TestLogic",
+					"Values": {}
+				}
+			]
+		},
+		{
+			"Name" : "MousePointer",
+			"Component" : [
+				{
+					"Type": "Transform",
+					"Values": {"Scale" : [10, 10, 0]}
+				},
+				{
+					"Type" : "Sprite",
+					"Values" : {"Texture" : "circle"}
+				}
+			]
 		}
+		
 	]
 }
