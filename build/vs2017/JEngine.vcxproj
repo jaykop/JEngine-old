@@ -261,6 +261,7 @@
     <ClCompile Include="..\..\src\JEngine\MathUtils_vec3.cpp" />
     <ClCompile Include="..\..\src\JEngine\MathUtils_vec4.cpp" />
     <ClCompile Include="..\..\src\JEngine\Matrix4x4.cpp" />
+    <ClCompile Include="..\..\src\JEngine\Mesh.cpp" />
     <ClCompile Include="..\..\src\JEngine\MessageDispatcher.cpp" />
     <ClCompile Include="..\..\src\JEngine\Model.cpp" />
     <ClCompile Include="..\..\src\JEngine\Object.cpp" />

@@ -243,22 +243,17 @@ void Steering::GetIntersectedObstalces()
 		left.Set(-detectionScale.x, 0.f);
 		right.Set(detectionScale.x, 0.f);
 
-		// Check intersection
-		//bool intersected = ((obstacleDown.y < down.y && down.y < obstacleUp.y)
-		//	|| (obstacleDown.y < up.y && up.y < obstacleUp.y))
-		//	&& ((obstacleLeft.x < left.x && left.x < obstacleRight.x)
-		//		|| (obstacleLeft.x < right.x && right.x < obstacleRight.x));
+		//// Check intersection
+		//bool intersected = !(obstacleUp.y < down.y) 
+		//	&& !(obstacleDown.y > up.y)
+		//	&& !(obstacleRight.x < left.x)
+		//	&& !(obstacleLeft.x > right.x);
 
-		bool intersected = !(obstacleUp.y < down.y) 
-			&& !(obstacleDown.y > up.y)
-			&& !(obstacleRight.x < left.x)
-			&& !(obstacleLeft.x > right.x);
-
-		// Enroll the intersected ones
-		if (intersected) {
-			jeDebugPrint("%s\n", obstacle->GetName().c_str());
-			m_intersected.push_back(obstacle);
-		}
+		//// Enroll the intersected ones
+		//if (intersected) {
+		//	jeDebugPrint("%s\n", obstacle->GetName().c_str());
+		//	m_intersected.push_back(obstacle);
+		//}
 	}
 }
 

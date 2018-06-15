@@ -41,9 +41,9 @@ namespace Math
 	// Matrix 4x4
 	//////////////////////////////////////////////////////////////////////////
 	mat4	GetTranspose(CR_Mat4 _mat);
-	mat4&	Transpose(mat4& _mat);
+	void	Transpose(mat4& _mat);
 	mat4	GetInverse(CR_Mat4 _mat);
-	mat4&	Inverse(mat4& _mat);
+	void	Inverse(mat4& _mat);
 	void	SetIdentity(mat4& _mat, float _diagonal = 1.f);
 
 	mat4 Translate(CR_Vec3 _vec);

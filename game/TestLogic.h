@@ -9,6 +9,7 @@ jeBegin
 class Object;
 class Camera;
 struct Telegram;
+class Transform;
 
 class TestLogic : public CustomComponent
 {
@@ -22,7 +23,7 @@ public:
 
 	Object * m_ortho, *m_pers;
 	Camera *camera;
-
+	Transform* pointer;
 private:
 
     std::vector <Object*> m_list;

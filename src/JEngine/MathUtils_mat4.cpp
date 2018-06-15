@@ -199,10 +199,9 @@ namespace Math {
 		return result;
 	}
 
-	Matrix4x4& Transpose(mat4& _mat)
+	void Transpose(mat4& _mat)
 	{
 		_mat = GetTranspose(_mat);
-		return _mat;
 	}
 
 	Matrix4x4 GetInverse(CR_Mat4 _mat)
@@ -344,10 +343,9 @@ namespace Math {
 		return result;
 	}
 
-	Matrix4x4& Inverse(mat4& _mat)
+	void Inverse(mat4& _mat)
 	{
 		_mat = GetInverse(_mat);
-		return _mat;
 	}
 
 	/******************************************************************************/
