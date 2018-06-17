@@ -102,6 +102,32 @@ void Sprite::operator=(const Sprite & _copy)
 
 void Sprite::Load(CR_RJValue _data)
 {
+	if (_data.HasMember("Mesh")
+		&& _data["Mesh"].GetString())
+	{
+		std::string meshType = _data["Mesh"].GetString();
+		if (!strcmp(meshType.c_str(), "Point"))
+			m_pMeshes = GLM::CreatePoint();
+
+		else if (!strcmp(meshType.c_str(), "Rect"))
+			m_pMeshes = GLM::CreateRect();
+			
+		else if (!strcmp(meshType.c_str(), "CrossRect"))
+			m_pMeshes = GLM::CreateCrossRect();
+			
+		else if (!strcmp(meshType.c_str(), "Cube"))
+			m_pMeshes = GLM::CreateCube();
+
+		// TODO
+		else if (!strcmp(meshType.c_str(), "Tetrahedron"))
+			m_pMeshes = GLM::CreatePoint();
+
+		// TODO
+		else if (!strcmp(meshType.c_str(), "Custom"))
+			m_pMeshes = nullptr;		;
+
+	}
+
 	if (_data.HasMember("Flip")
 		&& _data["Flip"].GetBool())
 		status |= IS_FLIPPED;

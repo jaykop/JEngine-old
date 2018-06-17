@@ -11,10 +11,6 @@ class Model : public Sprite
 
 public:
 
-	enum shape {none, rect, cube, tetrahedron, };
-
-	shape m_shape = none;
-
 private:
 
     Model(Object* pObject);
