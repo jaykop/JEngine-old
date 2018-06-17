@@ -1,37 +1,24 @@
 #include "GLManager.h"
 #include "Shader.h"
+#include "Mesh.h"
 #include "imgui.h"
-#include "Vector2.h"
+#include "GraphicSystem.h"
 
 jeBegin
-
-struct jeVertex{
-    
-    vec3 position;
-    vec2 uv;
-    vec3 normal;
-};
 
 //////////////////////////////////////////////////////////////////////////
 // static variables
 //////////////////////////////////////////////////////////////////////////
 float	GLM::m_width = 0;
 float	GLM::m_height = 0;
-GLint	GLM::m_buffers,
-GLM::m_samples,
-GLM::m_Attributes;
-GLuint	GLM::m_vao[] = { 0 },
-GLM::m_vbo[] = { 0 },
-GLM::m_ebo[] = { 0 },
-GLM::m_fbo = 0,
-GLM::m_depthBuffer = 0,
-GLM::m_renderTarget = 0;
-
+GLint	GLM::m_buffers, GLM::m_samples, GLM::m_Attributes;
+GLuint	GLM::m_vao[] = { 0 }, GLM::m_vbo[] = { 0 }, GLM::m_ebo[] = { 0 },
+GLM::m_fbo = 0, GLM::m_depthBuffer = 0, GLM::m_renderTarget = 0;
 GLM::Shaders	GLM::m_shader;
 GLM::DrawMode	GLM::m_mode = DrawMode::DRAW_FILL;
 const GLubyte	*GLM::m_pRenderer = nullptr, *GLM::m_pVendor = nullptr,
-		*GLM::m_pVersion = nullptr, *GLM::m_pGlslVersion = nullptr;
-unsigned	GLM::m_drawMode = GL_TRIANGLES;
+*GLM::m_pVersion = nullptr, *GLM::m_pGlslVersion = nullptr;
+unsigned		GLM::m_drawMode = GL_TRIANGLES;
 
 const float GLManager::m_verticesPoint[] =
 {	// position				// uv		// normals
@@ -42,140 +29,140 @@ const unsigned GLManager::m_indicesPoint[] = { 0 };
 const float GLManager::m_verticesPlane[] = {
 
     // vertic position	// uv		// normals
-    -.5f, .5f, 0.f,	0.f, 0.f,	0.0f,  0.0f, 1.0f,	
-    .5f, .5f, 0.f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,	
-    .5f, -.5f,	0.f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,	
-    -.5f, -.5f, 0.f,	0.f, 1.f,	0.0f,  0.0f, 1.0f	
+    -.5f, .5f, 0.f,	0.f, 0.f,	0.0f,  0.0f, 1.0f,
+    .5f, .5f, 0.f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,
+    .5f, -.5f,	0.f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,
+    -.5f, -.5f, 0.f,	0.f, 1.f,	0.0f,  0.0f, 1.0f
 };
 
 const unsigned GLManager::m_indicesPlane[] = {
 
     0, 2, 3,
-    2, 0, 1	
+    2, 0, 1
 };
 
 const float GLManager::m_verticesPlane3D[] = {
 
     // position			// uv		// normals
-    -.5f,	.5f,	0.f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,		
-    .5f,	.5f,	0.f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,	
-    .5f,	-.5f,	0.f,	0.f, 1.f,	0.0f,  0.0f, 1.0f,	
-    -.5f,	-.5f,	0.f,	0.f, 0.f,	0.0f,  0.0f, 1.0f,	
+    -.5f,	.5f,	0.f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,
+    .5f,	.5f,	0.f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,
+    .5f,	-.5f,	0.f,	0.f, 1.f,	0.0f,  0.0f, 1.0f,
+    -.5f,	-.5f,	0.f,	0.f, 0.f,	0.0f,  0.0f, 1.0f,
 
-    0.f,	.5f,	.5f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,	
-    0.f,	.5f,	-.5f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,	
-    0.f,	-.5f,	-.5f,	0.f, 1.f,	0.0f,  0.0f, 1.0f,	
-    0.f,	-.5f,	.5f,	0.f, 0.f,	0.0f,  0.0f, 1.0f,	
+    0.f,	.5f,	.5f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,
+    0.f,	.5f,	-.5f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,
+    0.f,	-.5f,	-.5f,	0.f, 1.f,	0.0f,  0.0f, 1.0f,
+    0.f,	-.5f,	.5f,	0.f, 0.f,	0.0f,  0.0f, 1.0f,
 
-    -.5f,	0.f,	-.5f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,		
-    .5f,	0.f,	-.5f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,	
-    .5f,	0.f,	.5f,	0.f, 1.f,	0.0f,  0.0f, 1.0f,	
-    -.5f,	0.f,	.5f,	0.f, 0.f,	0.0f,  0.0f, 1.0f,	
+    -.5f,	0.f,	-.5f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,
+    .5f,	0.f,	-.5f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,
+    .5f,	0.f,	.5f,	0.f, 1.f,	0.0f,  0.0f, 1.0f,
+    -.5f,	0.f,	.5f,	0.f, 0.f,	0.0f,  0.0f, 1.0f,
 
 };
 const unsigned GLManager::m_indicesPlane3D[] = {
     // front
-    0, 2, 3,	
-    2, 0, 1,	
+    0, 2, 3,
+    2, 0, 1,
 
     // back
-    5, 7, 6,	
-    7, 5, 4,	
+    5, 7, 6,
+    7, 5, 4,
 
     // left
-    8, 10, 11,	
-    10, 8, 9	
+    8, 10, 11,
+    10, 8, 9
 };
 
 const float GLManager::m_verticesCube[] =
 {
     // front
-    -.5f,	.5f,	.5f,	.25f, .25f,	0.0f,  0.0f, 1.0f,	
-    .5f,	.5f,	.5f,	.5f, .25f,	0.0f,  0.0f, 1.0f,	
-    .5f,	-.5f,	.5f,	.5f, .5f,	0.0f,  0.0f, 1.0f,	
-    -.5f,	-.5f,	.5f,	.25f, .5f,	0.0f,  0.0f, 1.0f,	
+    -.5f,	.5f,	.5f,	.25f, .25f,	0.0f,  0.0f, 1.0f,
+    .5f,	.5f,	.5f,	.5f, .25f,	0.0f,  0.0f, 1.0f,
+    .5f,	-.5f,	.5f,	.5f, .5f,	0.0f,  0.0f, 1.0f,
+    -.5f,	-.5f,	.5f,	.25f, .5f,	0.0f,  0.0f, 1.0f,
 
     // back
-    .5f,	.5f,	-.5f,	.75f, .25f,	0.0f,  0.0f, -1.0f,		
-    -.5f,	.5f,	-.5f,	1.f, .25f,	0.0f,  0.0f, -1.0f,	
-    -.5f,	-.5f,	-.5f,	1.f, .5f,	0.0f,  0.0f, -1.0f,	
-    .5f,	-.5f,	-.5f,	.75f, .5f,	0.0f,  0.0f, -1.0f,	
+    .5f,	.5f,	-.5f,	.75f, .25f,	0.0f,  0.0f, -1.0f,
+    -.5f,	.5f,	-.5f,	1.f, .25f,	0.0f,  0.0f, -1.0f,
+    -.5f,	-.5f,	-.5f,	1.f, .5f,	0.0f,  0.0f, -1.0f,
+    .5f,	-.5f,	-.5f,	.75f, .5f,	0.0f,  0.0f, -1.0f,
 
     // left
-    -.5f,	.5f,	-.5f,	0.f, .25f,	-1.0f,  0.0f,  0.0f,	
-    -.5f,	.5f,	.5f,	.25f, .25f,	-1.0f,  0.0f,  0.0f,	
-    -.5f,	-.5f,	.5f,	.25f, .5f,	-1.0f,  0.0f,  0.0f,	
-    -.5f,	-.5f,	-.5f,	0.f, .5f,	-1.0f,  0.0f,  0.0f,	
+    -.5f,	.5f,	-.5f,	0.f, .25f,	-1.0f,  0.0f,  0.0f,
+    -.5f,	.5f,	.5f,	.25f, .25f,	-1.0f,  0.0f,  0.0f,
+    -.5f,	-.5f,	.5f,	.25f, .5f,	-1.0f,  0.0f,  0.0f,
+    -.5f,	-.5f,	-.5f,	0.f, .5f,	-1.0f,  0.0f,  0.0f,
 
     // right
-    .5f,	.5f,	.5f,	.5f, .25f,	1.0f,  0.0f,  0.0f,			
+    .5f,	.5f,	.5f,	.5f, .25f,	1.0f,  0.0f,  0.0f,
     .5f,	.5f,	-.5f,	.75f, .25f,	1.0f,  0.0f,  0.0f,
-    .5f,	-.5f,	-.5f,	.75f, .5f,	1.0f,  0.0f,  0.0f,	
-    .5f,	-.5f,	.5f,	.5f, .5f,	1.0f,  0.0f,  0.0f,		
+    .5f,	-.5f,	-.5f,	.75f, .5f,	1.0f,  0.0f,  0.0f,
+    .5f,	-.5f,	.5f,	.5f, .5f,	1.0f,  0.0f,  0.0f,
 
     // down
-    -.5f,	-.5f,	.5f,	.25f, .5f,	0.0f, -1.0f,  0.0f,	
-    .5f,	-.5f,	.5f,	.5f, .5f,	0.0f, -1.0f,  0.0f,	
-    .5f,	-.5f,	-.5f,	.5f, .75f,	0.0f, -1.0f,  0.0f,	
-    -.5f,	-.5f,	-.5f,	.25f, .75f,	0.0f, -1.0f,  0.0f,	
+    -.5f,	-.5f,	.5f,	.25f, .5f,	0.0f, -1.0f,  0.0f,
+    .5f,	-.5f,	.5f,	.5f, .5f,	0.0f, -1.0f,  0.0f,
+    .5f,	-.5f,	-.5f,	.5f, .75f,	0.0f, -1.0f,  0.0f,
+    -.5f,	-.5f,	-.5f,	.25f, .75f,	0.0f, -1.0f,  0.0f,
 
     // up
-    -.5f,	.5f,	-.5f,	.25f, 0.f,	0.0f,  1.0f,  0.0f,		
-    .5f,	.5f,	-.5f,	.5f, 0.f,	0.0f,  1.0f,  0.0f,	
-    .5f,	.5f,	.5f,	.5f, .25f,	0.0f,  1.0f,  0.0f,	
-    -.5f,	.5f,	.5f,	.25f, .25f,	0.0f,  1.0f,  0.0f	
+    -.5f,	.5f,	-.5f,	.25f, 0.f,	0.0f,  1.0f,  0.0f,
+    .5f,	.5f,	-.5f,	.5f, 0.f,	0.0f,  1.0f,  0.0f,
+    .5f,	.5f,	.5f,	.5f, .25f,	0.0f,  1.0f,  0.0f,
+    -.5f,	.5f,	.5f,	.25f, .25f,	0.0f,  1.0f,  0.0f
 };
 
 const unsigned GLManager::m_indicesCube[] =
 {
 
     // front
-    3, 0, 2,	
+    3, 0, 2,
     1, 2, 0,
 
     // back
-    6, 7, 5,	
+    6, 7, 5,
     4, 5, 7,
 
     // left
     8, 10, 11,
-    10, 8, 9,	
+    10, 8, 9,
 
     // right
     14, 15, 13,
-    12, 13, 15,	
+    12, 13, 15,
 
     // down
     16, 18, 19,
     18, 16, 17,
 
     // up
-    20 ,22, 23,	
-    22, 20, 21	
+    20 ,22, 23,
+    22, 20, 21
 };
 
 const float GLManager::m_verticesCone[] = {
 
-    -.5f,	0.f,	0.f,	0.f, 0.f,	0.f,  1.f, 0.f,		
-    .5f,	.5f,	-.5f,	0.f, 0.f,	0.f,  1.f, 0.f,		
-    .5f,	.5f,	.5f,	0.f, 0.f,	0.f,  1.f, 0.f,		
+    -.5f,	0.f,	0.f,	0.f, 0.f,	0.f,  1.f, 0.f,
+    .5f,	.5f,	-.5f,	0.f, 0.f,	0.f,  1.f, 0.f,
+    .5f,	.5f,	.5f,	0.f, 0.f,	0.f,  1.f, 0.f,
 
-    -.5f,	0.f,	0.f,	0.f, 0.f,	-1.f,  0.f, 0.f,	
-    .5f,	.5f,	.5f,	0.f, 0.f,	-1.f,  0.f, 0.f,	
-    .5f,	-.5f,	.5f,	0.f, 0.f,	-1.f,  0.f, 0.f,	
+    -.5f,	0.f,	0.f,	0.f, 0.f,	-1.f,  0.f, 0.f,
+    .5f,	.5f,	.5f,	0.f, 0.f,	-1.f,  0.f, 0.f,
+    .5f,	-.5f,	.5f,	0.f, 0.f,	-1.f,  0.f, 0.f,
 
-    -.5f,	0.f,	0.f,	0.f, 0.f,	1.f,  0.f, 0.f,		
-    .5f,	-.5f,	.5f,	0.f, 0.f,	1.f,  0.f, 0.f,		
-    .5f,	-.5f,	-.5f,	0.f, 0.f,	1.f,  0.f, 0.f,		
+    -.5f,	0.f,	0.f,	0.f, 0.f,	1.f,  0.f, 0.f,
+    .5f,	-.5f,	.5f,	0.f, 0.f,	1.f,  0.f, 0.f,
+    .5f,	-.5f,	-.5f,	0.f, 0.f,	1.f,  0.f, 0.f,
 
-    -.5f,	0.f,	0.f,	0.f, 0.f,	0.f,  -1.f, 0.f,	
-    .5f,	-.5f,	-.5f,	0.f, 0.f,	0.f,  -1.f, 0.f,	
-    .5f,	.5f,	-.5f,	0.f, 0.f,	0.f,  -1.f, 0.f,	
+    -.5f,	0.f,	0.f,	0.f, 0.f,	0.f,  -1.f, 0.f,
+    .5f,	-.5f,	-.5f,	0.f, 0.f,	0.f,  -1.f, 0.f,
+    .5f,	.5f,	-.5f,	0.f, 0.f,	0.f,  -1.f, 0.f,
 
-    .5f,	.5f,	-.5f,	1.f, 0.f,	0.f,  0.f, -1.f,		
-    .5f,	.5f,	.5f,	1.f, 1.f,	0.f,  0.f, -1.f,	
-    .5f,	-.5f,	.5f,	0.f, 1.f,	0.f,  0.f, -1.f,	
-    .5f,	-.5f,	-.5f,	0.f, 0.f,	0.f,  0.f, -1.f,	
+    .5f,	.5f,	-.5f,	1.f, 0.f,	0.f,  0.f, -1.f,
+    .5f,	.5f,	.5f,	1.f, 1.f,	0.f,  0.f, -1.f,
+    .5f,	-.5f,	.5f,	0.f, 1.f,	0.f,  0.f, -1.f,
+    .5f,	-.5f,	-.5f,	0.f, 0.f,	0.f,  0.f, -1.f,
 };
 
 const unsigned GLManager::m_indicesCone[] = {
@@ -191,16 +178,16 @@ const unsigned GLManager::m_indicesCone[] = {
 const unsigned	GLManager::m_elementSize[] = { 1, 6, 72, 144, 6, 18 };
 const unsigned	GLManager::m_verticesSize[] = {
 
-	sizeof(GLM::m_verticesPoint), sizeof(GLM::m_verticesPlane),
-	sizeof(GLM::m_verticesPlane3D), sizeof(GLM::m_verticesCube),
-	sizeof(GLM::m_verticesPlane), sizeof(GLM::m_verticesCone)
+        sizeof(GLM::m_verticesPoint), sizeof(GLM::m_verticesPlane),
+        sizeof(GLM::m_verticesPlane3D), sizeof(GLM::m_verticesCube),
+        sizeof(GLM::m_verticesPlane), sizeof(GLM::m_verticesCone)
 
 };
 const unsigned	GLManager::m_indicesSize[] = {
 
-	sizeof(GLM::m_indicesPoint), sizeof(GLM::m_indicesPlane),
-	sizeof(GLM::m_verticesPlane3D), sizeof(GLM::m_indicesCube),
-	sizeof(GLM::m_indicesPlane),sizeof(GLM::m_indicesCone)
+        sizeof(GLM::m_indicesPoint), sizeof(GLM::m_indicesPlane),
+        sizeof(GLM::m_verticesPlane3D), sizeof(GLM::m_indicesCube),
+        sizeof(GLM::m_indicesPlane),sizeof(GLM::m_indicesCone)
 
 };
 
@@ -366,20 +353,29 @@ void GLManager::InitGLEnvironment()
 
 void GLManager::DescribeVertex()
 {
-    glGenVertexArrays(1, &m_testVAO);
-    glGenBuffers(1, &m_testVBO);
+    // Generate vaos, vboa, ebos at once
+    glGenVertexArrays(SHAPE_END, m_vao);
+    glGenBuffers(SHAPE_END, m_vbo);
+    glGenBuffers(SHAPE_END, m_ebo);
 
-    glBindVertexArray(m_testVAO);
-    glBindBuffer(GL_ARRAY_BUFFER, m_testVBO);
+    // Describe vertexes and indices
+	for (unsigned index = 0; index < SHAPE_END; ++index) {
+		glBindVertexArray(m_vao[index]);
+		glBindBuffer(GL_ARRAY_BUFFER, m_vbo[index]);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(int), reinterpret_cast<void*>(offsetof(jeVertex, jeVertex::position)));
-    glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GraphicSystem::jeVertex),
+			reinterpret_cast<void*>(offsetof(GraphicSystem::jeVertex, jeVertex::position)));
+		glEnableVertexAttribArray(0);
 
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(int), reinterpret_cast<void*>(offsetof(jeVertex, jeVertex::uv)));
-    glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(GraphicSystem::jeVertex),
+			reinterpret_cast<void*>(offsetof(GraphicSystem::jeVertex, jeVertex::uv)));
+		glEnableVertexAttribArray(1);
 
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(int), reinterpret_cast<void*>(offsetof(jeVertex, jeVertex::normal)));
-    glEnableVertexAttribArray(2);
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(GraphicSystem::jeVertex),
+			reinterpret_cast<void*>(offsetof(GraphicSystem::jeVertex, jeVertex::normal)));
+		glEnableVertexAttribArray(2);
+	}
+
 }
 
 void GLManager::InitShaders()
@@ -419,13 +415,271 @@ void GLManager::SetDrawMode(DrawMode _mode)
     m_mode = _mode;
 }
 
+Mesh* GLManager::CreatePoint()
+{
+    Mesh *pPoint = new Mesh;
+
+    pPoint->AddPoint(vec3(0, 0));
+    pPoint->AddTextureUV(vec2(0, 0));
+    pPoint->AddNormal(vec3(0, 0, 1.f));
+    pPoint->AddIndice(0);
+
+    return pPoint;
+}
+
+Mesh* GLManager::CreateRect()
+{
+    Mesh *pRect = new Mesh;
+
+    pRect->AddPoint(vec3(-.5f, .5f, 0.f));
+    pRect->AddPoint(vec3(.5f, .5f, 0.f));
+    pRect->AddPoint(vec3(.5f, -.5f, 0.f));
+    pRect->AddPoint(vec3(-.5f, -.5f, 0.f));
+
+    pRect->AddTextureUV(vec2(0.f, 0.f));
+    pRect->AddTextureUV(vec2(1.f, 0.f));
+    pRect->AddTextureUV(vec2(1.f, 1.f));
+    pRect->AddTextureUV(vec2(0.f, 1.f));
+
+    pRect->AddNormal(vec3(0, 0, 1.f));
+    pRect->AddNormal(vec3(0, 0, 1.f));
+    pRect->AddNormal(vec3(0, 0, 1.f));
+    pRect->AddNormal(vec3(0, 0, 1.f));
+
+    pRect->AddIndice(0);
+    pRect->AddIndice(2);
+    pRect->AddIndice(3);
+    pRect->AddIndice(2);
+    pRect->AddIndice(0);
+    pRect->AddIndice(1);
+
+    return pRect;
+}
+
+Mesh* GLManager::CreateCrossRect()
+{
+    Mesh *pCrossRect = new Mesh;
+
+    pCrossRect->AddPoint(vec3(-.5f, .5f, 0.f));
+    pCrossRect->AddPoint(vec3(.5f, .5f, 0.f));
+    pCrossRect->AddPoint(vec3(.5f, -.5f, 0.f));
+    pCrossRect->AddPoint(vec3(-.5f, -.5f, 0.f));
+    pCrossRect->AddPoint(vec3(0.f, .5f, .5f));
+    pCrossRect->AddPoint(vec3(0.f, .5f, -.5f));
+    pCrossRect->AddPoint(vec3(0.f, -.5f, -.5f));
+    pCrossRect->AddPoint(vec3(0.f, -.5f, .5f));
+    pCrossRect->AddPoint(vec3(-.5f, 0.f, -.5f));
+    pCrossRect->AddPoint(vec3(.5f, 0.f, -.5f));
+    pCrossRect->AddPoint(vec3(.5f, 0.f, .5f));
+    pCrossRect->AddPoint(vec3(-.5f, 0.f, .5f));
+
+    pCrossRect->AddTextureUV(vec2(1.f, 0.f));
+    pCrossRect->AddTextureUV(vec2(1.f, 1.f));
+    pCrossRect->AddTextureUV(vec2(0.f, 1.f));
+    pCrossRect->AddTextureUV(vec2(0.f, 0.f));
+    pCrossRect->AddTextureUV(vec2(1.f, 0.f));
+    pCrossRect->AddTextureUV(vec2(1.f, 1.f));
+    pCrossRect->AddTextureUV(vec2(0.f, 1.f));
+    pCrossRect->AddTextureUV(vec2(0.f, 0.f));
+    pCrossRect->AddTextureUV(vec2(1.f, 0.f));
+    pCrossRect->AddTextureUV(vec2(1.f, 1.f));
+    pCrossRect->AddTextureUV(vec2(0.f, 1.f));
+    pCrossRect->AddTextureUV(vec2(0.f, 0.f));
+
+    pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
+    pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
+    pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
+    pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
+    pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
+    pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
+    pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
+    pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
+    pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
+    pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
+    pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
+    pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
+
+    pCrossRect->AddIndice(0);
+    pCrossRect->AddIndice(2);
+    pCrossRect->AddIndice(3);
+    pCrossRect->AddIndice(2);
+    pCrossRect->AddIndice(0);
+    pCrossRect->AddIndice(1);
+
+    pCrossRect->AddIndice(5);
+    pCrossRect->AddIndice(7);
+    pCrossRect->AddIndice(6);
+    pCrossRect->AddIndice(7);
+    pCrossRect->AddIndice(5);
+    pCrossRect->AddIndice(4);
+
+    pCrossRect->AddIndice(8);
+    pCrossRect->AddIndice(10);
+    pCrossRect->AddIndice(11);
+    pCrossRect->AddIndice(10);
+    pCrossRect->AddIndice(8);
+    pCrossRect->AddIndice(9);
+
+    return pCrossRect;
+}
+
+Mesh* GLManager::CreateCube()
+{
+    Mesh *pCube = new Mesh;
+
+    pCube->AddPoint(vec3(-.5f, .5f, .5f));
+    pCube->AddPoint(vec3(.5f, .5f, .5f));
+    pCube->AddPoint(vec3(.5f, -.5f, .5f));
+    pCube->AddPoint(vec3(-.5f, -.5f, .5f));
+
+    pCube->AddPoint(vec3(.5f, .5f, -.5f));
+    pCube->AddPoint(vec3(-.5f, .5f, -.5f));
+    pCube->AddPoint(vec3(-.5f, -.5f, -.5f));
+    pCube->AddPoint(vec3(.5f, -.5f, -.5f));
+
+    pCube->AddPoint(vec3(-.5f, .5f, -.5f));
+    pCube->AddPoint(vec3(-.5f, .5f, .5f));
+    pCube->AddPoint(vec3(-.5f, -.5f, .5f));
+    pCube->AddPoint(vec3(-.5f, -.5f, -.5f));
+
+    pCube->AddPoint(vec3(.5f, .5f, .5f));
+    pCube->AddPoint(vec3(.5f, .5f, -.5f));
+    pCube->AddPoint(vec3(.5f, -.5f, -.5f));
+    pCube->AddPoint(vec3(.5f, -.5f, .5f));
+
+    pCube->AddPoint(vec3(-.5f, -.5f, .5f));
+    pCube->AddPoint(vec3(.5f, -.5f, .5f));
+    pCube->AddPoint(vec3(.5f, -.5f, -.5f));
+    pCube->AddPoint(vec3(-.5f, -.5f, -.5f));
+
+    pCube->AddPoint(vec3(-.5f, .5f, -.5f));
+    pCube->AddPoint(vec3(.5f, .5f, -.5f));
+    pCube->AddPoint(vec3(.5f, .5f, .5f));
+    pCube->AddPoint(vec3(-.5f, .5f, .5f));
+
+    pCube->AddTextureUV(vec2(.25f, .25f));
+    pCube->AddTextureUV(vec2(.5f, .25f));
+    pCube->AddTextureUV(vec2(.5f, .5f));
+    pCube->AddTextureUV(vec2(.25f, .5f));
+
+    pCube->AddTextureUV(vec2(.75f, .25f));
+    pCube->AddTextureUV(vec2(1.f, .25f));
+    pCube->AddTextureUV(vec2(1.f, .5f));
+    pCube->AddTextureUV(vec2(.75f, .5f));
+
+    pCube->AddTextureUV(vec2(0.f, .25f));
+    pCube->AddTextureUV(vec2(.25f, .25f));
+    pCube->AddTextureUV(vec2(.25f, .5f));
+    pCube->AddTextureUV(vec2(0.f, .5f));
+
+    pCube->AddTextureUV(vec2(.5f, .25f));
+    pCube->AddTextureUV(vec2(.75f, .25f));
+    pCube->AddTextureUV(vec2(.75f, .5f));
+    pCube->AddTextureUV(vec2(.5f, .5f));
+
+    pCube->AddTextureUV(vec2(.25f, .5f));
+    pCube->AddTextureUV(vec2(.5f, .5f));
+    pCube->AddTextureUV(vec2(.5f, .75f));
+    pCube->AddTextureUV(vec2(.25f, .75f));
+
+    pCube->AddTextureUV(vec2(.25f, 0.f));
+    pCube->AddTextureUV(vec2(.5f, 0.f));
+    pCube->AddTextureUV(vec2(.5f, .25f));
+    pCube->AddTextureUV(vec2(.25f, .25f));
+
+    pCube->AddNormal(vec3(0.0f, 0.0f, 1.0f));
+    pCube->AddNormal(vec3(0.0f, 0.0f, 1.0f));
+    pCube->AddNormal(vec3(0.0f, 0.0f, 1.0f));
+    pCube->AddNormal(vec3(0.0f, 0.0f, 1.0f));
+
+    pCube->AddNormal(vec3(0.0f, 0.0f, -1.0f));
+    pCube->AddNormal(vec3(0.0f, 0.0f, -1.0f));
+    pCube->AddNormal(vec3(0.0f, 0.0f, -1.0f));
+    pCube->AddNormal(vec3(0.0f, 0.0f, -1.0f));
+
+    pCube->AddNormal(vec3(-1.0f, 0.0f, 0.0f));
+    pCube->AddNormal(vec3(-1.0f, 0.0f, 0.0f));
+    pCube->AddNormal(vec3(-1.0f, 0.0f, 0.0f));
+    pCube->AddNormal(vec3(-1.0f, 0.0f, 0.0f));
+
+    pCube->AddNormal(vec3(1.0f, 0.0f, 0.0f));
+    pCube->AddNormal(vec3(1.0f, 0.0f, 0.0f));
+    pCube->AddNormal(vec3(1.0f, 0.0f, 0.0f));
+    pCube->AddNormal(vec3(1.0f, 0.0f, 0.0f));
+
+    pCube->AddNormal(vec3(0.0f, -1.0f, 0.0f));
+    pCube->AddNormal(vec3(0.0f, -1.0f, 0.0f));
+    pCube->AddNormal(vec3(0.0f, -1.0f, 0.0f));
+    pCube->AddNormal(vec3(0.0f, -1.0f, 0.0f));
+
+    pCube->AddNormal(vec3(0.0f, 1.0f, 0.0f));
+    pCube->AddNormal(vec3(0.0f, 1.0f, 0.0f));
+    pCube->AddNormal(vec3(0.0f, 1.0f, 0.0f));
+    pCube->AddNormal(vec3(0.0f, 1.0f, 0.0f));
+
+    pCube->AddIndice(3);
+    pCube->AddIndice(0);
+    pCube->AddIndice(2);
+    pCube->AddIndice(1);
+    pCube->AddIndice(2);
+    pCube->AddIndice(0);
+
+    pCube->AddIndice(6);
+    pCube->AddIndice(7);
+    pCube->AddIndice(5);
+    pCube->AddIndice(4);
+    pCube->AddIndice(5);
+    pCube->AddIndice(7);
+
+    pCube->AddIndice(8);
+    pCube->AddIndice(10);
+    pCube->AddIndice(11);
+    pCube->AddIndice(10);
+    pCube->AddIndice(8);
+    pCube->AddIndice(9);
+
+    pCube->AddIndice(14);
+    pCube->AddIndice(15);
+    pCube->AddIndice(13);
+    pCube->AddIndice(12);
+    pCube->AddIndice(13);
+    pCube->AddIndice(15);
+
+    pCube->AddIndice(16);
+    pCube->AddIndice(18);
+    pCube->AddIndice(19);
+    pCube->AddIndice(18);
+    pCube->AddIndice(16);
+    pCube->AddIndice(17);
+
+    pCube->AddIndice(20);
+    pCube->AddIndice(22);
+    pCube->AddIndice(23);
+    pCube->AddIndice(22);
+    pCube->AddIndice(20);
+    pCube->AddIndice(21);
+
+    return pCube;
+}
+
+Mesh* GLManager::CreateTetrahedron()
+{
+    Mesh *pTetrahedron = new Mesh;
+
+    //pTetrahedron->AddPoint();
+    //pTetrahedron->AddTextureUV();
+    //pTetrahedron->AddNormal();
+
+    return pTetrahedron;
+}
+
 void GLManager::ShowGLVersion()
 {
     // Show GL version info
-	m_pRenderer = glGetString(GL_RENDERER);
-	m_pVendor = glGetString(GL_VENDOR);
-	m_pVersion = glGetString(GL_VERSION);
-	m_pGlslVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
+    m_pRenderer = glGetString(GL_RENDERER);
+    m_pVendor = glGetString(GL_VENDOR);
+    m_pVersion = glGetString(GL_VERSION);
+    m_pGlslVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
 
     glGetIntegerv(GL_SAMPLE_BUFFERS, &m_buffers);
     glGetIntegerv(GL_SAMPLES, &m_samples);
@@ -461,15 +715,15 @@ void GLManager::SetVAO(GLuint &_vao, GLuint &_vbo, GLuint &_ebo,
 
     // Interpret vertex attributes data (s_vertices)
     // vertex position
-	glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 
     // texture coordinate position
-	glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 
     // normals of vertices
-	glEnableVertexAttribArray(2);
+    glEnableVertexAttribArray(2);
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
 
     // Generate element buffer object

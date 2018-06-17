@@ -9,6 +9,7 @@
 jeBegin
 jeDeclareComponentBuilder(Sprite);
 
+class Mesh;
 class Transform;
 
 class Sprite : public Component
@@ -32,7 +33,8 @@ protected:
     const static int IS_TEXT = 0x10;
     const static int IS_EMITTER = 0x01;
 
-    int m_hiddenStatus;
+	Mesh	*m_pMeshes = nullptr;
+    int		m_hiddenStatus;
 
 public:
 

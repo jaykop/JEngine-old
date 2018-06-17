@@ -3,7 +3,6 @@
 #include "GraphicSystem.h"
 #include "Application.h"
 #include "Transform.h"
-#include "InputHandler.h"
 #include "Sprite.h"
 #include "Light.h"
 #include "Camera.h"

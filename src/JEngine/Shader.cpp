@@ -18,8 +18,6 @@ Shader::Shader()
 	m_infoLogLength(0), m_result(GL_FALSE)
 {}
 
-Shader::~Shader() {}
-
 void Shader::CreateShader(std::string& _shaderContents, Type _type)
 {
 	// Create the shader

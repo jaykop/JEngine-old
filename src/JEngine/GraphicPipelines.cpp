@@ -5,6 +5,7 @@
 #include "GraphicComponents.h"
 #include "Transform.h"
 #include "MathUtils.h"
+#include "Mesh.h"
 
 jeBegin
 
@@ -586,6 +587,77 @@ void GraphicSystem::Render(Font* _font, Text*_text, Transform* _transform, bool 
 
 		glBindVertexArray(0);
 	}
+}
+
+
+void GraphicSystem::Render(const Mesh* _pMesh)
+{
+	m_vertexArray.clear();
+	m_vertexArray.reserve(_pMesh->GetPointCount());
+	for (unsigned index = 0; index < m_vertexArray.size(); ++index)
+		m_vertexArray.push_back(jeVertex{_pMesh->GetPoint(index), _pMesh->GetUV(index), _pMesh->GetNormal(index)});
+	
+	switch (_pMesh->m_shape)
+	{
+	case Mesh::MESH_NONE:
+		Render(GLM::m_vao[GLM::SHAPE_CONE], GLM::m_vbo[GLM::SHAPE_CONE], GLM::m_ebo[GLM::SHAPE_CONE],
+			m_vertexArray, _pMesh->GetIndices());
+		break;
+
+	case Mesh::MESH_POINT:
+		Render(GLM::m_vao[GLM::SHAPE_POINT], GLM::m_vbo[GLM::SHAPE_POINT], GLM::m_ebo[GLM::SHAPE_POINT],
+			m_vertexArray, _pMesh->GetIndices());
+		break;
+
+	case Mesh::MESH_RECT:
+		Render(GLM::m_vao[GLM::SHAPE_PLANE], GLM::m_vbo[GLM::SHAPE_PLANE], GLM::m_ebo[GLM::SHAPE_PLANE],
+			m_vertexArray, _pMesh->GetIndices());
+		break;
+
+	case Mesh::MESH_CROSSRECT:
+		Render(GLM::m_vao[GLM::SHAPE_PLANE3D], GLM::m_vbo[GLM::SHAPE_PLANE3D], GLM::m_ebo[GLM::SHAPE_PLANE3D],
+			m_vertexArray, _pMesh->GetIndices());
+		break;
+
+	case Mesh::MESH_CUBE:
+		Render(GLM::m_vao[GLM::SHAPE_CUBE], GLM::m_vbo[GLM::SHAPE_CUBE], GLM::m_ebo[GLM::SHAPE_CUBE],
+			m_vertexArray, _pMesh->GetIndices());
+		break;
+
+	case Mesh::MESH_TETRAHEDRON:
+		Render(GLM::m_vao[GLM::SHAPE_CONE], GLM::m_vbo[GLM::SHAPE_CONE], GLM::m_ebo[GLM::SHAPE_CONE], 
+			m_vertexArray, _pMesh->GetIndices());
+		break;
+
+	default:
+		break;
+	}
+}
+
+void GraphicSystem::Render(unsigned _vao, unsigned _vbo, unsigned _ebo, 
+	const Vertexes& _vertexes, const Indices& _indices)
+{
+	// This part actual render
+	glBindVertexArray(_vao);
+	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(jeVertex) * _vertexes.size(),
+	    static_cast<const void*>(&_vertexes[0]), GL_DYNAMIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(jeVertex), reinterpret_cast<void*>(offsetof(jeVertex, jeVertex::position)));
+	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(jeVertex), reinterpret_cast<void*>(offsetof(jeVertex, jeVertex::uv)));
+	glEnableVertexAttribArray(1);
+
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(jeVertex), reinterpret_cast<void*>(offsetof(jeVertex, jeVertex::normal)));
+	glEnableVertexAttribArray(2);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * _vertexes.size(), 
+		static_cast<const void*>(&_indices[0]), GL_DYNAMIC_DRAW);
+
+	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(_indices.size()), GL_UNSIGNED_INT, nullptr);
+	glBindVertexArray(0);
 }
 
 

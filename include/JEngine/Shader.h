@@ -31,7 +31,7 @@ private:
     void SetVector4(const char * _name, const vec4& _vector);
 
     Shader();
-    ~Shader();
+    ~Shader() {};
 
     static Shader* m_pCurrentShader;
 

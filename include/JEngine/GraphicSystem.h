@@ -1,11 +1,13 @@
 #pragma once
 #include <vector>
 #include "System.h"
+#include "Vector2.h"
 #include "Vector3.h"
 #include "Matrix4x4.h"
 
 jeBegin
 
+class Mesh;
 class Font;
 class Shader;
 class Material;
@@ -23,8 +25,18 @@ class GraphicSystem : public System
     friend class Sprite;
     friend class Camera;
     friend class Emitter;
+	friend class GLManager;
     friend class SystemManager;
 
+	struct jeVertex {
+
+		vec3 position;
+		vec2 uv;
+		vec3 normal;
+	};
+
+	using Indices = std::vector<unsigned>;
+	using Vertexes = std::vector<jeVertex>;
     using Lights = std::vector<Light*>;
     using Sprites = std::vector<Sprite*>;
     using Cameras = std::vector<Camera*>;
@@ -33,7 +45,7 @@ class GraphicSystem : public System
     enum Alias { ALIAS_ALIASED, ALIAS_ANTIALIASED, ALIAS_MULTISAMPLE };
 
 public:
-
+	
     // TODO
     void    Ray(Sprite* _sprite, Transform* _transform);
 
@@ -86,6 +98,10 @@ private:
     void LightingEffectPipeline(Material* _material);
     void ParticlePipeline(Emitter* _emitter, const float _dt);
 
+	// New method
+	void Render(const Mesh* _pMesh);
+	void Render(unsigned _vao, unsigned _vbo, unsigned _ebo, const Vertexes& _vertexes, const Indices& _indices);
+
     void Render(const unsigned &_vao, const int _elementSize);
     void Render(Font* _font, Text*_text, Transform* _transform, bool _printUnicode);
     void RenderCharacter(Character& _character, const vec3& _position,
@@ -102,6 +118,8 @@ private:
     vec3	m_resolutionScaler;
 
     unsigned	m_maxLights;
+
+	Vertexes	m_vertexArray;
 
     int		m_width, m_height;
     bool	m_inside, m_isLight;

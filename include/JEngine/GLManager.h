@@ -6,6 +6,7 @@
 
 jeBegin
 
+class Mesh;
 class GLManager {
 
     friend class Shader;
@@ -32,6 +33,11 @@ class GLManager {
 public:
 
     static void SetDrawMode(DrawMode _mode);
+	static Mesh* CreatePoint();
+	static Mesh* CreateRect();
+	static Mesh* CreateCrossRect();
+	static Mesh* CreateCube();
+	static Mesh* CreateTetrahedron();
 
 private:
 
@@ -62,7 +68,7 @@ private:
     static GLint	m_Attributes, m_buffers, m_samples;
     static GLuint	m_vao[SHAPE_END], m_vbo[SHAPE_END], m_ebo[SHAPE_END], m_fbo, m_renderTarget, m_depthBuffer;
 
-    static unsigned     m_testVAO, m_testVBO;
+    //static unsigned     m_testVAO, m_testVBO, m_testEBO;
 
     static const GLubyte *m_pRenderer, *m_pVendor, *m_pVersion, *m_pGlslVersion;
 
