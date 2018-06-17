@@ -12,6 +12,8 @@
 jeBegin
 jeDefineComponentBuilder(Text);
 
+std::vector<unsigned> Text::m_idices = { 0, 2, 3, 1, 0, 2 };
+
 Font::Font()
 	:m_fontSize(0), m_newLineInterval(0.f)
 {}

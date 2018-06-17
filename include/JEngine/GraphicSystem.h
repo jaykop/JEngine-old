@@ -100,7 +100,8 @@ private:
 
 	// New method
 	void Render(const Mesh* _pMesh);
-	void Render(unsigned _vao, unsigned _vbo, unsigned _ebo, const Vertexes& _vertexes, const Indices& _indices);
+	void Render(unsigned _vao, unsigned _vbo, unsigned _ebo, 
+		const Vertexes& _vertexes, const Indices& _indices, unsigned _drawMode);
 
     void Render(const unsigned &_vao, const int _elementSize);
     void Render(Font* _font, Text*_text, Transform* _transform, bool _printUnicode);

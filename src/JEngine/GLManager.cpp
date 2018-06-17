@@ -208,7 +208,8 @@ bool GLManager::Init()
     // Do gl stuff
     ShowGLVersion();
     InitShaders();
-    InitVBO();
+	DescribeVertex();
+    //InitVBO();
     InitFBO();
     InitGLEnvironment();
 
@@ -237,7 +238,7 @@ void GLManager::Close()
 void GLManager::InitVBO()
 {
     glActiveTexture(GL_TEXTURE0);
-
+	
     SetVAO(m_vao[SHAPE_POINT], m_vbo[SHAPE_POINT], m_ebo[SHAPE_POINT],
         m_verticesSize[SHAPE_POINT], m_indicesSize[SHAPE_POINT],
         m_verticesPoint, m_indicesPoint);
@@ -376,6 +377,7 @@ void GLManager::DescribeVertex()
 		glEnableVertexAttribArray(2);
 	}
 
+	glBindVertexArray(0);
 }
 
 void GLManager::InitShaders()
