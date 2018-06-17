@@ -23,7 +23,7 @@ void GraphicSystem::UpdatePipelines(const float _dt)
 	m_resolutionScaler = s_windowSize * s_resolutionStandard;
 
 	// Update sprites and lights
-	m_isLight = m_lights.empty() ? false : true;
+	m_isLight = !m_lights.empty();
 
 	LightSourcePipeline();
 
@@ -47,7 +47,7 @@ void GraphicSystem::UpdatePipelines(const float _dt)
 	}
 }
 
-void GraphicSystem::RenderToFramebuffer()
+void GraphicSystem::RenderToFramebuffer() const
 {
 	// Render to framebuffer
 	glBindFramebuffer(GL_FRAMEBUFFER, GLM::m_fbo);
@@ -67,7 +67,7 @@ void GraphicSystem::RenderToFramebuffer()
 		glPointSize(5);
 }
 
-void GraphicSystem::RenderToScreen()
+void GraphicSystem::RenderToScreen() const
 {
 	// Bind default framebuffer and render to screen
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -79,7 +79,7 @@ void GraphicSystem::RenderToScreen()
 
 	// Render to plane 2d
 	glBindVertexArray(GLM::m_vao[GLM::SHAPE_PLANE]);
-	Shader::m_pCurrentShader->Use(GLM::SHADER_SCREEN);
+	Shader::Use(GLM::SHADER_SCREEN);
 	Shader::m_pCurrentShader->SetVector4("v4_screenColor", screenColor);
 
 	// Impose screen effect 
@@ -114,7 +114,7 @@ void GraphicSystem::LightSourcePipeline()
 
 		glEnable(GL_DEPTH_TEST);
 
-		Shader::m_pCurrentShader->Use(GLM::SHADER_LIGHTING);
+		Shader::Use(GLM::SHADER_LIGHTING);
 
 		Shader::m_pCurrentShader->SetMatrix("m4_scale", Scale(lightScale));
 
@@ -146,7 +146,8 @@ void GraphicSystem::LightSourcePipeline()
 			Shader::m_pCurrentShader->SetVector4("v4_color", light->color);
 
 			glBlendFunc(light->sfactor, light->dfactor);
-			Render(GLM::m_vao[GLM::SHAPE_CONE], GLM::m_elementSize[GLM::SHAPE_CONE]);
+			Render(light->m_pMeshes);
+			//Render(GLM::m_vao[GLM::SHAPE_CONE], GLM::m_elementSize[GLM::SHAPE_CONE]);
 
 		} // for (auto light : m_lights) {
 	} // if (m_isLight) {
@@ -163,7 +164,7 @@ void GraphicSystem::SpritePipeline(Sprite *_sprite)
 	static Transform* s_pTransform;
 	s_pTransform = _sprite->m_pTransform;
 
-	Shader::m_pCurrentShader->Use(GLM::SHADER_MODEL);
+	Shader::Use(GLM::SHADER_MODEL);
 
 	Shader::m_pCurrentShader->SetMatrix("m4_translate", Translate(s_pTransform->position));
 	Shader::m_pCurrentShader->SetMatrix("m4_scale", Scale(s_pTransform->scale));
@@ -401,7 +402,7 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 		glBlendFunc(_emitter->sfactor, _emitter->dfactor);
 
 		// Points
-		if (_emitter->renderType == Emitter::PARTICLERENDER_POINT) {
+		if (_emitter->m_pMeshes->m_shape == Mesh::MESH_POINT) {
 			glPointSize(_emitter->pointSize);
 			glEnable(GL_POINT_SMOOTH);
 		}
@@ -410,15 +411,17 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 		else
 			glDisable(GL_POINT_SMOOTH);
 
-		static GLuint	    s_vao, s_elementSize;
-		static vec3	    s_velocity, s_colorDiff;
-		static bool	    s_changeColor, s_rotation;
-		static vec4	    s_color;
+		//static GLuint	    s_vao, s_vbo, s_ebo, s_elementSize;
+		static vec3			s_velocity, s_colorDiff;
+		static bool			s_changeColor, s_rotation;
+		static vec4			s_color;
 		static unsigned	    s_texture;
 		static Transform*   s_pTransform;
+		static Mesh			*s_pMesh;
 
-		s_vao = *(_emitter->pVao);
-		s_elementSize = _emitter->elementSize;
+		s_pMesh = _emitter->m_pMeshes;
+		//s_vao = *(_emitter->pVao);
+		//s_elementSize = _emitter->m_pMeshes->GetIndices().size();
 		s_rotation = _emitter->rotationSpeed != 0.f;
 		s_changeColor = _emitter->m_changeColor;
 		s_pTransform = _emitter->m_pTransform;
@@ -478,7 +481,7 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 				Shader::m_pCurrentShader->SetVector4("v4_color", s_color);
 				Shader::m_pCurrentShader->SetBool("boolean_hide", particle->hidden);
 
-				Render(s_vao, s_elementSize);
+				Render(s_pMesh);
 			}
 		}
 

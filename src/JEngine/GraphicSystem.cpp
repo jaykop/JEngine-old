@@ -110,7 +110,6 @@ void GraphicSystem::Update(const float _dt)
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	RenderToScreen();
-	//UpdateMousePosition();
 }
 
 void GraphicSystem::Close()

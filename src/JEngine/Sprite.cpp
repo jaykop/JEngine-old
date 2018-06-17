@@ -129,9 +129,8 @@ void Sprite::Load(CR_RJValue _data)
 			m_pMeshes = GLM::CreateCube();
 			m_pMeshes->m_shape = Mesh::MESH_CUBE;
 		}
-		// TODO
 		else if (!strcmp(meshType.c_str(), "Tetrahedron")) {
-			m_pMeshes = GLM::CreatePoint();
+			m_pMeshes = GLM::CreateTetrahedron();
 			m_pMeshes->m_shape = Mesh::MESH_TETRAHEDRON;
 		}
 		// TODO
@@ -139,6 +138,10 @@ void Sprite::Load(CR_RJValue _data)
 			m_pMeshes = nullptr; 
 			m_pMeshes->m_shape = Mesh::MESH_NONE;
 		}
+	}
+	else {
+		m_pMeshes = GLM::CreateRect();
+		m_pMeshes->m_shape = Mesh::MESH_RECT;
 	}
 
 	if (_data.HasMember("Flip")

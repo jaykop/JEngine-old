@@ -1,6 +1,7 @@
 #include "Model.h"
 #include "GLManager.h"
 #include "SystemManager.h"
+#include "Mesh.h"
 
 #ifdef  jeUseBuiltInAllocator
 #include "MemoryAllocator.h"
@@ -14,11 +15,15 @@ Model::Model(Object* _pOwner)
 {
 	pVao = &(GLM::m_vao[GLM::SHAPE_CUBE]);
 	elementSize = GLM::m_elementSize[GLM::SHAPE_CUBE];
-	//status |= Sprite::IS_MODEL;
 }
 
 Model::~Model()
 {
+	if (m_pMeshes) {
+		delete m_pMeshes;
+		m_pMeshes = nullptr;
+	}
+
 	SYSTEM::GetGraphicSystem()->RemoveSprite(this);
 }
 

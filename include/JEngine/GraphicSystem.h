@@ -86,8 +86,8 @@ private:
     void StartAntialiasing();
     void EndAntialiasing();
 
-    void RenderToFramebuffer();
-    void RenderToScreen();
+    void RenderToFramebuffer() const;
+    void RenderToScreen() const;
 
     void UpdatePipelines(const float _dt);
     void LightSourcePipeline();

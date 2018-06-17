@@ -1,6 +1,7 @@
 #include "Light.h"
 #include "SystemManager.h"
 #include "GLManager.h"
+#include "Mesh.h"
 
 #ifdef  jeUseBuiltInAllocator
 #include "MemoryAllocator.h"
@@ -21,6 +22,11 @@ Light::Light(Object * _pOwner)
 
 Light::~Light()
 {
+	if (m_pMeshes) {
+		delete m_pMeshes;
+		m_pMeshes = nullptr;
+	}
+
 	SYSTEM::GetGraphicSystem()->RemoveLight(this);
 }
 
@@ -57,6 +63,41 @@ void Light::Load(CR_RJValue _data)
 			m_type = SPOTLIGHT;
 		else if (!strcmp(loadedType.GetString(), "Point"))
 			m_type = POINTLIGHT;
+	}
+
+	if (_data.HasMember("Mesh")
+		&& _data["Mesh"].GetString())
+	{
+		std::string meshType = _data["Mesh"].GetString();
+		if (!strcmp(meshType.c_str(), "Point")) {
+			m_pMeshes = GLM::CreatePoint();
+			m_pMeshes->m_shape = Mesh::MESH_POINT;
+		}
+		else if (!strcmp(meshType.c_str(), "Rect")) {
+			m_pMeshes = GLM::CreateRect();
+			m_pMeshes->m_shape = Mesh::MESH_RECT;
+		}
+		else if (!strcmp(meshType.c_str(), "CrossRect")) {
+			m_pMeshes = GLM::CreateCrossRect();
+			m_pMeshes->m_shape = Mesh::MESH_CROSSRECT;
+		}
+		else if (!strcmp(meshType.c_str(), "Cube")) {
+			m_pMeshes = GLM::CreateCube();
+			m_pMeshes->m_shape = Mesh::MESH_CUBE;
+		}
+		else if (!strcmp(meshType.c_str(), "Tetrahedron")) {
+			m_pMeshes = GLM::CreateTetrahedron();
+			m_pMeshes->m_shape = Mesh::MESH_TETRAHEDRON;
+		}
+		// TODO
+		else if (!strcmp(meshType.c_str(), "Custom")) {
+			m_pMeshes = nullptr;
+			m_pMeshes->m_shape = Mesh::MESH_NONE;
+		}
+	}
+	else {
+		m_pMeshes = GLM::CreateCube();
+		m_pMeshes->m_shape = Mesh::MESH_CUBE;
 	}
 
 	if (_data.HasMember("CutOff")) {
