@@ -65,6 +65,8 @@ private:
     std::wstring	m_wText;
     size_t			m_size = 0;
 
+	static std::vector<unsigned> m_idices;
+
     Text(Object* pObject);
     ~Text();
     void operator=(const Text& _copy);

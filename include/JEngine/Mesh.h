@@ -15,7 +15,8 @@ public:
 
 	enum shape { MESH_NONE, MESH_POINT, MESH_RECT, MESH_CROSSRECT, MESH_CUBE, MESH_TETRAHEDRON, };
 
-	shape m_shape = MESH_NONE;
+	shape		m_shape;
+	unsigned	m_drawMode; 
 
 	void AddPoint(CR_Vec3 _point);
 	void AddTextureUV(CR_Vec2 _uv);
@@ -44,7 +45,7 @@ private:
 	std::vector<vec2>		m_UVs;
 	std::vector<vec3>		m_normals;
 
-	Mesh() {};
+	Mesh();
 	~Mesh();
 };
 

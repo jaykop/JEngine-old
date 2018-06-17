@@ -1,6 +1,9 @@
 #include "Mesh.h"
+#include "glew.h"
 
 jeBegin
+
+Mesh::Mesh() : m_shape (MESH_NONE), m_drawMode (GL_TRIANGLES) {}
 
 Mesh::~Mesh() { ClearVertexes();}
 

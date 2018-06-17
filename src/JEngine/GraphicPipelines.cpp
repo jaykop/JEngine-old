@@ -211,7 +211,8 @@ void GraphicSystem::SpritePipeline(Sprite *_sprite)
 	glEnable(GL_DEPTH_TEST);
 	glBlendFunc(_sprite->sfactor, _sprite->dfactor);
 
-	Render(*(_sprite->pVao), _sprite->elementSize);
+	Render(_sprite->m_pMeshes);
+	//Render(*(_sprite->pVao), _sprite->elementSize);
 
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
@@ -418,7 +419,7 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 
 		s_vao = *(_emitter->pVao);
 		s_elementSize = _emitter->elementSize;
-		s_rotation = _emitter->rotationSpeed == 0.f ? false : true;
+		s_rotation = _emitter->rotationSpeed != 0.f;
 		s_changeColor = _emitter->m_changeColor;
 		s_pTransform = _emitter->m_pTransform;
 		s_texture = _emitter->m_mainTex;
@@ -511,19 +512,30 @@ void GraphicSystem::RenderCharacter(Character& _character, const vec3& _position
 	Shader::m_pCurrentShader->SetMatrix("m4_translate", Translate(s_realPosition));
 
 	//Update vbo
-	GLfloat vertices[4][8] = {
+	float vertices[4][8] = {
 		{ 0.f, height, 0.f, 0.f, 0.f, 0.f, 0.f, 1.f },
 		{ width, height, 0.f, 1.f, 0.f, 0.f, 0.f, 1.f },
 		{ 0.f, 0.f, 0.f, 0.f, 1.f, 0.f, 0.f, 1.f },
 		{ width, 0.f, 0.f, 1.f, 1.f ,0.f, 0.f, 1.f }
 	};
 
-	const static auto sizeOfVertices = sizeof(vertices);
+	unsigned verticesSize = sizeof(vertices) / sizeof(GLfloat);
+
+	m_vertexArray.clear();
+	m_vertexArray.reserve(verticesSize);
+	for (unsigned index = 0; index < 4; ++index) 
+		m_vertexArray.push_back(jeVertex{ 
+			vec3(vertices[index][0], vertices[index][1], vertices[index][2]), 
+			vec2(vertices[index][3], vertices[index][4]), 
+			vec3(vertices[index][5], vertices[index][6], vertices[index][7])} );
 
 	glBindTexture(GL_TEXTURE_2D, _character.texture);
-	glBindBuffer(GL_ARRAY_BUFFER, GLM::m_vbo[GLM::SHAPE_TEXT]);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeOfVertices, vertices);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	Render(GLM::m_vao[GLM::SHAPE_TEXT], GLM::m_vbo[GLM::SHAPE_TEXT], GLM::m_ebo[GLM::SHAPE_TEXT],
+		m_vertexArray, Text::m_idices, GL_TRIANGLE_STRIP);
+	
+	/*glBindBuffer(GL_ARRAY_BUFFER, GLM::m_vbo[GLM::SHAPE_PLANE]);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);*/
 
 	_newX += (_character.advance >> sc_shift) * _scale.x;
 }
@@ -544,7 +556,7 @@ void GraphicSystem::Render(Font* _font, Text*_text, Transform* _transform, bool 
 		GLfloat initX = GLfloat(s_position.x), newX = initX, intervalY = 0.f;
 		int num_newline = 1;
 
-		glBindVertexArray(GLM::m_vao[GLM::SHAPE_TEXT]);
+		glBindVertexArray(GLM::m_vao[GLM::SHAPE_PLANE]);
 
 		// Iterate all character
 		if (_printUnicode) {
@@ -594,39 +606,39 @@ void GraphicSystem::Render(const Mesh* _pMesh)
 {
 	m_vertexArray.clear();
 	m_vertexArray.reserve(_pMesh->GetPointCount());
-	for (unsigned index = 0; index < m_vertexArray.size(); ++index)
+	for (unsigned index = 0; index < _pMesh->GetPointCount(); ++index)
 		m_vertexArray.push_back(jeVertex{_pMesh->GetPoint(index), _pMesh->GetUV(index), _pMesh->GetNormal(index)});
 	
 	switch (_pMesh->m_shape)
 	{
 	case Mesh::MESH_NONE:
 		Render(GLM::m_vao[GLM::SHAPE_CONE], GLM::m_vbo[GLM::SHAPE_CONE], GLM::m_ebo[GLM::SHAPE_CONE],
-			m_vertexArray, _pMesh->GetIndices());
+			m_vertexArray, _pMesh->GetIndices(), _pMesh->m_drawMode);
 		break;
 
 	case Mesh::MESH_POINT:
 		Render(GLM::m_vao[GLM::SHAPE_POINT], GLM::m_vbo[GLM::SHAPE_POINT], GLM::m_ebo[GLM::SHAPE_POINT],
-			m_vertexArray, _pMesh->GetIndices());
+			m_vertexArray, _pMesh->GetIndices(), _pMesh->m_drawMode);
 		break;
 
 	case Mesh::MESH_RECT:
 		Render(GLM::m_vao[GLM::SHAPE_PLANE], GLM::m_vbo[GLM::SHAPE_PLANE], GLM::m_ebo[GLM::SHAPE_PLANE],
-			m_vertexArray, _pMesh->GetIndices());
+			m_vertexArray, _pMesh->GetIndices(), _pMesh->m_drawMode);
 		break;
 
 	case Mesh::MESH_CROSSRECT:
 		Render(GLM::m_vao[GLM::SHAPE_PLANE3D], GLM::m_vbo[GLM::SHAPE_PLANE3D], GLM::m_ebo[GLM::SHAPE_PLANE3D],
-			m_vertexArray, _pMesh->GetIndices());
+			m_vertexArray, _pMesh->GetIndices(), _pMesh->m_drawMode);
 		break;
 
 	case Mesh::MESH_CUBE:
 		Render(GLM::m_vao[GLM::SHAPE_CUBE], GLM::m_vbo[GLM::SHAPE_CUBE], GLM::m_ebo[GLM::SHAPE_CUBE],
-			m_vertexArray, _pMesh->GetIndices());
+			m_vertexArray, _pMesh->GetIndices(), _pMesh->m_drawMode);
 		break;
 
 	case Mesh::MESH_TETRAHEDRON:
 		Render(GLM::m_vao[GLM::SHAPE_CONE], GLM::m_vbo[GLM::SHAPE_CONE], GLM::m_ebo[GLM::SHAPE_CONE], 
-			m_vertexArray, _pMesh->GetIndices());
+			m_vertexArray, _pMesh->GetIndices(), _pMesh->m_drawMode);
 		break;
 
 	default:
@@ -635,7 +647,7 @@ void GraphicSystem::Render(const Mesh* _pMesh)
 }
 
 void GraphicSystem::Render(unsigned _vao, unsigned _vbo, unsigned _ebo, 
-	const Vertexes& _vertexes, const Indices& _indices)
+	const Vertexes& _vertexes, const Indices& _indices, unsigned _drawMode)
 {
 	// This part actual render
 	glBindVertexArray(_vao);
@@ -653,10 +665,10 @@ void GraphicSystem::Render(unsigned _vao, unsigned _vbo, unsigned _ebo,
 	glEnableVertexAttribArray(2);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * _vertexes.size(), 
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * _indices.size(),
 		static_cast<const void*>(&_indices[0]), GL_DYNAMIC_DRAW);
 
-	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(_indices.size()), GL_UNSIGNED_INT, nullptr);
+	glDrawElements(_drawMode, static_cast<GLsizei>(_indices.size()), GL_UNSIGNED_INT, nullptr);
 	glBindVertexArray(0);
 }
 
