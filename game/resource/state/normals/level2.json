@@ -25,7 +25,7 @@
 					"Type": "Emitter",
 					"Values": {"Texture" : "smoke", "Color" : [1, 1, 1, 1], "Projection" : "Perspective", 
 						"Life" : 1.0, "Velocity" : [15, 15, 0], "Quantity" : 100, "Direction" : [1, 1, 0], 
-						"StartColor" : [1, 1, 1], "EndColor" : [0, 0, 1], "RenderType" : "Plane"}
+						"StartColor" : [1, 1, 1], "EndColor" : [0, 0, 1], "Mesh" : "CrossRect"}
 				}
 			]
 		},
@@ -40,7 +40,7 @@
 					"Type": "Emitter",
 					"Values": {"Texture" : "particle", "Color" : [1, 1, 1, 1], "Projection" : "Perspective", 
 						"Life" : 1.0, "Velocity" : [15, 15, 0], "Quantity" : 100, "Direction" : [1, 1, 0], 
-						"StartColor" : [1, 1, 1], "EndColor" : [0, 0, 1], "RenderType" : "Point", "Bilboard" : true,
+						"StartColor" : [1, 1, 1], "EndColor" : [0, 0, 1], "Bilboard" : true,
 						"PointSize" : 1}
 				}
 			]
@@ -56,8 +56,7 @@
 					"Type": "Emitter",
 					"Values": {"Type" : "Wide", "Texture" : "rect", "Color" : [1, 1, 1, 1], "Projection" : "Perspective", 
 						"Life" : 1, "Velocity" : [15, 15, 0], "Quantity" : 100, "Range" : [100, 10, 0], 
-						"StartColor" : [1, 1, 1], "EndColor" : [0, 0, 1], "RotationSpeed" : 1, "RenderType" : "Plane",
-						"Bilboard" : true}
+						"StartColor" : [1, 1, 1], "EndColor" : [0, 0, 1], "RotationSpeed" : 1, "Bilboard" : true}
 				}
 			]
 		},
@@ -72,7 +71,7 @@
 					"Type": "Emitter",
 					"Values": {"Type" : "Explosion", "Texture" : "particle", "Color" : [1, 1, 1, 1], "Projection" : "Perspective", 
 						"Life" : 0.25, "Velocity" : [60, 60, 0], "Quantity" : 100, "Direction" : [1, 1, 0], 
-						"StartColor" : [1, 1, 1], "EndColor" : [0, 0, 1], "RenderType" : "Plane"}
+						"StartColor" : [1, 1, 1], "EndColor" : [0, 0, 1]}
 				}
 			]
 		},

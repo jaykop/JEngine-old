@@ -9,6 +9,7 @@
 jeBegin
 jeDeclareComponentBuilder(Light);
 
+class Mesh;
 class Light : public Component
 {
 
@@ -31,6 +32,8 @@ public:
     void Register() override;
 
 private:
+
+	Mesh *m_pMeshes = nullptr;
 
     Light(Object* _pOwner);
     ~Light();

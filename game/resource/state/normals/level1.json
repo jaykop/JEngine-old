@@ -46,15 +46,6 @@
 			]
 		},
 		{
-			"Name" : "TestObject",
-			"Component" : [
-				{
-					"Type": "TestLogic",
-					"Values": {}
-				}
-			]
-		},
-		{
 			"Name" : "LevelController",
 			"Component" : [
 				{

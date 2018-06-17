@@ -1,7 +1,6 @@
 //#include <thread>
 #include "TestLogic.h"
 #include "CustomLogicHeader.h"
-#include "MemoryAllocator.h"
 
 jeBegin
 jeDefineCustomComponentBuilder(TestLogic);

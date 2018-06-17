@@ -375,9 +375,10 @@ void GLManager::DescribeVertex()
 		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(GraphicSystem::jeVertex),
 			reinterpret_cast<void*>(offsetof(GraphicSystem::jeVertex, jeVertex::normal)));
 		glEnableVertexAttribArray(2);
+
+		glBindVertexArray(0);
 	}
 
-	glBindVertexArray(0);
 }
 
 void GLManager::InitShaders()
@@ -666,6 +667,7 @@ Mesh* GLManager::CreateCube()
 
 Mesh* GLManager::CreateTetrahedron()
 {
+	// TODO
     Mesh *pTetrahedron = new Mesh;
 
     //pTetrahedron->AddPoint();

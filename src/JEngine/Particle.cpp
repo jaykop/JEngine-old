@@ -5,6 +5,7 @@
 #include "Random.h"
 #include "Object.h"
 #include "MathUtils.h"
+#include "Mesh.h"
 
 #ifdef  jeUseBuiltInAllocator
 #include "MemoryAllocator.h"
@@ -125,9 +126,8 @@ void Emitter::Particle::Refresh()
 Emitter::Emitter(Object* _pOwner)
 	:Sprite(_pOwner), m_startColor(vec3::ONE), m_changeColor(true),
 	m_endColor(vec3::ZERO), life(1.f), type(PARTICLE_NORMAL), is2d(false),
-	direction(vec3::ZERO), velocity(vec3::ZERO), active(true),
-	m_deadCount(0), renderType(PARTICLERENDER_3D), pointSize(0.f),
-	range(vec3::ZERO), size(0), colorDiff(vec3::ZERO), rotationSpeed(0.f)
+	direction(vec3::ZERO), velocity(vec3::ZERO), active(true), colorDiff(vec3::ZERO),
+	m_deadCount(0), pointSize(0.f), range(vec3::ZERO), size(0), rotationSpeed(0.f)
 {
 	sfactor = GL_SRC_ALPHA;
 	dfactor = GL_ONE;
@@ -157,7 +157,6 @@ void Emitter::operator=(const Emitter & _copy)
 	velocity.Set(_copy.velocity);
 	active = _copy.active;
 	m_deadCount = _copy.m_deadCount;
-	renderType = _copy.renderType;
 	pointSize = _copy.pointSize;
 	range.Set(_copy.range);
 	size = _copy.size;
@@ -188,6 +187,41 @@ void Emitter::ManualRefresh()
 
 void Emitter::Load(CR_RJValue _data)
 {
+	if (_data.HasMember("Mesh")
+		&& _data["Mesh"].GetString())
+	{
+		std::string meshType = _data["Mesh"].GetString();
+		if (!strcmp(meshType.c_str(), "Point")) {
+			m_pMeshes = GLM::CreatePoint();
+			m_pMeshes->m_shape = Mesh::MESH_POINT;
+		}
+		else if (!strcmp(meshType.c_str(), "Rect")) {
+			m_pMeshes = GLM::CreateRect();
+			m_pMeshes->m_shape = Mesh::MESH_RECT;
+		}
+		else if (!strcmp(meshType.c_str(), "CrossRect")) {
+			m_pMeshes = GLM::CreateCrossRect();
+			m_pMeshes->m_shape = Mesh::MESH_CROSSRECT;
+		}
+		else if (!strcmp(meshType.c_str(), "Cube")) {
+			m_pMeshes = GLM::CreateCube();
+			m_pMeshes->m_shape = Mesh::MESH_CUBE;
+		}
+		else if (!strcmp(meshType.c_str(), "Tetrahedron")) {
+			m_pMeshes = GLM::CreateTetrahedron();
+			m_pMeshes->m_shape = Mesh::MESH_TETRAHEDRON;
+		}
+		// TODO
+		else if (!strcmp(meshType.c_str(), "Custom")) {
+			m_pMeshes = nullptr;
+			m_pMeshes->m_shape = Mesh::MESH_NONE;
+		}
+	}
+	else {
+		m_pMeshes = GLM::CreateRect();
+		m_pMeshes->m_shape = Mesh::MESH_RECT;
+	}
+
 	if (_data.HasMember("Active"))
 		active = _data["Active"].GetBool();
 
@@ -233,26 +267,6 @@ void Emitter::Load(CR_RJValue _data)
 			loadedEndColor[2].GetFloat());
 
 		SetColors(m_startColor, m_endColor);
-	}
-
-	if (_data.HasMember("RenderType")) {
-		CR_RJValue RenderType = _data["RenderType"];
-
-		if (!strcmp("Point", RenderType.GetString())) {
-			renderType = PARTICLERENDER_POINT;
-			pVao = &GLM::m_vao[GLM::SHAPE_POINT];
-			elementSize = GLM::m_elementSize[GLM::SHAPE_POINT];
-		}
-		else if (!strcmp("Plane", RenderType.GetString())) {
-			renderType = PARTICLERENDER_PLANE;
-			pVao = &GLM::m_vao[GLM::SHAPE_PLANE];
-			elementSize = GLM::m_elementSize[GLM::SHAPE_PLANE];
-		}
-		else if (!strcmp("Plane3D", RenderType.GetString())) {
-			renderType = PARTICLERENDER_3D;
-			pVao = &GLM::m_vao[GLM::SHAPE_PLANE3D];
-			elementSize = GLM::m_elementSize[GLM::SHAPE_PLANE3D];
-		}
 	}
 
 	if (_data.HasMember("Type")) {
