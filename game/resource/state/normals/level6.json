@@ -20,10 +20,6 @@
 				{
 					"Type": "LevelController",
 					"Values": {}
-				},
-				{
-					"Type": "TestLogic",
-					"Values": {}
 				}
 			]
 		},
@@ -36,7 +32,7 @@
 				},
 				{
 					"Type": "Sprite",
-					"Values": { "Texture" : "wife" }
+					"Values": { "Texture" : "wife", "Mesh" : "Rect"}
 				},
 				{
 					"Type": "StateMachine",
@@ -54,7 +50,7 @@
 				},
 				{
 					"Type": "Sprite",
-					"Values": { "Texture" : "bully" }
+					"Values": { "Texture" : "bully", "Mesh" : "Rect" }
 				},
 				{
 					"Type": "StateMachine",
@@ -72,7 +68,7 @@
 				},
 				{
 					"Type": "Sprite",
-					"Values": { "Texture" : "miner" }
+					"Values": { "Texture" : "miner", "Mesh" : "Rect" }
 				},
 				{
 					"Type": "StateMachine",

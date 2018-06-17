@@ -5,6 +5,7 @@
 #include "AssetManager.h"
 #include "SystemManager.h"
 #include "Object.h"
+#include "Mesh.h"
 
 #ifdef  jeUseBuiltInAllocator
 #include "MemoryAllocator.h"
@@ -84,6 +85,12 @@ Sprite::~Sprite()
 {
 	// Remove textures
 	m_textureMap.clear();
+	
+	if (m_pMeshes) {
+		delete m_pMeshes;
+		m_pMeshes = nullptr;
+	}
+
 	SYSTEM::GetGraphicSystem()->RemoveSprite(this);
 }
 
@@ -106,26 +113,32 @@ void Sprite::Load(CR_RJValue _data)
 		&& _data["Mesh"].GetString())
 	{
 		std::string meshType = _data["Mesh"].GetString();
-		if (!strcmp(meshType.c_str(), "Point"))
+		if (!strcmp(meshType.c_str(), "Point")) {
 			m_pMeshes = GLM::CreatePoint();
-
-		else if (!strcmp(meshType.c_str(), "Rect"))
+			m_pMeshes->m_shape = Mesh::MESH_POINT;
+		}
+		else if (!strcmp(meshType.c_str(), "Rect")) {
 			m_pMeshes = GLM::CreateRect();
-			
-		else if (!strcmp(meshType.c_str(), "CrossRect"))
+			m_pMeshes->m_shape = Mesh::MESH_RECT;
+		}
+		else if (!strcmp(meshType.c_str(), "CrossRect")) {
 			m_pMeshes = GLM::CreateCrossRect();
-			
-		else if (!strcmp(meshType.c_str(), "Cube"))
+			m_pMeshes->m_shape = Mesh::MESH_CROSSRECT;
+		}
+		else if (!strcmp(meshType.c_str(), "Cube")) {
 			m_pMeshes = GLM::CreateCube();
-
+			m_pMeshes->m_shape = Mesh::MESH_CUBE;
+		}
 		// TODO
-		else if (!strcmp(meshType.c_str(), "Tetrahedron"))
+		else if (!strcmp(meshType.c_str(), "Tetrahedron")) {
 			m_pMeshes = GLM::CreatePoint();
-
+			m_pMeshes->m_shape = Mesh::MESH_TETRAHEDRON;
+		}
 		// TODO
-		else if (!strcmp(meshType.c_str(), "Custom"))
-			m_pMeshes = nullptr;		;
-
+		else if (!strcmp(meshType.c_str(), "Custom")) {
+			m_pMeshes = nullptr; 
+			m_pMeshes->m_shape = Mesh::MESH_NONE;
+		}
 	}
 
 	if (_data.HasMember("Flip")

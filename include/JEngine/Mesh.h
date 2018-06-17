@@ -8,6 +8,7 @@ jeBegin
 
 class Mesh
 {
+	friend class Sprite;
 	friend class GLManager;
 	
 public:
