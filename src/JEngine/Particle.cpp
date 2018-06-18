@@ -6,6 +6,7 @@
 #include "Object.h"
 #include "MathUtils.h"
 #include "Mesh.h"
+#include "AssetManager.h"
 
 #ifdef  jeUseBuiltInAllocator
 #include "MemoryAllocator.h"
@@ -192,33 +193,33 @@ void Emitter::Load(CR_RJValue _data)
 	{
 		std::string meshType = _data["Mesh"].GetString();
 		if (!strcmp(meshType.c_str(), "Point")) {
-			m_pMeshes = GLM::CreatePoint();
+			m_pMeshes = Mesh::CreatePoint();
 			m_pMeshes->m_shape = Mesh::MESH_POINT;
 		}
 		else if (!strcmp(meshType.c_str(), "Rect")) {
-			m_pMeshes = GLM::CreateRect();
+			m_pMeshes = Mesh::CreateRect();
 			m_pMeshes->m_shape = Mesh::MESH_RECT;
 		}
 		else if (!strcmp(meshType.c_str(), "CrossRect")) {
-			m_pMeshes = GLM::CreateCrossRect();
+			m_pMeshes = Mesh::CreateCrossRect();
 			m_pMeshes->m_shape = Mesh::MESH_CROSSRECT;
 		}
 		else if (!strcmp(meshType.c_str(), "Cube")) {
-			m_pMeshes = GLM::CreateCube();
+			m_pMeshes = Mesh::CreateCube();
 			m_pMeshes->m_shape = Mesh::MESH_CUBE;
 		}
 		else if (!strcmp(meshType.c_str(), "Tetrahedron")) {
-			m_pMeshes = GLM::CreateTetrahedron();
+			m_pMeshes = Mesh::CreateTetrahedron();
 			m_pMeshes->m_shape = Mesh::MESH_TETRAHEDRON;
 		}
-		// TODO
-		else if (!strcmp(meshType.c_str(), "Custom")) {
-			m_pMeshes = nullptr;
+		else /*if (!strcmp(meshType.c_str(), "Custom"))*/ {
+			m_pMeshes = ASSET::LoadObj(meshType.c_str());
 			m_pMeshes->m_shape = Mesh::MESH_NONE;
+			m_pMeshes->CreateCustomObject();
 		}
 	}
 	else {
-		m_pMeshes = GLM::CreateRect();
+		m_pMeshes = Mesh::CreateRect();
 		m_pMeshes->m_shape = Mesh::MESH_RECT;
 	}
 

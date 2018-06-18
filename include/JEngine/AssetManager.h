@@ -15,7 +15,9 @@ class Archetype;
 class AssetManager {
 
 	// Keyword Definitions
+	friend class Light;
 	friend class Sprite;
+	friend class Emitter;
 	friend class Application;
 	friend class StateManager;
 

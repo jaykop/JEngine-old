@@ -12,6 +12,7 @@ class Mesh
 	friend class Model;
 	friend class Light;
 	friend class Sprite;
+	friend class Emitter;
 	friend class GLManager;
 	friend class AssetManager;
 
@@ -51,7 +52,7 @@ private:
 	static Mesh* CreateCube();
 	static Mesh* CreateTetrahedron();
 
-	void CreateVAO();
+	void CreateCustomObject();
 
 	std::vector<unsigned>	m_indices;
 	std::vector<vec3>		m_points;
