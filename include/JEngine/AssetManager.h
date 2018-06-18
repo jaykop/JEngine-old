@@ -1,9 +1,11 @@
 #pragma once
 #include "Macro.h"
 #include <unordered_map>
+#include "GraphicSystem.h"
 
 jeBegin
 
+class Mesh;
 class Font;
 class Audio;
 class State;
@@ -13,6 +15,7 @@ class Archetype;
 class AssetManager {
 
 	// Keyword Definitions
+	friend class Sprite;
 	friend class Application;
 	friend class StateManager;
 
@@ -53,6 +56,7 @@ private:
 	static void LoadAudio(const char* _path, const char* _audioKey);
 	static void LoadImage(const char* _path, const char* _textureKey);
 	static void LoadArchetype(const char* _path, const char* _archetypeKey);
+	static Mesh* LoadObj(const char* _path);
 
 	// Private member functions
 	static bool SetBuiltInComponents();

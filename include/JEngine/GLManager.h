@@ -6,7 +6,6 @@
 
 jeBegin
 
-class Mesh;
 class GLManager {
 
     friend class Shader;
@@ -33,11 +32,6 @@ class GLManager {
 public:
 
     static void SetDrawMode(DrawMode _mode);
-	static Mesh* CreatePoint();
-	static Mesh* CreateRect();
-	static Mesh* CreateCrossRect();
-	static Mesh* CreateCube();
-	static Mesh* CreateTetrahedron();
 
 private:
 

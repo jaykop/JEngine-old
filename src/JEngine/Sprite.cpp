@@ -17,8 +17,7 @@ jeDefineComponentBuilder(Sprite);
 Sprite::Sprite(Object* _pOwner)
 	:Component(_pOwner), color(vec4::ONE), projection(PROJECTION_PERSPECTIVE), m_mainTex(0),
 	m_pTransform(nullptr), m_culled(false), m_pMaterial(nullptr), sfactor(GL_SRC_ALPHA),
-	dfactor(GL_ONE_MINUS_SRC_ALPHA), m_pAnimation(nullptr), m_hiddenStatus(0x0000), m_pInherited(nullptr),
-	pVao(&(GLM::m_vao[GLM::SHAPE_PLANE]))
+	dfactor(GL_ONE_MINUS_SRC_ALPHA), m_pAnimation(nullptr), m_hiddenStatus(0x0000), m_pInherited(nullptr)
 {}
 
 void Sprite::Register()
@@ -103,7 +102,6 @@ void Sprite::operator=(const Sprite & _copy)
 	m_culled = _copy.m_culled;
 	m_pMaterial = GetOwner()->GetComponent<Material>();
 	m_hiddenStatus = _copy.m_hiddenStatus;
-	pVao = _copy.pVao;
 }
 
 void Sprite::Load(CR_RJValue _data)
@@ -113,33 +111,32 @@ void Sprite::Load(CR_RJValue _data)
 	{
 		std::string meshType = _data["Mesh"].GetString();
 		if (!strcmp(meshType.c_str(), "Point")) {
-			m_pMeshes = GLM::CreatePoint();
+			m_pMeshes = Mesh::CreatePoint();
 			m_pMeshes->m_shape = Mesh::MESH_POINT;
 		}
 		else if (!strcmp(meshType.c_str(), "Rect")) {
-			m_pMeshes = GLM::CreateRect();
+			m_pMeshes = Mesh::CreateRect();
 			m_pMeshes->m_shape = Mesh::MESH_RECT;
 		}
 		else if (!strcmp(meshType.c_str(), "CrossRect")) {
-			m_pMeshes = GLM::CreateCrossRect();
+			m_pMeshes = Mesh::CreateCrossRect();
 			m_pMeshes->m_shape = Mesh::MESH_CROSSRECT;
 		}
 		else if (!strcmp(meshType.c_str(), "Cube")) {
-			m_pMeshes = GLM::CreateCube();
+			m_pMeshes = Mesh::CreateCube();
 			m_pMeshes->m_shape = Mesh::MESH_CUBE;
 		}
 		else if (!strcmp(meshType.c_str(), "Tetrahedron")) {
-			m_pMeshes = GLM::CreateTetrahedron();
+			m_pMeshes = Mesh::CreateTetrahedron();
 			m_pMeshes->m_shape = Mesh::MESH_TETRAHEDRON;
 		}
-		// TODO
-		else if (!strcmp(meshType.c_str(), "Custom")) {
-			m_pMeshes = nullptr; 
+		else /*if (!strcmp(meshType.c_str(), "Custom"))*/ {
+			m_pMeshes = ASSET::LoadObj(meshType.c_str());
 			m_pMeshes->m_shape = Mesh::MESH_NONE;
 		}
 	}
 	else {
-		m_pMeshes = GLM::CreateRect();
+		m_pMeshes = Mesh::CreateRect();
 		m_pMeshes->m_shape = Mesh::MESH_RECT;
 	}
 
