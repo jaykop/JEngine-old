@@ -1,6 +1,6 @@
 // This file contains state information
 {
-	"FirstState" : "level1",
+	"FirstState" : "level7",
 	
 	"State" : [
 		{"Key" : "level1", 	"Directory" : "../resource/state/normals/level1.json"},
@@ -9,6 +9,7 @@
 		{"Key" : "level4", 	"Directory" : "../resource/state/normals/level4.json"},
 		{"Key" : "level5", 	"Directory" : "../resource/state/normals/level5.json"},
 		{"Key" : "level6", 	"Directory" : "../resource/state/normals/level6.json"},
+		{"Key" : "level7", 	"Directory" : "../resource/state/normals/level7.json"},
 
 		{"Key" : "seek", 	"Directory" : "../resource/state/ai_behaviors/seek.json"},
 		{"Key" : "arrive", 	"Directory" : "../resource/state/ai_behaviors/arrive.json"},

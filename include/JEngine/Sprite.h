@@ -56,7 +56,6 @@ public:
     ProjectType projection;
 
     unsigned	sfactor, dfactor;
-    unsigned	*pVao;
 
 protected:
 

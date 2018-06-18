@@ -1,6 +1,7 @@
 #pragma once
 #include "Macro.h"
 #include <vector>
+#include "glew.h"
 #include "Vector2.h"
 #include "Vector3.h"
 
@@ -12,13 +13,15 @@ class Mesh
 	friend class Light;
 	friend class Sprite;
 	friend class GLManager;
-	
+	friend class AssetManager;
+
 public:
 
 	enum shape { MESH_NONE, MESH_POINT, MESH_RECT, MESH_CROSSRECT, MESH_CUBE, MESH_TETRAHEDRON, };
 
 	shape		m_shape;
-	unsigned	m_drawMode; 
+	unsigned	m_drawMode;
+	GLuint		m_vao, m_vbo, m_ebo;
 
 	void AddPoint(CR_Vec3 _point);
 	void AddTextureUV(CR_Vec2 _uv);
@@ -41,6 +44,14 @@ public:
 	void ClearVertexes();
 
 private:
+
+	static Mesh* CreatePoint();
+	static Mesh* CreateRect();
+	static Mesh* CreateCrossRect();
+	static Mesh* CreateCube();
+	static Mesh* CreateTetrahedron();
+
+	void CreateVAO();
 
 	std::vector<unsigned>	m_indices;
 	std::vector<vec3>		m_points;

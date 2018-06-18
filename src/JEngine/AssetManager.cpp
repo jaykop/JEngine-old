@@ -8,14 +8,20 @@
 #include "imgui.h"
 #include "Application.h"
 #include "SDL.h"
+#include "Mesh.h"
+#include <algorithm>
+#include <fstream>
+#include <sstream>
+#include "MathUtils.h"
 
 // Built-In Component Headers
 #include "GraphicComponents.h"
 #include "PhysicsComponents.h"
 #include "SoundComponents.h"
-#include <algorithm>
 
 jeBegin
+
+using namespace Math;
 
 // Declare static member variables
 ASSET::FontMap		ASSET::m_fontMap;
@@ -188,9 +194,10 @@ void AssetManager::LoadFont(const char * _path, const char* _key, unsigned _size
         // Check freetype face init
         if (bool a = !FT_New_Face(newFont->m_lib, _path, 0, &newFont->m_face))
             jeDebugPrint("*AssetManager - Loaded font: %s\n", _path);
-        else
-            jeDebugPrint("!AssetManager - Failed to load font: %s\n", _path);
-
+		else {
+			jeDebugPrint("!AssetManager - Failed to load font: %s\n", _path);
+			return;
+		}
         // Select unicode range
         FT_Select_Charmap(newFont->m_face, FT_ENCODING_UNICODE);
 
@@ -224,7 +231,7 @@ void AssetManager::LoadCharacters(Font* _pFont, float& _newLineLevel,
         if (FT_Load_Char(_pFont->m_face, c, FT_LOAD_RENDER))
         {
             jeDebugPrint("!AssetManager - Failed to load Glyph.\n");
-            continue;
+            break;
         }
 
         // Generate texture
@@ -297,6 +304,81 @@ void AssetManager::LoadArchetype(const char* /*_path*/, const char* /*_archetype
 {
     // TODO
     // load archetpye assets
+}
+
+Mesh* AssetManager::LoadObj(const char* _path)
+{
+	Mesh *pNewMesh = new Mesh;
+	bool hasNormal = false;
+
+	std::ifstream obj(_path, std::ios::in);
+
+	if (!obj) {
+		jeDebugPrint("!AssetManager - Cannot load the object file: %s", _path);
+		return nullptr;
+	}
+
+	std::string line;
+	std::vector<unsigned> elements;
+	std::vector<vec3> temp_points, temp_normals;
+	std::vector<vec2> temp_uvs;
+
+	while(std::getline(obj, line))	{
+		if (line.substr(0, 2) == "v ") {
+			std::istringstream s(line.substr(2));
+			vec3 point; s >> point.x; s >> point.y; s >> point.z;
+			temp_points.push_back(point);
+			pNewMesh->AddPoint(point);
+		}
+		else if (line.substr(0, 3) == "vt ") {
+			std::istringstream s(line.substr(2));
+			vec2 uv; s >> uv.x; s >> uv.y;;
+			temp_uvs.push_back(uv);
+			pNewMesh->AddTextureUV(uv);
+		}
+		else if (line.substr(0, 3) == "vn ") {
+			hasNormal = true;
+			std::istringstream s(line.substr(2));
+			vec3 normal; s >> normal.x; s >> normal.y; s >> normal.z;
+			temp_normals.push_back(normal);
+			pNewMesh->AddNormal(normal);
+		}
+		else if (line.substr(0, 2) == "f ") {
+			std::istringstream s(line.substr(2));
+			unsigned a, b, c;
+			s >> a; s >> b; s >> c;
+			a--; b--; c--;
+			elements.push_back(a);
+			elements.push_back(b);
+			elements.push_back(c);
+			pNewMesh->AddIndice(a);
+			pNewMesh->AddIndice(b);
+			pNewMesh->AddIndice(c);
+		}
+		else if (line.substr(0, 2) == "l ") {
+			// TODO;
+		}
+	}
+
+	// Calculate normal here - instread of getting normal from obj file
+	if (!hasNormal) {
+		temp_normals.resize(temp_points.size(), vec3::ZERO);
+		pNewMesh->m_normals.resize(temp_points.size(), vec3::ZERO);
+		for (unsigned i = 0; i < elements.size(); i += 3) {
+			unsigned ia = elements[i];
+			unsigned ib = elements[i + 1];
+			unsigned ic = elements[i + 2];
+
+			vec3 normal = GetNormalize(
+				CrossProduct((temp_points[ib] - temp_points[ia]),
+				(temp_points[ic] - temp_points[ia])));
+			temp_normals[ia] = temp_normals[ib] = temp_normals[ic] = normal;
+			pNewMesh->m_normals[ia] = pNewMesh->m_normals[ib] = pNewMesh->m_normals[ic] = normal;
+
+		}
+	}
+
+	return pNewMesh;
 }
 
 void AssetManager::TakeAScreenshot(const char* _directory)

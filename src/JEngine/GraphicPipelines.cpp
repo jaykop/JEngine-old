@@ -96,7 +96,7 @@ void GraphicSystem::RenderToScreen() const
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, GLM::m_renderTarget);
-	glDrawElements(GL_TRIANGLES, sizeOfPlaneIndices, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, sizeOfPlaneIndices, GL_UNSIGNED_INT, nullptr);
 	glEnable(GL_DEPTH_TEST);
 
 }
@@ -600,7 +600,7 @@ void GraphicSystem::Render(const Mesh* _pMesh)
 	switch (_pMesh->m_shape)
 	{
 	case Mesh::MESH_NONE:
-		Render(GLM::m_vao[GLM::SHAPE_CONE], GLM::m_vbo[GLM::SHAPE_CONE], GLM::m_ebo[GLM::SHAPE_CONE],
+		Render(_pMesh->m_vao, _pMesh->m_vbo, _pMesh->m_ebo,
 			m_vertexArray, _pMesh->GetIndices(), GLM::m_drawMode);
 		break;
 
