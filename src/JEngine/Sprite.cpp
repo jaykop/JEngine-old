@@ -18,7 +18,7 @@ Sprite::Sprite(Object* _pOwner)
 	:Component(_pOwner), color(vec4::ONE), projection(PROJECTION_PERSPECTIVE), m_mainTex(0),
 	m_pTransform(nullptr), m_culled(false), m_pMaterial(nullptr), sfactor(GL_SRC_ALPHA),
 	dfactor(GL_ONE_MINUS_SRC_ALPHA), m_pAnimation(nullptr), m_hiddenStatus(0x0000), m_pInherited(nullptr),
-	pVao(&(GLM::m_vao[GLM::SHAPE_PLANE])), elementSize(GLM::m_elementSize[GLM::SHAPE_PLANE])
+	pVao(&(GLM::m_vao[GLM::SHAPE_PLANE]))
 {}
 
 void Sprite::Register()
@@ -104,7 +104,6 @@ void Sprite::operator=(const Sprite & _copy)
 	m_pMaterial = GetOwner()->GetComponent<Material>();
 	m_hiddenStatus = _copy.m_hiddenStatus;
 	pVao = _copy.pVao;
-	elementSize = _copy.elementSize;
 }
 
 void Sprite::Load(CR_RJValue _data)

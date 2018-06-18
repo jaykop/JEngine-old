@@ -19,6 +19,17 @@ enum ProjectType { PROJECTION_PERSPECTIVE, PROJECTION_ORTHOGONAL };
 
 class GraphicSystem : public System
 {
+public:
+
+	struct jeVertex {
+
+		vec3 position;
+		vec2 uv;
+		vec3 normal;
+	};
+
+private:
+	
     friend class Text;
     friend class Light;
     friend class Model;
@@ -27,13 +38,6 @@ class GraphicSystem : public System
     friend class Emitter;
 	friend class GLManager;
     friend class SystemManager;
-
-	struct jeVertex {
-
-		vec3 position;
-		vec2 uv;
-		vec3 normal;
-	};
 
 	using Indices = std::vector<unsigned>;
 	using Vertexes = std::vector<jeVertex>;
@@ -45,7 +49,8 @@ class GraphicSystem : public System
     enum Alias { ALIAS_ALIASED, ALIAS_ANTIALIASED, ALIAS_MULTISAMPLE };
 
 public:
-	
+
+
     // TODO
     void    Ray(Sprite* _sprite, Transform* _transform);
 
@@ -103,12 +108,10 @@ private:
 	void Render(unsigned _vao, unsigned _vbo, unsigned _ebo, 
 		const Vertexes& _vertexes, const Indices& _indices, unsigned _drawMode);
 
-    void Render(const unsigned &_vao, const int _elementSize);
     void Render(Font* _font, Text*_text, Transform* _transform, bool _printUnicode);
     void RenderCharacter(Character& _character, const vec3& _position,
         const vec3& _scale, float& _newX, float _intervalY);
     void SortSprites();
-    //void UpdateMousePosition();
 
     // Member variables
     Lights	m_lights;

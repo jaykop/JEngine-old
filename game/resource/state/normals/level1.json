@@ -37,7 +37,8 @@
 				},
 				{
 					"Type": "Model",
-					"Values": {"Texture" : "uvtemplate", "Color" : [1, 1, 1, 1], "Projection" : "Perspective"}
+					"Values": {"Texture" : "uvtemplate", "Color" : [1, 1, 1, 1], "Projection" : "Perspective",
+								"Mesh" : "Cube"}
 				},
 				{
 					"Type": "Material",

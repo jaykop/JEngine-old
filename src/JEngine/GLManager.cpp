@@ -9,187 +9,23 @@ jeBegin
 //////////////////////////////////////////////////////////////////////////
 // static variables
 //////////////////////////////////////////////////////////////////////////
+
+std::vector<GraphicSystem::jeVertex> planeVertexes{
+	{vec3(-.5f, .5f, 0.f), vec2(0.f, 0.f), vec3(0, 0, 1.f) },
+{ vec3(.5f, .5f, 0.f), vec2(1.f, 0.f), vec3(0, 0, 1.f) },
+{ vec3(.5f, -.5f, 0.f), vec2(1.f, 1.f), vec3(0, 0, 1.f) },
+{ vec3(-.5f, -.5f, 0.f), vec2(0.f, 1.f), vec3(0, 0, 1.f) }
+};
+
 float	GLM::m_width = 0;
 float	GLM::m_height = 0;
 GLint	GLM::m_buffers, GLM::m_samples, GLM::m_Attributes;
-GLuint	GLM::m_vao[] = { 0 }, GLM::m_vbo[] = { 0 }, GLM::m_ebo[] = { 0 },
-GLM::m_fbo = 0, GLM::m_depthBuffer = 0, GLM::m_renderTarget = 0;
+GLuint	GLM::m_vao[] = { 0 }, GLM::m_vbo[] = { 0 }, GLM::m_ebo[] = { 0 }, GLM::m_fbo = 0, GLM::m_depthBuffer = 0, GLM::m_renderTarget = 0;
 GLM::Shaders	GLM::m_shader;
 GLM::DrawMode	GLM::m_mode = DrawMode::DRAW_FILL;
-const GLubyte	*GLM::m_pRenderer = nullptr, *GLM::m_pVendor = nullptr,
-*GLM::m_pVersion = nullptr, *GLM::m_pGlslVersion = nullptr;
+const GLubyte	*GLM::m_pRenderer = nullptr, *GLM::m_pVendor = nullptr, *GLM::m_pVersion = nullptr, *GLM::m_pGlslVersion = nullptr;
 unsigned		GLM::m_drawMode = GL_TRIANGLES;
-
-const float GLManager::m_verticesPoint[] =
-{	// position				// uv		// normals
-        0.f,	0.f,	0.f,	1.f, 1.f,	0.0f,  0.0f, 0.0f, };
-
-const unsigned GLManager::m_indicesPoint[] = { 0 };
-
-const float GLManager::m_verticesPlane[] = {
-
-    // vertic position	// uv		// normals
-    -.5f, .5f, 0.f,	0.f, 0.f,	0.0f,  0.0f, 1.0f,
-    .5f, .5f, 0.f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,
-    .5f, -.5f,	0.f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,
-    -.5f, -.5f, 0.f,	0.f, 1.f,	0.0f,  0.0f, 1.0f
-};
-
-const unsigned GLManager::m_indicesPlane[] = {
-
-    0, 2, 3,
-    2, 0, 1
-};
-
-const float GLManager::m_verticesPlane3D[] = {
-
-    // position			// uv		// normals
-    -.5f,	.5f,	0.f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,
-    .5f,	.5f,	0.f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,
-    .5f,	-.5f,	0.f,	0.f, 1.f,	0.0f,  0.0f, 1.0f,
-    -.5f,	-.5f,	0.f,	0.f, 0.f,	0.0f,  0.0f, 1.0f,
-
-    0.f,	.5f,	.5f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,
-    0.f,	.5f,	-.5f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,
-    0.f,	-.5f,	-.5f,	0.f, 1.f,	0.0f,  0.0f, 1.0f,
-    0.f,	-.5f,	.5f,	0.f, 0.f,	0.0f,  0.0f, 1.0f,
-
-    -.5f,	0.f,	-.5f,	1.f, 0.f,	0.0f,  0.0f, 1.0f,
-    .5f,	0.f,	-.5f,	1.f, 1.f,	0.0f,  0.0f, 1.0f,
-    .5f,	0.f,	.5f,	0.f, 1.f,	0.0f,  0.0f, 1.0f,
-    -.5f,	0.f,	.5f,	0.f, 0.f,	0.0f,  0.0f, 1.0f,
-
-};
-const unsigned GLManager::m_indicesPlane3D[] = {
-    // front
-    0, 2, 3,
-    2, 0, 1,
-
-    // back
-    5, 7, 6,
-    7, 5, 4,
-
-    // left
-    8, 10, 11,
-    10, 8, 9
-};
-
-const float GLManager::m_verticesCube[] =
-{
-    // front
-    -.5f,	.5f,	.5f,	.25f, .25f,	0.0f,  0.0f, 1.0f,
-    .5f,	.5f,	.5f,	.5f, .25f,	0.0f,  0.0f, 1.0f,
-    .5f,	-.5f,	.5f,	.5f, .5f,	0.0f,  0.0f, 1.0f,
-    -.5f,	-.5f,	.5f,	.25f, .5f,	0.0f,  0.0f, 1.0f,
-
-    // back
-    .5f,	.5f,	-.5f,	.75f, .25f,	0.0f,  0.0f, -1.0f,
-    -.5f,	.5f,	-.5f,	1.f, .25f,	0.0f,  0.0f, -1.0f,
-    -.5f,	-.5f,	-.5f,	1.f, .5f,	0.0f,  0.0f, -1.0f,
-    .5f,	-.5f,	-.5f,	.75f, .5f,	0.0f,  0.0f, -1.0f,
-
-    // left
-    -.5f,	.5f,	-.5f,	0.f, .25f,	-1.0f,  0.0f,  0.0f,
-    -.5f,	.5f,	.5f,	.25f, .25f,	-1.0f,  0.0f,  0.0f,
-    -.5f,	-.5f,	.5f,	.25f, .5f,	-1.0f,  0.0f,  0.0f,
-    -.5f,	-.5f,	-.5f,	0.f, .5f,	-1.0f,  0.0f,  0.0f,
-
-    // right
-    .5f,	.5f,	.5f,	.5f, .25f,	1.0f,  0.0f,  0.0f,
-    .5f,	.5f,	-.5f,	.75f, .25f,	1.0f,  0.0f,  0.0f,
-    .5f,	-.5f,	-.5f,	.75f, .5f,	1.0f,  0.0f,  0.0f,
-    .5f,	-.5f,	.5f,	.5f, .5f,	1.0f,  0.0f,  0.0f,
-
-    // down
-    -.5f,	-.5f,	.5f,	.25f, .5f,	0.0f, -1.0f,  0.0f,
-    .5f,	-.5f,	.5f,	.5f, .5f,	0.0f, -1.0f,  0.0f,
-    .5f,	-.5f,	-.5f,	.5f, .75f,	0.0f, -1.0f,  0.0f,
-    -.5f,	-.5f,	-.5f,	.25f, .75f,	0.0f, -1.0f,  0.0f,
-
-    // up
-    -.5f,	.5f,	-.5f,	.25f, 0.f,	0.0f,  1.0f,  0.0f,
-    .5f,	.5f,	-.5f,	.5f, 0.f,	0.0f,  1.0f,  0.0f,
-    .5f,	.5f,	.5f,	.5f, .25f,	0.0f,  1.0f,  0.0f,
-    -.5f,	.5f,	.5f,	.25f, .25f,	0.0f,  1.0f,  0.0f
-};
-
-const unsigned GLManager::m_indicesCube[] =
-{
-
-    // front
-    3, 0, 2,
-    1, 2, 0,
-
-    // back
-    6, 7, 5,
-    4, 5, 7,
-
-    // left
-    8, 10, 11,
-    10, 8, 9,
-
-    // right
-    14, 15, 13,
-    12, 13, 15,
-
-    // down
-    16, 18, 19,
-    18, 16, 17,
-
-    // up
-    20 ,22, 23,
-    22, 20, 21
-};
-
-const float GLManager::m_verticesCone[] = {
-
-    -.5f,	0.f,	0.f,	0.f, 0.f,	0.f,  1.f, 0.f,
-    .5f,	.5f,	-.5f,	0.f, 0.f,	0.f,  1.f, 0.f,
-    .5f,	.5f,	.5f,	0.f, 0.f,	0.f,  1.f, 0.f,
-
-    -.5f,	0.f,	0.f,	0.f, 0.f,	-1.f,  0.f, 0.f,
-    .5f,	.5f,	.5f,	0.f, 0.f,	-1.f,  0.f, 0.f,
-    .5f,	-.5f,	.5f,	0.f, 0.f,	-1.f,  0.f, 0.f,
-
-    -.5f,	0.f,	0.f,	0.f, 0.f,	1.f,  0.f, 0.f,
-    .5f,	-.5f,	.5f,	0.f, 0.f,	1.f,  0.f, 0.f,
-    .5f,	-.5f,	-.5f,	0.f, 0.f,	1.f,  0.f, 0.f,
-
-    -.5f,	0.f,	0.f,	0.f, 0.f,	0.f,  -1.f, 0.f,
-    .5f,	-.5f,	-.5f,	0.f, 0.f,	0.f,  -1.f, 0.f,
-    .5f,	.5f,	-.5f,	0.f, 0.f,	0.f,  -1.f, 0.f,
-
-    .5f,	.5f,	-.5f,	1.f, 0.f,	0.f,  0.f, -1.f,
-    .5f,	.5f,	.5f,	1.f, 1.f,	0.f,  0.f, -1.f,
-    .5f,	-.5f,	.5f,	0.f, 1.f,	0.f,  0.f, -1.f,
-    .5f,	-.5f,	-.5f,	0.f, 0.f,	0.f,  0.f, -1.f,
-};
-
-const unsigned GLManager::m_indicesCone[] = {
-
-        0, 1,	2,
-        3, 4,	5,
-        6, 7,	8,
-        9, 10,	11,
-        15, 14, 12,
-        13, 12, 14
-};
-
-const unsigned	GLManager::m_elementSize[] = { 1, 6, 72, 144, 6, 18 };
-const unsigned	GLManager::m_verticesSize[] = {
-
-        sizeof(GLM::m_verticesPoint), sizeof(GLM::m_verticesPlane),
-        sizeof(GLM::m_verticesPlane3D), sizeof(GLM::m_verticesCube),
-        sizeof(GLM::m_verticesPlane), sizeof(GLM::m_verticesCone)
-
-};
-const unsigned	GLManager::m_indicesSize[] = {
-
-        sizeof(GLM::m_indicesPoint), sizeof(GLM::m_indicesPlane),
-        sizeof(GLM::m_verticesPlane3D), sizeof(GLM::m_indicesCube),
-        sizeof(GLM::m_indicesPlane),sizeof(GLM::m_indicesCone)
-
-};
+std::vector<unsigned> GLM::m_planeIndices{ 0, 2, 3, 2, 0, 1 };
 
 //////////////////////////////////////////////////////////////////////////
 // GLManager functio bodies
@@ -209,7 +45,6 @@ bool GLManager::Init()
     ShowGLVersion();
     InitShaders();
 	DescribeVertex();
-    //InitVBO();
     InitFBO();
     InitGLEnvironment();
 
@@ -233,55 +68,6 @@ void GLManager::Close()
     }
 
     glDeleteFramebuffers(1, &m_fbo);
-}
-
-void GLManager::InitVBO()
-{
-    glActiveTexture(GL_TEXTURE0);
-	
-    SetVAO(m_vao[SHAPE_POINT], m_vbo[SHAPE_POINT], m_ebo[SHAPE_POINT],
-        m_verticesSize[SHAPE_POINT], m_indicesSize[SHAPE_POINT],
-        m_verticesPoint, m_indicesPoint);
-
-    SetVAO(m_vao[SHAPE_PLANE], m_vbo[SHAPE_PLANE], m_ebo[SHAPE_PLANE],
-        m_verticesSize[SHAPE_PLANE], m_indicesSize[SHAPE_PLANE],
-        m_verticesPlane, m_indicesPlane);
-
-    SetVAO(m_vao[SHAPE_PLANE3D], m_vbo[SHAPE_PLANE3D], m_ebo[SHAPE_PLANE3D],
-        m_verticesSize[SHAPE_PLANE3D], m_indicesSize[SHAPE_PLANE3D],
-        m_verticesPlane3D, m_indicesPlane3D);
-
-    SetVAO(m_vao[SHAPE_CUBE], m_vbo[SHAPE_CUBE], m_ebo[SHAPE_CUBE],
-        m_verticesSize[SHAPE_CUBE], m_indicesSize[SHAPE_CUBE],
-        m_verticesCube, m_indicesCube);
-
-    SetVAO(m_vao[SHAPE_CONE], m_vbo[SHAPE_CONE], m_ebo[SHAPE_CONE],
-        m_verticesSize[SHAPE_CONE], m_indicesSize[SHAPE_CONE],
-        m_verticesCone, m_indicesCone);
-
-    // Set vao for text
-    // Generate vertexy array object
-    glGenVertexArrays(1, &m_vao[SHAPE_TEXT]);
-    glBindVertexArray(m_vao[SHAPE_TEXT]);
-
-    // Generate vertex buffer object(VBO)
-    glGenBuffers(1, &m_vbo[SHAPE_TEXT]);
-    glBindBuffer(GL_ARRAY_BUFFER, m_vbo[SHAPE_TEXT]);
-    glBufferData(GL_ARRAY_BUFFER, m_verticesSize[SHAPE_PLANE], nullptr, GL_DYNAMIC_DRAW);
-
-    // vertex position
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    // texture coordinate position
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-
-    // normals of vertices
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
-    glEnableVertexAttribArray(2);
-
-    glBindVertexArray(0);
 }
 
 void GLManager::InitFBO()
@@ -323,6 +109,28 @@ void GLManager::InitFBO()
         jeDebugPrint("!GLManager - Framebuffer is not created properly.\n");
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	// Describe plane attributes for fianl render screen 
+	glBindVertexArray(m_vao[SHAPE_PLANE]);
+	glBindBuffer(GL_ARRAY_BUFFER, m_vbo[SHAPE_PLANE]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GraphicSystem::jeVertex) * planeVertexes.size(),
+		static_cast<const void*>(&planeVertexes[0]), GL_DYNAMIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GraphicSystem::jeVertex), 
+		reinterpret_cast<void*>(offsetof(GraphicSystem::jeVertex, jeVertex::position)));
+	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(GraphicSystem::jeVertex), 
+		reinterpret_cast<void*>(offsetof(GraphicSystem::jeVertex, jeVertex::uv)));
+	glEnableVertexAttribArray(1);
+
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(GraphicSystem::jeVertex), 
+		reinterpret_cast<void*>(offsetof(GraphicSystem::jeVertex, jeVertex::normal)));
+	glEnableVertexAttribArray(2);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo[SHAPE_PLANE]);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * m_planeIndices.size(),
+		static_cast<const void*>(&m_planeIndices[0]), GL_DYNAMIC_DRAW);
 }
 
 void GLManager::InitGLEnvironment()
@@ -702,38 +510,6 @@ void GLManager::Resize(int _width, int _height)
 {
     m_width = float(_width);
     m_height = float(_height);
-}
-
-void GLManager::SetVAO(GLuint &_vao, GLuint &_vbo, GLuint &_ebo,
-    const unsigned _verticeSize, const unsigned _elementSize,
-    const float _vertices[], const unsigned _elements[], int _draw)
-{
-    // Generate vertexy array object
-    glGenVertexArrays(1, &_vao);
-    glBindVertexArray(_vao);
-
-    // Generate vertex buffer object(VBO)
-    glGenBuffers(1, &_vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-    glBufferData(GL_ARRAY_BUFFER, _verticeSize, _vertices, _draw);
-
-    // Interpret vertex attributes data (s_vertices)
-    // vertex position
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-
-    // texture coordinate position
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-
-    // normals of vertices
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
-
-    // Generate element buffer object
-    glGenBuffers(1, &_ebo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, _elementSize, _elements, _draw);
 }
 
 void GLManager::EditorUpdate(const float /*_dt*/)

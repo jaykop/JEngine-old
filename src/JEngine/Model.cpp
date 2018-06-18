@@ -14,7 +14,6 @@ Model::Model(Object* _pOwner)
 	:Sprite(_pOwner)
 {
 	pVao = &(GLM::m_vao[GLM::SHAPE_CUBE]);
-	elementSize = GLM::m_elementSize[GLM::SHAPE_CUBE];
 }
 
 Model::~Model()

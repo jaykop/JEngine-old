@@ -69,6 +69,8 @@ void GraphicSystem::RenderToFramebuffer() const
 
 void GraphicSystem::RenderToScreen() const
 {
+	static size_t sizeOfPlaneIndices = GLM::m_planeIndices.size();
+
 	// Bind default framebuffer and render to screen
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -94,8 +96,7 @@ void GraphicSystem::RenderToScreen() const
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, GLM::m_renderTarget);
-
-	glDrawElements(GL_TRIANGLES, GLM::m_elementSize[GLM::SHAPE_PLANE], GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, sizeOfPlaneIndices, GL_UNSIGNED_INT, 0);
 	glEnable(GL_DEPTH_TEST);
 
 }
@@ -147,8 +148,7 @@ void GraphicSystem::LightSourcePipeline()
 
 			glBlendFunc(light->sfactor, light->dfactor);
 			Render(light->m_pMeshes);
-			//Render(GLM::m_vao[GLM::SHAPE_CONE], GLM::m_elementSize[GLM::SHAPE_CONE]);
-
+			
 		} // for (auto light : m_lights) {
 	} // if (m_isLight) {
 
@@ -213,7 +213,6 @@ void GraphicSystem::SpritePipeline(Sprite *_sprite)
 	glBlendFunc(_sprite->sfactor, _sprite->dfactor);
 
 	Render(_sprite->m_pMeshes);
-	//Render(*(_sprite->pVao), _sprite->elementSize);
 
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
@@ -411,7 +410,6 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 		else
 			glDisable(GL_POINT_SMOOTH);
 
-		//static GLuint	    s_vao, s_vbo, s_ebo, s_elementSize;
 		static vec3			s_velocity, s_colorDiff;
 		static bool			s_changeColor, s_rotation;
 		static vec4			s_color;
@@ -420,8 +418,6 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 		static Mesh			*s_pMesh;
 
 		s_pMesh = _emitter->m_pMeshes;
-		//s_vao = *(_emitter->pVao);
-		//s_elementSize = _emitter->m_pMeshes->GetIndices().size();
 		s_rotation = _emitter->rotationSpeed != 0.f;
 		s_changeColor = _emitter->m_changeColor;
 		s_pTransform = _emitter->m_pTransform;
@@ -492,13 +488,6 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 	glBindVertexArray(0);
 }
 
-void GraphicSystem::Render(const unsigned &_vao, const int _elementSize)
-{
-	glBindVertexArray(_vao);
-	glDrawElements(GL_TRIANGLES, _elementSize, GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);
-}
-
 void GraphicSystem::RenderCharacter(Character& _character, const vec3& _position,
 	const vec3& _scale, float& _newX, float _intervalY)
 {
@@ -522,7 +511,7 @@ void GraphicSystem::RenderCharacter(Character& _character, const vec3& _position
 		{ width, 0.f, 0.f, 1.f, 1.f ,0.f, 0.f, 1.f }
 	};
 
-	unsigned verticesSize = sizeof(vertices) / sizeof(GLfloat);
+	static unsigned verticesSize = sizeof(vertices) / sizeof(GLfloat);
 
 	m_vertexArray.clear();
 	m_vertexArray.reserve(verticesSize);
@@ -535,10 +524,6 @@ void GraphicSystem::RenderCharacter(Character& _character, const vec3& _position
 	glBindTexture(GL_TEXTURE_2D, _character.texture);
 	Render(GLM::m_vao[GLM::SHAPE_TEXT], GLM::m_vbo[GLM::SHAPE_TEXT], GLM::m_ebo[GLM::SHAPE_TEXT],
 		m_vertexArray, Text::m_idices, GL_TRIANGLE_STRIP);
-	
-	/*glBindBuffer(GL_ARRAY_BUFFER, GLM::m_vbo[GLM::SHAPE_PLANE]);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);*/
 
 	_newX += (_character.advance >> sc_shift) * _scale.x;
 }
@@ -616,32 +601,32 @@ void GraphicSystem::Render(const Mesh* _pMesh)
 	{
 	case Mesh::MESH_NONE:
 		Render(GLM::m_vao[GLM::SHAPE_CONE], GLM::m_vbo[GLM::SHAPE_CONE], GLM::m_ebo[GLM::SHAPE_CONE],
-			m_vertexArray, _pMesh->GetIndices(), _pMesh->m_drawMode);
+			m_vertexArray, _pMesh->GetIndices(), GLM::m_drawMode);
 		break;
 
 	case Mesh::MESH_POINT:
 		Render(GLM::m_vao[GLM::SHAPE_POINT], GLM::m_vbo[GLM::SHAPE_POINT], GLM::m_ebo[GLM::SHAPE_POINT],
-			m_vertexArray, _pMesh->GetIndices(), _pMesh->m_drawMode);
+			m_vertexArray, _pMesh->GetIndices(), GLM::m_drawMode);
 		break;
 
 	case Mesh::MESH_RECT:
 		Render(GLM::m_vao[GLM::SHAPE_PLANE], GLM::m_vbo[GLM::SHAPE_PLANE], GLM::m_ebo[GLM::SHAPE_PLANE],
-			m_vertexArray, _pMesh->GetIndices(), _pMesh->m_drawMode);
+			m_vertexArray, _pMesh->GetIndices(), GLM::m_drawMode);
 		break;
 
 	case Mesh::MESH_CROSSRECT:
 		Render(GLM::m_vao[GLM::SHAPE_PLANE3D], GLM::m_vbo[GLM::SHAPE_PLANE3D], GLM::m_ebo[GLM::SHAPE_PLANE3D],
-			m_vertexArray, _pMesh->GetIndices(), _pMesh->m_drawMode);
+			m_vertexArray, _pMesh->GetIndices(), GLM::m_drawMode);
 		break;
 
 	case Mesh::MESH_CUBE:
 		Render(GLM::m_vao[GLM::SHAPE_CUBE], GLM::m_vbo[GLM::SHAPE_CUBE], GLM::m_ebo[GLM::SHAPE_CUBE],
-			m_vertexArray, _pMesh->GetIndices(), _pMesh->m_drawMode);
+			m_vertexArray, _pMesh->GetIndices(), GLM::m_drawMode);
 		break;
 
 	case Mesh::MESH_TETRAHEDRON:
 		Render(GLM::m_vao[GLM::SHAPE_CONE], GLM::m_vbo[GLM::SHAPE_CONE], GLM::m_ebo[GLM::SHAPE_CONE], 
-			m_vertexArray, _pMesh->GetIndices(), _pMesh->m_drawMode);
+			m_vertexArray, _pMesh->GetIndices(), GLM::m_drawMode);
 		break;
 
 	default:
