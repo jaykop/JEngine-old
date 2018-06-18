@@ -69,7 +69,7 @@ void GraphicSystem::RenderToFramebuffer() const
 
 void GraphicSystem::RenderToScreen() const
 {
-	static size_t sizeOfPlaneIndices = GLM::m_planeIndices.size();
+	static GLsizei sizeOfPlaneIndices = static_cast<GLsizei>(GLM::m_planeIndices.size());
 
 	// Bind default framebuffer and render to screen
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);

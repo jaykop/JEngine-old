@@ -13,7 +13,7 @@ jeDefineComponentBuilder(Model);
 Model::Model(Object* _pOwner)
 	:Sprite(_pOwner)
 {
-	pVao = &(GLM::m_vao[GLM::SHAPE_CUBE]);
+
 }
 
 Model::~Model()

@@ -6,7 +6,17 @@ jeBegin
 Mesh::Mesh() : m_shape(MESH_NONE), m_drawMode(GL_TRIANGLES),
 	m_vao(0), m_vbo(0), m_ebo(0) {}
 
-Mesh::~Mesh() { ClearVertexes(); }
+Mesh::~Mesh()
+{
+	ClearVertexes();
+
+	if (m_shape == MESH_NONE)
+	{
+		glDeleteVertexArrays(1, &m_vao);
+		glDeleteBuffers(1, &m_vbo);
+		glDeleteBuffers(1, &m_ebo);
+	}
+}
 
 void Mesh::AddPoint(CR_Vec3 _point) { m_points.push_back(_point); }
 
@@ -304,17 +314,37 @@ Mesh* Mesh::CreateTetrahedron()
 	return pTetrahedron;
 }
 
-void Mesh::CreateVAO()
+void Mesh::CreateCustomObject()
 {
 	glGenVertexArrays(1, &m_vao);
 	glGenBuffers(1, &m_vbo);
 	glGenBuffers(1, &m_ebo);
 
+	std::vector<GraphicSystem::jeVertex> vertices;
+
+	for (std::size_t index = 0; index < GetPointCount(); ++index)
+		vertices.push_back({ m_points[index], m_UVs[index], m_normals[index] });
+	
 	glBindVertexArray(m_vao);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GraphicSystem::jeVertex),
-		reinterpret_cast<const void*>(&m_));
+		reinterpret_cast<const void*>(&vertices[0]), GL_DYNAMIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GraphicSystem::jeVertex),
+		reinterpret_cast<void*>(offsetof(GraphicSystem::jeVertex, jeVertex::position)));
+	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(GraphicSystem::jeVertex),
+		reinterpret_cast<void*>(offsetof(GraphicSystem::jeVertex, jeVertex::uv)));
+	glEnableVertexAttribArray(1);
+
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(GraphicSystem::jeVertex),
+		reinterpret_cast<void*>(offsetof(GraphicSystem::jeVertex, jeVertex::normal)));
+	glEnableVertexAttribArray(2);
+
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * m_indices.size(),
+		static_cast<const void*>(&m_indices[0]), GL_DYNAMIC_DRAW);
 }
 
 jeEnd
