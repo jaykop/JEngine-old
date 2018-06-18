@@ -48,15 +48,10 @@ private:
 
     static void DescribeVertex();
 
-    static void InitVBO();
     static void InitFBO();
     static void InitShaders();
     static void ShowGLVersion();
     static void Resize(int _width, int _height);
-    static void SetVAO(GLuint &_vao, GLuint &_vbo, GLuint &_ebo,
-
-	const unsigned	_verticeSize, const unsigned _elementSize,
-	const float		_vertices[], const unsigned _elements[], int _draw = GL_STATIC_DRAW);
 
     static void EditorUpdate(const float _dt);
 
@@ -68,12 +63,8 @@ private:
     static GLint	m_Attributes, m_buffers, m_samples;
     static GLuint	m_vao[SHAPE_END], m_vbo[SHAPE_END], m_ebo[SHAPE_END], m_fbo, m_renderTarget, m_depthBuffer;
 
+	static std::vector<unsigned> m_planeIndices;
     static const GLubyte *m_pRenderer, *m_pVendor, *m_pVersion, *m_pGlslVersion;
-
-    // Basic indices and vertices sets
-    static const float	    m_verticesPoint[8], m_verticesPlane[32], m_verticesPlane3D[96], m_verticesCube[192], m_verticesCone[128];
-    static const unsigned   m_indicesPoint[1], m_indicesPlane[6], m_indicesPlane3D[18], m_indicesCube[36], m_indicesCone[18],
-		m_elementSize[SHAPE_END], m_verticesSize[SHAPE_END], m_indicesSize[SHAPE_END];
 
 };
 
