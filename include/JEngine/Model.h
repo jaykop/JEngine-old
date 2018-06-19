@@ -21,7 +21,6 @@ class Model : public Component
     friend class Material;
     friend class Animation;
 
-    friend class ModelBuilder;
     friend class AssetManager;
 
     using Image = std::vector<unsigned char>;

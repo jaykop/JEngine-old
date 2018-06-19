@@ -24,7 +24,6 @@ GLuint	GLM::m_vao[] = { 0 }, GLM::m_vbo[] = { 0 }, GLM::m_ebo[] = { 0 }, GLM::m_
 GLM::Shaders	GLM::m_shader;
 GLM::DrawMode	GLM::m_mode = DrawMode::DRAW_FILL;
 const GLubyte	*GLM::m_pRenderer = nullptr, *GLM::m_pVendor = nullptr, *GLM::m_pVersion = nullptr, *GLM::m_pGlslVersion = nullptr;
-//unsigned		GLM::m_drawMode = GL_TRIANGLES;
 std::vector<unsigned> GLM::m_planeIndices{ 0, 2, 3, 2, 0, 1 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -135,8 +134,6 @@ void GLManager::InitFBO()
 
 void GLManager::InitGLEnvironment()
 {
-    // Set how to draw
-    //SetDrawMode(m_mode);
 
     // Set depth 
     glEnable(GL_LEQUAL);
@@ -207,25 +204,6 @@ void GLManager::InitShaders()
     jeDebugPrint("*GLManager - Compiled and linked shaders.\n");
 }
 
-//void GLManager::SetDrawMode(DrawMode _mode)
-//{
-//    switch (_mode)
-//    {
-//    case DRAW_POINT:
-//        m_drawMode = GL_POINT;
-//        glPointSize(5);
-//        break;
-//    case DRAW_LINE:
-//        m_drawMode = GL_LINE;
-//        break;
-//    case DRAW_FILL:
-//        m_drawMode = GL_TRIANGLES;
-//        break;
-//    }
-//
-//    m_mode = _mode;
-//}
-
 void GLManager::ShowGLVersion()
 {
     // Show GL version info
@@ -277,15 +255,6 @@ void GLManager::EditorUpdate(const float /*_dt*/)
         ImGui::Text("*Draw Mode: POINT");
         break;
     }
-
-    //if (ImGui::Button("POINT"))
-    //    SetDrawMode(DRAW_POINT);
-    //ImGui::SameLine();
-    //if (ImGui::Button("LINE"))
-    //    SetDrawMode(DRAW_LINE);
-    //ImGui::SameLine();
-    //if (ImGui::Button("FILL"))
-    //    SetDrawMode(DRAW_FILL);
 
     ImGui::End();
 }
