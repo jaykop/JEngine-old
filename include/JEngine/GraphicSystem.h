@@ -33,7 +33,6 @@ private:
     friend class Text;
     friend class Light;
     friend class Model;
-    friend class Sprite;
     friend class Camera;
     friend class Emitter;
 	friend class GLManager;
@@ -42,7 +41,7 @@ private:
 	using Indices = std::vector<unsigned>;
 	using Vertexes = std::vector<jeVertex>;
     using Lights = std::vector<Light*>;
-    using Sprites = std::vector<Sprite*>;
+    using Models = std::vector<Model*>;
     using Cameras = std::vector<Camera*>;
 
     enum ScreenEffect { EFFECT_NONE, EFFECT_BLUR, EFFECT_SOBEL, EFFECT_INVERSE };
@@ -78,8 +77,8 @@ private:
     void Unload() override;
 
     // Helper functions
-    void AddSprite(Sprite* _sprite);
-    void RemoveSprite(Sprite* _sprite);
+    void AddModel(Model* _sprite);
+    void RemoveModel(Model* _sprite);
 
     void AddCamera(Camera* _camera);
     void RemoveCamera(Camera* _camera);
@@ -96,9 +95,9 @@ private:
     void UpdatePipelines(const float _dt);
     void LightSourcePipeline();
     void TextPipeline(Text * _text);
-    void SpritePipeline(Sprite * _sprite);
+    void SpritePipeline(Model * _sprite);
     void ParentPipeline(Transform* _pTransform) const;
-    void MappingPipeline(Sprite* _sprite);
+    void MappingPipeline(Model* _sprite);
     void LightingEffectPipeline(Material* _material);
     void ParticlePipeline(Emitter* _emitter, const float _dt);
 

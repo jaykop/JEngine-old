@@ -10,7 +10,6 @@ class GLManager {
 
     friend class Shader;
     friend class Text;
-    friend class Model;
     friend class Sprite;
     friend class Emitter;
     friend class Application;
