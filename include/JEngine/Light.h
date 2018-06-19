@@ -24,7 +24,7 @@ public:
     LightType	m_type;
     ProjectType	projection;
 
-    vec3		position, direction;
+    vec3		position, direction, scale;
     vec4		ambient, specular, diffuse, color;
     float		constant, linear, quadratic, cutOff, outerCutOff;
     unsigned	sfactor, dfactor;

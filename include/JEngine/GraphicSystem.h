@@ -60,7 +60,6 @@ public:
 
     Camera* GetMainCamera() const;
 
-    vec3			lightScale;
     vec4			backgroundColor, screenColor;
     bool			orthoComesFirst;
     float			sobelAmount, blurSize, blurAmount, sobelSize, aspect, zNear, zFar;
