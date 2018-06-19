@@ -9,7 +9,7 @@
 			"Component" : [
 				{
 					"Type": "Camera",
-					"Values": {"Position" : [25, 25, -25], "Target" : [0, 0, 0],
+					"Values": {"Position" : [50, 25, 25], "Target" : [0, 0, 0],
 						"Up" : [0, 1, 0]}
 				}
 			]
@@ -24,7 +24,7 @@
 				{
 					"Type": "Model",
 					"Values": {"Texture" : "rect", "Color" : [1, 1, 1, 1], "Projection" : "Perspective",
-								"Mesh" : "../resource/obj/Paper Airplane.obj"}
+								"Mesh" : "../resource/obj/Paper Airplane.obj", "DrawMode" : "Triangle_Strip"}
 				},
 				{
 					"Type" : "Material",

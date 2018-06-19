@@ -31,7 +31,7 @@
 					"Values": { "Position" : [-90, 65, 1], "Scale" : [25, 25, 0] }
 				},
 				{
-					"Type": "Sprite",
+					"Type": "Model",
 					"Values": { "Texture" : "wife", "Mesh" : "Rect"}
 				},
 				{
@@ -49,7 +49,7 @@
 					"Values": { "Position" : [-80, -50, 1], "Scale" : [12.5, 25, 0] }
 				},
 				{
-					"Type": "Sprite",
+					"Type": "Model",
 					"Values": { "Texture" : "bully", "Mesh" : "Rect" }
 				},
 				{
@@ -67,7 +67,7 @@
 					"Values": { "Position" : [-80, 0, 1], "Scale" : [25, 25, 0] }
 				},
 				{
-					"Type": "Sprite",
+					"Type": "Model",
 					"Values": { "Texture" : "miner", "Mesh" : "Rect" }
 				},
 				{

@@ -150,7 +150,6 @@ bool AssetManager::SetBuiltInComponents()
 	jeCheckComponentRegistration(jeRegisterComponent(Text));
 	jeCheckComponentRegistration(jeRegisterComponent(Model));
 	jeCheckComponentRegistration(jeRegisterComponent(Camera));
-	jeCheckComponentRegistration(jeRegisterComponent(Model));
 	jeCheckComponentRegistration(jeRegisterComponent(Emitter));
 	jeCheckComponentRegistration(jeRegisterComponent(Light));
 	jeCheckComponentRegistration(jeRegisterComponent(Material));
