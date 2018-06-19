@@ -157,7 +157,7 @@ void Light::Load(CR_RJValue _data)
 	}
 
 	if (_data.HasMember("Scale")) {
-		CR_RJValue loadedScale = _data["Position"];
+		CR_RJValue loadedScale = _data["Scale"];
 		scale.Set(loadedScale[0].GetFloat(), loadedScale[1].GetFloat(), loadedScale[2].GetFloat());
 	}
 }
