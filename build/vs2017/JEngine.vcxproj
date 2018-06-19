@@ -195,7 +195,6 @@
     <ClInclude Include="..\..\include\JEngine\Shader.h" />
     <ClInclude Include="..\..\include\JEngine\SoundComponents.h" />
     <ClInclude Include="..\..\include\JEngine\SoundSystem.h" />
-    <ClInclude Include="..\..\include\JEngine\Sprite.h" />
     <ClInclude Include="..\..\include\JEngine\State.h" />
     <ClInclude Include="..\..\include\JEngine\StateManager.h" />
     <ClInclude Include="..\..\include\JEngine\System.h">
@@ -275,7 +274,6 @@
     <ClCompile Include="..\..\src\JEngine\SystemBlock.cpp" />
     <ClCompile Include="..\..\src\JEngine\VertexShader.cpp" />
     <ClCompile Include="..\..\src\JEngine\SoundSystem.cpp" />
-    <ClCompile Include="..\..\src\JEngine\Sprite.cpp" />
     <ClCompile Include="..\..\src\JEngine\State.cpp" />
     <ClCompile Include="..\..\src\JEngine\StateManager.cpp" />
     <ClCompile Include="..\..\src\JEngine\SystemManager.cpp" />

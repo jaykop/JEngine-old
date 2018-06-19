@@ -13,24 +13,18 @@ Material::Material(Object* _pOwner)
 	:Component(_pOwner), diffuse(0), 
 	specular(0), shininess(1.f)
 {
-	// Connect to sprite's pointer
-	if (_pOwner->HasComponent<Sprite>()) 
-		_pOwner->GetComponent<Sprite>()->m_pMaterial = this;
-
-	else if (_pOwner->HasComponent<Model>()) 
+	// Connect to model's pointer
+	if (_pOwner->HasComponent<Model>()) 
 		_pOwner->GetComponent<Model>()->m_pMaterial = this;
 
 	else
-		jeDebugPrint("!Material - This object has no sprite componnet: %s\n", _pOwner->GetName().c_str());
+		jeDebugPrint("!Material - This object has no model componnet: %s\n", _pOwner->GetName().c_str());
 }
 
 Material::~Material()
 {
 	// Turn off the toggle
-	if (GetOwner()->HasComponent<Sprite>()) 
-		GetOwner()->GetComponent<Sprite>()->m_pMaterial = nullptr;
-
-	else if (GetOwner()->HasComponent<Model>()) 
+	if (GetOwner()->HasComponent<Model>()) 
 		GetOwner()->GetComponent<Model>()->m_pMaterial = nullptr;
 }
 
@@ -40,10 +34,7 @@ void Material::operator=(const Material & _copy)
 	specular = _copy.specular;
 	shininess = _copy.shininess;
 	
-	if (GetOwner()->HasComponent<Sprite>()) 
-		GetOwner()->GetComponent<Sprite>()->m_pMaterial = this;
-
-	else if (GetOwner()->HasComponent<Model>()) 
+	if (GetOwner()->HasComponent<Model>()) 
 		GetOwner()->GetComponent<Model>()->m_pMaterial = this;
 
 }

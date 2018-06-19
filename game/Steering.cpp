@@ -100,9 +100,9 @@ void Steering::Init()
 		detectionTransform->scale.y = 1.f;
 		detectionTransform->position.x += detectionTransform->scale.x / 2.f;
 
-		Sprite *pathBoxSprite = m_detection->GetComponent<Sprite>();
-		pathBoxSprite->SetParentToFollow(GetOwner());
-		pathBoxSprite->projection = PROJECTION_PERSPECTIVE;
+		Model *pathBoxModel = m_detection->GetComponent<Model>();
+		pathBoxModel->SetParentToFollow(GetOwner());
+		pathBoxModel->projection = PROJECTION_PERSPECTIVE;
 
 		for (int index = 0; index < 5; ++index)	{
 			FACTORY::CreateObject(("Obstacle " + std::to_string(index)).c_str());
@@ -114,11 +114,11 @@ void Steering::Init()
 			float randomScale = RAND::GetRandomFloat(5.f, 15.f);
 			transform->scale.Set(randomScale, randomScale, 0.f);
 
-			newObstacle->AddComponent<Sprite>();
-			Sprite* sprite = newObstacle->GetComponent<Sprite>();
-			sprite->color.Set(1.f, 0.f, 0.f, 1.f);
-			sprite->AddTexture("circle");
-			sprite->projection = PROJECTION_PERSPECTIVE;
+			newObstacle->AddComponent<Model>();
+			Model* model = newObstacle->GetComponent<Model>();
+			model->color.Set(1.f, 0.f, 0.f, 1.f);
+			model->AddTexture("circle");
+			model->projection = PROJECTION_PERSPECTIVE;
 
 			FACTORY::AddCreatedObject();
 

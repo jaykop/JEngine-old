@@ -4,7 +4,7 @@
 #include "ft2build.h"
 #include FT_FREETYPE_H
 
-#include "Sprite.h"
+#include "Model.h"
 #include "Vector2.h"
 
 jeBegin
@@ -39,7 +39,7 @@ private:
     float		m_newLineInterval;
 };
 
-class Text : public Sprite
+class Text : public Model
 {
     jeBaseFriends(Text);
     friend class GraphicSystem;
@@ -60,7 +60,7 @@ private:
 
     bool			m_printWide = false;
 	char			*m_pTextStorage = nullptr;
-    wchar_t			*m_pwTextStorage = nullptr;
+    wchar_t	*m_pwTextStorage = nullptr;
 	std::string		m_text;
     std::wstring	m_wText;
     size_t			m_size = 0;

@@ -19,7 +19,7 @@ Font::Font()
 {}
 
 Text::Text(Object* _pOwner)
-	:Sprite(_pOwner)
+	:Model(_pOwner)
 {
 	m_hiddenStatus |= IS_TEXT;
 }
@@ -36,7 +36,7 @@ Text::~Text()
 		m_pwTextStorage = nullptr;
 	}
 
-	SYSTEM::GetGraphicSystem()->RemoveSprite(this);
+	SYSTEM::GetGraphicSystem()->RemoveModel(this);
 }
 
 void Text::operator=(const Text & _copy)
@@ -49,7 +49,7 @@ void Text::operator=(const Text & _copy)
 
 void Text::Register()
 {
-	SYSTEM::GetGraphicSystem()->AddSprite(this);
+	SYSTEM::GetGraphicSystem()->AddModel(this);
 	if (GetOwner()->HasComponent<Transform>())
 		m_pTransform = GetOwner()->GetComponent<Transform>();
 }
@@ -172,7 +172,7 @@ void Text::Load(CR_RJValue _data)
 			projection = PROJECTION_ORTHOGONAL;
 		}
 		else
-			jeDebugPrint("!Sprite - Wrong projection type: %s\n", loadedProjection.GetString());
+			jeDebugPrint("!Model - Wrong projection type: %s\n", loadedProjection.GetString());
 	}
 }
 

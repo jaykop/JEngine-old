@@ -1,6 +1,6 @@
 #include "Animation.h"
 #include "GraphicSystem.h"
-#include "Sprite.h"
+#include "Model.h"
 #include "Object.h"
 
 #ifdef  jeUseBuiltInAllocator
@@ -15,19 +15,19 @@ Animation::Animation(Object* _pOwner)
 	m_animationFrames(1), m_animationFixFrame(1), m_realSpeed(0.f),
 	m_realFrame(1.f), m_activeAnimation(false)
 {	
-	// Connect to sprite's pointer
-	if (_pOwner->HasComponent<Sprite>()) 
-		_pOwner->GetComponent<Sprite>()->m_pAnimation = this;
+	// Connect to model's pointer
+	if (_pOwner->HasComponent<Model>()) 
+		_pOwner->GetComponent<Model>()->m_pAnimation = this;
 
 	else
-		jeDebugPrint("!Animation - This object has no sprite componnet: %s\n", _pOwner->GetName().c_str());
+		jeDebugPrint("!Animation - This object has no model componnet: %s\n", _pOwner->GetName().c_str());
 }
 
 Animation::~Animation() {
 
 	// Turn off the toggle
-	if (GetOwner()->HasComponent<Sprite>()) 
-		GetOwner()->GetComponent<Sprite>()->m_pAnimation = nullptr;
+	if (GetOwner()->HasComponent<Model>()) 
+		GetOwner()->GetComponent<Model>()->m_pAnimation = nullptr;
 }
 
 void Animation::operator=(const Animation & _copy)
@@ -40,9 +40,9 @@ void Animation::operator=(const Animation & _copy)
 	m_realFrame = _copy.m_realFrame;
 	m_activeAnimation = _copy.m_activeAnimation;
 
-	// Connect to sprite's pointer
-	if (GetOwner()->HasComponent<Sprite>()) 
-		GetOwner()->GetComponent<Sprite>()->m_pAnimation = this;
+	// Connect to model's pointer
+	if (GetOwner()->HasComponent<Model>()) 
+		GetOwner()->GetComponent<Model>()->m_pAnimation = this;
 }
 
 void Animation::Load(CR_RJValue _data)

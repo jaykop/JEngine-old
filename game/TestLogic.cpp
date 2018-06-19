@@ -48,10 +48,10 @@ void TestLogic::Init()
 
 	camera = CONTAINER->GetObject("Camera")->GetComponent<Camera>();
 	pointer = CONTAINER->GetObject("MousePointer")->GetComponent<Transform>();
-    /*m_ortho = CONTAINER->GetObject("OrthogonalSprite");
+    /*m_ortho = CONTAINER->GetObject("OrthogonalModel");
     m_pers = CONTAINER->GetObject("PerspectiveModel");*/
-    //CONTAINER->GET_COMPONENT("Model", Sprite);
-    //CONTAINER->GET_COMPONENT(5, Sprite);
+    //CONTAINER->GET_COMPONENT("Model", Model);
+    //CONTAINER->GET_COMPONENT(5, Model);
 
     //std::vector<A*> b;
     //b.push_back(&A);
