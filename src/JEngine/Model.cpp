@@ -22,7 +22,7 @@ Model::Model(Object* _pOwner)
 
 void Model::Register()
 {
-	SYSTEM::GetGraphicSystem()->AddSprite(this);
+	SYSTEM::GetGraphicSystem()->AddModel(this);
 	if (GetOwner()->HasComponent<Transform>())
 		m_pTransform = GetOwner()->GetComponent<Transform>();
 }
@@ -41,7 +41,7 @@ void Model::AddTexture(const char *_key)
 {
 	auto found = m_textureMap.find(_key);
 	if (found != m_textureMap.end())
-		jeDebugPrint("!Sprite - Existing texture: %s.\n", _key);
+		jeDebugPrint("!Model - Existing texture: %s.\n", _key);
 
 	else {
 		unsigned newTexture = ASSET::GetTexture(_key);
@@ -76,7 +76,7 @@ unsigned Model::GetTexutre(const char *_key)
 	if (found != m_textureMap.end())
 		return found->second;
 
-	jeDebugPrint("!Sprite - No such name of enrolled texture: %s.\n", _key);
+	jeDebugPrint("!Model - No such name of enrolled texture: %s.\n", _key);
 	return 0;
 }
 
@@ -90,10 +90,10 @@ Model::~Model()
 		m_pMeshes = nullptr;
 	}
 
-	SYSTEM::GetGraphicSystem()->RemoveSprite(this);
+	SYSTEM::GetGraphicSystem()->RemoveModel(this);
 }
 
-void Model::operator=(const Sprite & _copy)
+void Model::operator=(const Model & _copy)
 {
 	color.Set(_copy.color);
 	projection = _copy.projection,

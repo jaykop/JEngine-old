@@ -22,7 +22,7 @@ void GraphicSystem::UpdatePipelines(const float _dt)
 
 	m_resolutionScaler = s_windowSize * s_resolutionStandard;
 
-	// Update sprites and lights
+	// Update models and lights
 	m_isLight = !m_lights.empty();
 
 	LightSourcePipeline();
@@ -32,18 +32,18 @@ void GraphicSystem::UpdatePipelines(const float _dt)
 	// Inform that there are lights
 	Shader::m_pCurrentShader->SetBool("boolean_light", m_isLight);
 
-	for (auto sprite : m_sprites) {
+	for (auto model : m_models) {
 
 		// Emitter
-		if ((sprite->m_hiddenStatus & Sprite::IS_EMITTER) == Sprite::IS_EMITTER)
-			ParticlePipeline(static_cast<Emitter*>(sprite), _dt);
+		if ((model->m_hiddenStatus & Model::IS_EMITTER) == Model::IS_EMITTER)
+			ParticlePipeline(static_cast<Emitter*>(model), _dt);
 
-		else if ((sprite->m_hiddenStatus & Sprite::IS_TEXT) == Sprite::IS_TEXT)
-			TextPipeline(static_cast<Text*>(sprite));
+		else if ((model->m_hiddenStatus & Model::IS_TEXT) == Model::IS_TEXT)
+			TextPipeline(static_cast<Text*>(model));
 
 		// Normal models
 		else
-			SpritePipeline(sprite);
+			ModelPipeline(model);
 	}
 }
 
@@ -157,12 +157,12 @@ void GraphicSystem::LightSourcePipeline()
 }
 
 //////////////////////////////////////////////////////////////////////////
-// Sprite(model) pipeline
+// Model(model) pipeline
 //////////////////////////////////////////////////////////////////////////
-void GraphicSystem::SpritePipeline(Sprite *_sprite)
+void GraphicSystem::ModelPipeline(Model *_model)
 {
 	static Transform* s_pTransform;
-	s_pTransform = _sprite->m_pTransform;
+	s_pTransform = _model->m_pTransform;
 
 	Shader::Use(GLM::SHADER_MODEL);
 
@@ -171,10 +171,10 @@ void GraphicSystem::SpritePipeline(Sprite *_sprite)
 	Shader::m_pCurrentShader->SetMatrix("m4_rotate", Rotate(Math::DegToRad(s_pTransform->rotation), s_pTransform->rotationAxis));
 
 	Shader::m_pCurrentShader->SetVector3("v3_cameraPosition", m_pMainCamera->position);
-	Shader::m_pCurrentShader->SetBool("boolean_bilboard", (_sprite->status & Sprite::IS_BILBOARD) == Sprite::IS_BILBOARD);
+	Shader::m_pCurrentShader->SetBool("boolean_bilboard", (_model->status & Model::IS_BILBOARD) == Model::IS_BILBOARD);
 
 	// Send projection info to shader
-	if (_sprite->projection == PROJECTION_PERSPECTIVE) {
+	if (_model->projection == PROJECTION_PERSPECTIVE) {
 
 		Shader::m_pCurrentShader->SetMatrix("m4_projection", m_perspective);
 		m_viewport = LookAt(m_pMainCamera->position, m_pMainCamera->target, m_pMainCamera->up);
@@ -192,17 +192,17 @@ void GraphicSystem::SpritePipeline(Sprite *_sprite)
 
 	// TODO
 	// It so, not draw
-	//if (!_sprite->m_culled) {
+	//if (!_model->m_culled) {
 
-	MappingPipeline(_sprite);
+	MappingPipeline(_model);
 
-	bool hasParent = (_sprite->status & Sprite::IS_INHERITED ) == Sprite::IS_INHERITED;
+	bool hasParent = (_model->status & Model::IS_INHERITED ) == Model::IS_INHERITED;
 	glUniform1i(glGetUniformLocation(Shader::m_pCurrentShader->m_programId, "hasParent"), hasParent);
 	if (hasParent)
-	    ParentPipeline(_sprite->m_pInherited);
+	    ParentPipeline(_model->m_pInherited);
 
-	if (_sprite->m_pMaterial && m_isLight)
-	    LightingEffectPipeline(_sprite->m_pMaterial);
+	if (_model->m_pMaterial && m_isLight)
+	    LightingEffectPipeline(_model->m_pMaterial);
 
 	if (GLM::m_mode == GLM::DRAW_FILL)
 	    glEnable(GL_BLEND);
@@ -210,9 +210,9 @@ void GraphicSystem::SpritePipeline(Sprite *_sprite)
 	    glDisable(GL_BLEND);
 
 	glEnable(GL_DEPTH_TEST);
-	glBlendFunc(_sprite->sfactor, _sprite->dfactor);
+	glBlendFunc(_model->sfactor, _model->dfactor);
 
-	Render(_sprite->m_pMeshes);
+	Render(_model->m_pMeshes);
 
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
@@ -230,14 +230,14 @@ void GraphicSystem::ParentPipeline(Transform* _pTransform) const
 		1, GL_FALSE, &Rotate(DegToRad(_pTransform->rotation), _pTransform->rotationAxis).m[0][0]);
 }
 
-void GraphicSystem::MappingPipeline(Sprite* _sprite)
+void GraphicSystem::MappingPipeline(Model* _model)
 {
-	glBindTexture(GL_TEXTURE_2D, _sprite->GetCurrentTexutre());
+	glBindTexture(GL_TEXTURE_2D, _model->GetCurrentTexutre());
 
-	if (_sprite->m_pAnimation) {
+	if (_model->m_pAnimation) {
 
 		static Animation* animation;
-		animation = _sprite->m_pAnimation;
+		animation = _model->m_pAnimation;
 
 		if (animation->m_activeAnimation) {
 
@@ -247,7 +247,7 @@ void GraphicSystem::MappingPipeline(Sprite* _sprite)
 			if (realSpeed <= animation->m_timer.GetTime()) {
 
 				static float nextFrame;
-				if ((_sprite->status & Sprite::IS_FLIPPED) == Sprite::IS_FLIPPED)
+				if ((_model->status & Model::IS_FLIPPED) == Model::IS_FLIPPED)
 					nextFrame = animation->m_currentFrame - animation->m_realFrame;
 				else
 					nextFrame = animation->m_currentFrame + animation->m_realFrame;
@@ -264,7 +264,7 @@ void GraphicSystem::MappingPipeline(Sprite* _sprite)
 		m_aniScale.Set(animation->m_realFrame, 1.f, 0.f);
 		m_aniTranslate.Set(animation->m_currentFrame, 0.f, 0.f);
 
-	} // if (_sprite->m_hasAnimation) {
+	} // if (_model->m_hasAnimation) {
 
 	else {
 		m_aniScale.Set(1, 1, 0);
@@ -272,9 +272,9 @@ void GraphicSystem::MappingPipeline(Sprite* _sprite)
 	}
 
 	// Send color info to shader
-	Shader::m_pCurrentShader->SetVector4("v4_color", _sprite->color);
+	Shader::m_pCurrentShader->SetVector4("v4_color", _model->color);
 	Shader::m_pCurrentShader->SetBool(
-		"boolean_flip", (_sprite->status & Sprite::IS_FLIPPED) == Sprite::IS_FLIPPED);
+		"boolean_flip", (_model->status & Model::IS_FLIPPED) == Model::IS_FLIPPED);
 	Shader::m_pCurrentShader->SetMatrix("m4_aniScale", Scale(m_aniScale));
 	Shader::m_pCurrentShader->SetMatrix("m4_aniTranslate", Translate(m_aniTranslate));
 }
@@ -347,7 +347,7 @@ void GraphicSystem::TextPipeline(Text * _text)
 
 	Shader::m_pCurrentShader->SetMatrix("m4_scale", Scale(s_pTransform->scale));
 	Shader::m_pCurrentShader->SetMatrix("m4_rotate", Rotate(Math::DegToRad(s_pTransform->rotation), s_pTransform->rotationAxis));
-	Shader::m_pCurrentShader->SetBool("boolean_bilboard", (_text->status & Sprite::IS_BILBOARD) == Sprite::IS_BILBOARD);
+	Shader::m_pCurrentShader->SetBool("boolean_bilboard", (_text->status & Model::IS_BILBOARD) == Model::IS_BILBOARD);
 	Shader::m_pCurrentShader->SetVector4("v4_color", _text->color);
 
 	// Send projection info to shader
@@ -370,7 +370,7 @@ void GraphicSystem::TextPipeline(Text * _text)
 
 	// TODO
 	// It so, not draw
-	//if (!_sprite->m_culled) {
+	//if (!_model->m_culled) {
 
 	if (GLM::m_mode == GLM::DRAW_FILL)
 		glEnable(GL_BLEND);
@@ -428,7 +428,7 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 		Shader::Use(GLM::SHADER_PARTICLE);
 
 		Shader::m_pCurrentShader->SetMatrix("m4_scale", Scale(s_pTransform->scale));
-		Shader::m_pCurrentShader->SetBool("boolean_bilboard", (_emitter->status & Sprite::IS_BILBOARD) == Sprite::IS_BILBOARD);
+		Shader::m_pCurrentShader->SetBool("boolean_bilboard", (_emitter->status & Model::IS_BILBOARD) == Model::IS_BILBOARD);
 
 		// Send projection info to shader
 		if (_emitter->projection == PROJECTION_PERSPECTIVE) {

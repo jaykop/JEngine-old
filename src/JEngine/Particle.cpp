@@ -125,7 +125,7 @@ void Emitter::Particle::Refresh()
 }
 
 Emitter::Emitter(Object* _pOwner)
-	:Sprite(_pOwner), m_startColor(vec3::ONE), m_changeColor(true),
+	:Model(_pOwner), m_startColor(vec3::ONE), m_changeColor(true),
 	m_endColor(vec3::ZERO), life(1.f), type(PARTICLE_NORMAL), is2d(false),
 	direction(vec3::ZERO), velocity(vec3::ZERO), active(true), colorDiff(vec3::ZERO),
 	m_deadCount(0), pointSize(0.f), range(vec3::ZERO), size(0), rotationSpeed(0.f)
@@ -143,7 +143,7 @@ Emitter::~Emitter()
 		particle = nullptr;
 	}
 
-	SYSTEM::GetGraphicSystem()->RemoveSprite(this);
+	SYSTEM::GetGraphicSystem()->RemoveModel(this);
 }
 
 void Emitter::operator=(const Emitter & _copy)
@@ -174,7 +174,7 @@ void Emitter::operator=(const Emitter & _copy)
 
 void Emitter::Register()
 {
-	SYSTEM::GetGraphicSystem()->AddSprite(this);
+	SYSTEM::GetGraphicSystem()->AddModel(this);
 	if (GetOwner()->HasComponent<Transform>()) 
 		m_pTransform = GetOwner()->GetComponent<Transform>();
 }
@@ -228,7 +228,7 @@ void Emitter::Load(CR_RJValue _data)
 
 	if (_data.HasMember("Bilboard")
 		&& _data["Bilboard"].GetBool())
-		status |= Sprite::IS_BILBOARD;
+		status |= Model::IS_BILBOARD;
 
 	if (_data.HasMember("Iis2d"))
 		is2d = _data["Iis2d"].GetBool();

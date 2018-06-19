@@ -3,7 +3,7 @@
 #include "GraphicSystem.h"
 #include "Application.h"
 #include "Transform.h"
-#include "Sprite.h"
+#include "Model.h"
 #include "Light.h"
 #include "Camera.h"
 #include "Object.h"
@@ -104,7 +104,7 @@ void GraphicSystem::Update(const float _dt)
 	glPolygonMode(GL_FRONT_AND_BACK, GLM::m_drawMode);
 
 	// Sort orthogonal objects and perspective objects
-	SortSprites();
+	SortModels();
 	UpdatePipelines(_dt);
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -119,15 +119,15 @@ void GraphicSystem::Close()
 void GraphicSystem::Unload()
 {
 	m_lights.clear();
-	m_sprites.clear();
+	m_models.clear();
 	m_cameras.clear();
 }
 
-void GraphicSystem::SortSprites()
+void GraphicSystem::SortModels()
 {
 	if (orthoComesFirst) {
-		std::sort(m_sprites.begin(), m_sprites.end(),
-			[&](Sprite* _leftSpt, Sprite* _rightSpt) -> bool {
+		std::sort(m_models.begin(), m_models.end(),
+			[&](Model* _leftSpt, Model* _rightSpt) -> bool {
 
 			if (_leftSpt->projection == PROJECTION_PERSPECTIVE
 				&& _rightSpt->projection == PROJECTION_ORTHOGONAL)
@@ -144,17 +144,17 @@ void GraphicSystem::SortSprites()
 	}
 }
 
-void GraphicSystem::AddSprite(Sprite* _sprite)
+void GraphicSystem::AddModel(Model* _model)
 {
-	m_sprites.push_back(_sprite);
+	m_models.push_back(_model);
 }
 
-void GraphicSystem::RemoveSprite(Sprite* _sprite)
+void GraphicSystem::RemoveModel(Model* _model)
 {
-	for (Sprites::iterator it = m_sprites.begin();
-		it != m_sprites.end(); ++it) {
-		if ((*it)->GetOwner()->GetId() == _sprite->GetOwner()->GetId()) {
-			m_sprites.erase(it);
+	for (Models::iterator it = m_models.begin();
+		it != m_models.end(); ++it) {
+		if ((*it)->GetOwner()->GetId() == _model->GetOwner()->GetId()) {
+			m_models.erase(it);
 			break;
 		}
 	}
@@ -279,10 +279,10 @@ void GraphicSystem::EndAntialiasing()
 //}
 
 
-void GraphicSystem::Ray(Sprite* /*_sprite*/, Transform* /*_transform*/)
+void GraphicSystem::Ray(Model* /*_model*/, Transform* /*_transform*/)
 {
-	//if (_sprite->GetOwnerId() != _transform->GetOwnerId())
-	//	jeDebugPrint("!The owners of sprite and transform are not identical.\n");
+	//if (_model->GetOwnerId() != _transform->GetOwnerId())
+	//	jeDebugPrint("!The owners of model and transform are not identical.\n");
 
 	//static mat4 s_translate, s_scale, s_rotation,
 	//	s_viewport, s_projection;
@@ -295,7 +295,7 @@ void GraphicSystem::Ray(Sprite* /*_sprite*/, Transform* /*_transform*/)
 	//s_scale = mat4::Scale(_transform->scale);
 	//s_rotation = mat4::Rotate(_transform->rotation, _transform->rotationAxis);
 	//
-	//if (_sprite->projection == PROJECTION_PERSPECTIVE) {
+	//if (_model->projection == PROJECTION_PERSPECTIVE) {
 	//	s_projection = m_perspective;
 	//	s_viewport = mat4::LookAt(
 	//		m_pMainCamera->position, m_pMainCamera->m_target, m_pMainCamera->m_up);

@@ -51,7 +51,7 @@ public:
 
 
     // TODO
-    void    Ray(Sprite* _sprite, Transform* _transform);
+    void    Ray(Model* _model, Transform* _transform);
 
     int	    GetWidth() const;
     int	    GetHeight() const;
@@ -77,8 +77,8 @@ private:
     void Unload() override;
 
     // Helper functions
-    void AddModel(Model* _sprite);
-    void RemoveModel(Model* _sprite);
+    void AddModel(Model* _model);
+    void RemoveModel(Model* _model);
 
     void AddCamera(Camera* _camera);
     void RemoveCamera(Camera* _camera);
@@ -95,9 +95,9 @@ private:
     void UpdatePipelines(const float _dt);
     void LightSourcePipeline();
     void TextPipeline(Text * _text);
-    void SpritePipeline(Model * _sprite);
+    void ModelPipeline(Model * _model);
     void ParentPipeline(Transform* _pTransform) const;
-    void MappingPipeline(Model* _sprite);
+    void MappingPipeline(Model* _model);
     void LightingEffectPipeline(Material* _material);
     void ParticlePipeline(Emitter* _emitter, const float _dt);
 
@@ -109,11 +109,11 @@ private:
     void Render(Font* _font, Text*_text, Transform* _transform, bool _printUnicode);
     void RenderCharacter(Character& _character, const vec3& _position,
         const vec3& _scale, float& _newX, float _intervalY);
-    void SortSprites();
+    void SortModels();
 
     // Member variables
     Lights	m_lights;
-    Sprites	m_sprites;
+    Models	m_models;
     Cameras	m_cameras;
     Camera*	m_pMainCamera;
 

@@ -1,11 +1,11 @@
 #pragma once
 #include <vector>
-#include "Sprite.h"
+#include "Model.h"
 
 jeBegin
 jeDeclareComponentBuilder(Emitter);
 
-class Emitter : public Sprite
+class Emitter : public Model
 {
     jeBaseFriends(Emitter);
     friend class GraphicSystem;

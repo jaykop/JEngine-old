@@ -150,7 +150,7 @@ bool AssetManager::SetBuiltInComponents()
 	jeCheckComponentRegistration(jeRegisterComponent(Text));
 	jeCheckComponentRegistration(jeRegisterComponent(Model));
 	jeCheckComponentRegistration(jeRegisterComponent(Camera));
-	jeCheckComponentRegistration(jeRegisterComponent(Sprite));
+	jeCheckComponentRegistration(jeRegisterComponent(Model));
 	jeCheckComponentRegistration(jeRegisterComponent(Emitter));
 	jeCheckComponentRegistration(jeRegisterComponent(Light));
 	jeCheckComponentRegistration(jeRegisterComponent(Material));
@@ -279,7 +279,7 @@ void AssetManager::LoadAudio(const char* /*_path*/, const char* /*_audioKey*/)
 void AssetManager::LoadImage(const char *_path, const char *_textureKey)
 {
     unsigned		newImage;
-    Sprite::Image	image;
+    Model::Image	image;
     unsigned		width, height;
     unsigned		error = lodepng::decode(image, width, height, _path);
 	
