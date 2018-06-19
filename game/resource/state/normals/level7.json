@@ -9,7 +9,7 @@
 			"Component" : [
 				{
 					"Type": "Camera",
-					"Values": {"Position" : [ 150, 150, 150], "Target" : [0, 0, 0],
+					"Values": {"Position" : [25, 25, -25], "Target" : [0, 0, 0],
 						"Up" : [0, 1, 0]}
 				}
 			]
@@ -19,12 +19,30 @@
 			"Component" : [
 				{
 					"Type": "Transform",
-					"Values": {"Position" : [0, 0, 0], "Scale" : [50, 50, 50]}
+					"Values": {"Position" : [0, 0, 0], "Scale" : [1, 1, 1]}
 				},
 				{
 					"Type": "Model",
-					"Values": {"Texture" : "uvtemplate", "Color" : [1, 1, 1, 1], "Projection" : "Perspective",
+					"Values": {"Texture" : "rect", "Color" : [1, 1, 1, 1], "Projection" : "Perspective",
 								"Mesh" : "../resource/obj/Paper Airplane.obj"}
+				},
+				{
+					"Type" : "Material",
+					"Values" : {}
+				}
+			]
+		},
+		{
+			"Name" : "Light",
+			"Component" : [
+				{
+					"Type": "Light",
+					"Values": {"Type" : "Normal", "Position" : [0, 10, 0],
+						"Color" : [1, 1, 0, 1], "Direction" : [0, 0, 0],
+						"Diffuse" : [1, 1, 1, 1], "Specular" : [1, 1, 1, 1], 
+						"Ambient" : [1, 1, 1, 1], "Constant" : 1.0,
+						"Linear" : 0.009, "Quadratic" : 0.0032, 
+						"CutOff" : 12.5, "OuterCutOff" : 17.5}
 				}
 			]
 		},

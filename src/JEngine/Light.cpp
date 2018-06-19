@@ -17,7 +17,7 @@ Light::Light(Object * _pOwner)
 	specular(vec4::ONE), position(vec3(0.f, 0.f, 1.f)),
 	direction(vec3::ZERO), constant(0.f), linear(0.f),
 	quadratic(0.f), cutOff(0.f), outerCutOff(0.f),
-	projection(PROJECTION_PERSPECTIVE),
+	projection(PROJECTION_PERSPECTIVE), scale(vec3::ONE),
 	sfactor(GL_SRC_ALPHA), dfactor(GL_ONE_MINUS_SRC_ALPHA)
 {}
 
@@ -154,6 +154,11 @@ void Light::Load(CR_RJValue _data)
 	if (_data.HasMember("Position")) {
 		CR_RJValue loadedPosition = _data["Position"];
 		position.Set(loadedPosition[0].GetFloat(), loadedPosition[1].GetFloat(), loadedPosition[2].GetFloat());
+	}
+
+	if (_data.HasMember("Scale")) {
+		CR_RJValue loadedScale = _data["Position"];
+		scale.Set(loadedScale[0].GetFloat(), loadedScale[1].GetFloat(), loadedScale[2].GetFloat());
 	}
 }
 

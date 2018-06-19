@@ -116,13 +116,13 @@ void GraphicSystem::LightSourcePipeline()
 		glEnable(GL_DEPTH_TEST);
 
 		Shader::Use(GLM::SHADER_LIGHTING);
-
-		Shader::m_pCurrentShader->SetMatrix("m4_scale", Scale(lightScale));
-
+		
 		for (auto light : m_lights) {
 
 			Shader::m_pCurrentShader->SetMatrix(
 				"m4_translate", Translate(light->position));
+
+			Shader::m_pCurrentShader->SetMatrix("m4_scale", Scale(light->scale));
 
 			Shader::m_pCurrentShader->SetMatrix(
 				"m4_rotateZ", RotateZ(atan2(light->direction.y, light->direction.x)));
@@ -600,8 +600,7 @@ void GraphicSystem::Render(const Mesh* _pMesh)
 	switch (_pMesh->m_shape)
 	{
 	case Mesh::MESH_NONE:
-		Render(_pMesh->m_vao, _pMesh->m_vbo, _pMesh->m_ebo,
-			m_vertexArray, _pMesh->GetIndices(), GLM::m_drawMode);
+		Render(_pMesh->m_vao, _pMesh->m_vbo, _pMesh->m_ebo, m_vertexArray, _pMesh->GetIndices(), GLM::m_drawMode);
 		break;
 
 	case Mesh::MESH_POINT:
@@ -656,7 +655,7 @@ void GraphicSystem::Render(unsigned _vao, unsigned _vbo, unsigned _ebo,
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * _indices.size(),
 		static_cast<const void*>(&_indices[0]), GL_DYNAMIC_DRAW);
 
-	glDrawElements(_drawMode, static_cast<GLsizei>(_indices.size()), GL_UNSIGNED_INT, nullptr);
+	glDrawElements(GL_TRIANGLE_STRIP, static_cast<GLsizei>(_indices.size()), GL_UNSIGNED_INT, nullptr);
 	glBindVertexArray(0);
 }
 
