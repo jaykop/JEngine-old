@@ -13,21 +13,7 @@
 						"Up" : [0, 1, 0]}
 				}
 			]
-		},		
-		{
-			"Name" : "Light1",
-			"Component" : [
-				{
-					"Type": "Light",
-					"Values": {"Type" : "Spot", "Position" : [0, 0, 50],
-						"Color" : [0, 0, 1, 1], "Direction" : [0, 0, -1],
-						"Diffuse" : [1, 1, 1, 1], "Specular" : [1, 1, 1, 1], 
-						"Ambient" : [1, 1, 1, 1], "Constant" : 1.0,
-						"Linear" : 0.009, "Quadratic" : 0.0032, 
-						"CutOff" : 12.5, "OuterCutOff" : 17.5}
-				}
-			]
-		},		
+		},				
 		{
 			"Name" : "Model",
 			"Component" : [
@@ -38,11 +24,7 @@
 				{
 					"Type": "Model",
 					"Values": {"Texture" : "uvtemplate", "Color" : [1, 1, 1, 1], "Projection" : "Perspective",
-								"Mesh" : "Cube"}
-				},
-				{
-					"Type": "Material",
-					"Values": {}
+								"Mesh" : "Cube", "DrawMode" : "Line_Strip"}
 				}
 			]
 		},

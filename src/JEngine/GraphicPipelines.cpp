@@ -56,15 +56,9 @@ void GraphicSystem::RenderToFramebuffer() const
 	glViewport(0, 0, GLint(m_width), GLint(m_height));
 
 	// Backface culling
-//	if (GLM::m_drawMode == GL_TRIANGLES) {
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 		glFrontFace(GL_CW);
-//	}
-
-	//// Default point size
-	//if (GLM::m_drawMode == GL_POINTS)
-	//	glPointSize(5);
 }
 
 void GraphicSystem::RenderToScreen() const
