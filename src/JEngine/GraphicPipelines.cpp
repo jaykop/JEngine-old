@@ -56,9 +56,9 @@ void GraphicSystem::RenderToFramebuffer() const
 	glViewport(0, 0, GLint(m_width), GLint(m_height));
 
 	// Backface culling
-		glEnable(GL_CULL_FACE);
-		glCullFace(GL_BACK);
-		glFrontFace(GL_CW);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glFrontFace(GL_CW);
 }
 
 void GraphicSystem::RenderToScreen() const
