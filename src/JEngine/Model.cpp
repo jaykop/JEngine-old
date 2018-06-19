@@ -141,6 +141,26 @@ void Model::Load(CR_RJValue _data)
 		m_pMeshes->m_shape = Mesh::MESH_RECT;
 	}
 
+	if (_data.HasMember("DrawMode")
+		&& _data["DrawMode"].IsString()) {
+		
+		std::string drawType = _data["DrawMode"].GetString();
+		if (!strcmp(drawType.c_str(), "Triangles"))
+			m_pMeshes->m_drawMode = GL_TRIANGLES;
+
+		else if (!strcmp(drawType.c_str(), "Triangle_Strip"))
+			m_pMeshes->m_drawMode = GL_TRIANGLE_STRIP;
+
+		else if (!strcmp(drawType.c_str(), "Triangle_Fan")) 
+			m_pMeshes->m_drawMode = GL_TRIANGLE_FAN;
+
+		else if (!strcmp(drawType.c_str(), "Lines")) 
+			m_pMeshes->m_drawMode = GL_LINES;
+
+		else if (!strcmp(drawType.c_str(), "Line_Strip")) 
+			m_pMeshes->m_drawMode = GL_LINE_STRIP;
+	}
+
 	if (_data.HasMember("Flip")
 		&& _data["Flip"].GetBool())
 		status |= IS_FLIPPED;

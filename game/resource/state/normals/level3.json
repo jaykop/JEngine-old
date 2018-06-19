@@ -35,7 +35,7 @@
 					"Values": {"Position" : [300, 50, -10], "Scale" : [150, 250, 0]}
 				},
 				{
-					"Type": "Sprite",
+					"Type": "Model",
 					"Values": {"Texture" : "testAnimation", "Color" : [1, 1, 1, 1], "Projection" : "Orthogonal"}
 				},
 				{

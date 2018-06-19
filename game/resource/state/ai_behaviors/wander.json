@@ -32,7 +32,7 @@
 					"Values": {"Position" : [0, 0, 0], "Scale" : [15, 15, 0]}
 				},
 				{
-					"Type" : "Sprite",
+					"Type" : "Model",
 					"Values" : {"Texture" : "crosshair", "Color" : [0, 0, 0, 1], "Projection" : "Orthogonal" }
 				}
 			]
@@ -45,7 +45,7 @@
 					"Values": {"Position" : [0, 0, 0], "Scale" : [50, 50, 0]}
 				},
 				{
-					"Type" : "Sprite",
+					"Type" : "Model",
 					"Values" : {"Texture" : "circle_line", "Color" : [1, 1, 1, 1], "Projection" : "Orthogonal" }
 				}
 			]
@@ -58,7 +58,7 @@
 					"Values": {"Position" : [0, 0, -1], "Scale" : [50, 50, 0]}
 				},
 				{
-					"Type" : "Sprite",
+					"Type" : "Model",
 					"Values" : {"Texture" : "arrow", "Color" : [1, 1, 1, 1], "Projection" : "Orthogonal" }
 				},
 				{

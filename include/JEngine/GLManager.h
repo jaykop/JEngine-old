@@ -30,7 +30,7 @@ class GLManager {
 
 public:
 
-    static void SetDrawMode(DrawMode _mode);
+    //static void SetDrawMode(DrawMode _mode);
 
 private:
 
@@ -52,7 +52,7 @@ private:
     static float	m_width, m_height;
     static Shaders	m_shader;
     static DrawMode	m_mode;
-    static unsigned	m_drawMode;
+    //static unsigned	m_drawMode;
     static GLint	m_Attributes, m_buffers, m_samples;
     static GLuint	m_vao[SHAPE_END], m_vbo[SHAPE_END], m_ebo[SHAPE_END], m_fbo, m_renderTarget, m_depthBuffer;
 

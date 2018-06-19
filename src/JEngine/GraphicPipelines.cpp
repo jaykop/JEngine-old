@@ -56,15 +56,15 @@ void GraphicSystem::RenderToFramebuffer() const
 	glViewport(0, 0, GLint(m_width), GLint(m_height));
 
 	// Backface culling
-	if (GLM::m_drawMode == GL_TRIANGLES) {
+//	if (GLM::m_drawMode == GL_TRIANGLES) {
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 		glFrontFace(GL_CW);
-	}
+//	}
 
-	// Default point size
-	if (GLM::m_drawMode == GL_POINTS)
-		glPointSize(5);
+	//// Default point size
+	//if (GLM::m_drawMode == GL_POINTS)
+	//	glPointSize(5);
 }
 
 void GraphicSystem::RenderToScreen() const
@@ -600,32 +600,32 @@ void GraphicSystem::Render(const Mesh* _pMesh)
 	switch (_pMesh->m_shape)
 	{
 	case Mesh::MESH_NONE:
-		Render(_pMesh->m_vao, _pMesh->m_vbo, _pMesh->m_ebo, m_vertexArray, _pMesh->GetIndices(), GLM::m_drawMode);
+		Render(_pMesh->m_vao, _pMesh->m_vbo, _pMesh->m_ebo, m_vertexArray, _pMesh->GetIndices(), _pMesh->m_drawMode);
 		break;
 
 	case Mesh::MESH_POINT:
 		Render(GLM::m_vao[GLM::SHAPE_POINT], GLM::m_vbo[GLM::SHAPE_POINT], GLM::m_ebo[GLM::SHAPE_POINT],
-			m_vertexArray, _pMesh->GetIndices(), GLM::m_drawMode);
+			m_vertexArray, _pMesh->GetIndices(), _pMesh->m_drawMode);
 		break;
 
 	case Mesh::MESH_RECT:
 		Render(GLM::m_vao[GLM::SHAPE_PLANE], GLM::m_vbo[GLM::SHAPE_PLANE], GLM::m_ebo[GLM::SHAPE_PLANE],
-			m_vertexArray, _pMesh->GetIndices(), GLM::m_drawMode);
+			m_vertexArray, _pMesh->GetIndices(), _pMesh->m_drawMode);
 		break;
 
 	case Mesh::MESH_CROSSRECT:
 		Render(GLM::m_vao[GLM::SHAPE_PLANE3D], GLM::m_vbo[GLM::SHAPE_PLANE3D], GLM::m_ebo[GLM::SHAPE_PLANE3D],
-			m_vertexArray, _pMesh->GetIndices(), GLM::m_drawMode);
+			m_vertexArray, _pMesh->GetIndices(), _pMesh->m_drawMode);
 		break;
 
 	case Mesh::MESH_CUBE:
 		Render(GLM::m_vao[GLM::SHAPE_CUBE], GLM::m_vbo[GLM::SHAPE_CUBE], GLM::m_ebo[GLM::SHAPE_CUBE],
-			m_vertexArray, _pMesh->GetIndices(), GLM::m_drawMode);
+			m_vertexArray, _pMesh->GetIndices(), _pMesh->m_drawMode);
 		break;
 
 	case Mesh::MESH_TETRAHEDRON:
 		Render(GLM::m_vao[GLM::SHAPE_CONE], GLM::m_vbo[GLM::SHAPE_CONE], GLM::m_ebo[GLM::SHAPE_CONE], 
-			m_vertexArray, _pMesh->GetIndices(), GLM::m_drawMode);
+			m_vertexArray, _pMesh->GetIndices(), _pMesh->m_drawMode);
 		break;
 
 	default:
@@ -655,7 +655,7 @@ void GraphicSystem::Render(unsigned _vao, unsigned _vbo, unsigned _ebo,
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * _indices.size(),
 		static_cast<const void*>(&_indices[0]), GL_DYNAMIC_DRAW);
 
-	glDrawElements(GL_TRIANGLE_STRIP, static_cast<GLsizei>(_indices.size()), GL_UNSIGNED_INT, nullptr);
+	glDrawElements(_drawMode, static_cast<GLsizei>(_indices.size()), GL_UNSIGNED_INT, nullptr);
 	glBindVertexArray(0);
 }
 
