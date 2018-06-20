@@ -47,6 +47,8 @@ void LevelController::Update(const float /*_dt*/)
     //	else
     //		STATE::Pause();
     //}
+	if (INPUT::KeyTriggered(JE_SPACE))
+		ASSET::TakeAScreenshot("../resource/screenshot/");
 
     if (INPUT::KeyTriggered(JE_R))
         STATE::Restart();
