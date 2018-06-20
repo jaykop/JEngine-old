@@ -11,6 +11,8 @@
 #include "Debug.h"
 #include "InputHandler.h"
 
+#define jeCheck(c) if (!c) return false
+
 jeBegin
 
 //////////////////////////////////////////////////////////////////////////
@@ -25,31 +27,37 @@ SDL_GLContext	APP::m_pContext = nullptr;
 APP::InitData	APP::m_Data = { "demo", "../resource/ico/main.ico", false, 800, 600 };
 bool			APP::m_IMGUI = false;
 
-void Application::Run(bool _imgui)
+int Application::Run(bool _imgui)
 {
 	m_IMGUI = _imgui;
 
 	// Pop console window 
-	DEBUG_LEAK_CHECKS(-1);
-
 	// and check memory leak
+	DEBUG_LEAK_CHECKS(-1);
 	DEBUG_CREATE_CONSOLE();
 
-	// Open application
+	// Initialize app info
+	// and update
 	if (Initialize())
 		Update();
 
+	// return error value if app info
+	// does not initialize correctly
+	else
+		return -1;
+
+	// Wrap up application
 	Close();
 	
 	// Delete console window
 	DEBUG_DESTROY_CONSOLE();
+
+	return 0;
 }
 
 bool Application::Initialize()
 {
-	/*************** Init Data **************/
-
-	// Assign app init data
+	// Load app init data
 	JSON::ReadFile(ASSET::m_initDirectory.c_str());
 
 	CR_RJValue title = JSON::GetDocument()["Title"];
@@ -77,32 +85,29 @@ bool Application::Initialize()
 	// Plant random seed
 	Random::PlantSeed();
 
-	/*************** SDL **************/
-	bool initedSDL = InitSDL();
+	// Initialize sdl info
+	jeCheck(InitSDL());
 
-	/*************** OpenGL **************/
+	// Initialize opengl setting
 	GLM::Resize(m_Data.m_width, m_Data.m_height);
-	bool initedGL = GLM::Init();
+	jeCheck(GLM::Init());
 
-	/**************** IMGUI **************/
-	bool initedIMGUI = IMGUI::Init(m_pWindow);
+	// Generate built-in components
+	jeCheck(ASSET::SetBuiltInComponents());
+
+	// Load data from json files
+	ASSET::LoadAssets();		
+
+	// Set up imgui
+	jeCheck(IMGUI::Init(m_pWindow));
 	IMGUI::AddEditorFunc(APP::EditorUpdate);
 	IMGUI::AddEditorFunc(GLM::EditorUpdate);
 	IMGUI::AddEditorFunc(STATE::EditorUpdate);
 
-	/**************** Assets **************/
-	// Load info from json files
-	ASSET::LoadAssets();		
+	// Load state info and bind systems here
+	jeCheck(STATE::Init(m_pWindow));
 
-	// Generate built-in components
-	bool initedBuiltInComponents = ASSET::SetBuiltInComponents();
-	
-	// Load state info
-	// Bind systems here
-	bool initedStates = STATE::Init(m_pWindow);	
-
-	return initedSDL && initedGL && initedIMGUI 
-		&& initedBuiltInComponents && initedStates;
+	return true;
 }
 
 void Application::Update()

@@ -103,8 +103,6 @@ void GraphicSystem::Update(const float _dt)
 	RenderToFramebuffer();
 	glPolygonMode(GL_FRONT_AND_BACK, GL_TRIANGLES);
 
-	// Sort orthogonal objects and perspective objects
-	SortModels();
 	UpdatePipelines(_dt);
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);

@@ -6,6 +6,6 @@ public:
 
 	static bool	imguiToggle;
 
-	static void RegisterAssets();
-	static void Run();
+	static bool RegisterAssets();
+	static int Run();
 };
