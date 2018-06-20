@@ -34,7 +34,7 @@ class Application {
 
 public:
 
-	static void Run(bool _imgui);
+	static int Run(bool _imgui);
 
 private:
 
