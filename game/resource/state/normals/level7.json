@@ -9,7 +9,7 @@
 			"Component" : [
 				{
 					"Type": "Camera",
-					"Values": {"Position" : [50, 25, 25], "Target" : [0, 0, 0],
+					"Values": {"Position" : [25, 25, -25], "Target" : [0, 0, 0],
 						"Up" : [0, 1, 0]}
 				}
 			]
@@ -33,12 +33,26 @@
 			]
 		},
 		{
-			"Name" : "Light",
+			"Name" : "Light1",
 			"Component" : [
 				{
 					"Type": "Light",
-					"Values": {"Type" : "Normal", "Position" : [0, 10, 0],
-						"Color" : [1, 1, 0, 1], "Direction" : [0, 0, 0],
+					"Values": {"Type" : "Spot", "Position" : [0, 10, 0],
+						"Color" : [1, 1, 0, 1], "Direction" : [0, -1, 0],
+						"Diffuse" : [1, 1, 1, 1], "Specular" : [1, 1, 1, 1], 
+						"Ambient" : [1, 1, 1, 1], "Constant" : 1.0,
+						"Linear" : 0.009, "Quadratic" : 0.0032, 
+						"CutOff" : 12.5, "OuterCutOff" : 17.5}
+				}
+			]
+		},
+		{
+			"Name" : "Light2",
+			"Component" : [
+				{
+					"Type": "Light",
+					"Values": {"Type" : "Normal", "Position" : [0, 0, -10],
+						"Color" : [0, 0, 1, 1], "Direction" : [0, 0, 0],
 						"Diffuse" : [1, 1, 1, 1], "Specular" : [1, 1, 1, 1], 
 						"Ambient" : [1, 1, 1, 1], "Constant" : 1.0,
 						"Linear" : 0.009, "Quadratic" : 0.0032, 

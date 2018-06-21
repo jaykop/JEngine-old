@@ -31,6 +31,9 @@ void GraphicSystem::UpdatePipelines(const float _dt)
 
 	// Inform that there are lights
 	Shader::m_pCurrentShader->SetBool("boolean_light", m_isLight);
+	
+	// Sort orthogonal objects and perspective objects
+	SortModels();
 
 	for (auto model : m_models) {
 

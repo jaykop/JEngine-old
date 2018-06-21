@@ -36,7 +36,7 @@ bool GLManager::Init()
 
     //Before using shader, initialize glew.
     if (glewInit() != GLEW_OK) {
-        fprintf(stderr, "*GLManager: Failed to initialize GLEW\n");
+        jeDebugPrint("!GLManager - Failed to initialize GLEW\n");
         return false;
     }
 
