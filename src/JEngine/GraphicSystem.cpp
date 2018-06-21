@@ -21,6 +21,9 @@ GraphicSystem::GraphicSystem()
 	m_viewport(mat4()), sobelAmount(0.f), blurSize(0.f), blurAmount(0.f), m_maxLights(16), 
 	aliasMode(ALIAS_ALIASED), screenEffect(EFFECT_NONE), m_resolutionScaler(GLM::m_width, GLM::m_height, 1.f)
 {
+	/* TODO: Remove duplicated varibles with camera component.
+	 Polish this class */
+
 	aspect = float(GLM::m_width / GLM::m_height);
 	m_right = m_width * .5f;
 	m_left = -m_right;
