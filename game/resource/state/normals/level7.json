@@ -1,0 +1,77 @@
+{
+
+	"Background" : [ 0.5, 0.5, 0.5, 0.5 ],
+	"Screen" : [ 1.0, 1.0, 1.0, 1.0 ],
+	"Effect" : { "Type" : "None" },
+	"Object" : [
+		{
+			"Name" : "Camera",
+			"Component" : [
+				{
+					"Type": "Camera",
+					"Values": {"Position" : [25, 25, -25], "Target" : [0, 0, 0],
+						"Up" : [0, 1, 0]}
+				},
+				{
+					"Type" : "CameraController",
+					"Values" : {}
+				}
+			]
+		},			
+		{
+			"Name" : "Model",
+			"Component" : [
+				{
+					"Type": "Transform",
+					"Values": {"Position" : [0, 0, 0], "Scale" : [1, 1, 1]}
+				},
+				{
+					"Type": "Model",
+					"Values": {"Texture" : "rect", "Color" : [1, 1, 1, 1], "Projection" : "Perspective",
+								"Mesh" : "../resource/obj/Paper Airplane.obj", "DrawMode" : "Triangle_Strip"}
+				},
+				{
+					"Type" : "Material",
+					"Values" : {}
+				}
+			]
+		},
+		{
+			"Name" : "Light1",
+			"Component" : [
+				{
+					"Type": "Light",
+					"Values": {"Type" : "Spot", "Position" : [0, 10, 0],
+						"Color" : [1, 1, 0, 1], "Direction" : [0, -1, 0],
+						"Diffuse" : [1, 1, 1, 1], "Specular" : [1, 1, 1, 1], 
+						"Ambient" : [1, 1, 1, 1], "Constant" : 1.0,
+						"Linear" : 0.009, "Quadratic" : 0.0032, 
+						"CutOff" : 12.5, "OuterCutOff" : 17.5}
+				}
+			]
+		},
+		{
+			"Name" : "Light2",
+			"Component" : [
+				{
+					"Type": "Light",
+					"Values": {"Type" : "Normal", "Position" : [0, 0, -10],
+						"Color" : [0, 0, 1, 1], "Direction" : [0, 0, 0],
+						"Diffuse" : [1, 1, 1, 1], "Specular" : [1, 1, 1, 1], 
+						"Ambient" : [1, 1, 1, 1], "Constant" : 1.0,
+						"Linear" : 0.009, "Quadratic" : 0.0032, 
+						"CutOff" : 12.5, "OuterCutOff" : 17.5}
+				}
+			]
+		},
+		{
+			"Name" : "LevelController",
+			"Component" : [
+				{
+					"Type": "LevelController",
+					"Values": {}
+				}
+			]
+		}
+	]
+}

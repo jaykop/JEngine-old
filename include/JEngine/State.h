@@ -2,7 +2,7 @@
 #include <string>
 #include "Macro.h"
 
-JE_BEGIN
+jeBegin
 
 class ObjectContainer;
 
@@ -12,6 +12,8 @@ class State {
 	friend class AssetManager;
 
 public:
+
+	const char * GetName() const;
 
 private:
 
@@ -32,7 +34,7 @@ private:
 	State*				m_pLastStage;
 	bool				m_paused;
 	std::string			m_name, m_loadDirectory;
-	ObjectContainer*	m_objContainer;
+	ObjectContainer*	m_pObjContainer;
 };
 
-JE_END
+jeEnd

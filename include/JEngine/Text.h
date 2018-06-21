@@ -4,87 +4,78 @@
 #include "ft2build.h"
 #include FT_FREETYPE_H
 
-#include "Sprite.h"
+#include "Model.h"
 #include "Vector2.h"
 
-JE_BEGIN
+jeBegin
+jeDeclareComponentBuilder(Text);
+
+struct Character {
+    unsigned	texture;	// ID handle of the glyph texture
+    unsigned	advance;	// Horizontal offset to advance to next glyph
+    vec2		size;		// Size of glyph
+    vec2		bearing;	// Offset from baseline to left/top of glyph
+};
 
 class Font {
 
-	struct Character {
-		unsigned	m_texture;	// ID handle of the glyph texture
-		unsigned	m_advance;	// Horizontal offset to advance to next glyph
-		vec2		m_size;		// Size of glyph
-		vec2		m_bearing;	// Offset from baseline to left/top of glyph
-	};
+    friend class AssetManager;
+    friend class GraphicSystem;
 
-	typedef std::map<char, Character> FontData;
-
-	friend class AssetManager;
-	friend class GraphicSystem;
+    using FontData = std::map<unsigned long, Character>;
 
 private:
 
-	Font();
-	~Font() {};
-	Font(const Font& /*_copy*/) = delete;
-	void operator = (const Font& /*_copy*/) = delete;
+    Font();
+    ~Font() {};
+    Font(const Font& /*_copy*/) = delete;
+    void operator= (const Font& /*_copy*/) = delete;
+    void operator= (Font&& /*_copy*/) = delete;
 
-	FontData m_data;
-	FT_Face m_face;
-	FT_Library m_lib;
-	unsigned m_fontSize;
-	float m_newLineInterval;
+    FontData	m_data;
+    FT_Face		m_face;
+    FT_Library	m_lib;
+    unsigned	m_fontSize;
+    float		m_newLineInterval;
 };
 
-class TextBuilder : public ComponentBuilder
+class Text : public Model
 {
-
-	friend class AssetManager;
+    jeBaseFriends(Text);
+    friend class GraphicSystem;
 
 public:
 
-private:
+    void Register() override;
 
-	TextBuilder();
-	~TextBuilder() {};
-	TextBuilder(const TextBuilder& /*_copy*/) = delete;
-	void operator=(const TextBuilder& /*_copy*/) = delete;
+    void SetText(const char* _text, ...);
+    const std::string&	GetText() const;
 
-	Component* CreateComponent(Object* _pOwner) const override;
+    void SetText(const wchar_t* _wText, ...);
+    const std::wstring& GetWText() const;
 
-};
-
-class Text : public Sprite
-{
-	friend class ComponentManager;
-	friend class GraphicSystem;
-	friend class TextBuilder;
-
-public:
-
-	void Register() override;
-
-	void				SetText(const char* _text, ...);
-	const std::string&	GetText(void) const;
-
-	Font* m_pFont;
+    Font* pFont;
 
 private:
-	
-	char		m_textStorage[1024];
-	std::string m_text;
 
-	Text(Object* pObject);
-	~Text();
-	void operator=(const Text& _copy);
+    bool			m_printWide = false;
+	char			*m_pTextStorage = nullptr;
+    wchar_t	*m_pwTextStorage = nullptr;
+	std::string		m_text;
+    std::wstring	m_wText;
+    size_t			m_size = 0;
 
-	void Load(CR_RJValue _data) override;
+	static std::vector<unsigned> m_idices;
 
-	void EditorUpdate(const float _dt) override;
+    Text(Object* pObject);
+    ~Text();
+    void operator=(const Text& _copy);
+    void Load(CR_RJValue _data) override;
+    void EditorUpdate(const float _dt) override;
 
-	Text() = delete;
-	Text(const Text& /*_copy*/) = delete;
+    Text() = delete;
+    Text(const Text& /*_copy*/) = delete;
+    Text(Text&& /*_copy*/) = delete;
 };
 
-JE_END
+jeEnd

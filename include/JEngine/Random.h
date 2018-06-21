@@ -3,11 +3,14 @@
 #include "Vector3.h"
 #include "Vector4.h"
 
-JE_BEGIN
+jeBegin
 
 class Random {
 
 	friend class Application;
+
+	// Locked constuctor, destructor, assign operator
+	jeStaticClassDeclaration(Random)
 
 public:
 
@@ -25,10 +28,8 @@ private:
 	
 	static std::mt19937	m_randomObject;
 
-	Random() = delete;
-	Random(const Random& /*_copy*/) = delete;
-	void operator=(const Random& /*_copy*/) = delete;
-
 };
 
-JE_END
+using RAND = Random;
+
+jeEnd

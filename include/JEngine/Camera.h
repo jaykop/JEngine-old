@@ -1,53 +1,51 @@
 #pragma once
 #include "Vector3.h"
 #include "Component.h"
+#include "ComponentManager.h"
 #include "ComponentBuilder.h"
 
-JE_BEGIN
-
-class CameraBuilder : public ComponentBuilder
-{
-
-	friend class AssetManager;
-
-public:
-
-private:
-
-	CameraBuilder();
-	~CameraBuilder() {};
-	CameraBuilder(const CameraBuilder& /*_copy*/) = delete;
-	void operator=(const CameraBuilder& /*_copy*/) = delete;
-
-	Component* CreateComponent(Object* _pOwner) const override;
-
-};
+jeBegin
 
 class Camera : public Component
 {
-
-	friend class ComponentManager;
-	friend class GraphicSystem;
-	friend class CameraBuilder;
+    jeBaseFriends(Camera);
+    friend class GraphicSystem;
 
 public:
 
-	vec3 m_position, m_up, m_target;
+    vec3 position;
+	float zoom, near, far;
+	
+	void SetCamera(const vec3& _eye, const vec3& _look, const vec3& _up, float _fov, float _aspect,float _distance);
+	const vec3& GetViewGeometry() const;
 
-	void Register() override;
+	float GetFovy() const;
+	float GetAspect() const;
+	float GetDistance() const;
+
+	void Yaw(float _degree);
+	void Pitch(float _degree);
+	void Roll(float _degree);
+	void Zoom(float _zoom);
+
+    void Register() override;
 
 private:
 
-	Camera(Object* _pOwner);
-	~Camera() {};
-	void operator=(const Camera& _copy);
+	vec3 m_up, m_target, m_right, m_back, m_viewGeometry;
+	float m_distance, m_fovy, m_aspect, m_width, m_height;
 
-	Camera() = delete;
-	Camera(const Camera& /*_copy*/) = delete;
-	
-	void Load(CR_RJValue _data) override;
+    Camera(Object* _pOwner);
+    ~Camera() {};
+    void operator=(const Camera& _copy);
 
-	void EditorUpdate(const float _dt) override;
+    Camera() = delete;
+    Camera(const Camera& /*_copy*/) = delete;
+
+    void Load(CR_RJValue _data) override;
+
+    void EditorUpdate(const float _dt) override;
 };
 
-JE_END
+jeDeclareComponentBuilder(Camera);
+jeEnd

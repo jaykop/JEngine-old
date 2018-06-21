@@ -1,28 +1,32 @@
 #include "Component.h"
+#include "Object.h"
 #include "JsonParser.h"
 #include "ObjectFactory.h"
 #include "stringbuffer.h"
-#include "FileReadStream.h"
-#include "imgui.h"
-#include "ImguiManager.h"
+#include "istreamwrapper.h"
+#include <fstream>
 
-JE_BEGIN
+jeBegin
 
-RJDoc		JsonParser::m_document;
+RJDoc JsonParser::m_document;
 
 void JsonParser::ReadFile(const char * _dir)
 {
-	m_document.Clear();
-	FILE* pFile;
-	fopen_s(&pFile, _dir, "rb");
-	char buffer[65536];
-	rapidjson::FileReadStream read(pFile, buffer, sizeof(buffer));
-	m_document.ParseStream<0, rapidjson::UTF8<>, rapidjson::FileReadStream>(read);
+	Close();
+
+	std::ifstream read(_dir);
+	rapidjson::IStreamWrapper toInputStream(read);
+	m_document.ParseStream(toInputStream);
 }
 
 CR_RJDoc JsonParser::GetDocument()
 {
 	return m_document;
+}
+
+void JsonParser::Close()
+{
+	m_document.Clear();
 }
 
 void JsonParser::LoadObjects()
@@ -45,19 +49,19 @@ void JsonParser::LoadObjects()
 					if (component[j].HasMember("Type"))
 						LoadComponents(component[j]);
 					else
-						JE_DEBUG_PRINT("!JsonParser - Wrong component type or values.\n");
+						jeDebugPrint("!JsonParser - Wrong component type or values.\n");
 
 				} // for (rapidjson::SizeType j = 0; j < component.Size(); ++j) {
 			} // if (object[i].HasMember("Component")) {
 
 			else
-				JE_DEBUG_PRINT("!JsonParser - No component in this object: %s\n", object[i]["Name"].GetString());
+				jeDebugPrint("!JsonParser - No component in this object: %s\n", object[i]["Name"].GetString());
 
 			FACTORY::AddCreatedObject();
 		} // if (object[i]["Name"].IsString()) {
 
 		else // if (object[i]["Name"].IsString()) {
-			JE_DEBUG_PRINT("!JsonParser - Wrong type of object name.\n");
+			jeDebugPrint("!JsonParser - Wrong type of object name.\n");
 
 	} // for (rapidjson::SizeType i = 0; i < object.Size(); ++i) {
 }
@@ -72,4 +76,4 @@ void JsonParser::LoadComponents(CR_RJValue _data)
 			found->Load(_data["Values"]);
 }
 
-JE_END
+jeEnd

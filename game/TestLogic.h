@@ -1,52 +1,50 @@
 #pragma once
 #include "CustomComponent.h"
 #include "ComponentBuilder.h"
+#include "ComponentManager.h"
+#include "Timer.h"
 
-JE_BEGIN
+jeBegin
 
 class Object;
-class TestLogicBuilder : public ComponentBuilder
-{
+class Camera;
+struct Telegram;
+class Transform;
 
-	friend class Core;
-
-public:
-
-private:
-
-	TestLogicBuilder();
-	~TestLogicBuilder() {};
-	TestLogicBuilder(const TestLogicBuilder& /*_copy*/) = delete;
-	void operator=(const TestLogicBuilder& /*_copy*/) = delete;
-
-	CustomComponent* CreateComponent(Object* _pOwner) const override;
-
-};
-
-void threadTest(int a);
 class TestLogic : public CustomComponent
 {
-	friend class ComponentManager;
-	friend class TestLogicBuilder;
+    template <class T>
+    friend class MemoryAllocator;
+
+    friend class ComponentManager;
+    friend class TestLogicBuilder;
 
 public:
 
-	Object *m_ortho, *m_pers;
-
+	Object * m_ortho, *m_pers;
+	Camera *camera;
+	Transform* pointer;
 private:
 
-	TestLogic(Object* pObject);
-	~TestLogic() {};
+    std::vector <Object*> m_list;
 
-	void Register() override;
-	void Load(CR_RJValue _data) override;
-	void Init() override;
-	void Update(const float _dt) override;
-	void Close() override;
-	void Unload() override;
+    TestLogic(Object* pObject);
+    ~TestLogic() {};
 
-	void EditorUpdate(const float _dt) override;
+    static int a;
 
+    void Register() override;
+    void Load(CR_RJValue _data) override;
+    void Init() override;
+    void Update(const float _dt) override;
+    void Close() override;
+    void Unload() override;
+    bool OnMessage(Telegram& msg) override { msg; return false; }
+
+    void EditorUpdate(const float _dt) override;
+
+    Timer t;
 };
 
-JE_END
+jeDeclareCustomComponentBuilder(TestLogic);
+jeEnd

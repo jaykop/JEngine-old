@@ -1,5 +1,6 @@
 #include "GLManager.h"
 #include "SDL_opengl.h"
+#include "SDL_image.h"
 #include "Application.h"
 #include "StateManager.h"
 #include "AssetManager.h"
@@ -7,8 +8,12 @@
 #include "Random.h"
 #include "ImguiManager.h"
 #include "imgui.h"
+#include "Debug.h"
+#include "InputHandler.h"
 
-JE_BEGIN
+#define jeCheck(c) if (!c) return false
+
+jeBegin
 
 //////////////////////////////////////////////////////////////////////////
 // static variables
@@ -17,42 +22,134 @@ int				APP::m_samples = 0;
 int				APP::m_buffers = 0;
 SDL_Event		APP::m_pEvent;
 SDL_Window*		APP::m_pWindow = nullptr;
-SDL_Surface*	APP::m_pSurface = nullptr;
+SDL_Surface		*APP::m_pSurface = nullptr, *APP::m_pIcon= nullptr;
 SDL_GLContext	APP::m_pContext = nullptr;
-APP::InitData	APP::m_Data = { "demo", false, 800, 600 };
+APP::InitData	APP::m_Data = { "demo", "../resource/ico/main.ico", false, 800, 600 };
+bool			APP::m_IMGUI = false;
+
+int Application::Run(bool _imgui)
+{
+	m_IMGUI = _imgui;
+
+	// Pop console window 
+	// and check memory leak
+	DEBUG_LEAK_CHECKS(-1);
+	DEBUG_CREATE_CONSOLE();
+
+	// Initialize app info
+	// and update
+	if (Initialize())
+		Update();
+
+	// return error value if app info
+	// does not initialize correctly
+	else
+		return -1;
+
+	// Wrap up application
+	Close();
+	
+	// Delete console window
+	DEBUG_DESTROY_CONSOLE();
+
+	return 0;
+}
 
 bool Application::Initialize()
 {
-	/*************** Init Data **************/
-
-	// Assign app init data
+	// Load app init data
 	JSON::ReadFile(ASSET::m_initDirectory.c_str());
 
 	CR_RJValue title = JSON::GetDocument()["Title"];
 	CR_RJValue fullscreen = JSON::GetDocument()["Fullscreen"];
 	CR_RJValue width = JSON::GetDocument()["Width"];
 	CR_RJValue height = JSON::GetDocument()["Height"];
+	CR_RJValue icon = JSON::GetDocument()["Icon"];
 
 	if (title.IsString() && fullscreen.IsBool()
-		&& width.IsInt() && height.IsInt()) {
+		&& width.IsInt() && height.IsInt()
+		&& icon.IsString()) {
 
 		m_Data.m_title.assign(title.GetString());
+		m_Data.m_icon.assign(icon.GetString());
 		m_Data.m_isFullScreen = fullscreen.GetBool();
 		m_Data.m_width = width.GetInt();
 		m_Data.m_height = height.GetInt();
 	}
 
 	else {
-		JE_DEBUG_PRINT("!Application - Wrong init data.\n");
+		jeDebugPrint("!Application - Wrong init data.\n");
 		return false;
 	}
 
-	/*************** SDL **************/
+	// Plant random seed
+	Random::PlantSeed();
 
+	// Initialize sdl info
+	jeCheck(InitSDL());
+
+	// Initialize opengl setting
+	GLM::Resize(m_Data.m_width, m_Data.m_height);
+	jeCheck(GLM::Init());
+
+	// Generate built-in components
+	jeCheck(ASSET::SetBuiltInComponents());
+
+	// Load data from json files
+	ASSET::LoadAssets();		
+
+	// Set up imgui
+	jeCheck(IMGUI::Init(m_pWindow));
+	IMGUI::AddEditorFunc(APP::EditorUpdate);
+	IMGUI::AddEditorFunc(GLM::EditorUpdate);
+	IMGUI::AddEditorFunc(STATE::EditorUpdate);
+
+	// Load state info and bind systems here
+	jeCheck(STATE::Init(m_pWindow));
+
+	return true;
+}
+
+void Application::Update()
+{
+	// Update the surface
+	while (STATE::GetStatus()
+		!= STATE::StateStatus::STATE_QUIT) {
+
+		// Update state manager
+		STATE::Update(&m_pEvent);
+
+		// Update sdl window
+		SDL_UpdateWindowSurface(m_pWindow);
+
+	}	// while (STATE::GetStatus()
+		// != STATE::StateStatus::STATE_QUIT) {
+}
+
+void Application::Close()
+{
+	STATE::Close();			// Remove systems and states
+	ASSET::UnloadAssets();	// Clear loaded assets
+	JSON::Close();			// Clear document
+	GLM::Close();			// Close SDL GL
+	IMGUI::Close();			// Close imgui manager
+
+	CloseSDL();				// Close sdl window
+}
+
+bool Application::InitSDL()
+{
 	// Check right init
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0) {
 		// Print error message
-		JE_DEBUG_PRINT("!Application - SDL could not initialize. SDL_Error: %s\n", SDL_GetError());
+		jeDebugPrint("!Application - SDL could not initialize. SDL_Error: %s\n", SDL_GetError());
+		return false;
+	}
+
+	// Initialize png loading
+	if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG))
+	{
+		jeDebugPrint("!Application - SDL_image could not initialize. SDL_image Error: %s\n", IMG_GetError());
 		return false;
 	}
 
@@ -76,9 +173,14 @@ bool Application::Initialize()
 		m_Data.m_width, m_Data.m_height, SDL_WINDOW_OPENGL);
 
 	if (!m_pWindow) {
-		JE_DEBUG_PRINT("!Application - Window could not be created. SDL_Error: %s\n", SDL_GetError());
+		jeDebugPrint("!Application - Window could not be created. SDL_Error: %s\n", SDL_GetError());
 		return false;
 	}
+
+	// Set window icon
+	m_pIcon = IMG_Load(m_Data.m_icon.c_str());
+
+	SDL_SetWindowIcon(m_pWindow, m_pIcon);
 
 	// Get context
 	m_pContext = SDL_GL_CreateContext(m_pWindow);
@@ -91,47 +193,14 @@ bool Application::Initialize()
 	// Fill the surface white
 	SDL_FillRect(m_pSurface, nullptr, SDL_MapRGB(m_pSurface->format, 0xFF, 0xFF, 0xFF));
 
-	/*************** Open GL **************/
-	GLM::Resize(m_Data.m_width, m_Data.m_height);
-	GLM::initSDL_GL();
-	
-	/**************** IMGUI **************/
-	IMGUI::Init(m_pWindow);
-	IMGUI::AddEditorFunc(APP::EditorUpdate);
-	IMGUI::AddEditorFunc(GLM::EditorUpdate);
-	IMGUI::AddEditorFunc(STATE::EditorUpdate);
-	
-	/**************** Built-in **************/
-	Random::PlantSeed();	// Plant random seed
-	ASSET::Load();			// Load info from json files
-	STATE::Init(m_pWindow);	// Bind systems here
-
 	return true;
 }
 
-void Application::Update()
-{	
-	// Update the surface
-	while (STATE::GetStatus()
-		!= STATE::StateStatus::STATE_QUIT) {
-		
-		// Update state manager
-		STATE::Update(&m_pEvent);
-	
-		// Update sdl window
-		SDL_UpdateWindowSurface(m_pWindow);
-		
-	}	// while (STATE::GetStatus()
-		// != STATE::StateStatus::S_QUIT) {
-}
-
-void Application::Close()
+void Application::CloseSDL()
 {
-	STATE::Close();		// Remove systems and states
-	ASSET::Unload();	// Clear loaded assets
-	GLM::CloseSDL_GL(); // Close SDL GL
-	IMGUI::Close(); 	// Close imgui manager
-	
+	// Delete m_pIcon
+	SDL_FreeSurface(m_pIcon);
+
 	// Destroy
 	SDL_GL_DeleteContext(m_pContext);
 
@@ -143,7 +212,7 @@ void Application::Close()
 }
 
 void Application::EditorUpdate(const float /*_dt*/)
-{		
+{
 	// Basic debug window
 	ImGui::Begin("Debug");
 	ImGui::Text("*JEngine Frame Time: %.11f", STATE::m_frameTime);
@@ -168,4 +237,4 @@ void Application::EditorUpdate(const float /*_dt*/)
 	ImGui::End();
 }
 
-JE_END
+jeEnd

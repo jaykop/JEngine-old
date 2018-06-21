@@ -1,69 +1,53 @@
 #pragma once
 #include "Timer.h"
 #include "Component.h"
+#include "ComponentManager.h"
 #include "ComponentBuilder.h"
 
-JE_BEGIN
-
-class AnimationBuilder : public ComponentBuilder
-{
-
-	friend class AssetManager;
-
-public:
-
-private:
-
-	AnimationBuilder();
-	~AnimationBuilder() {};
-	AnimationBuilder(const AnimationBuilder& /*_copy*/) = delete;
-	void operator=(const AnimationBuilder& /*_copy*/) = delete;
-
-	Component* CreateComponent(Object* _pOwner) const override;
-
-};
+jeBegin
 
 class Animation : public Component
 {
-	// Keyword Definitions
-	friend class ComponentManager;
-	friend class GraphicSystem;
-	friend class AnimationBuilder;
+    // Keyword Definitions
+    jeBaseFriends(Animation);
+    friend class GraphicSystem;
 
 public:
 
-	int		GetAnimationFrame();
-	float	GetAnimationSpeed();
-	bool	GetActiveAnimationToggle();
-	void	ActiveAnimation(bool _toggle);
-	void	FixAnimationFrame(int _thFrame);
-	void	SetAnimationSpeed(float _speed);
-	void	SetAnimationFrame(int _numOfFrame);
+    int	    GetAnimationFrame() const;
+    float   GetAnimationSpeed() const;
+    bool    GetActiveAnimationToggle() const;
+    void    ActiveAnimation(bool _toggle);
+    void    FixAnimationFrame(int _thFrame);
+    void    SetAnimationSpeed(float _speed);
+    void    SetAnimationFrame(int _numOfFrame);
 
 private:
 
-	// Locked constuctors and destructor
-	~Animation();
-	Animation(Object* _pOwner);
-	void operator=(const Animation& _copy);
+    // Locked constuctors and destructor
+    ~Animation();
+    Animation(Object* _pOwner);
+    void operator=(const Animation& _copy);
 
-	Animation() = delete;
-	Animation(const Animation& /*_copy*/) = delete;
+    Animation() = delete;
+    Animation(const Animation& /*_copy*/) = delete;
 
-	void Load(CR_RJValue _data) override;
-	void Register() override {};
+    void Load(CR_RJValue _data) override;
+    void Register() override {};
 
-	Timer	m_timer;
-	int		m_animationFrames;
-	int		m_animationFixFrame;
-	bool	m_activeAnimation;
-	float	m_realSpeed;
-	float	m_realFrame;
-	float	m_currentFrame;
-	float	m_animationSpeed;
+    Timer   m_timer;
+    int	    m_animationFrames;
+    int	    m_animationFixFrame;
+    bool    m_activeAnimation;
+    float   m_realSpeed;
+    float   m_realFrame;
+    float   m_currentFrame;
+    float   m_animationSpeed;
 
-	void	EditorUpdate(const float _dt) override;
+    void    EditorUpdate(const float _dt) override;
 
 };
 
-JE_END
+jeDeclareComponentBuilder(Animation);
+
+jeEnd

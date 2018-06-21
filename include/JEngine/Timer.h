@@ -1,7 +1,11 @@
 #pragma once
 #include "Macro.h"
 
-JE_BEGIN
+jeBegin
+
+struct Time{
+	int year, month, day, hour, minute, second;
+};
 
 class Timer {
 
@@ -11,15 +15,19 @@ public:
 	~Timer() {};
 
 	void	Start(void);
-	float	GetTime(void);
+	float	GetTime(void) const;
+
+	static  Time GetCurrentTimeInfo(void);
 
 private:
 
-	Timer(const Timer& /*_cpoy*/) = delete;
-	void operator=(const Timer& /*_cpoy*/) = delete;
-
 	float m_time;
+
+	Timer(Timer&&) = delete;
+	Timer(const Timer&) = delete;
+	Timer& operator=(Timer&&) = delete;
+	Timer& operator=(const Timer&) = delete;
 
 };
 
-JE_END
+jeEnd

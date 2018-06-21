@@ -1,32 +1,33 @@
 #include "Animation.h"
 #include "GraphicSystem.h"
-#include "Sprite.h"
+#include "Model.h"
+#include "Object.h"
 
-JE_BEGIN
+#ifdef  jeUseBuiltInAllocator
+#include "MemoryAllocator.h"
+#endif
+
+jeBegin
+jeDefineComponentBuilder(Animation);
 
 Animation::Animation(Object* _pOwner)
 	: Component(_pOwner), m_currentFrame(0.f), m_animationSpeed(0.f),
 	m_animationFrames(1), m_animationFixFrame(1), m_realSpeed(0.f),
 	m_realFrame(1.f), m_activeAnimation(false)
 {	
-	// Connect to sprite's pointer
-	if (_pOwner->HasComponent<Sprite>()
-		&& !_pOwner->GetComponent<Sprite>()->m_hasAnimation) {
-		_pOwner->GetComponent<Sprite>()->m_animation = this;
-		_pOwner->GetComponent<Sprite>()->m_hasAnimation = true;
-	}
+	// Connect to model's pointer
+	if (_pOwner->HasComponent<Model>()) 
+		_pOwner->GetComponent<Model>()->m_pAnimation = this;
 
 	else
-		JE_DEBUG_PRINT("!Animation - This object has no sprite componnet: %s\n", _pOwner->GetName().c_str());
+		jeDebugPrint("!Animation - This object has no model componnet: %s\n", _pOwner->GetName().c_str());
 }
 
 Animation::~Animation() {
 
 	// Turn off the toggle
-	if (m_pOwner->HasComponent<Sprite>()) {
-		m_pOwner->GetComponent<Sprite>()->m_animation = nullptr;
-		m_pOwner->GetComponent<Sprite>()->m_hasAnimation = false;
-	}
+	if (GetOwner()->HasComponent<Model>()) 
+		GetOwner()->GetComponent<Model>()->m_pAnimation = nullptr;
 }
 
 void Animation::operator=(const Animation & _copy)
@@ -39,12 +40,9 @@ void Animation::operator=(const Animation & _copy)
 	m_realFrame = _copy.m_realFrame;
 	m_activeAnimation = _copy.m_activeAnimation;
 
-	// Connect to sprite's pointer
-	if (m_pOwner->HasComponent<Sprite>()
-		&& !m_pOwner->GetComponent<Sprite>()->m_hasAnimation) {
-		m_pOwner->GetComponent<Sprite>()->m_animation = this;
-		m_pOwner->GetComponent<Sprite>()->m_hasAnimation = true;
-	}
+	// Connect to model's pointer
+	if (GetOwner()->HasComponent<Model>()) 
+		GetOwner()->GetComponent<Model>()->m_pAnimation = this;
 }
 
 void Animation::Load(CR_RJValue _data)
@@ -75,8 +73,8 @@ void Animation::EditorUpdate(const float /*_dt*/)
 	// TODO
 }
 
-bool Animation::GetActiveAnimationToggle()
-{
+bool Animation::GetActiveAnimationToggle() const
+{ 
 	return m_activeAnimation;
 }
 
@@ -106,23 +104,14 @@ void Animation::SetAnimationSpeed(float _speed)
 	m_realSpeed = 1.f / _speed;
 }
 
-int Animation::GetAnimationFrame()
+int Animation::GetAnimationFrame() const
 {
 	return m_animationFrames;
 }
 
-float Animation::GetAnimationSpeed()
+float Animation::GetAnimationSpeed() const
 {
 	return m_animationSpeed;
 }
 
-AnimationBuilder::AnimationBuilder()
-	:ComponentBuilder()
-{}
-
-Component* AnimationBuilder::CreateComponent(Object* _pOwner) const
-{
-	return new Animation(_pOwner);
-}
-
-JE_END
+jeEnd

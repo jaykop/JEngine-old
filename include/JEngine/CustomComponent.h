@@ -1,10 +1,13 @@
 #pragma once
 #include "Component.h"
 
-JE_BEGIN
+jeBegin
+
+struct Telegram;
 
 class CustomComponent : public Component {
 
+	friend class Object;
 	friend class BehaviorSystem;
 
 public:
@@ -14,9 +17,11 @@ public:
 	virtual void Close() = 0;
 	virtual void Unload() = 0;
 
+	virtual bool OnMessage(Telegram& msg) = 0;
+
 protected:
 
-	CustomComponent(Object* _pOwner = nullptr)
+	CustomComponent(Object* _pOwner)
 		: Component(_pOwner, true) {};
 	virtual	~CustomComponent() {};
 
@@ -27,4 +32,4 @@ private:
 	void operator=(const CustomComponent& /*_copy*/) = delete;
 };
 
-JE_END
+jeEnd

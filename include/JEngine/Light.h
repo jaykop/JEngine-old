@@ -1,64 +1,50 @@
 #pragma once
 #include "Component.h"
-#include "Vector3.h"
-#include "Vector4.h"
+#include "ComponentManager.h"
 #include "ComponentBuilder.h"
 
 // For enum ProjectType
 #include "GraphicSystem.h"
 
-JE_BEGIN
+jeBegin
+jeDeclareComponentBuilder(Light);
 
-class LightBuilder : public ComponentBuilder
-{
-
-	friend class AssetManager;
-
-public:
-
-private:
-
-	LightBuilder();
-	~LightBuilder() {};
-	LightBuilder(const LightBuilder& /*_copy*/) = delete;
-	void operator=(const LightBuilder& /*_copy*/) = delete;
-
-	Component* CreateComponent(Object* _pOwner) const override;
-
-};
-
+class Mesh;
 class Light : public Component
 {
 
-	enum LightType  {NORMALLIGHT, DIRECTIONALLIGHT, SPOTLIGHT, POINTLIGHT};
+    jeBaseFriends(Light);
+    friend class GraphicSystem;
 
-	friend class ComponentManager;
-	friend class GraphicSystem;
-	friend class LightBuilder;
+    enum LightType { NORMALLIGHT, DIRECTIONALLIGHT, SPOTLIGHT, POINTLIGHT };
+
 
 public:
 
-	LightType	m_type;
-	ProjectType	m_projection;
+    LightType	m_type;
+    ProjectType	projection;
 
-	vec3		m_position, m_direction;
-	vec4		m_ambient, m_specular, m_diffuse, m_color;
-	float		m_constant, m_linear, m_quadratic, m_cutOff, m_outerCutOff;
+    vec3		position, direction, scale;
+    vec4		ambient, specular, diffuse, color;
+    float		constant, linear, quadratic, cutOff, outerCutOff;
+    unsigned	sfactor, dfactor;
 
-	void Register() override;
+    void Register() override;
 
 private:
 
-	Light(Object* _pOwner);
-	~Light();
-	void operator=(const Light& _copy);
+	Mesh *m_pMeshes = nullptr;
 
-	Light() = delete;
-	Light(const Light& /*_copy*/) = delete;
+    Light(Object* _pOwner);
+    ~Light();
+    void operator=(const Light& _copy);
 
-	void Load(CR_RJValue _data) override;
+    Light() = delete;
+    Light(const Light& /*_copy*/) = delete;
 
-	void EditorUpdate(const float _dt) override;
+    void Load(CR_RJValue _data) override;
+
+    void EditorUpdate(const float _dt) override;
 };
 
-JE_END
+jeEnd

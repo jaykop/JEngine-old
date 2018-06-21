@@ -2,7 +2,7 @@
 #include <vector>
 #include "System.h"
 
-JE_BEGIN
+jeBegin
 
 class Transform;
 class Rigidbody;
@@ -39,4 +39,4 @@ private:
 	Rigidbodies		m_rigidboide;
 };
 
-JE_END
+jeEnd

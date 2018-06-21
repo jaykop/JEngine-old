@@ -15,15 +15,23 @@ Contains Vector2's class
 #include "Macro.h"
 #include <iostream>
 
-JE_BEGIN
+jeBegin
 
 // vector2 struct
 struct Vector2
 {
+	// Memver variables
+	float x, y;
+
 	// Constructors and destructor
 	Vector2(float _x = 0, float _y = 0);
 	Vector2(const Vector2& _copy);
-	~Vector2();
+
+	// Static variables
+	static const Vector2 ZERO;
+	static const Vector2 ONE;
+	static const Vector2 UNIT_X;
+	static const Vector2 UNIT_Y;
 
 	// Operators
 	bool		operator<(const Vector2& _rhs) const;
@@ -53,34 +61,15 @@ struct Vector2
 	void		SetOne();
 	void		SetUnitX();
 	void		SetUnitY();
-	bool		IsZero() const;
-	bool		IsOne() const;
-	float		GetLength() const;
-	float		GetLengthSq() const;
-	float		DotProduct(const Vector2& _rhs);
-	Vector2		CrossProduct(const Vector2& _rhs);
-	Vector2&	Normalize();
-	Vector2		GetNormalize() const;
-	Vector2&	Absolute();
-	Vector2		GetAbsolute() const;
-	float		GetAngle();
 
 	// Friend functions
 	friend Vector2			operator+(float _constant, const Vector2& _rhs);
 	friend Vector2			operator*(float _constant, const Vector2& _rhs);
 	friend std::ostream&	operator<<(std::ostream& _os, const Vector2& _constents);
 
-	// Static variables
-	static const Vector2 ZERO;
-	static const Vector2 ONE;
-	static const Vector2 UNIT_X;
-	static const Vector2 UNIT_Y;
-
-	// Memver variables
-	float x, y;
 };
 
 using vec2 = Vector2;
-using CR_vec2 = const vec2&;
+using CR_Vec2 = const vec2&;
 
-JE_END
+jeEnd

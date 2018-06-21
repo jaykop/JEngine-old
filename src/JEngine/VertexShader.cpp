@@ -1,14 +1,14 @@
 #include "Shader.h"
 
-JE_BEGIN
+jeBegin
 
 //////////////////////////////////////////////////////////////////////////
 // Vectex shaders
 //////////////////////////////////////////////////////////////////////////
 std::string Shader::m_vertexShader[] = {
 
-	/*************** Model Shader **************/
-	R"glsl(
+    /*************** Model Shader **************/
+    R"glsl(
 	#version 450 core
 
 	layout(location = 0) in vec3 position;
@@ -34,6 +34,10 @@ std::string Shader::m_vertexShader[] = {
 	uniform bool boolean_flip;
 	uniform bool boolean_light;
 	uniform bool boolean_bilboard;
+	
+	uniform bool hasParent;
+	uniform mat4 m4_parentTranslate,
+		m4_parentScale, m4_parentRotate;
 
 	////////////////////////////
 	// out variables
@@ -68,9 +72,13 @@ std::string Shader::m_vertexShader[] = {
 	// Fucntion bodies
 	////////////////////////////
 	void Transforming(vec4 _position, mat4 _model) {
-
+		
+		mat4 newModel = transpose(_model);
+		if (hasParent) 
+			newModel = transpose(m4_parentScale * m4_parentRotate * m4_parentTranslate) * newModel;
+	
 		// Calculate mvp transform matrix
-		mat4 modelview = transpose(m4_viewport) * transpose(_model);
+		mat4 modelview = transpose(m4_viewport) * newModel;
 
 		if (boolean_bilboard) {
 			modelview[0][0]
@@ -117,8 +125,8 @@ std::string Shader::m_vertexShader[] = {
 	};
 	)glsl",
 
-	/*************** Text Shader **************/
-	R"glsl(
+    /*************** Text Shader **************/
+    R"glsl(
 	#version 450 core
 
 	layout (location = 0) in vec3 position;
@@ -147,7 +155,6 @@ std::string Shader::m_vertexShader[] = {
 
 		vec4 newPosition = vec4(position, 1);
 		mat4 model =  m4_scale * m4_rotate * m4_translate;
-		vec4 newTexCoord;
 	
 		// Calculate mvp transform matrix
 		mat4 modelview = transpose(m4_viewport) * transpose(model);
@@ -173,8 +180,8 @@ std::string Shader::m_vertexShader[] = {
 	}
 	)glsl",
 
-	/*************** Lighting Shader **************/
-	R"glsl(
+    /*************** Lighting Shader **************/
+    R"glsl(
 	#version 450 core
 
 	layout (location = 0) in vec3 position;
@@ -198,8 +205,8 @@ std::string Shader::m_vertexShader[] = {
 	}
 	)glsl",
 
-	/*************** Particle Shader **************/
-	R"glsl(
+    /*************** Particle Shader **************/
+    R"glsl(
 	#version 450 core
 
 	// Input vertex data, different for all executions of this shader.
@@ -256,8 +263,8 @@ std::string Shader::m_vertexShader[] = {
 	}
 	)glsl",
 
-	/*************** Screen Shader **************/
-	R"glsl(
+    /*************** Screen Shader **************/
+    R"glsl(
 	#version 450 core
 
 	layout (location = 0) in vec3 position;
@@ -276,4 +283,4 @@ std::string Shader::m_vertexShader[] = {
 	)glsl",
 };
 
-JE_END
+jeEnd

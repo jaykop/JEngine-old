@@ -1,6 +1,8 @@
+// This file contains window info
 {
 	"Title" : "demo",
 	"Fullscreen" : false,
 	"Width" : 800,
-	"Height" : 600	
+	"Height" : 600,
+	"Icon" : "../resource/ico/main.png"
 }

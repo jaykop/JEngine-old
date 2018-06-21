@@ -16,16 +16,25 @@ Contains Application's class and member functions
 #include <string>
 #include "SDL.h"
 
-JE_BEGIN
+jeBegin
+
+struct MAStats;
+struct MAConfig;
 
 //////////////////////////////////////////////////////////////////////////
 // Main application class
 //////////////////////////////////////////////////////////////////////////
 class Application {
 
-	friend class Core;
+	friend class ImguiManager;
+	friend class AssetManager;
+
+	// Locked constuctor, destructor, assign operator
+	jeStaticClassDeclaration(Application)
 
 public:
+
+	static int Run(bool _imgui);
 
 private:
 
@@ -35,6 +44,7 @@ private:
 	struct InitData
 	{
 		std::string	m_title;		// Title
+		std::string m_icon;			// Icon directory
 		bool		m_isFullScreen;	// Flag of fullscr
 		int			m_width;		// Width size
 		int			m_height;		// Height size
@@ -44,23 +54,21 @@ private:
 	static void	Update();
 	static void	Close();
 
+	static bool InitSDL();
+	static void CloseSDL();
+
 	static void EditorUpdate(const float _dt);
 
-	// Locked functions
-	Application() = delete; 
-	~Application() = delete;
-	Application(const Application& /*app*/) = delete;
-	void operator=(const Application& /*app*/) = delete;
-
 	// Private variables
-	static InitData			m_Data;		// Window config
-	static SDL_Window*		m_pWindow;	// SDL window
-	static SDL_Event		m_pEvent;	// SDL Event
-	static SDL_GLContext	m_pContext;	// SDL GL context
-	static SDL_Surface*		m_pSurface; // SDL screen surface
+	static InitData			m_Data;					// Window config
+	static SDL_Window*		m_pWindow;				// SDL window
+	static SDL_Event		m_pEvent;				// SDL Event
+	static SDL_GLContext	m_pContext;				// SDL GL context
+	static SDL_Surface		*m_pSurface, *m_pIcon;	// SDL screen surface
 	static int				m_buffers, m_samples;
+	static bool				m_IMGUI;
 };
 
 using APP = Application;
 
-JE_END
+jeEnd

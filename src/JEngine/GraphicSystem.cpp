@@ -3,37 +3,43 @@
 #include "GraphicSystem.h"
 #include "Application.h"
 #include "Transform.h"
-#include "InputHandler.h"
-#include "Sprite.h"
+#include "Model.h"
 #include "Light.h"
 #include "Camera.h"
+#include "Object.h"
+#include "MathUtils.h"
 
-JE_BEGIN
+jeBegin
+
+using namespace Math;
 
 GraphicSystem::GraphicSystem()
 	:System(), m_pMainCamera(nullptr),
-	m_fovy(45.f), m_zNear(.1f), m_zFar(1000.f), m_isLight(false), m_backgroundColor(vec4::ZERO), 
-	m_orthoComesFirst(true), m_screenColor(vec4::ONE), m_width(int(GLM::m_width)), m_mouseZ(0.f),
-	m_height(int(GLM::m_height)), m_lightScale(vec3(10, 10, 10)), m_aniScale(vec3::ZERO), 
-	m_aniTranslate(vec3::ZERO), m_viewport(mat4()), m_sobelAmount(0.f), m_blurSize(0.f), 
-	m_blurAmount(0.f), m_maxLights(16), m_aliasMode(ALIAS_ALIASED), m_screenEffect(EFFECT_NONE), 
-	m_resolutionScaler(GLM::m_width, GLM::m_height, 1.f)
+	zNear(.1f), zFar(1000.f), m_isLight(false), backgroundColor(vec4::ZERO),
+	orthoComesFirst(true), screenColor(vec4::ONE), m_width(int(GLM::m_width)), m_mouseZ(0.f),
+	m_height(int(GLM::m_height)), m_aniScale(vec3::ZERO), m_aniTranslate(vec3::ZERO),
+	m_viewport(mat4()), sobelAmount(0.f), blurSize(0.f), blurAmount(0.f), m_maxLights(16), 
+	aliasMode(ALIAS_ALIASED), screenEffect(EFFECT_NONE), m_resolutionScaler(GLM::m_width, GLM::m_height, 1.f)
 {
-	m_aspect = GLM::m_width / GLM::m_height;
+	/* TODO: Remove duplicated varibles with camera component.
+	 Polish this class */
+
+	aspect = float(GLM::m_width / GLM::m_height);
 	m_right = m_width * .5f;
 	m_left = -m_right;
 	m_top = m_height * .5f;
 	m_bottom = -m_top;
 
-	m_perspective = mat4::Perspective(m_fovy, m_aspect, m_zNear, m_zFar);
-	m_orthogonal = mat4::Orthogonal(m_left, m_right, m_bottom, m_top, m_zNear, m_zFar);
+	// Fix the orthogonal matrix
+	// because users are not allow to change app size while it is running 
+	m_orthogonal = Orthogonal(m_left, m_right, m_bottom, m_top, zNear, zFar);
 }
 
 void GraphicSystem::Load(CR_RJDoc _data)
 {
 	if (_data.HasMember("Background")) {
 		CR_RJValue color = _data["Background"];
-		m_backgroundColor.Set(
+		backgroundColor.Set(
 			color[0].GetFloat(),
 			color[1].GetFloat(),
 			color[2].GetFloat(),
@@ -43,7 +49,7 @@ void GraphicSystem::Load(CR_RJDoc _data)
 
 	if (_data.HasMember("Screen")) {
 		CR_RJValue color = _data["Screen"];
-		m_screenColor.Set(
+		screenColor.Set(
 			color[0].GetFloat(),
 			color[1].GetFloat(),
 			color[2].GetFloat(),
@@ -55,30 +61,30 @@ void GraphicSystem::Load(CR_RJDoc _data)
 		CR_RJValue effect = _data["Effect"];
 		CR_RJValue type = effect["Type"];
 
-		if (!strcmp("None", type.GetString())) 
-			m_screenEffect = EFFECT_NONE;
+		if (!strcmp("None", type.GetString()))
+			screenEffect = EFFECT_NONE;
 
-		else if (!strcmp("Inverse", type.GetString())) 
-			m_screenEffect = EFFECT_INVERSE;
-		
+		else if (!strcmp("Inverse", type.GetString()))
+			screenEffect = EFFECT_INVERSE;
+
 		else if (!strcmp("Sobel", type.GetString())) {
 			static float s_recommend = 0.005f;
-			m_screenEffect = EFFECT_SOBEL;
+			screenEffect = EFFECT_SOBEL;
 			if (effect.HasMember("SobelAmount")) {
-				m_sobelAmount = effect["SobelAmount"].GetFloat();
-				if (m_sobelAmount > s_recommend)
-					JE_DEBUG_PRINT("!GraphicSystem - Recommend to set sobel amount less than %f.\n", s_recommend);
+				sobelAmount = effect["SobelAmount"].GetFloat();
+				if (sobelAmount > s_recommend)
+					jeDebugPrint("!GraphicSystem - Recommend to set sobel amount less than %f.\n", s_recommend);
 			}
 		}
 		else if (!strcmp("Blur", type.GetString())) {
-			m_screenEffect = EFFECT_BLUR;
+			screenEffect = EFFECT_BLUR;
 			if (effect.HasMember("BlurAmount"))
-				m_blurAmount = effect["BlurAmount"].GetFloat();
+				blurAmount = effect["BlurAmount"].GetFloat();
 			if (effect.HasMember("BlurSize"))
-				m_blurSize= effect["BlurSize"].GetFloat();
+				blurSize = effect["BlurSize"].GetFloat();
 		}
 		else
-			JE_DEBUG_PRINT("!GraphicSystem - Wrong type of screen effect.\n");
+			jeDebugPrint("!GraphicSystem - Wrong type of screen effect.\n");
 	}
 }
 
@@ -86,25 +92,24 @@ void GraphicSystem::Init()
 {
 	// If there is no preset camera by user,
 	// set the first camera as a main camera.
-	if (!m_pMainCamera) 
+	if (!m_pMainCamera)
 		m_pMainCamera = m_cameras[0];
 
-	m_mouseZ = m_pMainCamera->m_position.z;
+	m_mouseZ = m_pMainCamera->position.z;
 
 	for (auto light : m_lights)
-		light->m_direction.Normalize();
+		Normalize(light->direction);
 }
 
 void GraphicSystem::Update(const float _dt)
 {
 	RenderToFramebuffer();
+	glPolygonMode(GL_FRONT_AND_BACK, GL_TRIANGLES);
 
-	// Sort orthogonal objects and perspective objects
-	SortSprites();
 	UpdatePipelines(_dt);
 
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	RenderToScreen();
-	UpdateMousePosition();
 }
 
 void GraphicSystem::Close()
@@ -115,22 +120,22 @@ void GraphicSystem::Close()
 void GraphicSystem::Unload()
 {
 	m_lights.clear();
-	m_sprites.clear();
+	m_models.clear();
 	m_cameras.clear();
 }
 
-void GraphicSystem::SortSprites()
+void GraphicSystem::SortModels()
 {
-	if (m_orthoComesFirst) {
-		std::sort(m_sprites.begin(), m_sprites.end(),
-			[&](Sprite* _leftSpt, Sprite* _rightSpt) -> bool {
+	if (orthoComesFirst) {
+		std::sort(m_models.begin(), m_models.end(),
+			[&](Model* _leftSpt, Model* _rightSpt) -> bool {
 
-			if (_leftSpt->m_projection == PROJECTION_PERSPECTIVE
-				&& _rightSpt->m_projection == PROJECTION_ORTHOGONAL)
+			if (_leftSpt->projection == PROJECTION_PERSPECTIVE
+				&& _rightSpt->projection == PROJECTION_ORTHOGONAL)
 				return true;
 
-			else if (_leftSpt->m_projection == PROJECTION_ORTHOGONAL
-				&& _rightSpt->m_projection == PROJECTION_PERSPECTIVE)
+			else if (_leftSpt->projection == PROJECTION_ORTHOGONAL
+				&& _rightSpt->projection == PROJECTION_PERSPECTIVE)
 				return false;
 
 			else
@@ -140,17 +145,17 @@ void GraphicSystem::SortSprites()
 	}
 }
 
-void GraphicSystem::AddSprite(Sprite* _sprite)
+void GraphicSystem::AddModel(Model* _model)
 {
-	m_sprites.push_back(_sprite);
+	m_models.push_back(_model);
 }
 
-void GraphicSystem::RemoveSprite(Sprite* _sprite)
+void GraphicSystem::RemoveModel(Model* _model)
 {
-	for (Sprites::iterator it = m_sprites.begin();
-		it != m_sprites.end(); ++it) {
-		if ((*it)->m_pOwnerId == _sprite->m_pOwnerId) {
-			m_sprites.erase(it);
+	for (Models::iterator it = m_models.begin();
+		it != m_models.end(); ++it) {
+		if ((*it)->GetOwner()->GetId() == _model->GetOwner()->GetId()) {
+			m_models.erase(it);
 			break;
 		}
 	}
@@ -171,7 +176,7 @@ void GraphicSystem::SetMainCamera(Camera* _camera)
 	m_pMainCamera = _camera;
 }
 
-Camera* GraphicSystem::GetMainCamera()
+Camera* GraphicSystem::GetMainCamera() const
 {
 	return m_pMainCamera;
 }
@@ -184,10 +189,10 @@ void GraphicSystem::AddCamera(Camera* _camera)
 }
 
 void GraphicSystem::RemoveCamera(Camera* _camera)
-{	
+{
 	for (Cameras::iterator it = m_cameras.begin();
 		it != m_cameras.end(); ++it) {
-		if ((*it)->m_pOwnerId == _camera->m_pOwnerId) {
+		if ((*it)->GetOwner()->GetId() == _camera->GetOwner()->GetId()) {
 			m_cameras.erase(it);
 			break;
 		}
@@ -200,14 +205,14 @@ void GraphicSystem::AddLight(Light * _light)
 		m_lights.push_back(_light);
 
 	else
-		JE_DEBUG_PRINT("!GraphicSystem: JEngine cannot support the number of lights more than %d.", m_maxLights);
+		jeDebugPrint("!GraphicSystem: JEngine cannot support the number of lights more than %d.", m_maxLights);
 }
 
 void GraphicSystem::RemoveLight(Light * _light)
 {
 	for (Lights::iterator it = m_lights.begin();
 		it != m_lights.end(); ++it) {
-		if ((*it)->m_pOwnerId == _light->m_pOwnerId) {
+		if ((*it)->GetOwner()->GetId() == _light->GetOwner()->GetId()) {
 			m_lights.erase(it);
 			break;
 		}
@@ -215,9 +220,9 @@ void GraphicSystem::RemoveLight(Light * _light)
 }
 
 void GraphicSystem::StartAntialiasing()
-{	
+{
 	//Start alias mode
-	switch (m_aliasMode)
+	switch (aliasMode)
 	{
 	case ALIAS_ALIASED:
 		glDisable(GL_LINE_SMOOTH);
@@ -243,9 +248,9 @@ void GraphicSystem::StartAntialiasing()
 }
 
 void GraphicSystem::EndAntialiasing()
-{	
+{
 	//End alias mode
-	switch (m_aliasMode)
+	switch (aliasMode)
 	{
 	case ALIAS_ANTIALIASED:
 		glDisable(GL_LINE_SMOOTH);
@@ -258,56 +263,55 @@ void GraphicSystem::EndAntialiasing()
 	}
 }
 
-void GraphicSystem::UpdateMousePosition() {
+//void GraphicSystem::UpdateMousePosition() {
+//
+//	if (INPUT::KeyPressed(JE_MOUSE_WHEEL_UP)) {
+//		m_mouseZ++;
+//		//jeDebugPrint("*GraphicSystem: Mouse screen position - [ %f, %f, %f ]\n", INPUT::m_screenPosition.x, INPUT::m_screenPosition.y, m_mouseZ);
+//	}
+//	else if (INPUT::KeyPressed(JE_MOUSE_WHEEL_DOWN)) {
+//		m_mouseZ--;
+//		//jeDebugPrint("*GraphicSystem: Mouse screen position - [ %f, %f, %f ]\n", INPUT::m_screenPosition.x, INPUT::m_screenPosition.y, m_mouseZ);
+//	}
+//
+//	// Set mouse;s screen position 
+//
+//
+//}
 
-	if (INPUT::KeyPressed(JE_MOUSE_WHEEL_UP)) {
-		m_mouseZ++;
-		JE_DEBUG_PRINT("*GraphicSystem: Mouse screen position - [ %f, %f, %f ]\n", INPUT::m_screenPosition.x, INPUT::m_screenPosition.y, m_mouseZ);
-	}
-	else if (INPUT::KeyPressed(JE_MOUSE_WHEEL_DOWN)) {
-		m_mouseZ--;
-		JE_DEBUG_PRINT("*GraphicSystem: Mouse screen position - [ %f, %f, %f ]\n", INPUT::m_screenPosition.x, INPUT::m_screenPosition.y, m_mouseZ);
-	}
-	
-	// Set mouse;s screen position 
-	static float width = float(m_width)* .5f, height = float(m_height)* .5f;
-	INPUT::m_screenPosition.Set(INPUT::m_rawPosition.x - width, height - INPUT::m_rawPosition.y, m_mouseZ);
 
-}
-
-
-void GraphicSystem::Ray(Sprite* _sprite, Transform* _transform)
+void GraphicSystem::Ray(Model* /*_model*/, Transform* /*_transform*/)
 {
-	if (_sprite->GetOwnerId() != _transform->GetOwnerId())
-		JE_DEBUG_PRINT("!The owners of sprite and transform are not identical.\n");
+	//if (_model->GetOwnerId() != _transform->GetOwnerId())
+	//	jeDebugPrint("!The owners of model and transform are not identical.\n");
 
-	static mat4 s_translate, s_scale, s_rotation,
-		s_viewport, s_projection;
-	static vec4 s_final, s_position4;
-	static vec3 s_position3;
+	//static mat4 s_translate, s_scale, s_rotation,
+	//	s_viewport, s_projection;
+	//static vec4 s_final, s_position4;
+	//static vec3 s_position3;
 
-	s_position3 = _transform->m_position;
-	s_position4.Set(s_position3.x, s_position3.y, s_position3.z, 1.f);
-	s_translate = mat4::Translate(s_position3);
-	s_scale = mat4::Scale(_transform->m_scale);
-	s_rotation = mat4::Rotate(_transform->m_rotation, _transform->m_rotationAxis);
-	
-	if (_sprite->m_projection == PROJECTION_PERSPECTIVE) {
-		s_projection = m_perspective;
-		s_viewport = mat4::LookAt(
-			m_pMainCamera->m_position, m_pMainCamera->m_target, m_pMainCamera->m_up);
-	}
+	//s_position3 = _transform->position;
+	//s_position4.Set(s_position3.x, s_position3.y, s_position3.z, 1.f);
+	//s_translate = mat4::Translate(s_position3);
+	//s_scale = mat4::Scale(_transform->scale);
+	//s_rotation = mat4::Rotate(_transform->rotation, _transform->rotationAxis);
+	//
+	//if (_model->projection == PROJECTION_PERSPECTIVE) {
+	//	s_projection = m_perspective;
+	//	s_viewport = mat4::LookAt(
+	//		m_pMainCamera->position, m_pMainCamera->m_target, m_pMainCamera->m_up);
+	//}
 
-	else {	// PROJECTION_ORTHOGONAL
-		s_projection = m_orthogonal;
-		s_viewport.SetIdentity();
-		s_viewport = mat4::Scale(m_resolutionScaler);
-	}
+	//else {	// PROJECTION_ORTHOGONAL
+	//	s_projection = m_orthogonal;
+	//	s_viewport.SetIdentity();
+	//	s_viewport = mat4::Scale(m_resolutionScaler);
+	//}
 
-	s_final = s_projection * s_viewport * (s_scale * s_rotation * s_translate) * s_position4;
+	//s_final = s_projection * s_viewport * (s_scale * s_rotation * s_translate) * s_position4;
 
-	// TODO...
-	// http://goguri.tistory.com/entry/3D-%ED%94%BC%ED%82%B9
+	//// TODO...
+	//// http://goguri.tistory.com/entry/3D-%ED%94%BC%ED%82%B9
 }
 
-JE_END
+jeEnd

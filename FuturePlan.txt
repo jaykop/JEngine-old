@@ -1,0 +1,15 @@
+*Go over ai example and techniques
+*Camera component/controller/GraphicSystem
+*Clone function - copy and move constructor
+*Polish event handler with std function
+*Mouse picking - bounding box
+*Broadcasting design
+*Add dixygen comments
+*Deferred rendering
+*premake build/cmake/emscripten
+*FMOD Lib
+*SIMD Tech
+*Rippling effect
+*Use thread
+*Polish obj loader
+*Math library unit test

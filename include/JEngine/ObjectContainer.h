@@ -2,7 +2,7 @@
 #include "Macro.h"
 #include <unordered_map>
 
-JE_BEGIN
+jeBegin
 
 class Object;
 using ObjectMap = std::unordered_map<std::string, Object*>;
@@ -13,29 +13,24 @@ class ObjectContainer {
 	friend class StateManager;
 	friend class ObjectFactory;
 
+	ObjectContainer(ObjectContainer&&) = delete;
+	ObjectContainer(const ObjectContainer&) = delete;
+	ObjectContainer& operator=(ObjectContainer&&) = delete;
+	ObjectContainer& operator=(const ObjectContainer&) = delete;
+
 public:
 
+	void		RemoveObject(Object* _pObj);
 	void		RemoveObject(const char* _name);
+	void		RemoveObject(unsigned _id);
 	Object*		GetObject(const char* _name);
-	ObjectMap&	GetObjectMap();
+	Object*		GetObject(unsigned _id);
 	bool		HasObject(const char* _name);
-
-	// These functions are able to
-	// connect to objects directly
-	template <typename ComponentType>
-	inline void				AddComponent(const char* _toObject);
+	bool		HasObject(unsigned _id);
+	ObjectMap&	GetObjectMap();
 
 	template <typename ComponentType>
-	inline ComponentType*	GetComponent(const char* _fromObject);
-
-	template <typename ComponentType>
-	inline bool				HasComponent(const char* _fromObject);
-
-	template <typename ComponentType>
-	inline void				RemoveComponent(const char* _fromObject);
-
-	template <typename ComponentType>
-	inline ObjectMap		GetObjects();
+	inline ObjectMap        GetObjects();
 
 	static ObjectContainer* GetCurrentContainer();
 
@@ -43,20 +38,24 @@ private:
 
 	~ObjectContainer();
 	ObjectContainer() {};
-	ObjectContainer(const ObjectContainer& /*_copy*/) = delete;
-	void operator=(const ObjectContainer& /*_copy*/) = delete;
 
 	void ClearObjectMap();
 
 	// Static variable and function
 	static ObjectContainer* m_pSharedContainer;
-	static void				EditorUpdate(const float _dt);
+	static void		EditorUpdate(const float _dt);
 
 	ObjectMap	m_objectMap;
 };
 
 using OBJECT = ObjectContainer;
 
-JE_END
+jeEnd
 
 #include "ObjectContainer.inl"
+
+#define CONTAINER		OBJECT::GetCurrentContainer()
+#define ADD_COMPONENT(o, c)	GetObject(o)->AddComponent<c>()
+#define GET_COMPONENT(o, c)	GetObject(o)->GetComponent<c>()
+#define REMOVE_COMPONENT(o, c)	GetObject(o)->RemoveComponent<c>()
+#define HAS_COMPONENT(o, c)	GetObject(o)->HasComponent<c>()

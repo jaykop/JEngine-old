@@ -2,11 +2,11 @@
 #include "Macro.h"
 #include <unordered_map>
 
-JE_BEGIN
+jeBegin
 
 class ComponentBuilder;
 using ComponentTypeMap = std::unordered_map<std::string, std::string>;
-using BuilderMap = std::unordered_map<std::string, ComponentBuilder*> ;
+using BuilderMap = std::unordered_map<std::string, ComponentBuilder*>;
 
 class Object;
 class Component;
@@ -14,37 +14,46 @@ class ComponentBuilder;
 
 class ComponentManager {
 
-	friend class Core;
-	friend class Object;
-	friend class AssetManager;
+    friend class JEngine;
+    friend class Object;
+    friend class AssetManager;
+
+    // Locked constuctor, destructor, assign operator
+    jeStaticClassDeclaration(ComponentManager)
 
 public:
 
-	static const char* KeyTranslator(const char* _name);
-	static const char* TypeTranslator(const char* _type);
+    static const char* KeyToTypeTranslator(const char* _name);
+    static const char* TypeToKeyTranslator(const char* _type);
+
+    static Component*	CreateComponent(
+        const char* _componentName, Object* _pOwner);
+
+#ifdef  jeUseBuiltInAllocator
+    static void	RemoveComponent(Component* _component);
+#endif // jeUseBuiltInAllocator
 
 private:
 
-	static void			ClearBuilders();
-	static Component*	CreateComponent(
-		const char* _componentName, Object* _pOwner);
+    static void	ClearBuilders();
 
-	static BuilderMap			m_builderMap;
-	static ComponentTypeMap		m_typeMap, m_nameMap;	
-	static bool					m_loadingCustomLogic;
+    template <class ComponentType>
+    static bool RegisterBuilder(
+        const char* _componentName, ComponentBuilder* _pBuilder);
 
-	template <class ComponentType>
-	inline static void RegisterBuilder(
-		const char* _componentName, ComponentBuilder* _pBuilder);
+    static BuilderMap	    m_builderMap;
+    static ComponentTypeMap m_typeMap, m_nameMap;
+    static bool				m_loadingCustomLogic;
 };
 
 using COMPONENT = ComponentManager;
 
-JE_END
+// Component manager macro
+#define jeStringfy(x)					#x
+#define jeConcat(a, b)					a ## b
+#define jeRegisterComponent(c)			COMPONENT::RegisterBuilder<c>(jeStringfy(c), new jeConcat(c, Builder))
+#define jeCheckComponentRegistration(c)	if (!(c)) { return false; } 
+
+jeEnd
 
 #include "ComponentManager.inl"
-
-// Component manager macro
-#define JE_STRINGFY(x) #x
-#define JE_CONCAT(a, b) a ## b
-#define JE_ADD_COMPONENT(c)	COMPONENT::RegisterBuilder<c>(JE_STRINGFY(c), new JE_CONCAT(c, Builder));

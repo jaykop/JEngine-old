@@ -2,7 +2,7 @@
 #include <stack>
 #include "JsonParser.h"
 
-JE_BEGIN
+jeBegin
 
 class SoundSystem;
 class GraphicSystem;
@@ -11,69 +11,72 @@ class BehaviorSystem;
 
 class SystemManager {
 
-	class Systems {
+    // Locked constuctor, destructor, assign operator
+    jeStaticClassDeclaration(SystemManager)
 
-		friend class SystemManager;
+    class SystemBlock {
 
-	private:
+    friend class SystemManager;
 
-		Systems();
-		~Systems() {};
-		Systems(const Systems& /*_cpoy*/) = delete;
-		void operator=(const Systems& /*_cpoy*/) = delete;
+    private:
 
-		void Bind();
-		void Unbind();
+        SystemBlock();
+        ~SystemBlock();
 
-		void Load(CR_RJDoc _data);
-		void Init();
-		void Update(const float _dt);
-		void Close();
-		void Unload();
+        void Bind();
+        void Unbind();
 
-		SoundSystem		*m_pSoundSystem;
-		GraphicSystem	*m_pGraphicSystem;
-		PhysicsSystem	*m_pPhysicsSystem;
-		BehaviorSystem	*m_pBehaviorSystem;
+        void Load(CR_RJDoc _data);
+        void Init();
+        void Update(const float _dt);
+        void Close();
+        void Unload();
 
-	};
+        SoundSystem		*m_pSoundSystem;
+        GraphicSystem	*m_pGraphicSystem;
+        PhysicsSystem	*m_pPhysicsSystem;
+        BehaviorSystem	*m_pBehaviorSystem;
 
-	friend class State;
-	friend class StateManager;
+    private:
 
-	using SystemStack = std::stack<Systems*> ;
+        SystemBlock(SystemBlock&&) = delete;
+        SystemBlock(const SystemBlock&) = delete;
+        SystemBlock& operator=(SystemBlock&&) = delete;
+        SystemBlock& operator=(const SystemBlock&) = delete;
+
+    };
+
+    friend class State;
+    friend class StateManager;
+
+    using SystemStack = std::stack<SystemBlock*>;
 
 public:
 
-	static Systems				*m_systems;
+    static SystemBlock	    *m_systemBlock;
 
-	static SoundSystem*			GetSoundSystem();
-	static GraphicSystem*		GetGraphicSystem();
-	static PhysicsSystem*		GetPhysicsSystem();
-	static BehaviorSystem*		GetBehaviorSystem();
+    static SoundSystem*	    GetSoundSystem();
+    static GraphicSystem*   GetGraphicSystem();
+    static PhysicsSystem*   GetPhysicsSystem();
+    static BehaviorSystem*  GetBehaviorSystem();
 
 private:
 
-	static void Load(CR_RJDoc _data);
-	static void Init();
-	static void Update(const float _dt);
-	static void Close();
-	static void Unload();
+    static void Load(CR_RJDoc _data);
+    static void Init();
+    static void Update(const float _dt);
+    static void Close();
+    static void Unload();
 
-	static void Pause();
-	static void Resume();
+    static void Pause();
+    static void Resume();
 
-	static void Bind();
-	static void Unbind();
+    static void Bind();
+    static void Unbind();
 
-	SystemManager() = delete;
-	~SystemManager() = delete;
-	SystemManager(const SystemManager& /*_copy*/) = delete;
-	void operator=(const SystemManager& /*_copy*/) = delete;
-
-	static SystemStack	m_pauseStack;
+    static SystemStack	m_pauseStack;
 };
 
 using SYSTEM = SystemManager;
 
-JE_END
+jeEnd

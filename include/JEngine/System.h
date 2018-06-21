@@ -1,11 +1,9 @@
 #pragma once
 #include "JsonParser.h"
 
-JE_BEGIN
+jeBegin
 
 class System {
-
-public:
 
 protected:
 
@@ -16,12 +14,15 @@ protected:
 	virtual void Unload() = 0;
 
 	System() {};
-	~System() {};
+	virtual ~System() {};
 
 private:
 
-	System(const System& /*_copy*/) = delete;
-	void operator=(const System& /*_copy*/) = delete;
+	System(System&&) = delete;
+	System(const System&) = delete;
+	System& operator=(System&&) = delete;
+	System& operator=(const System&) = delete;
+
 };
 
-JE_END
+jeEnd

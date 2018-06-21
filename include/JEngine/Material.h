@@ -1,51 +1,34 @@
 #pragma once
 #include "Component.h"
+#include "ComponentManager.h"
 #include "ComponentBuilder.h"
 
-JE_BEGIN
-
-class MaterialBuilder : public ComponentBuilder
-{
-
-	friend class AssetManager;
-
-public:
-
-private:
-
-	MaterialBuilder();
-	~MaterialBuilder() {};
-	MaterialBuilder(const MaterialBuilder& /*_copy*/) = delete;
-	void operator=(const MaterialBuilder& /*_copy*/) = delete;
-
-	Component* CreateComponent(Object* _pOwner) const override;
-
-};
+jeBegin
 
 class Material : public Component {
 
-	friend class ComponentManager;
-	friend class MaterialBuilder;
-	friend class GraphicSystem;
+    jeBaseFriends(Material);
+    friend class GraphicSystem;
 
 public:
 
-	int m_diffuse, m_specular;
-	float m_shininess;
+    int diffuse, specular;
+    float shininess;
 
 private:
 
-	Material(Object* _pOwner);
-	~Material() {};
-	void operator= (const Material& _copy);
+    Material(Object* _pOwner);
+    ~Material();
+    void operator= (const Material& _copy);
 
-	Material() = delete;
-	Material(const Material& /*_copy*/) = delete;
+    Material() = delete;
+    Material(const Material& /*_copy*/) = delete;
 
-	void Load(CR_RJValue _data) override;
-	void Register() override {};
+    void Load(CR_RJValue _data) override;
+    void Register() override {};
 
-	void EditorUpdate(const float _dt) override;
+    void EditorUpdate(const float _dt) override;
 };
 
-JE_END
+jeDeclareComponentBuilder(Material);
+jeEnd

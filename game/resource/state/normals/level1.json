@@ -1,0 +1,55 @@
+{
+
+	"Background" : [ 0.5, 0.5, 0.5, 0.5 ],
+	"Screen" : [ 1.0, 1.0, 1.0, 1.0 ],
+	"Effect" : { "Type" : "None" },
+	"Object" : [
+		{
+			"Name" : "Camera",
+			"Component" : [
+				{
+					"Type": "Camera",
+					"Values": {"Position" : [ 100, 100, 150], "Target" : [0, 0, 0],
+						"Up" : [0, 1, 0]}
+				}
+			]
+		},				
+		{
+			"Name" : "Model1",
+			"Component" : [
+				{
+					"Type": "Transform",
+					"Values": {"Position" : [50, 0, 0], "Scale" : [50, 50, 50]}
+				},
+				{
+					"Type": "Model",
+					"Values": {"Texture" : "uvtemplate", "Color" : [1, 1, 1, 1], "Projection" : "Perspective",
+								"Mesh" : "Cube", "DrawMode" : "Line_Strip"}
+				}
+			]
+		},
+		{
+			"Name" : "Model2",
+			"Component" : [
+				{
+					"Type": "Transform",
+					"Values": {"Position" : [-50, 0, 0], "Scale" : [50, 50, 50]}
+				},
+				{
+					"Type": "Model",
+					"Values": {"Texture" : "uvtemplate", "Color" : [1, 1, 1, 1], "Projection" : "Perspective",
+								"Mesh" : "Cube"}
+				}
+			]
+		},
+		{
+			"Name" : "LevelController",
+			"Component" : [
+				{
+					"Type": "LevelController",
+					"Values": {}
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,87 @@
+{
+
+	"Background" : [ 0.5, 0.5, 0.5, 1.0 ],
+	"Screen" : [ 1.0, 1.0, 1.0, 1.0 ],
+	"Effect" : { "Type" : "None" },
+	"Object" : [
+		{
+			"Name" : "Camera",
+			"Component" : [
+				{
+					"Type": "Camera",
+					"Values": {"Position" : [0, 0, 100], "Target" : [0, 0, 0],
+						"Up" : [0, 1, 0]}
+				}
+			]
+		},	
+		{
+			"Name" : "LevelController",
+			"Component" : [
+				{
+					"Type": "LevelController",
+					"Values": {}
+				}
+			]
+		},
+		{
+			"Name" : "Circle",
+			"Component" : [
+				{
+					"Type": "Transform",
+					"Values": {"Position" : [0, 0, 0], "Scale" : [50, 50, 0]}
+				},
+				{
+					"Type" : "Model",
+					"Values" : {"Texture" : "circle_line", "Color" : [1, 1, 1, 1], "Projection" : "Orthogonal" }
+				}
+			]
+		},
+		{
+			"Name" : "Target",
+			"Component" : [
+				{
+					"Type": "Transform",
+					"Values": {"Position" : [0, 250, -1], "Scale" : [15, 15, 0]}
+				},
+				{
+					"Type" : "Model",
+					"Values" : {"Texture" : "crosshair", "Color" : [0, 0, 0, 1], "Projection" : "Orthogonal" }
+				}
+			]
+		},
+		{
+			"Name" : "Seeker",
+			"Component" : [
+				{
+					"Type": "Transform",
+					"Values": {"Position" : [250, 0, -1], "Scale" : [50, 50, 0]}
+				},
+				{
+					"Type" : "Model",
+					"Values" : {"Texture" : "arrow", "Color" : [1, 0, 0, 1], "Projection" : "Orthogonal" }
+				},
+				{
+					"Type" : "Steering",
+					"Values" : {"Behavior" : "Evade"}
+				}
+			]
+		},
+		{
+			"Name" : "Pursuer",
+			"Component" : [
+				{
+					"Type": "Transform",
+					"Values": {"Position" : [0, 0, -1], "Scale" : [50, 50, 0]}
+				},
+				{
+					"Type" : "Model",
+					"Values" : {"Texture" : "arrow", "Color" : [0, 0, 1, 1], "Projection" : "Orthogonal" }
+				},
+				{
+					"Type" : "Steering",
+					"Values" : {"Behavior" : "Wander"}
+				}
+			]
+		}
+	]
+}

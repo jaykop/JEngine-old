@@ -2,63 +2,58 @@
 #include "Object.h"
 #include "Material.h"
 
-JE_BEGIN
+#ifdef  jeUseBuiltInAllocator
+#include "MemoryAllocator.h"
+#endif
+
+jeBegin
+jeDefineComponentBuilder(Material);
 
 Material::Material(Object* _pOwner)
-	:Component(_pOwner), m_diffuse(0), 
-	m_specular(0), m_shininess(1.f)
+	:Component(_pOwner), diffuse(0), 
+	specular(0), shininess(1.f)
 {
-	// Connect to sprite's pointer
-	if (_pOwner->HasComponent<Sprite>()
-		&& !_pOwner->GetComponent<Sprite>()->m_hasMaterial) {
-		_pOwner->GetComponent<Sprite>()->m_material = this;
-		_pOwner->GetComponent<Sprite>()->m_hasMaterial = true;
-	}
-
-	else if (_pOwner->HasComponent<Model>()
-		&& !_pOwner->GetComponent<Model>()->m_hasMaterial) {
-		_pOwner->GetComponent<Model>()->m_material = this;
-		_pOwner->GetComponent<Model>()->m_hasMaterial = true;
-	}
+	// Connect to model's pointer
+	if (_pOwner->HasComponent<Model>()) 
+		_pOwner->GetComponent<Model>()->m_pMaterial = this;
 
 	else
-		JE_DEBUG_PRINT("!Material - This object has no sprite componnet: %s\n", _pOwner->GetName().c_str());
+		jeDebugPrint("!Material - This object has no model componnet: %s\n", _pOwner->GetName().c_str());
+}
+
+Material::~Material()
+{
+	// Turn off the toggle
+	if (GetOwner()->HasComponent<Model>()) 
+		GetOwner()->GetComponent<Model>()->m_pMaterial = nullptr;
 }
 
 void Material::operator=(const Material & _copy)
 {
-	m_diffuse = _copy.m_diffuse;
-	m_specular = _copy.m_specular;
-	m_shininess = _copy.m_shininess;
+	diffuse = _copy.diffuse;
+	specular = _copy.specular;
+	shininess = _copy.shininess;
 	
-	if (m_pOwner->HasComponent<Sprite>()
-		&& !m_pOwner->GetComponent<Sprite>()->m_hasMaterial) {
-		m_pOwner->GetComponent<Sprite>()->m_material = this;
-		m_pOwner->GetComponent<Sprite>()->m_hasMaterial = true;
-	}
-	else if (m_pOwner->HasComponent<Model>()
-		&& !m_pOwner->GetComponent<Model>()->m_hasMaterial) {
-		m_pOwner->GetComponent<Model>()->m_material = this;
-		m_pOwner->GetComponent<Model>()->m_hasMaterial = true;
-	}
+	if (GetOwner()->HasComponent<Model>()) 
+		GetOwner()->GetComponent<Model>()->m_pMaterial = this;
 
 }
 
 void Material::Load(CR_RJValue _data)
 {
 	if (_data.HasMember("Diffuse")) {
-		CR_RJValue diffuse = _data["Diffuse"];
-		m_diffuse = diffuse.GetInt();
+		CR_RJValue loadedDiffuse = _data["Diffuse"];
+		diffuse = loadedDiffuse.GetInt();
 	}
 
 	if (_data.HasMember("Specular")) {
-		CR_RJValue specular = _data["Specular"];
-		m_specular = specular.GetInt();
+		CR_RJValue loadedSpecular = _data["Specular"];
+		specular = loadedSpecular.GetInt();
 	}
 	
 	if (_data.HasMember("Shininess")) {
-		CR_RJValue shininess = _data["Shininess"];
-		m_shininess = shininess.GetFloat();
+		CR_RJValue loadedShininess = _data["Shininess"];
+		shininess = loadedShininess.GetFloat();
 	}
 }
 
@@ -67,13 +62,4 @@ void Material::EditorUpdate(const float /*_dt*/)
 	// TODO
 }
 
-MaterialBuilder::MaterialBuilder()
-	:ComponentBuilder()
-{}
-
-Component* MaterialBuilder::CreateComponent(Object* _pOwner) const
-{
-	return new Material(_pOwner);
-}
-
-JE_END
+jeEnd

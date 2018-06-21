@@ -11,9 +11,12 @@ Contains Vector4's template class and member function
 
 */
 /******************************************************************************/
-#include "Vector4.h"
 
-JE_BEGIN
+#include "MathUtils.h"
+
+jeBegin
+
+using namespace Math;
 
 //////////////////////////////////////////////////////////////////////////
 // static variables
@@ -24,14 +27,6 @@ const Vector4 Vector4::UNIT_X(1.f, 0.f, 0.f, 0.f);
 const Vector4 Vector4::UNIT_Y(0.f, 1.f, 0.f, 0.f);
 const Vector4 Vector4::UNIT_Z(0.f, 0.f, 1.f, 0.f);
 const Vector4 Vector4::UNIT_W(0.f, 0.f, 0.f, 1.f);
-
-/******************************************************************************/
-/*!
-\brief - Vector4 Destructor
-*/
-/******************************************************************************/
-Vector4::~Vector4(void)
-{}
 
 /******************************************************************************/
 /*!
@@ -60,11 +55,10 @@ Vector4::Vector4(const vec4& _copy)
 /******************************************************************************/
 /*!
 \brief - Vector4 unary - operator
-\param _rhs - Vector4 to be assigned
 \return Result
 */
 /******************************************************************************/
-Vector4 Vector4::operator-(void)
+Vector4 Vector4::operator-(void) const
 {
 	vec4 Result;
 
@@ -85,7 +79,7 @@ Vector4 Vector4::operator-(void)
 /******************************************************************************/
 bool Vector4::operator<(const vec4& _rhs) const
 {
-	return this->GetLengthSq() < _rhs.GetLengthSq();
+	return GetLengthSq(*this) < GetLengthSq(_rhs);
 }
 
 Vector4 Vector4::operator+(const vec4& _rhs) const
@@ -103,7 +97,7 @@ Vector4 Vector4::operator+(const vec4& _rhs) const
 /******************************************************************************/
 /*!
 \brief - Vector4 + operator
-\param _rhs - Vector4 to be added
+\param _constant - Vector4 to be added
 \return result
 */
 /******************************************************************************/
@@ -141,7 +135,7 @@ Vector4 Vector4::operator-(const vec4& _rhs) const
 /******************************************************************************/
 /*!
 \brief - Vector4 - operator
-\param _rhs - number to be subtracted
+\param _constant - number to be subtracted
 \return result
 */
 /******************************************************************************/
@@ -160,7 +154,7 @@ Vector4 Vector4::operator-(float _constant) const
 /******************************************************************************/
 /*!
 \brief - Vector4 * operator
-\param _rhs - number to be nultiplied
+\param _constant - number to be nultiplied
 \return result
 */
 /******************************************************************************/
@@ -191,7 +185,7 @@ Vector4 Vector4::operator*(const vec4& _rhs) const
 /******************************************************************************/
 /*!
 \brief - Vector4 / operator
-\param _rhs - number to be divided
+\param _constant - number to be divided
 \return result
 */
 /******************************************************************************/
@@ -210,7 +204,7 @@ Vector4 Vector4::operator / (float _constant) const
 
 	// Unless.
 	else
-		JE_DEBUG_PRINT("!Vector4 - Cannot devide by 0.\n");
+		jeDebugPrint("!Vector4 - Cannot devide by 0.\n");
 
 	return result;
 }
@@ -265,8 +259,8 @@ Vector4 operator*(float _constant, const vec4& _rhs)
 /******************************************************************************/
 /*!
 \brief - Friend function, << operator
-\param _constant - storage to put contents in
-\param _rhs - *this
+\param os - storage to put contents in
+\param contents - *this
 \return os
 */
 /******************************************************************************/
@@ -274,18 +268,6 @@ std::ostream& operator<<(std::ostream& os, const vec4& contents)
 {
 	os << "Vector4[ " << contents.x << ", " << contents.y << ", " << contents.z << ", " << contents.w << " ]";
 	return os;
-}
-
-/******************************************************************************/
-/*!
-\brief - Get two Vector4s' DotProduct
-\param _rhs - to be calculated
-\return x * _rhs.x + y * _rhs.y + z * _rhs.z + w * _rhs.w;
-*/
-/******************************************************************************/
-float Vector4::DotProduct(const vec4& _rhs)
-{
-	return x * _rhs.x + y * _rhs.y + z * _rhs.z + w * _rhs.w;
 }
 
 /******************************************************************************/
@@ -308,7 +290,7 @@ Vector4& Vector4::operator+=(const vec4& _rhs)
 /******************************************************************************/
 /*!
 \brief - Vector4 += operator
-\param _rhs - number to be added
+\param _constant - number to be added
 \return *this
 */
 /******************************************************************************/
@@ -342,7 +324,7 @@ Vector4& Vector4::operator-=(const vec4& _rhs)
 /******************************************************************************/
 /*!
 \brief - Vector4 -= operator
-\param _rhs - number to be subtracted
+\param _constant - number to be subtracted
 \return *this
 */
 /******************************************************************************/
@@ -369,7 +351,7 @@ Vector4& Vector4::operator*=(const vec4& _rhs)
 /******************************************************************************/
 /*!
 \brief - Vector4 *= operator
-\param _rhs - Vector4 to be multiplied
+\param _constant - Vector4 to be multiplied
 \return *this
 */
 /******************************************************************************/
@@ -395,7 +377,7 @@ Vector4& Vector4::operator/=(float _constant)
 
 	// Unless.
 	else
-		JE_DEBUG_PRINT("!Vector4 - Cannot devide by 0.\n");
+		jeDebugPrint("!Vector4 - Cannot devide by 0.\n");
 
 	return *this;
 }
@@ -459,112 +441,6 @@ void Vector4::SetUnitW()
 	w = 1.f;
 }
 
-bool Vector4::IsZero() const
-{
-	// If both x y z are not 0,
-	if (x || y || z || w)
-		return false;
-
-	// Unless,
-	return true;
-}
-
-bool Vector4::IsOne() const
-{
-	// If both x y z are not 1,
-	if (x != 1.f || y != 1.f || z != 1.f || w != 1.f)
-		return false;
-
-	// Unless,
-	return true;
-}
-
-/******************************************************************************/
-/*!
-\brief - Get normalized Vector4
-\return result
-*/
-/******************************************************************************/
-Vector4& Vector4::Normalize(void)
-{
-	// If this is not zero,
-	if (!IsZero())
-		*this = *this / GetLength();
-
-	// Unless.
-	else
-		JE_DEBUG_PRINT("!Vector4 - Cannot devide by 0.\n");
-
-	return *this;
-}
-
-Vector4 Vector4::GetNormalize() const
-{
-	Vector4 result(*this);
-
-	// If this is not zero,
-	if (!IsZero())
-		result = result / GetLength();
-
-	// Unless.
-	else
-		JE_DEBUG_PRINT("!Vector4 - Cannot devide by 0.\n");
-
-	return result;
-}
-
-/******************************************************************************/
-/*!
-\brief - Calculate vector's absolute value
-\return result
-*/
-/******************************************************************************/
-Vector4& Vector4::Absolute()
-{
-	if (x < 0)
-		x = -x;
-	if (y < 0)
-		y = -y;
-	if (z < 0)
-		z = -z;
-	if (w < 0)
-		w = -w;
-
-	return *this;
-}
-
-Vector4 Vector4::GetAbsolute() const
-{
-	Vector4 result(x, y, z, w);
-
-	if (result.x < 0)
-		result.x = -result.x;
-	if (result.y < 0)
-		result.y = -result.y;
-	if (result.z < 0)
-		result.z = -result.z;
-	if (result.w < 0)
-		result.w = -result.w;
-
-	return result;
-}
-
-/******************************************************************************/
-/*!
-\brief - Get Vector4's length
-\return sqrt(x*x + y*y)
-*/
-/******************************************************************************/
-float Vector4::GetLength(void) const
-{
-	return sqrt(GetLengthSq());
-}
-
-float Vector4::GetLengthSq() const
-{
-	return x*x + y*y + z*z + w*w;
-}
-
 /******************************************************************************/
 /*!
 \brief - Compare == operator
@@ -595,4 +471,4 @@ bool Vector4::operator!=(const vec4& _rhs) const
 	return true;
 }
 
-JE_END
+jeEnd

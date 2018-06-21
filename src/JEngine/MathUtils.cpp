@@ -15,7 +15,7 @@ Contains MathUtils's class and member function
 #include <cmath>
 #include <iomanip>
 
-JE_BEGIN
+jeBegin
 
 namespace Math
 {
@@ -40,8 +40,8 @@ namespace Math
 	/******************************************************************************/
 	float RadToDeg(float radian)
 	{
-		return radian * static_cast<float>(RADIAN_DEGREE);
+		return radian * static_cast<float>(RADIAN_TO_DEGREE);
 	}
 }
 
-JE_END
+jeEnd

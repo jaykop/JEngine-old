@@ -11,6 +11,8 @@ lib/JEngine/
 *.exe
 *.pdb
 *.obj
+!game/resource/obj/*.obj
 *.log
 *.ilk
 *.ipch
+*.tmp

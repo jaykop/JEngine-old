@@ -1,10 +1,11 @@
 #pragma once
 #include "Macro.h"
-#include <vector>
 #include <unordered_map>
+#include "GraphicSystem.h"
 
-JE_BEGIN
+jeBegin
 
+class Mesh;
 class Font;
 class Audio;
 class State;
@@ -14,6 +15,9 @@ class Archetype;
 class AssetManager {
 
 	// Keyword Definitions
+	friend class Light;
+	friend class Model;
+	friend class Emitter;
 	friend class Application;
 	friend class StateManager;
 
@@ -23,7 +27,12 @@ class AssetManager {
 	using TextureMap =		std::unordered_map<std::string, unsigned>;
 	using ArchetypeMap =	std::unordered_map<std::string, Archetype*>;
 
+	// Locked constuctor, destructor, assign operator
+	jeStaticClassDeclaration(AssetManager)
+
 public:
+
+	static void			TakeAScreenshot(const char* _directory = nullptr);
 
 	static void			SetInitDirectory(const char* _dir);
 	static void			SetAssetDirectory(const char* _dir);
@@ -41,23 +50,24 @@ private:
 	static std::string m_initDirectory, m_assetDirectory,
 		m_stateDirectory, m_archeDirectory;
 	
-	static void LoadFont(const char* _path, const char* _audioKey, unsigned _size);
+	static void ShowLoadingPercentage(unsigned _loadedPercentage, unsigned _size);
+
+	static void LoadFont(const char* _path, const char* _audioKey, unsigned _size,
+		unsigned long start, unsigned long end);
+	static void LoadCharacters(Font* _pFont, float& _newLineLevel, unsigned long _start, unsigned long _end);
 	static void LoadAudio(const char* _path, const char* _audioKey);
 	static void LoadImage(const char* _path, const char* _textureKey);
 	static void LoadArchetype(const char* _path, const char* _archetypeKey);
-
-	// Locked constructors and destructor
-	AssetManager() = delete;
-	~AssetManager() = delete;
-	AssetManager(const AssetManager& /*_copy*/) = delete;
-	void operator=(const AssetManager& /*_copy*/) = delete;
+	static Mesh* LoadObj(const char* _path);
 
 	// Private member functions
-	static void LoadBuiltInComponents();
-	static void Load();
-	static void Unload();
+	static bool SetBuiltInComponents();
+	static void LoadAssets();
+	static void UnloadAssets();
 
 	// Private member variables
+	static unsigned char* m_pPixelChunk;
+
 	static FontMap		m_fontMap;
 	static AudioMap		m_audioMap;
 	static StateMap		m_stateMap;
@@ -68,4 +78,4 @@ private:
 
 using ASSET = AssetManager;
 
-JE_END
+jeEnd

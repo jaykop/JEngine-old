@@ -1,7 +1,7 @@
 #include <ctime>
 #include "Timer.h"
 
-JE_BEGIN
+jeBegin
 
 /******************************************************************************/
 /*!
@@ -18,10 +18,30 @@ void Timer::Start(void)
 \brief - Get spent time from StartTime() moment
 */
 /******************************************************************************/
-float Timer::GetTime(void)
+float Timer::GetTime(void) const
 {
 	return (static_cast<float>(clock()) - m_time) / static_cast<float>(CLOCKS_PER_SEC);
 }
 
-JE_END
+/******************************************************************************/
+/*!
+\brief - Get current time info (yy/mm/dd/hh/mm/ss)
+\return - Time instance
+*/
+/******************************************************************************/
+Time Timer::GetCurrentTimeInfo()
+{
+	time_t theTime = time(nullptr);
+	tm timeBuf;
+	localtime_s(&timeBuf, &theTime);
+
+	return Time{ timeBuf.tm_year + 1900, 
+		timeBuf.tm_mon + 1, 
+		timeBuf.tm_mday, 
+		timeBuf.tm_hour, 
+		timeBuf.tm_min, 
+		timeBuf.tm_sec };
+}
+
+jeEnd
 

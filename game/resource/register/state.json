@@ -1,11 +1,23 @@
+// This file contains state information
 {
-	"FirstState" : "level1",
+	"FirstState" : "level7",
 	
 	"State" : [
-		{"Key" : "level1", 	"Directory" : "resource/state/level1.json"},
-		{"Key" : "level2", 	"Directory" : "resource/state/level2.json"},
-		{"Key" : "level3", 	"Directory" : "resource/state/level3.json"},
-		{"Key" : "level4", 	"Directory" : "resource/state/level4.json"},
-		{"Key" : "level5", 	"Directory" : "resource/state/level5.json"}
+		{"Key" : "level1", 	"Directory" : "../resource/state/normals/level1.json"},
+		{"Key" : "level2", 	"Directory" : "../resource/state/normals/level2.json"},
+		{"Key" : "level3", 	"Directory" : "../resource/state/normals/level3.json"},
+		{"Key" : "level4", 	"Directory" : "../resource/state/normals/level4.json"},
+		{"Key" : "level5", 	"Directory" : "../resource/state/normals/level5.json"},
+		{"Key" : "level6", 	"Directory" : "../resource/state/normals/level6.json"},
+		{"Key" : "level7", 	"Directory" : "../resource/state/normals/level7.json"},
+
+		{"Key" : "seek", 	"Directory" : "../resource/state/ai_behaviors/seek.json"},
+		{"Key" : "arrive", 	"Directory" : "../resource/state/ai_behaviors/arrive.json"},
+		{"Key" : "flee", 	"Directory" : "../resource/state/ai_behaviors/flee.json"},
+		{"Key" : "pursuit", "Directory" : "../resource/state/ai_behaviors/pursuit.json"},
+		{"Key" : "evade", 	"Directory" : "../resource/state/ai_behaviors/evade.json"},
+		{"Key" : "wander", 	"Directory" : "../resource/state/ai_behaviors/wander.json"},
+		{"Key" : "obstacle_avoidance", 	"Directory" : "../resource/state/ai_behaviors/obstacle_avoidance.json"}
+		
 	]
 }

@@ -1,7 +1,7 @@
 #include "PhysicsSystem.h"
 #include "PhysicsComponents.h"
 
-JE_BEGIN
+jeBegin
 
 PhysicsSystem::PhysicsSystem()
 	:System()
@@ -28,4 +28,4 @@ void PhysicsSystem::Unload()
 {
 }
 
-JE_END
+jeEnd

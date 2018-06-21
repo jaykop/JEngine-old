@@ -1,44 +1,82 @@
 #pragma once
-#include "Sprite.h"
+#include "Component.h"
+#include "ComponentManager.h"
+#include "ComponentBuilder.h"
 
-JE_BEGIN
+// For enum ProjectType
+#include "GraphicSystem.h"
 
-class ModelBuilder : public ComponentBuilder
+jeBegin
+jeDeclareComponentBuilder(Model);
+
+class Mesh;
+class Transform;
+
+class Model : public Component
 {
+    // Keyword Definitions
+    jeBaseFriends(Model);
+    friend class GraphicSystem;
 
-	friend class AssetManager;
+    friend class Material;
+    friend class Animation;
+
+    friend class AssetManager;
+
+    using Image = std::vector<unsigned char>;
+    using TextureMap = std::unordered_map<std::string, unsigned>;
+
+protected:
+
+    const static int IS_TEXT = 0x10;
+    const static int IS_EMITTER = 0x01;
+
+	Mesh	*m_pMeshes = nullptr;
+    int		m_hiddenStatus;
 
 public:
 
+    const static int IS_FLIPPED = 0x100;
+    const static int IS_BILBOARD = 0x010;
+    const static int IS_INHERITED = 0x001;
+
+    void Register() override;
+
+    void		SetParentToFollow(Object* _pObj);
+    void		AddTexture(const char* _key);
+    void		RemoveTexture(const char* _key);
+    void		SetCurrentTexutre(const char* _key);
+    unsigned	GetCurrentTexutre() const;
+    unsigned	GetTexutre(const char* _key);
+
+    int			status;
+    vec4		color;
+    ProjectType projection;
+
+    unsigned	sfactor, dfactor;
+
+protected:
+
+    ~Model();
+	Model(Object* _pOwner);
+    void operator=(const Model& _copy);
+
+    void Load(CR_RJValue _data) override;
+
+    bool		m_culled;
+    unsigned	m_mainTex;
+    TextureMap	m_textureMap;
+    Transform	*m_pTransform, *m_pInherited;
+    Material	*m_pMaterial;
+    Animation	*m_pAnimation;
+
 private:
 
-	ModelBuilder();
-	~ModelBuilder() {};
-	ModelBuilder(const ModelBuilder& /*_copy*/) = delete;
-	void operator=(const ModelBuilder& /*_copy*/) = delete;
-
-	Component* CreateComponent(Object* _pOwner) const override;
-
-};
-
-class Model : public Sprite
-{
-	friend class ComponentManager;
-	friend class GraphicSystem;
-	friend class ModelBuilder;
-
-public:
-
-private:
-
-	Model(Object* pObject);
-	~Model();
-	void operator=(const Model& _copy);
-
+    // Locked constuctors and destructor
 	Model() = delete;
 	Model(const Model& /*_copy*/) = delete;
 
-	void EditorUpdate(const float _dt) override;
+    void EditorUpdate(const float _dt) override;
 };
 
-JE_END
+jeEnd

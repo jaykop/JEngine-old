@@ -4,7 +4,7 @@
 
 union SDL_Event;
 
-JE_BEGIN
+jeBegin
 
 enum JE_KEY  {
 
@@ -44,7 +44,7 @@ enum JE_KEY  {
 	JE_HOME = SDLK_HOME,
 	JE_PAGEUP = SDLK_PAGEUP,
 	JE_DELETE = SDLK_DELETE,
-	JE_END = SDLK_END,
+	jeEnd = SDLK_END,
 	JE_PAGEDOWN = SDLK_PAGEDOWN,*/
 	//JE_F1 = SDLK_F1,
 	//JE_F2 = SDLK_F2,
@@ -83,7 +83,11 @@ class InputHandler {
 
 	friend class StateManager;
 	friend class GraphicSystem;
+
 	using KeyMap = std::map<unsigned, bool> ;
+
+	// Locked constuctor, destructor, assign operator
+	jeStaticClassDeclaration(InputHandler)
 
 public:
 	
@@ -96,11 +100,6 @@ public:
 
 private:
 
-	InputHandler();
-	~InputHandler() = delete;
-	InputHandler(const InputHandler& _handle) = delete;
-	void operator=(const InputHandler& _handle) = delete;
-
 	// Keyboard
 	static void KeyUp();
 	static void KeyDown();
@@ -109,10 +108,12 @@ private:
 	static void MouseUp();
 	static void MouseDown();
 
+	static void Init();
 	static void Update(SDL_Event* _event);
 
 	static JE_KEY	KeyTranslator(SDL_Event* _event);
 
+	static unsigned m_triggerCalled;
 	static int		m_mouseWheel;
 	static vec3		m_screenPosition, m_rawPosition;
 	static bool		m_keyPressed, m_mousePressed;
@@ -121,4 +122,4 @@ private:
 
 using INPUT = InputHandler;
 
-JE_END
+jeEnd

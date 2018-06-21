@@ -1,7 +1,7 @@
 #include <chrono>
 #include "Random.h"
 
-JE_BEGIN
+jeBegin
 
 std::mt19937 Random::m_randomObject;
 
@@ -15,17 +15,17 @@ void Random::PlantSeed()
 		unsigned milliseconds = static_cast<unsigned>(std::chrono::duration_cast<std::chrono::milliseconds>(duration).count());
 		m_randomObject = std::mt19937(milliseconds);
 		planted = true;
-		JE_DEBUG_PRINT("*Random - Planted random seed successfully.\n");
+		jeDebugPrint("*Random - Planted random seed object.\n");
 	}
 
 	else
-		JE_DEBUG_PRINT("!Random - Already planted.\n");
+		jeDebugPrint("!Random - Already planted.\n");
 }
 
 int Random::GetRandomInt(int _min, int _max) 
 {
 	if (_min > _max) {
-		JE_DEBUG_PRINT("!Random - Set minimum lower than maximum / returning 0.\n");
+		jeDebugPrint("!Random - Set minimum lower than maximum / returning 0.\n");
 		return 0;
 	}
 
@@ -72,7 +72,7 @@ vec4 Random::GetRandVec4(const vec4& _minVec4, const vec4& _maxVec4)
 float Random::GetRandomFloat(float _min, float _max) 
 {
 	if (_min > _max) {
-		JE_DEBUG_PRINT("!Random - Set minimum lower than maximum / returning 0.\n");
+		jeDebugPrint("!Random - Set minimum lower than maximum / returning 0.\n");
 		return 0.f;
 	}
 
@@ -80,4 +80,4 @@ float Random::GetRandomFloat(float _min, float _max)
 	return floatRand(m_randomObject);
 }
 
-JE_END
+jeEnd

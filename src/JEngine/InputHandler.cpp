@@ -1,7 +1,8 @@
 #include "SDL.h"
 #include "InputHandler.h"
+#include "GLManager.h"
 
-JE_BEGIN
+jeBegin
 
 //////////////////////////////////////////////////////////////////////////
 // static variables
@@ -12,6 +13,14 @@ vec3			INPUT::m_rawPosition = vec3::ZERO;
 vec3			INPUT::m_screenPosition = vec3::ZERO;
 INPUT::KeyMap	INPUT::m_keys, INPUT::m_triggerList;
 int				INPUT::m_mouseWheel = 0;
+unsigned		INPUT::m_triggerCalled = 0;
+
+void InputHandler::Init()
+{
+	// Refresh all keys' status
+	for (unsigned i = 0; i < JE_KEY_END; ++i)
+		m_triggerList[i] = m_keys[i] = false;
+}
 
 bool InputHandler::KeyPressed(JE_KEY _pressed)
 {
@@ -20,9 +29,10 @@ bool InputHandler::KeyPressed(JE_KEY _pressed)
 
 bool InputHandler::KeyTriggered(JE_KEY _trigger)
 {
-	if (!m_triggerList[_trigger]			// First press, trigger must be false
-		&& m_keys[_trigger]) {				// Key pressed, so this must be true
-		m_triggerList[_trigger] = true;		// Set trigger is activated -> no more access here
+	if ((m_triggerCalled || !m_triggerList[_trigger])	// First press, trigger must be false or check trigger call is on the same frame
+		&& m_keys[_trigger]) {							// Key pressed, so this must be true
+		m_triggerList[_trigger] = true;					// Set trigger is activated -> no more access here
+		m_triggerCalled++;								// Increase the number of calling trigger
 		return true;
 	}
 
@@ -47,13 +57,6 @@ void InputHandler::MouseUp()
 void InputHandler::MouseDown()
 {
 	m_mousePressed = true;
-}
-
-InputHandler::InputHandler()
-{
-	// Refresh all keys' status
-	for (unsigned i = 0; i < JE_KEY_END; ++i)
-		m_triggerList[i] = m_keys[i] = false;
 }
 
 JE_KEY InputHandler::KeyTranslator(SDL_Event* _event)
@@ -271,6 +274,9 @@ JE_KEY InputHandler::KeyTranslator(SDL_Event* _event)
 
 void InputHandler::Update(SDL_Event* _event)
 {	
+	// Initialize the number of calling trigger
+	m_triggerCalled = 0;
+
 	// Refresh the mouse wheel toggles
 	switch (m_mouseWheel) {
 	case 0:
@@ -345,7 +351,9 @@ vec3& InputHandler::GetRawPosition()
 
 vec3& InputHandler::GetOrhtoPosition()
 {
+	float width = GLM::m_width* .5f, height = GLM::m_height* .5f;
+	m_screenPosition.Set(m_rawPosition.x - width, height - m_rawPosition.y, 0./*m_mouseZ*/);
 	return m_screenPosition;
 }
 
-JE_END
+jeEnd

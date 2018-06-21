@@ -1,12 +1,13 @@
 #include "imgui.h"
 #include "imgui_impl_sdl_gl3.h"
 #include "glew.h"
+#include "Application.h"
 #include "ImguiManager.h"
-#include "Core.h"
 #include "GLManager.h"
 #include "Component.h"
+#include "Object.h"
 
-JE_BEGIN
+jeBegin
 
 SDL_Window*					IMGUI::m_pWindow = nullptr;
 IMGUI::EditorList			IMGUI::m_editors;
@@ -50,36 +51,41 @@ void ImguiManager::RemoveObjectEditor(Object* _object)
 	}
 }
 
-	void ImguiManager::ClearComponentEditor()
-	{
-		if (!m_cptEditors.empty())
-			m_cptEditors.clear();
-	}
-
-	void ImguiManager::ClearObjectEditor()
-	{
-		if (!m_objEditors.empty())
-			m_objEditors.clear();
-	}
-
-	void ImguiManager::Init(SDL_Window* _window)
+void ImguiManager::ClearComponentEditor()
 {
-	if (CORE::m_IMGUI) {
+	if (!m_cptEditors.empty())
+		m_cptEditors.clear();
+}
+
+void ImguiManager::ClearObjectEditor()
+{
+	if (!m_objEditors.empty())
+		m_objEditors.clear();
+}
+
+bool ImguiManager::Init(SDL_Window* _window)
+{
+	if (APP::m_IMGUI) {
 		m_pWindow = _window;
-		ImGui_ImplSdlGL3_Init(_window);
+		bool result = ImGui_ImplSdlGL3_Init(_window);
+		if (!result)
+			jeDebugPrint("!ImguiManager: Could not initialize IMGUI.\n");
+		return result;
 	}
+
+	return true;
 }
 
 void ImguiManager::EventUpdate(SDL_Event* _event)
 {
-	if (CORE::m_IMGUI) 
+	if (APP::m_IMGUI)
 		ImGui_ImplSdlGL3_ProcessEvent(_event);
 }
 
 void ImguiManager::Update(const float _dt)
 {
-	if (CORE::m_IMGUI) {
-				
+	if (APP::m_IMGUI) {
+
 		ImVec4 clear_color = ImColor(114, 144, 154);
 		ImGui_ImplSdlGL3_NewFrame(m_pWindow);
 
@@ -117,7 +123,7 @@ void ImguiManager::Update(const float _dt)
 
 void ImguiManager::Close()
 {
-	if (CORE::m_IMGUI) 
+	if (APP::m_IMGUI)
 		ImGui_ImplSdlGL3_Shutdown();
 }
 
@@ -150,4 +156,4 @@ void ImguiManager::Close()
 //	ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiCond_FirstUseEver); // Normally user code doesn't need/want to call this because positions are saved in .ini file anyway. Here we just want to make the demo initial state a bit more friendly!
 //}
 
-JE_END
+jeEnd

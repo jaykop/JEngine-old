@@ -15,24 +15,24 @@ Contains Engine's generic macros
 
 // Generic Engine Macro
 #ifdef __cplusplus
-#define JE_BEGIN	namespace JEngine {
-#define JE_END	}
-#define USING_NS_JE	using namespace JEngine
-#define NS_JE		::JEngine
+#define jeBegin	namespace JE {
+#define jeEnd	}
+#define jeUsingNamespace	using namespace JE
+#define jeNamespace		::JE
 #else
-#define NS_BEGIN 
-#define NE_END	 
-#define USING_NS 
-#define NS_JE 
+#define jeBegin 
+#define jeEnd	 
+#define jeUsingNamespace 
+#define jeNamespace 
 #endif //__cplusplus
 
 // Debug printing
-#define JE_DO_PRINT
-#if defined(_DEBUG) && defined(JE_DO_PRINT)
+#define jeDoPrint
+#if defined(_DEBUG) && defined(jeDoPrint)
 #include <cstdio>
-#define JE_DEBUG_PRINT(...) printf(__VA_ARGS__)
+#define jeDebugPrint(...) printf(__VA_ARGS__)
 #else
-#define JE_DEBUG_PRINT(...)	JE_UNUSED_PARAM(__VA_ARGS__)
+#define jeDebugPrint(...)jeUnusedParam(__VA_ARGS__)
 #endif // defined(_DEBUG) && defined(JE_DO_PRINT)
 
 // Define NULL pointer
@@ -49,8 +49,14 @@ Contains Engine's generic macros
 #include <assert.h>
 
 // Set variable as unreferenced
-#define JE_UNUSED_PARAM(unused)    (void)unused
+#define jeUnusedParam(unused)    (void)unused
 
 // Delete macro
-#define JE_SAFE_DELETE(p)			do { if(p) { delete(p);  (p) = nullptr;}} while(0)
-#define JE_SAFE_DELETE_ARRAY(p)		do { if(p) { delete[] (p); (p) = nullptr;}} while(0)
+#define jeSafeDelete(p)		do { if(p) { delete(p);  (p) = nullptr;}} while(0)
+#define jeSafeDeleteArray(p)	do { if(p) { delete[] (p); (p) = nullptr;}} while(0)
+
+// Simplify static setting
+#define jeStaticClassDeclaration(c) c() = delete; ~c() = delete; c& operator=(const c&) = delete; c& operator=(c&&) = delete; c(const c&) = delete; c(c&&) = delete;
+
+// Use bulit int allocator
+// #defin jeBuiltInAllocator

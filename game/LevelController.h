@@ -1,32 +1,18 @@
 #pragma once
 #include "CustomComponent.h"
+#include "ComponentManager.h"
 #include "ComponentBuilder.h"
 
-#include "Vector3.h"
+jeBegin
 
-JE_BEGIN
-
-class LevelControllerBuilder : public ComponentBuilder
-{
-
-	friend class Core;
-
-public:
-
-private:
-
-	LevelControllerBuilder();
-	~LevelControllerBuilder() {};
-	LevelControllerBuilder(const LevelControllerBuilder& _copy) = delete;
-	void operator=(const LevelControllerBuilder& _copy) = delete;
-
-	CustomComponent* CreateComponent(Object* _pOwner) const override;
-
-};
-
+struct Telegram;
 class Camera;
+
 class LevelController : public CustomComponent
 {
+	template <class T>
+	friend class MemoryAllocator;
+
 	friend class ComponentManager;
 	friend class LevelControllerBuilder;
 
@@ -43,8 +29,10 @@ private:
 	void Update(const float _dt) override;
 	void Close() override;
 	void Unload() override;
+	bool OnMessage(Telegram& msg) override { msg;  return false; }
 
 	void EditorUpdate(const float _dt) override;
 };
 
-JE_END
+jeDeclareCustomComponentBuilder(LevelController);
+jeEnd

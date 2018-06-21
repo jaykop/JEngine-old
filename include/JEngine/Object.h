@@ -3,22 +3,37 @@
 #include "Macro.h"
 #include <unordered_map>
 
-JE_BEGIN
+jeBegin
 
+struct Telegram;
 class Object;
 class Component;
+class CustomComponent;
 
 using ChildObjects = std::unordered_map<std::string, Object*>;
 using ComponentMap = std::unordered_map<std::string, Component*>;
 
 class Object {
 
+	struct StateMachine
+	{
+	    CustomComponent* m_pPreviousState = nullptr;
+	    CustomComponent* m_pCurrentState = nullptr;
+	    CustomComponent* m_pGlobalState = nullptr;
+	};
+
 public:
+
+#ifdef jeUseBuiltInAllocator
+	template <class T>
+	friend class MemoryAllocator;
+#endif
 
 	friend class JsonParser;
 	friend class ObjectFactory;
 	friend class ObjectContainer;
 	friend class ImguiManager;
+	friend class MessageDispatcher;
 
 	Object(const char* _name);
 	~Object();
@@ -27,7 +42,7 @@ public:
 
 	void RegisterComponents();
 
-	const std::string&	GetName(void) const;
+	const std::string&  GetName(void) const;
 	void				SetName(const char* _name);
 
 	void	AddChild(Object* _child);
@@ -44,16 +59,37 @@ public:
 	ComponentMap& GetComponentMap();
 
 	template<typename ComponentType>
-	inline void				AddComponent();
+	inline void AddComponent();
 
 	template <typename ComponentType>
 	inline ComponentType*	GetComponent();
 
 	template<typename ComponentType>
-	inline bool				HasComponent();
+	inline bool HasComponent();
 
 	template<typename ComponentType>
-	inline void				RemoveComponent();
+	inline void RemoveComponent();
+
+	void	    AddComponent(const char* _componentName);
+	Component*  GetComponent(const char* _componentName);
+	bool	    HasComponent(const char* _componentName) const;
+	void	    RemoveComponent(const char* _componentName);
+
+	template<typename ComponentType>
+	inline void SetGlobalState();
+	
+	template<typename ComponentType>
+	inline void SetCurrentState();
+	
+	template<typename ComponentType>
+	inline void ChangeState();
+	
+	CustomComponent* GetGlobalState() const;
+	CustomComponent* GetCurrentState() const;
+
+	void SetGlobalState(const char* _componentName);
+	void SetCurrentState(const char* _componentName);
+	void RevertToPreviousState();
 
 private:
 
@@ -63,18 +99,15 @@ private:
 	void ClearComponents();
 	void ClearChildren();
 
-	void		AddComponent(const char* _componentName);
-	Component*	GetComponent(const char* _componentName);
-	bool		HasComponent(const char* _componentName) const;
-	void		RemoveComponent(const char* _componentName);
+	bool HandleMessage(Telegram& _message);
 
-	unsigned			m_id;
-	bool				m_active;
-	Object*				m_pParent;
-	std::string			m_name;
-	ChildObjects		m_childObjs;
-	ComponentMap		m_componentMap;
-	ObjectContainer*	m_pOBC;
+	unsigned		m_id;
+	bool			m_active;
+	Object*			m_pParent;
+	StateMachine	m_StateMachine;
+	std::string		m_name;
+	ChildObjects	m_childObjs;
+	ComponentMap	m_componentMap;
 	
 	// statiic editor variable and function
 	void	EditorUpdate(const float _dt);
@@ -86,6 +119,6 @@ private:
 
 };
 
-JE_END
+jeEnd
 
 #include "Object.inl"
