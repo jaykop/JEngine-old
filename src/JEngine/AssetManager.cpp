@@ -412,46 +412,46 @@ void AssetManager::TakeAScreenshot(const char* _directory)
 	if (!error) {
 
 		std::string fileName;
+		if (_directory)
+			fileName.assign(_directory);
 		
-		if (!_directory) {
+		Time currentTimeInfo = Timer::GetCurrentTimeInfo();
 
-			Time currentTimeInfo = Timer::GetCurrentTimeInfo();
+		fileName += std::to_string(currentTimeInfo.year);
 
-			fileName += std::to_string(currentTimeInfo.year);
-			
-			if (currentTimeInfo.month < 10)
-				fileName += "0" + std::to_string(currentTimeInfo.month);
-			else
-				fileName += std::to_string(currentTimeInfo.month);
+		if (currentTimeInfo.month < 10)
+			fileName += "0" + std::to_string(currentTimeInfo.month);
+		else
+			fileName += std::to_string(currentTimeInfo.month);
 
-			if (currentTimeInfo.day < 10)
-				fileName += "0" + std::to_string(currentTimeInfo.day);
-			else
-				fileName += std::to_string(currentTimeInfo.day);
-			
-			if (currentTimeInfo.hour < 10)
-				fileName += "0" + std::to_string(currentTimeInfo.hour);
-			else
-				fileName += std::to_string(currentTimeInfo.hour);
+		if (currentTimeInfo.day < 10)
+			fileName += "0" + std::to_string(currentTimeInfo.day);
+		else
+			fileName += std::to_string(currentTimeInfo.day);
 
-			if (currentTimeInfo.minute < 10)
-				fileName += "0" + std::to_string(currentTimeInfo.minute);
-			else
-				fileName += std::to_string(currentTimeInfo.minute);
+		if (currentTimeInfo.hour < 10)
+			fileName += "0" + std::to_string(currentTimeInfo.hour);
+		else
+			fileName += std::to_string(currentTimeInfo.hour);
 
-			if (currentTimeInfo.second < 10)
-				fileName += "0" + std::to_string(currentTimeInfo.second);
-			else
-				fileName += std::to_string(currentTimeInfo.second);
+		if (currentTimeInfo.minute < 10)
+			fileName += "0" + std::to_string(currentTimeInfo.minute);
+		else
+			fileName += std::to_string(currentTimeInfo.minute);
 
-			fileName += ".png";
-		}
+		if (currentTimeInfo.second < 10)
+			fileName += "0" + std::to_string(currentTimeInfo.second);
+		else
+			fileName += std::to_string(currentTimeInfo.second);
+
+		fileName += ".png";
 
 		lodepng::save_file(image, fileName);
+		jeDebugPrint("*AssetManager - Generated screenshot image file : %s\n", fileName.c_str());
 	}
 
 	else
-		jeDebugPrint("!AssetManager - Cannot export screenshot image : %i", error);
+		jeDebugPrint("!AssetManager - Cannot export screenshot image : %i\n", error);
 
 
 	delete[] m_pPixelChunk;

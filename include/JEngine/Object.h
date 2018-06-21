@@ -24,8 +24,10 @@ class Object {
 
 public:
 
+#ifdef jeUseBuiltInAllocator
 	template <class T>
 	friend class MemoryAllocator;
+#endif
 
 	friend class JsonParser;
 	friend class ObjectFactory;
@@ -99,13 +101,13 @@ private:
 
 	bool HandleMessage(Telegram& _message);
 
-        unsigned		m_id;
-        bool			m_active;
-        Object*			m_pParent;
-        StateMachine	m_StateMachine;
-        std::string		m_name;
-        ChildObjects	m_childObjs;
-        ComponentMap	m_componentMap;
+	unsigned		m_id;
+	bool			m_active;
+	Object*			m_pParent;
+	StateMachine	m_StateMachine;
+	std::string		m_name;
+	ChildObjects	m_childObjs;
+	ComponentMap	m_componentMap;
 	
 	// statiic editor variable and function
 	void	EditorUpdate(const float _dt);

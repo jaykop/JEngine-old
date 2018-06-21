@@ -25,9 +25,10 @@ int main(int argc, char* args[]) {
 	
 	JEngine::imguiToggle = false;
 
-	JEngine::RegisterAssets();
-	JEngine::Run();
+	if (JEngine::RegisterAssets())
+		return JEngine::Run();
 
-	return 0;
+	// Improper finish
+	return -1;
 
 }
