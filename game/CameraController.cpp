@@ -29,9 +29,22 @@ void CameraController::Init()
 
 void CameraController::Update(const float _dt)
 {
-	static vec3 lastPosition, currentPosition, diff;
+	static vec3 lastPosition, currentPosition = vec3::ZERO, diff;
 	static float yaw = 0.f, pitch = 0.f;
 	static bool active = false;
+
+	//lastPosition = currentPosition;
+	//currentPosition = INPUT::GetOrhtoPosition();
+	//diff = lastPosition - currentPosition;
+	//if (active) {
+	//	yaw = diff.x * 180.f / SYSTEM::GetGraphicSystem()->GetWidth();
+	//	pitch = diff.y * 180.f / SYSTEM::GetGraphicSystem()->GetHeight();
+
+	//	m_camera->Yaw(yaw);
+	//	m_camera->Pitch(-pitch);
+	//}
+	//active = true;
+
 	if (INPUT::KeyPressed(JE_MOUSE_LEFT)) {
 		lastPosition = currentPosition;
 		currentPosition = INPUT::GetOrhtoPosition();
@@ -40,7 +53,7 @@ void CameraController::Update(const float _dt)
 			yaw = diff.x * m_camera->GetFovy() / SYSTEM::GetGraphicSystem()->GetWidth();
 			pitch = diff.y * m_camera->GetFovy() / SYSTEM::GetGraphicSystem()->GetHeight();
 
-			m_camera->Yaw(yaw);
+			m_camera->Yaw(-yaw);
 			m_camera->Pitch(pitch);
 		}
 		active = true;
@@ -56,12 +69,6 @@ void CameraController::Update(const float _dt)
 
 	else if (INPUT::KeyPressed(JE_S)) 
 		m_camera->position += speed * _dt * m_camera->GetBack();
-
-	if (INPUT::KeyPressed(JE_A))
-		m_camera->position -= speed * _dt * m_camera->GetRight();
-
-	else if (INPUT::KeyPressed(JE_D))
-		m_camera->position += speed * _dt * m_camera->GetRight();
 
 }
 
