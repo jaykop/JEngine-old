@@ -1,5 +1,4 @@
 *Go over ai example and techniques
-*Camera component/controller/GraphicSystem
 *Clone function - copy and move constructor
 *Polish event handler with std function
 *Mouse picking - bounding box
