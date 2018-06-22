@@ -130,7 +130,7 @@ void GraphicSystem::LightSourcePipeline()
 			if (light->projection == PROJECTION_PERSPECTIVE) {
 				Shader::m_pCurrentShader->SetMatrix("m4_projection", m_perspective);
 
-				m_viewport = LookAt(m_pMainCamera->position, m_pMainCamera->target, m_pMainCamera->up);
+				m_viewport = LookAt(m_pMainCamera->position, m_pMainCamera->m_target, m_pMainCamera->m_up);
 			}
 
 			else {
@@ -174,7 +174,7 @@ void GraphicSystem::ModelPipeline(Model *_model)
 	if (_model->projection == PROJECTION_PERSPECTIVE) {
 
 		Shader::m_pCurrentShader->SetMatrix("m4_projection", m_perspective);
-		m_viewport = LookAt(m_pMainCamera->position, m_pMainCamera->target, m_pMainCamera->up);
+		m_viewport = LookAt(m_pMainCamera->position, m_pMainCamera->m_target, m_pMainCamera->m_up);
 	}
 
 	else {
@@ -352,7 +352,7 @@ void GraphicSystem::TextPipeline(Text * _text)
 		Shader::m_pCurrentShader->SetMatrix("m4_projection", m_perspective);
 
 		m_viewport = LookAt(
-			m_pMainCamera->position, m_pMainCamera->target, m_pMainCamera->up);
+			m_pMainCamera->position, m_pMainCamera->m_target, m_pMainCamera->m_up);
 	}
 
 	else {
@@ -432,7 +432,7 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 			Shader::m_pCurrentShader->SetMatrix("m4_projection", m_perspective);
 
 			m_viewport = LookAt(
-				m_pMainCamera->position, m_pMainCamera->target, m_pMainCamera->up);
+				m_pMainCamera->position, m_pMainCamera->m_target, m_pMainCamera->m_up);
 		}
 
 		else {

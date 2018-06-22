@@ -13,12 +13,27 @@ class Camera : public Component
 
 public:
 
-    vec3 position, up, target;
-	float zoom;
+    vec3 position;
+	float zoom, near, far;
 	
+	void SetCamera(const vec3& _eye, const vec3& _look, const vec3& _up, float _fov, float _aspect,float _distance);
+	const vec3& GetViewGeometry() const;
+
+	float GetFovy() const;
+	float GetAspect() const;
+	float GetDistance() const;
+
+	void Yaw(float _degree);
+	void Pitch(float _degree);
+	void Roll(float _degree);
+	void Zoom(float _zoom);
+
     void Register() override;
 
 private:
+
+	vec3 m_up, m_target, m_right, m_back, m_viewGeometry;
+	float m_distance, m_fovy, m_aspect, m_width, m_height;
 
     Camera(Object* _pOwner);
     ~Camera() {};
