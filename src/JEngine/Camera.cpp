@@ -16,7 +16,7 @@ using namespace Math;
 Camera::Camera(Object* _pOwner)
 	: Component(_pOwner),
 	position(vec3::ZERO), near(.1f), far(1000.f),
-	m_up(vec3::UNIT_Y),m_target(vec3::ZERO), m_right(vec3::ZERO), m_back(vec3::ZERO),
+	m_up(vec3::UNIT_Y), target(vec3::ZERO), m_right(vec3::ZERO), m_back(vec3::ZERO),
 	m_viewGeometry(vec3::ZERO), m_distance(1.f), m_fovy(0.f), m_aspect(0.f),
 	m_width(0.f), m_height(0.f), zoom(45.f)
 {
@@ -60,9 +60,14 @@ float Camera::GetDistance() const
 	return m_distance;
 }
 
+const vec3& Camera::GetBack() const
+{
+	return m_back;
+}
+
 void Camera::Yaw(float _degree)
 {
-	mat4 rotate = Rotate(_degree, m_up);
+	mat4 rotate = Rotate(DegToRad(_degree), m_up);
 
 	vec4 right(m_right.x, m_right.y, m_right.z, 1.f);
 	right = rotate * right;
@@ -75,7 +80,7 @@ void Camera::Yaw(float _degree)
 
 void Camera::Pitch(float _degree)
 {
-	mat4 rotate = Rotate(_degree, m_right);
+	mat4 rotate = Rotate(DegToRad(_degree), m_right);
 
 	vec4 up(m_up.x, m_up.y, m_up.z, 1.f);
 	up = rotate * up;
@@ -88,7 +93,7 @@ void Camera::Pitch(float _degree)
 
 void Camera::Roll(float _degree)
 {
-	mat4 rotate = Rotate(_degree, m_back);
+	mat4 rotate = Rotate(DegToRad(_degree), m_back);
 
 	vec4 right(m_right.x, m_right.y, m_right.z, 1.f);
 	right = rotate * right;
@@ -114,7 +119,7 @@ void Camera::operator=(const Camera & _copy)
 {
 	position.Set(_copy.position);
 	m_up.Set(_copy.m_up);
-	m_target.Set(_copy.m_target);
+	target.Set(_copy.target);
 }
 
 void Camera::Load(CR_RJValue _data)
@@ -132,7 +137,7 @@ void Camera::Load(CR_RJValue _data)
 
 	if (_data.HasMember("Target")) {
 		CR_RJValue loadedTarget = _data["Target"];
-		m_target.Set(loadedTarget[0].GetFloat(), loadedTarget[1].GetFloat(), loadedTarget[2].GetFloat());
+		target.Set(loadedTarget[0].GetFloat(), loadedTarget[1].GetFloat(), loadedTarget[2].GetFloat());
 	}
 
 	if (_data.HasMember("Far"))

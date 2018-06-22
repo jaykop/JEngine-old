@@ -13,7 +13,7 @@ class Camera : public Component
 
 public:
 
-    vec3 position;
+    vec3 position, target;
 	float zoom, near, far;
 	
 	void SetCamera(const vec3& _eye, const vec3& _look, const vec3& _up, float _fov, float _aspect,float _distance);
@@ -22,6 +22,7 @@ public:
 	float GetFovy() const;
 	float GetAspect() const;
 	float GetDistance() const;
+	const vec3& GetBack() const;
 
 	void Yaw(float _degree);
 	void Pitch(float _degree);
@@ -32,7 +33,7 @@ public:
 
 private:
 
-	vec3 m_up, m_target, m_right, m_back, m_viewGeometry;
+	vec3 m_up, m_right, m_back, m_viewGeometry;
 	float m_distance, m_fovy, m_aspect, m_width, m_height;
 
     Camera(Object* _pOwner);

@@ -14,7 +14,9 @@ using namespace Math;
 void GraphicSystem::UpdatePipelines(const float _dt)
 {
 	// Update the perpsective matrix by camera's zoom
-	m_perspective = Perspective(m_pMainCamera->zoom, aspect, zNear, zFar);
+	m_perspective = Perspective(
+		m_pMainCamera->zoom, m_pMainCamera->m_aspect, 
+		m_pMainCamera->near, m_pMainCamera->far);
 
 	// Update the projection size by window screen size
 	static vec3 s_windowSize, s_resolutionStandard(1.f / 800.f, 1.f / 600.f, 1.f);
@@ -130,10 +132,17 @@ void GraphicSystem::LightSourcePipeline()
 			if (light->projection == PROJECTION_PERSPECTIVE) {
 				Shader::m_pCurrentShader->SetMatrix("m4_projection", m_perspective);
 
-				m_viewport = LookAt(m_pMainCamera->position, m_pMainCamera->m_target, m_pMainCamera->m_up);
+				m_viewport = LookAt(m_pMainCamera->position, m_pMainCamera->target, m_pMainCamera->m_up);
 			}
 
 			else {
+				m_right = m_width * .5f;
+				m_left = -m_right;
+				m_top = m_height * .5f;
+				m_bottom = -m_top;
+
+				m_orthogonal = Orthogonal(m_left, m_right, m_bottom, m_top, m_pMainCamera->near, m_pMainCamera->far);
+
 				Shader::m_pCurrentShader->SetMatrix("m4_projection", m_orthogonal);
 
 				SetIdentity(m_viewport);
@@ -174,10 +183,17 @@ void GraphicSystem::ModelPipeline(Model *_model)
 	if (_model->projection == PROJECTION_PERSPECTIVE) {
 
 		Shader::m_pCurrentShader->SetMatrix("m4_projection", m_perspective);
-		m_viewport = LookAt(m_pMainCamera->position, m_pMainCamera->m_target, m_pMainCamera->m_up);
+		m_viewport = LookAt(m_pMainCamera->position, m_pMainCamera->target, m_pMainCamera->m_up);
 	}
 
 	else {
+		m_right = m_width * .5f;
+		m_left = -m_right;
+		m_top = m_height * .5f;
+		m_bottom = -m_top;
+
+		m_orthogonal = Orthogonal(m_left, m_right, m_bottom, m_top, m_pMainCamera->near, m_pMainCamera->far);
+
 		Shader::m_pCurrentShader->SetMatrix("m4_projection", m_orthogonal);
 
 		SetIdentity(m_viewport);
@@ -352,10 +368,17 @@ void GraphicSystem::TextPipeline(Text * _text)
 		Shader::m_pCurrentShader->SetMatrix("m4_projection", m_perspective);
 
 		m_viewport = LookAt(
-			m_pMainCamera->position, m_pMainCamera->m_target, m_pMainCamera->m_up);
+			m_pMainCamera->position, m_pMainCamera->target, m_pMainCamera->m_up);
 	}
 
 	else {
+		m_right = m_width * .5f;
+		m_left = -m_right;
+		m_top = m_height * .5f;
+		m_bottom = -m_top;
+
+		m_orthogonal = Orthogonal(m_left, m_right, m_bottom, m_top, m_pMainCamera->near, m_pMainCamera->far);
+
 		Shader::m_pCurrentShader->SetMatrix("m4_projection", m_orthogonal);
 
 		SetIdentity(m_viewport);
@@ -432,10 +455,17 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 			Shader::m_pCurrentShader->SetMatrix("m4_projection", m_perspective);
 
 			m_viewport = LookAt(
-				m_pMainCamera->position, m_pMainCamera->m_target, m_pMainCamera->m_up);
+				m_pMainCamera->position, m_pMainCamera->target, m_pMainCamera->m_up);
 		}
 
 		else {
+			m_right = m_width * .5f;
+			m_left = -m_right;
+			m_top = m_height * .5f;
+			m_bottom = -m_top;
+
+			m_orthogonal = Orthogonal(m_left, m_right, m_bottom, m_top, m_pMainCamera->near, m_pMainCamera->far);
+
 			Shader::m_pCurrentShader->SetMatrix("m4_projection", m_orthogonal);
 
 			SetIdentity(m_viewport);
@@ -541,8 +571,6 @@ void GraphicSystem::Render(Font* _font, Text*_text, Transform* _transform, bool 
 		GLfloat initX = GLfloat(s_position.x), newX = initX, intervalY = 0.f;
 		int num_newline = 1;
 
-		glBindVertexArray(GLM::m_vao[GLM::SHAPE_PLANE]);
-
 		// Iterate all character
 		if (_printUnicode) {
 			std::wstring::const_iterator letter;
@@ -581,8 +609,6 @@ void GraphicSystem::Render(Font* _font, Text*_text, Transform* _transform, bool 
 				}
 			}
 		}
-
-		glBindVertexArray(0);
 	}
 }
 

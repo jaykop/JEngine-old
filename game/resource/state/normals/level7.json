@@ -9,8 +9,7 @@
 			"Component" : [
 				{
 					"Type": "Camera",
-					"Values": {"Position" : [25, 25, -25], "Target" : [0, 0, 0],
-						"Up" : [0, 1, 0]}
+					"Values": {"Position" : [0, 0, -25], "Target" : [0, 0, 0], "Up" : [0, 1, 0]}
 				},
 				{
 					"Type" : "CameraController",

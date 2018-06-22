@@ -39,26 +39,6 @@ bool InputHandler::KeyTriggered(JE_KEY _trigger)
 	return false;
 }
 
-void InputHandler::KeyUp(void)
-{
-	m_keyPressed = false;
-}
-
-void InputHandler::KeyDown(void)
-{
-	m_keyPressed = true;
-}
-
-void InputHandler::MouseUp()
-{
-	m_mousePressed = false;
-}
-
-void InputHandler::MouseDown()
-{
-	m_mousePressed = true;
-}
-
 JE_KEY InputHandler::KeyTranslator(SDL_Event* _event)
 {
 	// Mouse translator
@@ -300,22 +280,24 @@ void InputHandler::Update(SDL_Event* _event)
 	{
 		// Keyboard
 	case SDL_KEYDOWN:
+		m_keyPressed = true;
 		m_keys[KeyTranslator(_event)] = true;
 		break;
 
 	case SDL_KEYUP:
+		m_keyPressed = false;
 		m_triggerList[KeyTranslator(_event)]
 			= m_keys[KeyTranslator(_event)] = false;
 		break;
 
 		// Mouse
 	case SDL_MOUSEBUTTONDOWN:
-		MouseDown();
+		m_mousePressed = true;
 		m_keys[KeyTranslator(_event)] = true;
 		break;
 
 	case SDL_MOUSEBUTTONUP:
-		MouseUp();
+		m_mousePressed = false;
 		m_triggerList[KeyTranslator(_event)]
 			= m_keys[KeyTranslator(_event)] = false;
 		break;
@@ -354,6 +336,21 @@ vec3& InputHandler::GetOrhtoPosition()
 	float width = GLM::m_width* .5f, height = GLM::m_height* .5f;
 	m_screenPosition.Set(m_rawPosition.x - width, height - m_rawPosition.y, 0./*m_mouseZ*/);
 	return m_screenPosition;
+}
+
+bool InputHandler::AnyKeyDown()
+{
+	return m_keyPressed || m_mousePressed;
+}
+
+bool InputHandler::KeyDown()
+{
+	return m_keyPressed;
+}
+
+bool InputHandler::MouseDown()
+{
+	return m_mousePressed;
 }
 
 jeEnd

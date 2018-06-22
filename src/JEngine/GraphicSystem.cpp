@@ -14,26 +14,12 @@ jeBegin
 using namespace Math;
 
 GraphicSystem::GraphicSystem()
-	:System(), m_pMainCamera(nullptr),
-	zNear(.1f), zFar(1000.f), m_isLight(false), backgroundColor(vec4::ZERO),
-	orthoComesFirst(true), screenColor(vec4::ONE), m_width(int(GLM::m_width)), m_mouseZ(0.f),
+	:System(), m_pMainCamera(nullptr), m_isLight(false), backgroundColor(vec4::ZERO),
+	orthoComesFirst(true), screenColor(vec4::ONE), m_width(int(GLM::m_width)),
 	m_height(int(GLM::m_height)), m_aniScale(vec3::ZERO), m_aniTranslate(vec3::ZERO),
 	m_viewport(mat4()), sobelAmount(0.f), blurSize(0.f), blurAmount(0.f), m_maxLights(16), 
 	aliasMode(ALIAS_ALIASED), screenEffect(EFFECT_NONE), m_resolutionScaler(GLM::m_width, GLM::m_height, 1.f)
-{
-	/* TODO: Remove duplicated varibles with camera component.
-	 Polish this class */
-
-	aspect = float(GLM::m_width / GLM::m_height);
-	m_right = m_width * .5f;
-	m_left = -m_right;
-	m_top = m_height * .5f;
-	m_bottom = -m_top;
-
-	// Fix the orthogonal matrix
-	// because users are not allow to change app size while it is running 
-	m_orthogonal = Orthogonal(m_left, m_right, m_bottom, m_top, zNear, zFar);
-}
+{}
 
 void GraphicSystem::Load(CR_RJDoc _data)
 {
@@ -94,8 +80,6 @@ void GraphicSystem::Init()
 	// set the first camera as a main camera.
 	if (!m_pMainCamera)
 		m_pMainCamera = m_cameras[0];
-
-	m_mouseZ = m_pMainCamera->position.z;
 
 	for (auto light : m_lights)
 		Normalize(light->direction);
@@ -262,23 +246,6 @@ void GraphicSystem::EndAntialiasing()
 		break;
 	}
 }
-
-//void GraphicSystem::UpdateMousePosition() {
-//
-//	if (INPUT::KeyPressed(JE_MOUSE_WHEEL_UP)) {
-//		m_mouseZ++;
-//		//jeDebugPrint("*GraphicSystem: Mouse screen position - [ %f, %f, %f ]\n", INPUT::m_screenPosition.x, INPUT::m_screenPosition.y, m_mouseZ);
-//	}
-//	else if (INPUT::KeyPressed(JE_MOUSE_WHEEL_DOWN)) {
-//		m_mouseZ--;
-//		//jeDebugPrint("*GraphicSystem: Mouse screen position - [ %f, %f, %f ]\n", INPUT::m_screenPosition.x, INPUT::m_screenPosition.y, m_mouseZ);
-//	}
-//
-//	// Set mouse;s screen position 
-//
-//
-//}
-
 
 void GraphicSystem::Ray(Model* /*_model*/, Transform* /*_transform*/)
 {

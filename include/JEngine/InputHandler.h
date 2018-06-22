@@ -91,6 +91,11 @@ class InputHandler {
 
 public:
 	
+	// Key status
+	static bool AnyKeyDown();
+	static bool KeyDown();
+	static bool MouseDown();
+
 	// Basic key triggers
 	static bool KeyPressed(JE_KEY _pressed);
 	static bool KeyTriggered(JE_KEY _trigger);
@@ -99,14 +104,6 @@ public:
 	static vec3& GetOrhtoPosition();
 
 private:
-
-	// Keyboard
-	static void KeyUp();
-	static void KeyDown();
-
-	// Mouse
-	static void MouseUp();
-	static void MouseDown();
 
 	static void Init();
 	static void Update(SDL_Event* _event);

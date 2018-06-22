@@ -61,7 +61,7 @@ public:
 
     vec4			backgroundColor, screenColor;
     bool			orthoComesFirst;
-    float			sobelAmount, blurSize, blurAmount, sobelSize, aspect, zNear, zFar;
+	float			sobelAmount, blurSize, blurAmount, sobelSize;
     Alias			aliasMode;
     ScreenEffect    screenEffect;
 
@@ -118,16 +118,14 @@ private:
     Camera*	m_pMainCamera;
 
     vec3	m_resolutionScaler;
-
     unsigned	m_maxLights;
-
 	Vertexes	m_vertexArray;
 
     int		m_width, m_height;
     bool	m_inside, m_isLight;
     mat4	m_perspective, m_orthogonal, m_viewport;
     vec3	m_aniScale, m_aniTranslate;
-    float	m_left, m_right, m_top, m_bottom, m_mouseZ;
+    float	m_left, m_right, m_top, m_bottom;
 	
     GraphicSystem(const GraphicSystem& /*_copy*/) = delete;
     void operator=(const GraphicSystem& /*_copy*/) = delete;

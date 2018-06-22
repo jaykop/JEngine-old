@@ -25,62 +25,42 @@ void CameraController::Init()
 {
 	m_camera = GetOwner()->GetComponent<Camera>();
 	position = m_camera->position;
-	//m_camera->target = m_camera->position + vec3::UNIT_Z/*m_camera->position.GetNormalize()*/;
 }
 
 void CameraController::Update(const float _dt)
 {
-	//static float s_speed = 5.f, s_speedByDt;
-	//static vec4 s_v4Target;
-	//static vec3 s_right, s_v3Target;
-	//s_v4Target.Set(m_camera->target.x, m_camera->target.y,
-	//	m_camera->target.z, 1.f);
-	//s_v3Target.Set(m_camera->target);
+	static vec3 firstPosition, secondPosition, diff;
+	static bool clicked = false;
 
-	//s_speedByDt = _dt * s_speed;
+	if (INPUT::KeyPressed(JE_MOUSE_LEFT) && !clicked) {
+		firstPosition = INPUT::GetOrhtoPosition();
+		std::cout << firstPosition << std::endl;
+		clicked = true;
+	}
 
-	//if (INPUT::KeyPressed(JE_UP))
-	//	position.z += s_speedByDt;
+	else if (!INPUT::KeyPressed(JE_MOUSE_LEFT) && clicked) {
+		secondPosition = INPUT::GetOrhtoPosition();
+		diff = firstPosition - secondPosition;
+		std::cout << secondPosition << std::endl;	
+		
+		float yaw = diff.x * m_camera->GetFovy() / SYSTEM::GetGraphicSystem()->GetWidth();
+		float pitch = diff.y * m_camera->GetFovy() / SYSTEM::GetGraphicSystem()->GetHeight();
 
-	//if (INPUT::KeyPressed(JE_LEFT))
-	//	position.x += s_speedByDt;
+		jeDebugPrint("%f %f\n", yaw, pitch);
 
-	//if (INPUT::KeyPressed(JE_RIGHT))
-	//	position.x -= s_speedByDt;
+		m_camera->Yaw(yaw);
+		m_camera->Pitch(pitch);
+		clicked = false;
+	}
+	
+	m_camera->target = m_camera->position - m_camera->GetBack();
 
-	//if (INPUT::KeyPressed(JE_DOWN))
-	//	position.z -= s_speedByDt;
+	static float speed = 100.f;
+	if (INPUT::KeyPressed(JE_W)) 
+		m_camera->position += speed *_dt * m_camera->GetBack();
 
-	//if (INPUT::KeyPressed(JE_A)) {
-	//	s_v4Target = s_v4Target * Rotate(s_speedByDt, m_camera->up);
-	//	s_v3Target.Set(s_v4Target.x, s_v4Target.y, s_v4Target.z);
-	//}
-	//
-	//if (INPUT::KeyPressed(JE_D)){
-	//	s_v4Target = s_v4Target * Rotate(-s_speedByDt, m_camera->up);
-	//	s_v3Target.Set(s_v4Target.x, s_v4Target.y, s_v4Target.z);
-	//}
-	//
-	//if (INPUT::KeyPressed(JE_W)) {
-	///*	s_right = CrossProduct(m_camera->up, GetNormalize(s_v3Target));
-	//	s_v4Target.Set(s_v3Target.x, s_v3Target.y, s_v3Target.z, 1.f);
-	//	s_v4Target = s_v4Target * Rotate(-s_speedByDt, s_right);
-	//	s_v3Target.Set(s_v4Target.x, s_v4Target.y, s_v4Target.z);
-	//	m_camera->up = CrossProduct(s_v3Target, GetNormalize(s_right));*/
-	//	m_camera->position += _dt * m_camera->;
-	//}
-	//
-	//if (INPUT::KeyPressed(JE_S)) {
-	//	s_right = CrossProduct(m_camera->up, GetNormalize(s_v3Target));
-	//	s_v4Target.Set(s_v3Target.x, s_v3Target.y, s_v3Target.z, 1.f);
-	//	s_v4Target = s_v4Target * Rotate(s_speedByDt, s_right);
-	//	s_v3Target.Set(s_v4Target.x, s_v4Target.y, s_v4Target.z);
-	//	m_camera->up = CrossProduct(s_v3Target, GetNormalize(s_right));
-	//}
-
-	////vec3 newTarget = (s_v3Target - position).GetNormalize();
-	//m_camera->position = position;
-	//m_camera->target.Set(position - GetNormalize(s_v3Target));// (position + vec3::UNIT_Z);
+	else if (INPUT::KeyPressed(JE_S)) 
+		m_camera->position -= speed * _dt * m_camera->GetBack();
 }
 
 void CameraController::Close()
