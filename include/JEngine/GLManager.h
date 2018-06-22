@@ -12,12 +12,12 @@ class GLManager {
     friend class Text;
     friend class Model;
     friend class Emitter;
+	friend class Camera;
     friend class Application;
     friend class InputHandler;
     friend class AssetManager;
     friend class GraphicSystem;
     friend class ImguiManager;
-    friend class NuklearManager;
 
     using Shaders = std::vector<Shader*>;
 

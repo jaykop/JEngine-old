@@ -1,7 +1,8 @@
 #include "Camera.h"
 #include "SystemManager.h"
 #include "GraphicSystem.h"
-#include "../../game/CustomLogicHeader.h"
+#include "MathUtils.h"
+#include "GLManager.h"
 
 #ifdef  jeUseBuiltInAllocator
 #include "MemoryAllocator.h"
@@ -14,11 +15,13 @@ using namespace Math;
 
 Camera::Camera(Object* _pOwner)
 	: Component(_pOwner),
-	position(vec3::ZERO), near(0.0001f), far(1000.f),
+	position(vec3::ZERO), near(.1f), far(1000.f),
 	m_up(vec3::UNIT_Y),m_target(vec3::ZERO), m_right(vec3::ZERO), m_back(vec3::ZERO),
 	m_viewGeometry(vec3::ZERO), m_distance(1.f), m_fovy(0.f), m_aspect(0.f),
 	m_width(0.f), m_height(0.f), zoom(45.f)
-{}
+{
+	SetCamera(position, vec3::UNIT_Z, m_up,	45.f, GLM::m_width / GLM::m_height, 1.f);
+}
 
 void Camera::SetCamera(const vec3& _eye, const vec3& _look, const vec3& _up, 
 	float _fov, float _aspect, float _distance)
@@ -116,10 +119,15 @@ void Camera::operator=(const Camera & _copy)
 
 void Camera::Load(CR_RJValue _data)
 {
-	// TODO: Add other attribute loader
+
 	if (_data.HasMember("Up")) {
 		CR_RJValue loadedUp = _data["Up"];
 		m_up.Set(loadedUp[0].GetFloat(), loadedUp[1].GetFloat(), loadedUp[2].GetFloat());
+	}
+	
+	if (_data.HasMember("Position")) {
+		CR_RJValue loadedPosition = _data["Position"];
+		position.Set(loadedPosition[0].GetFloat(), loadedPosition[1].GetFloat(), loadedPosition[2].GetFloat());
 	}
 
 	if (_data.HasMember("Target")) {
@@ -127,10 +135,23 @@ void Camera::Load(CR_RJValue _data)
 		m_target.Set(loadedTarget[0].GetFloat(), loadedTarget[1].GetFloat(), loadedTarget[2].GetFloat());
 	}
 
-	if (_data.HasMember("Position")) {
-		CR_RJValue loadedPosition = _data["Position"];
-		position.Set(loadedPosition[0].GetFloat(), loadedPosition[1].GetFloat(), loadedPosition[2].GetFloat());
+	if (_data.HasMember("Far"))
+		far = _data["Far"].GetFloat();
+
+	if (_data.HasMember("Near"))
+		near = _data["Near"].GetFloat();
+
+	if (_data.HasMember("Look")
+		&& _data.HasMember("Fovy")
+		&& _data.HasMember("Distance")) {
+
+		CR_RJValue loadedLook = _data["Look"];
+		vec3 look(loadedLook[0].GetFloat(), loadedLook[1].GetFloat(), loadedLook[2].GetFloat());
+
+		SetCamera(position, look, m_up, 
+			_data["Fovy"].GetFloat(), GLM::m_width / GLM::m_height, _data["Distance"].GetFloat());
 	}
+
 }
 
 void Camera::EditorUpdate(const float /*_dt*/)
