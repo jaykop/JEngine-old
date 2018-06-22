@@ -22,6 +22,9 @@ public:
 	float GetFovy() const;
 	float GetAspect() const;
 	float GetDistance() const;
+
+	const vec3& GetUp() const;
+	const vec3& GetRight() const;
 	const vec3& GetBack() const;
 
 	void Yaw(float _degree);

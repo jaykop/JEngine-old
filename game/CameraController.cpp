@@ -29,38 +29,40 @@ void CameraController::Init()
 
 void CameraController::Update(const float _dt)
 {
-	static vec3 firstPosition, secondPosition, diff;
-	static bool clicked = false;
+	static vec3 lastPosition, currentPosition, diff;
+	static float yaw = 0.f, pitch = 0.f;
+	static bool active = false;
+	if (INPUT::KeyPressed(JE_MOUSE_LEFT)) {
+		lastPosition = currentPosition;
+		currentPosition = INPUT::GetOrhtoPosition();
+		diff = lastPosition - currentPosition;
+		if (active) {
+			yaw = diff.x * m_camera->GetFovy() / SYSTEM::GetGraphicSystem()->GetWidth();
+			pitch = diff.y * m_camera->GetFovy() / SYSTEM::GetGraphicSystem()->GetHeight();
 
-	if (INPUT::KeyPressed(JE_MOUSE_LEFT) && !clicked) {
-		firstPosition = INPUT::GetOrhtoPosition();
-		std::cout << firstPosition << std::endl;
-		clicked = true;
+			m_camera->Yaw(yaw);
+			m_camera->Pitch(pitch);
+		}
+		active = true;
 	}
-
-	else if (!INPUT::KeyPressed(JE_MOUSE_LEFT) && clicked) {
-		secondPosition = INPUT::GetOrhtoPosition();
-		diff = firstPosition - secondPosition;
-		std::cout << secondPosition << std::endl;	
-		
-		float yaw = diff.x * m_camera->GetFovy() / SYSTEM::GetGraphicSystem()->GetWidth();
-		float pitch = diff.y * m_camera->GetFovy() / SYSTEM::GetGraphicSystem()->GetHeight();
-
-		jeDebugPrint("%f %f\n", yaw, pitch);
-
-		m_camera->Yaw(yaw);
-		m_camera->Pitch(pitch);
-		clicked = false;
-	}
+	else
+		active = false;
 	
 	m_camera->target = m_camera->position - m_camera->GetBack();
 
 	static float speed = 100.f;
 	if (INPUT::KeyPressed(JE_W)) 
-		m_camera->position += speed *_dt * m_camera->GetBack();
+		m_camera->position -= speed *_dt * m_camera->GetBack();
 
 	else if (INPUT::KeyPressed(JE_S)) 
-		m_camera->position -= speed * _dt * m_camera->GetBack();
+		m_camera->position += speed * _dt * m_camera->GetBack();
+
+	if (INPUT::KeyPressed(JE_A))
+		m_camera->position -= speed * _dt * m_camera->GetRight();
+
+	else if (INPUT::KeyPressed(JE_D))
+		m_camera->position += speed * _dt * m_camera->GetRight();
+
 }
 
 void CameraController::Close()

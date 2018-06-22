@@ -60,6 +60,16 @@ float Camera::GetDistance() const
 	return m_distance;
 }
 
+const vec3& Camera::GetUp() const
+{
+	return m_up;
+}
+
+const vec3& Camera::GetRight() const
+{
+	return m_right;
+}
+
 const vec3& Camera::GetBack() const
 {
 	return m_back;
