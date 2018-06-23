@@ -12,7 +12,11 @@
 jeBegin
 jeDefineComponentBuilder(Text);
 
-std::vector<unsigned> Text::m_idices = { 0, 2, 3, 1, 0, 2 };
+std::vector<Mesh::VertexIndex> Text::m_indices = {
+	{0, 0, 0}, {2, 2, 2}, {3, 3, 3}, {1, 1, 1}, {0, 0, 0}, {2, 2, 2}
+};
+
+std::vector<unsigned> Text::m_pointIndices = { 0, 2, 3, 1, 0, 2 };
 
 Font::Font()
 	:m_fontSize(0), m_newLineInterval(0.f)

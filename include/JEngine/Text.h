@@ -5,7 +5,7 @@
 #include FT_FREETYPE_H
 
 #include "Model.h"
-#include "Vector2.h"
+#include "Mesh.h"
 
 jeBegin
 jeDeclareComponentBuilder(Text);
@@ -60,12 +60,13 @@ private:
 
     bool			m_printWide = false;
 	char			*m_pTextStorage = nullptr;
-    wchar_t	*m_pwTextStorage = nullptr;
+    wchar_t			*m_pwTextStorage = nullptr;
 	std::string		m_text;
     std::wstring	m_wText;
     size_t			m_size = 0;
 
-	static std::vector<unsigned> m_idices;
+	static std::vector<Mesh::VertexIndex> m_indices;
+	static std::vector<unsigned> m_pointIndices;
 
     Text(Object* pObject);
     ~Text();

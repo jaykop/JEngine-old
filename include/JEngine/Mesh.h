@@ -9,11 +9,15 @@ jeBegin
 
 class Mesh
 {
+	friend class Text;
 	friend class Light;
 	friend class Model;
 	friend class Emitter;
 	friend class GLManager;
 	friend class AssetManager;
+	friend class GraphicSystem;
+
+	struct VertexIndex { unsigned a, b, c; };
 
 public:
 
@@ -26,15 +30,20 @@ public:
 	void AddPoint(CR_Vec3 _point);
 	void AddTextureUV(CR_Vec2 _uv);
 	void AddNormal(CR_Vec3 _normal);
-	void AddIndice(unsigned _indice);
+	void AddIndice(VertexIndex _indice);
+	void AddPointIndice(unsigned _indice);
 
 	vec3		GetPoint(unsigned _index) const;
 	vec2		GetUV(unsigned _index) const;
 	vec3		GetNormal(unsigned _index) const;
-	unsigned	GetIndice(unsigned _index) const;
+	VertexIndex	GetIndice(unsigned _index) const;
 
 	std::size_t GetPointCount() const;
-	const std::vector<unsigned>& GetIndices() const;
+	std::size_t GetIndiceCount() const;
+
+	const std::vector<vec3>&		GetNormals() const;
+	const std::vector<VertexIndex>& GetIndices() const;
+	const std::vector<unsigned>&	GetPointIndices() const;
 
 	void ClearPoints();
 	void ClearNormals();
@@ -53,10 +62,11 @@ private:
 
 	void CreateCustomObject();
 
-	std::vector<unsigned>	m_indices;
-	std::vector<vec3>		m_points;
-	std::vector<vec2>		m_UVs;
-	std::vector<vec3>		m_normals;
+	std::vector<VertexIndex>	m_indices;
+	std::vector<unsigned>		m_pointIndices;
+	std::vector<vec3>			m_points;
+	std::vector<vec2>			m_UVs;
+	std::vector<vec3>			m_normals;
 
 	Mesh();
 	~Mesh();

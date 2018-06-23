@@ -343,38 +343,69 @@ Mesh* AssetManager::LoadObj(const char* _path)
 			pNewMesh->AddNormal(normal);
 		}
 		else if (line.substr(0, 2) == "f ") {
+
+			// Calculate normal here - instread of getting normal from obj file
+			if (!hasNormal) {
+				temp_normals.resize(temp_points.size(), vec3::ZERO);
+				for (unsigned i = 0; i < elements.size(); i += 3) {
+					unsigned ia = elements[i];
+					unsigned ib = elements[i + 1];
+					unsigned ic = elements[i + 2];
+
+					vec3 normal = GetNormalize(
+						CrossProduct((temp_points[ib] - temp_points[ia]),
+						(temp_points[ic] - temp_points[ia])));
+					temp_normals[ia] = temp_normals[ib] = temp_normals[ic] = normal;
+				}
+				hasNormal = true;
+			}
+
 			std::istringstream s(line.substr(2));
-			unsigned a, b, c;
-			s >> a; s >> b; s >> c;
-			a--; b--; c--;
-			elements.push_back(a);
-			elements.push_back(b);
-			elements.push_back(c);
-			pNewMesh->AddIndice(a);
-			pNewMesh->AddIndice(b);
-			pNewMesh->AddIndice(c);
-		}
-		else if (line.substr(0, 2) == "l ") {
-			// TODO;
-		}
-	}
 
-	// Calculate normal here - instread of getting normal from obj file
-	if (!hasNormal) {
-		temp_normals.resize(temp_points.size(), vec3::ZERO);
-		pNewMesh->m_normals.resize(temp_points.size(), vec3::ZERO);
-		for (unsigned i = 0; i < elements.size(); i += 3) {
-			unsigned ia = elements[i];
-			unsigned ib = elements[i + 1];
-			unsigned ic = elements[i + 2];
+			int a = 0, b = 0, c = 0;
+			
+			while (!s.eof()) {
+				// Vertex index
+				s >> a;
 
-			vec3 normal = GetNormalize(
-				CrossProduct((temp_points[ib] - temp_points[ia]),
-				(temp_points[ic] - temp_points[ia])));
-			temp_normals[ia] = temp_normals[ib] = temp_normals[ic] = normal;
-			pNewMesh->m_normals[ia] = pNewMesh->m_normals[ib] = pNewMesh->m_normals[ic] = normal;
+				// Check texture/normal index
+				if (s.peek() == '/') {
+					s.ignore(1);
 
+					// a/b/c
+					if (s.peek() != '/') {
+						s >> b;
+
+						if (s.peek() == '/') {
+							s.ignore(1);
+							s >> c;
+						}
+					}
+
+					// No texture index
+					// a//c
+					else
+						s >> c;
+				}
+
+				if (a) 	--a;
+				if (b)	--b;
+				if (c)	--c;
+
+				pNewMesh->AddIndice({unsigned(a), unsigned(b), unsigned(c) });
+				pNewMesh->AddPointIndice(a);
+			}
 		}
+		
+		if (pNewMesh->GetNormals().empty()) {
+			for (unsigned index = 0; index < temp_normals.size(); ++index)
+				pNewMesh->AddNormal(temp_normals.at(index));
+		}
+		// TODO
+		//else if (line.substr(0, 2) == "l ") {
+		//	
+		//}
+
 	}
 
 	return pNewMesh;

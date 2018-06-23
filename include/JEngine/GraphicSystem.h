@@ -4,10 +4,10 @@
 #include "Vector2.h"
 #include "Vector3.h"
 #include "Matrix4x4.h"
+#include "Mesh.h"
 
 jeBegin
 
-class Mesh;
 class Font;
 class Shader;
 class Material;
@@ -38,6 +38,7 @@ private:
 	friend class GLManager;
     friend class SystemManager;
 
+	using VertexIndices = std::vector<Mesh::VertexIndex>;
 	using Indices = std::vector<unsigned>;
 	using Vertexes = std::vector<jeVertex>;
     using Lights = std::vector<Light*>;
@@ -48,7 +49,6 @@ private:
     enum Alias { ALIAS_ALIASED, ALIAS_ANTIALIASED, ALIAS_MULTISAMPLE };
 
 public:
-
 
     // TODO
     void    Ray(Model* _model, Transform* _transform);
