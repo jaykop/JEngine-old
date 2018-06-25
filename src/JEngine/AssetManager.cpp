@@ -14,6 +14,8 @@
 #include <sstream>
 #include "MathUtils.h"
 
+#include <thread>
+
 // Built-In Component Headers
 #include "GraphicComponents.h"
 #include "PhysicsComponents.h"
@@ -32,6 +34,7 @@ ASSET::ArchetypeMap	ASSET::m_archetypeMap;
 std::string			ASSET::m_initDirectory, ASSET::m_assetDirectory,
 					ASSET::m_stateDirectory, ASSET::m_archeDirectory;
 unsigned char*		ASSET::m_pPixelChunk = nullptr;
+std::unordered_map<std::string, ASSET::Image> ASSET::m_images;
 
 void AssetManager::ShowLoadingPercentage(unsigned _loadedPercentage, unsigned _size)
 {
@@ -43,12 +46,12 @@ void AssetManager::ShowLoadingPercentage(unsigned _loadedPercentage, unsigned _s
 void AssetManager::LoadAssets()
 {
     // Read state info
-    JSON::ReadFile(ASSET::m_stateDirectory.c_str());
+    JSON::ReadFile(m_stateDirectory.c_str());
     CR_RJValue states = JSON::GetDocument()["State"];
     CR_RJValue fristStates = JSON::GetDocument()["FirstState"];
 
     // Read asset info
-    JSON::ReadFile(ASSET::m_assetDirectory.c_str());
+    JSON::ReadFile(m_assetDirectory.c_str());
     CR_RJValue textures = JSON::GetDocument()["Texture"];
 
     // Read font info
@@ -60,9 +63,10 @@ void AssetManager::LoadAssets()
         realLoadingPercentage = 0,
         loadingPercentage = stateSize + textureSize + fontSize;
 
-    // Load states
+    // Load states using thread
     for (rapidjson::SizeType i = 0; i < stateSize; ++i) {
-        STATE::PushState(states[i]["Directory"].GetString(), states[i]["Key"].GetString());
+		std::thread stateLoader(&STATE::PushState, states[i]["Directory"].GetString(), states[i]["Key"].GetString());
+		stateLoader.join();
         jeDebugPrint("*AssetManager - Loaded state: %s.\n", states[i]["Directory"].GetString());
         realLoadingPercentage++;
         ShowLoadingPercentage(realLoadingPercentage, loadingPercentage);
@@ -72,13 +76,18 @@ void AssetManager::LoadAssets()
     STATE::SetStartingState(fristStates.GetString());
     jeDebugPrint("*AssetManager - The first state is %s.\n", fristStates.GetString());
 
-    // Load images
+    // Load images using thread
     for (rapidjson::SizeType i = 0; i < textureSize; ++i) {
-        LoadImage(textures[i]["Directory"].GetString(), textures[i]["Key"].GetString());
-        jeDebugPrint("*AssetManager - Loaded texture: %s.\n", textures[i]["Directory"].GetString());
+		std::thread imageLoader(&LoadImage, textures[i]["Directory"].GetString(), textures[i]["Key"].GetString());
+		imageLoader.join();
+		jeDebugPrint("*AssetManager - Loaded image: %s.\n", textures[i]["Directory"].GetString());
         realLoadingPercentage++;
         ShowLoadingPercentage(realLoadingPercentage, loadingPercentage);
     }
+
+	// Register images to gpu
+	for (auto it : m_images)
+		RegisterImage(it.second, it.first.c_str());
 
     // Load font
     for (rapidjson::SizeType i = 0; i < fontSize; ++i) {
@@ -160,7 +169,6 @@ bool AssetManager::SetBuiltInComponents()
     return true;
 }
 
-
 void AssetManager::LoadFont(const char * _path, const char* _key, unsigned _size,
     unsigned long _start, unsigned long _end)
 {
@@ -197,17 +205,15 @@ void AssetManager::LoadFont(const char * _path, const char* _key, unsigned _size
 			jeDebugPrint("!AssetManager - Failed to load font: %s\n", _path);
 			return;
 		}
+
         // Select unicode range
         FT_Select_Charmap(newFont->m_face, FT_ENCODING_UNICODE);
-
         // Set pixel size
         FT_Set_Pixel_Sizes(newFont->m_face, 0, _size);
         // Set size of the font
         newFont->m_fontSize = _size;
-
         // Disable byte-alignment restriction
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
     }
 
     LoadCharacters(newFont, s_newLineLevel, _start, _end);
@@ -277,26 +283,31 @@ void AssetManager::LoadAudio(const char* /*_path*/, const char* /*_audioKey*/)
 
 void AssetManager::LoadImage(const char *_path, const char *_textureKey)
 {
-    unsigned		newImage;
-    Model::Image	image;
-    unsigned		width, height;
-    unsigned		error = lodepng::decode(image, width, height, _path);
+    Image	 image;
+    unsigned error = lodepng::decode(image.pixels, image.width, image.height, _path);
 	
 	if (error)
         jeDebugPrint("!AssetManager - Decoder error %d / %s.\n", error, lodepng_error_text(error));
 
-    // Enable the texture for OpenGL.
-    glEnable(GL_TEXTURE_2D);
-    glGenTextures(1, &newImage);
-    glBindTexture(GL_TEXTURE_2D, newImage);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0,
-        GL_RGBA, GL_UNSIGNED_BYTE, &image[0]);
+	else 
+		m_images.insert(
+			std::unordered_map<std::string, Image>::value_type(_textureKey, image));
+}
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+void AssetManager::RegisterImage(Image& _image, const char* _textureKey)
+{    
+	// Enable the texture for OpenGL.
+	glEnable(GL_TEXTURE_2D);
+	glGenTextures(1, &_image.handle);
+	glBindTexture(GL_TEXTURE_2D, _image.handle);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _image.width, _image.height, 0,
+		GL_RGBA, GL_UNSIGNED_BYTE, &_image.pixels[0]);
 
-    m_textureMap.insert(TextureMap::value_type(
-        _textureKey, newImage));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	m_textureMap.insert(TextureMap::value_type(
+		_textureKey, _image.handle));
 }
 
 void AssetManager::LoadArchetype(const char* /*_path*/, const char* /*_archetypeKey*/)
@@ -404,7 +415,6 @@ void AssetManager::TakeAScreenshot(const char* _directory)
 			std::swap(m_pPixelChunk[index + 1], m_pPixelChunk[invertedInder + 1]);
 			std::swap(m_pPixelChunk[index + 2], m_pPixelChunk[invertedInder + 2]);
 			std::swap(m_pPixelChunk[index + 3], m_pPixelChunk[invertedInder + 3]);
-
 		}
 
 	// Check error
@@ -458,25 +468,13 @@ void AssetManager::TakeAScreenshot(const char* _directory)
 	m_pPixelChunk = nullptr;
 }
 
-void AssetManager::SetInitDirectory(const char * _dir)
-{
-    m_initDirectory.assign(_dir);
-}
+void AssetManager::SetInitDirectory(const char * _dir) { m_initDirectory.assign(_dir); }
 
-void AssetManager::SetAssetDirectory(const char * _dir)
-{
-    m_assetDirectory.assign(_dir);
-}
+void AssetManager::SetAssetDirectory(const char * _dir) { m_assetDirectory.assign(_dir); }
 
-void AssetManager::SetStateDirectory(const char * _dir)
-{
-    m_stateDirectory.assign(_dir);
-}
+void AssetManager::SetStateDirectory(const char * _dir) { m_stateDirectory.assign(_dir); }
 
-void AssetManager::SetArchetypeDirectory(const char * _dir)
-{
-    m_archeDirectory.assign(_dir);
-}
+void AssetManager::SetArchetypeDirectory(const char * _dir) { m_archeDirectory.assign(_dir); }
 
 Font* AssetManager::GetFont(const char *_key)
 {

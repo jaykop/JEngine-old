@@ -27,6 +27,11 @@ class AssetManager {
 	using TextureMap =		std::unordered_map<std::string, unsigned>;
 	using ArchetypeMap =	std::unordered_map<std::string, Archetype*>;
 
+	struct Image {
+		std::vector<unsigned char> pixels;
+		unsigned handle, width, height;
+	};
+
 	// Locked constuctor, destructor, assign operator
 	jeStaticClassDeclaration(AssetManager)
 
@@ -57,6 +62,7 @@ private:
 	static void LoadCharacters(Font* _pFont, float& _newLineLevel, unsigned long _start, unsigned long _end);
 	static void LoadAudio(const char* _path, const char* _audioKey);
 	static void LoadImage(const char* _path, const char* _textureKey);
+	static void RegisterImage(Image& _image, const char* _textureKey);
 	static void LoadArchetype(const char* _path, const char* _archetypeKey);
 	static Mesh* LoadObj(const char* _path);
 
@@ -67,6 +73,7 @@ private:
 
 	// Private member variables
 	static unsigned char* m_pPixelChunk;
+	static std::unordered_map<std::string, Image> m_images;
 
 	static FontMap		m_fontMap;
 	static AudioMap		m_audioMap;

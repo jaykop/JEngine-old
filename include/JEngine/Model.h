@@ -17,13 +17,10 @@ class Model : public Component
     // Keyword Definitions
     jeBaseFriends(Model);
     friend class GraphicSystem;
-
     friend class Material;
     friend class Animation;
-
     friend class AssetManager;
 
-    using Image = std::vector<unsigned char>;
     using TextureMap = std::unordered_map<std::string, unsigned>;
 
 protected:
