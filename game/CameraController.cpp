@@ -63,7 +63,7 @@ void CameraController::Update(const float _dt)
 	
 	m_camera->target = m_camera->position - m_camera->GetBack();
 
-	static float speed = 100.f;
+	static float speed = 50.f;
 	if (INPUT::KeyPressed(JE_W)) 
 		m_camera->position -= speed *_dt * m_camera->GetBack();
 

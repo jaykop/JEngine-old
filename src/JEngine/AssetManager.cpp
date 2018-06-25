@@ -322,6 +322,8 @@ Mesh* AssetManager::LoadObj(const char* _path)
 	std::vector<vec3> temp_points, temp_normals;
 	std::vector<vec2> temp_uvs;
 
+	static unsigned index = 0;
+
 	while(std::getline(obj, line))	{
 		if (line.substr(0, 2) == "v ") {
 			std::istringstream s(line.substr(2));
@@ -362,7 +364,7 @@ Mesh* AssetManager::LoadObj(const char* _path)
 
 			std::istringstream s(line.substr(2));
 
-			int a = 0, b = 0, c = 0;
+			unsigned a = 0, b = 0, c = 0;
 			
 			while (!s.eof()) {
 				// Vertex index
@@ -392,14 +394,14 @@ Mesh* AssetManager::LoadObj(const char* _path)
 				if (b)	--b;
 				if (c)	--c;
 
-				pNewMesh->AddIndice({unsigned(a), unsigned(b), unsigned(c) });
-				pNewMesh->AddPointIndice(a);
+				pNewMesh->AddIndice({a, b, c });
+				pNewMesh->AddPointIndice(index++);
 			}
 		}
 		
 		if (pNewMesh->GetNormals().empty()) {
-			for (unsigned index = 0; index < temp_normals.size(); ++index)
-				pNewMesh->AddNormal(temp_normals.at(index));
+			for (unsigned i = 0; i < temp_normals.size(); ++i)
+				pNewMesh->AddNormal(temp_normals.at(i));
 		}
 		// TODO
 		//else if (line.substr(0, 2) == "l ") {
@@ -407,7 +409,7 @@ Mesh* AssetManager::LoadObj(const char* _path)
 		//}
 
 	}
-
+	index = 0;
 	return pNewMesh;
 }
 

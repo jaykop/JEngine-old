@@ -33,7 +33,8 @@
 		{"Key" : "box_line",		"Directory" : "../resource/texture/box_line.png"},
 		{"Key" : "ground",			"Directory" : "../resource/texture/ground.png"},
 		{"Key" : "whale",			"Directory" : "../resource/texture/Narwhal_BaseColor.png"},
-		{"Key" : "cyborg_diffuse",	"Directory" : "../resource/texture/cyborg_diffuse.png"}
+		{"Key" : "cyborg_diffuse",	"Directory" : "../resource/texture/cyborg_diffuse.png"},
+		{"Key" : "uvmap",	"Directory" : "../resource/texture/uvmap.png"}
 	]
 	
 	// Audio info

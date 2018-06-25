@@ -9,11 +9,7 @@
 			"Component" : [
 				{
 					"Type": "Camera",
-					"Values": {"Position" : [0, 0, -50], "Target" : [0, 0, 0], "Up" : [0, 1, 0]}
-				},
-				{
-					"Type" : "CameraController",
-					"Values" : {}
+					"Values": {"Position" : [0, 0, 150], "Target" : [0, 0, 0], "Up" : [0, 1, 0]}
 				}
 			]
 		},			
@@ -22,23 +18,23 @@
 			"Component" : [
 				{
 					"Type": "Transform",
-					"Values": {"Position" : [0, 0, 0], "Scale" : [1, 1, 1]}
+					"Values": {"Position" : [0, 0, 0], "Scale" : [25, 25, 25]}
 				},
 //				{
 //					"Type": "Model",
 //					"Values": {"Texture" : "rect", "Color" : [1, 1, 1, 1], "Projection" : "Perspective",
 //								"Mesh" : "../resource/obj/Paper Airplane.obj", "DrawMode" : "Triangles"}
 //				}
-//				{
-//					"Type": "Model",
-//					"Values": {"Texture" : "whale", "Color" : [1, 1, 1, 1], "Projection" : "Perspective",
-//								"Mesh" : "../resource/obj/Narwhal.obj", "DrawMode" : "Triangles"}
-//				}
 				{
 					"Type": "Model",
-					"Values": {"Texture" : "cyborg_diffuse", "Color" : [1, 1, 1, 1], "Projection" : "Perspective",
-								"Mesh" : "../resource/obj/cyborg.obj", "DrawMode" : "Triangles"}
+					"Values": {"Texture" : "uvmap", "Color" : [1, 1, 1, 1], "Projection" : "Perspective",
+								"Mesh" : "../resource/obj/cube.obj", "DrawMode" : "Triangles"}
 				}
+//				{
+//					"Type": "Model",
+//					"Values": {"Texture" : "cyborg_diffuse", "Color" : [1, 1, 1, 1], "Projection" : "Perspective",
+//								"Mesh" : "../resource/obj/cyborg.obj", "DrawMode" : "Triangles"}
+//				}
 			]
 		},
 /*		{

@@ -328,7 +328,8 @@ void Mesh::CreateCustomObject()
 	glGenBuffers(1, &m_ebo);
 
 	std::vector<GraphicSystem::jeVertex> vertices;
-
+	vertices.reserve(GetIndiceCount());
+	
 	for (unsigned index = 0; index < GetIndiceCount(); ++index) {
 		VertexIndex vi = GetIndices().at(index);
 		vertices.push_back(GraphicSystem::jeVertex{ GetPoint(vi.a),	GetUV(vi.b), GetNormal(vi.c) });
@@ -336,8 +337,10 @@ void Mesh::CreateCustomObject()
 
 	glBindVertexArray(m_vao);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GraphicSystem::jeVertex),
-		reinterpret_cast<const void*>(&vertices[0]), GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GraphicSystem::jeVertex) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * m_pointIndices.size(), &m_pointIndices[0], GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GraphicSystem::jeVertex),
 		reinterpret_cast<void*>(offsetof(GraphicSystem::jeVertex, jeVertex::position)));
@@ -351,9 +354,7 @@ void Mesh::CreateCustomObject()
 		reinterpret_cast<void*>(offsetof(GraphicSystem::jeVertex, jeVertex::normal)));
 	glEnableVertexAttribArray(2);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * m_indices.size(),
-		static_cast<const void*>(&m_indices[0]), GL_DYNAMIC_DRAW);
+	glBindVertexArray(0);
 }
 
 jeEnd
