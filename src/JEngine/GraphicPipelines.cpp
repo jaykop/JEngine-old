@@ -539,12 +539,12 @@ void GraphicSystem::RenderCharacter(Character& _character, const vec3& _position
 	};
 
 	static unsigned verticesSize = sizeof(vertices) / sizeof(GLfloat);
-	static std::vector<jeVertex> s_vertexArray;
+	static std::vector<Mesh::jeVertex> s_vertexArray;
 
 	s_vertexArray.clear();
 	s_vertexArray.reserve(verticesSize);
 	for (unsigned index = 0; index < 4; ++index) 
-		s_vertexArray.push_back(jeVertex{
+		s_vertexArray.push_back(Mesh::jeVertex{
 			vec3(vertices[index][0], vertices[index][1], vertices[index][2]), 
 			vec2(vertices[index][3], vertices[index][4]), 
 			vec3(vertices[index][5], vertices[index][6], vertices[index][7])} );
@@ -554,16 +554,16 @@ void GraphicSystem::RenderCharacter(Character& _character, const vec3& _position
 	// This part actual render
 	glBindVertexArray(GLM::m_vao[GLM::SHAPE_TEXT]);
 	glBindBuffer(GL_ARRAY_BUFFER, GLM::m_vbo[GLM::SHAPE_TEXT]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(jeVertex) * s_vertexArray.size(),
+	glBufferData(GL_ARRAY_BUFFER, sizeof(Mesh::jeVertex) * s_vertexArray.size(),
 		static_cast<const void*>(&s_vertexArray[0]), GL_DYNAMIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(jeVertex), reinterpret_cast<void*>(offsetof(jeVertex, jeVertex::position)));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::jeVertex), reinterpret_cast<void*>(offsetof(Mesh::jeVertex, jeVertex::position)));
 	glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(jeVertex), reinterpret_cast<void*>(offsetof(jeVertex, jeVertex::uv)));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Mesh::jeVertex), reinterpret_cast<void*>(offsetof(Mesh::jeVertex, jeVertex::uv)));
 	glEnableVertexAttribArray(1);
 
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(jeVertex), reinterpret_cast<void*>(offsetof(jeVertex, jeVertex::normal)));
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::jeVertex), reinterpret_cast<void*>(offsetof(Mesh::jeVertex, jeVertex::normal)));
 	glEnableVertexAttribArray(2);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GLM::m_ebo[GLM::SHAPE_TEXT]);

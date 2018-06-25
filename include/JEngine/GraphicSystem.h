@@ -19,15 +19,6 @@ enum ProjectType { PROJECTION_PERSPECTIVE, PROJECTION_ORTHOGONAL };
 
 class GraphicSystem : public System
 {
-public:
-
-	struct jeVertex {
-
-		vec3 position;
-		vec2 uv;
-		vec3 normal;
-	};
-
 private:
 	
     friend class Text;

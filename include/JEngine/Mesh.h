@@ -21,6 +21,13 @@ class Mesh
 
 public:
 
+	struct jeVertex {
+
+		vec3 position;
+		vec2 uv;
+		vec3 normal;
+	};
+
 	enum shape { MESH_NONE, MESH_POINT, MESH_RECT, MESH_CROSSRECT, MESH_CUBE, MESH_TETRAHEDRON, };
 
 	shape		m_shape;

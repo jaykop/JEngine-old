@@ -327,31 +327,31 @@ void Mesh::CreateCustomObject()
 	glGenBuffers(1, &m_vbo);
 	glGenBuffers(1, &m_ebo);
 
-	std::vector<GraphicSystem::jeVertex> vertices;
+	std::vector<jeVertex> vertices;
 	vertices.reserve(GetIndiceCount());
 	
 	for (unsigned index = 0; index < GetIndiceCount(); ++index) {
 		VertexIndex vi = GetIndices().at(index);
-		vertices.push_back(GraphicSystem::jeVertex{ GetPoint(vi.a),	GetUV(vi.b), GetNormal(vi.c) });
+		vertices.push_back(jeVertex{ GetPoint(vi.a),	GetUV(vi.b), GetNormal(vi.c) });
 	}
 
 	glBindVertexArray(m_vao);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GraphicSystem::jeVertex) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(jeVertex) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * m_pointIndices.size(), &m_pointIndices[0], GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GraphicSystem::jeVertex),
-		reinterpret_cast<void*>(offsetof(GraphicSystem::jeVertex, jeVertex::position)));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(jeVertex),
+		reinterpret_cast<void*>(offsetof(jeVertex, jeVertex::position)));
 	glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(GraphicSystem::jeVertex),
-		reinterpret_cast<void*>(offsetof(GraphicSystem::jeVertex, jeVertex::uv)));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(jeVertex),
+		reinterpret_cast<void*>(offsetof(jeVertex, jeVertex::uv)));
 	glEnableVertexAttribArray(1);
 
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(GraphicSystem::jeVertex),
-		reinterpret_cast<void*>(offsetof(GraphicSystem::jeVertex, jeVertex::normal)));
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(jeVertex),
+		reinterpret_cast<void*>(offsetof(jeVertex, jeVertex::normal)));
 	glEnableVertexAttribArray(2);
 
 	glBindVertexArray(0);
