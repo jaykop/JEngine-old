@@ -334,7 +334,7 @@ void Mesh::CreateCustomObject()
 		VertexIndex vi = GetIndices().at(index);
 		vertices.push_back(jeVertex{ GetPoint(vi.a), GetUV(vi.b), GetNormal(vi.c) });
 	}
-
+	
 	glBindVertexArray(m_vao);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(jeVertex) * vertices.size(), &vertices[0], GL_STATIC_DRAW);

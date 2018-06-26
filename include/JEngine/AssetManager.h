@@ -58,9 +58,7 @@ private:
 	static void LoadAudio(const char* _path, const char* _audioKey);
 	static void LoadImage(const char* _path, const char* _textureKey);
 	static void LoadArchetype(const char* _path, const char* _archetypeKey);
-	static Mesh* LoadObj(const char* _path);
-	static void loadOBJ(const char* path, std::vector<vec3>& out_vertices, std::vector<vec2>& out_uvs,
-				std::vector<vec3>& out_normals);
+	static Mesh* LoadObjFile(const char* _path);
 
 	// Private member functions
 	static bool SetBuiltInComponents();

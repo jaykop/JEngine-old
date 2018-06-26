@@ -10,5 +10,8 @@
 *SIMD Tech
 *Rippling effect
 *Use thread
-*Polish obj loader
+*Polish obj loader/ Efficient obj loader / 4 faces case
 *Math library unit test
+*Json parser checker
+*Look for part to implement thread
+*vsync and culling

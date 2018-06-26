@@ -6,8 +6,6 @@
 
 jeUsingNamespace;
 
-bool	JEngine::imguiToggle = false;
-
 bool JEngine::RegisterAssets()
 {
     // Get assets ready 
@@ -51,7 +49,17 @@ bool JEngine::RegisterAssets()
 	return true;
 }
 
-int JEngine::Run()
+void JEngine::CreateConsole()
 {
-    return APP::Run(imguiToggle);
+	APP::CreateConsole();
+}
+
+void JEngine::CloseConsole()
+{
+	APP::CloseConsole();
+}
+
+void JEngine::Run(bool _imguiToggle)
+{
+    APP::Run(_imguiToggle);
 }

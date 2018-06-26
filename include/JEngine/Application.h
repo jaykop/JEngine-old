@@ -34,7 +34,9 @@ class Application {
 
 public:
 
-	static int Run(bool _imgui);
+	static void Run(bool _imgui);
+	static void CreateConsole();
+	static void CloseConsole();
 
 private:
 
@@ -66,7 +68,7 @@ private:
 	static SDL_GLContext	m_pContext;				// SDL GL context
 	static SDL_Surface		*m_pSurface, *m_pIcon;	// SDL screen surface
 	static int				m_buffers, m_samples;
-	static bool				m_IMGUI;
+	static bool				m_IMGUI, m_openCMD;
 };
 
 using APP = Application;

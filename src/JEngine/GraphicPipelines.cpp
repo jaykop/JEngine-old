@@ -671,8 +671,6 @@ void GraphicSystem::Render(unsigned _vao, const Indices& _indices, unsigned _dra
 {
 	glBindVertexArray(_vao);
 	glDrawElements(_drawMode, static_cast<GLsizei>(_indices.size()), GL_UNSIGNED_INT, nullptr);
-	
-	//glDrawArrays(_drawMode, 0, GLsizei(_indices.size()));
 	glBindVertexArray(0);
 }
 

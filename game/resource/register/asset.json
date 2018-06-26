@@ -34,7 +34,8 @@
 		{"Key" : "ground",			"Directory" : "../resource/texture/ground.png"},
 		{"Key" : "whale",			"Directory" : "../resource/texture/Narwhal_BaseColor.png"},
 		{"Key" : "cyborg_diffuse",	"Directory" : "../resource/texture/cyborg_diffuse.png"},
-		{"Key" : "uvmap",	"Directory" : "../resource/texture/uvmap.png"}
+		{"Key" : "monkey",			"Directory" : "../resource/texture/monkey.png"},
+		{"Key" : "Tex_Orca",		"Directory" : "../resource/texture/Tex_Orca.png"}
 	]
 	
 	// Audio info

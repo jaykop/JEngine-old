@@ -23,12 +23,20 @@ int main(int argc, char* args[]) {
 	jeUnusedParam(argc);	// No argc - Block the warnings
 	jeUnusedParam(args);	// No args - Block the warnings
 	
-	JEngine::imguiToggle = false;
+	JEngine::CreateConsole();
+	
+	// Initialize aassets
+	if (JEngine::RegisterAssets()) {
 
-	if (JEngine::RegisterAssets())
-		return JEngine::Run();
+		// Run engine with imgui toggle parameter
+		JEngine::Run(false);
+
+		JEngine::CloseConsole();
+
+		// Close properly
+		return 0;
+	}
 
 	// Improper finish
 	return -1;
-
 }

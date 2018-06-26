@@ -213,7 +213,7 @@ void Emitter::Load(CR_RJValue _data)
 			m_pMeshes->m_shape = Mesh::MESH_TETRAHEDRON;
 		}
 		else /*if (!strcmp(meshType.c_str(), "Custom"))*/ {
-			m_pMeshes = ASSET::LoadObj(meshType.c_str());
+			m_pMeshes = ASSET::LoadObjFile(meshType.c_str());
 			m_pMeshes->m_shape = Mesh::MESH_NONE;
 			m_pMeshes->CreateCustomObject();
 		}
