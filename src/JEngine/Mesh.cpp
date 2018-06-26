@@ -332,7 +332,7 @@ void Mesh::CreateCustomObject()
 	
 	for (unsigned index = 0; index < GetIndiceCount(); ++index) {
 		VertexIndex vi = GetIndices().at(index);
-		vertices.push_back(jeVertex{ GetPoint(vi.a),	GetUV(vi.b), GetNormal(vi.c) });
+		vertices.push_back(jeVertex{ GetPoint(vi.a), GetUV(vi.b), GetNormal(vi.c) });
 	}
 
 	glBindVertexArray(m_vao);
