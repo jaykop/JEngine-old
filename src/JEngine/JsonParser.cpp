@@ -19,10 +19,7 @@ void JsonParser::ReadFile(const char * _dir)
 	m_document.ParseStream(toInputStream);
 }
 
-CR_RJDoc JsonParser::GetDocument()
-{
-	return m_document;
-}
+CR_RJDoc JsonParser::GetDocument() { return m_document;}
 
 void JsonParser::Close()
 {
