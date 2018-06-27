@@ -24,7 +24,7 @@ private:
 	static void		Close();
 
 	static void LoadObjects();
-	static void LoadComponents(CR_RJValue _data);
+	static void LoadComponents(rapidjson::Value& _data);
 
 	static RJDoc m_document;
 

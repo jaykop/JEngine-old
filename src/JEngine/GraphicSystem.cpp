@@ -91,8 +91,6 @@ void GraphicSystem::Update(const float _dt)
 	glPolygonMode(GL_FRONT_AND_BACK, GL_TRIANGLES);
 
 	UpdatePipelines(_dt);
-
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	RenderToScreen();
 }
 

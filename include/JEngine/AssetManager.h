@@ -64,7 +64,7 @@ private:
 	static void LoadImage(const char* _path, const char* _textureKey);
 	static void RegisterImage(Image& _image, const char* _textureKey);
 	static void LoadArchetype(const char* _path, const char* _archetypeKey);
-	static Mesh* LoadObj(const char* _path);
+	static Mesh* LoadObjFile(const char* _path);
 
 	// Private member functions
 	static bool SetBuiltInComponents();

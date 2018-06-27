@@ -10,7 +10,7 @@ jeBegin
 // static variables
 //////////////////////////////////////////////////////////////////////////
 
-std::vector<GraphicSystem::jeVertex> planeVertexes{
+std::vector<Mesh::jeVertex> planeVertexes{
 	{vec3(-.5f, .5f, 0.f), vec2(0.f, 0.f), vec3(0, 0, 1.f) },
 { vec3(.5f, .5f, 0.f), vec2(1.f, 0.f), vec3(0, 0, 1.f) },
 { vec3(.5f, -.5f, 0.f), vec2(1.f, 1.f), vec3(0, 0, 1.f) },
@@ -112,19 +112,19 @@ void GLManager::InitFBO()
 	// Describe plane attributes for fianl render screen 
 	glBindVertexArray(m_vao[SHAPE_PLANE]);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo[SHAPE_PLANE]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GraphicSystem::jeVertex) * planeVertexes.size(),
+	glBufferData(GL_ARRAY_BUFFER, sizeof(Mesh::jeVertex) * planeVertexes.size(),
 		static_cast<const void*>(&planeVertexes[0]), GL_DYNAMIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GraphicSystem::jeVertex), 
-		reinterpret_cast<void*>(offsetof(GraphicSystem::jeVertex, jeVertex::position)));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::jeVertex),
+		reinterpret_cast<void*>(offsetof(Mesh::jeVertex, jeVertex::position)));
 	glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(GraphicSystem::jeVertex), 
-		reinterpret_cast<void*>(offsetof(GraphicSystem::jeVertex, jeVertex::uv)));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Mesh::jeVertex),
+		reinterpret_cast<void*>(offsetof(Mesh::jeVertex, jeVertex::uv)));
 	glEnableVertexAttribArray(1);
 
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(GraphicSystem::jeVertex), 
-		reinterpret_cast<void*>(offsetof(GraphicSystem::jeVertex, jeVertex::normal)));
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::jeVertex),
+		reinterpret_cast<void*>(offsetof(Mesh::jeVertex, jeVertex::normal)));
 	glEnableVertexAttribArray(2);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo[SHAPE_PLANE]);
@@ -169,16 +169,16 @@ void GLManager::DescribeVertex()
 		glBindVertexArray(m_vao[index]);
 		glBindBuffer(GL_ARRAY_BUFFER, m_vbo[index]);
 
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GraphicSystem::jeVertex),
-			reinterpret_cast<void*>(offsetof(GraphicSystem::jeVertex, jeVertex::position)));
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::jeVertex),
+			reinterpret_cast<void*>(offsetof(Mesh::jeVertex, jeVertex::position)));
 		glEnableVertexAttribArray(0);
 
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(GraphicSystem::jeVertex),
-			reinterpret_cast<void*>(offsetof(GraphicSystem::jeVertex, jeVertex::uv)));
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Mesh::jeVertex),
+			reinterpret_cast<void*>(offsetof(Mesh::jeVertex, jeVertex::uv)));
 		glEnableVertexAttribArray(1);
 
-		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(GraphicSystem::jeVertex),
-			reinterpret_cast<void*>(offsetof(GraphicSystem::jeVertex, jeVertex::normal)));
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::jeVertex),
+			reinterpret_cast<void*>(offsetof(Mesh::jeVertex, jeVertex::normal)));
 		glEnableVertexAttribArray(2);
 
 		glBindVertexArray(0);

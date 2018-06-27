@@ -4,10 +4,10 @@
 #include "Vector2.h"
 #include "Vector3.h"
 #include "Matrix4x4.h"
+#include "Mesh.h"
 
 jeBegin
 
-class Mesh;
 class Font;
 class Shader;
 class Material;
@@ -19,15 +19,6 @@ enum ProjectType { PROJECTION_PERSPECTIVE, PROJECTION_ORTHOGONAL };
 
 class GraphicSystem : public System
 {
-public:
-
-	struct jeVertex {
-
-		vec3 position;
-		vec2 uv;
-		vec3 normal;
-	};
-
 private:
 	
     friend class Text;
@@ -38,8 +29,8 @@ private:
 	friend class GLManager;
     friend class SystemManager;
 
+	using VertexIndices = std::vector<Mesh::VertexIndex>;
 	using Indices = std::vector<unsigned>;
-	using Vertexes = std::vector<jeVertex>;
     using Lights = std::vector<Light*>;
     using Models = std::vector<Model*>;
     using Cameras = std::vector<Camera*>;
@@ -48,7 +39,6 @@ private:
     enum Alias { ALIAS_ALIASED, ALIAS_ANTIALIASED, ALIAS_MULTISAMPLE };
 
 public:
-
 
     // TODO
     void    Ray(Model* _model, Transform* _transform);
@@ -103,8 +93,7 @@ private:
 
 	// New method
 	void Render(const Mesh* _pMesh);
-	void Render(unsigned _vao, unsigned _vbo, unsigned _ebo, 
-		const Vertexes& _vertexes, const Indices& _indices, unsigned _drawMode);
+	void Render(unsigned _vao, const Indices& _indices, unsigned _drawMode);
 
     void Render(Font* _font, Text*_text, Transform* _transform, bool _printUnicode);
     void RenderCharacter(Character& _character, const vec3& _position,
@@ -119,7 +108,6 @@ private:
 
     vec3	m_resolutionScaler;
     unsigned	m_maxLights;
-	Vertexes	m_vertexArray;
 
     int		m_width, m_height;
     bool	m_inside, m_isLight;

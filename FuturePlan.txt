@@ -1,14 +1,17 @@
 *Go over ai example and techniques
-*Polish obj loader
-*SIMD Tech
-*Mouse picking - bounding box
-*Raycasting algorithm
-*Deferred rendering
-*premake build/cmake/emscripten
-*Rippling effect
-*Broadcasting design
-*Unit test for math library 
 *Clone function - copy and move constructor
 *Polish event handler with std function
+*Mouse picking - bounding box
+*Broadcasting design
 *Add dixygen comments
+*Deferred rendering
+*premake build/cmake/emscripten
 *FMOD Lib
+*SIMD Tech
+*Rippling effect
+*Use thread
+*Polish obj loader/ Efficient obj loader / 4 faces case
+*Math library unit test
+*Json parser checker
+*Look for part to implement thread
+*vsync and culling

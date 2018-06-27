@@ -4,8 +4,8 @@ class JEngine
 {
 public:
 
-	static bool	imguiToggle;
-
 	static bool RegisterAssets();
-	static int Run();
+	static void CreateConsole();
+	static void CloseConsole();
+	static void Run(bool _imguiToggle);
 };

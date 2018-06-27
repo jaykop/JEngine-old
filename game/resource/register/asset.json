@@ -31,8 +31,11 @@
 		{"Key" : "crosshair",		"Directory" : "../resource/texture/Crosshair.png"},
 		{"Key" : "circle_line",		"Directory" : "../resource/texture/circle_line.png"},
 		{"Key" : "box_line",		"Directory" : "../resource/texture/box_line.png"},
-		{"Key" : "ground",			"Directory" : "../resource/texture/ground.png"}
-
+		{"Key" : "ground",			"Directory" : "../resource/texture/ground.png"},
+		{"Key" : "whale",			"Directory" : "../resource/texture/Narwhal_BaseColor.png"},
+		{"Key" : "cyborg_diffuse",	"Directory" : "../resource/texture/cyborg_diffuse.png"},
+		{"Key" : "monkey",			"Directory" : "../resource/texture/monkey.png"},
+		{"Key" : "Tex_Orca",		"Directory" : "../resource/texture/Tex_Orca.png"}
 	]
 	
 	// Audio info

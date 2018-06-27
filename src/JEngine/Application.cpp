@@ -25,34 +25,44 @@ SDL_Window*		APP::m_pWindow = nullptr;
 SDL_Surface		*APP::m_pSurface = nullptr, *APP::m_pIcon= nullptr;
 SDL_GLContext	APP::m_pContext = nullptr;
 APP::InitData	APP::m_Data = { "demo", "../resource/ico/main.ico", false, 800, 600 };
-bool			APP::m_IMGUI = false;
+bool			APP::m_IMGUI = false, APP::m_openCMD = false;
 
-int Application::Run(bool _imgui)
+void Application::Run(bool _imgui)
 {
 	m_IMGUI = _imgui;
-
-	// Pop console window 
-	// and check memory leak
-	DEBUG_LEAK_CHECKS(-1);
-	DEBUG_CREATE_CONSOLE();
+	if (m_IMGUI)
+		jeDebugPrint("*Application - IMGUI Activated.\n");
 
 	// Initialize app info
 	// and update
 	if (Initialize())
 		Update();
 
-	// return error value if app info
-	// does not initialize correctly
-	else
-		return -1;
-
 	// Wrap up application
 	Close();
 	
-	// Delete console window
-	DEBUG_DESTROY_CONSOLE();
+}
 
-	return 0;
+void Application::CreateConsole()
+{
+	// Pop console window 
+	// and check memory leak
+	if (!m_openCMD) {
+		DEBUG_LEAK_CHECKS(-1);
+		DEBUG_CREATE_CONSOLE();
+
+		m_openCMD = true;
+	}
+}
+
+void Application::CloseConsole()
+{
+	if (m_openCMD) {
+		// Delete console window
+		DEBUG_DESTROY_CONSOLE();
+
+		m_openCMD = false;
+	}
 }
 
 bool Application::Initialize()

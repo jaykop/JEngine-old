@@ -9,11 +9,7 @@
 			"Component" : [
 				{
 					"Type": "Camera",
-					"Values": {"Position" : [0, 0, -25], "Target" : [0, 0, 0], "Up" : [0, 1, 0]}
-				},
-				{
-					"Type" : "CameraController",
-					"Values" : {}
+					"Values": {"Position" : [0, 0, 600], "Target" : [0, 0, 0], "Up" : [0, 1, 0]}
 				}
 			]
 		},			
@@ -26,16 +22,22 @@
 				},
 				{
 					"Type": "Model",
-					"Values": {"Texture" : "rect", "Color" : [1, 1, 1, 1], "Projection" : "Perspective",
-								"Mesh" : "../resource/obj/Paper Airplane.obj", "DrawMode" : "Triangle_Strip"}
-				},
-				{
-					"Type" : "Material",
-					"Values" : {}
+					"Values": {"Texture" : "Tex_Orca", "Color" : [1, 1, 1, 1], "Projection" : "Perspective",
+								"Mesh" : "../resource/obj/Mesh_Orca.obj", "DrawMode" : "Triangle"}
 				}
+//				{
+//					"Type": "Model",
+//					"Values": {"Texture" : "whale", "Color" : [1, 1, 1, 1], "Projection" : "Perspective",
+//								"Mesh" : "../resource/obj/Narwhal.obj", "DrawMode" : "Triangles"}
+//				}
+//				{
+//					"Type": "Model",
+//					"Values": {"Texture" : "cyborg_diffuse", "Color" : [1, 1, 1, 1], "Projection" : "Perspective",
+//								"Mesh" : "../resource/obj/cyborg.obj", "DrawMode" : "Triangles"}
+//				}
 			]
 		},
-		{
+/*		{
 			"Name" : "Light1",
 			"Component" : [
 				{
@@ -62,7 +64,7 @@
 						"CutOff" : 12.5, "OuterCutOff" : 17.5}
 				}
 			]
-		},
+		},*/
 		{
 			"Name" : "LevelController",
 			"Component" : [

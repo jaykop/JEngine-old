@@ -5,6 +5,7 @@
 #include "stringbuffer.h"
 #include "istreamwrapper.h"
 #include <fstream>
+#include <thread>
 
 jeBegin
 
@@ -43,12 +44,16 @@ void JsonParser::LoadObjects()
 				// Check either if components have correct type
 				for (rapidjson::SizeType j = 0; j < component.Size(); ++j) {
 
-					if (component[j].HasMember("Type"))
-						LoadComponents(component[j]);
+					if (component[j].HasMember("Type")) {
+						std::thread component_thread(&LoadComponents, component[j]);
+						component_thread.join();
+					}
+					// LoadComponents(component[j]);
+
 					else
 						jeDebugPrint("!JsonParser - Wrong component type or values.\n");
+				}
 
-				} // for (rapidjson::SizeType j = 0; j < component.Size(); ++j) {
 			} // if (object[i].HasMember("Component")) {
 
 			else
@@ -57,20 +62,21 @@ void JsonParser::LoadObjects()
 			FACTORY::AddCreatedObject();
 		} // if (object[i]["Name"].IsString()) {
 
-		else // if (object[i]["Name"].IsString()) {
+		else 
 			jeDebugPrint("!JsonParser - Wrong type of object name.\n");
 
 	} // for (rapidjson::SizeType i = 0; i < object.Size(); ++i) {
 }
 
-void JsonParser::LoadComponents(CR_RJValue _data)
+void JsonParser::LoadComponents(rapidjson::Value& _data)
 {
 	std::string a = _data["Type"].GetString();
-		FACTORY::GetCreatedObject()->AddComponent(_data["Type"].GetString());
-		Component* found = 
-			FACTORY::GetCreatedObject()->GetComponent(_data["Type"].GetString());
-		if (_data.HasMember("Values"))
-			found->Load(_data["Values"]);
+	FACTORY::GetCreatedObject()->AddComponent(_data["Type"].GetString());
+	Component* found =
+		FACTORY::GetCreatedObject()->GetComponent(_data["Type"].GetString());
+
+	if (_data.HasMember("Values"))
+		found->Load(_data["Values"]);
 }
 
 jeEnd
