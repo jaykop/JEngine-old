@@ -63,7 +63,6 @@ void GraphicSystem::RenderToFramebuffer() const
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CCW);
-	//glFrontFace(GL_CW);
 }
 
 void GraphicSystem::RenderToScreen() const
@@ -670,7 +669,8 @@ void GraphicSystem::Render(const Mesh* _pMesh)
 void GraphicSystem::Render(unsigned _vao, const Indices& _indices, unsigned _drawMode)
 {
 	glBindVertexArray(_vao);
-	glDrawElements(_drawMode, static_cast<GLsizei>(_indices.size()), GL_UNSIGNED_INT, nullptr);
+	//glDrawElements(GL_TRIANGLE_FAN, static_cast<GLsizei>(_indices.size()), GL_UNSIGNED_INT, nullptr);
+	glDrawArrays(GL_TRIANGLE_FAN, 0, static_cast<GLsizei>(_indices.size()));
 	glBindVertexArray(0);
 }
 

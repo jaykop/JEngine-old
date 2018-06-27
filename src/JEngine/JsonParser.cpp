@@ -17,7 +17,9 @@ void JsonParser::ReadFile(const char * _dir)
 
 	std::ifstream read(_dir);
 	rapidjson::IStreamWrapper toInputStream(read);
-	m_document.ParseStream(toInputStream);
+	if (m_document.ParseStream(toInputStream).HasParseError())
+		jeDebugPrint("!JsonParser - Json file has a problem: %s", _dir);
+
 }
 
 CR_RJDoc JsonParser::GetDocument() { return m_document;}
@@ -35,7 +37,9 @@ void JsonParser::LoadObjects()
 
 		// Check either if object's name
 		if (object[i]["Name"].IsString()) {
-			FACTORY::CreateObject(object[i]["Name"].GetString());
+			//FACTORY::CreateObject(object[i]["Name"].GetString());
+			std::thread object_thread(&FACTORY::CreateObject, object[i]["Name"].GetString());
+			object_thread.join();
 
 			// Check either if object has any component
 			if (object[i].HasMember("Component")) {
@@ -45,11 +49,10 @@ void JsonParser::LoadObjects()
 				for (rapidjson::SizeType j = 0; j < component.Size(); ++j) {
 
 					if (component[j].HasMember("Type")) {
-						std::thread component_thread(&LoadComponents, component[j]);
-						component_thread.join();
+						LoadComponents(component[j]);
+						//std::thread component_thread(&LoadComponents, component[j]);
+						//component_thread.join();
 					}
-					// LoadComponents(component[j]);
-
 					else
 						jeDebugPrint("!JsonParser - Wrong component type or values.\n");
 				}
@@ -59,7 +62,9 @@ void JsonParser::LoadObjects()
 			else
 				jeDebugPrint("!JsonParser - No component in this object: %s\n", object[i]["Name"].GetString());
 
-			FACTORY::AddCreatedObject();
+			//FACTORY::AddCreatedObject();
+			std::thread register_thread(&FACTORY::AddCreatedObject);
+			register_thread.join();
 		} // if (object[i]["Name"].IsString()) {
 
 		else 
@@ -68,9 +73,8 @@ void JsonParser::LoadObjects()
 	} // for (rapidjson::SizeType i = 0; i < object.Size(); ++i) {
 }
 
-void JsonParser::LoadComponents(rapidjson::Value& _data)
+void JsonParser::LoadComponents(CR_RJValue _data)
 {
-	std::string a = _data["Type"].GetString();
 	FACTORY::GetCreatedObject()->AddComponent(_data["Type"].GetString());
 	Component* found =
 		FACTORY::GetCreatedObject()->GetComponent(_data["Type"].GetString());
