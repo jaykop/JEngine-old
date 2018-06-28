@@ -234,6 +234,7 @@
     <ClCompile Include="..\..\src\JEngine\BehaviorSystem.cpp" />
     <ClCompile Include="..\..\src\JEngine\Camera.cpp" />
     <ClCompile Include="..\..\src\JEngine\ComponentManager.cpp" />
+    <ClCompile Include="..\..\src\JEngine\CreateSimplePolygon.cpp" />
     <ClCompile Include="..\..\src\JEngine\Debug.cpp" />
     <ClCompile Include="..\..\src\JEngine\GeometryShader.cpp" />
     <ClCompile Include="..\..\src\JEngine\FragmentShader.cpp" />
@@ -271,7 +272,6 @@
     <ClCompile Include="..\..\src\JEngine\Random.cpp" />
     <ClCompile Include="..\..\src\JEngine\Rigidbody.cpp" />
     <ClCompile Include="..\..\src\JEngine\Shader.cpp" />
-    <ClCompile Include="..\..\src\JEngine\SystemBlock.cpp" />
     <ClCompile Include="..\..\src\JEngine\VertexShader.cpp" />
     <ClCompile Include="..\..\src\JEngine\SoundSystem.cpp" />
     <ClCompile Include="..\..\src\JEngine\State.cpp" />

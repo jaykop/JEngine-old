@@ -39,8 +39,8 @@
 				},
 				{
 					"Type": "Model",
-					"Values": {"Texture" : "Tex_Orca", "Color" : [1, 1, 1, 1], "Projection" : "Perspective",
-								"Mesh" : "../resource/obj/Mesh_Orca.obj", "DrawMode" : "Triangle"}
+					"Values": {"Texture" : "earth_ball", "Color" : [1, 1, 1, 1], "Projection" : "Perspective",
+								"Mesh" : "../resource/obj/earth_ball.obj", "DrawMode" : "Triangle_Strip"}
 				}
 //				{
 //					"Type": "Model",

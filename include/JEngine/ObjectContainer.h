@@ -32,8 +32,8 @@ public:
 	template <typename ComponentType>
 	inline ObjectMap        GetObjects();
 
-	static ObjectContainer* GetCurrentContainer();
-
+	static ObjectContainer* pContainer_;
+	
 private:
 
 	~ObjectContainer();
@@ -42,7 +42,6 @@ private:
 	void ClearObjectMap();
 
 	// Static variable and function
-	static ObjectContainer* m_pSharedContainer;
 	static void		EditorUpdate(float dt);
 
 	ObjectMap	m_objectMap;
@@ -54,8 +53,7 @@ jeEnd
 
 #include "ObjectContainer.inl"
 
-#define CONTAINER		OBJECT::GetCurrentContainer()
-#define ADD_COMPONENT(o, c)	GetObject(o)->AddComponent<c>()
-#define GET_COMPONENT(o, c)	GetObject(o)->GetComponent<c>()
-#define REMOVE_COMPONENT(o, c)	GetObject(o)->RemoveComponent<c>()
-#define HAS_COMPONENT(o, c)	GetObject(o)->HasComponent<c>()
+#define jeAddComponent(o, c)	GetObject(o)->AddComponent<c>()
+#define jeGetComponent(o, c)	GetObject(o)->GetComponent<c>()
+#define jeRemoveComponent(o, c)	GetObject(o)->RemoveComponent<c>()
+#define jeHasComponent(o, c)	GetObject(o)->HasComponent<c>()

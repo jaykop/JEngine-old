@@ -28,7 +28,7 @@ Light::~Light()
 		m_pMeshes = nullptr;
 	}
 
-	SYSTEM::GetGraphicSystem()->RemoveLight(this);
+	SYSTEM::pGraphic_->RemoveLight(this);
 }
 
 void Light::operator=(const Light & _copy)
@@ -49,7 +49,7 @@ void Light::operator=(const Light & _copy)
 
 void Light::Register()
 {
-	SYSTEM::GetGraphicSystem()->AddLight(this);
+	SYSTEM::pGraphic_->AddLight(this);
 }
 
 void Light::Load(CR_RJValue _data)
@@ -71,34 +71,34 @@ void Light::Load(CR_RJValue _data)
 	{
 		std::string meshType = _data["Mesh"].GetString();
 		if (!strcmp(meshType.c_str(), "Point")) {
-			m_pMeshes = Mesh::CreatePoint();
+			m_pMeshes = GLM::CreatePoint();
 			m_pMeshes->m_shape = Mesh::MESH_POINT;
 		}
 		else if (!strcmp(meshType.c_str(), "Rect")) {
-			m_pMeshes = Mesh::CreateRect();
+			m_pMeshes = GLM::CreateRect();
 			m_pMeshes->m_shape = Mesh::MESH_RECT;
 		}
 		else if (!strcmp(meshType.c_str(), "CrossRect")) {
-			m_pMeshes = Mesh::CreateCrossRect();
+			m_pMeshes = GLM::CreateCrossRect();
 			m_pMeshes->m_shape = Mesh::MESH_CROSSRECT;
 		}
 		else if (!strcmp(meshType.c_str(), "Cube")) {
-			m_pMeshes = Mesh::CreateCube();
+			m_pMeshes = GLM::CreateCube();
 			m_pMeshes->m_shape = Mesh::MESH_CUBE;
 		}
 		else if (!strcmp(meshType.c_str(), "Tetrahedron")) {
-			m_pMeshes = Mesh::CreateTetrahedron();
+			m_pMeshes = GLM::CreateTetrahedron();
 			m_pMeshes->m_shape = Mesh::MESH_TETRAHEDRON;
 		}
 		else /*if (!strcmp(meshType.c_str(), "Custom"))*/ {
 			m_pMeshes = ASSET::LoadObjFile(meshType.c_str());
 			GLM::DescribeVertex(m_pMeshes);
-			m_pMeshes->m_shape = Mesh::MESH_NONE;
+			m_pMeshes->m_shape = Mesh::MESH_CUSTOM;
 			m_pMeshes->builtIn_ = false;
 		}
 	}
 	else {
-		m_pMeshes = Mesh::CreateCube();
+		m_pMeshes = GLM::CreateCube();
 		m_pMeshes->m_shape = Mesh::MESH_CUBE;
 	}
 

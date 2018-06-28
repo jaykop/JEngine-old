@@ -47,7 +47,7 @@ Object* ObjectFactory::GetCreatedObject()
 void ObjectFactory::AddCreatedObject()
 {
     // Register the object
-    CONTAINER->m_objectMap.insert(
+	OBJECT::pContainer_->m_objectMap.insert(
         ObjectMap::value_type(
             m_pLastMade->m_name, m_pLastMade));
     IMGUI::AddObjectEditor(m_pLastMade);

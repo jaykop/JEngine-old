@@ -16,7 +16,7 @@ void MessageDispatcher::Discharge(Object* _pReceiver, Telegram& msg)
 
 void MessageDispatcher::DispatchMessage(float _delay, unsigned _sender, unsigned _receiver, const char* _MessageType, void *_extraInfo)
 {
-	Object* pReceiver = OBJECT::GetCurrentContainer()->GetObject(_receiver);
+	Object* pReceiver = OBJECT::pContainer_->GetObject(_receiver);
 	Telegram telegram(0.f, _sender, _receiver, _MessageType, _extraInfo);
 
 	if (_delay <= 0.f)
@@ -41,7 +41,7 @@ void MessageDispatcher::DispatchDelayedMessage()
 		// Get telegram
 		Telegram telegram = *m_messageQue.begin();
 		// Get receiver
-		Object* pReceiver = OBJECT::GetCurrentContainer()->GetObject(telegram.receiverId);
+		Object* pReceiver = OBJECT::pContainer_->GetObject(telegram.receiverId);
 
 		// Operate event and remove the message from the list
 		Discharge(pReceiver, telegram);

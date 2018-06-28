@@ -11,7 +11,7 @@ LevelController::LevelController(Object* _pObject)
 
 void LevelController::Register()
 {
-    SYSTEM::GetBehaviorSystem()->AddBehavior(this);
+    SYSTEM::pBehavior_->AddBehavior(this);
 }
 
 void LevelController::Load(CR_RJValue /*_data*/)

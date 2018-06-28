@@ -17,18 +17,16 @@ class Mesh
 	friend class AssetManager;
 	friend class GraphicSystem;
 
-	struct VertexIndex { unsigned a, b, c; };
-
-public:
-
+	struct jeIndex { unsigned a, b, c; };
 	struct jeVertex {
-
 		vec3 position;
 		vec2 uv;
 		vec3 normal;
 	};
 
-	enum shape { MESH_NONE, MESH_POINT, MESH_RECT, MESH_CROSSRECT, MESH_CUBE, MESH_TETRAHEDRON, };
+public:
+
+	enum shape { MESH_CUSTOM, MESH_POINT, MESH_RECT, MESH_CROSSRECT, MESH_CUBE, MESH_TETRAHEDRON, };
 
 	shape		m_shape;
 	unsigned	m_drawMode;
@@ -37,18 +35,18 @@ public:
 	void AddPoint(CR_Vec3 _point);
 	void AddTextureUV(CR_Vec2 _uv);
 	void AddNormal(CR_Vec3 _normal);
-	void AddIndice(VertexIndex _indice);
+	void AddIndice(jeIndex _indice);
 
 	vec3		GetPoint(unsigned _index) const;
 	vec2		GetUV(unsigned _index) const;
 	vec3		GetNormal(unsigned _index) const;
-	VertexIndex	GetIndice(unsigned _index) const;
+	jeIndex		GetIndice(unsigned _index) const;
 
 	std::size_t GetPointCount() const;
 	std::size_t GetIndiceCount() const;
 
-	const std::vector<vec3>&		GetNormals() const;
-	const std::vector<VertexIndex>& GetIndices() const;
+	const std::vector<vec3>&	GetNormals() const;
+	const std::vector<jeIndex>& GetIndices() const;
 
 	void ClearPoints();
 	void ClearNormals();
@@ -59,16 +57,10 @@ public:
 
 private:
 
-	static Mesh* CreatePoint();
-	static Mesh* CreateRect();
-	static Mesh* CreateCrossRect();
-	static Mesh* CreateCube();
-	static Mesh* CreateTetrahedron();
-
-	std::vector<VertexIndex>	m_indices;
-	std::vector<vec3>			m_points;
-	std::vector<vec2>			m_UVs;
-	std::vector<vec3>			m_normals;
+	std::vector<jeIndex>	m_indices;
+	std::vector<vec3>		m_points;
+	std::vector<vec2>		m_UVs;
+	std::vector<vec3>		m_normals;
 
 	bool builtIn_;
 

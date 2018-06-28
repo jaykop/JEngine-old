@@ -163,9 +163,6 @@
     <ClInclude Include="..\..\include\JEngine\Particle.h">
       <Filter>System\GraphicComponent</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\Sprite.h">
-      <Filter>System\GraphicComponent</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\JEngine\Text.h">
       <Filter>System\GraphicComponent</Filter>
     </ClInclude>
@@ -299,9 +296,6 @@
     <ClCompile Include="..\..\src\JEngine\MessageDispatcher.cpp">
       <Filter>System\Behavior</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\SystemBlock.cpp">
-      <Filter>System</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\JEngine\MathUtils_mat4.cpp">
       <Filter>Utils\Math</Filter>
     </ClCompile>
@@ -338,14 +332,14 @@
     <ClCompile Include="..\..\src\JEngine\Particle.cpp">
       <Filter>System\GraphicComponent</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\Sprite.cpp">
-      <Filter>System\GraphicComponent</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\JEngine\Text.cpp">
       <Filter>System\GraphicComponent</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\JEngine\Mesh.cpp">
       <Filter>System\Graphic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JEngine\CreateSimplePolygon.cpp">
+      <Filter>Core\OpenGL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

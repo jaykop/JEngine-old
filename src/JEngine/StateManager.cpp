@@ -87,6 +87,9 @@ void StateManager::Update(SDL_Event* _event)
 #else
             m_pCurrent->Update(m_frameTime);// Update state
             IMGUI::Update(m_frameTime);		// Update imgui renderer
+
+			// Reset mouse wheel session
+			INPUT::m_mouseWheel = 0;
 #endif
             /* Update rendrer with physics together
             so makes rendering scene more smoothly */
@@ -182,14 +185,14 @@ void StateManager::ChangeState()
     else if (m_status == STATE_RESUME) {
         State* release = m_pCurrent;
         m_pCurrent = m_pNext = m_pCurrent->m_pLastStage;
-        OBJECT::m_pSharedContainer = m_pCurrent->m_pObjContainer;
+		OBJECT::pContainer_ = m_pCurrent->m_pObjContainer;
         release->m_pLastStage = nullptr;
     }
 
     // Resume and change
     else if (m_status == STATE_RESUME_AND_CHANGE) {
         m_pCurrent = m_pCurrent->m_pLastStage;
-        OBJECT::m_pSharedContainer = m_pCurrent->m_pObjContainer;
+		OBJECT::pContainer_ = m_pCurrent->m_pObjContainer;
         m_status = STATE_CHANGE;
     }
 

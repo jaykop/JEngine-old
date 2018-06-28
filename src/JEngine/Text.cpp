@@ -12,7 +12,7 @@
 jeBegin
 jeDefineComponentBuilder(Text);
 
-std::vector<Mesh::VertexIndex> Text::m_indices = {
+std::vector<Mesh::jeIndex> Text::m_indices = {
 	{0, 0, 0}, {2, 2, 2}, {3, 3, 3}, {1, 1, 1}, {0, 0, 0}, {2, 2, 2}
 };
 
@@ -40,7 +40,7 @@ Text::~Text()
 		m_pwTextStorage = nullptr;
 	}
 
-	SYSTEM::GetGraphicSystem()->RemoveModel(this);
+	SYSTEM::pGraphic_->RemoveModel(this);
 }
 
 void Text::operator=(const Text & _copy)
@@ -53,7 +53,7 @@ void Text::operator=(const Text & _copy)
 
 void Text::Register()
 {
-	SYSTEM::GetGraphicSystem()->AddModel(this);
+	SYSTEM::pGraphic_->AddModel(this);
 	if (GetOwner()->HasComponent<Transform>())
 		m_pTransform = GetOwner()->GetComponent<Transform>();
 }

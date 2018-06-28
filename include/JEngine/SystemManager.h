@@ -14,36 +14,11 @@ class SystemManager {
     // Locked constuctor, destructor, assign operator
     jeStaticClassDeclaration(SystemManager)
 
-    class SystemBlock {
-
-    friend class SystemManager;
-
-    private:
-
-        SystemBlock();
-        ~SystemBlock();
-
-        void Bind();
-        void Unbind();
-
-        void Load(CR_RJDoc _data);
-        void Init();
-        void Update(float dt);
-        void Close();
-        void Unload();
-
+    struct SystemBlock {
         SoundSystem		*m_pSoundSystem;
         GraphicSystem	*m_pGraphicSystem;
         PhysicsSystem	*m_pPhysicsSystem;
         BehaviorSystem	*m_pBehaviorSystem;
-
-    private:
-
-        SystemBlock(SystemBlock&&) = delete;
-        SystemBlock(const SystemBlock&) = delete;
-        SystemBlock& operator=(SystemBlock&&) = delete;
-        SystemBlock& operator=(const SystemBlock&) = delete;
-
     };
 
     friend class State;
@@ -53,12 +28,12 @@ class SystemManager {
 
 public:
 
-    static SystemBlock	    *m_systemBlock;
+    static SystemBlock*		pBlock_;
 
-    static SoundSystem*	    GetSoundSystem();
-    static GraphicSystem*   GetGraphicSystem();
-    static PhysicsSystem*   GetPhysicsSystem();
-    static BehaviorSystem*  GetBehaviorSystem();
+	static SoundSystem*	    pSound_;
+    static GraphicSystem*   pGraphic_;
+    static PhysicsSystem*   pPhysics_;
+    static BehaviorSystem*  pBehavior_;
 
 private:
 
@@ -78,10 +53,5 @@ private:
 };
 
 using SYSTEM = SystemManager;
-
-#define GRAPHIC		SYSTEM::GetGraphicSystem()
-#define PHYSICS		SYSTEM::GetPhysicsSystem()
-#define BEHAVIOR	SYSTEM::GetBehaviorSystem()
-#define SOUND		SYSTEM::GetSoundSystem()
 
 jeEnd

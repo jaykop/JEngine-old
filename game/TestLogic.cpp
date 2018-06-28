@@ -13,7 +13,7 @@ TestLogic::TestLogic(Object* _pObject)
 
 void TestLogic::Register()
 {
-    SYSTEM::GetBehaviorSystem()->AddBehavior(this);
+    SYSTEM::pBehavior_->AddBehavior(this);
 }
 
 void TestLogic::Load(CR_RJValue /*_data*/)
@@ -24,6 +24,8 @@ void TestLogic::Init()
 
 void TestLogic::Update(float dt)
 {
+	dt;
+
 	// it's on defaultly
 	if (INPUT::KeyPressed(JE_SPACE)) {
 		static bool on = false;

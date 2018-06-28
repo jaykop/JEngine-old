@@ -29,7 +29,7 @@ private:
 	friend class GLManager;
     friend class SystemManager;
 
-	using VertexIndices = std::vector<Mesh::VertexIndex>;
+	using VertexIndices = std::vector<Mesh::jeIndex>;
 	using Indices = std::vector<unsigned>;
     using Lights = std::vector<Light*>;
     using Models = std::vector<Model*>;
@@ -105,7 +105,7 @@ private:
     Cameras	m_cameras;
     Camera*	m_pMainCamera;
 
-    vec3	m_resolutionScaler;
+    vec3		m_resolutionScaler;
     unsigned	m_maxLights;
 
     int		m_width, m_height;

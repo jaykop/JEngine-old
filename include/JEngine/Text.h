@@ -65,7 +65,7 @@ private:
     std::wstring	m_wText;
     size_t			m_size = 0;
 
-	static std::vector<Mesh::VertexIndex> m_indices;
+	static std::vector<Mesh::jeIndex> m_indices;
 	static std::vector<unsigned> m_pointIndices;
 
     Text(Object* pObject);

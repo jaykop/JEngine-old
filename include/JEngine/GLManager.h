@@ -25,13 +25,18 @@ class GLManager {
     // Locked constuctor, destructor, assign operator
     jeStaticClassDeclaration(GLManager)
 
-    enum DrawMode { DRAW_POINT, DRAW_LINE, DRAW_FILL };
     enum ShaderType { SHADER_MODEL, SHADER_TEXT, SHADER_LIGHTING, SHADER_PARTICLE, SHADER_SCREEN, SHADER_END };
-    enum ShapeType { SHAPE_POINT, SHAPE_PLANE, SHAPE_TEXT, SHAPE_PLANE3D, SHAPE_CUBE,  SHAPE_CONE, SHAPE_END };
+    enum ShapeType { SHAPE_POINT, SHAPE_RECT, SHAPE_TEXT, SHAPE_CROSSRECT, SHAPE_CUBE, SHAPE_TETRAHEDRON, SHAPE_END };
 
 public:
 
 	static void DescribeVertex(Mesh* pMesh);
+
+	static Mesh* CreatePoint();
+	static Mesh* CreateRect();
+	static Mesh* CreateCrossRect();
+	static Mesh* CreateCube();
+	static Mesh* CreateTetrahedron();
 
 private:
 
@@ -51,7 +56,6 @@ private:
     // Private member variables
     static float	m_width, m_height;
     static Shaders	m_shader;
-    static DrawMode	m_mode;
     static GLint	m_Attributes, m_buffers, m_samples;
     static GLuint	m_fbo, m_renderTarget, m_depthBuffer;
 	static Mesh*	pMesh_[SHAPE_END];

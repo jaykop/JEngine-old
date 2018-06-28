@@ -67,7 +67,7 @@ void GraphicSystem::RenderToFramebuffer() const
 
 void GraphicSystem::RenderToScreen() const
 {
-	static GLsizei sizeOfPlaneIndices = static_cast<GLsizei>(GLM::pMesh_[GLM::SHAPE_PLANE]->GetIndiceCount());
+	static GLsizei sizeOfPlaneIndices = static_cast<GLsizei>(GLM::pMesh_[GLM::SHAPE_RECT]->GetIndiceCount());
 
 	// Bind default framebuffer and render to screen
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -78,7 +78,7 @@ void GraphicSystem::RenderToScreen() const
 	glDisable(GL_DEPTH_TEST);	//Disable depth test
 
 	// Render to plane 2d
-	glBindVertexArray(GLM::pMesh_[GLM::SHAPE_PLANE]->m_vao);
+	glBindVertexArray(GLM::pMesh_[GLM::SHAPE_RECT]->m_vao);
 	Shader::Use(GLM::SHADER_SCREEN);
 	Shader::m_pCurrentShader->SetVector4("v4_screenColor", screenColor);
 
@@ -106,11 +106,7 @@ void GraphicSystem::LightSourcePipeline()
 {
 	if (m_isLight) {
 
-		if (GLM::m_mode == GLM::DRAW_FILL)
-			glEnable(GL_BLEND);
-		else
-			glDisable(GL_BLEND);
-
+		glEnable(GL_BLEND);
 		glEnable(GL_DEPTH_TEST);
 
 		Shader::Use(GLM::SHADER_LIGHTING);
@@ -216,11 +212,7 @@ void GraphicSystem::ModelPipeline(Model *_model)
 	if (_model->m_pMaterial && m_isLight)
 	    LightingEffectPipeline(_model->m_pMaterial);
 
-	if (GLM::m_mode == GLM::DRAW_FILL)
-	    glEnable(GL_BLEND);
-	else
-	    glDisable(GL_BLEND);
-
+	glEnable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 	glBlendFunc(_model->sfactor, _model->dfactor);
 
@@ -391,11 +383,7 @@ void GraphicSystem::TextPipeline(Text * _text)
 	// It so, not draw
 	//if (!_model->m_culled) {
 
-	if (GLM::m_mode == GLM::DRAW_FILL)
-		glEnable(GL_BLEND);
-	else
-		glDisable(GL_BLEND);
-
+	glEnable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 	glBlendFunc(_text->sfactor, _text->dfactor);
 
@@ -411,11 +399,7 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, float dt)
 	if (_emitter->active) {
 
 		// Particle render attributes setting
-		if (GLM::m_mode == GLM::DRAW_FILL)
-			glEnable(GL_BLEND);
-		else
-			glDisable(GL_BLEND);
-
+		glEnable(GL_BLEND);
 		glDepthMask(GL_FALSE);
 		glBlendFunc(_emitter->sfactor, _emitter->dfactor);
 
@@ -640,7 +624,7 @@ void GraphicSystem::Render(const Mesh* _pMesh)
 {
 	switch (_pMesh->m_shape)
 	{
-	case Mesh::MESH_NONE:
+	case Mesh::MESH_CUSTOM:
 		Render(_pMesh->m_vao, unsigned(_pMesh->GetIndiceCount()), _pMesh->m_drawMode);
 		break;
 		
@@ -649,11 +633,11 @@ void GraphicSystem::Render(const Mesh* _pMesh)
 		break;
 
 	case Mesh::MESH_RECT:
-		Render(GLM::pMesh_[GLM::SHAPE_PLANE]->m_vao, unsigned(_pMesh->GetIndiceCount()), _pMesh->m_drawMode);
+		Render(GLM::pMesh_[GLM::SHAPE_RECT]->m_vao, unsigned(_pMesh->GetIndiceCount()), _pMesh->m_drawMode);
 		break;
 
 	case Mesh::MESH_CROSSRECT:
-		Render(GLM::pMesh_[GLM::SHAPE_PLANE3D]->m_vao, unsigned(_pMesh->GetIndiceCount()), _pMesh->m_drawMode);
+		Render(GLM::pMesh_[GLM::SHAPE_CROSSRECT]->m_vao, unsigned(_pMesh->GetIndiceCount()), _pMesh->m_drawMode);
 		break;
 
 	case Mesh::MESH_CUBE:
@@ -661,7 +645,7 @@ void GraphicSystem::Render(const Mesh* _pMesh)
 		break;
 
 	case Mesh::MESH_TETRAHEDRON:
-		Render(GLM::pMesh_[GLM::SHAPE_CONE]->m_vao, unsigned(_pMesh->GetIndiceCount()), _pMesh->m_drawMode);
+		Render(GLM::pMesh_[GLM::SHAPE_TETRAHEDRON]->m_vao, unsigned(_pMesh->GetIndiceCount()), _pMesh->m_drawMode);
 		break;
 
 	default:

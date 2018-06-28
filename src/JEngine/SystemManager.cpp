@@ -1,80 +1,80 @@
 #include "SystemManager.h"
+#include "GraphicSystem.h"
+#include "PhysicsSystem.h"
+#include "SoundSystem.h"
+#include "BehaviorSystem.h"
 
 jeBegin
 
 //////////////////////////////////////////////////////////////////////////
 // static variables
 //////////////////////////////////////////////////////////////////////////
-SYSTEM::SystemBlock	*SYSTEM::m_systemBlock = nullptr;
+SYSTEM::SystemBlock	*SYSTEM::pBlock_ = nullptr;
 SYSTEM::SystemStack	SYSTEM::m_pauseStack;
+
+SoundSystem*		SYSTEM::pSound_ = nullptr;
+GraphicSystem*		SYSTEM::pGraphic_ = nullptr;
+PhysicsSystem*		SYSTEM::pPhysics_ = nullptr;
+BehaviorSystem*		SYSTEM::pBehavior_ = nullptr;
 
 //////////////////////////////////////////////////////////////////////////
 // class SystemManager's funciton bodues
 //////////////////////////////////////////////////////////////////////////
-SoundSystem* SystemManager::GetSoundSystem()
-{
-	return m_systemBlock->m_pSoundSystem;
-}
-
-GraphicSystem* SystemManager::GetGraphicSystem()
-{
-	return m_systemBlock->m_pGraphicSystem;;
-}
-
-PhysicsSystem* SystemManager::GetPhysicsSystem()
-{
-	return m_systemBlock->m_pPhysicsSystem;
-}
-
-BehaviorSystem* SystemManager::GetBehaviorSystem()
-{
-	return m_systemBlock->m_pBehaviorSystem;
-}
-
 void SystemManager::Load(CR_RJDoc _data)
 {
-	m_systemBlock->Load(_data);
+	pBehavior_->Load(_data);
+	pSound_->Load(_data);
+	pGraphic_->Load(_data);
+	pPhysics_->Load(_data);
 }
 
 void SystemManager::Init()
 {
-	m_systemBlock->Init();
+	pSound_->Init();
+	pGraphic_->Init();
+	pPhysics_->Init();
+	pBehavior_->Init();
 }
 
 void SystemManager::Update(float dt)
 {
-	m_systemBlock->Update(dt);
+	pGraphic_->Update(dt);
+	pPhysics_->Update(dt);
+	pSound_->Update(dt);
+	pBehavior_->Update(dt);
 }
 
 void SystemManager::Close()
 {
-	m_systemBlock->Close();
+	pSound_->Close();
+	pGraphic_->Close();
+	pPhysics_->Close();
+	pBehavior_->Close();
 }
 
 void SystemManager::Unload()
 {
-	m_systemBlock->Unload();
+	pSound_->Unload();
+	pGraphic_->Unload();
+	pPhysics_->Unload();
+	pBehavior_->Unload();
 }
 
 void SystemManager::Pause()
 {
 	// Push current systems into the storage stack
-	m_pauseStack.push(m_systemBlock);
+	m_pauseStack.push(pBlock_);
 
 	// Bind new system
-	m_systemBlock = new SystemBlock;
-	m_systemBlock->Bind();
+	pBlock_ = nullptr;
+	Bind();
 }
 
 void SystemManager::Resume()
 {
 	// Unbind systems
-	m_systemBlock->Unbind();
-
-	// Delete and get last system
-	delete m_systemBlock;
-	m_systemBlock = nullptr;
-	m_systemBlock = m_pauseStack.top();
+	Unbind();
+	pBlock_ = m_pauseStack.top();
 
 	// Pop the top(currnet system)
 	m_pauseStack.pop();
@@ -83,18 +83,46 @@ void SystemManager::Resume()
 void SystemManager::Bind()
 {
 	// Check nullptr
-	if (!m_systemBlock) {
-		m_systemBlock = new SystemBlock;
-		m_systemBlock->Bind();
+	if (!pBlock_) {
+
+		pBlock_ = new SystemBlock;
+
+		pBlock_->m_pGraphicSystem = pGraphic_ = new GraphicSystem;
+		pBlock_->m_pPhysicsSystem = pPhysics_ = new PhysicsSystem;
+		pBlock_->m_pSoundSystem = pSound_ = new SoundSystem;
+		pBlock_->m_pBehaviorSystem = pBehavior_ = new BehaviorSystem;
+
 	}
 }
 
 void SystemManager::Unbind()
 {
 	// Check valid ptr
-	if (m_systemBlock) {
-		delete m_systemBlock;
-		m_systemBlock = nullptr;
+	if (pBlock_) {
+
+		// Delete all systems
+		if (pGraphic_) {
+			delete pGraphic_;
+			pGraphic_ = nullptr;
+		}
+
+		if (pPhysics_) {
+			delete pPhysics_;
+			pPhysics_ = nullptr;
+		}
+
+		if (pSound_) {
+			delete pSound_;
+			pSound_ = nullptr;
+		}
+
+		if (pBehavior_) {
+			delete pBehavior_;
+			pBehavior_ = nullptr;
+		}
+
+		delete pBlock_;
+		pBlock_ = nullptr;
 	}
 }
 

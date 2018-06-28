@@ -2,7 +2,6 @@
 #include "Shader.h"
 #include "Mesh.h"
 #include "imgui.h"
-#include "GraphicSystem.h"
 #include "Mesh.h"
 
 jeBegin
@@ -16,7 +15,6 @@ float			GLM::m_height = 0;
 GLint			GLM::m_buffers, GLM::m_samples, GLM::m_Attributes;
 GLuint			GLM::m_fbo = 0, GLM::m_depthBuffer = 0, GLM::m_renderTarget = 0;
 GLM::Shaders	GLM::m_shader;
-GLM::DrawMode	GLM::m_mode = DRAW_FILL;
 const GLubyte	*GLM::m_pRenderer = nullptr, *GLM::m_pVendor = nullptr, *GLM::m_pVersion = nullptr, *GLM::m_pGlslVersion = nullptr;
 Mesh			*GLM::pMesh_[] = { nullptr };
 
@@ -127,30 +125,29 @@ void GLManager::InitGLEnvironment()
 
 void GLManager::InitSimplePolygons()
 {
-
 	// Describe vertexes and indices
-	for (unsigned shape_index = 0; shape_index < SHAPE_CUBE; ++shape_index) {
+	for (unsigned shape_index = 0; shape_index < SHAPE_TETRAHEDRON; ++shape_index) {
 
 		switch (shape_index) {
 		case SHAPE_TEXT:
-		case SHAPE_PLANE:
-			pMesh_[shape_index] = Mesh::CreateRect();
+		case SHAPE_RECT:
+			pMesh_[shape_index] = CreateRect();
 			DescribeVertex(pMesh_[shape_index]);
 			break;
 		case SHAPE_CUBE:
-			pMesh_[shape_index] = Mesh::CreateCube();
+			pMesh_[shape_index] = CreateCube();
 			DescribeVertex(pMesh_[shape_index]);
 			break;
-		case SHAPE_PLANE3D:
-			pMesh_[shape_index] = Mesh::CreateCrossRect();
+		case SHAPE_CROSSRECT:
+			pMesh_[shape_index] = CreateCrossRect();
 			DescribeVertex(pMesh_[shape_index]);
 			break;
 		case SHAPE_POINT:
-			pMesh_[shape_index] = Mesh::CreatePoint();
+			pMesh_[shape_index] = CreatePoint();
 			DescribeVertex(pMesh_[shape_index]);
 			break;
-		case SHAPE_CONE:
-			pMesh_[shape_index] = Mesh::CreateTetrahedron();
+		case SHAPE_TETRAHEDRON:
+			pMesh_[shape_index] = CreateTetrahedron();
 			DescribeVertex(pMesh_[shape_index]);
 			break;
 		case SHAPE_END:
@@ -181,7 +178,7 @@ void GLManager::DescribeVertex(Mesh* pMesh)
 	indicies.reserve(indiceCount);
 
 	for (unsigned index = 0; index < indiceCount; ++index) {
-		Mesh::VertexIndex vi = pMesh->GetIndices().at(index);
+		Mesh::jeIndex vi = pMesh->GetIndices().at(index);
 		vertices.push_back(Mesh::jeVertex{
 			pMesh->GetPoint(vi.a),
 			pMesh->GetUV(vi.b),
@@ -269,18 +266,6 @@ void GLManager::EditorUpdate(const float /*dt*/)
     ImGui::Text("*GL Sample Buffers: %d", m_buffers);
     ImGui::Text("*Maximum vertex attributes: %d", m_Attributes);*/
     ImGui::Text("*Total Shaders: %d", int(SHADER_END));
-
-    switch (m_mode) {
-    case DRAW_FILL:
-        ImGui::Text("*Draw Mode: FILL");
-        break;
-    case DRAW_LINE:
-        ImGui::Text("*Draw Mode: LINE");
-        break;
-    case DRAW_POINT:
-        ImGui::Text("*Draw Mode: POINT");
-        break;
-    }
 
     ImGui::End();
 }

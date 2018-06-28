@@ -1,5 +1,4 @@
 *Go over ai example and techniques
-*Change the name of glm enums
 *Finish presets of polygons
 *Polish glm and mesh, model
 *Correct 0 value

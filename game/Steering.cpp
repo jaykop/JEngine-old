@@ -18,8 +18,8 @@ void Truncate(vec3& vector, float _max)
 
 void ControlPosition(vec3& _position)
 {
-	static const float halfWidth = SYSTEM::GetGraphicSystem()->GetWidth() / 2.f;
-	static const float halfHeight = SYSTEM::GetGraphicSystem()->GetHeight() / 2.f;
+	static const float halfWidth = SYSTEM::pGraphic_->GetWidth() / 2.f;
+	static const float halfHeight = SYSTEM::pGraphic_->GetHeight() / 2.f;
 
 	if (_position.x > halfWidth)
 		_position.x = -halfWidth;
@@ -41,7 +41,7 @@ Steering::Steering(Object* _pObject)
 
 void Steering::Register()
 {
-	SYSTEM::GetBehaviorSystem()->AddBehavior(this);
+	SYSTEM::pBehavior_->AddBehavior(this);
 }
 
 void Steering::Load(CR_RJValue _data)
@@ -79,21 +79,21 @@ void Steering::Init()
 
 	// Setting for each behavior mode
 	if (m_behavior == pursuit)
-		m_evader = CONTAINER->GetObject("Seeker")->GetComponent<Steering>();
+		m_evader = OBJECT::pContainer_->GetObject("Seeker")->GetComponent<Steering>();
 
 	else if (m_behavior == evade)
-		m_pursuer = CONTAINER->GetObject("Pursuer")->GetComponent<Steering>();
+		m_pursuer = OBJECT::pContainer_->GetObject("Pursuer")->GetComponent<Steering>();
 
 	else if (m_behavior == wander)
 	{
-		m_circle = CONTAINER->GetObject("Circle");
+		m_circle = OBJECT::pContainer_->GetObject("Circle");
 		circleTransform = m_circle->GetComponent<Transform>();
 		wanderRadius = circleTransform->scale.x / 2.f;
 	}
 
 	else if (m_behavior == obstacle_avoidance) {
 		
-		m_detection = CONTAINER->GetObject("PathBox");
+		m_detection = OBJECT::pContainer_->GetObject("PathBox");
 		
 		detectionTransform = m_detection->GetComponent<Transform>();
 		detectionTransform->scale.x = 5.f;
@@ -127,7 +127,7 @@ void Steering::Init()
 	}
 
 	// Get target transform
-	m_target = CONTAINER->GetObject("Target");
+	m_target = OBJECT::pContainer_->GetObject("Target");
 	targetTransform = m_target->GetComponent<Transform>();
 
 }

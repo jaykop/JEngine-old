@@ -155,7 +155,7 @@ bool CookStew::OnMessage(Telegram& msg)
         //let miner know the stew is ready
         DISPATCHER::DispatchMessage(0.0,
             GetOwner()->GetId(),
-			CONTAINER->GetObject("Miner")->GetId(),
+			OBJECT::pContainer_->GetObject("Miner")->GetId(),
             "StewReady",
             nullptr);
 

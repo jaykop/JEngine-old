@@ -68,7 +68,7 @@ void Object::RemoveChild(const char* _name)
     // If there is, remove
     if (found != m_childObjs.end()) {
         m_childObjs.erase(_name);		// Remove from the child list
-        CONTAINER->RemoveObject(_name);	// Remove from obj manager
+		OBJECT::pContainer_->RemoveObject(_name);	// Remove from obj manager
     }
 
     else
@@ -158,7 +158,7 @@ void Object::ClearComponents()
 void Object::ClearChildren()
 {
     for (auto child : m_childObjs)
-        CONTAINER->RemoveObject(child.second);
+		OBJECT::pContainer_->RemoveObject(child.second);
 
     m_childObjs.clear();
 }

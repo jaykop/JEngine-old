@@ -7,7 +7,7 @@
 
 jeBegin
 
-ObjectContainer* OBJECT::m_pSharedContainer = nullptr;
+ObjectContainer* OBJECT::pContainer_ = nullptr;
 
 ObjectContainer::~ObjectContainer()
 {
@@ -142,11 +142,6 @@ bool ObjectContainer::HasObject(unsigned _id)
     return false;
 }
 
-ObjectContainer* ObjectContainer::GetCurrentContainer()
-{
-    return m_pSharedContainer;
-}
-
 void ObjectContainer::ClearObjectMap()
 {
     for (auto obj : m_objectMap)
@@ -172,7 +167,7 @@ void ObjectContainer::EditorUpdate(const float /*dt*/)
 
     // Main object container window
     ImGui::Begin("ObjectContainer");
-    ImGui::Text("*Total Objects: %d", m_pSharedContainer->m_objectMap.size());
+    ImGui::Text("*Total Objects: %d", pContainer_->m_objectMap.size());
     if (ImGui::Button("Show Object List"))
         showObjsList = !showObjsList;
 
@@ -182,7 +177,7 @@ void ObjectContainer::EditorUpdate(const float /*dt*/)
     ImGui::SameLine();
     if (ImGui::Button("Search")) {
         static Object* s_pObj = nullptr;
-        s_pObj = m_pSharedContainer->GetObject(ObjId);
+        s_pObj = pContainer_->GetObject(ObjId);
         s_pObj->m_showEditor = true;
     }
 
@@ -191,7 +186,7 @@ void ObjectContainer::EditorUpdate(const float /*dt*/)
     // Object list window
     if (showObjsList) {
         ImGui::Begin("ObjectList");
-        for (auto Obj : m_pSharedContainer->m_objectMap)
+        for (auto Obj : pContainer_->m_objectMap)
             ImGui::Text(Obj.second->GetName().c_str());
         ImGui::End();
     }

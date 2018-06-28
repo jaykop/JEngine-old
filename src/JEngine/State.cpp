@@ -16,7 +16,7 @@ void State::Load()
 	jeDebugPrint("*State - Loading %s...\n", m_name.c_str());
 	
 	// Allocate new object container;
-	OBJECT::m_pSharedContainer 
+	OBJECT::pContainer_
 		= m_pObjContainer = new ObjectContainer;
 	
 	// Read flie from json state file
@@ -55,7 +55,7 @@ void State::Close()
 	STATE::m_showUpdateMessage = true;
 #endif // _DEBUG
 
-	OBJECT::m_pSharedContainer = STATE::GetCurrentState()->m_pObjContainer;
+	OBJECT::pContainer_ = STATE::GetCurrentState()->m_pObjContainer;
 
 	jeDebugPrint("*State - Closing %s...\n", m_name.c_str());
 	SYSTEM::Close();

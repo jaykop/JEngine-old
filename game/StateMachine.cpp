@@ -11,7 +11,7 @@ StateMachine::StateMachine(Object* _pObject)
 
 void StateMachine::Register()
 {
-    SYSTEM::GetBehaviorSystem()->AddBehavior(this);
+    SYSTEM::pBehavior_->AddBehavior(this);
 }
 
 void StateMachine::Load(CR_RJValue _data)

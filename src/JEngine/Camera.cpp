@@ -117,7 +117,7 @@ void Camera::Zoom(float _zoom)
 
 void Camera::Register()
 {
-	SystemManager::GetGraphicSystem()->AddCamera(this);
+	SYSTEM::pGraphic_->AddCamera(this);
 }
 
 void Camera::operator=(const Camera & _copy)

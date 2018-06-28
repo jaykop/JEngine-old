@@ -12,7 +12,7 @@ LightController::LightController(Object* _pObject)
 
 void LightController::Register()
 {
-    SYSTEM::GetBehaviorSystem()->AddBehavior(this);
+    SYSTEM::pBehavior_->AddBehavior(this);
 }
 
 void LightController::Load(CR_RJValue /*_data*/)

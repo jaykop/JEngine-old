@@ -45,7 +45,7 @@ void BullyState::Init()
 	m_pTalkTransform->position.Set(
 		m_pTransform->position + m_talkOffset);
 
-	m_pMiner = CONTAINER->GetObject("Miner");
+	m_pMiner = OBJECT::pContainer_->GetObject("Miner");
 }
 
 void BullyState::Update(const float /*dt*/)
@@ -125,7 +125,7 @@ void GoFight::Init()
 
 	DISPATCHER::DispatchMessage(0.0,			//time delay
 		GetOwner()->GetId(),								//sender ID
-		CONTAINER->GetObject("Miner")->GetId(),	//receiver ID
+		OBJECT::pContainer_->GetObject("Miner")->GetId(),	//receiver ID
 		"Fight",								//msg
 		nullptr);
 
@@ -154,7 +154,7 @@ bool GoFight::OnMessage(Telegram& msg)
 
 		DISPATCHER::DispatchMessage(0.0,			//time delay
 			GetOwner()->GetId(),								//sender ID
-			CONTAINER->GetObject("Miner")->GetId(),	//receiver ID
+			OBJECT::pContainer_->GetObject("Miner")->GetId(),	//receiver ID
 			"Surrender",								//msg
 			nullptr);
 
