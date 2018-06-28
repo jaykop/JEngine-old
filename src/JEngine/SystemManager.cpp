@@ -41,9 +41,9 @@ void SystemManager::Init()
 	m_systemBlock->Init();
 }
 
-void SystemManager::Update(const float _dt)
+void SystemManager::Update(float dt)
 {
-	m_systemBlock->Update(_dt);
+	m_systemBlock->Update(dt);
 }
 
 void SystemManager::Close()

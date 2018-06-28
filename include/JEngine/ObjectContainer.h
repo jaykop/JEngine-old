@@ -43,7 +43,7 @@ private:
 
 	// Static variable and function
 	static ObjectContainer* m_pSharedContainer;
-	static void		EditorUpdate(const float _dt);
+	static void		EditorUpdate(float dt);
 
 	ObjectMap	m_objectMap;
 };

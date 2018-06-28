@@ -231,7 +231,7 @@ void GLManager::Resize(int _width, int _height)
     m_height = float(_height);
 }
 
-void GLManager::EditorUpdate(const float /*_dt*/)
+void GLManager::EditorUpdate(const float /*dt*/)
 {
     ImGui::Begin("OpenGL");
 

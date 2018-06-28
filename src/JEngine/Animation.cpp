@@ -68,7 +68,7 @@ void Animation::Load(CR_RJValue _data)
 	}
 }
 
-void Animation::EditorUpdate(const float /*_dt*/)
+void Animation::EditorUpdate(const float /*dt*/)
 {
 	// TODO
 }

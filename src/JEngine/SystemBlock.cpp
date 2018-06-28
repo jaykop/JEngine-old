@@ -67,12 +67,12 @@ void SystemManager::SystemBlock::Init()
 	m_pBehaviorSystem->Init();
 }
 
-void SystemManager::SystemBlock::Update(const float _dt)
+void SystemManager::SystemBlock::Update(float dt)
 {
-	m_pGraphicSystem->Update(_dt);
-	m_pPhysicsSystem->Update(_dt);
-	m_pSoundSystem->Update(_dt);
-	m_pBehaviorSystem->Update(_dt);
+	m_pGraphicSystem->Update(dt);
+	m_pPhysicsSystem->Update(dt);
+	m_pSoundSystem->Update(dt);
+	m_pBehaviorSystem->Update(dt);
 }
 
 void SystemManager::SystemBlock::Close()

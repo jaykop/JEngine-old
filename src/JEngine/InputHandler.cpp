@@ -275,6 +275,9 @@ void InputHandler::Update(SDL_Event* _event)
 		break;
 	}
 
+	// Reset mouse wheel session
+	m_mouseWheel = 0;	
+
 	// Handle input events
 	switch (_event->type)
 	{

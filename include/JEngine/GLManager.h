@@ -44,7 +44,7 @@ private:
     static void ShowGLVersion();
     static void Resize(int _width, int _height);
 
-    static void EditorUpdate(const float _dt);
+    static void EditorUpdate(float dt);
 
     // Private member variables
     static float	m_width, m_height;

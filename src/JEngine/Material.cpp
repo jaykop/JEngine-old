@@ -57,7 +57,7 @@ void Material::Load(CR_RJValue _data)
 	}
 }
 
-void Material::EditorUpdate(const float /*_dt*/)
+void Material::EditorUpdate(const float /*dt*/)
 {
 	// TODO
 }

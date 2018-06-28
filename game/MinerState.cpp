@@ -48,7 +48,7 @@ void MinerState::Init()
 
 }
 
-void MinerState::Update(const float /*_dt*/)
+void MinerState::Update(const float /*dt*/)
 {}
 
 void MinerState::Close()
@@ -100,7 +100,7 @@ void GoHomeAndSleepTilRested::Init()
 	m_globalState->m_ateStew = firstTIme = false;
 }
 
-void GoHomeAndSleepTilRested::Update(const float /*_dt*/)
+void GoHomeAndSleepTilRested::Update(const float /*dt*/)
 {
     if (m_globalState->m_fatigue <= 0) 
         GetOwner()->ChangeState<EnterMineAndDigForNugget>();
@@ -169,7 +169,7 @@ void EnterMineAndDigForNugget::Init()
 	}
 }
 
-void EnterMineAndDigForNugget::Update(const float /*_dt*/)
+void EnterMineAndDigForNugget::Update(const float /*dt*/)
 {
     if (m_globalState->m_gold >= 10)
         GetOwner()->ChangeState<VisitBankAndDepositGold>();
@@ -233,7 +233,7 @@ void VisitBankAndDepositGold::Init()
 		m_globalState->m_pTransform->position + m_globalState->m_talkOffset);
 }
 
-void VisitBankAndDepositGold::Update(const float /*_dt*/)
+void VisitBankAndDepositGold::Update(const float /*dt*/)
 {
     if (m_globalState->m_saved >= 100)
         GetOwner()->ChangeState<GoHomeAndSleepTilRested>();
@@ -280,7 +280,7 @@ void QuenchThirst::Init()
 		m_globalState->m_pTransform->position + m_globalState->m_talkOffset);
 }
 
-void QuenchThirst::Update(const float /*_dt*/)
+void QuenchThirst::Update(const float /*dt*/)
 {
 	if (m_globalState->m_thirst == 0)
 		GetOwner()->ChangeState<EnterMineAndDigForNugget>();
@@ -321,7 +321,7 @@ void BeatBully::Init()
 	m_globalState->m_talkText->SetText("%s", m_globalState->m_content);
 }
 
-void BeatBully::Update(const float /*_dt*/)
+void BeatBully::Update(const float /*dt*/)
 {
 	if (!m_beaten) 
 		m_beaten = true;
@@ -372,7 +372,7 @@ void EatStew::Init()
 	m_globalState->m_ateStew = true;
 }
 
-void EatStew::Update(const float /*_dt*/)
+void EatStew::Update(const float /*dt*/)
 {
     GetOwner()->RevertToPreviousState();
 }

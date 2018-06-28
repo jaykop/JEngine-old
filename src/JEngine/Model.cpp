@@ -194,7 +194,7 @@ void Model::Load(CR_RJValue _data)
 		status |= IS_BILBOARD;
 }
 
-void Model::EditorUpdate(const float /*_dt*/)
+void Model::EditorUpdate(const float /*dt*/)
 {
 	// TODO
 }

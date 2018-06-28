@@ -7,6 +7,10 @@
 #include "imgui.h"
 #include "ImguiManager.h"
 
+#if _DEBUG
+#include "Application.h"
+#endif
+
 jeBegin
 
 /* Define this macro if you want to render
@@ -27,6 +31,7 @@ STATE::StateStatus	STATE::m_status = STATE_CHANGE;
 State			    *STATE::m_pCurrent = nullptr,
 					*STATE::m_pNext = nullptr;
 float			    STATE::m_frameTime = 0.f;
+unsigned			STATE::m_frames = 0;
 
 //////////////////////////////////////////////////////////////////////////
 // funciton bodues
@@ -50,7 +55,7 @@ void StateManager::Update(SDL_Event* _event)
 {
     m_timer.Start();
 
-    static float s_dt = 1.f / 60.f, s_stack, s_newTime, s_currentTime;
+    static float s_sec = 1.f /*/ 60.f*/, s_stack, s_newTime, s_currentTime;
     s_stack = s_newTime = s_currentTime = 0.f;
 
     ChangeState();
@@ -69,12 +74,12 @@ void StateManager::Update(SDL_Event* _event)
             m_frameTime = 0.25f;
 
         s_stack += m_frameTime;		// Stack frame time
+		m_frames++;					// Stack frame
 
         // Fixed timestep
-        if (s_stack >= s_dt) {		// Refresh every sec
+        if (s_stack >= s_sec) {		// Refresh every sec
 
 			s_currentTime = s_newTime;	// Refresh current time
-            INPUT::m_mouseWheel = 0;	// Reset mouse wheel session
 
 #ifdef jeFixedFrameRate
             m_pCurrent->Update(s_dt);	// Update state
@@ -86,11 +91,23 @@ void StateManager::Update(SDL_Event* _event)
             /* Update rendrer with physics together
             so makes rendering scene more smoothly */
             SDL_GL_SwapWindow(m_pWindow);
-            s_stack -= s_dt;
+
+#if _DEBUG
+			static std::string s_fps;
+			s_fps.assign(APP::GetAppData().m_title + " [fps: " + std::to_string(m_frames) + "]");
+			SDL_SetWindowTitle(m_pWindow, s_fps.c_str());
+#endif
+			s_stack = 0.f;	//s_stack -= s_dt;
+			m_frames = 0;
         }
     }
 
     switch (m_status) {
+
+		// Keep updaring
+	case STATE_NONE:
+	default:
+		break;
 
         // Pause process
     case STATE_PAUSE:
@@ -251,7 +268,7 @@ void StateManager::Restart()
 
 bool StateManager::IsPaused()
 {
-    return m_pCurrent->m_pLastStage != nullptr ? true : false;
+    return m_pCurrent->m_pLastStage != nullptr;
 }
 
 StateManager::StateStatus StateManager::GetStatus(void)
@@ -351,6 +368,16 @@ float StateManager::GetCurrentTime()
     return m_timer.GetTime();
 }
 
+unsigned StateManager::GetFramePerSecond()
+{
+	return m_frames;
+}
+
+float StateManager::GetFrameRate()
+{
+	return m_frameTime;
+}
+
 void StateManager::ClearStates()
 {
     // Remove all states from the vector
@@ -360,7 +387,7 @@ void StateManager::ClearStates()
     m_states.clear();
 }
 
-void StateManager::EditorUpdate(const float /*_dt*/)
+void StateManager::EditorUpdate(const float /*dt*/)
 {
     static bool foundObject = false, showLevels = false;
 

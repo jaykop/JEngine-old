@@ -24,9 +24,9 @@ void LightController::Init()
         m_light = GetOwner()->GetComponent<Light>();
 }
 
-void LightController::Update(const float _dt)
+void LightController::Update(float dt)
 {
-    float speed = 60.f * _dt;
+    float speed = 60.f * dt;
     if (INPUT::KeyPressed(JE_A))
         m_light->position.x -= speed;
 
@@ -52,7 +52,7 @@ void LightController::Close()
 void LightController::Unload()
 {}
 
-void LightController::EditorUpdate(const float /*_dt*/)
+void LightController::EditorUpdate(const float /*dt*/)
 {
     // TODO
 }

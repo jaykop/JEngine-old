@@ -44,7 +44,7 @@ private:
 
     void Load(CR_RJValue _data) override;
 
-    void EditorUpdate(const float _dt) override;
+    void EditorUpdate(float dt) override;
 };
 
 jeEnd

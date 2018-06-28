@@ -1,4 +1,5 @@
 *Go over ai example and techniques
+*Correct 0 value
 *Clone function - copy and move constructor
 *Polish event handler with std function
 *Mouse picking - bounding box

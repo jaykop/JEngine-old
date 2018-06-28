@@ -27,7 +27,7 @@ private:
 
 	void Load(CR_RJDoc _data) override;
 	void Init() override;
-	void Update(const float _dt) override;
+	void Update(float dt) override;
 	void Close() override;
 	void Unload() override;
 

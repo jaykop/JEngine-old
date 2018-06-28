@@ -32,18 +32,10 @@ class Application {
 	// Locked constuctor, destructor, assign operator
 	jeStaticClassDeclaration(Application)
 
-public:
-
-	static void Run(bool _imgui);
-	static void CreateConsole();
-	static void CloseConsole();
-
-private:
-
 	//////////////////////////////////////////////////////////////////////////
 	// Init data for application
 	//////////////////////////////////////////////////////////////////////////
-	struct InitData
+	struct AppData
 	{
 		std::string	m_title;		// Title
 		std::string m_icon;			// Icon directory
@@ -52,6 +44,17 @@ private:
 		int			m_height;		// Height size
 	};
 
+public:
+
+	static void Run(bool _imgui);
+	static void CreateConsole();
+	static void CloseConsole();
+
+	static void		ActivateVSync(bool on);
+	static AppData	GetAppData();
+
+private:
+
 	static bool	Initialize();
 	static void	Update();
 	static void	Close();
@@ -59,10 +62,10 @@ private:
 	static bool InitSDL();
 	static void CloseSDL();
 
-	static void EditorUpdate(const float _dt);
+	static void EditorUpdate(float dt);
 
 	// Private variables
-	static InitData			m_Data;					// Window config
+	static AppData			m_Data;					// Window config
 	static SDL_Window*		m_pWindow;				// SDL window
 	static SDL_Event		m_pEvent;				// SDL Event
 	static SDL_GLContext	m_pContext;				// SDL GL context

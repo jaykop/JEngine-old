@@ -180,7 +180,7 @@ void Text::Load(CR_RJValue _data)
 	}
 }
 
-void Text::EditorUpdate(const float /*_dt*/)
+void Text::EditorUpdate(const float /*dt*/)
 {
 	// TODO
 }

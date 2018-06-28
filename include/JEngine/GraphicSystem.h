@@ -62,7 +62,7 @@ private:
 
     void Load(CR_RJDoc _data) override;
     void Init() override;
-    void Update(const float _dt) override;
+    void Update(float dt) override;
     void Close() override;
     void Unload() override;
 
@@ -82,14 +82,14 @@ private:
     void RenderToFramebuffer() const;
     void RenderToScreen() const;
 
-    void UpdatePipelines(const float _dt);
+    void UpdatePipelines(float dt);
     void LightSourcePipeline();
     void TextPipeline(Text * _text);
     void ModelPipeline(Model * _model);
     void ParentPipeline(Transform* _pTransform) const;
     void MappingPipeline(Model* _model);
     void LightingEffectPipeline(Material* _material);
-    void ParticlePipeline(Emitter* _emitter, const float _dt);
+    void ParticlePipeline(Emitter* _emitter, float dt);
 
 	// New method
 	void Render(const Mesh* _pMesh);

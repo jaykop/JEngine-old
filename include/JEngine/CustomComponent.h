@@ -13,7 +13,7 @@ class CustomComponent : public Component {
 public:
 
 	virtual void Init() = 0;
-	virtual void Update(const float _dt) = 0;
+	virtual void Update(float dt) = 0;
 	virtual void Close() = 0;
 	virtual void Unload() = 0;
 

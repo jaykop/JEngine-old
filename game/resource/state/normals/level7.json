@@ -9,10 +9,27 @@
 			"Component" : [
 				{
 					"Type": "Camera",
-					"Values": {"Position" : [0, 0, 600], "Target" : [0, 0, 0], "Up" : [0, 1, 0]}
+					"Values": {"Position" : [0, 0, 500], "Target" : [0, 0, 0], "Up" : [0, 1, 0]}
+				},
+				{
+					"Type" : "CameraController",
+					"Values": {}
 				}
 			]
 		},			
+		{
+			"Name" : "LevelController",
+			"Component" : [
+				{
+					"Type": "LevelController",
+					"Values": {}
+				},
+				{
+					"Type": "TestLogic",
+					"Values": {}
+				}
+			]
+		},
 		{
 			"Name" : "Model",
 			"Component" : [
@@ -36,7 +53,7 @@
 //								"Mesh" : "../resource/obj/cyborg.obj", "DrawMode" : "Triangles"}
 //				}
 			]
-		},
+		}
 /*		{
 			"Name" : "Light1",
 			"Component" : [
@@ -65,14 +82,5 @@
 				}
 			]
 		},*/
-		{
-			"Name" : "LevelController",
-			"Component" : [
-				{
-					"Type": "LevelController",
-					"Values": {}
-				}
-			]
-		}
 	]
 }

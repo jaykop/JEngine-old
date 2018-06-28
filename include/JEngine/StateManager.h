@@ -39,6 +39,8 @@ public:
 	static State*		GetState(const char* _stateName);
 	static bool			HasState(const char* _stateName);
 	static float		GetCurrentTime();
+	static float		GetFrameRate();
+	static unsigned		GetFramePerSecond();
 
 private:
 
@@ -53,10 +55,11 @@ private:
 	static void ChangeState();
 	static void ClearStates();
 
-	static void	EditorUpdate(const float _dt);
+	static void	EditorUpdate(float dt);
 
 	// Private member variables
 	static float		m_frameTime;
+	static unsigned		m_frames;
 	static Timer		m_timer;
 	static States		m_states;
 	static StateStatus	m_status;

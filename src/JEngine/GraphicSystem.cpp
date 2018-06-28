@@ -85,12 +85,12 @@ void GraphicSystem::Init()
 		Normalize(light->direction);
 }
 
-void GraphicSystem::Update(const float _dt)
+void GraphicSystem::Update(float dt)
 {
 	RenderToFramebuffer();
 	glPolygonMode(GL_FRONT_AND_BACK, GL_TRIANGLES);
 
-	UpdatePipelines(_dt);
+	UpdatePipelines(dt);
 	RenderToScreen();
 }
 

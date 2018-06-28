@@ -25,7 +25,7 @@ private:
 
 	void Load();
 	void Init();
-	void Update(const float _dt);
+	void Update(float dt);
 	void Close();
 	void Unload();
 

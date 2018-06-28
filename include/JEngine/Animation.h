@@ -44,7 +44,7 @@ private:
     float   m_currentFrame;
     float   m_animationSpeed;
 
-    void    EditorUpdate(const float _dt) override;
+    void    EditorUpdate(float dt) override;
 
 };
 

@@ -10,11 +10,11 @@ jeBegin
 
 using namespace Math;
 
-void GraphicSystem::UpdatePipelines(const float _dt)
+void GraphicSystem::UpdatePipelines(float dt)
 {
 	// Update the perpsective matrix by camera's zoom
 	m_perspective = Perspective(
-		m_pMainCamera->zoom, m_pMainCamera->m_aspect, 
+		m_pMainCamera->fovy, m_pMainCamera->m_aspect,
 		m_pMainCamera->near, m_pMainCamera->far);
 
 	// Update the projection size by window screen size
@@ -40,7 +40,7 @@ void GraphicSystem::UpdatePipelines(const float _dt)
 
 		// Emitter
 		if ((model->m_hiddenStatus & Model::IS_EMITTER) == Model::IS_EMITTER)
-			ParticlePipeline(static_cast<Emitter*>(model), _dt);
+			ParticlePipeline(static_cast<Emitter*>(model), dt);
 
 		else if ((model->m_hiddenStatus & Model::IS_TEXT) == Model::IS_TEXT)
 			TextPipeline(static_cast<Text*>(model));
@@ -405,7 +405,7 @@ void GraphicSystem::TextPipeline(Text * _text)
 	glDisable(GL_BLEND);
 }
 
-void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
+void GraphicSystem::ParticlePipeline(Emitter* _emitter, float dt)
 {
 	// Check emitter's active toggle
 	if (_emitter->active) {
@@ -441,8 +441,8 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 		s_changeColor = _emitter->m_changeColor;
 		s_pTransform = _emitter->m_pTransform;
 		s_texture = _emitter->m_mainTex;
-		s_velocity = _dt * _emitter->velocity;
-		s_colorDiff = _dt * _emitter->colorDiff;
+		s_velocity = dt * _emitter->velocity;
+		s_colorDiff = dt * _emitter->colorDiff;
 
 		Shader::Use(GLM::SHADER_PARTICLE);
 
@@ -483,11 +483,11 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 
 			else {
 
-				particle->life -= _dt;
+				particle->life -= dt;
 				particle->position += particle->direction * s_velocity;
 
 				if (s_rotation)
-					particle->rotation += particle->rotationSpeed * _dt;
+					particle->rotation += particle->rotationSpeed * dt;
 
 				if (s_changeColor)
 					particle->color += s_colorDiff;
@@ -669,8 +669,7 @@ void GraphicSystem::Render(const Mesh* _pMesh)
 void GraphicSystem::Render(unsigned _vao, const Indices& _indices, unsigned _drawMode)
 {
 	glBindVertexArray(_vao);
-	//glDrawElements(GL_TRIANGLE_FAN, static_cast<GLsizei>(_indices.size()), GL_UNSIGNED_INT, nullptr);
-	glDrawArrays(GL_TRIANGLE_FAN, 0, static_cast<GLsizei>(_indices.size()));
+	glDrawElements(_drawMode, static_cast<GLsizei>(_indices.size()), GL_UNSIGNED_INT, nullptr);
 	glBindVertexArray(0);
 }
 

@@ -43,15 +43,15 @@ void StateMachine::Init()
         GetOwner()->GetCurrentState()->Init();
 }
 
-void StateMachine::Update(const float _dt)
+void StateMachine::Update(float dt)
 {
     if (INPUT::KeyTriggered(JE_ENTER)) {
 		
         if (GetOwner()->GetGlobalState())
-            GetOwner()->GetGlobalState()->Update(_dt);
+            GetOwner()->GetGlobalState()->Update(dt);
 
         if (GetOwner()->GetCurrentState())
-            GetOwner()->GetCurrentState()->Update(_dt);
+            GetOwner()->GetCurrentState()->Update(dt);
     }
 }
 
@@ -61,7 +61,7 @@ void StateMachine::Close()
 void StateMachine::Unload()
 {}
 
-void StateMachine::EditorUpdate(const float /*_dt*/)
+void StateMachine::EditorUpdate(const float /*dt*/)
 {
     // TODO
 }

@@ -47,7 +47,7 @@ void WifeState::Init()
 		m_pTransform->position + m_talkOffset);
 }
 
-void WifeState::Update(const float /*_dt*/)
+void WifeState::Update(const float /*dt*/)
 {}
 
 void WifeState::Close()
@@ -89,7 +89,7 @@ void DoHousework::Init()
 		m_globalState->m_content, m_globalState->m_chores, m_globalState->m_natureCalling);
 }
 
-void DoHousework::Update(const float /*_dt*/)
+void DoHousework::Update(const float /*dt*/)
 {
 	m_globalState->m_natureCalling++;
 	m_globalState->m_chores--;
@@ -142,7 +142,7 @@ void CookStew::Init()
     }
 }
 
-void CookStew::Update(const float /*_dt*/)
+void CookStew::Update(const float /*dt*/)
 {}
 
 void CookStew::Close()
@@ -195,7 +195,7 @@ void GoToBathroom::Init()
 		m_globalState->m_content, m_globalState->m_chores, m_globalState->m_natureCalling);
 }
 
-void GoToBathroom::Update(const float /*_dt*/)
+void GoToBathroom::Update(const float /*dt*/)
 {
 	if (!m_globalState->m_natureCalling)
 		GetOwner()->ChangeState<DoHousework>();

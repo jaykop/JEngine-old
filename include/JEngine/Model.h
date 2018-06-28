@@ -73,7 +73,7 @@ private:
 	Model() = delete;
 	Model(const Model& /*_copy*/) = delete;
 
-    void EditorUpdate(const float _dt) override;
+    void EditorUpdate(float dt) override;
 };
 
 jeEnd

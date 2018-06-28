@@ -45,7 +45,7 @@ void Transform::Load(CR_RJValue _data)
 	}
 }
 
-void Transform::EditorUpdate(const float /*_dt*/)
+void Transform::EditorUpdate(const float /*dt*/)
 {
 	if (m_showEditor) {
 		static float s_position[3] = { position.x, position.y, position.z }, 

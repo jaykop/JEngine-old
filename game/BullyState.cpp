@@ -48,7 +48,7 @@ void BullyState::Init()
 	m_pMiner = CONTAINER->GetObject("Miner");
 }
 
-void BullyState::Update(const float /*_dt*/)
+void BullyState::Update(const float /*dt*/)
 {}
 
 void BullyState::Close()
@@ -81,7 +81,7 @@ void JustHatingMiner::Init()
 		m_globalState->m_content, m_globalState->m_hateMiner);
 }
 
-void JustHatingMiner::Update(const float /*_dt*/)
+void JustHatingMiner::Update(const float /*dt*/)
 {
 	MinerState* pMinerState = (MinerState*)m_globalState->m_pMiner->GetGlobalState();
 	if (m_globalState->m_hateMiner > 10
@@ -134,7 +134,7 @@ void GoFight::Init()
 
 }
 
-void GoFight::Update(const float /*_dt*/)
+void GoFight::Update(const float /*dt*/)
 {
 	if (m_beaten) {
 		m_beaten = false;

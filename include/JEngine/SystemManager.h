@@ -28,7 +28,7 @@ class SystemManager {
 
         void Load(CR_RJDoc _data);
         void Init();
-        void Update(const float _dt);
+        void Update(float dt);
         void Close();
         void Unload();
 
@@ -64,7 +64,7 @@ private:
 
     static void Load(CR_RJDoc _data);
     static void Init();
-    static void Update(const float _dt);
+    static void Update(float dt);
     static void Close();
     static void Unload();
 
@@ -78,5 +78,10 @@ private:
 };
 
 using SYSTEM = SystemManager;
+
+#define GRAPHIC		SYSTEM::GetGraphicSystem()
+#define PHYSICS		SYSTEM::GetPhysicsSystem()
+#define BEHAVIOR	SYSTEM::GetBehaviorSystem()
+#define SOUND		SYSTEM::GetSoundSystem()
 
 jeEnd

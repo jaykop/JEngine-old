@@ -14,12 +14,11 @@ class Camera : public Component
 public:
 
     vec3 position, target;
-	float zoom, near, far;
+	float fovy, near, far;
 	
 	void SetCamera(const vec3& _eye, const vec3& _look, const vec3& _up, float _fov, float _aspect,float _distance);
 	const vec3& GetViewGeometry() const;
 
-	float GetFovy() const;
 	float GetAspect() const;
 	float GetDistance() const;
 
@@ -37,7 +36,7 @@ public:
 private:
 
 	vec3 m_up, m_right, m_back, m_viewGeometry;
-	float m_distance, m_fovy, m_aspect, m_width, m_height;
+	float m_distance, m_aspect, m_width, m_height;
 
     Camera(Object* _pOwner);
     ~Camera() {};
@@ -48,7 +47,7 @@ private:
 
     void Load(CR_RJValue _data) override;
 
-    void EditorUpdate(const float _dt) override;
+    void EditorUpdate(float dt) override;
 };
 
 jeDeclareComponentBuilder(Camera);

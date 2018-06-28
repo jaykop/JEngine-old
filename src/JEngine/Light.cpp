@@ -162,7 +162,7 @@ void Light::Load(CR_RJValue _data)
 	}
 }
 
-void Light::EditorUpdate(const float /*_dt*/)
+void Light::EditorUpdate(const float /*dt*/)
 {
 	// TODO
 }

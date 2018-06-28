@@ -110,7 +110,7 @@ private:
 	ComponentMap	m_componentMap;
 	
 	// statiic editor variable and function
-	void	EditorUpdate(const float _dt);
+	void	EditorUpdate(float dt);
 	bool	m_showEditor;
 
 	Object() = delete;

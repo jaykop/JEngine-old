@@ -30,7 +30,7 @@ private:
 
 	static bool Init(SDL_Window* _window);
 	static void EventUpdate(SDL_Event* _event);
-	static void Update(const float _dt);
+	static void Update(float dt);
 	static void Close();
 
 	static void AddEditorFunc(const EditorUpdateFunc& _pFunc);

@@ -166,7 +166,7 @@ void ObjectContainer::ClearObjectMap()
     m_objectMap.clear();
 }
 
-void ObjectContainer::EditorUpdate(const float /*_dt*/)
+void ObjectContainer::EditorUpdate(const float /*dt*/)
 {
     static bool foundObject = false, showObjsList = false;
 

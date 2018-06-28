@@ -24,7 +24,7 @@ SDL_Event		APP::m_pEvent;
 SDL_Window*		APP::m_pWindow = nullptr;
 SDL_Surface		*APP::m_pSurface = nullptr, *APP::m_pIcon= nullptr;
 SDL_GLContext	APP::m_pContext = nullptr;
-APP::InitData	APP::m_Data = { "demo", "../resource/ico/main.ico", false, 800, 600 };
+APP::AppData	APP::m_Data = { "demo", "../resource/ico/main.ico", false, 800, 600 };
 bool			APP::m_IMGUI = false, APP::m_openCMD = false;
 
 void Application::Run(bool _imgui)
@@ -63,6 +63,16 @@ void Application::CloseConsole()
 
 		m_openCMD = false;
 	}
+}
+
+void Application::ActivateVSync(bool on)
+{
+	SDL_GL_SetSwapInterval(on);
+}
+
+APP::AppData Application::GetAppData()
+{
+	return m_Data;
 }
 
 bool Application::Initialize()
@@ -124,16 +134,9 @@ void Application::Update()
 {
 	// Update the surface
 	while (STATE::GetStatus()
-		!= STATE::StateStatus::STATE_QUIT) {
-
+		!= STATE::StateStatus::STATE_QUIT)
 		// Update state manager
 		STATE::Update(&m_pEvent);
-
-		// Update sdl window
-		SDL_UpdateWindowSurface(m_pWindow);
-
-	}	// while (STATE::GetStatus()
-		// != STATE::StateStatus::STATE_QUIT) {
 }
 
 void Application::Close()
@@ -221,7 +224,7 @@ void Application::CloseSDL()
 	SDL_Quit();
 }
 
-void Application::EditorUpdate(const float /*_dt*/)
+void Application::EditorUpdate(const float /*dt*/)
 {
 	// Basic debug window
 	ImGui::Begin("Debug");

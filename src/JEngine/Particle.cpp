@@ -350,7 +350,7 @@ void Emitter::Refresh(Particle *_particle)
 
 }
 
-void Emitter::EditorUpdate(const float /*_dt*/)
+void Emitter::EditorUpdate(const float /*dt*/)
 {
 	// TODO
 }

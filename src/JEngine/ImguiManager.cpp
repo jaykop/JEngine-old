@@ -82,7 +82,7 @@ void ImguiManager::EventUpdate(SDL_Event* _event)
 		ImGui_ImplSdlGL3_ProcessEvent(_event);
 }
 
-void ImguiManager::Update(const float _dt)
+void ImguiManager::Update(float dt)
 {
 	if (APP::m_IMGUI) {
 
@@ -105,15 +105,15 @@ void ImguiManager::Update(const float _dt)
 		//}
 		// Updated added editor functions
 		for (auto editorUpdate : m_editors)
-			editorUpdate(_dt);
+			editorUpdate(dt);
 
 		// Update object's eidtor window
 		for (auto objEditor : m_objEditors)
-			objEditor->EditorUpdate(_dt);
+			objEditor->EditorUpdate(dt);
 
 		// Update component's eidtor window
 		for (auto componentEditor : m_cptEditors)
-			componentEditor->EditorUpdate(_dt);
+			componentEditor->EditorUpdate(dt);
 
 		// Rendering
 		glViewport(0, 0, (int)ImGui::GetIO().DisplaySize.x, (int)ImGui::GetIO().DisplaySize.y);

@@ -36,11 +36,11 @@ void BehaviorSystem::Init()
 		behavior->Init();
 }
 
-void BehaviorSystem::Update(const float _dt)
+void BehaviorSystem::Update(float dt)
 {
 	// Update normal game logics
 	for (auto behavior : m_behaviors) 
-		behavior->Update(_dt);
+		behavior->Update(dt);
 
 	// Deal with delayed event
 	DISPATCHER::DispatchDelayedMessage();

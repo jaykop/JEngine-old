@@ -17,8 +17,8 @@ Camera::Camera(Object* _pOwner)
 	: Component(_pOwner),
 	position(vec3::ZERO), near(.1f), far(1000.f),
 	m_up(vec3::UNIT_Y), target(vec3::ZERO), m_right(vec3::ZERO), m_back(vec3::ZERO),
-	m_viewGeometry(vec3::ZERO), m_distance(1.f), m_fovy(0.f), m_aspect(0.f),
-	m_width(0.f), m_height(0.f), zoom(45.f)
+	m_viewGeometry(vec3::ZERO), m_distance(1.f), fovy(0.f), m_aspect(0.f),
+	m_width(0.f), m_height(0.f)
 {
 	SetCamera(position, vec3::UNIT_Z, m_up,	45.f, GLM::m_width / GLM::m_height, 1.f);
 }
@@ -31,10 +31,10 @@ void Camera::SetCamera(const vec3& _eye, const vec3& _look, const vec3& _up,
 	m_up = GetNormalize(CrossProduct(m_right, _look));
 	m_back = GetNormalize(-_look);
 
-	m_fovy = _fov;
+	fovy = _fov;
 	m_aspect = _aspect;
 	m_distance = _distance;
-	m_width = 2 * tanf(.5f*m_fovy);
+	m_width = 2 * tanf(.5f*fovy);
 	m_height = m_width / m_aspect;
 
 	m_viewGeometry.Set(m_width, m_height, m_distance);
@@ -43,11 +43,6 @@ void Camera::SetCamera(const vec3& _eye, const vec3& _look, const vec3& _up,
 const vec3& Camera::GetViewGeometry() const
 {
 	return m_viewGeometry;
-}
-
-float Camera::GetFovy() const
-{
-	return m_fovy;
 }
 
 float Camera::GetAspect() const
@@ -169,7 +164,7 @@ void Camera::Load(CR_RJValue _data)
 
 }
 
-void Camera::EditorUpdate(const float /*_dt*/)
+void Camera::EditorUpdate(const float /*dt*/)
 {
 	// TODO
 }

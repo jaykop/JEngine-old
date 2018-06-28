@@ -313,7 +313,7 @@ void Object::SetCurrentState(const char* _componentName)
         jeDebugPrint("!Object - There is an allocated current state already: %s\n", _componentName);
 }
 
-void Object::EditorUpdate(const float /*_dt*/)
+void Object::EditorUpdate(const float /*dt*/)
 {
     // Searched object window
     if (m_showEditor)

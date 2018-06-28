@@ -141,7 +141,7 @@ vec3 GetPerpendicular(const vec3& vector)
 	return result;
 }
 
-void Steering::Update(const float _dt)
+void Steering::Update(float dt)
 {
 	// By mouse
 	if (INPUT::KeyTriggered(JE_MOUSE_LEFT)) {
@@ -175,13 +175,13 @@ void Steering::Update(const float _dt)
 
 		// Add force to velocity
 		vec3 acceleration = GetNormalize(steeringForce) / mass;
-		velocity += acceleration * _dt * maxSpeed;
+		velocity += acceleration * dt * maxSpeed;
 
 		// Limit the velocity magnitude
 		Truncate(velocity, maxSpeed);
 
 		// Update position
-		vec3 toAdd = velocity * _dt;
+		vec3 toAdd = velocity * dt;
 		toAdd.z = 0.f;
 		m_transform->position += toAdd;
 		m_transform->rotation = GetAngle(vec3::UNIT_X, velocity);

@@ -9,8 +9,7 @@ jeDefineCustomComponentBuilder(CameraController);
 using namespace Math;
 
 CameraController::CameraController(Object* _pObject)
-	:CustomComponent(_pObject), m_camera(nullptr),
-	position(vec3::ZERO), m_target(vec3::ZERO)
+	:CustomComponent(_pObject), m_camera(nullptr)
 {}
 
 void CameraController::Register()
@@ -18,40 +17,34 @@ void CameraController::Register()
 	SYSTEM::GetBehaviorSystem()->AddBehavior(this);
 }
 
-void CameraController::Load(CR_RJValue /*_data*/)
-{}
+void CameraController::Load(CR_RJValue /*_data*/) {}
 
 void CameraController::Init()
 {
 	m_camera = GetOwner()->GetComponent<Camera>();
-	position = m_camera->position;
+	m_camera->SetCamera(
+		m_camera->position,
+		-vec3::UNIT_Z,
+		m_camera->GetUp(),
+		45.f,
+		GRAPHIC->GetWidth() / float(GRAPHIC->GetHeight()),
+		1.f
+	);
 }
 
-void CameraController::Update(const float _dt)
+void CameraController::Update(float dt)
 {
 	static vec3 lastPosition, currentPosition = vec3::ZERO, diff;
 	static float yaw = 0.f, pitch = 0.f;
 	static bool active = false;
-
-	//lastPosition = currentPosition;
-	//currentPosition = INPUT::GetOrhtoPosition();
-	//diff = lastPosition - currentPosition;
-	//if (active) {
-	//	yaw = diff.x * 180.f / SYSTEM::GetGraphicSystem()->GetWidth();
-	//	pitch = diff.y * 180.f / SYSTEM::GetGraphicSystem()->GetHeight();
-
-	//	m_camera->Yaw(yaw);
-	//	m_camera->Pitch(-pitch);
-	//}
-	//active = true;
 
 	if (INPUT::KeyPressed(JE_MOUSE_LEFT)) {
 		lastPosition = currentPosition;
 		currentPosition = INPUT::GetOrhtoPosition();
 		diff = lastPosition - currentPosition;
 		if (active) {
-			yaw = diff.x * m_camera->GetFovy() / SYSTEM::GetGraphicSystem()->GetWidth();
-			pitch = diff.y * m_camera->GetFovy() / SYSTEM::GetGraphicSystem()->GetHeight();
+			yaw = diff.x * m_camera->fovy / GRAPHIC->GetWidth();
+			pitch = diff.y * m_camera->fovy / GRAPHIC->GetHeight();
 
 			m_camera->Yaw(-yaw);
 			m_camera->Pitch(pitch);
@@ -61,24 +54,32 @@ void CameraController::Update(const float _dt)
 	else
 		active = false;
 	
-	m_camera->target = m_camera->position - m_camera->GetBack();
-
-	static float speed = 50.f;
+	static float speed = 150.f;
+	
+	// move back and forward
 	if (INPUT::KeyPressed(JE_W)) 
-		m_camera->position -= speed *_dt * m_camera->GetBack();
+		m_camera->position -= speed * dt * m_camera->GetBack();
 
 	else if (INPUT::KeyPressed(JE_S)) 
-		m_camera->position += speed * _dt * m_camera->GetBack();
+		m_camera->position += speed * dt * m_camera->GetBack();
+
+	// zoom in/out by scrolling mouse wheel
+	if (INPUT::KeyPressed(JE_MOUSE_WHEEL_UP))
+		m_camera->fovy += dt;
+
+	else if (INPUT::KeyPressed(JE_MOUSE_WHEEL_DOWN))
+		m_camera->fovy -= dt;
+
+	// Update target as well
+	m_camera->target = m_camera->position - m_camera->GetBack();
 
 }
 
-void CameraController::Close()
-{}
+void CameraController::Close() {}
 
-void CameraController::Unload()
-{}
+void CameraController::Unload() {}
 
-void CameraController::EditorUpdate(const float /*_dt*/)
+void CameraController::EditorUpdate(const float /*dt*/)
 {
 	// TODO
 }

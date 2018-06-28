@@ -28,7 +28,7 @@ protected:
     };
 
     virtual void Load(CR_RJValue _data) = 0;
-    virtual void EditorUpdate(float _dt) = 0;
+    virtual void EditorUpdate(float dt) = 0;
 
 private:
     

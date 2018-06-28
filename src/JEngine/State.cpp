@@ -37,7 +37,7 @@ void State::Init()
 	SYSTEM::Init();
 }
 
-void State::Update(const float _dt)
+void State::Update(float dt)
 {
 #if defined(_DEBUG)
 	if (STATE::m_showUpdateMessage) {
@@ -46,7 +46,7 @@ void State::Update(const float _dt)
 	}
 #endif // _DEBUG
 
-	SYSTEM::Update(_dt);
+	SYSTEM::Update(dt);
 }
 
 void State::Close()
