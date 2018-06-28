@@ -78,7 +78,7 @@ void GraphicSystem::RenderToScreen() const
 	glDisable(GL_DEPTH_TEST);	//Disable depth test
 
 	// Render to plane 2d
-	glBindVertexArray(GLM::m_vao[GLM::SHAPE_PLANE]);
+	glBindVertexArray(GLM::pMesh_[GLM::SHAPE_PLANE]->m_vao);
 	Shader::Use(GLM::SHADER_SCREEN);
 	Shader::m_pCurrentShader->SetVector4("v4_screenColor", screenColor);
 
@@ -551,8 +551,8 @@ void GraphicSystem::RenderCharacter(Character& _character, const vec3& _position
 	glBindTexture(GL_TEXTURE_2D, _character.texture);
 
 	// This part actual render
-	glBindVertexArray(GLM::m_vao[GLM::SHAPE_TEXT]);
-	glBindBuffer(GL_ARRAY_BUFFER, GLM::m_vbo[GLM::SHAPE_TEXT]);
+	glBindVertexArray(GLM::pMesh_[GLM::SHAPE_TEXT]->m_vao);
+	glBindBuffer(GL_ARRAY_BUFFER, GLM::pMesh_[GLM::SHAPE_TEXT]->m_vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Mesh::jeVertex) * s_vertexArray.size(),
 		static_cast<const void*>(&s_vertexArray[0]), GL_DYNAMIC_DRAW);
 
@@ -565,7 +565,7 @@ void GraphicSystem::RenderCharacter(Character& _character, const vec3& _position
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::jeVertex), reinterpret_cast<void*>(offsetof(Mesh::jeVertex, jeVertex::normal)));
 	glEnableVertexAttribArray(2);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GLM::m_ebo[GLM::SHAPE_TEXT]);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GLM::pMesh_[GLM::SHAPE_TEXT]->m_ebo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * Text::m_pointIndices.size(),
 		static_cast<const void*>(&Text::m_pointIndices[0]), GL_DYNAMIC_DRAW);
 	glDrawElements(GL_TRIANGLE_STRIP, GLsizei(Text::m_pointIndices.size()), GL_UNSIGNED_INT, nullptr);
@@ -645,23 +645,23 @@ void GraphicSystem::Render(const Mesh* _pMesh)
 		break;
 		
 	case Mesh::MESH_POINT:
-		Render(GLM::m_vao[GLM::SHAPE_POINT], unsigned(_pMesh->GetIndiceCount()), _pMesh->m_drawMode);
+		Render(GLM::pMesh_[GLM::SHAPE_POINT]->m_vao, unsigned(_pMesh->GetIndiceCount()), _pMesh->m_drawMode);
 		break;
 
 	case Mesh::MESH_RECT:
-		Render(GLM::m_vao[GLM::SHAPE_PLANE], unsigned(_pMesh->GetIndiceCount()), _pMesh->m_drawMode);
+		Render(GLM::pMesh_[GLM::SHAPE_PLANE]->m_vao, unsigned(_pMesh->GetIndiceCount()), _pMesh->m_drawMode);
 		break;
 
 	case Mesh::MESH_CROSSRECT:
-		Render(GLM::m_vao[GLM::SHAPE_PLANE3D], unsigned(_pMesh->GetIndiceCount()), _pMesh->m_drawMode);
+		Render(GLM::pMesh_[GLM::SHAPE_PLANE3D]->m_vao, unsigned(_pMesh->GetIndiceCount()), _pMesh->m_drawMode);
 		break;
 
 	case Mesh::MESH_CUBE:
-		Render(GLM::m_vao[GLM::SHAPE_CUBE], unsigned(_pMesh->GetIndiceCount()), _pMesh->m_drawMode);
+		Render(GLM::pMesh_[GLM::SHAPE_CUBE]->m_vao, unsigned(_pMesh->GetIndiceCount()), _pMesh->m_drawMode);
 		break;
 
 	case Mesh::MESH_TETRAHEDRON:
-		Render(GLM::m_vao[GLM::SHAPE_CONE], unsigned(_pMesh->GetIndiceCount()), _pMesh->m_drawMode);
+		Render(GLM::pMesh_[GLM::SHAPE_CONE]->m_vao, unsigned(_pMesh->GetIndiceCount()), _pMesh->m_drawMode);
 		break;
 
 	default:

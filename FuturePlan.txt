@@ -18,4 +18,3 @@
 *Look for part to implement thread
 *culling
 *Change naming convention
-*Polish pMesh_ of glm - they already have vao, vbo and ebo

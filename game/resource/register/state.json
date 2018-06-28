@@ -1,6 +1,6 @@
 // This file contains state information
 {
-	"FirstState" : "level7",
+	"FirstState" : "level6",
 	
 	"State" : [
 		{"Key" : "level1", 	"Directory" : "../resource/state/normals/level1.json"},

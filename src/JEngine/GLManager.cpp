@@ -14,9 +14,9 @@ jeBegin
 float			GLM::m_width = 0;
 float			GLM::m_height = 0;
 GLint			GLM::m_buffers, GLM::m_samples, GLM::m_Attributes;
-GLuint			GLM::m_vao[] = { 0 }, GLM::m_vbo[] = { 0 }, GLM::m_ebo[] = { 0 }, GLM::m_fbo = 0, GLM::m_depthBuffer = 0, GLM::m_renderTarget = 0;
+GLuint			GLM::m_fbo = 0, GLM::m_depthBuffer = 0, GLM::m_renderTarget = 0;
 GLM::Shaders	GLM::m_shader;
-GLM::DrawMode	GLM::m_mode = DrawMode::DRAW_FILL;
+GLM::DrawMode	GLM::m_mode = DRAW_FILL;
 const GLubyte	*GLM::m_pRenderer = nullptr, *GLM::m_pVendor = nullptr, *GLM::m_pVersion = nullptr, *GLM::m_pGlslVersion = nullptr;
 Mesh			*GLM::pMesh_[] = { nullptr };
 
@@ -54,12 +54,8 @@ void GLManager::Close()
 
     m_shader.clear();
 
-    for (int index = 0; index < SHAPE_END; ++index) {
-        glDeleteBuffers(1, &m_ebo[index]);
-        glDeleteBuffers(1, &m_vbo[index]);
-        glDeleteVertexArrays(1, &m_vao[index]);
+    for (int index = 0; index < SHAPE_END; ++index) 
 		delete pMesh_[index];
-    }
 
     glDeleteFramebuffers(1, &m_fbo);
 }
@@ -130,10 +126,7 @@ void GLManager::InitGLEnvironment()
 }
 
 void GLManager::InitSimplePolygons()
-{// Generate vaos, vboa, ebos at once
-	glGenVertexArrays(SHAPE_END, m_vao);
-	glGenBuffers(SHAPE_END, m_vbo);
-	glGenBuffers(SHAPE_END, m_ebo);
+{
 
 	// Describe vertexes and indices
 	for (unsigned shape_index = 0; shape_index < SHAPE_CUBE; ++shape_index) {
@@ -142,28 +135,23 @@ void GLManager::InitSimplePolygons()
 		case SHAPE_TEXT:
 		case SHAPE_PLANE:
 			pMesh_[shape_index] = Mesh::CreateRect();
-			DescribeVertex(m_vao[shape_index], m_vbo[shape_index], 
-				m_ebo[shape_index], pMesh_[shape_index]);
+			DescribeVertex(pMesh_[shape_index]);
 			break;
 		case SHAPE_CUBE:
 			pMesh_[shape_index] = Mesh::CreateCube();
-			DescribeVertex(m_vao[shape_index], m_vbo[shape_index],
-				m_ebo[shape_index], pMesh_[shape_index]);
+			DescribeVertex(pMesh_[shape_index]);
 			break;
 		case SHAPE_PLANE3D:
 			pMesh_[shape_index] = Mesh::CreateCrossRect();
-			DescribeVertex(m_vao[shape_index], m_vbo[shape_index],
-				m_ebo[shape_index], pMesh_[shape_index]);
+			DescribeVertex(pMesh_[shape_index]);
 			break;
 		case SHAPE_POINT:
 			pMesh_[shape_index] = Mesh::CreatePoint();
-			DescribeVertex(m_vao[shape_index], m_vbo[shape_index],
-				m_ebo[shape_index], pMesh_[shape_index]);
+			DescribeVertex(pMesh_[shape_index]);
 			break;
 		case SHAPE_CONE:
 			pMesh_[shape_index] = Mesh::CreateTetrahedron();
-			DescribeVertex(m_vao[shape_index], m_vbo[shape_index],
-				m_ebo[shape_index], pMesh_[shape_index]);
+			DescribeVertex(pMesh_[shape_index]);
 			break;
 		case SHAPE_END:
 		default:
@@ -174,16 +162,16 @@ void GLManager::InitSimplePolygons()
 	}
 }
 
-void GLManager::DescribeVertex(unsigned& vao, unsigned& vbo, unsigned& ebo, Mesh* pMesh)
+void GLManager::DescribeVertex(Mesh* pMesh)
 {
 	// Check either if all the objects are initialized
 	// and if not, generate them
-	if (!vao)
-		glGenVertexArrays(1, &vao);
-	if (!vbo)
-		glGenBuffers(1, &vbo);
-	if (!ebo)
-		glGenBuffers(1, &ebo);
+	if (!pMesh->m_vao)
+		glGenVertexArrays(1, &pMesh->m_vao);
+	if (!pMesh->m_vbo)
+		glGenBuffers(1, &pMesh->m_vbo);
+	if (!pMesh->m_ebo)
+		glGenBuffers(1, &pMesh->m_ebo);
 
 	// Set vertices and indices vector container
 	std::vector<Mesh::jeVertex> vertices;
@@ -202,11 +190,11 @@ void GLManager::DescribeVertex(unsigned& vao, unsigned& vbo, unsigned& ebo, Mesh
 	}
 
 	// Decribe the format of vertex and indice
-	glBindVertexArray(vao);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBindVertexArray(pMesh->m_vao);
+	glBindBuffer(GL_ARRAY_BUFFER, pMesh->m_vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Mesh::jeVertex) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pMesh->m_ebo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * indicies.size(), &indicies[0], GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::jeVertex),

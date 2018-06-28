@@ -27,11 +27,11 @@ class GLManager {
 
     enum DrawMode { DRAW_POINT, DRAW_LINE, DRAW_FILL };
     enum ShaderType { SHADER_MODEL, SHADER_TEXT, SHADER_LIGHTING, SHADER_PARTICLE, SHADER_SCREEN, SHADER_END };
-    enum ShapeType { SHAPE_POINT, SHAPE_PLANE, SHAPE_PLANE3D, SHAPE_CUBE, SHAPE_TEXT, SHAPE_CONE, SHAPE_END };
+    enum ShapeType { SHAPE_POINT, SHAPE_PLANE, SHAPE_TEXT, SHAPE_PLANE3D, SHAPE_CUBE,  SHAPE_CONE, SHAPE_END };
 
 public:
 
-	static void DescribeVertex(unsigned& vao, unsigned& vbo, unsigned& ebo, Mesh* pMesh);
+	static void DescribeVertex(Mesh* pMesh);
 
 private:
 
@@ -53,7 +53,7 @@ private:
     static Shaders	m_shader;
     static DrawMode	m_mode;
     static GLint	m_Attributes, m_buffers, m_samples;
-    static GLuint	m_vao[SHAPE_END], m_vbo[SHAPE_END], m_ebo[SHAPE_END], m_fbo, m_renderTarget, m_depthBuffer;
+    static GLuint	m_fbo, m_renderTarget, m_depthBuffer;
 	static Mesh*	pMesh_[SHAPE_END];
 
     static const GLubyte *m_pRenderer, *m_pVendor, *m_pVersion, *m_pGlslVersion;

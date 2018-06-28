@@ -214,8 +214,8 @@ void Emitter::Load(CR_RJValue _data)
 		}
 		else /*if (!strcmp(meshType.c_str(), "Custom"))*/ {
 			m_pMeshes = ASSET::LoadObjFile(meshType.c_str());
+			GLM::DescribeVertex(m_pMeshes);
 			m_pMeshes->m_shape = Mesh::MESH_NONE;
-			GLM::DescribeVertex(m_pMeshes->m_vao, m_pMeshes->m_vbo, m_pMeshes->m_ebo, m_pMeshes);
 			m_pMeshes->builtIn_ = false;
 		}
 	}
