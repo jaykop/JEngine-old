@@ -38,7 +38,6 @@ public:
 	void AddTextureUV(CR_Vec2 _uv);
 	void AddNormal(CR_Vec3 _normal);
 	void AddIndice(VertexIndex _indice);
-	void AddPointIndice(unsigned _indice);
 
 	vec3		GetPoint(unsigned _index) const;
 	vec2		GetUV(unsigned _index) const;
@@ -50,7 +49,6 @@ public:
 
 	const std::vector<vec3>&		GetNormals() const;
 	const std::vector<VertexIndex>& GetIndices() const;
-	const std::vector<unsigned>&	GetPointIndices() const;
 
 	void ClearPoints();
 	void ClearNormals();
@@ -67,13 +65,12 @@ private:
 	static Mesh* CreateCube();
 	static Mesh* CreateTetrahedron();
 
-	void CreateCustomObject();
-
 	std::vector<VertexIndex>	m_indices;
-	std::vector<unsigned>		m_pointIndices;
 	std::vector<vec3>			m_points;
 	std::vector<vec2>			m_UVs;
 	std::vector<vec3>			m_normals;
+
+	bool builtIn_;
 
 	Mesh();
 	~Mesh();

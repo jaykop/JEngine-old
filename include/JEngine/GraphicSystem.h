@@ -90,15 +90,14 @@ private:
     void MappingPipeline(Model* _model);
     void LightingEffectPipeline(Material* _material);
     void ParticlePipeline(Emitter* _emitter, float dt);
+	void SortModels();
 
-	// New method
+	// Render functions
 	void Render(const Mesh* _pMesh);
-	void Render(unsigned _vao, const Indices& _indices, unsigned _drawMode);
-
-    void Render(Font* _font, Text*_text, Transform* _transform, bool _printUnicode);
+	void Render(const Text*_pText);
+	void Render(unsigned _vao, unsigned _indicesSize, unsigned _drawMode);
     void RenderCharacter(Character& _character, const vec3& _position,
         const vec3& _scale, float& _newX, float _intervalY);
-    void SortModels();
 
     // Member variables
     Lights	m_lights;

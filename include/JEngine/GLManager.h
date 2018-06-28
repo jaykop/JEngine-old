@@ -6,6 +6,7 @@
 
 jeBegin
 
+class Mesh;
 class GLManager {
 
     friend class Shader;
@@ -30,14 +31,15 @@ class GLManager {
 
 public:
 
+	static void DescribeVertex(unsigned& vao, unsigned& vbo, unsigned& ebo, Mesh* pMesh);
+
 private:
 
     // Private member functions
     static bool Init();
     static void Close();
     static void InitGLEnvironment();
-
-    static void DescribeVertex();
+	static void InitSimplePolygons();
 
     static void InitFBO();
     static void InitShaders();
@@ -52,8 +54,8 @@ private:
     static DrawMode	m_mode;
     static GLint	m_Attributes, m_buffers, m_samples;
     static GLuint	m_vao[SHAPE_END], m_vbo[SHAPE_END], m_ebo[SHAPE_END], m_fbo, m_renderTarget, m_depthBuffer;
+	static Mesh*	pMesh_[SHAPE_END];
 
-	static std::vector<unsigned> m_planeIndices;
     static const GLubyte *m_pRenderer, *m_pVendor, *m_pVersion, *m_pGlslVersion;
 
 };

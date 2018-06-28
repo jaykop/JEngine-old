@@ -86,8 +86,10 @@ Model::~Model()
 	m_textureMap.clear();
 	
 	if (m_pMeshes) {
-		delete m_pMeshes;
-		m_pMeshes = nullptr;
+		if (!m_pMeshes->builtIn_) {
+			delete m_pMeshes;
+			m_pMeshes = nullptr;
+		}
 	}
 
 	SYSTEM::GetGraphicSystem()->RemoveModel(this);
@@ -111,29 +113,30 @@ void Model::Load(CR_RJValue _data)
 	{
 		std::string meshType = _data["Mesh"].GetString();
 		if (!strcmp(meshType.c_str(), "Point")) {
-			m_pMeshes = Mesh::CreatePoint();
+			m_pMeshes = GLM::pMesh_[GLM::SHAPE_POINT];
 			m_pMeshes->m_shape = Mesh::MESH_POINT;
 		}
 		else if (!strcmp(meshType.c_str(), "Rect")) {
-			m_pMeshes = Mesh::CreateRect();
+			m_pMeshes = GLM::pMesh_[GLM::SHAPE_PLANE];
 			m_pMeshes->m_shape = Mesh::MESH_RECT;
 		}
 		else if (!strcmp(meshType.c_str(), "CrossRect")) {
-			m_pMeshes = Mesh::CreateCrossRect();
+			m_pMeshes = GLM::pMesh_[GLM::SHAPE_PLANE3D];
 			m_pMeshes->m_shape = Mesh::MESH_CROSSRECT;
 		}
 		else if (!strcmp(meshType.c_str(), "Cube")) {
-			m_pMeshes = Mesh::CreateCube();
+			m_pMeshes = GLM::pMesh_[GLM::SHAPE_CUBE];
 			m_pMeshes->m_shape = Mesh::MESH_CUBE;
 		}
 		else if (!strcmp(meshType.c_str(), "Tetrahedron")) {
-			m_pMeshes = Mesh::CreateTetrahedron();
+			m_pMeshes = GLM::pMesh_[GLM::SHAPE_CONE];
 			m_pMeshes->m_shape = Mesh::MESH_TETRAHEDRON;
 		}
 		else /*if (!strcmp(meshType.c_str(), "Custom"))*/ {
 			m_pMeshes = ASSET::LoadObjFile(meshType.c_str());
 			m_pMeshes->m_shape = Mesh::MESH_NONE;
-			m_pMeshes->CreateCustomObject();
+			GLM::DescribeVertex(m_pMeshes->m_vao, m_pMeshes->m_vbo, m_pMeshes->m_ebo, m_pMeshes);
+			m_pMeshes->builtIn_ = false;
 		}
 	}
 	else {

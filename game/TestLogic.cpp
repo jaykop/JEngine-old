@@ -24,8 +24,9 @@ void TestLogic::Init()
 
 void TestLogic::Update(float dt)
 {
+	// it's on defaultly
 	if (INPUT::KeyPressed(JE_SPACE)) {
-		static bool on = true;
+		static bool on = false;
 		APP::ActivateVSync(on);
 		on = !on;
 	}

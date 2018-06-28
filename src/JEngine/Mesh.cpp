@@ -1,10 +1,9 @@
 #include "Mesh.h"
-#include "GraphicSystem.h"
 
 jeBegin
 
 Mesh::Mesh() : m_shape(MESH_NONE), m_drawMode(GL_TRIANGLES),
-	m_vao(0), m_vbo(0), m_ebo(0) {}
+	m_vao(0), m_vbo(0), m_ebo(0), builtIn_(true) {}
 
 Mesh::~Mesh()
 {
@@ -26,8 +25,6 @@ void Mesh::AddNormal(CR_Vec3 _normal) { m_normals.push_back(_normal); }
 
 void Mesh::AddIndice(VertexIndex _indice) { m_indices.push_back(_indice); }
 
-void Mesh::AddPointIndice(unsigned _indice) { m_pointIndices.push_back(_indice); }
-
 vec3 Mesh::GetPoint(unsigned _index) const { return m_points.at(_index); }
 
 vec2 Mesh::GetUV(unsigned _index) const { return m_UVs.at(_index); }
@@ -43,8 +40,6 @@ std::size_t Mesh::GetIndiceCount() const { return m_indices.size(); }
 const std::vector<vec3>& Mesh::GetNormals() const { return m_normals; }
 
 const std::vector<Mesh::VertexIndex>& Mesh::GetIndices() const { return m_indices; }
-
-const std::vector<unsigned>& Mesh::GetPointIndices() const { return m_pointIndices;  }
 
 void Mesh::ClearPoints() { m_points.clear(); }
 
@@ -79,26 +74,23 @@ Mesh* Mesh::CreateRect()
 	Mesh *pRect = new Mesh;
 
 	pRect->AddPoint(vec3(-.5f, .5f, 0.f));
-	pRect->AddPoint(vec3(.5f, .5f, 0.f));
-	pRect->AddPoint(vec3(.5f, -.5f, 0.f));
 	pRect->AddPoint(vec3(-.5f, -.5f, 0.f));
+	pRect->AddPoint(vec3(.5f, -.5f, 0.f));
+	pRect->AddPoint(vec3(.5f, .5f, 0.f));
 
 	pRect->AddTextureUV(vec2(0.f, 0.f));
-	pRect->AddTextureUV(vec2(1.f, 0.f));
-	pRect->AddTextureUV(vec2(1.f, 1.f));
 	pRect->AddTextureUV(vec2(0.f, 1.f));
+	pRect->AddTextureUV(vec2(1.f, 1.f));
+	pRect->AddTextureUV(vec2(1.f, 0.f));
 
 	pRect->AddNormal(vec3(0, 0, 1.f));
-	pRect->AddNormal(vec3(0, 0, 1.f));
-	pRect->AddNormal(vec3(0, 0, 1.f));
-	pRect->AddNormal(vec3(0, 0, 1.f));
 
+	pRect->AddIndice({ 2, 2, 0 });
 	pRect->AddIndice({ 0, 0, 0 });
-	pRect->AddIndice({ 2, 2, 2 });
-	pRect->AddIndice({ 3, 3, 3 });
-	pRect->AddIndice({ 2, 2, 2 });
+	pRect->AddIndice({ 1, 1, 0 });
+	pRect->AddIndice({ 2, 2, 0 });
+	pRect->AddIndice({ 3, 3, 0 });
 	pRect->AddIndice({ 0, 0, 0 });
-	pRect->AddIndice({ 1, 1, 1 });
 
 	return pRect;
 }
@@ -107,65 +99,65 @@ Mesh* Mesh::CreateCrossRect()
 {
 	Mesh *pCrossRect = new Mesh;
 
-	//pCrossRect->AddPoint(vec3(-.5f, .5f, 0.f));
-	//pCrossRect->AddPoint(vec3(.5f, .5f, 0.f));
-	//pCrossRect->AddPoint(vec3(.5f, -.5f, 0.f));
-	//pCrossRect->AddPoint(vec3(-.5f, -.5f, 0.f));
-	//pCrossRect->AddPoint(vec3(0.f, .5f, .5f));
-	//pCrossRect->AddPoint(vec3(0.f, .5f, -.5f));
-	//pCrossRect->AddPoint(vec3(0.f, -.5f, -.5f));
-	//pCrossRect->AddPoint(vec3(0.f, -.5f, .5f));
-	//pCrossRect->AddPoint(vec3(-.5f, 0.f, -.5f));
-	//pCrossRect->AddPoint(vec3(.5f, 0.f, -.5f));
-	//pCrossRect->AddPoint(vec3(.5f, 0.f, .5f));
-	//pCrossRect->AddPoint(vec3(-.5f, 0.f, .5f));
+	pCrossRect->AddPoint(vec3(-.5f, .5f, 0.f));
+	pCrossRect->AddPoint(vec3(.5f, .5f, 0.f));
+	pCrossRect->AddPoint(vec3(.5f, -.5f, 0.f));
+	pCrossRect->AddPoint(vec3(-.5f, -.5f, 0.f));
+	pCrossRect->AddPoint(vec3(0.f, .5f, .5f));
+	pCrossRect->AddPoint(vec3(0.f, .5f, -.5f));
+	pCrossRect->AddPoint(vec3(0.f, -.5f, -.5f));
+	pCrossRect->AddPoint(vec3(0.f, -.5f, .5f));
+	pCrossRect->AddPoint(vec3(-.5f, 0.f, -.5f));
+	pCrossRect->AddPoint(vec3(.5f, 0.f, -.5f));
+	pCrossRect->AddPoint(vec3(.5f, 0.f, .5f));
+	pCrossRect->AddPoint(vec3(-.5f, 0.f, .5f));
 
-	//pCrossRect->AddTextureUV(vec2(1.f, 0.f));
-	//pCrossRect->AddTextureUV(vec2(1.f, 1.f));
-	//pCrossRect->AddTextureUV(vec2(0.f, 1.f));
-	//pCrossRect->AddTextureUV(vec2(0.f, 0.f));
-	//pCrossRect->AddTextureUV(vec2(1.f, 0.f));
-	//pCrossRect->AddTextureUV(vec2(1.f, 1.f));
-	//pCrossRect->AddTextureUV(vec2(0.f, 1.f));
-	//pCrossRect->AddTextureUV(vec2(0.f, 0.f));
-	//pCrossRect->AddTextureUV(vec2(1.f, 0.f));
-	//pCrossRect->AddTextureUV(vec2(1.f, 1.f));
-	//pCrossRect->AddTextureUV(vec2(0.f, 1.f));
-	//pCrossRect->AddTextureUV(vec2(0.f, 0.f));
+	pCrossRect->AddTextureUV(vec2(1.f, 0.f));
+	pCrossRect->AddTextureUV(vec2(1.f, 1.f));
+	pCrossRect->AddTextureUV(vec2(0.f, 1.f));
+	pCrossRect->AddTextureUV(vec2(0.f, 0.f));
+	pCrossRect->AddTextureUV(vec2(1.f, 0.f));
+	pCrossRect->AddTextureUV(vec2(1.f, 1.f));
+	pCrossRect->AddTextureUV(vec2(0.f, 1.f));
+	pCrossRect->AddTextureUV(vec2(0.f, 0.f));
+	pCrossRect->AddTextureUV(vec2(1.f, 0.f));
+	pCrossRect->AddTextureUV(vec2(1.f, 1.f));
+	pCrossRect->AddTextureUV(vec2(0.f, 1.f));
+	pCrossRect->AddTextureUV(vec2(0.f, 0.f));
 
-	//pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
-	//pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
-	//pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
-	//pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
-	//pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
-	//pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
-	//pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
-	//pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
-	//pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
-	//pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
-	//pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
-	//pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
+	pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
+	pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
+	pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
+	pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
+	pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
+	pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
+	pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
+	pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
+	pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
+	pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
+	pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
+	pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
 
-	//pCrossRect->AddIndice(0);
-	//pCrossRect->AddIndice(2);
-	//pCrossRect->AddIndice(3);
-	//pCrossRect->AddIndice(2);
-	//pCrossRect->AddIndice(0);
-	//pCrossRect->AddIndice(1);
+	pCrossRect->AddIndice({ 0, 0, 0 });
+	pCrossRect->AddIndice({ 2, 2, 2 });
+	pCrossRect->AddIndice({ 3, 3, 3 });
+	pCrossRect->AddIndice({ 2, 2, 2 });
+	pCrossRect->AddIndice({ 0, 0, 0 });
+	pCrossRect->AddIndice({ 1, 1, 1 });
 
-	//pCrossRect->AddIndice(5);
-	//pCrossRect->AddIndice(7);
-	//pCrossRect->AddIndice(6);
-	//pCrossRect->AddIndice(7);
-	//pCrossRect->AddIndice(5);
-	//pCrossRect->AddIndice(4);
+	pCrossRect->AddIndice({ 5, 5, 5 });
+	pCrossRect->AddIndice({ 7, 7, 7 });
+	pCrossRect->AddIndice({ 6, 6, 6 });
+	pCrossRect->AddIndice({ 7, 7, 7 });
+	pCrossRect->AddIndice({ 5, 5, 5 });
+	pCrossRect->AddIndice({ 4, 4, 4 });
 
-	//pCrossRect->AddIndice(8);
-	//pCrossRect->AddIndice(10);
-	//pCrossRect->AddIndice(11);
-	//pCrossRect->AddIndice(10);
-	//pCrossRect->AddIndice(8);
-	//pCrossRect->AddIndice(9);
+	pCrossRect->AddIndice({ 8, 8, 8 });
+	pCrossRect->AddIndice({ 10, 10, 10 });
+	pCrossRect->AddIndice({ 11, 11, 11 });
+	pCrossRect->AddIndice({ 10, 10, 10 });
+	pCrossRect->AddIndice({ 8, 8, 8 });
+	pCrossRect->AddIndice({ 9, 9, 9 });
 
 	return pCrossRect;
 }
@@ -319,42 +311,6 @@ Mesh* Mesh::CreateTetrahedron()
 	//pTetrahedron->AddNormal();
 
 	return pTetrahedron;
-}
-
-void Mesh::CreateCustomObject()
-{
-	glGenVertexArrays(1, &m_vao);
-	glGenBuffers(1, &m_vbo);
-	glGenBuffers(1, &m_ebo);
-
-	std::vector<jeVertex> vertices;
-	vertices.reserve(GetIndiceCount());
-	
-	for (unsigned index = 0; index < GetIndiceCount(); ++index) {
-		VertexIndex vi = GetIndices().at(index);
-		vertices.push_back(jeVertex{ GetPoint(vi.a), GetUV(vi.b), GetNormal(vi.c) });
-	}
-	
-	glBindVertexArray(m_vao);
-	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(jeVertex) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * m_pointIndices.size(), &m_pointIndices[0], GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(jeVertex),
-		reinterpret_cast<void*>(offsetof(jeVertex, jeVertex::position)));
-	glEnableVertexAttribArray(0);
-
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(jeVertex),
-		reinterpret_cast<void*>(offsetof(jeVertex, jeVertex::uv)));
-	glEnableVertexAttribArray(1);
-
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(jeVertex),
-		reinterpret_cast<void*>(offsetof(jeVertex, jeVertex::normal)));
-	glEnableVertexAttribArray(2);
-
-	glBindVertexArray(0);
 }
 
 jeEnd

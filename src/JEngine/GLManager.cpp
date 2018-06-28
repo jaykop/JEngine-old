@@ -3,6 +3,7 @@
 #include "Mesh.h"
 #include "imgui.h"
 #include "GraphicSystem.h"
+#include "Mesh.h"
 
 jeBegin
 
@@ -10,21 +11,14 @@ jeBegin
 // static variables
 //////////////////////////////////////////////////////////////////////////
 
-std::vector<Mesh::jeVertex> planeVertexes{
-	{vec3(-.5f, .5f, 0.f), vec2(0.f, 0.f), vec3(0, 0, 1.f) },
-{ vec3(.5f, .5f, 0.f), vec2(1.f, 0.f), vec3(0, 0, 1.f) },
-{ vec3(.5f, -.5f, 0.f), vec2(1.f, 1.f), vec3(0, 0, 1.f) },
-{ vec3(-.5f, -.5f, 0.f), vec2(0.f, 1.f), vec3(0, 0, 1.f) }
-};
-
-float	GLM::m_width = 0;
-float	GLM::m_height = 0;
-GLint	GLM::m_buffers, GLM::m_samples, GLM::m_Attributes;
-GLuint	GLM::m_vao[] = { 0 }, GLM::m_vbo[] = { 0 }, GLM::m_ebo[] = { 0 }, GLM::m_fbo = 0, GLM::m_depthBuffer = 0, GLM::m_renderTarget = 0;
+float			GLM::m_width = 0;
+float			GLM::m_height = 0;
+GLint			GLM::m_buffers, GLM::m_samples, GLM::m_Attributes;
+GLuint			GLM::m_vao[] = { 0 }, GLM::m_vbo[] = { 0 }, GLM::m_ebo[] = { 0 }, GLM::m_fbo = 0, GLM::m_depthBuffer = 0, GLM::m_renderTarget = 0;
 GLM::Shaders	GLM::m_shader;
 GLM::DrawMode	GLM::m_mode = DrawMode::DRAW_FILL;
 const GLubyte	*GLM::m_pRenderer = nullptr, *GLM::m_pVendor = nullptr, *GLM::m_pVersion = nullptr, *GLM::m_pGlslVersion = nullptr;
-std::vector<unsigned> GLM::m_planeIndices{ 0, 2, 3, 2, 0, 1 };
+Mesh			*GLM::pMesh_[] = { nullptr };
 
 //////////////////////////////////////////////////////////////////////////
 // GLManager functio bodies
@@ -43,7 +37,7 @@ bool GLManager::Init()
     // Do gl stuff
     ShowGLVersion();
     InitShaders();
-	DescribeVertex();
+	InitSimplePolygons();
     InitFBO();
     InitGLEnvironment();
 
@@ -64,6 +58,7 @@ void GLManager::Close()
         glDeleteBuffers(1, &m_ebo[index]);
         glDeleteBuffers(1, &m_vbo[index]);
         glDeleteVertexArrays(1, &m_vao[index]);
+		delete pMesh_[index];
     }
 
     glDeleteFramebuffers(1, &m_fbo);
@@ -108,33 +103,10 @@ void GLManager::InitFBO()
         jeDebugPrint("!GLManager - Framebuffer is not created properly.\n");
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-	// Describe plane attributes for fianl render screen 
-	glBindVertexArray(m_vao[SHAPE_PLANE]);
-	glBindBuffer(GL_ARRAY_BUFFER, m_vbo[SHAPE_PLANE]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(Mesh::jeVertex) * planeVertexes.size(),
-		static_cast<const void*>(&planeVertexes[0]), GL_DYNAMIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::jeVertex),
-		reinterpret_cast<void*>(offsetof(Mesh::jeVertex, jeVertex::position)));
-	glEnableVertexAttribArray(0);
-
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Mesh::jeVertex),
-		reinterpret_cast<void*>(offsetof(Mesh::jeVertex, jeVertex::uv)));
-	glEnableVertexAttribArray(1);
-
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::jeVertex),
-		reinterpret_cast<void*>(offsetof(Mesh::jeVertex, jeVertex::normal)));
-	glEnableVertexAttribArray(2);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo[SHAPE_PLANE]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * m_planeIndices.size(),
-		static_cast<const void*>(&m_planeIndices[0]), GL_DYNAMIC_DRAW);
 }
 
 void GLManager::InitGLEnvironment()
 {
-
     // Set depth 
     glEnable(GL_LEQUAL);
     glDisable(GL_DEPTH_TEST);
@@ -157,33 +129,99 @@ void GLManager::InitGLEnvironment()
 
 }
 
-void GLManager::DescribeVertex()
+void GLManager::InitSimplePolygons()
+{// Generate vaos, vboa, ebos at once
+	glGenVertexArrays(SHAPE_END, m_vao);
+	glGenBuffers(SHAPE_END, m_vbo);
+	glGenBuffers(SHAPE_END, m_ebo);
+
+	// Describe vertexes and indices
+	for (unsigned shape_index = 0; shape_index < SHAPE_CUBE; ++shape_index) {
+
+		switch (shape_index) {
+		case SHAPE_TEXT:
+		case SHAPE_PLANE:
+			pMesh_[shape_index] = Mesh::CreateRect();
+			DescribeVertex(m_vao[shape_index], m_vbo[shape_index], 
+				m_ebo[shape_index], pMesh_[shape_index]);
+			break;
+		case SHAPE_CUBE:
+			pMesh_[shape_index] = Mesh::CreateCube();
+			DescribeVertex(m_vao[shape_index], m_vbo[shape_index],
+				m_ebo[shape_index], pMesh_[shape_index]);
+			break;
+		case SHAPE_PLANE3D:
+			pMesh_[shape_index] = Mesh::CreateCrossRect();
+			DescribeVertex(m_vao[shape_index], m_vbo[shape_index],
+				m_ebo[shape_index], pMesh_[shape_index]);
+			break;
+		case SHAPE_POINT:
+			pMesh_[shape_index] = Mesh::CreatePoint();
+			DescribeVertex(m_vao[shape_index], m_vbo[shape_index],
+				m_ebo[shape_index], pMesh_[shape_index]);
+			break;
+		case SHAPE_CONE:
+			pMesh_[shape_index] = Mesh::CreateTetrahedron();
+			DescribeVertex(m_vao[shape_index], m_vbo[shape_index],
+				m_ebo[shape_index], pMesh_[shape_index]);
+			break;
+		case SHAPE_END:
+		default:
+			break;
+		}
+
+		
+	}
+}
+
+void GLManager::DescribeVertex(unsigned& vao, unsigned& vbo, unsigned& ebo, Mesh* pMesh)
 {
-    // Generate vaos, vboa, ebos at once
-    glGenVertexArrays(SHAPE_END, m_vao);
-    glGenBuffers(SHAPE_END, m_vbo);
-    glGenBuffers(SHAPE_END, m_ebo);
+	// Check either if all the objects are initialized
+	// and if not, generate them
+	if (!vao)
+		glGenVertexArrays(1, &vao);
+	if (!vbo)
+		glGenBuffers(1, &vbo);
+	if (!ebo)
+		glGenBuffers(1, &ebo);
 
-    // Describe vertexes and indices
-	for (unsigned index = 0; index < SHAPE_END; ++index) {
-		glBindVertexArray(m_vao[index]);
-		glBindBuffer(GL_ARRAY_BUFFER, m_vbo[index]);
+	// Set vertices and indices vector container
+	std::vector<Mesh::jeVertex> vertices;
+	std::vector<unsigned> indicies;
+	unsigned indiceCount = unsigned(pMesh->GetIndiceCount());
+	vertices.reserve(indiceCount);
+	indicies.reserve(indiceCount);
 
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::jeVertex),
-			reinterpret_cast<void*>(offsetof(Mesh::jeVertex, jeVertex::position)));
-		glEnableVertexAttribArray(0);
-
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Mesh::jeVertex),
-			reinterpret_cast<void*>(offsetof(Mesh::jeVertex, jeVertex::uv)));
-		glEnableVertexAttribArray(1);
-
-		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::jeVertex),
-			reinterpret_cast<void*>(offsetof(Mesh::jeVertex, jeVertex::normal)));
-		glEnableVertexAttribArray(2);
-
-		glBindVertexArray(0);
+	for (unsigned index = 0; index < indiceCount; ++index) {
+		Mesh::VertexIndex vi = pMesh->GetIndices().at(index);
+		vertices.push_back(Mesh::jeVertex{
+			pMesh->GetPoint(vi.a),
+			pMesh->GetUV(vi.b),
+			pMesh->GetNormal(vi.c) });
+		indicies.push_back(index);
 	}
 
+	// Decribe the format of vertex and indice
+	glBindVertexArray(vao);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(Mesh::jeVertex) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * indicies.size(), &indicies[0], GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::jeVertex),
+		reinterpret_cast<void*>(offsetof(Mesh::jeVertex, jeVertex::position)));
+	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Mesh::jeVertex),
+		reinterpret_cast<void*>(offsetof(Mesh::jeVertex, jeVertex::uv)));
+	glEnableVertexAttribArray(1);
+
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::jeVertex),
+		reinterpret_cast<void*>(offsetof(Mesh::jeVertex, jeVertex::normal)));
+	glEnableVertexAttribArray(2);
+
+	glBindVertexArray(0);
 }
 
 void GLManager::InitShaders()

@@ -21,6 +21,7 @@ class Model : public Component
     friend class Animation;
     friend class AssetManager;
 
+	using Meshes = std::vector<Mesh*>;
     using TextureMap = std::unordered_map<std::string, unsigned>;
 
 protected:
@@ -28,7 +29,9 @@ protected:
     const static int IS_TEXT = 0x10;
     const static int IS_EMITTER = 0x01;
 
+	// TODO
 	Mesh	*m_pMeshes = nullptr;
+	Meshes	meshes_;
     int		m_hiddenStatus;
 
 public:

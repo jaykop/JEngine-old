@@ -67,7 +67,7 @@ void GraphicSystem::RenderToFramebuffer() const
 
 void GraphicSystem::RenderToScreen() const
 {
-	static GLsizei sizeOfPlaneIndices = static_cast<GLsizei>(GLM::m_planeIndices.size());
+	static GLsizei sizeOfPlaneIndices = static_cast<GLsizei>(GLM::pMesh_[GLM::SHAPE_PLANE]->GetIndiceCount());
 
 	// Bind default framebuffer and render to screen
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -399,7 +399,7 @@ void GraphicSystem::TextPipeline(Text * _text)
 	glEnable(GL_DEPTH_TEST);
 	glBlendFunc(_text->sfactor, _text->dfactor);
 
-	Render(_text->pFont, _text, s_pTransform, _text->m_printWide);
+	Render(_text);
 
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
@@ -575,24 +575,27 @@ void GraphicSystem::RenderCharacter(Character& _character, const vec3& _position
 	_newX += (_character.advance >> sc_shift) * _scale.x;
 }
 
-void GraphicSystem::Render(Font* _font, Text*_text, Transform* _transform, bool _printUnicode)
+void GraphicSystem::Render(const Text*_pText)
 {
-	const std::wstring c_wcontent = _text->GetWText();
-	const std::string c_content = _text->GetText();
+	Font* pFont = _pText->pFont;
+	Transform* pTransform = _pText->m_pTransform;
+
+	const std::wstring c_wcontent = _pText->GetWText();
+	const std::string c_content = _pText->GetText();
 
 	// Check there are contents to print out
 	if (!c_wcontent.empty() || !c_content.empty()) {
 
 		static vec3 s_position, s_scale;
-		s_scale = _transform->scale;
-		s_position = _transform->position;
-		const GLfloat nextLineInverval = _font->m_newLineInterval * _font->m_fontSize * s_scale.y / 50.f;
+		s_scale = pTransform->scale;
+		s_position = pTransform->position;
+		const GLfloat nextLineInverval = pFont->m_newLineInterval * pFont->m_fontSize * s_scale.y / 50.f;
 
 		GLfloat initX = GLfloat(s_position.x), newX = initX, intervalY = 0.f;
 		int num_newline = 1;
 
 		// Iterate all character
-		if (_printUnicode) {
+		if (_pText->m_printWide) {
 			std::wstring::const_iterator letter;
 			for (letter = c_wcontent.begin(); letter != c_wcontent.end(); ++letter)
 			{
@@ -604,7 +607,7 @@ void GraphicSystem::Render(Font* _font, Text*_text, Transform* _transform, bool 
 				}
 
 				else {
-					Character character = _font->m_data[*letter];
+					Character character = pFont->m_data[*letter];
 					RenderCharacter(character, s_position, s_scale, newX, intervalY);
 				}
 			}
@@ -624,7 +627,7 @@ void GraphicSystem::Render(Font* _font, Text*_text, Transform* _transform, bool 
 				}
 
 				else {
-					Character character = _font->m_data[*letter];
+					Character character = pFont->m_data[*letter];
 					RenderCharacter(character, s_position, s_scale, newX, intervalY);
 				}
 			}
@@ -638,27 +641,27 @@ void GraphicSystem::Render(const Mesh* _pMesh)
 	switch (_pMesh->m_shape)
 	{
 	case Mesh::MESH_NONE:
-		Render(_pMesh->m_vao, _pMesh->GetPointIndices(), _pMesh->m_drawMode);
+		Render(_pMesh->m_vao, unsigned(_pMesh->GetIndiceCount()), _pMesh->m_drawMode);
 		break;
 		
 	case Mesh::MESH_POINT:
-		Render(GLM::m_vao[GLM::SHAPE_POINT], _pMesh->GetPointIndices(), _pMesh->m_drawMode);
+		Render(GLM::m_vao[GLM::SHAPE_POINT], unsigned(_pMesh->GetIndiceCount()), _pMesh->m_drawMode);
 		break;
 
 	case Mesh::MESH_RECT:
-		Render(GLM::m_vao[GLM::SHAPE_PLANE], _pMesh->GetPointIndices(), _pMesh->m_drawMode);
+		Render(GLM::m_vao[GLM::SHAPE_PLANE], unsigned(_pMesh->GetIndiceCount()), _pMesh->m_drawMode);
 		break;
 
 	case Mesh::MESH_CROSSRECT:
-		Render(GLM::m_vao[GLM::SHAPE_PLANE3D], _pMesh->GetPointIndices(), _pMesh->m_drawMode);
+		Render(GLM::m_vao[GLM::SHAPE_PLANE3D], unsigned(_pMesh->GetIndiceCount()), _pMesh->m_drawMode);
 		break;
 
 	case Mesh::MESH_CUBE:
-		Render(GLM::m_vao[GLM::SHAPE_CUBE], _pMesh->GetPointIndices(), _pMesh->m_drawMode);
+		Render(GLM::m_vao[GLM::SHAPE_CUBE], unsigned(_pMesh->GetIndiceCount()), _pMesh->m_drawMode);
 		break;
 
 	case Mesh::MESH_TETRAHEDRON:
-		Render(GLM::m_vao[GLM::SHAPE_CONE], _pMesh->GetPointIndices(), _pMesh->m_drawMode);
+		Render(GLM::m_vao[GLM::SHAPE_CONE], unsigned(_pMesh->GetIndiceCount()), _pMesh->m_drawMode);
 		break;
 
 	default:
@@ -666,12 +669,11 @@ void GraphicSystem::Render(const Mesh* _pMesh)
 	}
 }
 
-void GraphicSystem::Render(unsigned _vao, const Indices& _indices, unsigned _drawMode)
+void GraphicSystem::Render(unsigned _vao, unsigned _indicesSize, unsigned _drawMode)
 {
 	glBindVertexArray(_vao);
-	glDrawElements(_drawMode, static_cast<GLsizei>(_indices.size()), GL_UNSIGNED_INT, nullptr);
+	glDrawElements(_drawMode, _indicesSize, GL_UNSIGNED_INT, nullptr);
 	glBindVertexArray(0);
 }
-
 
 jeEnd

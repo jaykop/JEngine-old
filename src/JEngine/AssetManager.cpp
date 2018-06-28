@@ -331,9 +331,7 @@ Mesh* AssetManager::LoadObjFile(const char* _path)
 	std::vector<unsigned> elements;
 	std::vector<vec3> temp_points, temp_normals;
 	std::vector<vec2> temp_uvs;
-
-	static unsigned index = 0;
-
+	
 	while(std::getline(obj, line))	{
 		if (line.substr(0, 2) == "v ") {
 			std::istringstream s(line.substr(2));
@@ -408,7 +406,6 @@ Mesh* AssetManager::LoadObjFile(const char* _path)
 				if (c)	--c;
 
 				pNewMesh->AddIndice({a, b, c });
-				pNewMesh->AddPointIndice(index++);
 			}
 		}
 		
@@ -422,7 +419,7 @@ Mesh* AssetManager::LoadObjFile(const char* _path)
 		//}
 
 	}
-	index = 0;
+
 	return pNewMesh;
 }
 

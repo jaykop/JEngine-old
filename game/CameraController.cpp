@@ -38,6 +38,7 @@ void CameraController::Update(float dt)
 	static float yaw = 0.f, pitch = 0.f;
 	static bool active = false;
 
+	// rotate the camera
 	if (INPUT::KeyPressed(JE_MOUSE_LEFT)) {
 		lastPosition = currentPosition;
 		currentPosition = INPUT::GetOrhtoPosition();
@@ -62,6 +63,13 @@ void CameraController::Update(float dt)
 
 	else if (INPUT::KeyPressed(JE_S)) 
 		m_camera->position += speed * dt * m_camera->GetBack();
+
+	// move left and right
+	if (INPUT::KeyPressed(JE_D))
+		m_camera->position += speed * dt * m_camera->GetRight();
+
+	else if (INPUT::KeyPressed(JE_A))
+		m_camera->position -= speed * dt * m_camera->GetRight();
 
 	// zoom in/out by scrolling mouse wheel
 	if (INPUT::KeyPressed(JE_MOUSE_WHEEL_UP))
