@@ -18,7 +18,14 @@ class CameraController : public CustomComponent
 	friend class ComponentManager;
 	friend class CameraControllerBuilder;
 
+	enum CameraMode { CAMERA_FREE, CAMERA_ORBIT };
+
 public:
+
+	void FreeMovingCamera(float dt);
+	void OrbitingCamera(float dt);
+
+	CameraMode mode_ = CAMERA_FREE;
 
 private:
 

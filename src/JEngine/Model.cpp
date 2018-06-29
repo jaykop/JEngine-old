@@ -173,14 +173,20 @@ void Model::Load(CR_RJValue _data)
 		else if (!strcmp(drawType.c_str(), "Triangle_Strip"))
 			m_drawMode = GL_TRIANGLE_STRIP;
 
-		else if (!strcmp(drawType.c_str(), "Triangle_Fan")) 
+		else if (!strcmp(drawType.c_str(), "Triangle_Fan"))
 			m_drawMode = GL_TRIANGLE_FAN;
 
-		else if (!strcmp(drawType.c_str(), "Lines")) 
+		else if (!strcmp(drawType.c_str(), "Lines"))
 			m_drawMode = GL_LINES;
 
-		else if (!strcmp(drawType.c_str(), "Line_Strip")) 
+		else if (!strcmp(drawType.c_str(), "Line_Strip"))
 			m_drawMode = GL_LINE_STRIP;
+
+		else if (!strcmp("Quad",drawType.c_str()))
+			m_drawMode = GL_QUADS;
+
+		else if (!strcmp("Quad_Strip", drawType.c_str()))
+			m_drawMode= GL_QUAD_STRIP;
 	}
 
 	if (_data.HasMember("Flip")

@@ -30,9 +30,29 @@ void CameraController::Init()
 		SYSTEM::pGraphic_->GetWidth() / float(SYSTEM::pGraphic_->GetHeight()),
 		1.f
 	);
+
+	//mode_ = CAMERA_ORBIT;
+	mode_ = CAMERA_FREE;
 }
 
 void CameraController::Update(float dt)
+{
+	if (mode_ == CAMERA_FREE)
+		FreeMovingCamera(dt);
+	else
+		OrbitingCamera(dt);
+}
+
+void CameraController::Close() {}
+
+void CameraController::Unload() {}
+
+void CameraController::EditorUpdate(const float /*dt*/)
+{
+	// TODO
+}
+
+void CameraController::FreeMovingCamera(float dt)
 {
 	static vec3 lastPosition, currentPosition = vec3::ZERO, diff;
 	static float yaw = 0.f, pitch = 0.f;
@@ -56,12 +76,12 @@ void CameraController::Update(float dt)
 		active = false;
 	
 	static float move = 150.f, zoom = 25.f;
-	
+
 	// move back and forward
-	if (INPUT::KeyPressed(JE_W)) 
+	if (INPUT::KeyPressed(JE_W))
 		m_camera->position -= move * dt * m_camera->GetBack();
 
-	else if (INPUT::KeyPressed(JE_S)) 
+	else if (INPUT::KeyPressed(JE_S))
 		m_camera->position += move * dt * m_camera->GetBack();
 
 	// move left and right
@@ -85,16 +105,46 @@ void CameraController::Update(float dt)
 
 	// Update target as well
 	m_camera->target = m_camera->position - m_camera->GetBack();
-
 }
 
-void CameraController::Close() {}
-
-void CameraController::Unload() {}
-
-void CameraController::EditorUpdate(const float /*dt*/)
+void CameraController::OrbitingCamera(float dt)
 {
+	static vec3 lastPosition, currentPosition = vec3::ZERO, 
+		diff, newPosition;
+	static float distance = 250.f;
+	static float degreeVertical = 0.f, degreeHorizontal = 0.f;
+	static bool active = false;
+
+	newPosition.Set(m_camera->position);
+
+	if (INPUT::KeyPressed(JE_MOUSE_LEFT)) {
+		lastPosition = currentPosition;
+		currentPosition = INPUT::GetOrhtoPosition();
+		diff = lastPosition - currentPosition;
+		if (active) {
+			degreeVertical += diff.x * 180.f / SYSTEM::pGraphic_->GetWidth();
+			degreeHorizontal += diff.y * 180.f / SYSTEM::pGraphic_->GetHeight();
+		}
+		active = true;
+	}
+	else
+		active = false;
+
 	// TODO
+	// Degree to vector
+
+	//float v_x = cosf(DegToRad(degreeVertical)), v_y = sinf(DegToRad(degreeVertical));
+	//newPosition.x = distance * v_x;
+	//newPosition.y = 0.f;
+	//newPosition.z = distance * v_y;
+
+	float h_x = cosf(DegToRad(degreeHorizontal)), h_y = sinf(DegToRad(degreeHorizontal));
+	newPosition.x = 0.f;
+	newPosition.y = distance * h_y;
+	newPosition.z = distance * h_x;
+
+	// 
+	m_camera->position.Set(newPosition);
 }
 
 jeEnd

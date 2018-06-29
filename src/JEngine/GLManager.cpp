@@ -126,7 +126,7 @@ void GLManager::InitGLEnvironment()
 void GLManager::InitSimplePolygons()
 {
 	// Describe vertexes and indices
-	for (unsigned shape_index = 0; shape_index < SHAPE_TETRAHEDRON; ++shape_index) {
+	for (unsigned shape_index = 0; shape_index < SHAPE_END; ++shape_index) {
 
 		switch (shape_index) {
 		case SHAPE_TEXT:

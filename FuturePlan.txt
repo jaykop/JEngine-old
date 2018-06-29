@@ -10,12 +10,12 @@
 *Broadcasting design
 *Add dixygen comments
 *Deferred rendering
-*premake build/cmake/emscripten
+*premake build/cmake/emscripten/python
 *FMOD Lib
 *SIMD Tech
 *Rippling effect
 *Polish obj loader/ Efficient obj loader / 4 faces case
 *Math library unit test
 *Look for part to implement thread
-*culling
+*Culling
 *Change naming convention

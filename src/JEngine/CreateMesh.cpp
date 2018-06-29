@@ -264,12 +264,17 @@ Mesh* GraphicSystem::CreateCube()
 
 Mesh* GraphicSystem::CreateTetrahedron()
 {
-	// TODO
 	Mesh *pTetrahedron = new Mesh;
 
-	//pTetrahedron->AddPoint();
-	//pTetrahedron->AddTextureUV();
-	//pTetrahedron->AddNormal();
+	pTetrahedron->AddPoint(vec3(0.f, 1.f, .5f));
+	pTetrahedron->AddPoint(vec3(-.5f, 0.f, -.5f));
+	pTetrahedron->AddPoint(vec3(-.5f, 0.f, .5f));
+	pTetrahedron->AddPoint(vec3(.5f, 0.f, .5f));
+	pTetrahedron->AddPoint(vec3(.5f, 0.f, -.5f));
+
+	// TODO
+	pTetrahedron->AddTextureUV(vec2(0,0));
+	pTetrahedron->AddNormal(vec3(0,0,0));
 
 	return pTetrahedron;
 }

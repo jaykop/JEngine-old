@@ -22,7 +22,6 @@ void LevelController::Init()
 
 void LevelController::Update(const float /*dt*/)
 {
-
     //if (INPUT::KeyTriggered(JE_1))
     //	STATE::SetNextState("level1");
 
