@@ -29,9 +29,17 @@ class Mesh
 
 public:
 
-	enum shape { MESH_CUSTOM, MESH_POINT, MESH_RECT, MESH_CROSSRECT, MESH_CUBE, MESH_TETRAHEDRON, };
+	static Mesh* CreatePoint();
+	static Mesh* CreateRect();
+	static Mesh* CreateCrossRect();
+	static Mesh* CreateCube();
+	static Mesh* CreateTetrahedron();
 
-	shape m_shape;
+	void		AddTexture(const char* _key);
+	void		RemoveTexture(const char* _key);
+	void		SetCurrentTexutre(const char* _key);
+	unsigned	GetCurrentTexutre() const;
+	unsigned	GetTexutre(const char* _key);
 
 	void AddPoint(CR_Vec3 _point);
 	void AddTextureUV(CR_Vec2 _uv);
@@ -58,12 +66,15 @@ public:
 
 private:
 
+	unsigned	m_mainTex;
+	TextureMap	m_textureMap;
+
 	std::vector<jeIndex>	m_indices;
 	std::vector<vec3>		m_points;
 	std::vector<vec2>		m_UVs;
 	std::vector<vec3>		m_normals;
 
-	GLuint		m_vao, m_vbo, m_ebo;
+	GLuint m_vao, m_vbo, m_ebo;
 
 	bool builtIn_;
 

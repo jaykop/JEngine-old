@@ -21,10 +21,6 @@ class Model : public Component
     friend class Animation;
     friend class AssetManager;
 
-    using TextureMap = std::unordered_map<std::string, unsigned>;
-	unsigned	m_mainTex;
-	TextureMap	m_textureMap;
-
 protected:
 
     const static int IS_TEXT = 0x10;
@@ -48,11 +44,6 @@ public:
 	unsigned	GetMeshCount() const;
 
     void		SetParentToFollow(Object* _pObj);
-    void		AddTexture(const char* _key);
-    void		RemoveTexture(const char* _key);
-    void		SetCurrentTexutre(const char* _key);
-    unsigned	GetCurrentTexutre() const;
-    unsigned	GetTexutre(const char* _key);
 
 	unsigned	m_drawMode;
     int			status;

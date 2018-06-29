@@ -6,9 +6,9 @@
 
 jeBegin
 
-class Mesh;
 class GLManager {
 
+	friend class Mesh;
     friend class Shader;
     friend class Text;
     friend class Model;
@@ -27,19 +27,20 @@ class GLManager {
     jeStaticClassDeclaration(GLManager)
 
     enum ShaderType { SHADER_MODEL, SHADER_TEXT, SHADER_LIGHTING, SHADER_PARTICLE, SHADER_SCREEN, SHADER_END };
-    enum ShapeType { SHAPE_POINT, SHAPE_RECT, SHAPE_TEXT, SHAPE_CROSSRECT, SHAPE_CUBE, SHAPE_TETRAHEDRON, SHAPE_END };
+    enum Target { TARGET_SCREEN, TARGET_TEXT, TARGET_END };
 
 public:
 	
+	static void	DescribeVertex(Mesh* pMesh);
+
 private:
 
     // Private member functions
     static bool Init();
     static void Close();
-    static void InitGLEnvironment();
-	static void InitSimplePolygons();
 
-    static void InitFBO();
+	static void InitFramebuffer();
+    static void InitGLEnvironment();
     static void InitShaders();
     static void ShowGLVersion();
     static void Resize(int _width, int _height);
@@ -51,7 +52,7 @@ private:
     static Shaders	m_shader;
     static GLint	m_Attributes, m_buffers, m_samples;
     static GLuint	m_fbo, m_renderTarget, m_depthBuffer;
-	static Mesh*	pMesh_[SHAPE_END];
+	static Mesh*	targetMesh_[TARGET_END];
 
     static const GLubyte *m_pRenderer, *m_pVendor, *m_pVersion, *m_pGlslVersion;
 

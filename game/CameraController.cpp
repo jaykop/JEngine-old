@@ -107,7 +107,7 @@ void CameraController::FreeMovingCamera(float dt)
 	m_camera->target = m_camera->position - m_camera->GetBack();
 }
 
-void CameraController::OrbitingCamera(float dt)
+void CameraController::OrbitingCamera(float /*dt*/)
 {
 	static vec3 lastPosition, currentPosition = vec3::ZERO, 
 		diff, newPosition;

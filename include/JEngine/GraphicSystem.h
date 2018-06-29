@@ -55,14 +55,6 @@ public:
     Alias			aliasMode;
     ScreenEffect    screenEffect;
 
-	static Mesh* CreatePoint();
-	static Mesh* CreateRect();
-	static Mesh* CreateCrossRect();
-	static Mesh* CreateCube();
-	static Mesh* CreateTetrahedron();
-
-	static void DescribeVertex(Mesh* pMesh);
-
 private:
 
     GraphicSystem();
@@ -103,7 +95,6 @@ private:
 	// Render functions
 	void Render(const Mesh* _pMesh, unsigned drawMode);
 	void Render(const Text*_pText);
-	void Render(unsigned _vao, unsigned _indicesSize, unsigned _drawMode);
     void RenderCharacter(Character& _character, const vec3& _position,
         const vec3& _scale, float& _newX, float _intervalY);
 

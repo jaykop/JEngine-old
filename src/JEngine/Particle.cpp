@@ -192,29 +192,29 @@ void Emitter::Load(CR_RJValue _data)
 		&& _data["Mesh"].GetString())
 	{
 		std::string meshType = _data["Mesh"].GetString();
-		if (!strcmp(meshType.c_str(), "Point")) 
-			AddMesh(GLM::pMesh_[GLM::SHAPE_POINT]);
-		
-		else if (!strcmp(meshType.c_str(), "Rect")) 
-			AddMesh(GLM::pMesh_[GLM::SHAPE_RECT]);
-		
-		else if (!strcmp(meshType.c_str(), "CrossRect")) 
-			AddMesh(GLM::pMesh_[GLM::SHAPE_CROSSRECT]);
-		
-		else if (!strcmp(meshType.c_str(), "Cube")) 
-			AddMesh(GLM::pMesh_[GLM::SHAPE_CUBE]);
-		
-		else if (!strcmp(meshType.c_str(), "Tetrahedron")) 
-			AddMesh(GLM::pMesh_[GLM::SHAPE_TETRAHEDRON]);
-		
+		if (!strcmp(meshType.c_str(), "Point"))
+			AddMesh(Mesh::CreatePoint());
+
+		else if (!strcmp(meshType.c_str(), "Rect"))
+			AddMesh(Mesh::CreateRect());
+
+		else if (!strcmp(meshType.c_str(), "CrossRect"))
+			AddMesh(Mesh::CreateCrossRect());
+
+		else if (!strcmp(meshType.c_str(), "Cube"))
+			AddMesh(Mesh::CreateCube());
+
+		else if (!strcmp(meshType.c_str(), "Tetrahedron"))
+			AddMesh(Mesh::CreateTetrahedron());
+
 		else /*if (!strcmp(meshType.c_str(), "Custom"))*/ {
 			Mesh* pMesh = ASSET::LoadObjFile(meshType.c_str());
-			GraphicSystem::DescribeVertex(pMesh);
+			GLM::DescribeVertex(pMesh);
 			AddMesh(pMesh);
 		}
 	}
-	else 
-		AddMesh(GraphicSystem::CreateRect());
+	else
+		AddMesh(Mesh::CreateCrossRect());
 
 	if (_data.HasMember("Active"))
 		active = _data["Active"].GetBool();
@@ -238,7 +238,7 @@ void Emitter::Load(CR_RJValue _data)
 
 	if (_data.HasMember("Texture")) {
 		CR_RJValue loadedTexture = _data["Texture"];
-		AddTexture(loadedTexture.GetString());
+		meshes_[0]->AddTexture(loadedTexture.GetString());
 	}
 
 	if (_data.HasMember("Life")) 

@@ -117,7 +117,9 @@ void Steering::Init()
 			newObstacle->AddComponent<Model>();
 			Model* model = newObstacle->GetComponent<Model>();
 			model->color.Set(1.f, 0.f, 0.f, 1.f);
-			model->AddTexture("circle");
+			Mesh* newMesh = Mesh::CreateRect();
+			model->AddMesh(newMesh);
+			newMesh->AddTexture("circle");
 			model->projection = PROJECTION_PERSPECTIVE;
 
 			FACTORY::AddCreatedObject();

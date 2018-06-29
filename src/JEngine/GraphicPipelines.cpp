@@ -68,7 +68,8 @@ void GraphicSystem::RenderToFramebuffer() const
 
 void GraphicSystem::RenderToScreen() const
 {
-	static GLsizei sizeOfPlaneIndices = static_cast<GLsizei>(GLM::pMesh_[GLM::SHAPE_RECT]->GetIndiceCount());
+	static GLsizei sizeOfPlaneIndices
+		= static_cast<GLsizei>(GLM::targetMesh_[GLM::TARGET_SCREEN]->GetIndiceCount());
 
 	// Bind default framebuffer and render to screen
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -79,7 +80,7 @@ void GraphicSystem::RenderToScreen() const
 	glDisable(GL_DEPTH_TEST);	//Disable depth test
 
 	// Render to plane 2d
-	glBindVertexArray(GLM::pMesh_[GLM::SHAPE_RECT]->m_vao);
+	glBindVertexArray(GLM::targetMesh_[GLM::TARGET_SCREEN]->m_vao);
 	Shader::Use(GLM::SHADER_SCREEN);
 	Shader::m_pCurrentShader->SetVector4("v4_screenColor", screenColor);
 
@@ -244,51 +245,54 @@ void GraphicSystem::ParentPipeline(Transform* _pTransform) const
 
 void GraphicSystem::MappingPipeline(Model* _model)
 {
-	glBindTexture(GL_TEXTURE_2D, _model->GetCurrentTexutre());
+	for (auto mesh : _model->meshes_) {
 
-	if (_model->m_pAnimation) {
+		glBindTexture(GL_TEXTURE_2D, mesh->m_mainTex);
 
-		static Animation* animation;
-		animation = _model->m_pAnimation;
+		if (_model->m_pAnimation) {
 
-		if (animation->m_activeAnimation) {
+			static Animation* animation;
+			animation = _model->m_pAnimation;
 
-			static float realSpeed;
-			realSpeed = animation->m_realSpeed;
+			if (animation->m_activeAnimation) {
 
-			if (realSpeed <= animation->m_timer.GetTime()) {
+				static float realSpeed;
+				realSpeed = animation->m_realSpeed;
 
-				static float nextFrame;
-				if ((_model->status & Model::IS_FLIPPED) == Model::IS_FLIPPED)
-					nextFrame = animation->m_currentFrame - animation->m_realFrame;
-				else
-					nextFrame = animation->m_currentFrame + animation->m_realFrame;
+				if (realSpeed <= animation->m_timer.GetTime()) {
 
-				if (nextFrame >= 1.f)
-					animation->m_currentFrame = 0.f;
-				else
-					animation->m_currentFrame = nextFrame;
+					static float nextFrame;
+					if ((_model->status & Model::IS_FLIPPED) == Model::IS_FLIPPED)
+						nextFrame = animation->m_currentFrame - animation->m_realFrame;
+					else
+						nextFrame = animation->m_currentFrame + animation->m_realFrame;
 
-				animation->m_timer.Start();
-			} // if (realSpeed <= animation->m_timer.GetTime()) {
-		} // if (animation->activeAnimation) {
+					if (nextFrame >= 1.f)
+						animation->m_currentFrame = 0.f;
+					else
+						animation->m_currentFrame = nextFrame;
 
-		m_aniScale.Set(animation->m_realFrame, 1.f, 0.f);
-		m_aniTranslate.Set(animation->m_currentFrame, 0.f, 0.f);
+					animation->m_timer.Start();
+				} // if (realSpeed <= animation->m_timer.GetTime()) {
+			} // if (animation->activeAnimation) {
 
-	} // if (_model->m_hasAnimation) {
+			m_aniScale.Set(animation->m_realFrame, 1.f, 0.f);
+			m_aniTranslate.Set(animation->m_currentFrame, 0.f, 0.f);
 
-	else {
-		m_aniScale.Set(1, 1, 0);
-		m_aniTranslate.Set(0, 0, 0);
+		} // if (_model->m_hasAnimation) {
+
+		else {
+			m_aniScale.Set(1, 1, 0);
+			m_aniTranslate.Set(0, 0, 0);
+		}
+
+		// Send color info to shader
+		Shader::m_pCurrentShader->SetVector4("v4_color", _model->color);
+		Shader::m_pCurrentShader->SetBool(
+			"boolean_flip", (_model->status & Model::IS_FLIPPED) == Model::IS_FLIPPED);
+		Shader::m_pCurrentShader->SetMatrix("m4_aniScale", Scale(m_aniScale));
+		Shader::m_pCurrentShader->SetMatrix("m4_aniTranslate", Translate(m_aniTranslate));
 	}
-
-	// Send color info to shader
-	Shader::m_pCurrentShader->SetVector4("v4_color", _model->color);
-	Shader::m_pCurrentShader->SetBool(
-		"boolean_flip", (_model->status & Model::IS_FLIPPED) == Model::IS_FLIPPED);
-	Shader::m_pCurrentShader->SetMatrix("m4_aniScale", Scale(m_aniScale));
-	Shader::m_pCurrentShader->SetMatrix("m4_aniTranslate", Translate(m_aniTranslate));
 }
 
 void GraphicSystem::LightingEffectPipeline(Material *_material)
@@ -415,13 +419,12 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, float dt)
 		static vec3			s_velocity, s_colorDiff;
 		static bool			s_changeColor, s_rotation;
 		static vec4			s_color;
-		static unsigned	    s_texture, s_mode;
+		static unsigned	    s_mode;
 		static Transform*   s_pTransform;
 
 		s_rotation = _emitter->rotationSpeed != 0.f;
 		s_changeColor = _emitter->m_changeColor;
 		s_pTransform = _emitter->m_pTransform;
-		s_texture = _emitter->m_mainTex;
 		s_velocity = dt * _emitter->velocity;
 		s_colorDiff = dt * _emitter->colorDiff;
 		s_mode = _emitter->m_drawMode;
@@ -456,8 +459,6 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, float dt)
 		// Send camera info to shader
 		Shader::m_pCurrentShader->SetMatrix("m4_viewport", m_viewport);
 
-		glBindTexture(GL_TEXTURE_2D, s_texture);
-
 		for (auto particle : _emitter->m_particles) {
 
 			if (particle->life < 0.f)
@@ -487,9 +488,13 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, float dt)
 
 				// Update every mesh
 				for (auto mesh : _emitter->meshes_) {
-				
+
+					static unsigned	 s_texture;
+					glBindTexture(GL_TEXTURE_2D, s_texture);
+					s_texture = mesh->m_mainTex;
+
 					// Points
-					if (mesh->m_shape == Mesh::MESH_POINT) {
+					if (mesh->GetIndiceCount() == 1) {
 						glPointSize(_emitter->pointSize);
 						glEnable(GL_POINT_SMOOTH);
 					}
@@ -548,8 +553,8 @@ void GraphicSystem::RenderCharacter(Character& _character, const vec3& _position
 
 	// Text component does not use member mesh vector,
 	// but pre defined mesh from GLManager
-	glBindVertexArray(GLM::pMesh_[GLM::SHAPE_TEXT]->m_vao);
-	glBindBuffer(GL_ARRAY_BUFFER, GLM::pMesh_[GLM::SHAPE_TEXT]->m_vbo);
+	glBindVertexArray(GLM::targetMesh_[GLM::TARGET_TEXT]->m_vao);
+	glBindBuffer(GL_ARRAY_BUFFER, GLM::targetMesh_[GLM::TARGET_TEXT]->m_vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Mesh::jeVertex) * s_vertexArray.size(),
 		static_cast<const void*>(&s_vertexArray[0]), GL_DYNAMIC_DRAW);
 
@@ -562,7 +567,7 @@ void GraphicSystem::RenderCharacter(Character& _character, const vec3& _position
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::jeVertex), reinterpret_cast<void*>(offsetof(Mesh::jeVertex, jeVertex::normal)));
 	glEnableVertexAttribArray(2);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GLM::pMesh_[GLM::SHAPE_TEXT]->m_ebo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GLM::targetMesh_[GLM::TARGET_TEXT]->m_ebo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * Text::m_pointIndices.size(),
 		static_cast<const void*>(&Text::m_pointIndices[0]), GL_DYNAMIC_DRAW);
 	glDrawElements(GL_TRIANGLE_STRIP, GLsizei(Text::m_pointIndices.size()), GL_UNSIGNED_INT, nullptr);
@@ -635,41 +640,8 @@ void GraphicSystem::Render(const Text*_pText)
 
 void GraphicSystem::Render(const Mesh* _pMesh, unsigned drawMode)
 {
-	switch (_pMesh->m_shape)
-	{
-	case Mesh::MESH_CUSTOM:
-		Render(_pMesh->m_vao, unsigned(_pMesh->GetIndiceCount()), drawMode);
-		break;
-		
-	case Mesh::MESH_POINT:
-		Render(GLM::pMesh_[GLM::SHAPE_POINT]->m_vao, unsigned(_pMesh->GetIndiceCount()), drawMode);
-		break;
-
-	case Mesh::MESH_RECT:
-		Render(GLM::pMesh_[GLM::SHAPE_RECT]->m_vao, unsigned(_pMesh->GetIndiceCount()), drawMode);
-		break;
-
-	case Mesh::MESH_CROSSRECT:
-		Render(GLM::pMesh_[GLM::SHAPE_CROSSRECT]->m_vao, unsigned(_pMesh->GetIndiceCount()), drawMode);
-		break;
-
-	case Mesh::MESH_CUBE:
-		Render(GLM::pMesh_[GLM::SHAPE_CUBE]->m_vao, unsigned(_pMesh->GetIndiceCount()), drawMode);
-		break;
-
-	case Mesh::MESH_TETRAHEDRON:
-		Render(GLM::pMesh_[GLM::SHAPE_TETRAHEDRON]->m_vao, unsigned(_pMesh->GetIndiceCount()), drawMode);
-		break;
-
-	default:
-		break;
-	}
-}
-
-void GraphicSystem::Render(unsigned _vao, unsigned _indicesSize, unsigned _drawMode)
-{
-	glBindVertexArray(_vao);
-	glDrawElements(_drawMode, _indicesSize, GL_UNSIGNED_INT, nullptr);
+	glBindVertexArray(_pMesh->m_vao);
+	glDrawElements(drawMode, unsigned(_pMesh->GetIndiceCount()), GL_UNSIGNED_INT, nullptr);
 	glBindVertexArray(0);
 }
 

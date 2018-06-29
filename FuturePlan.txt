@@ -2,7 +2,6 @@
 *Add orbiting camera to camera controller
 *Derive light class from model
 *Polish text and particle pipeline as well
-*Correct 0 value
 *Clone function - copy and move constructor
 *Polish event handler with std function
 *Mouse picking - bounding box

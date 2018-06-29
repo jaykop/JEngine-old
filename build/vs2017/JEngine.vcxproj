@@ -234,7 +234,6 @@
     <ClCompile Include="..\..\src\JEngine\BehaviorSystem.cpp" />
     <ClCompile Include="..\..\src\JEngine\Camera.cpp" />
     <ClCompile Include="..\..\src\JEngine\ComponentManager.cpp" />
-    <ClCompile Include="..\..\src\JEngine\CreateMesh.cpp" />
     <ClCompile Include="..\..\src\JEngine\Debug.cpp" />
     <ClCompile Include="..\..\src\JEngine\GeometryShader.cpp" />
     <ClCompile Include="..\..\src\JEngine\FragmentShader.cpp" />

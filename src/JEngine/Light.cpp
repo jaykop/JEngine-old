@@ -75,28 +75,28 @@ void Light::Load(CR_RJValue _data)
 	{
 		std::string meshType = _data["Mesh"].GetString();
 		if (!strcmp(meshType.c_str(), "Point"))
-			AddMesh(GLM::pMesh_[GLM::SHAPE_POINT]);
+			AddMesh(Mesh::CreatePoint());
 
 		else if (!strcmp(meshType.c_str(), "Rect"))
-			AddMesh(GLM::pMesh_[GLM::SHAPE_RECT]);
+			AddMesh(Mesh::CreateRect());
 
 		else if (!strcmp(meshType.c_str(), "CrossRect"))
-			AddMesh(GLM::pMesh_[GLM::SHAPE_CROSSRECT]);
+			AddMesh(Mesh::CreateCrossRect());
 
 		else if (!strcmp(meshType.c_str(), "Cube"))
-			AddMesh(GLM::pMesh_[GLM::SHAPE_CUBE]);
+			AddMesh(Mesh::CreateCube());
 
 		else if (!strcmp(meshType.c_str(), "Tetrahedron"))
-			AddMesh(GLM::pMesh_[GLM::SHAPE_TETRAHEDRON]);
+			AddMesh(Mesh::CreateTetrahedron());
 
 		else /*if (!strcmp(meshType.c_str(), "Custom"))*/ {
 			Mesh* pMesh = ASSET::LoadObjFile(meshType.c_str());
-			GraphicSystem::DescribeVertex(pMesh);
+			GLM::DescribeVertex(pMesh);
 			AddMesh(pMesh);
 		}
 	}
-	else 
-		AddMesh(GLM::pMesh_[GLM::SHAPE_CUBE]);
+	else
+		AddMesh(Mesh::CreateCube());
 
 	if (_data.HasMember("CutOff")) {
 		CR_RJValue loadedCutOff = _data["CutOff"];
