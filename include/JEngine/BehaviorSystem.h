@@ -21,7 +21,7 @@ public:
 private:
 
 	BehaviorSystem();
-	~BehaviorSystem() {};
+	virtual ~BehaviorSystem() {};
 	BehaviorSystem(const BehaviorSystem& /*_copy*/) = delete;
 	void operator=(const BehaviorSystem& /*_copy*/) = delete;
 

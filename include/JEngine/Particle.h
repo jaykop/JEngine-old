@@ -57,7 +57,7 @@ public:
 private:
 
     Emitter(Object* _pOwner);
-    ~Emitter();
+	virtual ~Emitter();
     void operator=(const Emitter& _copy);
 
     void Load(CR_RJValue _data) override;

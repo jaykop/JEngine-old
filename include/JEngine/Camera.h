@@ -39,7 +39,7 @@ private:
 	float m_distance, m_aspect, m_width, m_height;
 
     Camera(Object* _pOwner);
-    ~Camera() {};
+	virtual ~Camera() {};
     void operator=(const Camera& _copy);
 
     Camera() = delete;

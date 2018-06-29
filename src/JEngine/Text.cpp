@@ -12,10 +12,6 @@
 jeBegin
 jeDefineComponentBuilder(Text);
 
-std::vector<Mesh::jeIndex> Text::m_indices = {
-	{0, 0, 0}, {2, 2, 2}, {3, 3, 3}, {1, 1, 1}, {0, 0, 0}, {2, 2, 2}
-};
-
 std::vector<unsigned> Text::m_pointIndices = { 0, 2, 3, 1, 0, 2 };
 
 Font::Font()
@@ -159,6 +155,10 @@ void Text::Load(CR_RJValue _data)
 		pFont = ASSET::GetFont(loadedFont.GetString());
 	}
 
+	if (_data.HasMember("Flip")
+		&& _data["Flip"].GetBool())
+		status |= IS_FLIPPED;
+
 	if (_data.HasMember("Color")) {
 		CR_RJValue loadedColor = _data["Color"];
 		color.Set(loadedColor[0].GetFloat(), loadedColor[1].GetFloat(),
@@ -168,16 +168,19 @@ void Text::Load(CR_RJValue _data)
 	if (_data.HasMember("Projection")) {
 		CR_RJValue loadedProjection = _data["Projection"];
 
-		if (!strcmp("Perspective", loadedProjection.GetString())) {
+		if (!strcmp("Perspective", loadedProjection.GetString()))
 			projection = PROJECTION_PERSPECTIVE;
-		}
 
-		else if (!strcmp("Orthogonal", loadedProjection.GetString())) {
+		else if (!strcmp("Orthogonal", loadedProjection.GetString()))
 			projection = PROJECTION_ORTHOGONAL;
-		}
+
 		else
 			jeDebugPrint("!Model - Wrong projection type: %s\n", loadedProjection.GetString());
 	}
+
+	if (_data.HasMember("Bilboard")
+		&& _data["Bilboard"].GetBool())
+		status |= IS_BILBOARD;
 }
 
 void Text::EditorUpdate(const float /*dt*/)

@@ -58,7 +58,7 @@ public:
 private:
 
     GraphicSystem();
-    ~GraphicSystem() {};
+	virtual ~GraphicSystem() {};
 
     void Load(CR_RJDoc _data) override;
     void Init() override;

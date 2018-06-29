@@ -22,28 +22,31 @@ void LightController::Init()
 {
     if (GetOwner()->HasComponent<Light>())
         m_light = GetOwner()->GetComponent<Light>();
+
+	if (GetOwner()->HasComponent<Transform>())
+		transform_ = GetOwner()->GetComponent<Transform>();
 }
 
 void LightController::Update(float dt)
 {
     float speed = 60.f * dt;
     if (INPUT::KeyPressed(JE_A))
-        m_light->position.x -= speed;
+		transform_->position.x -= speed;
 
     if (INPUT::KeyPressed(JE_D))
-        m_light->position.x += speed;
+		transform_->position.x += speed;
 
     if (INPUT::KeyPressed(JE_W))
-        m_light->position.y += speed;
+		transform_->position.y += speed;
 
     if (INPUT::KeyPressed(JE_S))
-        m_light->position.y -= speed;
+		transform_->position.y -= speed;
 
     if (INPUT::KeyPressed(JE_Z))
-        m_light->position.z += speed;
+		transform_->position.z += speed;
 
     if (INPUT::KeyPressed(JE_C))
-        m_light->position.z -= speed;
+		transform_->position.z -= speed;
 }
 
 void LightController::Close()

@@ -189,57 +189,110 @@ void Emitter::ManualRefresh()
 void Emitter::Load(CR_RJValue _data)
 {
 	if (_data.HasMember("Mesh")
-		&& _data["Mesh"].GetString())
+		&& _data["Mesh"].IsArray())
 	{
-		std::string meshType = _data["Mesh"].GetString();
-		if (!strcmp(meshType.c_str(), "Point"))
-			AddMesh(Mesh::CreatePoint());
+		CR_RJValue loadedMeshes = _data["Mesh"];
 
-		else if (!strcmp(meshType.c_str(), "Rect"))
-			AddMesh(Mesh::CreateRect());
+		for (unsigned meshIndex = 0; meshIndex < loadedMeshes.Size(); ++meshIndex) {
 
-		else if (!strcmp(meshType.c_str(), "CrossRect"))
-			AddMesh(Mesh::CreateCrossRect());
+			CR_RJValue currentMesh = loadedMeshes[meshIndex];
+			if (currentMesh.HasMember("Shape")
+				&& currentMesh["Shape"].IsString()) {
 
-		else if (!strcmp(meshType.c_str(), "Cube"))
-			AddMesh(Mesh::CreateCube());
+				std::string meshType = currentMesh["Shape"].GetString();
+				Mesh* newMesh = nullptr;
 
-		else if (!strcmp(meshType.c_str(), "Tetrahedron"))
-			AddMesh(Mesh::CreateTetrahedron());
+				if (!strcmp(meshType.c_str(), "Point"))
+					newMesh = Mesh::CreatePoint();
 
-		else /*if (!strcmp(meshType.c_str(), "Custom"))*/ {
-			Mesh* pMesh = ASSET::LoadObjFile(meshType.c_str());
-			GLM::DescribeVertex(pMesh);
-			AddMesh(pMesh);
+				else if (!strcmp(meshType.c_str(), "Rect"))
+					newMesh = Mesh::CreateRect();
+
+				else if (!strcmp(meshType.c_str(), "CrossRect"))
+					newMesh = Mesh::CreateCrossRect();
+
+				/*else if (!strcmp(meshType.c_str(), "Cube"))
+				newMesh = Mesh::CreateCube();
+				*/
+				else if (!strcmp(meshType.c_str(), "Tetrahedron"))
+					newMesh = Mesh::CreateTetrahedron();
+
+				else if (!strcmp(meshType.c_str(), "Custom"))
+					newMesh = ASSET::LoadObjFile(meshType.c_str());
+
+				else
+					AddMesh(Mesh::CreateCube());
+
+				AddMesh(newMesh);
+
+				if (currentMesh.HasMember("Texture")
+					&& currentMesh["Texture"].IsArray()) {
+
+					for (unsigned textureIndex = 0; textureIndex < currentMesh["Texture"].Size(); ++textureIndex)
+						newMesh->AddTexture(currentMesh["Texture"][textureIndex].GetString());
+				}
+			}
 		}
 	}
-	else
-		AddMesh(Mesh::CreateCrossRect());
 
-	if (_data.HasMember("Active"))
-		active = _data["Active"].GetBool();
+	if (_data.HasMember("DrawMode")
+		&& _data["DrawMode"].IsString()) {
 
-	if (_data.HasMember("Bilboard")
-		&& _data["Bilboard"].GetBool())
-		status |= Model::IS_BILBOARD;
+		std::string drawType = _data["DrawMode"].GetString();
+		if (!strcmp(drawType.c_str(), "Triangles"))
+			m_drawMode = GL_TRIANGLES;
 
-	if (_data.HasMember("Iis2d"))
-		is2d = _data["Iis2d"].GetBool();
+		else if (!strcmp(drawType.c_str(), "Triangle_Strip"))
+			m_drawMode = GL_TRIANGLE_STRIP;
+
+		else if (!strcmp(drawType.c_str(), "Triangle_Fan"))
+			m_drawMode = GL_TRIANGLE_FAN;
+
+		else if (!strcmp(drawType.c_str(), "Lines"))
+			m_drawMode = GL_LINES;
+
+		else if (!strcmp(drawType.c_str(), "Line_Strip"))
+			m_drawMode = GL_LINE_STRIP;
+
+		else if (!strcmp("Quad", drawType.c_str()))
+			m_drawMode = GL_QUADS;
+
+		else if (!strcmp("Quad_Strip", drawType.c_str()))
+			m_drawMode = GL_QUAD_STRIP;
+	}
+
+	if (_data.HasMember("Flip")
+		&& _data["Flip"].GetBool())
+		status |= IS_FLIPPED;
+
+	if (_data.HasMember("Color")) {
+		CR_RJValue loadedColor = _data["Color"];
+		color.Set(loadedColor[0].GetFloat(), loadedColor[1].GetFloat(),
+			loadedColor[2].GetFloat(), loadedColor[3].GetFloat());
+	}
 
 	if (_data.HasMember("Projection")) {
 		CR_RJValue loadedProjection = _data["Projection"];
 
-		if (!strcmp("Perspective", loadedProjection.GetString())) 
+		if (!strcmp("Perspective", loadedProjection.GetString()))
 			projection = PROJECTION_PERSPECTIVE;
 
-		else if (!strcmp("Orhtogonal", loadedProjection.GetString())) 
-			projection = PROJECTION_PERSPECTIVE;
+		else if (!strcmp("Orthogonal", loadedProjection.GetString()))
+			projection = PROJECTION_ORTHOGONAL;
+
+		else
+			jeDebugPrint("!Model - Wrong projection type: %s\n", loadedProjection.GetString());
 	}
 
-	if (_data.HasMember("Texture")) {
-		CR_RJValue loadedTexture = _data["Texture"];
-		meshes_[0]->AddTexture(loadedTexture.GetString());
-	}
+	if (_data.HasMember("Bilboard")
+		&& _data["Bilboard"].GetBool())
+		status |= IS_BILBOARD;
+
+	if (_data.HasMember("Active"))
+		active = _data["Active"].GetBool();
+
+	if (_data.HasMember("Iis2d"))
+		is2d = _data["Iis2d"].GetBool();
 
 	if (_data.HasMember("Life")) 
 		life = _data["Life"].GetFloat();

@@ -53,7 +53,7 @@ public:
 
 protected:
 
-    ~Model();
+    virtual ~Model();
 	Model(Object* _pOwner);
     void operator=(const Model& _copy);
 

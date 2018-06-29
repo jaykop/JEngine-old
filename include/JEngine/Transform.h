@@ -19,7 +19,7 @@ public:
 private:
 
     Transform(Object* _pOwner);
-    ~Transform() {};
+	virtual ~Transform() {};
     void operator= (const Transform& _copy);
 
     void Load(CR_RJValue _data) override;

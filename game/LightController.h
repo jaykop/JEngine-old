@@ -6,6 +6,7 @@
 jeBegin
 
 class Light;
+class Transform;
 struct Telegram;
 
 class LightController : public CustomComponent
@@ -32,6 +33,7 @@ private:
 	bool OnMessage(Telegram& msg) override { msg; return false; }
 
 	Light* m_light;
+	Transform* transform_;
 
 	void EditorUpdate(float dt) override;
 };

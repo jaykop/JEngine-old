@@ -18,7 +18,7 @@ public:
 private:
 
     Material(Object* _pOwner);
-    ~Material();
+	virtual ~Material();
     void operator= (const Material& _copy);
 
     Material() = delete;

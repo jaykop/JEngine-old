@@ -13,7 +13,7 @@ public:
 private:
 
 	SoundSystem();
-	~SoundSystem() {};
+	virtual ~SoundSystem() {};
 	SoundSystem(const SoundSystem& /*_copy*/) = delete;
 	void operator=(const SoundSystem& /*_copy*/) = delete;
 

@@ -19,7 +19,7 @@ public:
 private:
 
 	PhysicsSystem();
-	~PhysicsSystem() {};
+	virtual ~PhysicsSystem() {};
 	PhysicsSystem(const PhysicsSystem& /*_copy*/) = delete;
 	void operator=(const PhysicsSystem& /*_copy*/) = delete;
 

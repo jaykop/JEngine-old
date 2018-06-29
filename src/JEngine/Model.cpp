@@ -73,7 +73,8 @@ Model::~Model()
 	}
 	meshes_.clear();
 
-	SYSTEM::pGraphic_->RemoveModel(this);
+	if (IS_LIGHT != is_)
+		SYSTEM::pGraphic_->RemoveModel(this);
 }
 
 void Model::operator=(const Model & _copy)

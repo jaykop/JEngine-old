@@ -65,11 +65,10 @@ private:
     std::wstring	m_wText;
     size_t			m_size = 0;
 
-	static std::vector<Mesh::jeIndex> m_indices;
 	static std::vector<unsigned> m_pointIndices;
 
     Text(Object* pObject);
-    ~Text();
+	virtual ~Text();
     void operator=(const Text& _copy);
     void Load(CR_RJValue _data) override;
     void EditorUpdate(float dt) override;

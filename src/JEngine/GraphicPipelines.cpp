@@ -115,10 +115,15 @@ void GraphicSystem::LightSourcePipeline()
 		
 		for (auto light : m_lights) {
 
-			Shader::m_pCurrentShader->SetMatrix(
-				"m4_translate", Translate(light->position));
+			Transform* transform = light->m_pTransform;
 
-			Shader::m_pCurrentShader->SetMatrix("m4_scale", Scale(light->scale));
+			Shader::m_pCurrentShader->SetMatrix(
+				"m4_translate", Translate(transform->position));
+
+			Shader::m_pCurrentShader->SetMatrix(
+				"m4_rotate", Rotate(Math::DegToRad(transform->rotation), transform->rotationAxis));
+
+			Shader::m_pCurrentShader->SetMatrix("m4_scale", Scale(transform->scale));
 
 			Shader::m_pCurrentShader->SetMatrix(
 				"m4_rotateZ", RotateZ(atan2(light->direction.y, light->direction.x)));
@@ -342,7 +347,7 @@ void GraphicSystem::LightingEffectPipeline(Material *_material)
 			(s_light + quad).c_str(), _light->quadratic);
 
 		Shader::m_pCurrentShader->SetVector3(
-			(s_light + pos).c_str(), _light->position);
+			(s_light + pos).c_str(), _light->m_pTransform->position);
 
 		Shader::m_pCurrentShader->SetFloat(
 			(s_light + cut).c_str(), cosf(Math::DegToRad(_light->cutOff)));

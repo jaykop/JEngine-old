@@ -25,7 +25,7 @@ public:
 private:
 
     // Locked constuctors and destructor
-    ~Animation();
+	virtual ~Animation();
     Animation(Object* _pOwner);
     void operator=(const Animation& _copy);
 
