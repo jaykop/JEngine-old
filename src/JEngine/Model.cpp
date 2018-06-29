@@ -89,32 +89,51 @@ void Model::operator=(const Model & _copy)
 void Model::Load(CR_RJValue _data)
 {
 	if (_data.HasMember("Mesh")
-		&& _data["Mesh"].GetString())
+		&& _data["Mesh"].IsArray())
 	{
-		std::string meshType = _data["Mesh"].GetString();
-		if (!strcmp(meshType.c_str(), "Point"))
-			AddMesh(Mesh::CreatePoint());
+		CR_RJValue loadedMeshes = _data["Mesh"];
 
-		else if (!strcmp(meshType.c_str(), "Rect"))
-			AddMesh(Mesh::CreateRect());
+		for (unsigned meshIndex = 0; meshIndex < loadedMeshes.Size(); ++meshIndex) {
 
-		else if (!strcmp(meshType.c_str(), "CrossRect"))
-			AddMesh(Mesh::CreateCrossRect());
+			CR_RJValue currentMesh = loadedMeshes[meshIndex];
+			if (currentMesh.HasMember("Shape")
+				&& currentMesh["Shape"].IsString()) {
 
-		else if (!strcmp(meshType.c_str(), "Cube"))
-			AddMesh(Mesh::CreateCube());
+				std::string meshType = currentMesh["Shape"].GetString();
+				Mesh* newMesh = nullptr;
 
-		else if (!strcmp(meshType.c_str(), "Tetrahedron"))
-			AddMesh(Mesh::CreateTetrahedron());
+				if (!strcmp(meshType.c_str(), "Point"))
+					newMesh = Mesh::CreatePoint();
 
-		else /*if (!strcmp(meshType.c_str(), "Custom"))*/ {
-			Mesh* pMesh = ASSET::LoadObjFile(meshType.c_str());
-			GLM::DescribeVertex(pMesh);
-			AddMesh(pMesh);
+				//else if (!strcmp(meshType.c_str(), "Rect"))
+				//	newMesh = Mesh::CreateRect();
+
+				else if (!strcmp(meshType.c_str(), "CrossRect"))
+					newMesh = Mesh::CreateCrossRect();
+
+				else if (!strcmp(meshType.c_str(), "Cube"))
+					newMesh = Mesh::CreateCube();
+
+				else if (!strcmp(meshType.c_str(), "Tetrahedron"))
+					newMesh = Mesh::CreateTetrahedron();
+
+				else if (!strcmp(meshType.c_str(), "Custom"))
+					newMesh = ASSET::LoadObjFile(meshType.c_str());
+
+				else
+					AddMesh(Mesh::CreateRect());
+
+				AddMesh(newMesh);
+
+				if (currentMesh.HasMember("Texture")
+					&& currentMesh["Texture"].IsArray()) {
+
+					for (unsigned textureIndex = 0; textureIndex < currentMesh["Texture"].Size(); ++textureIndex)
+						newMesh->AddTexture(currentMesh["Texture"][textureIndex].GetString());
+				}
+			}
 		}
 	}
-	else 
-		AddMesh(Mesh::CreateRect());
 
 	if (_data.HasMember("DrawMode")
 		&& _data["DrawMode"].IsString()) {
@@ -163,11 +182,6 @@ void Model::Load(CR_RJValue _data)
 
 		else
 			jeDebugPrint("!Model - Wrong projection type: %s\n", loadedProjection.GetString());
-	}
-
-	if (_data.HasMember("Texture")) {
-		CR_RJValue loadedTexture = _data["Texture"];
-		meshes_[0]->AddTexture(loadedTexture.GetString());
 	}
 
 	if (_data.HasMember("Bilboard")

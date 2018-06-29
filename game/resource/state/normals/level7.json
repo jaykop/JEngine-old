@@ -39,8 +39,17 @@
 				},
 				{
 					"Type": "Model",
-					"Values": {"Texture" : "tetrahedron", "Color" : [1, 1, 1, 1], "Projection" : "Perspective",
-								"Mesh" : "Tetrahedron", "DrawMode" : "Triangles"}
+					"Values": { 
+						"Mesh" : [  
+							{
+								"Shape" : "Tetrahedron",
+								"Texture" : [ "tetrahedron" ] 
+							}
+						],
+
+						"Color" : [1, 1, 1, 1], "Projection" : "Perspective",
+						"DrawMode" : "Triangles"
+					}
 				}
 			]
 		}

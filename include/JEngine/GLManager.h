@@ -30,8 +30,6 @@ class GLManager {
     enum Target { TARGET_SCREEN, TARGET_TEXT, TARGET_END };
 
 public:
-	
-	static void	DescribeVertex(Mesh* pMesh);
 
 private:
 
@@ -43,6 +41,8 @@ private:
     static void InitGLEnvironment();
     static void InitShaders();
     static void ShowGLVersion();
+
+	static void	DescribeVertex(Mesh* pMesh);
     static void Resize(int _width, int _height);
 
     static void EditorUpdate(float dt);

@@ -396,6 +396,7 @@ Mesh* AssetManager::LoadObjFile(const char* _path)
 		}
 	}
 
+	GLM::DescribeVertex(pNewMesh);
 	return pNewMesh;
 }
 
