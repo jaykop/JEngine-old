@@ -12,6 +12,7 @@ class GLManager {
     friend class Shader;
     friend class Text;
     friend class Model;
+	friend class Light;
     friend class Emitter;
 	friend class Camera;
     friend class Application;
@@ -29,15 +30,7 @@ class GLManager {
     enum ShapeType { SHAPE_POINT, SHAPE_RECT, SHAPE_TEXT, SHAPE_CROSSRECT, SHAPE_CUBE, SHAPE_TETRAHEDRON, SHAPE_END };
 
 public:
-
-	static void DescribeVertex(Mesh* pMesh);
-
-	static Mesh* CreatePoint();
-	static Mesh* CreateRect();
-	static Mesh* CreateCrossRect();
-	static Mesh* CreateCube();
-	static Mesh* CreateTetrahedron();
-
+	
 private:
 
     // Private member functions

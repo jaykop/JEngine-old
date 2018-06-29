@@ -134,13 +134,13 @@ void Model::Load(CR_RJValue _data)
 		}
 		else /*if (!strcmp(meshType.c_str(), "Custom"))*/ {
 			m_pMeshes = ASSET::LoadObjFile(meshType.c_str());
-			GLM::DescribeVertex(m_pMeshes);
+			GraphicSystem::DescribeVertex(m_pMeshes);
 			m_pMeshes->m_shape = Mesh::MESH_CUSTOM;
 			m_pMeshes->builtIn_ = false;
 		}
 	}
 	else {
-		m_pMeshes = GLM::CreateRect();
+		m_pMeshes = GraphicSystem::CreateRect();
 		m_pMeshes->m_shape = Mesh::MESH_RECT;
 	}
 

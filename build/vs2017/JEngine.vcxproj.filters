@@ -338,8 +338,8 @@
     <ClCompile Include="..\..\src\JEngine\Mesh.cpp">
       <Filter>System\Graphic</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\CreateSimplePolygon.cpp">
-      <Filter>Core\OpenGL</Filter>
+    <ClCompile Include="..\..\src\JEngine\CreateMesh.cpp">
+      <Filter>System\Graphic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

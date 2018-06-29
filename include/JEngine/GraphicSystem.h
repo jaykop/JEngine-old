@@ -55,6 +55,14 @@ public:
     Alias			aliasMode;
     ScreenEffect    screenEffect;
 
+	static Mesh* CreatePoint();
+	static Mesh* CreateRect();
+	static Mesh* CreateCrossRect();
+	static Mesh* CreateCube();
+	static Mesh* CreateTetrahedron();
+
+	static void DescribeVertex(Mesh* pMesh);
+
 private:
 
     GraphicSystem();

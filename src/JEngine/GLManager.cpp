@@ -2,7 +2,7 @@
 #include "Shader.h"
 #include "Mesh.h"
 #include "imgui.h"
-#include "Mesh.h"
+#include "GraphicSystem.h"
 
 jeBegin
 
@@ -131,24 +131,24 @@ void GLManager::InitSimplePolygons()
 		switch (shape_index) {
 		case SHAPE_TEXT:
 		case SHAPE_RECT:
-			pMesh_[shape_index] = CreateRect();
-			DescribeVertex(pMesh_[shape_index]);
+			pMesh_[shape_index] = GraphicSystem::CreateRect();
+			GraphicSystem::DescribeVertex(pMesh_[shape_index]);
 			break;
 		case SHAPE_CUBE:
-			pMesh_[shape_index] = CreateCube();
-			DescribeVertex(pMesh_[shape_index]);
+			pMesh_[shape_index] = GraphicSystem::CreateCube();
+			GraphicSystem::DescribeVertex(pMesh_[shape_index]);
 			break;
 		case SHAPE_CROSSRECT:
-			pMesh_[shape_index] = CreateCrossRect();
-			DescribeVertex(pMesh_[shape_index]);
+			pMesh_[shape_index] = GraphicSystem::CreateCrossRect();
+			GraphicSystem::DescribeVertex(pMesh_[shape_index]);
 			break;
 		case SHAPE_POINT:
-			pMesh_[shape_index] = CreatePoint();
-			DescribeVertex(pMesh_[shape_index]);
+			pMesh_[shape_index] = GraphicSystem::CreatePoint();
+			GraphicSystem::DescribeVertex(pMesh_[shape_index]);
 			break;
 		case SHAPE_TETRAHEDRON:
-			pMesh_[shape_index] = CreateTetrahedron();
-			DescribeVertex(pMesh_[shape_index]);
+			pMesh_[shape_index] = GraphicSystem::CreateTetrahedron();
+			GraphicSystem::DescribeVertex(pMesh_[shape_index]);
 			break;
 		case SHAPE_END:
 		default:
@@ -157,56 +157,6 @@ void GLManager::InitSimplePolygons()
 
 		
 	}
-}
-
-void GLManager::DescribeVertex(Mesh* pMesh)
-{
-	// Check either if all the objects are initialized
-	// and if not, generate them
-	if (!pMesh->m_vao)
-		glGenVertexArrays(1, &pMesh->m_vao);
-	if (!pMesh->m_vbo)
-		glGenBuffers(1, &pMesh->m_vbo);
-	if (!pMesh->m_ebo)
-		glGenBuffers(1, &pMesh->m_ebo);
-
-	// Set vertices and indices vector container
-	std::vector<Mesh::jeVertex> vertices;
-	std::vector<unsigned> indicies;
-	unsigned indiceCount = unsigned(pMesh->GetIndiceCount());
-	vertices.reserve(indiceCount);
-	indicies.reserve(indiceCount);
-
-	for (unsigned index = 0; index < indiceCount; ++index) {
-		Mesh::jeIndex vi = pMesh->GetIndices().at(index);
-		vertices.push_back(Mesh::jeVertex{
-			pMesh->GetPoint(vi.a),
-			pMesh->GetUV(vi.b),
-			pMesh->GetNormal(vi.c) });
-		indicies.push_back(index);
-	}
-
-	// Decribe the format of vertex and indice
-	glBindVertexArray(pMesh->m_vao);
-	glBindBuffer(GL_ARRAY_BUFFER, pMesh->m_vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(Mesh::jeVertex) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pMesh->m_ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * indicies.size(), &indicies[0], GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::jeVertex),
-		reinterpret_cast<void*>(offsetof(Mesh::jeVertex, jeVertex::position)));
-	glEnableVertexAttribArray(0);
-
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Mesh::jeVertex),
-		reinterpret_cast<void*>(offsetof(Mesh::jeVertex, jeVertex::uv)));
-	glEnableVertexAttribArray(1);
-
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::jeVertex),
-		reinterpret_cast<void*>(offsetof(Mesh::jeVertex, jeVertex::normal)));
-	glEnableVertexAttribArray(2);
-
-	glBindVertexArray(0);
 }
 
 void GLManager::InitShaders()

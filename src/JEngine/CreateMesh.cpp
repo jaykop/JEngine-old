@@ -1,9 +1,59 @@
-#include "GLManager.h"
+#include "GraphicSystem.h"
 #include "Mesh.h"
 
 jeBegin
 
-Mesh* GLM::CreatePoint()
+void GraphicSystem::DescribeVertex(Mesh* pMesh)
+{
+	// Check either if all the objects are initialized
+	// and if not, generate them
+	if (!pMesh->m_vao)
+		glGenVertexArrays(1, &pMesh->m_vao);
+	if (!pMesh->m_vbo)
+		glGenBuffers(1, &pMesh->m_vbo);
+	if (!pMesh->m_ebo)
+		glGenBuffers(1, &pMesh->m_ebo);
+
+	// Set vertices and indices vector container
+	std::vector<Mesh::jeVertex> vertices;
+	std::vector<unsigned> indicies;
+	unsigned indiceCount = unsigned(pMesh->GetIndiceCount());
+	vertices.reserve(indiceCount);
+	indicies.reserve(indiceCount);
+
+	for (unsigned index = 0; index < indiceCount; ++index) {
+		Mesh::jeIndex vi = pMesh->GetIndices().at(index);
+		vertices.push_back(Mesh::jeVertex{
+			pMesh->GetPoint(vi.a),
+			pMesh->GetUV(vi.b),
+			pMesh->GetNormal(vi.c) });
+		indicies.push_back(index);
+	}
+
+	// Decribe the format of vertex and indice
+	glBindVertexArray(pMesh->m_vao);
+	glBindBuffer(GL_ARRAY_BUFFER, pMesh->m_vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(Mesh::jeVertex) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pMesh->m_ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * indicies.size(), &indicies[0], GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::jeVertex),
+		reinterpret_cast<void*>(offsetof(Mesh::jeVertex, jeVertex::position)));
+	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Mesh::jeVertex),
+		reinterpret_cast<void*>(offsetof(Mesh::jeVertex, jeVertex::uv)));
+	glEnableVertexAttribArray(1);
+
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::jeVertex),
+		reinterpret_cast<void*>(offsetof(Mesh::jeVertex, jeVertex::normal)));
+	glEnableVertexAttribArray(2);
+
+	glBindVertexArray(0);
+}
+
+Mesh* GraphicSystem::CreatePoint()
 {
 	Mesh *pPoint = new Mesh;
 
@@ -15,7 +65,7 @@ Mesh* GLM::CreatePoint()
 	return pPoint;
 }
 
-Mesh* GLM::CreateRect()
+Mesh* GraphicSystem::CreateRect()
 {
 	Mesh *pRect = new Mesh;
 
@@ -41,7 +91,7 @@ Mesh* GLM::CreateRect()
 	return pRect;
 }
 
-Mesh* GLM::CreateCrossRect()
+Mesh* GraphicSystem::CreateCrossRect()
 {
 	Mesh *pCrossRect = new Mesh;
 
@@ -108,7 +158,7 @@ Mesh* GLM::CreateCrossRect()
 	return pCrossRect;
 }
 
-Mesh* GLM::CreateCube()
+Mesh* GraphicSystem::CreateCube()
 {
 	Mesh *pCube = new Mesh;
 
@@ -204,7 +254,7 @@ Mesh* GLM::CreateCube()
 	return pCube;
 }
 
-Mesh* GLM::CreateTetrahedron()
+Mesh* GraphicSystem::CreateTetrahedron()
 {
 	// TODO
 	Mesh *pTetrahedron = new Mesh;
