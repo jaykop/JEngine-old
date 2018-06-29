@@ -1,4 +1,6 @@
 #pragma once
+//#include "Model.h"
+
 #include "Component.h"
 #include "ComponentManager.h"
 #include "ComponentBuilder.h"
@@ -17,7 +19,6 @@ class Light : public Component
     friend class GraphicSystem;
 
     enum LightType { NORMALLIGHT, DIRECTIONALLIGHT, SPOTLIGHT, POINTLIGHT };
-
 
 public:
 
@@ -48,8 +49,8 @@ private:
     Light() = delete;
     Light(const Light& /*_copy*/) = delete;
 
-    void Load(CR_RJValue _data) override;
-
+	void Load(CR_RJValue _data) override;
+	
     void EditorUpdate(float dt) override;
 };
 

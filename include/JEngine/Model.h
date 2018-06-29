@@ -22,14 +22,17 @@ class Model : public Component
     friend class AssetManager;
 
     using TextureMap = std::unordered_map<std::string, unsigned>;
+	unsigned	m_mainTex;
+	TextureMap	m_textureMap;
 
 protected:
 
     const static int IS_TEXT = 0x10;
     const static int IS_EMITTER = 0x01;
+	const static int IS_LIGHT = 0x11;
 
 	std::vector<Mesh*>	meshes_;
-    int					m_hiddenStatus;
+    int					is_;
 
 public:
 
@@ -66,8 +69,6 @@ protected:
     void Load(CR_RJValue _data) override;
 
     bool		m_culled;
-    unsigned	m_mainTex;
-    TextureMap	m_textureMap;
     Transform	*m_pTransform, *m_pInherited;
     Material	*m_pMaterial;
     Animation	*m_pAnimation;

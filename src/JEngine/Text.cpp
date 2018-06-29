@@ -25,7 +25,7 @@ Font::Font()
 Text::Text(Object* _pOwner)
 	:Model(_pOwner)
 {
-	m_hiddenStatus |= IS_TEXT;
+	is_ |= IS_TEXT;
 }
 
 Text::~Text()

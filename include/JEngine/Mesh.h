@@ -4,6 +4,7 @@
 #include "glew.h"
 #include "Vector2.h"
 #include "Vector3.h"
+#include <unordered_map>
 
 jeBegin
 
@@ -17,6 +18,8 @@ class Mesh
 	friend class AssetManager;
 	friend class GraphicSystem;
 
+	using TextureMap = std::unordered_map<std::string, unsigned>;
+
 	struct jeIndex { unsigned a, b, c; };
 	struct jeVertex {
 		vec3 position;
@@ -28,8 +31,7 @@ public:
 
 	enum shape { MESH_CUSTOM, MESH_POINT, MESH_RECT, MESH_CROSSRECT, MESH_CUBE, MESH_TETRAHEDRON, };
 
-	shape		m_shape;
-	GLuint		m_vao, m_vbo, m_ebo;
+	shape m_shape;
 
 	void AddPoint(CR_Vec3 _point);
 	void AddTextureUV(CR_Vec2 _uv);
@@ -60,6 +62,8 @@ private:
 	std::vector<vec3>		m_points;
 	std::vector<vec2>		m_UVs;
 	std::vector<vec3>		m_normals;
+
+	GLuint		m_vao, m_vbo, m_ebo;
 
 	bool builtIn_;
 

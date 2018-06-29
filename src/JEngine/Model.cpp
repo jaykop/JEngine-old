@@ -17,7 +17,7 @@ jeDefineComponentBuilder(Model);
 Model::Model(Object* _pOwner)
 	:Component(_pOwner), m_drawMode(GL_TRIANGLES), color(vec4::ONE), projection(PROJECTION_PERSPECTIVE), m_mainTex(0),
 	m_pTransform(nullptr), m_culled(false), m_pMaterial(nullptr), sfactor(GL_SRC_ALPHA),
-	dfactor(GL_ONE_MINUS_SRC_ALPHA), m_pAnimation(nullptr), m_hiddenStatus(0x0000), m_pInherited(nullptr)
+	dfactor(GL_ONE_MINUS_SRC_ALPHA), m_pAnimation(nullptr), is_(0x0000), m_pInherited(nullptr)
 {}
 
 void Model::Register()
@@ -130,7 +130,7 @@ void Model::operator=(const Model & _copy)
 	m_pTransform = GetOwner()->GetComponent<Transform>();
 	m_culled = _copy.m_culled;
 	m_pMaterial = GetOwner()->GetComponent<Material>();
-	m_hiddenStatus = _copy.m_hiddenStatus;
+	is_ = _copy.is_;
 }
 
 void Model::Load(CR_RJValue _data)

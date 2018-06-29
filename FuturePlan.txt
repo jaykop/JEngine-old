@@ -1,4 +1,5 @@
 *Go over ai example and techniques
+*Add orbiting camera to camera controller
 *Derive light class from model
 *Polish text and particle pipeline as well
 *Finish presets of polygons

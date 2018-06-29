@@ -132,7 +132,7 @@ Emitter::Emitter(Object* _pOwner)
 {
 	sfactor = GL_SRC_ALPHA;
 	dfactor = GL_ONE;
-	m_hiddenStatus |= IS_EMITTER;
+	is_ |= IS_EMITTER;
 }
 
 Emitter::~Emitter() 

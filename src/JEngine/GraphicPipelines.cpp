@@ -39,10 +39,11 @@ void GraphicSystem::UpdatePipelines(float dt)
 	for (auto model : m_models) {
 
 		// Emitter
-		if ((model->m_hiddenStatus & Model::IS_EMITTER) == Model::IS_EMITTER)
+		if ((model->is_ & Model::IS_EMITTER) == Model::IS_EMITTER)
 			ParticlePipeline(static_cast<Emitter*>(model), dt);
 
-		else if ((model->m_hiddenStatus & Model::IS_TEXT) == Model::IS_TEXT)
+		// Text
+		else if ((model->is_ & Model::IS_TEXT) == Model::IS_TEXT)
 			TextPipeline(static_cast<Text*>(model));
 
 		// Normal models
@@ -394,9 +395,7 @@ void GraphicSystem::TextPipeline(Text * _text)
 	glEnable(GL_DEPTH_TEST);
 	glBlendFunc(_text->sfactor, _text->dfactor);
 
-	// TODO
-	//for (auto mesh : light->meshes_)
-	//	Render(mesh);
+	// Text does not render its own mesh list
 	Render(_text);
 
 	glDisable(GL_DEPTH_TEST);
@@ -547,7 +546,8 @@ void GraphicSystem::RenderCharacter(Character& _character, const vec3& _position
 
 	glBindTexture(GL_TEXTURE_2D, _character.texture);
 
-	// This part actual render
+	// Text component does not use member mesh vector,
+	// but pre defined mesh from GLManager
 	glBindVertexArray(GLM::pMesh_[GLM::SHAPE_TEXT]->m_vao);
 	glBindBuffer(GL_ARRAY_BUFFER, GLM::pMesh_[GLM::SHAPE_TEXT]->m_vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Mesh::jeVertex) * s_vertexArray.size(),
