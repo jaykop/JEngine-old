@@ -29,7 +29,6 @@ public:
 	enum shape { MESH_CUSTOM, MESH_POINT, MESH_RECT, MESH_CROSSRECT, MESH_CUBE, MESH_TETRAHEDRON, };
 
 	shape		m_shape;
-	unsigned	m_drawMode;
 	GLuint		m_vao, m_vbo, m_ebo;
 
 	void AddPoint(CR_Vec3 _point);

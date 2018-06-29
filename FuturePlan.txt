@@ -1,6 +1,7 @@
 *Go over ai example and techniques
+*Derive light class from model
+*Polish text and particle pipeline as well
 *Finish presets of polygons
-*Polish glm and mesh, model
 *Correct 0 value
 *Clone function - copy and move constructor
 *Polish event handler with std function

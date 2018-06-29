@@ -12,8 +12,8 @@ jeBegin
 jeDefineComponentBuilder(Light);
 
 Light::Light(Object * _pOwner)
-	:Component(_pOwner), color(vec4::ONE),
-	ambient(vec4::ONE), diffuse(vec4::ONE),
+	:Component(_pOwner), m_drawMode(GL_TRIANGLES), 
+	color(vec4::ONE), ambient(vec4::ONE), diffuse(vec4::ONE),
 	specular(vec4::ONE), position(vec3(0.f, 0.f, 1.f)),
 	direction(vec3::ZERO), constant(0.f), linear(0.f),
 	quadratic(0.f), cutOff(0.f), outerCutOff(0.f),
@@ -23,10 +23,14 @@ Light::Light(Object * _pOwner)
 
 Light::~Light()
 {
-	if (m_pMeshes) {
-		delete m_pMeshes;
-		m_pMeshes = nullptr;
+	// Clear mesh container
+	for (auto mesh : meshes_) {
+		if (!mesh->builtIn_) {
+			delete mesh;
+			mesh = nullptr;
+		}
 	}
+	meshes_.clear();
 
 	SYSTEM::pGraphic_->RemoveLight(this);
 }
@@ -70,37 +74,29 @@ void Light::Load(CR_RJValue _data)
 		&& _data["Mesh"].GetString())
 	{
 		std::string meshType = _data["Mesh"].GetString();
-		if (!strcmp(meshType.c_str(), "Point")) {
-			m_pMeshes = GLM::pMesh_[GLM::SHAPE_POINT];
-			m_pMeshes->m_shape = Mesh::MESH_POINT;
-		}
-		else if (!strcmp(meshType.c_str(), "Rect")) {
-			m_pMeshes = GLM::pMesh_[GLM::SHAPE_RECT];
-			m_pMeshes->m_shape = Mesh::MESH_RECT;
-		}
-		else if (!strcmp(meshType.c_str(), "CrossRect")) {
-			m_pMeshes = GLM::pMesh_[GLM::SHAPE_CROSSRECT];
-			m_pMeshes->m_shape = Mesh::MESH_CROSSRECT;
-		}
-		else if (!strcmp(meshType.c_str(), "Cube")) {
-			m_pMeshes = GLM::pMesh_[GLM::SHAPE_CUBE];
-			m_pMeshes->m_shape = Mesh::MESH_CUBE;
-		}
-		else if (!strcmp(meshType.c_str(), "Tetrahedron")) {
-			m_pMeshes = GLM::pMesh_[GLM::SHAPE_TETRAHEDRON];
-			m_pMeshes->m_shape = Mesh::MESH_TETRAHEDRON;
-		}
+		if (!strcmp(meshType.c_str(), "Point"))
+			AddMesh(GLM::pMesh_[GLM::SHAPE_POINT]);
+
+		else if (!strcmp(meshType.c_str(), "Rect"))
+			AddMesh(GLM::pMesh_[GLM::SHAPE_RECT]);
+
+		else if (!strcmp(meshType.c_str(), "CrossRect"))
+			AddMesh(GLM::pMesh_[GLM::SHAPE_CROSSRECT]);
+
+		else if (!strcmp(meshType.c_str(), "Cube"))
+			AddMesh(GLM::pMesh_[GLM::SHAPE_CUBE]);
+
+		else if (!strcmp(meshType.c_str(), "Tetrahedron"))
+			AddMesh(GLM::pMesh_[GLM::SHAPE_TETRAHEDRON]);
+
 		else /*if (!strcmp(meshType.c_str(), "Custom"))*/ {
-			m_pMeshes = ASSET::LoadObjFile(meshType.c_str());
-			GraphicSystem::DescribeVertex(m_pMeshes);
-			m_pMeshes->m_shape = Mesh::MESH_CUSTOM;
-			m_pMeshes->builtIn_ = false;
+			Mesh* pMesh = ASSET::LoadObjFile(meshType.c_str());
+			GraphicSystem::DescribeVertex(pMesh);
+			AddMesh(pMesh);
 		}
 	}
-	else {
-		m_pMeshes = GraphicSystem::CreateCube();
-		m_pMeshes->m_shape = Mesh::MESH_CUBE;
-	}
+	else 
+		AddMesh(GLM::pMesh_[GLM::SHAPE_CUBE]);
 
 	if (_data.HasMember("CutOff")) {
 		CR_RJValue loadedCutOff = _data["CutOff"];
@@ -166,6 +162,31 @@ void Light::Load(CR_RJValue _data)
 void Light::EditorUpdate(const float /*dt*/)
 {
 	// TODO
+}
+
+void Light::AddMesh(Mesh* pMesh)
+{
+	return meshes_.push_back(pMesh);
+}
+
+void Light::RemoveMesh(unsigned index)
+{
+	unsigned count = 0;
+	for (auto it = meshes_.begin();
+		it != meshes_.end(); ++it, ++count) {
+		if (count == index)
+			meshes_.erase(it);
+	}
+}
+
+Mesh* Light::GetMesh(unsigned index) const
+{
+	return meshes_.at(index);
+}
+
+unsigned Light::GetMeshCount() const
+{
+	return unsigned(meshes_.size());
 }
 
 jeEnd

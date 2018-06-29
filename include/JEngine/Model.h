@@ -21,7 +21,6 @@ class Model : public Component
     friend class Animation;
     friend class AssetManager;
 
-	using Meshes = std::vector<Mesh*>;
     using TextureMap = std::unordered_map<std::string, unsigned>;
 
 protected:
@@ -29,10 +28,8 @@ protected:
     const static int IS_TEXT = 0x10;
     const static int IS_EMITTER = 0x01;
 
-	// TODO
-	Mesh	*m_pMeshes = nullptr;
-	Meshes	meshes_;
-    int		m_hiddenStatus;
+	std::vector<Mesh*>	meshes_;
+    int					m_hiddenStatus;
 
 public:
 
@@ -42,6 +39,11 @@ public:
 
     void Register() override;
 
+	void		AddMesh(Mesh* pMesh);
+	void		RemoveMesh(unsigned index);
+	Mesh*		GetMesh(unsigned index) const;
+	unsigned	GetMeshCount() const;
+
     void		SetParentToFollow(Object* _pObj);
     void		AddTexture(const char* _key);
     void		RemoveTexture(const char* _key);
@@ -49,10 +51,10 @@ public:
     unsigned	GetCurrentTexutre() const;
     unsigned	GetTexutre(const char* _key);
 
+	unsigned	m_drawMode;
     int			status;
     vec4		color;
     ProjectType projection;
-
     unsigned	sfactor, dfactor;
 
 protected:

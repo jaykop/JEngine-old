@@ -2,11 +2,10 @@
 
 jeBegin
 
-Mesh::Mesh() : m_shape(MESH_CUSTOM), m_drawMode(GL_TRIANGLES),
-	m_vao(0), m_vbo(0), m_ebo(0), builtIn_(true) {}
+Mesh::Mesh() : m_shape(MESH_CUSTOM), m_vao(0), m_vbo(0), m_ebo(0), builtIn_(false) {}
 
-Mesh::~Mesh()
-{
+Mesh::~Mesh() {
+
 	ClearVertexes();
 
 	if (m_shape == MESH_CUSTOM)
@@ -49,8 +48,8 @@ void Mesh::ClearUVs() { m_UVs.clear(); }
 
 void Mesh::ClearIndices() { m_indices.clear(); }
 
-void Mesh::ClearVertexes()
-{
+void Mesh::ClearVertexes() {
+
 	ClearPoints();
 	ClearUVs();
 	ClearNormals();

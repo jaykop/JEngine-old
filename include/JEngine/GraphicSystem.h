@@ -101,7 +101,7 @@ private:
 	void SortModels();
 
 	// Render functions
-	void Render(const Mesh* _pMesh);
+	void Render(const Mesh* _pMesh, unsigned drawMode);
 	void Render(const Text*_pText);
 	void Render(unsigned _vao, unsigned _indicesSize, unsigned _drawMode);
     void RenderCharacter(Character& _character, const vec3& _position,

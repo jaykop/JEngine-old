@@ -192,37 +192,29 @@ void Emitter::Load(CR_RJValue _data)
 		&& _data["Mesh"].GetString())
 	{
 		std::string meshType = _data["Mesh"].GetString();
-		if (!strcmp(meshType.c_str(), "Point")) {
-			m_pMeshes = GLM::pMesh_[GLM::SHAPE_POINT];
-			m_pMeshes->m_shape = Mesh::MESH_POINT;
-		}
-		else if (!strcmp(meshType.c_str(), "Rect")) {
-			m_pMeshes = GLM::pMesh_[GLM::SHAPE_RECT];
-			m_pMeshes->m_shape = Mesh::MESH_RECT;
-		}
-		else if (!strcmp(meshType.c_str(), "CrossRect")) {
-			m_pMeshes = GLM::pMesh_[GLM::SHAPE_CROSSRECT];
-			m_pMeshes->m_shape = Mesh::MESH_CROSSRECT;
-		}
-		else if (!strcmp(meshType.c_str(), "Cube")) {
-			m_pMeshes = GLM::pMesh_[GLM::SHAPE_CUBE];
-			m_pMeshes->m_shape = Mesh::MESH_CUBE;
-		}
-		else if (!strcmp(meshType.c_str(), "Tetrahedron")) {
-			m_pMeshes = GLM::pMesh_[GLM::SHAPE_TETRAHEDRON];
-			m_pMeshes->m_shape = Mesh::MESH_TETRAHEDRON;
-		}
+		if (!strcmp(meshType.c_str(), "Point")) 
+			AddMesh(GLM::pMesh_[GLM::SHAPE_POINT]);
+		
+		else if (!strcmp(meshType.c_str(), "Rect")) 
+			AddMesh(GLM::pMesh_[GLM::SHAPE_RECT]);
+		
+		else if (!strcmp(meshType.c_str(), "CrossRect")) 
+			AddMesh(GLM::pMesh_[GLM::SHAPE_CROSSRECT]);
+		
+		else if (!strcmp(meshType.c_str(), "Cube")) 
+			AddMesh(GLM::pMesh_[GLM::SHAPE_CUBE]);
+		
+		else if (!strcmp(meshType.c_str(), "Tetrahedron")) 
+			AddMesh(GLM::pMesh_[GLM::SHAPE_TETRAHEDRON]);
+		
 		else /*if (!strcmp(meshType.c_str(), "Custom"))*/ {
-			m_pMeshes = ASSET::LoadObjFile(meshType.c_str());
-			GraphicSystem::DescribeVertex(m_pMeshes);
-			m_pMeshes->m_shape = Mesh::MESH_CUSTOM;
-			m_pMeshes->builtIn_ = false;
+			Mesh* pMesh = ASSET::LoadObjFile(meshType.c_str());
+			GraphicSystem::DescribeVertex(pMesh);
+			AddMesh(pMesh);
 		}
 	}
-	else {
-		m_pMeshes = GraphicSystem::CreateRect();
-		m_pMeshes->m_shape = Mesh::MESH_RECT;
-	}
+	else 
+		AddMesh(GraphicSystem::CreateRect());
 
 	if (_data.HasMember("Active"))
 		active = _data["Active"].GetBool();

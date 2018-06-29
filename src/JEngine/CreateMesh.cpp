@@ -62,6 +62,8 @@ Mesh* GraphicSystem::CreatePoint()
 	pPoint->AddNormal(vec3(0, 0, 1.f));
 	pPoint->AddIndice({ 0,0,0 });
 
+	pPoint->m_shape = Mesh::MESH_POINT;
+	pPoint->builtIn_ = true;
 	return pPoint;
 }
 
@@ -88,6 +90,8 @@ Mesh* GraphicSystem::CreateRect()
 	pRect->AddIndice({ 3, 3, 0 });
 	pRect->AddIndice({ 0, 0, 0 });
 
+	pRect->m_shape = Mesh::MESH_RECT;
+	pRect->builtIn_ = true;
 	return pRect;
 }
 
@@ -155,6 +159,8 @@ Mesh* GraphicSystem::CreateCrossRect()
 	pCrossRect->AddIndice({ 8, 8, 8 });
 	pCrossRect->AddIndice({ 9, 9, 9 });
 
+	pCrossRect->m_shape = Mesh::MESH_CROSSRECT;
+	pCrossRect->builtIn_ = true;
 	return pCrossRect;
 }
 
@@ -251,6 +257,8 @@ Mesh* GraphicSystem::CreateCube()
 	pCube->AddIndice({ 20, 12, 5 });
 	pCube->AddIndice({ 22, 1, 5 });
 
+	pCube->m_shape = Mesh::MESH_CUBE;
+	pCube->builtIn_ = true;
 	return pCube;
 }
 

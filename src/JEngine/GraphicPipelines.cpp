@@ -148,7 +148,11 @@ void GraphicSystem::LightSourcePipeline()
 			Shader::m_pCurrentShader->SetVector4("v4_color", light->color);
 
 			glBlendFunc(light->sfactor, light->dfactor);
-			Render(light->m_pMeshes);
+
+			// Update every mesh
+			unsigned mode = light->m_drawMode;
+			for (auto mesh : light->meshes_)
+				Render(mesh, mode);
 			
 		} // for (auto light : m_lights) {
 	} // if (m_isLight) {
@@ -216,7 +220,10 @@ void GraphicSystem::ModelPipeline(Model *_model)
 	glEnable(GL_DEPTH_TEST);
 	glBlendFunc(_model->sfactor, _model->dfactor);
 
-	Render(_model->m_pMeshes);
+	// Update every mesh
+	unsigned mode = _model->m_drawMode;
+	for (auto mesh : _model->meshes_)
+		Render(mesh, mode);
 
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
@@ -387,6 +394,9 @@ void GraphicSystem::TextPipeline(Text * _text)
 	glEnable(GL_DEPTH_TEST);
 	glBlendFunc(_text->sfactor, _text->dfactor);
 
+	// TODO
+	//for (auto mesh : light->meshes_)
+	//	Render(mesh);
 	Render(_text);
 
 	glDisable(GL_DEPTH_TEST);
@@ -403,30 +413,19 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, float dt)
 		glDepthMask(GL_FALSE);
 		glBlendFunc(_emitter->sfactor, _emitter->dfactor);
 
-		// Points
-		if (_emitter->m_pMeshes->m_shape == Mesh::MESH_POINT) {
-			glPointSize(_emitter->pointSize);
-			glEnable(GL_POINT_SMOOTH);
-		}
-
-		// Plane 2d and 3d form
-		else
-			glDisable(GL_POINT_SMOOTH);
-
 		static vec3			s_velocity, s_colorDiff;
 		static bool			s_changeColor, s_rotation;
 		static vec4			s_color;
-		static unsigned	    s_texture;
+		static unsigned	    s_texture, s_mode;
 		static Transform*   s_pTransform;
-		static Mesh			*s_pMesh;
 
-		s_pMesh = _emitter->m_pMeshes;
 		s_rotation = _emitter->rotationSpeed != 0.f;
 		s_changeColor = _emitter->m_changeColor;
 		s_pTransform = _emitter->m_pTransform;
 		s_texture = _emitter->m_mainTex;
 		s_velocity = dt * _emitter->velocity;
 		s_colorDiff = dt * _emitter->colorDiff;
+		s_mode = _emitter->m_drawMode;
 
 		Shader::Use(GLM::SHADER_PARTICLE);
 
@@ -487,7 +486,21 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, float dt)
 				Shader::m_pCurrentShader->SetVector4("v4_color", s_color);
 				Shader::m_pCurrentShader->SetBool("boolean_hide", particle->hidden);
 
-				Render(s_pMesh);
+				// Update every mesh
+				for (auto mesh : _emitter->meshes_) {
+				
+					// Points
+					if (mesh->m_shape == Mesh::MESH_POINT) {
+						glPointSize(_emitter->pointSize);
+						glEnable(GL_POINT_SMOOTH);
+					}
+
+					// Plane 2d and 3d form
+					else
+						glDisable(GL_POINT_SMOOTH);
+
+					Render(mesh, s_mode);
+				}
 			}
 		}
 
@@ -620,32 +633,32 @@ void GraphicSystem::Render(const Text*_pText)
 }
 
 
-void GraphicSystem::Render(const Mesh* _pMesh)
+void GraphicSystem::Render(const Mesh* _pMesh, unsigned drawMode)
 {
 	switch (_pMesh->m_shape)
 	{
 	case Mesh::MESH_CUSTOM:
-		Render(_pMesh->m_vao, unsigned(_pMesh->GetIndiceCount()), _pMesh->m_drawMode);
+		Render(_pMesh->m_vao, unsigned(_pMesh->GetIndiceCount()), drawMode);
 		break;
 		
 	case Mesh::MESH_POINT:
-		Render(GLM::pMesh_[GLM::SHAPE_POINT]->m_vao, unsigned(_pMesh->GetIndiceCount()), _pMesh->m_drawMode);
+		Render(GLM::pMesh_[GLM::SHAPE_POINT]->m_vao, unsigned(_pMesh->GetIndiceCount()), drawMode);
 		break;
 
 	case Mesh::MESH_RECT:
-		Render(GLM::pMesh_[GLM::SHAPE_RECT]->m_vao, unsigned(_pMesh->GetIndiceCount()), _pMesh->m_drawMode);
+		Render(GLM::pMesh_[GLM::SHAPE_RECT]->m_vao, unsigned(_pMesh->GetIndiceCount()), drawMode);
 		break;
 
 	case Mesh::MESH_CROSSRECT:
-		Render(GLM::pMesh_[GLM::SHAPE_CROSSRECT]->m_vao, unsigned(_pMesh->GetIndiceCount()), _pMesh->m_drawMode);
+		Render(GLM::pMesh_[GLM::SHAPE_CROSSRECT]->m_vao, unsigned(_pMesh->GetIndiceCount()), drawMode);
 		break;
 
 	case Mesh::MESH_CUBE:
-		Render(GLM::pMesh_[GLM::SHAPE_CUBE]->m_vao, unsigned(_pMesh->GetIndiceCount()), _pMesh->m_drawMode);
+		Render(GLM::pMesh_[GLM::SHAPE_CUBE]->m_vao, unsigned(_pMesh->GetIndiceCount()), drawMode);
 		break;
 
 	case Mesh::MESH_TETRAHEDRON:
-		Render(GLM::pMesh_[GLM::SHAPE_TETRAHEDRON]->m_vao, unsigned(_pMesh->GetIndiceCount()), _pMesh->m_drawMode);
+		Render(GLM::pMesh_[GLM::SHAPE_TETRAHEDRON]->m_vao, unsigned(_pMesh->GetIndiceCount()), drawMode);
 		break;
 
 	default:

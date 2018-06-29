@@ -15,7 +15,7 @@ jeBegin
 jeDefineComponentBuilder(Model);
 
 Model::Model(Object* _pOwner)
-	:Component(_pOwner), color(vec4::ONE), projection(PROJECTION_PERSPECTIVE), m_mainTex(0),
+	:Component(_pOwner), m_drawMode(GL_TRIANGLES), color(vec4::ONE), projection(PROJECTION_PERSPECTIVE), m_mainTex(0),
 	m_pTransform(nullptr), m_culled(false), m_pMaterial(nullptr), sfactor(GL_SRC_ALPHA),
 	dfactor(GL_ONE_MINUS_SRC_ALPHA), m_pAnimation(nullptr), m_hiddenStatus(0x0000), m_pInherited(nullptr)
 {}
@@ -25,6 +25,31 @@ void Model::Register()
 	SYSTEM::pGraphic_->AddModel(this);
 	if (GetOwner()->HasComponent<Transform>())
 		m_pTransform = GetOwner()->GetComponent<Transform>();
+}
+
+void Model::AddMesh(Mesh* pMesh)
+{
+	return meshes_.push_back(pMesh);
+}
+
+void Model::RemoveMesh(unsigned index)
+{
+	unsigned count = 0;
+	for (auto it = meshes_.begin();
+		it != meshes_.end(); ++it, ++count) {
+		if (count == index)
+			meshes_.erase(it);
+	}
+}
+
+Mesh* Model::GetMesh(unsigned index) const
+{
+	return meshes_.at(index);
+}
+
+unsigned Model::GetMeshCount() const
+{
+	return unsigned(meshes_.size());
 }
 
 void Model::SetParentToFollow(Object* _pObj)
@@ -85,12 +110,14 @@ Model::~Model()
 	// Remove textures
 	m_textureMap.clear();
 	
-	if (m_pMeshes) {
-		if (!m_pMeshes->builtIn_) {
-			delete m_pMeshes;
-			m_pMeshes = nullptr;
+	// Clear mesh container
+	for (auto mesh : meshes_) {
+		if (!mesh->builtIn_) {
+			delete mesh;
+			mesh = nullptr;
 		}
 	}
+	meshes_.clear();
 
 	SYSTEM::pGraphic_->RemoveModel(this);
 }
@@ -112,56 +139,48 @@ void Model::Load(CR_RJValue _data)
 		&& _data["Mesh"].GetString())
 	{
 		std::string meshType = _data["Mesh"].GetString();
-		if (!strcmp(meshType.c_str(), "Point")) {
-			m_pMeshes = GLM::pMesh_[GLM::SHAPE_POINT];
-			m_pMeshes->m_shape = Mesh::MESH_POINT;
-		}
-		else if (!strcmp(meshType.c_str(), "Rect")) {
-			m_pMeshes = GLM::pMesh_[GLM::SHAPE_RECT];
-			m_pMeshes->m_shape = Mesh::MESH_RECT;
-		}
-		else if (!strcmp(meshType.c_str(), "CrossRect")) {
-			m_pMeshes = GLM::pMesh_[GLM::SHAPE_CROSSRECT];
-			m_pMeshes->m_shape = Mesh::MESH_CROSSRECT;
-		}
-		else if (!strcmp(meshType.c_str(), "Cube")) {
-			m_pMeshes = GLM::pMesh_[GLM::SHAPE_CUBE];
-			m_pMeshes->m_shape = Mesh::MESH_CUBE;
-		}
-		else if (!strcmp(meshType.c_str(), "Tetrahedron")) {
-			m_pMeshes = GLM::pMesh_[GLM::SHAPE_TETRAHEDRON];
-			m_pMeshes->m_shape = Mesh::MESH_TETRAHEDRON;
-		}
+		if (!strcmp(meshType.c_str(), "Point"))
+			AddMesh(GLM::pMesh_[GLM::SHAPE_POINT]);
+
+		else if (!strcmp(meshType.c_str(), "Rect"))
+			AddMesh(GLM::pMesh_[GLM::SHAPE_RECT]);
+
+		else if (!strcmp(meshType.c_str(), "CrossRect"))
+			AddMesh(GLM::pMesh_[GLM::SHAPE_CROSSRECT]);
+
+		else if (!strcmp(meshType.c_str(), "Cube"))
+			AddMesh(GLM::pMesh_[GLM::SHAPE_CUBE]);
+
+		else if (!strcmp(meshType.c_str(), "Tetrahedron"))
+			AddMesh(GLM::pMesh_[GLM::SHAPE_TETRAHEDRON]);
+
 		else /*if (!strcmp(meshType.c_str(), "Custom"))*/ {
-			m_pMeshes = ASSET::LoadObjFile(meshType.c_str());
-			GraphicSystem::DescribeVertex(m_pMeshes);
-			m_pMeshes->m_shape = Mesh::MESH_CUSTOM;
-			m_pMeshes->builtIn_ = false;
+			Mesh* pMesh = ASSET::LoadObjFile(meshType.c_str());
+			GraphicSystem::DescribeVertex(pMesh);
+			AddMesh(pMesh);
 		}
 	}
-	else {
-		m_pMeshes = GraphicSystem::CreateRect();
-		m_pMeshes->m_shape = Mesh::MESH_RECT;
-	}
+	else 
+		AddMesh(GLM::pMesh_[GLM::SHAPE_RECT]);
 
 	if (_data.HasMember("DrawMode")
 		&& _data["DrawMode"].IsString()) {
 		
 		std::string drawType = _data["DrawMode"].GetString();
 		if (!strcmp(drawType.c_str(), "Triangles"))
-			m_pMeshes->m_drawMode = GL_TRIANGLES;
+			m_drawMode = GL_TRIANGLES;
 
 		else if (!strcmp(drawType.c_str(), "Triangle_Strip"))
-			m_pMeshes->m_drawMode = GL_TRIANGLE_STRIP;
+			m_drawMode = GL_TRIANGLE_STRIP;
 
 		else if (!strcmp(drawType.c_str(), "Triangle_Fan")) 
-			m_pMeshes->m_drawMode = GL_TRIANGLE_FAN;
+			m_drawMode = GL_TRIANGLE_FAN;
 
 		else if (!strcmp(drawType.c_str(), "Lines")) 
-			m_pMeshes->m_drawMode = GL_LINES;
+			m_drawMode = GL_LINES;
 
 		else if (!strcmp(drawType.c_str(), "Line_Strip")) 
-			m_pMeshes->m_drawMode = GL_LINE_STRIP;
+			m_drawMode = GL_LINE_STRIP;
 	}
 
 	if (_data.HasMember("Flip")

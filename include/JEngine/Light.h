@@ -21,6 +21,7 @@ class Light : public Component
 
 public:
 
+	unsigned	m_drawMode;
     LightType	m_type;
     ProjectType	projection;
 
@@ -31,9 +32,14 @@ public:
 
     void Register() override;
 
-private:
+	void		AddMesh(Mesh* pMesh);
+	void		RemoveMesh(unsigned index);
+	Mesh*		GetMesh(unsigned index) const;
+	unsigned	GetMeshCount() const;
 
-	Mesh *m_pMeshes = nullptr;
+private:
+	
+	std::vector<Mesh*> meshes_;
 
     Light(Object* _pOwner);
     ~Light();
