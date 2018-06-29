@@ -318,7 +318,6 @@ void AssetManager::LoadArchetype(const char* /*_path*/, const char* /*_archetype
 Mesh* AssetManager::LoadObjFile(const char* _path)
 {
 	Mesh *pNewMesh = new Mesh;
-	bool hasNormal = false;
 
 	std::ifstream obj(_path, std::ios::in);
 
@@ -347,7 +346,6 @@ Mesh* AssetManager::LoadObjFile(const char* _path)
 			pNewMesh->AddTextureUV(uv);
 		}
 		else if (line.substr(0, 3) == "vn ") {
-			hasNormal = true;
 			std::istringstream s(line.substr(2));
 			vec3 normal; s >> normal.x; s >> normal.y; s >> normal.z;
 			temp_normals.push_back(normal);
@@ -355,24 +353,7 @@ Mesh* AssetManager::LoadObjFile(const char* _path)
 		}
 		else if (line.substr(0, 2) == "f ") {
 
-			// Calculate normal here - instread of getting normal from obj file
-			if (!hasNormal) {
-				temp_normals.resize(temp_points.size(), vec3::ZERO);
-				for (unsigned i = 0; i < elements.size(); i += 3) {
-					unsigned ia = elements[i];
-					unsigned ib = elements[i + 1];
-					unsigned ic = elements[i + 2];
-
-					vec3 normal = GetNormalize(
-						CrossProduct((temp_points[ib] - temp_points[ia]),
-						(temp_points[ic] - temp_points[ia])));
-					temp_normals[ia] = temp_normals[ib] = temp_normals[ic] = normal;
-				}
-				hasNormal = true;
-			}
-
 			std::istringstream s(line.substr(2));
-
 			unsigned a = 0, b = 0, c = 0;
 			
 			while (!s.eof()) {
@@ -413,11 +394,6 @@ Mesh* AssetManager::LoadObjFile(const char* _path)
 			for (unsigned i = 0; i < temp_normals.size(); ++i)
 				pNewMesh->AddNormal(temp_normals.at(i));
 		}
-		// TODO
-		//else if (line.substr(0, 2) == "l ") {
-		//	
-		//}
-
 	}
 
 	return pNewMesh;

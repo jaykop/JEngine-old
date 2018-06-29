@@ -266,16 +266,42 @@ Mesh* GraphicSystem::CreateTetrahedron()
 {
 	Mesh *pTetrahedron = new Mesh;
 
-	pTetrahedron->AddPoint(vec3(0.f, 1.f, .5f));
-	pTetrahedron->AddPoint(vec3(-.5f, 0.f, -.5f));
+	const static float height = sqrt(3.f) / 2.f;
+
+	pTetrahedron->AddPoint(vec3(0.f, 1.f, 0.f));
+	pTetrahedron->AddPoint(vec3(0.f, 0.f, -height));
 	pTetrahedron->AddPoint(vec3(-.5f, 0.f, .5f));
 	pTetrahedron->AddPoint(vec3(.5f, 0.f, .5f));
-	pTetrahedron->AddPoint(vec3(.5f, 0.f, -.5f));
 
 	// TODO
-	pTetrahedron->AddTextureUV(vec2(0,0));
+	pTetrahedron->AddTextureUV(vec2(0, 1));
+	pTetrahedron->AddTextureUV(vec2(0.5f, 1));
+	pTetrahedron->AddTextureUV(vec2(1, 1));
+	pTetrahedron->AddTextureUV(vec2(0.25f, 1 - height * .5f));
+	pTetrahedron->AddTextureUV(vec2(0.75f, 1 - height * .5f));
+	pTetrahedron->AddTextureUV(vec2(0.5f, 1 - height));
+
+	// TODO Get proper normals
 	pTetrahedron->AddNormal(vec3(0,0,0));
 
+	pTetrahedron->AddIndice({ 2, 3, 0});
+	pTetrahedron->AddIndice({ 3, 4, 0 });
+	pTetrahedron->AddIndice({ 0, 5, 0 });
+
+	pTetrahedron->AddIndice({ 3, 4, 0 });
+	pTetrahedron->AddIndice({ 1, 1, 0 });
+	pTetrahedron->AddIndice({ 0, 2, 0 });
+
+	pTetrahedron->AddIndice({ 1, 1, 0 });
+	pTetrahedron->AddIndice({ 2, 3, 0 });
+	pTetrahedron->AddIndice({ 0, 0, 0 });
+
+	pTetrahedron->AddIndice({ 1, 1, 0 });
+	pTetrahedron->AddIndice({ 3, 4, 0 });
+	pTetrahedron->AddIndice({ 2, 3, 0 });
+
+	pTetrahedron->m_shape = Mesh::MESH_TETRAHEDRON;
+	pTetrahedron->builtIn_ = true;
 	return pTetrahedron;
 }
 

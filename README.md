@@ -1,6 +1,6 @@
 *JEngine 3D Framework  
 *Writter:  
-&nbsp;&nbsp;&nbsp;&nbsp;J.Jeong(jaykop)  
+&nbsp;&nbsp;&nbsp;&nbsp;Juyong.Jeong(jaykop)  
 *Description:  
 &nbsp;&nbsp;&nbsp;&nbsp;3D game engine for personal project.  
 &nbsp;&nbsp;&nbsp;&nbsp;Main purpose is to test graphic and A.I. techniques.  

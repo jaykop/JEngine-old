@@ -6,10 +6,9 @@ Mesh::Mesh() : m_shape(MESH_CUSTOM), m_vao(0), m_vbo(0), m_ebo(0), builtIn_(fals
 
 Mesh::~Mesh() {
 
-	ClearVertexes();
-
 	if (m_shape == MESH_CUSTOM)
 	{
+		ClearVertexes();
 		glDeleteVertexArrays(1, &m_vao);
 		glDeleteBuffers(1, &m_vbo);
 		glDeleteBuffers(1, &m_ebo);

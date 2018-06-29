@@ -13,10 +13,6 @@
 
 jeBegin
 
-/* Define this macro if you want to render
-with fixex frame rate value(1/60)*/
-// #define jeFixedFrameRate
-
 //////////////////////////////////////////////////////////////////////////
 // static variables
 //////////////////////////////////////////////////////////////////////////
@@ -55,7 +51,7 @@ void StateManager::Update(SDL_Event* _event)
 {
     m_timer.Start();
 
-    static float s_sec = 1.f /*/ 60.f*/, s_stack, s_newTime, s_currentTime;
+    static float s_sec = 1.f, s_stack, s_newTime, s_currentTime;
     s_stack = s_newTime = s_currentTime = 0.f;
 
     ChangeState();
@@ -81,16 +77,12 @@ void StateManager::Update(SDL_Event* _event)
 
 			s_currentTime = s_newTime;	// Refresh current time
 
-#ifdef jeFixedFrameRate
-            m_pCurrent->Update(s_dt);	// Update state
-            IMGUI::Update(s_dt);		// Update imgui renderer
-#else
             m_pCurrent->Update(m_frameTime);// Update state
             IMGUI::Update(m_frameTime);		// Update imgui renderer
 
 			// Reset mouse wheel session
 			INPUT::m_mouseWheel = 0;
-#endif
+
             /* Update rendrer with physics together
             so makes rendering scene more smoothly */
             SDL_GL_SwapWindow(m_pWindow);
