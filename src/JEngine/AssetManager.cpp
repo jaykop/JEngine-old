@@ -13,7 +13,7 @@
 #include <fstream>
 #include <sstream>
 #include "MathUtils.h"
-
+#include "Shader.h"
 #include <thread>
 
 // Built-In Component Headers
@@ -26,32 +26,32 @@ jeBegin
 using namespace Math;
 
 // Declare static member variables
-ASSET::FontMap		ASSET::m_fontMap;
-ASSET::AudioMap		ASSET::m_audioMap;
-ASSET::StateMap		ASSET::m_stateMap;
-ASSET::TextureMap	ASSET::m_textureMap;
-ASSET::ArchetypeMap	ASSET::m_archetypeMap;
-std::string			ASSET::m_initDirectory, ASSET::m_assetDirectory,
-					ASSET::m_stateDirectory, ASSET::m_archeDirectory;
-unsigned char*		ASSET::m_pPixelChunk = nullptr;
-std::unordered_map<std::string, ASSET::Image> ASSET::m_images;
+ASSET::FontMap		ASSET::fontMap_;
+ASSET::AudioMap		ASSET::audioMap_;
+ASSET::StateMap		ASSET::stateMap_;
+ASSET::TextureMap	ASSET::textureMap_;
+ASSET::ArchetypeMap	ASSET::archetypeMap_;
+std::string			ASSET::initDirectory_, ASSET::assetDirectory_,
+					ASSET::stateDirectory_, ASSET::archeDirectory_;
+unsigned char*		ASSET::pPixelChunk_ = nullptr;
+std::unordered_map<std::string, ASSET::Image> ASSET::images_;
 
-void AssetManager::ShowLoadingPercentage(unsigned _loadedPercentage, unsigned _size)
+void AssetManager::ShowLoadingPercentage(unsigned loadedPercentage, unsigned size)
 {
     std::string title;
-    title.assign(APP::m_Data.m_title + " - Loading... " + std::to_string((float)_loadedPercentage / _size * 100.f) + "%");
-    SDL_SetWindowTitle(APP::m_pWindow, title.c_str());
+    title.assign(APP::data_.title + " - Loading... " + std::to_string((float)loadedPercentage / size * 100.f) + "%");
+    SDL_SetWindowTitle(APP::pWindow_, title.c_str());
 }
 
 void AssetManager::LoadAssets()
 {
     // Read state info
-    JSON::ReadFile(m_stateDirectory.c_str());
+    JSON::ReadFile(stateDirectory_.c_str());
     CR_RJValue states = JSON::GetDocument()["State"];
     CR_RJValue fristStates = JSON::GetDocument()["FirstState"];
 
     // Read asset info
-    JSON::ReadFile(m_assetDirectory.c_str());
+    JSON::ReadFile(assetDirectory_.c_str());
     CR_RJValue textures = JSON::GetDocument()["Texture"];
 
     // Read font info
@@ -86,7 +86,7 @@ void AssetManager::LoadAssets()
     }
 
 	// Register images to gpu
-	for (auto it : m_images)
+	for (auto it : images_)
 		RegisterImage(it.second, it.first.c_str());
 
     // Load font
@@ -106,14 +106,14 @@ void AssetManager::LoadAssets()
         ShowLoadingPercentage(realLoadingPercentage, loadingPercentage);
     }
 
-    SDL_SetWindowTitle(APP::m_pWindow, APP::m_Data.m_title.c_str());
+    SDL_SetWindowTitle(APP::pWindow_, APP::data_.title.c_str());
 
 }
 
 void AssetManager::UnloadAssets()
 {
     // Clear audio map
-    //for (auto audio : m_audioMap) {
+    //for (auto audio : audioMap_) {
     //	if (audio.second) {
     //		delete audio.second;
     //		audio.second = nullptr;
@@ -121,19 +121,19 @@ void AssetManager::UnloadAssets()
     //}
 
     // Clear font map
-    for (auto font : m_fontMap) {
+    for (auto font : fontMap_) {
         if (font.second) {
             delete font.second;
             font.second = nullptr;
         }
     }
-    m_fontMap.clear();
+    fontMap_.clear();
 
     // Clear texture map
-    m_textureMap.clear();
+    textureMap_.clear();
 
     //// Clear archetype map
-    //for (auto archetype : m_archetypeMap) {
+    //for (auto archetype : archetypeMap_) {
     //	if (archetype.second) {
     //		delete archetype.second;
     //		archetype.second = nullptr;
@@ -141,7 +141,7 @@ void AssetManager::UnloadAssets()
     //}
 
     // Clear state map
-    m_stateMap.clear();
+    stateMap_.clear();
 
     COMPONENT::ClearBuilders();
 }
@@ -149,7 +149,7 @@ void AssetManager::UnloadAssets()
 bool AssetManager::SetBuiltInComponents()
 {
     // Load built-in components
-	COMPONENT::m_loadingCustomLogic = false;
+	COMPONENT::loadingCustomLogic_ = false;
 
     // Physics components
 	jeCheckComponentRegistration(jeRegisterComponent(Transform));
@@ -168,16 +168,16 @@ bool AssetManager::SetBuiltInComponents()
     return true;
 }
 
-void AssetManager::LoadFont(const char * _path, const char* _key, unsigned _size,
-    unsigned long _start, unsigned long _end)
+void AssetManager::LoadFont(const char * path, const char* key, unsigned size,
+    unsigned long start, unsigned long end)
 {
     // Set pointer to new font
     Font* newFont = nullptr;
     static bool s_existing = false;
     static float s_newLineLevel = 0;
-    auto found = m_fontMap.find(_key);
+    auto found = fontMap_.find(key);
 
-    if (found != m_fontMap.end()) {
+    if (found != fontMap_.end()) {
         // There is existing font map
         s_existing = true;
         // Then get that one
@@ -195,44 +195,44 @@ void AssetManager::LoadFont(const char * _path, const char* _key, unsigned _size
 
         // Init freetype
         if (FT_Init_FreeType(&newFont->m_lib))
-            jeDebugPrint("!AssetManager - Could not init freetype library: %s\n", _path);
+            jeDebugPrint("!AssetManager - Could not init freetype library: %s\n", path);
 
         // Check freetype face init
-        if (bool a = !FT_New_Face(newFont->m_lib, _path, 0, &newFont->m_face))
-            jeDebugPrint("*AssetManager - Loaded font: %s\n", _path);
+        if (bool a = !FT_New_Face(newFont->m_lib, path, 0, &newFont->m_face))
+            jeDebugPrint("*AssetManager - Loaded font: %s\n", path);
 		else {
-			jeDebugPrint("!AssetManager - Failed to load font: %s\n", _path);
+			jeDebugPrint("!AssetManager - Failed to load font: %s\n", path);
 			return;
 		}
 
         // Select unicode range
         FT_Select_Charmap(newFont->m_face, FT_ENCODING_UNICODE);
         // Set pixel size
-        FT_Set_Pixel_Sizes(newFont->m_face, 0, _size);
+        FT_Set_Pixel_Sizes(newFont->m_face, 0, size);
         // Set size of the font
-        newFont->m_fontSize = _size;
+        newFont->m_fontSize = size;
         // Disable byte-alignment restriction
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     }
 
-    LoadCharacters(newFont, s_newLineLevel, _start, _end);
+    LoadCharacters(newFont, s_newLineLevel, start, end);
 
     // If there is not existing font in the list,
     // add new one
     if (!s_existing) {
         newFont->m_newLineInterval = s_newLineLevel;
-        m_fontMap.insert(FontMap::value_type(_key, newFont));
+        fontMap_.insert(FontMap::value_type(key, newFont));
     }
 }
 
-void AssetManager::LoadCharacters(Font* _pFont, float& _newLineLevel,
-    unsigned long _start, unsigned long _end)
+void AssetManager::LoadCharacters(Font* pFont, float& newLineLevel,
+    unsigned long start, unsigned long end)
 {
     // Load first 128 characters of ASCII set
-    for (unsigned long c = _start; c < _end; c++)
+    for (unsigned long c = start; c < end; c++)
     {
         // Load character glyph 
-        if (FT_Load_Char(_pFont->m_face, c, FT_LOAD_RENDER))
+        if (FT_Load_Char(pFont->m_face, c, FT_LOAD_RENDER))
         {
             jeDebugPrint("!AssetManager - Failed to load Glyph.\n");
             break;
@@ -246,12 +246,12 @@ void AssetManager::LoadCharacters(Font* _pFont, float& _newLineLevel,
             GL_TEXTURE_2D,
             0,
             GL_RED,
-            _pFont->m_face->glyph->bitmap.width,
-            _pFont->m_face->glyph->bitmap.rows,
+			pFont->m_face->glyph->bitmap.width,
+			pFont->m_face->glyph->bitmap.rows,
             0,
             GL_RED,
             GL_UNSIGNED_BYTE,
-            _pFont->m_face->glyph->bitmap.buffer
+			pFont->m_face->glyph->bitmap.buffer
         );
 
         // Set texture options
@@ -262,67 +262,67 @@ void AssetManager::LoadCharacters(Font* _pFont, float& _newLineLevel,
 
         // Now store character for later use
         Character character = {
-                texture, GLuint(_pFont->m_face->glyph->advance.x),
-                vec2(float(_pFont->m_face->glyph->bitmap.width), float(_pFont->m_face->glyph->bitmap.rows)),
-                vec2(float(_pFont->m_face->glyph->bitmap_left), float(_pFont->m_face->glyph->bitmap_top))
+                texture, GLuint(pFont->m_face->glyph->advance.x),
+                vec2(float(pFont->m_face->glyph->bitmap.width), float(pFont->m_face->glyph->bitmap.rows)),
+                vec2(float(pFont->m_face->glyph->bitmap_left), float(pFont->m_face->glyph->bitmap_top))
         };
-        if (_newLineLevel < character.size.y)
-            _newLineLevel = character.size.y;
-        _pFont->m_data.insert(Font::FontData::value_type(c, character));
+        if (newLineLevel < character.size.y)
+			newLineLevel = character.size.y;
+		pFont->m_data.insert(Font::FontData::value_type(c, character));
     }
 
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void AssetManager::LoadAudio(const char* /*_path*/, const char* /*_audioKey*/)
+void AssetManager::LoadAudio(const char* /*path*/, const char* /*_audioKey*/)
 {
     // TODO
     // load audio assets
 }
 
-void AssetManager::LoadImage(const char *_path, const char *_textureKey)
+void AssetManager::LoadImage(const char *path, const char *textureKey)
 {
     Image	 image;
-    unsigned error = lodepng::decode(image.pixels, image.width, image.height, _path);
+    unsigned error = lodepng::decode(image.pixels, image.width, image.height, path);
 	
 	if (error)
         jeDebugPrint("!AssetManager - Decoder error %d / %s.\n", error, lodepng_error_text(error));
 
 	else 
-		m_images.insert(
-			std::unordered_map<std::string, Image>::value_type(_textureKey, image));
+		images_.insert(
+			std::unordered_map<std::string, Image>::value_type(textureKey, image));
 }
 
-void AssetManager::RegisterImage(Image& _image, const char* _textureKey)
+void AssetManager::RegisterImage(Image& image, const char* textureKey)
 {    
 	// Enable the texture for OpenGL.
 	glEnable(GL_TEXTURE_2D);
-	glGenTextures(1, &_image.handle);
-	glBindTexture(GL_TEXTURE_2D, _image.handle);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _image.width, _image.height, 0,
-		GL_RGBA, GL_UNSIGNED_BYTE, &_image.pixels[0]);
+	glGenTextures(1, &image.handle);
+	glBindTexture(GL_TEXTURE_2D, image.handle);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.width, image.height, 0,
+		GL_RGBA, GL_UNSIGNED_BYTE, &image.pixels[0]);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-	m_textureMap.insert(TextureMap::value_type(
-		_textureKey, _image.handle));
+	textureMap_.insert(TextureMap::value_type(
+		textureKey, image.handle));
 }
 
-void AssetManager::LoadArchetype(const char* /*_path*/, const char* /*_archetypeKey*/)
+void AssetManager::LoadArchetype(const char* /*path*/, const char* /*_archetypeKey*/)
 {
     // TODO
     // load archetpye assets
 }
 
-Mesh* AssetManager::LoadObjFile(const char* _path)
+Mesh* AssetManager::LoadObjFile(const char* path)
 {
 	Mesh *pNewMesh = new Mesh;
 
-	std::ifstream obj(_path, std::ios::in);
+	std::ifstream obj(path, std::ios::in);
 
 	if (!obj) {
-		jeDebugPrint("!AssetManager - Cannot load the object file: %s", _path);
+		jeDebugPrint("!AssetManager - Cannot load the object file: %s", path);
 		return nullptr;
 	}
 
@@ -400,18 +400,17 @@ Mesh* AssetManager::LoadObjFile(const char* _path)
 	return pNewMesh;
 }
 
-void AssetManager::TakeAScreenshot(const char* _directory)
+void AssetManager::TakeAScreenshot(const char* directory)
 {
 	// Get the total size of image
-	unsigned width = APP::m_Data.m_width, height = APP::m_Data.m_height, size = width * height * 4;
+	unsigned width = APP::data_.width, height = APP::data_.height, size = width * height * 4;
 
 	// Send the pixel info to the image vector
 	std::vector<unsigned char> image;
-	m_pPixelChunk = new unsigned char[size];
-	//image.resize(size);
+	pPixelChunk_ = new unsigned char[size];
 
 	// Read pixel from window screen
-	glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, &m_pPixelChunk[0]);
+	glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, &pPixelChunk_[0]);
 
 	// Invert the image vertucally
 	for (unsigned y = 0; y < height / 2; y++)
@@ -420,19 +419,19 @@ void AssetManager::TakeAScreenshot(const char* _directory)
 			unsigned index = 4 * (width * y + x);
 			unsigned invertedInder = 4 * (width * (height - y - 1) + x);
 
-			std::swap(m_pPixelChunk[index + 0], m_pPixelChunk[invertedInder + 0]);
-			std::swap(m_pPixelChunk[index + 1], m_pPixelChunk[invertedInder + 1]);
-			std::swap(m_pPixelChunk[index + 2], m_pPixelChunk[invertedInder + 2]);
-			std::swap(m_pPixelChunk[index + 3], m_pPixelChunk[invertedInder + 3]);
+			std::swap(pPixelChunk_[index + 0], pPixelChunk_[invertedInder + 0]);
+			std::swap(pPixelChunk_[index + 1], pPixelChunk_[invertedInder + 1]);
+			std::swap(pPixelChunk_[index + 2], pPixelChunk_[invertedInder + 2]);
+			std::swap(pPixelChunk_[index + 3], pPixelChunk_[invertedInder + 3]);
 		}
 
 	// Check error
-	unsigned error = lodepng::encode(image, m_pPixelChunk, width, height);
+	unsigned error = lodepng::encode(image, pPixelChunk_, width, height);
 	if (!error) {
 
 		std::string fileName;
-		if (_directory)
-			fileName.assign(_directory);
+		if (directory)
+			fileName.assign(directory);
 		
 		Time currentTimeInfo = Timer::GetCurrentTimeInfo();
 
@@ -473,66 +472,150 @@ void AssetManager::TakeAScreenshot(const char* _directory)
 		jeDebugPrint("!AssetManager - Cannot export screenshot image : %i\n", error);
 
 
-	delete[] m_pPixelChunk;
-	m_pPixelChunk = nullptr;
+	delete[] pPixelChunk_;
+	pPixelChunk_ = nullptr;
 }
 
-void AssetManager::SetInitDirectory(const char * _dir) { m_initDirectory.assign(_dir); }
+void AssetManager::SetInitDirectory(const char * dir) { initDirectory_.assign(dir); }
 
-void AssetManager::SetAssetDirectory(const char * _dir) { m_assetDirectory.assign(_dir); }
+void AssetManager::SetAssetDirectory(const char * dir) { assetDirectory_.assign(dir); }
 
-void AssetManager::SetStateDirectory(const char * _dir) { m_stateDirectory.assign(_dir); }
+void AssetManager::SetStateDirectory(const char * dir) { stateDirectory_.assign(dir); }
 
-void AssetManager::SetArchetypeDirectory(const char * _dir) { m_archeDirectory.assign(_dir); }
+void AssetManager::SetArchetypeDirectory(const char * dir) { archeDirectory_.assign(dir); }
 
-Font* AssetManager::GetFont(const char *_key)
+Font* AssetManager::GetFont(const char *key)
 {
-    auto found = m_fontMap.find(_key);
-    if (found != m_fontMap.end())
+    auto found = fontMap_.find(key);
+    if (found != fontMap_.end())
         return found->second;
 
-    jeDebugPrint("!AssetManager - Cannot find such name of font resource: %s.\n", _key);
+    jeDebugPrint("!AssetManager - Cannot find such name of font resource: %s.\n", key);
     return nullptr;
 }
 
-State* AssetManager::GetState(const char *_key)
+State* AssetManager::GetState(const char *key)
 {
-    auto found = m_stateMap.find(_key);
-    if (found != m_stateMap.end())
+    auto found = stateMap_.find(key);
+    if (found != stateMap_.end())
         return found->second;
 
-    jeDebugPrint("!AssetManager - Cannot find such name of state resource: %s.\n", _key);
+    jeDebugPrint("!AssetManager - Cannot find such name of state resource: %s.\n", key);
     return nullptr;
 }
 
-Audio* AssetManager::GetAudio(const char *_key)
+Audio* AssetManager::GetAudio(const char *key)
 {
-    auto found = m_audioMap.find(_key);
-    if (found != m_audioMap.end())
+    auto found = audioMap_.find(key);
+    if (found != audioMap_.end())
         return found->second;
 
-    jeDebugPrint("!AssetManager - Cannot find such name of audio resource: %s.\n", _key);
+    jeDebugPrint("!AssetManager - Cannot find such name of audio resource: %s.\n", key);
     return nullptr;
 }
 
-unsigned AssetManager::GetTexture(const char *_key)
+unsigned AssetManager::GetTexture(const char *key)
 {
-    auto found = m_textureMap.find(_key);
-    if (found != m_textureMap.end())
+    auto found = textureMap_.find(key);
+    if (found != textureMap_.end())
         return found->second;
 
-    jeDebugPrint("!AssetManager - Cannot find such name of texture resource: %s.\n", _key);
+    jeDebugPrint("!AssetManager - Cannot find such name of texture resource: %s.\n", key);
     return 0;
 }
 
-Archetype* AssetManager::GetArchetype(const char *_key)
+Archetype* AssetManager::GetArchetype(const char *key)
 {
-    auto found = m_archetypeMap.find(_key);
-    if (found != m_archetypeMap.end())
+    auto found = archetypeMap_.find(key);
+    if (found != archetypeMap_.end())
         return found->second;
 
-    jeDebugPrint("!AssetManager: Cannot find such name of archetype resource: %s.\n", _key);
+    jeDebugPrint("!AssetManager: Cannot find such name of archetype resource: %s.\n", key);
     return nullptr;
+}
+
+void AssetManager::DrawLoadingScreen(SDL_Window* pWindow, const char* directory)
+{
+	// TODO
+	// None of this code is not working
+	LoadImage(directory, "Splash");
+
+	for (auto image : images_) {
+	
+		if (!strcmp(image.first.c_str(), "Splash"))
+			RegisterImage(image.second, "Splash");
+	}
+
+	GLsizei sizeOfPlaneIndices
+		= static_cast<GLsizei>(GLM::targetMesh_[GLM::JE_TARGET_SCREEN]->GetIndiceCount());
+
+	Mesh* mesh = Mesh::CreateRect();
+	GLM::DescribeVertex(mesh);
+	mesh->AddTexture("Splash");
+
+	// Render to framebuffer
+	glBindFramebuffer(GL_FRAMEBUFFER, GLM::fbo_);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.f, 0.f, 0.f, 0.f);
+	glViewport(0, 0, GLint(GLM::width_), GLint(GLM::height_));
+
+	// Backface culling
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glFrontFace(GL_CCW);
+
+	Shader::Use(GLM::JE_SHADER_MODEL);
+
+	Shader::pCurrentShader_->SetMatrix("m4_translate", Translate(vec3::ZERO));
+	Shader::pCurrentShader_->SetMatrix("m4_scale", Scale(vec3(GLM::width_, GLM::height_, 0.f)));
+	Shader::pCurrentShader_->SetMatrix("m4_rotate", Rotate(0.f, vec3::UNIT_Z));
+
+	float m_right = GLM::width_ * .5f;
+	float m_left = -m_right;
+	float m_top = GLM::height_ * .5f;
+	float m_bottom = -m_top;
+
+	Shader::pCurrentShader_->SetMatrix("m4_projection", Orthogonal(m_left, m_right, m_bottom, m_top, 0.1f, 1000.f));
+
+	// Send camera info to shader
+	Shader::pCurrentShader_->SetMatrix("m4_viewport", Scale(vec3(GLM::width_ / 800.f, GLM::height_ / 600.f, 1.f)));
+
+	glBindTexture(GL_TEXTURE, mesh->m_mainTex);
+
+	// Send color info to shader
+	Shader::pCurrentShader_->SetVector4("v4_color", vec4::ONE);
+	Shader::pCurrentShader_->SetBool("boolean_flip", false);
+	Shader::pCurrentShader_->SetMatrix("m4_aniScale", Scale(vec3(1,1,0)));
+	Shader::pCurrentShader_->SetMatrix("m4_aniTranslate", Translate(vec3::ZERO));
+
+	glBindVertexArray(mesh->m_vao);
+	glDrawElements(GL_TRIANGLES, sizeOfPlaneIndices, GL_UNSIGNED_INT, nullptr);
+	glBindVertexArray(0);
+
+	// Bind default framebuffer and render to screen
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glClearColor(1.f, 0.f, 0.f, 1.f);
+
+	glDisable(GL_CULL_FACE);	//Disable face culling
+	glDisable(GL_DEPTH_TEST);	//Disable depth test
+
+	// Render to plane 2d
+	glBindVertexArray(GLM::targetMesh_[GLM::JE_TARGET_SCREEN]->m_vao);
+	Shader::Use(GLM::JE_SHADER_SCREEN);
+	Shader::pCurrentShader_->SetVector4("v4_screenColor", vec4::ONE);
+	Shader::pCurrentShader_->SetEnum("enum_effectType", 0);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, GLM::texColorBuf_);
+	glDrawElements(GL_TRIANGLES, sizeOfPlaneIndices, GL_UNSIGNED_INT, nullptr);
+	glEnable(GL_DEPTH_TEST);
+
+	glBindVertexArray(0);
+
+	SDL_GL_SwapWindow(pWindow);
+
+	delete mesh;
 }
 
 jeEnd

@@ -8,18 +8,18 @@
 jeBegin
 jeDefineComponentBuilder(Transform);
 
-Transform::Transform(Object* _pOwner)
-	:Component(_pOwner), 
+Transform::Transform(Object* pOwner)
+	:Component(pOwner), 
 	position(vec3::ZERO), scale(vec3::ZERO), 
 	rotation(0.f), rotationAxis(vec3::UNIT_Z)
 {}
 
-void Transform::operator= (const Transform& _copy)
+void Transform::operator= (const Transform& copy)
 {
-	position.Set(_copy.position); 
-	scale.Set(_copy.scale);
-	rotation = _copy.rotation; 
-	rotationAxis.Set(_copy.rotationAxis);
+	position.Set(copy.position); 
+	scale.Set(copy.scale);
+	rotation = copy.rotation; 
+	rotationAxis.Set(copy.rotationAxis);
 }
 
 void Transform::Load(CR_RJValue _data)
@@ -47,7 +47,7 @@ void Transform::Load(CR_RJValue _data)
 
 void Transform::EditorUpdate(const float /*dt*/)
 {
-	if (m_showEditor) {
+	if (showEditor_) {
 		static float s_position[3] = { position.x, position.y, position.z }, 
 			s_scale[3] = { scale.x, scale.y, scale.z },
 			s_axis[3] = { rotationAxis.x, rotationAxis.y, rotationAxis.z },
@@ -60,7 +60,7 @@ void Transform::EditorUpdate(const float /*dt*/)
 		ImGui::InputFloat("Rotation", &s_rotation);
 		
 		if (ImGui::Button("Close"))
-			m_showEditor = false;
+			showEditor_ = false;
 
 		ImGui::End();
 

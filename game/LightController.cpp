@@ -6,8 +6,8 @@ jeBegin
 
 jeDefineCustomComponentBuilder(LightController);
 
-LightController::LightController(Object* _pObject)
-    :CustomComponent(_pObject)
+LightController::LightController(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void LightController::Register()

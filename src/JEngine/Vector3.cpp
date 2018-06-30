@@ -48,16 +48,16 @@ Vector3::Vector3(float _x, float _y, float _z)
 /******************************************************************************/
 /*!
 \brief - Vector3 Copy Constructor
-\param _copy - Vector3 to be copied
+\param copy - Vector3 to be copied
 */
 /******************************************************************************/
-Vector3::Vector3(const vec3& _copy)
+Vector3::Vector3(const vec3& copy)
 {
-    if (this != &_copy)
+    if (this != &copy)
     {
-        x = _copy.x;
-        y = _copy.y;
-        z = _copy.z;
+        x = copy.x;
+        y = copy.y;
+        z = copy.z;
     }
 }
 
@@ -376,11 +376,11 @@ Vector3& Vector3::operator/=(float _constant)
     return *this;
 }
 
-void Vector3::Set(const vec3& _copy)
+void Vector3::Set(const vec3& copy)
 {
-    x = _copy.x;
-    y = _copy.y;
-    z = _copy.z;
+    x = copy.x;
+    y = copy.y;
+    z = copy.z;
 }
 
 void Vector3::Set(float _x, float _y, float _z)

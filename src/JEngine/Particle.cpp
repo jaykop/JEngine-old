@@ -1,5 +1,4 @@
 #include "Particle.h"
-#include "GLManager.h"
 #include "Transform.h"
 #include "SystemManager.h"
 #include "Random.h"
@@ -47,22 +46,22 @@ Emitter::Particle::Particle(Emitter* _emitter)
 		direction.z = 0.f;
 }
 
-void Emitter::Particle::operator=(const Particle & _copy)
+void Emitter::Particle::operator=(const Particle & copy)
 {
 	static Transform* s_pTransform;
 	s_pTransform = m_pEmitter->GetOwner()->GetComponent<Transform>();
 
-	dead = _copy.dead;
-	life = _copy.life;
-	velocity.Set(_copy.velocity);
+	dead = copy.dead;
+	life = copy.life;
+	velocity.Set(copy.velocity);
 	position.Set(s_pTransform->position);
-	rotation = _copy.rotation;
-	direction.Set(_copy.direction);
+	rotation = copy.rotation;
+	direction.Set(copy.direction);
 	Normalize(direction);
-	color.Set(_copy.color);
-	hidden = _copy.hidden;
-	rotationSpeed = _copy.rotationSpeed;
-	direction.z = _copy.direction.z;;
+	color.Set(copy.color);
+	hidden = copy.hidden;
+	rotationSpeed = copy.rotationSpeed;
+	direction.z = copy.direction.z;;
 }
 
 void Emitter::Particle::Refresh()
@@ -124,8 +123,8 @@ void Emitter::Particle::Refresh()
 		direction.z = 0.f;
 }
 
-Emitter::Emitter(Object* _pOwner)
-	:Model(_pOwner), m_startColor(vec3::ONE), m_changeColor(true),
+Emitter::Emitter(Object* pOwner)
+	:Model(pOwner), m_startColor(vec3::ONE), m_changeColor(true),
 	m_endColor(vec3::ZERO), life(1.f), type(PARTICLE_NORMAL), is2d(false),
 	direction(vec3::ZERO), velocity(vec3::ZERO), active(true), colorDiff(vec3::ZERO),
 	m_deadCount(0), pointSize(0.f), range(vec3::ZERO), size(0), rotationSpeed(0.f)
@@ -146,30 +145,30 @@ Emitter::~Emitter()
 	SYSTEM::pGraphic_->RemoveModel(this);
 }
 
-void Emitter::operator=(const Emitter & _copy)
+void Emitter::operator=(const Emitter & /*copy*/)
 {
-	m_startColor.Set(_copy.m_startColor);
-	m_changeColor = _copy.m_changeColor;
-	m_endColor.Set(_copy.m_endColor);
-	life = _copy.life;
-	type = _copy.type;
-	is2d = _copy.is2d;
-	direction.Set(_copy.direction);
-	velocity.Set(_copy.velocity);
-	active = _copy.active;
-	m_deadCount = _copy.m_deadCount;
-	pointSize = _copy.pointSize;
-	range.Set(_copy.range);
-	size = _copy.size;
-	colorDiff.Set(_copy.colorDiff);
-	rotationSpeed = _copy.rotationSpeed;
+	//m_startColor.Set(copy.m_startColor);
+	//m_changeColor = copy.m_changeColor;
+	//m_endColor.Set(copy.m_endColor);
+	//life = copy.life;
+	//type = copy.type;
+	//is2d = copy.is2d;
+	//direction.Set(copy.direction);
+	//velocity.Set(copy.velocity);
+	//active = copy.active;
+	//m_deadCount = copy.m_deadCount;
+	//pointSize = copy.pointSize;
+	//range.Set(copy.range);
+	//size = copy.size;
+	//colorDiff.Set(copy.colorDiff);
+	//rotationSpeed = copy.rotationSpeed;
 
-	SetQuantity(size);
-	auto copy = _copy.m_particles.begin();
-	for (auto particle = m_particles.begin(); particle != m_particles.end();
-		particle++, copy++) 
-		(*particle) = (*copy);
-	
+	//SetQuantity(size);
+	//auto copy = copy.m_particles.begin();
+	//for (auto particle = m_particles.begin(); particle != m_particles.end();
+	//	particle++, copy++) 
+	//	(*particle) = (*copy);
+	//
 }
 
 void Emitter::Register()

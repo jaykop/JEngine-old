@@ -8,8 +8,8 @@ jeDefineCustomComponentBuilder(CameraController);
 
 using namespace Math;
 
-CameraController::CameraController(Object* _pObject)
-	:CustomComponent(_pObject), m_camera(nullptr)
+CameraController::CameraController(Object* pObject)
+	:CustomComponent(pObject), m_camera(nullptr)
 {}
 
 void CameraController::Register()

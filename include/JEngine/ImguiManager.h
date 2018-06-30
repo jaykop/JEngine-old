@@ -41,7 +41,7 @@ private:
 	static void ClearComponentEditor();
 	static void ClearObjectEditor();
 
-	static SDL_Window			*m_pWindow;
+	static SDL_Window			*pWindow_;
 	static EditorList			m_editors;
 	static ObjectEditorMap		m_objEditors;
 	static ComponentEditorMap	m_cptEditors;

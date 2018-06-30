@@ -11,8 +11,8 @@ jeDefineCustomComponentBuilder(GoFight);
 /////////////////////////////////////////////////////////////////////////
 // Global bully state
 /////////////////////////////////////////////////////////////////////////
-BullyState::BullyState(Object* _pObject)
-    :CustomComponent(_pObject)
+BullyState::BullyState(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void BullyState::Register()
@@ -62,8 +62,8 @@ bool BullyState::OnMessage(Telegram& /*msg*/)
 /////////////////////////////////////////////////////////////////////////
 // Hating state
 /////////////////////////////////////////////////////////////////////////
-JustHatingMiner::JustHatingMiner(Object* _pObject)
-    :CustomComponent(_pObject)
+JustHatingMiner::JustHatingMiner(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void JustHatingMiner::Register()
@@ -109,8 +109,8 @@ bool JustHatingMiner::OnMessage(Telegram& /*msg*/)
 /////////////////////////////////////////////////////////////////////////
 // Go fight to miner
 /////////////////////////////////////////////////////////////////////////
-GoFight::GoFight(Object* _pObject)
-    :CustomComponent(_pObject)
+GoFight::GoFight(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void GoFight::Register()

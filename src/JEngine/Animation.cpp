@@ -10,17 +10,17 @@
 jeBegin
 jeDefineComponentBuilder(Animation);
 
-Animation::Animation(Object* _pOwner)
-	: Component(_pOwner), m_currentFrame(0.f), m_animationSpeed(0.f),
+Animation::Animation(Object* pOwner)
+	: Component(pOwner), m_currentFrame(0.f), m_animationSpeed(0.f),
 	m_animationFrames(1), m_animationFixFrame(1), m_realSpeed(0.f),
-	m_realFrame(1.f), m_activeAnimation(false)
+	m_realFrame(1.f), active_Animation(false)
 {	
 	// Connect to model's pointer
-	if (_pOwner->HasComponent<Model>()) 
-		_pOwner->GetComponent<Model>()->m_pAnimation = this;
+	if (pOwner->HasComponent<Model>()) 
+		pOwner->GetComponent<Model>()->m_pAnimation = this;
 
 	else
-		jeDebugPrint("!Animation - This object has no model componnet: %s\n", _pOwner->GetName().c_str());
+		jeDebugPrint("!Animation - This object has no model componnet: %s\n", pOwner->GetName().c_str());
 }
 
 Animation::~Animation() {
@@ -30,15 +30,15 @@ Animation::~Animation() {
 		GetOwner()->GetComponent<Model>()->m_pAnimation = nullptr;
 }
 
-void Animation::operator=(const Animation & _copy)
+void Animation::operator=(const Animation & copy)
 {
-	m_currentFrame = _copy.m_currentFrame; 
-	m_animationSpeed = _copy.m_animationSpeed;
-	m_animationFrames = _copy.m_animationFrames;
-	m_animationFixFrame = _copy.m_animationFixFrame;
-	m_realSpeed = _copy.m_realSpeed;
-	m_realFrame = _copy.m_realFrame;
-	m_activeAnimation = _copy.m_activeAnimation;
+	m_currentFrame = copy.m_currentFrame; 
+	m_animationSpeed = copy.m_animationSpeed;
+	m_animationFrames = copy.m_animationFrames;
+	m_animationFixFrame = copy.m_animationFixFrame;
+	m_realSpeed = copy.m_realSpeed;
+	m_realFrame = copy.m_realFrame;
+	active_Animation = copy.active_Animation;
 
 	// Connect to model's pointer
 	if (GetOwner()->HasComponent<Model>()) 
@@ -54,7 +54,7 @@ void Animation::Load(CR_RJValue _data)
 
 	if (_data.HasMember("Active")) {
 		CR_RJValue active = _data["Active"];
-		m_activeAnimation = active.GetBool();
+		active_Animation = active.GetBool();
 	}
 
 	if (_data.HasMember("Frame")) {
@@ -75,20 +75,20 @@ void Animation::EditorUpdate(const float /*dt*/)
 
 bool Animation::GetActiveAnimationToggle() const
 { 
-	return m_activeAnimation;
+	return active_Animation;
 }
 
 void Animation::ActiveAnimation(bool _toggle)
 {
-	m_activeAnimation = _toggle;
-	if (m_activeAnimation)
-		m_timer.Start();
+	active_Animation = _toggle;
+	if (active_Animation)
+		timer_.Start();
 }
 
 void Animation::FixAnimationFrame(int _thFrame)
 {
 	m_animationSpeed = 0.f;
-	m_activeAnimation = false;
+	active_Animation = false;
 	m_currentFrame = float(_thFrame) * m_realFrame;
 }
 

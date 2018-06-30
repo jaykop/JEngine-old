@@ -9,12 +9,12 @@ jeBegin
 // static variables
 //////////////////////////////////////////////////////////////////////////
 
-float			GLM::m_width = 0;
-float			GLM::m_height = 0;
-GLint			GLM::m_buffers, GLM::m_samples, GLM::m_Attributes;
-GLuint			GLM::m_fbo = 0, GLM::m_depthBuffer = 0, GLM::m_renderTarget = 0;
-GLM::Shaders	GLM::m_shader;
-const GLubyte	*GLM::m_pRenderer = nullptr, *GLM::m_pVendor = nullptr, *GLM::m_pVersion = nullptr, *GLM::m_pGlslVersion = nullptr;
+float			GLM::width_ = 0;
+float			GLM::height_ = 0;
+GLint			GLM::buffers_, GLM::samples_, GLM::attributes_;
+GLuint			GLM::fbo_ = 0, GLM::rbo_ = 0, GLM::texColorBuf_ = 0;
+GLM::Shaders	GLM::shader_;
+const GLubyte	*GLM::pRenderer_ = nullptr, *GLM::pVendor_ = nullptr, *GLM::pVersion_ = nullptr, *GLM::pGlslVersion_ = nullptr;
 Mesh			*GLM::targetMesh_[] = { nullptr };
 
 //////////////////////////////////////////////////////////////////////////
@@ -43,61 +43,59 @@ bool GLManager::Init()
 void GLManager::Close()
 {
     // Clear shaders
-    for (auto shader : m_shader) {
+    for (auto shader : shader_) {
         delete shader;
         shader = nullptr;
     }
 
-    m_shader.clear();
+    shader_.clear();
 
-    for (int index = 0; index < TARGET_END; ++index)
+    for (int index = 0; index < JE_TARGET_END; ++index)
 		delete targetMesh_[index];
 
-    glDeleteFramebuffers(1, &m_fbo);
+    glDeleteFramebuffers(1, &fbo_);
 }
 
 void GLManager::InitFramebuffer()
 {
 	// Int target render meshes for screen and text
-	targetMesh_[TARGET_TEXT] = Mesh::CreateRect();
-	targetMesh_[TARGET_TEXT]->builtIn_ = true;
-	GLM::DescribeVertex(targetMesh_[TARGET_TEXT]);
+	targetMesh_[JE_TARGET_TEXT] = Mesh::CreateRect();
+	targetMesh_[JE_TARGET_TEXT]->builtIn_ = true;
+	GLM::DescribeVertex(targetMesh_[JE_TARGET_TEXT]);
 
-	targetMesh_[TARGET_SCREEN] = Mesh::CreateRect();
-	targetMesh_[TARGET_SCREEN]->builtIn_ = true;
-	GLM::DescribeVertex(targetMesh_[TARGET_SCREEN]);
+	targetMesh_[JE_TARGET_SCREEN] = Mesh::CreateRect();
+	targetMesh_[JE_TARGET_SCREEN]->builtIn_ = true;
+	GLM::DescribeVertex(targetMesh_[JE_TARGET_SCREEN]);
 
     // Create and bind the FBO
-    glGenFramebuffers(1, &m_fbo);
-    glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
+    glGenFramebuffers(1, &fbo_);
+    glBindFramebuffer(GL_FRAMEBUFFER, fbo_);
 
     // The texture we're going to render to
-    glGenTextures(1, &m_renderTarget);
+    glGenTextures(1, &texColorBuf_);
 
     // "Bind" the newly created texture : all future texture functions will modify this texture
-    glBindTexture(GL_TEXTURE_2D, m_renderTarget);
+    glBindTexture(GL_TEXTURE_2D, texColorBuf_);
 
     // Give an empty image to OpenGL ( the last "0" )
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, GLsizei(m_width), GLsizei(m_height), 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, GLsizei(width_), GLsizei(height_), 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 
     // Poor filtering. Needed !
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	// Set "renderedTexture" as our colour attachement #0
+	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texColorBuf_, 0);
 
     // The depth buffer
-    glGenRenderbuffers(1, &m_depthBuffer);
-    glBindRenderbuffer(GL_RENDERBUFFER, m_depthBuffer);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, GLsizei(m_width), GLsizei(m_height));
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_depthBuffer);
-
-    // Set "renderedTexture" as our colour attachement #0
-    glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, m_renderTarget, 0);
-
-    // Set the list of draw buffers.
-    GLenum DrawBuffers[1] = { GL_COLOR_ATTACHMENT0 };
-    glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
+    glGenRenderbuffers(1, &rbo_);
+    glBindRenderbuffer(GL_RENDERBUFFER, rbo_);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, GLsizei(width_), GLsizei(height_));
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo_);
 
     // Always check that our framebuffer is ok
     if (GL_FRAMEBUFFER_COMPLETE != glCheckFramebufferStatus(GL_FRAMEBUFFER))
@@ -133,16 +131,16 @@ void GLManager::InitGLEnvironment()
 void GLManager::InitShaders()
 {
     // Do shader stuff
-    for (unsigned i = 0; i < SHADER_END; ++i) {
+    for (unsigned i = 0; i < JE_SHADER_END; ++i) {
 
-        m_shader.push_back(new Shader);
-        m_shader[i]->CreateShader(Shader::m_vertexShader[i], Shader::VERTEX);
+        shader_.push_back(new Shader);
+        shader_[i]->CreateShader(Shader::vertexShader_[i], Shader::JE_VERTEX);
         // TODO
         // Work on geometry shader
-        //m_shader[i]->CreateShader(Shader::m_geometryShader[i], Shader::GEOMETRY);
-        m_shader[i]->CreateShader(Shader::m_fragmentShader[i], Shader::PIXEL);
+        //shader_[i]->CreateShader(Shader::m_geometryShader[i], Shader::JE_GEOMETRY);
+        shader_[i]->CreateShader(Shader::fragmentShader_[i], Shader::JE_PIXEL);
 
-        m_shader[i]->CombineShaders();
+        shader_[i]->CombineShaders();
     }
 
     jeDebugPrint("*GLManager - Compiled and linked shaders.\n");
@@ -151,28 +149,28 @@ void GLManager::InitShaders()
 void GLManager::ShowGLVersion()
 {
     // Show GL version info
-    m_pRenderer = glGetString(GL_RENDERER);
-    m_pVendor = glGetString(GL_VENDOR);
-    m_pVersion = glGetString(GL_VERSION);
-    m_pGlslVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
+    pRenderer_ = glGetString(GL_RENDERER);
+    pVendor_ = glGetString(GL_VENDOR);
+    pVersion_ = glGetString(GL_VERSION);
+    pGlslVersion_ = glGetString(GL_SHADING_LANGUAGE_VERSION);
 
-    glGetIntegerv(GL_SAMPLE_BUFFERS, &m_buffers);
-    glGetIntegerv(GL_SAMPLES, &m_samples);
+    glGetIntegerv(GL_SAMPLE_BUFFERS, &buffers_);
+    glGetIntegerv(GL_SAMPLES, &samples_);
 
-    jeDebugPrint("*GLManager - GL Vendor: %s / GL Renderer: %s\n", m_pVendor, m_pRenderer);
-    jeDebugPrint("*GLManager - GL Version: %s\n", m_pVersion);
-    jeDebugPrint("*GLManager - GLSL Version: %s\n", m_pGlslVersion);
-    jeDebugPrint("*GLManager - GL Samples: %d / GL Sample Buffers: %d\n", m_samples, m_buffers);
+    jeDebugPrint("*GLManager - GL Vendor: %s / GL Renderer: %s\n", pVendor_, pRenderer_);
+    jeDebugPrint("*GLManager - GL Version: %s\n", pVersion_);
+    jeDebugPrint("*GLManager - GLSL Version: %s\n", pGlslVersion_);
+    jeDebugPrint("*GLManager - GL Samples: %d / GL Sample Buffers: %d\n", samples_, buffers_);
 
     // Show how much attributes are available
-    glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &m_Attributes);
-    jeDebugPrint("*GLManager - Maximum number of vertex attributes supported: %d\n", m_Attributes);
+    glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &attributes_);
+    jeDebugPrint("*GLManager - Maximum number of vertex attributes supported: %d\n", attributes_);
 }
 
-void GLManager::Resize(int _width, int _height)
+void GLManager::Resize(int width, int height)
 {
-    m_width = float(_width);
-    m_height = float(_height);
+    width_ = float(width);
+    height_ = float(height);
 }
 
 void GLManager::EditorUpdate(const float /*dt*/)
@@ -180,13 +178,13 @@ void GLManager::EditorUpdate(const float /*dt*/)
     ImGui::Begin("OpenGL");
 
     //ImGui::Text("*GL Vendor: %s", m_vendor);
-    ImGui::Text("*GL Renderer: %s", m_pRenderer);
-    ImGui::Text("*GL Version: %s", m_pVersion);
+    ImGui::Text("*GL Renderer: %s", pRenderer_);
+    ImGui::Text("*GL Version: %s", pVersion_);
     /*	ImGui::Text("*GLSL Version: %s", m_glslVersion);
-    ImGui::Text("*GL Samples: %d", m_samples);
-    ImGui::Text("*GL Sample Buffers: %d", m_buffers);
-    ImGui::Text("*Maximum vertex attributes: %d", m_Attributes);*/
-    ImGui::Text("*Total Shaders: %d", int(SHADER_END));
+    ImGui::Text("*GL Samples: %d", samples_);
+    ImGui::Text("*GL Sample Buffers: %d", buffers_);
+    ImGui::Text("*Maximum vertex attributes: %d", attributes_);*/
+    ImGui::Text("*Total Shaders: %d", int(JE_SHADER_END));
 
     ImGui::End();
 }

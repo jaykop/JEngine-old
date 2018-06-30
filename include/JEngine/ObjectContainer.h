@@ -20,13 +20,13 @@ class ObjectContainer {
 
 public:
 
-	void		RemoveObject(Object* _pObj);
-	void		RemoveObject(const char* _name);
-	void		RemoveObject(unsigned _id);
-	Object*		GetObject(const char* _name);
-	Object*		GetObject(unsigned _id);
-	bool		HasObject(const char* _name);
-	bool		HasObject(unsigned _id);
+	void		RemoveObject(Object* pObj);
+	void		RemoveObject(const char* name);
+	void		RemoveObject(unsigned id);
+	Object*		GetObject(const char* name);
+	Object*		GetObject(unsigned id);
+	bool		HasObject(const char* name);
+	bool		HasObject(unsigned id);
 	ObjectMap&	GetObjectMap();
 
 	template <typename ComponentType>
@@ -44,7 +44,7 @@ private:
 	// Static variable and function
 	static void		EditorUpdate(float dt);
 
-	ObjectMap	m_objectMap;
+	ObjectMap	objectMap_;
 };
 
 using OBJECT = ObjectContainer;

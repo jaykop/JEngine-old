@@ -41,14 +41,14 @@ Vector4::Vector4(float _x, float _y, float _z, float _w)
 	:x(_x), y(_y), z(_z), w(_w)
 {}
 
-Vector4::Vector4(const vec4& _copy)
+Vector4::Vector4(const vec4& copy)
 {
-	if (this != &_copy)
+	if (this != &copy)
 	{
-		x = _copy.x;
-		y = _copy.y;
-		z = _copy.z;
-		w = _copy.w;
+		x = copy.x;
+		y = copy.y;
+		z = copy.z;
+		w = copy.w;
 	}
 }
 
@@ -382,12 +382,12 @@ Vector4& Vector4::operator/=(float _constant)
 	return *this;
 }
 
-void Vector4::Set(const vec4& _copy)
+void Vector4::Set(const vec4& copy)
 {
-	x = _copy.x;
-	y = _copy.y;
-	z = _copy.z;
-	w = _copy.w;
+	x = copy.x;
+	y = copy.y;
+	z = copy.z;
+	w = copy.w;
 }
 
 void Vector4::Set(float _x, float _y, float _z, float _w)

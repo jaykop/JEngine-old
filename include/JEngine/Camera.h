@@ -36,14 +36,14 @@ public:
 private:
 
 	vec3 m_up, m_right, m_back, m_viewGeometry;
-	float m_distance, m_aspect, m_width, m_height;
+	float m_distance, m_aspect, width_, height_;
 
-    Camera(Object* _pOwner);
+    Camera(Object* pOwner);
 	virtual ~Camera() {};
-    void operator=(const Camera& _copy);
+    void operator=(const Camera& copy);
 
     Camera() = delete;
-    Camera(const Camera& /*_copy*/) = delete;
+    Camera(const Camera& /*copy*/) = delete;
 
     void Load(CR_RJValue _data) override;
 

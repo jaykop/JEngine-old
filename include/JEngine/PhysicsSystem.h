@@ -20,8 +20,8 @@ private:
 
 	PhysicsSystem();
 	virtual ~PhysicsSystem() {};
-	PhysicsSystem(const PhysicsSystem& /*_copy*/) = delete;
-	void operator=(const PhysicsSystem& /*_copy*/) = delete;
+	PhysicsSystem(const PhysicsSystem& /*copy*/) = delete;
+	void operator=(const PhysicsSystem& /*copy*/) = delete;
 
 	void Load(CR_RJDoc _data) override;
 	void Init() override;

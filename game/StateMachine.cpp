@@ -5,8 +5,8 @@ jeBegin
 
 jeDefineCustomComponentBuilder(StateMachine);
 
-StateMachine::StateMachine(Object* _pObject)
-    :CustomComponent(_pObject)
+StateMachine::StateMachine(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void StateMachine::Register()

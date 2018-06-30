@@ -12,8 +12,8 @@ jeDefineCustomComponentBuilder(GoToBathroom);
 /////////////////////////////////////////////////////////////////////////
 // Global wife state
 /////////////////////////////////////////////////////////////////////////
-WifeState::WifeState(Object* _pObject)
-    :CustomComponent(_pObject)
+WifeState::WifeState(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void WifeState::Register()
@@ -70,8 +70,8 @@ bool WifeState::OnMessage(Telegram& msg)
 /////////////////////////////////////////////////////////////////////////
 // Housework state
 /////////////////////////////////////////////////////////////////////////
-DoHousework::DoHousework(Object* _pObject)
-    :CustomComponent(_pObject)
+DoHousework::DoHousework(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void DoHousework::Register()
@@ -114,8 +114,8 @@ bool DoHousework::OnMessage(Telegram& /*msg*/)
 /////////////////////////////////////////////////////////////////////////
 // Cook Stew state
 /////////////////////////////////////////////////////////////////////////
-CookStew::CookStew(Object* _pObject)
-    :CustomComponent(_pObject)
+CookStew::CookStew(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void CookStew::Register()
@@ -172,8 +172,8 @@ bool CookStew::OnMessage(Telegram& msg)
 /////////////////////////////////////////////////////////////////////////
 // GoToBathroom state
 /////////////////////////////////////////////////////////////////////////
-GoToBathroom::GoToBathroom(Object* _pObject)
-    :CustomComponent(_pObject)
+GoToBathroom::GoToBathroom(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void GoToBathroom::Register()

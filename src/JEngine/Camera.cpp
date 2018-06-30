@@ -13,14 +13,14 @@ jeDefineComponentBuilder(Camera);
 
 using namespace Math;
 
-Camera::Camera(Object* _pOwner)
-	: Component(_pOwner),
+Camera::Camera(Object* pOwner)
+	: Component(pOwner),
 	position(vec3::ZERO), near(.1f), far(1000.f),
 	m_up(vec3::UNIT_Y), target(vec3::ZERO), m_right(vec3::ZERO), m_back(vec3::ZERO),
 	m_viewGeometry(vec3::ZERO), m_distance(1.f), fovy(0.f), m_aspect(0.f),
-	m_width(0.f), m_height(0.f)
+	width_(0.f), height_(0.f)
 {
-	SetCamera(position, vec3::UNIT_Z, m_up,	45.f, GLM::m_width / GLM::m_height, 1.f);
+	SetCamera(position, vec3::UNIT_Z, m_up,	45.f, GLM::width_ / GLM::height_, 1.f);
 }
 
 void Camera::SetCamera(const vec3& _eye, const vec3& _look, const vec3& _up, 
@@ -34,10 +34,10 @@ void Camera::SetCamera(const vec3& _eye, const vec3& _look, const vec3& _up,
 	fovy = _fov;
 	m_aspect = _aspect;
 	m_distance = _distance;
-	m_width = 2 * tanf(.5f*fovy);
-	m_height = m_width / m_aspect;
+	width_ = 2 * tanf(.5f*fovy);
+	height_ = width_ / m_aspect;
 
-	m_viewGeometry.Set(m_width, m_height, m_distance);
+	m_viewGeometry.Set(width_, height_, m_distance);
 }
 
 const vec3& Camera::GetViewGeometry() const
@@ -111,8 +111,8 @@ void Camera::Roll(float _degree)
 
 void Camera::Zoom(float _zoom)
 {
-	m_width *= _zoom;
-	m_height += _zoom;
+	width_ *= _zoom;
+	height_ += _zoom;
 }
 
 void Camera::Register()
@@ -120,11 +120,11 @@ void Camera::Register()
 	SYSTEM::pGraphic_->AddCamera(this);
 }
 
-void Camera::operator=(const Camera & _copy)
+void Camera::operator=(const Camera & copy)
 {
-	position.Set(_copy.position);
-	m_up.Set(_copy.m_up);
-	target.Set(_copy.target);
+	position.Set(copy.position);
+	m_up.Set(copy.m_up);
+	target.Set(copy.target);
 }
 
 void Camera::Load(CR_RJValue _data)
@@ -159,7 +159,7 @@ void Camera::Load(CR_RJValue _data)
 		vec3 look(loadedLook[0].GetFloat(), loadedLook[1].GetFloat(), loadedLook[2].GetFloat());
 
 		SetCamera(position, look, m_up, 
-			_data["Fovy"].GetFloat(), GLM::m_width / GLM::m_height, _data["Distance"].GetFloat());
+			_data["Fovy"].GetFloat(), GLM::width_ / GLM::height_, _data["Distance"].GetFloat());
 	}
 
 }

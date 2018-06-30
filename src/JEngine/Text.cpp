@@ -1,6 +1,5 @@
 #include "Text.h"
 #include "Transform.h"
-#include "GLManager.h"
 #include "AssetManager.h"
 #include "SystemManager.h"
 #include "Object.h"
@@ -18,8 +17,8 @@ Font::Font()
 	:m_fontSize(0), m_newLineInterval(0.f)
 {}
 
-Text::Text(Object* _pOwner)
-	:Model(_pOwner)
+Text::Text(Object* pOwner)
+	:Model(pOwner)
 {
 	is_ |= IS_TEXT;
 }
@@ -39,12 +38,12 @@ Text::~Text()
 	SYSTEM::pGraphic_->RemoveModel(this);
 }
 
-void Text::operator=(const Text & _copy)
+void Text::operator=(const Text & copy)
 {
-	pFont = _copy.pFont;
-	m_text = _copy.m_text;
-	m_wText = _copy.m_wText;
-	m_printWide = _copy.m_printWide;
+	pFont = copy.pFont;
+	m_text = copy.m_text;
+	m_wText = copy.m_wText;
+	m_printWide = copy.m_printWide;
 }
 
 void Text::Register()

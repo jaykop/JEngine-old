@@ -5,35 +5,35 @@ jeBegin
 
 template <class ComponentType>
 bool ComponentManager::RegisterBuilder(
-    const char* _componentName, ComponentBuilder* _pBuilder)
+    const char* componentName, ComponentBuilder* pBuilder)
 {
     static const char* s_name;
     s_name = typeid(ComponentType).name();
     // Check if either there is a existing component builder 
-    auto foundName = m_builderMap.find(s_name);
+    auto foundName = builderMap_.find(s_name);
 
     // If there is existing like that,
     // don't add new builder
-    if (foundName != m_builderMap.end()) {
+    if (foundName != builderMap_.end()) {
         jeDebugPrint("!ComponentManager - No such name of enrolled component: %s\n", s_name);
         return false;
     }
 
     // Unless, add new builder
     else {
-        m_builderMap.insert(
-            BuilderMap::value_type(s_name, _pBuilder));
+        builderMap_.insert(
+            BuilderMap::value_type(s_name, pBuilder));
 
         // Key = Type name, Value = Class Name
-        m_typeMap.insert(
-            ComponentTypeMap::value_type(_componentName, typeid(ComponentType).name()));
+        typeMap_.insert(
+            ComponentTypeMap::value_type(componentName, typeid(ComponentType).name()));
 
         // Key = Class Name, Value = Type name
-        m_nameMap.insert(
-            ComponentTypeMap::value_type(typeid(ComponentType).name(), _componentName));
+        nameMap_.insert(
+            ComponentTypeMap::value_type(typeid(ComponentType).name(), componentName));
 
-        if (m_loadingCustomLogic)
-            jeDebugPrint("*ComponentManager - Loaded custom logic: %s\n", _componentName);
+        if (loadingCustomLogic_)
+            jeDebugPrint("*ComponentManager - Loaded custom logic: %s\n", componentName);
 
         return true;
     }

@@ -25,12 +25,12 @@ public:
 
 private:
 	
-    Light(Object* _pOwner);
+    Light(Object* pOwner);
     virtual ~Light();
-    void operator=(const Light& _copy);
+    void operator=(const Light& copy);
 
     Light() = delete;
-    Light(const Light& /*_copy*/) = delete;
+    Light(const Light& /*copy*/) = delete;
 
 	void Load(CR_RJValue _data) override;
 	

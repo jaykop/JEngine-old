@@ -9,7 +9,7 @@
 
 jeBegin
 
-SDL_Window*					IMGUI::m_pWindow = nullptr;
+SDL_Window*					IMGUI::pWindow_ = nullptr;
 IMGUI::EditorList			IMGUI::m_editors;
 IMGUI::ObjectEditorMap		IMGUI::m_objEditors;
 IMGUI::ComponentEditorMap	IMGUI::m_cptEditors;
@@ -65,8 +65,8 @@ void ImguiManager::ClearObjectEditor()
 
 bool ImguiManager::Init(SDL_Window* _window)
 {
-	if (APP::m_IMGUI) {
-		m_pWindow = _window;
+	if (APP::activateIMGUI_) {
+		pWindow_ = _window;
 		bool result = ImGui_ImplSdlGL3_Init(_window);
 		if (!result)
 			jeDebugPrint("!ImguiManager: Could not initialize IMGUI.\n");
@@ -78,16 +78,16 @@ bool ImguiManager::Init(SDL_Window* _window)
 
 void ImguiManager::EventUpdate(SDL_Event* _event)
 {
-	if (APP::m_IMGUI)
+	if (APP::activateIMGUI_)
 		ImGui_ImplSdlGL3_ProcessEvent(_event);
 }
 
 void ImguiManager::Update(float dt)
 {
-	if (APP::m_IMGUI) {
+	if (APP::activateIMGUI_) {
 
 		ImVec4 clear_color = ImColor(114, 144, 154);
-		ImGui_ImplSdlGL3_NewFrame(m_pWindow);
+		ImGui_ImplSdlGL3_NewFrame(pWindow_);
 
 		//TODO Add...
 		//// System Manager
@@ -123,7 +123,7 @@ void ImguiManager::Update(float dt)
 
 void ImguiManager::Close()
 {
-	if (APP::m_IMGUI)
+	if (APP::activateIMGUI_)
 		ImGui_ImplSdlGL3_Shutdown();
 }
 

@@ -26,19 +26,19 @@ private:
 
     // Locked constuctors and destructor
 	virtual ~Animation();
-    Animation(Object* _pOwner);
-    void operator=(const Animation& _copy);
+    Animation(Object* pOwner);
+    void operator=(const Animation& copy);
 
     Animation() = delete;
-    Animation(const Animation& /*_copy*/) = delete;
+    Animation(const Animation& /*copy*/) = delete;
 
     void Load(CR_RJValue _data) override;
     void Register() override {};
 
-    Timer   m_timer;
+    Timer   timer_;
     int	    m_animationFrames;
     int	    m_animationFixFrame;
-    bool    m_activeAnimation;
+    bool    active_Animation;
     float   m_realSpeed;
     float   m_realFrame;
     float   m_currentFrame;

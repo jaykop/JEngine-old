@@ -25,7 +25,7 @@ struct Vector2
 
 	// Constructors and destructor
 	Vector2(float _x = 0, float _y = 0);
-	Vector2(const Vector2& _copy);
+	Vector2(const Vector2& copy);
 
 	// Static variables
 	static const Vector2 ZERO;
@@ -55,7 +55,7 @@ struct Vector2
 	Vector2&	operator/=(float _constant);
 
 	// Transform functions
-	void		Set(const Vector2& _copy);
+	void		Set(const Vector2& copy);
 	void		Set(float _x, float _y);
 	void		SetZero();
 	void		SetOne();

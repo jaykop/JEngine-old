@@ -15,10 +15,10 @@ using namespace Math;
 
 GraphicSystem::GraphicSystem()
 	:System(), m_pMainCamera(nullptr), m_isLight(false), backgroundColor(vec4::ZERO),
-	orthoComesFirst(true), screenColor(vec4::ONE), m_width(int(GLM::m_width)),
-	m_height(int(GLM::m_height)), m_aniScale(vec3::ZERO), m_aniTranslate(vec3::ZERO),
+	orthoComesFirst(true), screenColor(vec4::ONE), width_(int(GLM::width_)),
+	height_(int(GLM::height_)), m_aniScale(vec3::ZERO), m_aniTranslate(vec3::ZERO),
 	m_viewport(mat4()), sobelAmount(0.f), blurSize(0.f), blurAmount(0.f), m_maxLights(16), 
-	aliasMode(ALIAS_ALIASED), screenEffect(EFFECT_NONE), m_resolutionScaler(GLM::m_width, GLM::m_height, 1.f)
+	aliasMode(ALIAS_ALIASED), screenEffect(EFFECT_NONE), m_resolutionScaler(GLM::width_, GLM::height_, 1.f)
 {}
 
 void GraphicSystem::Load(CR_RJDoc _data)
@@ -145,12 +145,12 @@ void GraphicSystem::RemoveModel(Model* _model)
 
 int GraphicSystem::GetWidth() const
 {
-	return m_width;
+	return width_;
 }
 
 int	GraphicSystem::GetHeight() const
 {
-	return m_height;
+	return height_;
 }
 
 void GraphicSystem::SetMainCamera(Camera* _camera)

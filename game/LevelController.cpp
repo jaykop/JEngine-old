@@ -5,8 +5,8 @@ jeBegin
 
 jeDefineCustomComponentBuilder(LevelController);
 
-LevelController::LevelController(Object* _pObject)
-    :CustomComponent(_pObject)
+LevelController::LevelController(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void LevelController::Register()

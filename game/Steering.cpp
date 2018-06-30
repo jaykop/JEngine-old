@@ -35,8 +35,8 @@ void ControlPosition(vec3& _position)
 
 }
 
-Steering::Steering(Object* _pObject)
-	:CustomComponent(_pObject)
+Steering::Steering(Object* pObject)
+	:CustomComponent(pObject)
 {}
 
 void Steering::Register()

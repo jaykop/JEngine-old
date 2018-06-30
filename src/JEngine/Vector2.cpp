@@ -25,10 +25,10 @@ const Vector2 Vector2::ZERO(0.f, 0.f);
 const Vector2 Vector2::UNIT_X(1.f, 0.f);
 const Vector2 Vector2::UNIT_Y(0.f, 1.f);
 
-void Vector2::Set(const vec2& _copy)
+void Vector2::Set(const vec2& copy)
 {
-	x = _copy.x;
-	y = _copy.y;
+	x = copy.x;
+	y = copy.y;
 }
 
 void Vector2::Set(float _x, float _y)
@@ -73,15 +73,15 @@ Vector2::Vector2(float _x, float _y)
 /******************************************************************************/
 /*!
 \brief - Vector2 Copy Constructor
-\param _copy - vector2 to be copied
+\param copy - vector2 to be copied
 */
 /******************************************************************************/
-Vector2::Vector2(const vec2& _copy)
+Vector2::Vector2(const vec2& copy)
 {
-	if (this !=&_copy)
+	if (this !=&copy)
 	{
-		x = _copy.x;
-		y = _copy.y;
+		x = copy.x;
+		y = copy.y;
 	}
 }
 

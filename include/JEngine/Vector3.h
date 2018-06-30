@@ -26,7 +26,7 @@ struct Vector3
 
 	// Constructor and destructor
 	Vector3(float _x = 0, float _y = 0, float _z = 0);
-	Vector3(const Vector3& _copy);
+	Vector3(const Vector3& copy);
 
 	// Static variables
 	static const Vector3 ZERO;
@@ -57,7 +57,7 @@ struct Vector3
 	Vector3&	operator/=(float _constant);
 
 	// Transforming functions
-	void		Set(const Vector3& _copy);
+	void		Set(const Vector3& copy);
 	void		Set(float _x, float _y, float _z);
 	void		SetZero();
 	void		SetOne();

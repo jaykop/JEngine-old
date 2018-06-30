@@ -26,10 +26,10 @@ private:
 
 	MessageDispatcher() = delete;
 	~MessageDispatcher() = delete;
-	MessageDispatcher(const MessageDispatcher& /*_copy*/) = delete;
-	MessageDispatcher& operator=(const MessageDispatcher& /*_copy*/) = delete;
-	MessageDispatcher(MessageDispatcher&& /*_copy*/) = delete;
-	MessageDispatcher& operator=(MessageDispatcher&& /*_copy*/) = delete;
+	MessageDispatcher(const MessageDispatcher& /*copy*/) = delete;
+	MessageDispatcher& operator=(const MessageDispatcher& /*copy*/) = delete;
+	MessageDispatcher(MessageDispatcher&& /*copy*/) = delete;
+	MessageDispatcher& operator=(MessageDispatcher&& /*copy*/) = delete;
 };
 
 using DISPATCHER = MessageDispatcher;

@@ -15,8 +15,8 @@ jeDefineCustomComponentBuilder(EnterMineAndDigForNugget);
 /////////////////////////////////////////////////////////////////////////
 // Global miner state
 /////////////////////////////////////////////////////////////////////////
-MinerState::MinerState(Object* _pObject)
-    :CustomComponent(_pObject)
+MinerState::MinerState(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void MinerState::Register()
@@ -62,8 +62,8 @@ bool MinerState::OnMessage(Telegram& /*msg*/)
 /////////////////////////////////////////////////////////////////////////
 // GoHomeAndSleepTilRested state
 /////////////////////////////////////////////////////////////////////////
-GoHomeAndSleepTilRested::GoHomeAndSleepTilRested(Object* _pObject)
-    :CustomComponent(_pObject)
+GoHomeAndSleepTilRested::GoHomeAndSleepTilRested(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void GoHomeAndSleepTilRested::Register()
@@ -131,8 +131,8 @@ bool GoHomeAndSleepTilRested::OnMessage(Telegram& msg)
 /////////////////////////////////////////////////////////////////////////
 // EnterMineAndDigForNugget state
 /////////////////////////////////////////////////////////////////////////
-EnterMineAndDigForNugget::EnterMineAndDigForNugget(Object* _pObject)
-    :CustomComponent(_pObject)
+EnterMineAndDigForNugget::EnterMineAndDigForNugget(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void EnterMineAndDigForNugget::Register()
@@ -205,8 +205,8 @@ bool EnterMineAndDigForNugget::OnMessage(Telegram& /*msg*/)
 /////////////////////////////////////////////////////////////////////////
 // VisitBankAndDepositGold state
 /////////////////////////////////////////////////////////////////////////
-VisitBankAndDepositGold::VisitBankAndDepositGold(Object* _pObject)
-    :CustomComponent(_pObject)
+VisitBankAndDepositGold::VisitBankAndDepositGold(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void VisitBankAndDepositGold::Register()
@@ -254,8 +254,8 @@ bool VisitBankAndDepositGold::OnMessage(Telegram& /*msg*/)
 /////////////////////////////////////////////////////////////////////////
 // QuenchThirst state
 /////////////////////////////////////////////////////////////////////////
-QuenchThirst::QuenchThirst(Object* _pObject)
-    :CustomComponent(_pObject)
+QuenchThirst::QuenchThirst(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void QuenchThirst::Register()
@@ -303,8 +303,8 @@ bool QuenchThirst::OnMessage(Telegram& msg)
 /////////////////////////////////////////////////////////////////////////
 // BeatBully state
 /////////////////////////////////////////////////////////////////////////
-BeatBully::BeatBully(Object* _pObject)
-    :CustomComponent(_pObject)
+BeatBully::BeatBully(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void BeatBully::Register()
@@ -352,8 +352,8 @@ bool BeatBully::OnMessage(Telegram& msg)
 /////////////////////////////////////////////////////////////////////////
 // EatStew state
 /////////////////////////////////////////////////////////////////////////
-EatStew::EatStew(Object* _pObject)
-    :CustomComponent(_pObject)
+EatStew::EatStew(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void EatStew::Register()

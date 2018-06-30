@@ -7,8 +7,8 @@ jeDefineCustomComponentBuilder(TestLogic);
 
 int TestLogic::a = 0;
 
-TestLogic::TestLogic(Object* _pObject)
-    :CustomComponent(_pObject)
+TestLogic::TestLogic(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void TestLogic::Register()

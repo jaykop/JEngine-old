@@ -18,7 +18,7 @@ class StateManager {
 	friend class AssetManager;
 
 	enum StateStatus  {
-		STATE_NONE, STATE_RESTART, STATE_PAUSE, STATE_RESUME, STATE_CHANGE, STATE_RESUME_AND_CHANGE, STATE_QUIT };
+		JE_STATE_NONE, JE_STATE_RESTART, JE_STATE_PAUSE, JE_STATE_RESUME, JE_STATE_CHANGE, JE_STATE_RESUME_AND_CHANGE, JE_STATE_QUIT };
 
 	// Locked constuctor, destructor, assign operator
 	jeStaticClassDeclaration(StateManager)
@@ -28,16 +28,16 @@ public:
 	static void Quit();
 	static void Restart();
 	static void Resume();
-	static void Pause(const char* _nextState);
+	static void Pause(const char* nextState);
 	static bool IsPaused();
-	static void SetNextState(const char* _nextState);
-	static void ResumeAndNext(const char* _nextState);
-	static void SetStartingState(const char* _stateName);
+	static void SetNextState(const char* nextState);
+	static void ResumeAndNext(const char* nextState);
+	static void SetStartingState(const char* stateName);
 
 	static StateStatus	GetStatus(void);
 	static State*		GetCurrentState(void);
-	static State*		GetState(const char* _stateName);
-	static bool			HasState(const char* _stateName);
+	static State*		GetState(const char* stateName);
+	static bool			HasState(const char* stateName);
 	static float		GetCurrentTime();
 	static float		GetFrameRate();
 	static unsigned		GetFramePerSecond();
@@ -45,12 +45,12 @@ public:
 private:
 
 	// Private member functions
-	static bool Init(SDL_Window* _pWindow);
-	static void Update(SDL_Event* _event);
+	static bool Init(SDL_Window* pWindow);
+	static void Update(SDL_Event* pEvent);
 	static void Close();
 
-	static void PushState(const char* _path, const char* _stateName);
-	static void PopState(const char* _stateName);
+	static void PushState(const char* path, const char* stateName);
+	static void PopState(const char* stateName);
 
 	static void ChangeState();
 	static void ClearStates();
@@ -58,16 +58,16 @@ private:
 	static void	EditorUpdate(float dt);
 
 	// Private member variables
-	static float		m_frameTime;
-	static unsigned		m_frames;
-	static Timer		m_timer;
-	static States		m_states;
-	static StateStatus	m_status;
-	static State*		m_pCurrent, *m_pNext;
-	static SDL_Window*	m_pWindow;
+	static float		frameTime_;
+	static unsigned		frames_;
+	static Timer		timer_;
+	static States		states_;
+	static StateStatus	status_;
+	static State*		pCurrent_, *pNext;
+	static SDL_Window*	pWindow_;
 	
 #if defined(_DEBUG)
-	static bool m_showUpdateMessage;
+	static bool showUpdateMessage_;
 #endif // _DEBUG
 
 };

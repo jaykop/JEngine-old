@@ -10,10 +10,6 @@ class GLManager {
 
 	friend class Mesh;
     friend class Shader;
-    friend class Text;
-    friend class Model;
-	friend class Light;
-    friend class Emitter;
 	friend class Camera;
     friend class Application;
     friend class InputHandler;
@@ -26,8 +22,8 @@ class GLManager {
     // Locked constuctor, destructor, assign operator
     jeStaticClassDeclaration(GLManager)
 
-    enum ShaderType { SHADER_MODEL, SHADER_TEXT, SHADER_LIGHTING, SHADER_PARTICLE, SHADER_SCREEN, SHADER_END };
-    enum Target { TARGET_SCREEN, TARGET_TEXT, TARGET_END };
+    enum ShaderType { JE_SHADER_MODEL, JE_SHADER_TEXT, JE_SHADER_LIGHTING, JE_SHADER_PARTICLE, JE_SHADER_SCREEN, JE_SHADER_END };
+    enum Target { JE_TARGET_SCREEN, JE_TARGET_TEXT, JE_TARGET_END };
 
 public:
 
@@ -43,18 +39,18 @@ private:
     static void ShowGLVersion();
 
 	static void	DescribeVertex(Mesh* pMesh);
-    static void Resize(int _width, int _height);
+    static void Resize(int width, int height);
 
     static void EditorUpdate(float dt);
 
     // Private member variables
-    static float	m_width, m_height;
-    static Shaders	m_shader;
-    static GLint	m_Attributes, m_buffers, m_samples;
-    static GLuint	m_fbo, m_renderTarget, m_depthBuffer;
-	static Mesh*	targetMesh_[TARGET_END];
+    static float	width_, height_;
+    static Shaders	shader_;
+    static GLint	attributes_, buffers_, samples_;
+    static GLuint	fbo_, texColorBuf_, rbo_;
+	static Mesh*	targetMesh_[JE_TARGET_END];
 
-    static const GLubyte *m_pRenderer, *m_pVendor, *m_pVersion, *m_pGlslVersion;
+    static const GLubyte *pRenderer_, *pVendor_, *pVersion_, *pGlslVersion_;
 
 };
 

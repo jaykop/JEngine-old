@@ -17,12 +17,12 @@ public:
 
 private:
 
-    Material(Object* _pOwner);
+    Material(Object* pOwner);
 	virtual ~Material();
-    void operator= (const Material& _copy);
+    void operator= (const Material& copy);
 
     Material() = delete;
-    Material(const Material& /*_copy*/) = delete;
+    Material(const Material& /*copy*/) = delete;
 
     void Load(CR_RJValue _data) override;
     void Register() override {};

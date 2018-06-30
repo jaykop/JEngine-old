@@ -54,8 +54,8 @@ public:
 protected:
 
     virtual ~Model();
-	Model(Object* _pOwner);
-    void operator=(const Model& _copy);
+	Model(Object* pOwner);
+    void operator=(const Model& copy);
 
     void Load(CR_RJValue _data) override;
 
@@ -68,7 +68,7 @@ private:
 
     // Locked constuctors and destructor
 	Model() = delete;
-	Model(const Model& /*_copy*/) = delete;
+	Model(const Model& /*copy*/) = delete;
 
     void EditorUpdate(float dt) override;
 };

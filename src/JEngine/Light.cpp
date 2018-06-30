@@ -1,6 +1,5 @@
 #include "Light.h"
 #include "SystemManager.h"
-#include "GLManager.h"
 #include "Mesh.h"
 #include "AssetManager.h"
 
@@ -11,8 +10,8 @@
 jeBegin
 jeDefineComponentBuilder(Light);
 
-Light::Light(Object * _pOwner)
-	:Model(_pOwner), ambient(vec4::ONE), diffuse(vec4::ONE),
+Light::Light(Object * pOwner)
+	:Model(pOwner), ambient(vec4::ONE), diffuse(vec4::ONE),
 	specular(vec4::ONE), direction(vec3::ZERO), constant(0.f), 
 	linear(0.f), quadratic(0.f), cutOff(0.f), outerCutOff(0.f),
 	sfactor(GL_SRC_ALPHA), dfactor(GL_ONE_MINUS_SRC_ALPHA)
@@ -32,19 +31,19 @@ Light::~Light()
 	SYSTEM::pGraphic_->RemoveLight(this);
 }
 
-void Light::operator=(const Light & _copy)
+void Light::operator=(const Light & copy)
 {
-	color.Set(_copy.color);
-	ambient.Set(_copy.ambient); 
-	diffuse.Set(_copy.diffuse);
-	specular.Set(_copy.specular); 
-	direction.Set(_copy.direction); 
-	constant = _copy.constant; 
-	linear = _copy.linear;
-	quadratic = _copy.quadratic;
-	cutOff = _copy.cutOff;
-	outerCutOff = _copy.outerCutOff;
-	projection = _copy.projection;
+	color.Set(copy.color);
+	ambient.Set(copy.ambient); 
+	diffuse.Set(copy.diffuse);
+	specular.Set(copy.specular); 
+	direction.Set(copy.direction); 
+	constant = copy.constant; 
+	linear = copy.linear;
+	quadratic = copy.quadratic;
+	cutOff = copy.cutOff;
+	outerCutOff = copy.outerCutOff;
+	projection = copy.projection;
 }
 
 void Light::Register()

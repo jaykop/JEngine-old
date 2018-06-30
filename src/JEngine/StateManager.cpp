@@ -17,25 +17,25 @@ jeBegin
 // static variables
 //////////////////////////////////////////////////////////////////////////
 #if defined(_DEBUG)
-bool			    STATE::m_showUpdateMessage = true;
+bool			    STATE::showUpdateMessage_ = true;
 #endif // _DEBUG
 
-SDL_Window*		    STATE::m_pWindow = nullptr;
-Timer			    STATE::m_timer;
-States			    STATE::m_states;
-STATE::StateStatus	STATE::m_status = STATE_CHANGE;
-State			    *STATE::m_pCurrent = nullptr,
-					*STATE::m_pNext = nullptr;
-float			    STATE::m_frameTime = 0.f;
-unsigned			STATE::m_frames = 0;
+SDL_Window*		    STATE::pWindow_ = nullptr;
+Timer			    STATE::timer_;
+States			    STATE::states_;
+STATE::StateStatus	STATE::status_ = JE_STATE_CHANGE;
+State			    *STATE::pCurrent_ = nullptr,
+					*STATE::pNext = nullptr;
+float			    STATE::frameTime_ = 0.f;
+unsigned			STATE::frames_ = 0;
 
 //////////////////////////////////////////////////////////////////////////
 // funciton bodues
 //////////////////////////////////////////////////////////////////////////
-bool StateManager::Init(SDL_Window* _pWindow)
+bool StateManager::Init(SDL_Window* pWindow)
 {
-    if (_pWindow) {
-        m_pWindow = _pWindow;
+    if (pWindow) {
+        pWindow_ = pWindow;
 
         INPUT::Init();	// Init input keys
         SYSTEM::Bind();	// Allocate systems in advance
@@ -47,88 +47,88 @@ bool StateManager::Init(SDL_Window* _pWindow)
 
 }
 
-void StateManager::Update(SDL_Event* _event)
+void StateManager::Update(SDL_Event* pEvent)
 {
-    m_timer.Start();
+    timer_.Start();
 
     static float s_sec = 1.f, s_stack, s_newTime, s_currentTime;
     s_stack = s_newTime = s_currentTime = 0.f;
 
     ChangeState();
 
-    while (SDL_PollEvent(_event) != 0	// Event handler loop
-        || m_status == STATE_NONE) {	// State updating loop
+    while (SDL_PollEvent(pEvent) != 0	// Event handler loop
+        || status_ == JE_STATE_NONE) {	// State updating loop
 
-        IMGUI::EventUpdate(_event);	// Get input by imgui manager
-        INPUT::Update(_event);		// Get input by input handler
+        IMGUI::EventUpdate(pEvent);	// Get input by imgui manager
+        INPUT::Update(pEvent);		// Get input by input handler
 
-        s_newTime = m_timer.GetTime();	// Get delta time
-        m_frameTime						// Get frame time
+        s_newTime = timer_.GetTime();	// Get delta time
+        frameTime_						// Get frame time
             = s_newTime - s_currentTime;
 
-        if (m_frameTime > 0.25f)	// Lock the frame time
-            m_frameTime = 0.25f;
+        if (frameTime_ > 0.25f)	// Lock the frame time
+            frameTime_ = 0.25f;
 
-        s_stack += m_frameTime;		// Stack frame time
-		m_frames++;					// Stack frame
+        s_stack += frameTime_;		// Stack frame time
+		frames_++;					// Stack frame
 
         // Fixed timestep
         if (s_stack >= s_sec) {		// Refresh every sec
 
 			s_currentTime = s_newTime;	// Refresh current time
 
-            m_pCurrent->Update(m_frameTime);// Update state
-            IMGUI::Update(m_frameTime);		// Update imgui renderer
+            pCurrent_->Update(frameTime_);// Update state
+            IMGUI::Update(frameTime_);		// Update imgui renderer
 
 			// Reset mouse wheel session
-			INPUT::m_mouseWheel = 0;
+			INPUT::mouseWheel_ = 0;
 
             /* Update rendrer with physics together
             so makes rendering scene more smoothly */
-            SDL_GL_SwapWindow(m_pWindow);
+            SDL_GL_SwapWindow(pWindow_);
 
 #if _DEBUG
 			static std::string s_fps;
-			s_fps.assign(APP::GetAppData().m_title + " [fps: " + std::to_string(m_frames) + "]");
-			SDL_SetWindowTitle(m_pWindow, s_fps.c_str());
+			s_fps.assign(APP::GetAppData().title + " [fps: " + std::to_string(frames_) + "]");
+			SDL_SetWindowTitle(pWindow_, s_fps.c_str());
 #endif
 			s_stack = 0.f;	//s_stack -= s_dt;
-			m_frames = 0;
+			frames_ = 0;
         }
     }
 
-    switch (m_status) {
+    switch (status_) {
 
 		// Keep updaring
-	case STATE_NONE:
+	case JE_STATE_NONE:
 	default:
 		break;
 
         // Pause process
-    case STATE_PAUSE:
+    case JE_STATE_PAUSE:
         SYSTEM::Pause();
         break;
 
-    case STATE_QUIT:				// The case to quit app
-        while (m_pCurrent) {
-            State* pLast = m_pCurrent->m_pLastStage;
-            m_pCurrent->Close();
-            m_pCurrent->Unload();
-            m_pCurrent = pLast;
+    case JE_STATE_QUIT:				// The case to quit app
+        while (pCurrent_) {
+            State* pLast = pCurrent_->pLastStage_;
+            pCurrent_->Close();
+            pCurrent_->Unload();
+            pCurrent_ = pLast;
         }
         break;
 
-    case STATE_RESUME:				// The case to resume to last state
-        m_pCurrent->Close();
-        m_pCurrent->Unload();
+    case JE_STATE_RESUME:				// The case to resume to last state
+        pCurrent_->Close();
+        pCurrent_->Unload();
         SYSTEM::Resume();
         break;
 
-    case STATE_RESTART:				// The case to restart the current state
-    case STATE_CHANGE:				// The case to change to next state
-    case STATE_RESUME_AND_CHANGE:	// The case to resume and change
-        m_pCurrent->Close();
-        m_pCurrent->Unload();
+    case JE_STATE_RESTART:				// The case to restart the current state
+    case JE_STATE_CHANGE:				// The case to change to next state
+    case JE_STATE_RESUME_AND_CHANGE:	// The case to resume and change
+        pCurrent_->Close();
+        pCurrent_->Unload();
         break;
     }
 }
@@ -146,24 +146,24 @@ void StateManager::ChangeState()
 {
     // Load and init agein
     // for next stage
-    if (m_status == STATE_CHANGE
-        || m_status == STATE_PAUSE
-        || m_status == STATE_RESTART) {
+    if (status_ == JE_STATE_CHANGE
+        || status_ == JE_STATE_PAUSE
+        || status_ == JE_STATE_RESTART) {
 
         // Save state to resume
-        if (m_status == STATE_PAUSE) {
-            State* toResume = m_pCurrent;
-            m_pCurrent = m_pNext;
-            m_pCurrent->m_pLastStage = toResume;
+        if (status_ == JE_STATE_PAUSE) {
+            State* toResume = pCurrent_;
+            pCurrent_ = pNext;
+            pCurrent_->pLastStage_ = toResume;
         }
 
         // Just change current state
-        else if (m_status == STATE_CHANGE)
-            m_pCurrent = m_pNext;
+        else if (status_ == JE_STATE_CHANGE)
+            pCurrent_ = pNext;
 
         // Renew the state
-        m_pCurrent->Load();
-        m_pCurrent->Init();
+        pCurrent_->Load();
+        pCurrent_->Init();
 
         // Add object container editor function
         static bool s_addContainerEditor = false;
@@ -174,35 +174,35 @@ void StateManager::ChangeState()
     }
 
     // Resume state
-    else if (m_status == STATE_RESUME) {
-        State* release = m_pCurrent;
-        m_pCurrent = m_pNext = m_pCurrent->m_pLastStage;
-		OBJECT::pContainer_ = m_pCurrent->m_pObjContainer;
-        release->m_pLastStage = nullptr;
+    else if (status_ == JE_STATE_RESUME) {
+        State* release = pCurrent_;
+        pCurrent_ = pNext = pCurrent_->pLastStage_;
+		OBJECT::pContainer_ = pCurrent_->pObjContainer_;
+        release->pLastStage_ = nullptr;
     }
 
     // Resume and change
-    else if (m_status == STATE_RESUME_AND_CHANGE) {
-        m_pCurrent = m_pCurrent->m_pLastStage;
-		OBJECT::pContainer_ = m_pCurrent->m_pObjContainer;
-        m_status = STATE_CHANGE;
+    else if (status_ == JE_STATE_RESUME_AND_CHANGE) {
+        pCurrent_ = pCurrent_->pLastStage_;
+		OBJECT::pContainer_ = pCurrent_->pObjContainer_;
+        status_ = JE_STATE_CHANGE;
     }
 
-    // Refresh the m_status
-    if (m_pCurrent == m_pNext)
-        m_status = STATE_NONE;
+    // Refresh the status_
+    if (pCurrent_ == pNext)
+        status_ = JE_STATE_NONE;
 }
 
-void StateManager::PushState(const char* _path, const char* _stateName)
+void StateManager::PushState(const char* path, const char* stateName)
 {
     bool sameOne = false;
-    for (auto it = m_states.begin();
-        it != m_states.end(); ++it) {
+    for (auto it = states_.begin();
+        it != states_.end(); ++it) {
         // If there is already same one,
         // mark toggle
-        if (!strcmp((*it)->m_name.c_str(), _stateName)) {
+        if (!strcmp((*it)->name_.c_str(), stateName)) {
             sameOne = true;
-            jeDebugPrint("!StateManager - Existing state: %s\n", _stateName);
+            jeDebugPrint("!StateManager - Existing state: %s\n", stateName);
             break;
         }
     }
@@ -211,46 +211,46 @@ void StateManager::PushState(const char* _path, const char* _stateName)
     if (!sameOne) {
 
         // Make new one
-        State* newState = new State(_stateName);
-        newState->m_loadDirectory.assign(_path);
+        State* newState = new State(stateName);
+        newState->loadDirectory_.assign(path);
 
         // Push to the vector
-        m_states.push_back(newState);
-        if (m_states.size() == 1)
-            SetStartingState(_stateName);
+        states_.push_back(newState);
+        if (states_.size() == 1)
+            SetStartingState(stateName);
     }
 }
 
-void StateManager::PopState(const char* _stateName)
+void StateManager::PopState(const char* stateName)
 {
     // Find where it is
-    for (auto it = m_states.begin();
-        it != m_states.end(); ++it) {
+    for (auto it = states_.begin();
+        it != states_.end(); ++it) {
 
         // Get same name state
-        if (!strcmp((*it)->m_name.c_str(), _stateName)) {
+        if (!strcmp((*it)->name_.c_str(), stateName)) {
             delete (*it);		// Remove the memory
-            m_states.erase(it);	// Remove form the vector
+            states_.erase(it);	// Remove form the vector
             break;
         }
     }
 }
 
-void StateManager::SetStartingState(const char * _stateName)
+void StateManager::SetStartingState(const char * stateName)
 {
     // Find where it is
-    for (auto it = m_states.begin();
-        it != m_states.end(); ++it) {
+    for (auto it = states_.begin();
+        it != states_.end(); ++it) {
 
         // Get same name state
-        if (!strcmp((*it)->m_name.c_str(), _stateName))
-            m_pNext = m_pCurrent = (*it);
+        if (!strcmp((*it)->name_.c_str(), stateName))
+            pNext = pCurrent_ = (*it);
     }
 }
 
 void StateManager::Quit()
 {
-    m_status = STATE_QUIT;
+    status_ = JE_STATE_QUIT;
 }
 
 void StateManager::Restart()
@@ -258,49 +258,49 @@ void StateManager::Restart()
     if (IsPaused())
         jeDebugPrint("!StateManager - Cannot restart on pause state.\n");
     else
-        m_status = STATE_RESTART;
+        status_ = JE_STATE_RESTART;
 }
 
 bool StateManager::IsPaused()
 {
-    return m_pCurrent->m_pLastStage != nullptr;
+    return pCurrent_->pLastStage_ != nullptr;
 }
 
 StateManager::StateStatus StateManager::GetStatus(void)
 {
-    return m_status;
+    return status_;
 }
 
-void StateManager::SetNextState(const char* _nextState)
+void StateManager::SetNextState(const char* nextState)
 {
     // Current state is the state
-    if (!strcmp(m_pCurrent->m_name.c_str(), _nextState))
-        jeDebugPrint("!StateManager - As same as current state: %s\n", _nextState);
+    if (!strcmp(pCurrent_->name_.c_str(), nextState))
+        jeDebugPrint("!StateManager - As same as current state: %s\n", nextState);
 
     else {
         // Check if there is no state to resume
-        if (!m_pCurrent->m_pLastStage) {
+        if (!pCurrent_->pLastStage_) {
 
-            if (HasState(_nextState)) {
-                m_pNext = GetState(_nextState);
-                m_status = STATE_CHANGE;
+            if (HasState(nextState)) {
+                pNext = GetState(nextState);
+                status_ = JE_STATE_CHANGE;
             }
         }
 
         else
-            jeDebugPrint("!StateManager - Cannot move on paused m_status.\n");
+            jeDebugPrint("!StateManager - Cannot move on paused status_.\n");
     }
 }
 
-void StateManager::Pause(const char* _nextState)
+void StateManager::Pause(const char* nextState)
 {
     // Current state is the state
-    if (!strcmp(m_pCurrent->m_name.c_str(), _nextState))
-        jeDebugPrint("!StateManager - As same as current state: %s\n", _nextState);
+    if (!strcmp(pCurrent_->name_.c_str(), nextState))
+        jeDebugPrint("!StateManager - As same as current state: %s\n", nextState);
 
-    else if (HasState(_nextState)) {
-        m_pNext = GetState(_nextState);
-        m_status = STATE_PAUSE;
+    else if (HasState(nextState)) {
+        pNext = GetState(nextState);
+        status_ = JE_STATE_PAUSE;
     }
 
 }
@@ -308,78 +308,78 @@ void StateManager::Pause(const char* _nextState)
 void StateManager::Resume()
 {
     // Check state to resume
-    if (m_pCurrent->m_pLastStage)
-        m_status = STATE_RESUME;
+    if (pCurrent_->pLastStage_)
+        status_ = JE_STATE_RESUME;
 
     else
         jeDebugPrint("!StateManager - No state to resume.\n");
 }
 
-void StateManager::ResumeAndNext(const char* _nextState)
+void StateManager::ResumeAndNext(const char* nextState)
 {
-    if (HasState(_nextState)) {
-        m_status = STATE_RESUME_AND_CHANGE;
-        m_pNext = GetState(_nextState);
+    if (HasState(nextState)) {
+        status_ = JE_STATE_RESUME_AND_CHANGE;
+        pNext = GetState(nextState);
     }
 }
 
 State* StateManager::GetCurrentState(void)
 {
-    return m_pCurrent;
+    return pCurrent_;
 }
 
-State* StateManager::GetState(const char* _stateName)
+State* StateManager::GetState(const char* stateName)
 {
     // Find the same name 
-    for (auto it : m_states)
-        if (!strcmp(_stateName, it->m_name.c_str()))
+    for (auto it : states_)
+        if (!strcmp(stateName, it->name_.c_str()))
             return it;
 
     // If there is no,
-    jeDebugPrint("!StateManager - No such name of enrolled state: %s\n", _stateName);
+    jeDebugPrint("!StateManager - No such name of enrolled state: %s\n", stateName);
     return nullptr;
 }
 
-bool StateManager::HasState(const char *_stateName)
+bool StateManager::HasState(const char *stateName)
 {
     bool found = false;
-    for (auto state : m_states) {
+    for (auto state : states_) {
 
         // If found the one,
-        if (!strcmp(_stateName, state->m_name.c_str())) {
+        if (!strcmp(stateName, state->name_.c_str())) {
             found = true;
             return found;
         }
     }
 
     if (!found)
-        jeDebugPrint("!StateManager - No such name of enrolled state: %s\n", _stateName);
+        jeDebugPrint("!StateManager - No such name of enrolled state: %s\n", stateName);
 
     return found;
 }
 
 float StateManager::GetCurrentTime()
 {
-    return m_timer.GetTime();
+    return timer_.GetTime();
 }
 
 unsigned StateManager::GetFramePerSecond()
 {
-	return m_frames;
+	return frames_;
 }
 
 float StateManager::GetFrameRate()
 {
-	return m_frameTime;
+	return frameTime_;
 }
 
 void StateManager::ClearStates()
 {
     // Remove all states from the vector
-    for (auto it = m_states.begin(); it != m_states.end(); )
+    for (auto it = states_.begin(); it != states_.end(); )
         delete (*it++);
 
-    m_states.clear();
+    states_.clear();
 }
 
 void StateManager::EditorUpdate(const float /*dt*/)
@@ -387,9 +387,9 @@ void StateManager::EditorUpdate(const float /*dt*/)
     static bool foundObject = false, showLevels = false;
 
     ImGui::Begin("StateManager");
-    ImGui::Text("*Current State: %s", m_pCurrent->m_name.c_str());
+    ImGui::Text("*Current State: %s", pCurrent_->name_.c_str());
 
-    ImGui::Text("*Total States: %d", m_states.size());
+    ImGui::Text("*Total States: %d", states_.size());
     ImGui::Text("*States Stacked: %d", SYSTEM::m_pauseStack.size());
 
     if (ImGui::Button("Show Level List"))
@@ -425,8 +425,8 @@ void StateManager::EditorUpdate(const float /*dt*/)
     if (showLevels)
     {
         ImGui::Begin("LevelList");
-        for (auto state : m_states)
-            ImGui::Text("%s", state->m_name.c_str());
+        for (auto state : states_)
+            ImGui::Text("%s", state->name_.c_str());
         ImGui::End();
     }
 }

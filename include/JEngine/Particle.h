@@ -29,12 +29,12 @@ class Emitter : public Model
 
         Particle(Emitter* _emitter);
         ~Particle() {};
-        void operator=(const Particle& _copy);
+        void operator=(const Particle& copy);
 
         Emitter* m_pEmitter;
 
         Particle() = delete;
-        Particle(const Particle& /*_copy*/) = delete;
+        Particle(const Particle& /*copy*/) = delete;
 
     };
 
@@ -56,9 +56,9 @@ public:
 
 private:
 
-    Emitter(Object* _pOwner);
+    Emitter(Object* pOwner);
 	virtual ~Emitter();
-    void operator=(const Emitter& _copy);
+    void operator=(const Emitter& copy);
 
     void Load(CR_RJValue _data) override;
     void Refresh(Particle* _particle);
@@ -69,7 +69,7 @@ private:
     unsigned	m_deadCount;
 
     Emitter() = delete;
-    Emitter(const Emitter& /*_copy*/) = delete;
+    Emitter(const Emitter& /*copy*/) = delete;
 
     void EditorUpdate(float dt) override;
 

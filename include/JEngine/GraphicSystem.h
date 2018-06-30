@@ -107,14 +107,14 @@ private:
     vec3		m_resolutionScaler;
     unsigned	m_maxLights;
 
-    int		m_width, m_height;
+    int		width_, height_;
     bool	m_inside, m_isLight;
     mat4	m_perspective, m_orthogonal, m_viewport;
     vec3	m_aniScale, m_aniTranslate;
     float	m_left, m_right, m_top, m_bottom;
 	
-    GraphicSystem(const GraphicSystem& /*_copy*/) = delete;
-    void operator=(const GraphicSystem& /*_copy*/) = delete;
+    GraphicSystem(const GraphicSystem& /*copy*/) = delete;
+    void operator=(const GraphicSystem& /*copy*/) = delete;
 };
 
 jeEnd

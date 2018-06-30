@@ -4,147 +4,147 @@
 
 jeBegin
 
-Shader* Shader::m_pCurrentShader = nullptr;
+Shader* Shader::pCurrentShader_ = nullptr;
 
-void Shader::Use(const GLM::ShaderType& _shaderType)
+void Shader::Use(const GLM::ShaderType& shaderType)
 {
-	m_pCurrentShader = GLM::m_shader[_shaderType];
-	glUseProgram(m_pCurrentShader->m_programId);
+	pCurrentShader_ = GLM::shader_[shaderType];
+	glUseProgram(pCurrentShader_->programId_);
 }
 
 Shader::Shader()
-	:m_programId(0), m_vertexId(0),
-	m_fragmentId(0), m_geometryId(0),
-	m_infoLogLength(0), m_result(GL_FALSE)
+	:programId_(0), vertexId_(0),
+	fragmentId_(0), geometryId_(0),
+	infoLogLength_(0), result_(GL_FALSE)
 {}
 
-void Shader::CreateShader(std::string& _shaderContents, Type _type)
+void Shader::CreateShader(std::string& shaderContents, Type type)
 {
 	// Create the shader
 	GLuint *pShader = nullptr;
 
-	switch (_type)
+	switch (type)
 	{
-	case VERTEX:
-		m_vertexId = glCreateShader(GL_VERTEX_SHADER);
-		pShader = &m_vertexId;
+	case JE_VERTEX:
+		vertexId_ = glCreateShader(GL_VERTEX_SHADER);
+		pShader = &vertexId_;
 		break;
-	case PIXEL:
-		m_fragmentId = glCreateShader(GL_FRAGMENT_SHADER);
-		pShader = &m_fragmentId;
+	case JE_PIXEL:
+		fragmentId_ = glCreateShader(GL_FRAGMENT_SHADER);
+		pShader = &fragmentId_;
 		break;
-	case GEOMETRY:
-		m_geometryId = glCreateShader(GL_GEOMETRY_SHADER);
-		pShader = &m_geometryId;
+	case JE_GEOMETRY:
+		geometryId_ = glCreateShader(GL_GEOMETRY_SHADER);
+		pShader = &geometryId_;
 		break;
 	}
 
-	char const* SourcePointer = _shaderContents.c_str();
+	char const* SourcePointer = shaderContents.c_str();
 	glShaderSource(*pShader, 1, &SourcePointer, nullptr);
 	glCompileShader(*pShader);
 
 	// Check shader
-	glGetShaderiv(*pShader, GL_COMPILE_STATUS, &m_result);
-	glGetShaderiv(*pShader, GL_INFO_LOG_LENGTH, &m_infoLogLength);
+	glGetShaderiv(*pShader, GL_COMPILE_STATUS, &result_);
+	glGetShaderiv(*pShader, GL_INFO_LOG_LENGTH, &infoLogLength_);
 
-	if (m_infoLogLength > 0) {
-		std::vector<char> ShaderErrorMessage(m_infoLogLength + 1);
-		glGetShaderInfoLog(*pShader, m_infoLogLength, nullptr, &ShaderErrorMessage[0]);
+	if (infoLogLength_ > 0) {
+		std::vector<char> ShaderErrorMessage(infoLogLength_ + 1);
+		glGetShaderInfoLog(*pShader, infoLogLength_, nullptr, &ShaderErrorMessage[0]);
 		jeDebugPrint("!Shader - %4s\n", &ShaderErrorMessage[0]);
 	}
 }
 
 void Shader::CombineShaders()
 {
-	m_programId = glCreateProgram();
+	programId_ = glCreateProgram();
 
-	if (m_programId == 0)
+	if (programId_ == 0)
 		jeDebugPrint("!Shader - Shader couldn't get program id.\n");
 
 	else {
 
 		// Combine several shaders into the program
-		if (m_vertexId)
-			glAttachShader(m_programId, m_vertexId);
-		if (m_fragmentId)
-			glAttachShader(m_programId, m_fragmentId);
-		if (m_geometryId)
-			glAttachShader(m_programId, m_geometryId);
+		if (vertexId_)
+			glAttachShader(programId_, vertexId_);
+		if (fragmentId_)
+			glAttachShader(programId_, fragmentId_);
+		if (geometryId_)
+			glAttachShader(programId_, geometryId_);
 
-		glLinkProgram(m_programId);
+		glLinkProgram(programId_);
 
 		// Check the program
-		glGetProgramiv(m_programId, GL_LINK_STATUS, &m_result);
-		glGetShaderiv(m_programId, GL_INFO_LOG_LENGTH, &m_infoLogLength);
+		glGetProgramiv(programId_, GL_LINK_STATUS, &result_);
+		glGetShaderiv(programId_, GL_INFO_LOG_LENGTH, &infoLogLength_);
 
 		// Check if linked properly
-		if (m_infoLogLength > 0) {
-			std::vector<char> ProgramErrorMessage(m_infoLogLength + 1);
-			glGetShaderInfoLog(m_programId, m_infoLogLength, nullptr, &ProgramErrorMessage[0]);
+		if (infoLogLength_ > 0) {
+			std::vector<char> ProgramErrorMessage(infoLogLength_ + 1);
+			glGetShaderInfoLog(programId_, infoLogLength_, nullptr, &ProgramErrorMessage[0]);
 			jeDebugPrint("!Shader: %4s\n", &ProgramErrorMessage[0]);
 
 		}	// if (infoLogLength > 0) {
 
-		glUseProgram(m_programId);	// Start using shade  program
+		glUseProgram(programId_);	// Start using shade  program
 
-		if (m_vertexId) {
-			glDetachShader(m_programId, m_vertexId);
-			glDeleteShader(m_vertexId);
+		if (vertexId_) {
+			glDetachShader(programId_, vertexId_);
+			glDeleteShader(vertexId_);
 		}
 
-		if (m_fragmentId) {
-			glDetachShader(m_programId, m_fragmentId);
-			glDeleteShader(m_fragmentId);
+		if (fragmentId_) {
+			glDetachShader(programId_, fragmentId_);
+			glDeleteShader(fragmentId_);
 		}
 
-		if (m_geometryId) {
-			glDetachShader(m_programId, m_geometryId);
-			glDeleteShader(m_geometryId);
+		if (geometryId_) {
+			glDetachShader(programId_, geometryId_);
+			glDeleteShader(geometryId_);
 		}
 	}
 }
 
-void Shader::SetBool(const char* _name, bool _bool)
+void Shader::SetBool(const char* name, bool toggle)
 {
-	glUniform1i(glGetUniformLocation(m_pCurrentShader->m_programId, _name), _bool);
+	glUniform1i(glGetUniformLocation(pCurrentShader_->programId_, name), toggle);
 }
 
-void Shader::SetuInt(const char * _name, unsigned _uInt)
+void Shader::SetuInt(const char * name, unsigned uInt)
 {
-	glUniform1ui(glGetUniformLocation(m_pCurrentShader->m_programId, _name), _uInt);
+	glUniform1ui(glGetUniformLocation(pCurrentShader_->programId_, name), uInt);
 }
 
-void Shader::SetVector4(const char* _name, const vec4& _vector)
+void Shader::SetVector4(const char* name, const vec4& vector)
 {
-	glUniform4f(glGetUniformLocation(m_pCurrentShader->m_programId, _name),
-		_vector.x, _vector.y, _vector.z, _vector.w);
+	glUniform4f(glGetUniformLocation(pCurrentShader_->programId_, name),
+		vector.x, vector.y, vector.z, vector.w);
 }
 
-void Shader::SetVector3(const char* _name, const vec3& _vector)
+void Shader::SetVector3(const char* name, const vec3& vector)
 {
-	glUniform3f(glGetUniformLocation(m_pCurrentShader->m_programId, _name),
-		_vector.x, _vector.y, _vector.z);
+	glUniform3f(glGetUniformLocation(pCurrentShader_->programId_, name),
+		vector.x, vector.y, vector.z);
 }
 
-void Shader::SetInt(const char* _name, int _int)
+void Shader::SetInt(const char* name, int number)
 {
-	glUniform1i(glGetUniformLocation(m_pCurrentShader->m_programId, _name), _int);
+	glUniform1i(glGetUniformLocation(pCurrentShader_->programId_, name), number);
 }
 
-void Shader::SetFloat(const char* _name, float _float)
+void Shader::SetFloat(const char* name, float number)
 {
-	glUniform1f(glGetUniformLocation(m_pCurrentShader->m_programId, _name), _float);
+	glUniform1f(glGetUniformLocation(pCurrentShader_->programId_, name), number);
 }
 
-void Shader::SetEnum(const char* _name, int _enum)
+void Shader::SetEnum(const char* name, int type)
 {
-	glUniform1i(glGetUniformLocation(m_pCurrentShader->m_programId, _name), _enum);
+	glUniform1i(glGetUniformLocation(pCurrentShader_->programId_, name), type);
 }
 
-void Shader::SetMatrix(const char* _name, const mat4& _mat4)
+void Shader::SetMatrix(const char* name, const mat4& mat4)
 {
-	glUniformMatrix4fv(glGetUniformLocation(m_pCurrentShader->m_programId, _name), 
-		1, GL_FALSE, &_mat4.m[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(pCurrentShader_->programId_, name), 
+		1, GL_FALSE, &mat4.m[0][0]);
 }
 
 jeEnd

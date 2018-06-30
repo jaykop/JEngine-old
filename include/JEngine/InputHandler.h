@@ -97,8 +97,8 @@ public:
 	static bool MouseDown();
 
 	// Basic key triggers
-	static bool KeyPressed(JE_KEY _pressed);
-	static bool KeyTriggered(JE_KEY _trigger);
+	static bool KeyPressed(JE_KEY pressed);
+	static bool KeyTriggered(JE_KEY trigger);
 
 	static vec3& GetRawPosition();
 	static vec3& GetOrhtoPosition();
@@ -106,15 +106,15 @@ public:
 private:
 
 	static void Init();
-	static void Update(SDL_Event* _event);
+	static void Update(SDL_Event* event);
 
-	static JE_KEY	KeyTranslator(SDL_Event* _event);
+	static JE_KEY	KeyTranslator(SDL_Event* event);
 
-	static unsigned m_triggerCalled;
-	static int		m_mouseWheel;
-	static vec3		m_screenPosition, m_rawPosition;
-	static bool		m_keyPressed, m_mousePressed;
-	static KeyMap	m_keys, m_triggerList;
+	static unsigned triggerCalled_;
+	static int		mouseWheel_;
+	static vec3		screenPosition_, rawPosition_;
+	static bool		keyPressed_, mousePressed_;
+	static KeyMap	keys_, triggerList_;
 };
 
 using INPUT = InputHandler;

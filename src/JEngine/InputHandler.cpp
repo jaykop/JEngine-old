@@ -7,42 +7,42 @@ jeBegin
 //////////////////////////////////////////////////////////////////////////
 // static variables
 //////////////////////////////////////////////////////////////////////////
-bool			INPUT::m_keyPressed = false;
-bool			INPUT::m_mousePressed = false;
-vec3			INPUT::m_rawPosition = vec3::ZERO;
-vec3			INPUT::m_screenPosition = vec3::ZERO;
-INPUT::KeyMap	INPUT::m_keys, INPUT::m_triggerList;
-int				INPUT::m_mouseWheel = 0;
-unsigned		INPUT::m_triggerCalled = 0;
+bool			INPUT::keyPressed_ = false;
+bool			INPUT::mousePressed_ = false;
+vec3			INPUT::rawPosition_ = vec3::ZERO;
+vec3			INPUT::screenPosition_ = vec3::ZERO;
+INPUT::KeyMap	INPUT::keys_, INPUT::triggerList_;
+int				INPUT::mouseWheel_ = 0;
+unsigned		INPUT::triggerCalled_ = 0;
 
 void InputHandler::Init()
 {
 	// Refresh all keys' status
 	for (unsigned i = 0; i < JE_KEY_END; ++i)
-		m_triggerList[i] = m_keys[i] = false;
+		triggerList_[i] = keys_[i] = false;
 }
 
-bool InputHandler::KeyPressed(JE_KEY _pressed)
+bool InputHandler::KeyPressed(JE_KEY pressed)
 {
-	return m_keys[_pressed];
+	return keys_[pressed];
 }
 
-bool InputHandler::KeyTriggered(JE_KEY _trigger)
+bool InputHandler::KeyTriggered(JE_KEY trigger)
 {
-	if ((m_triggerCalled || !m_triggerList[_trigger])	// First press, trigger must be false or check trigger call is on the same frame
-		&& m_keys[_trigger]) {							// Key pressed, so this must be true
-		m_triggerList[_trigger] = true;					// Set trigger is activated -> no more access here
-		m_triggerCalled++;								// Increase the number of calling trigger
+	if ((triggerCalled_ || !triggerList_[trigger])	// First press, trigger must be false or check trigger call is on the same frame
+		&& keys_[trigger]) {							// Key pressed, so this must be true
+		triggerList_[trigger] = true;					// Set trigger is activated -> no more access here
+		triggerCalled_++;								// Increase the number of calling trigger
 		return true;
 	}
 
 	return false;
 }
 
-JE_KEY InputHandler::KeyTranslator(SDL_Event* _event)
+JE_KEY InputHandler::KeyTranslator(SDL_Event* event)
 {
 	// Mouse translator
-	switch (_event->button.button) {
+	switch (event->button.button) {
 
 	case SDL_BUTTON_RIGHT:
 		return JE_MOUSE_RIGHT;
@@ -58,7 +58,7 @@ JE_KEY InputHandler::KeyTranslator(SDL_Event* _event)
 	}
 
 	// Keyboard translator
-	switch (_event->key.keysym.sym) {
+	switch (event->key.keysym.sym) {
 
 	case SDLK_UNKNOWN:
 		break;
@@ -252,70 +252,70 @@ JE_KEY InputHandler::KeyTranslator(SDL_Event* _event)
 	return JE_NONE;
 }
 
-void InputHandler::Update(SDL_Event* _event)
+void InputHandler::Update(SDL_Event* event)
 {	
 	// Initialize the number of calling trigger
-	m_triggerCalled = 0;
+	triggerCalled_ = 0;
 
 	// Refresh the mouse wheel toggles
-	switch (m_mouseWheel) {
+	switch (mouseWheel_) {
 	case 0:
-		m_triggerList[JE_MOUSE_WHEEL_DOWN]
-			= m_keys[JE_MOUSE_WHEEL_DOWN]
-			= m_triggerList[JE_MOUSE_WHEEL_UP]
-			= m_keys[JE_MOUSE_WHEEL_UP] = false;
+		triggerList_[JE_MOUSE_WHEEL_DOWN]
+			= keys_[JE_MOUSE_WHEEL_DOWN]
+			= triggerList_[JE_MOUSE_WHEEL_UP]
+			= keys_[JE_MOUSE_WHEEL_UP] = false;
 		break;
 	case 1:
-		m_triggerList[JE_MOUSE_WHEEL_UP]
-			= m_keys[JE_MOUSE_WHEEL_UP] = true;
+		triggerList_[JE_MOUSE_WHEEL_UP]
+			= keys_[JE_MOUSE_WHEEL_UP] = true;
 		break;
 	case -1:
-		m_triggerList[JE_MOUSE_WHEEL_DOWN]
-			= m_keys[JE_MOUSE_WHEEL_DOWN] = true;
+		triggerList_[JE_MOUSE_WHEEL_DOWN]
+			= keys_[JE_MOUSE_WHEEL_DOWN] = true;
 		break;
 	}
 
 	// Handle input events
-	switch (_event->type)
+	switch (event->type)
 	{
 		// Keyboard
 	case SDL_KEYDOWN:
-		m_keyPressed = true;
-		m_keys[KeyTranslator(_event)] = true;
+		keyPressed_ = true;
+		keys_[KeyTranslator(event)] = true;
 		break;
 
 	case SDL_KEYUP:
-		m_keyPressed = false;
-		m_triggerList[KeyTranslator(_event)]
-			= m_keys[KeyTranslator(_event)] = false;
+		keyPressed_ = false;
+		triggerList_[KeyTranslator(event)]
+			= keys_[KeyTranslator(event)] = false;
 		break;
 
 		// Mouse
 	case SDL_MOUSEBUTTONDOWN:
-		m_mousePressed = true;
-		m_keys[KeyTranslator(_event)] = true;
+		mousePressed_ = true;
+		keys_[KeyTranslator(event)] = true;
 		break;
 
 	case SDL_MOUSEBUTTONUP:
-		m_mousePressed = false;
-		m_triggerList[KeyTranslator(_event)]
-			= m_keys[KeyTranslator(_event)] = false;
+		mousePressed_ = false;
+		triggerList_[KeyTranslator(event)]
+			= keys_[KeyTranslator(event)] = false;
 		break;
 
 	case SDL_MOUSEMOTION:
-		m_rawPosition
-			= vec3(float(_event->motion.x), float(_event->motion.y));
+		rawPosition_
+			= vec3(float(event->motion.x), float(event->motion.y));
 		break;
 
 	case SDL_MOUSEWHEEL:
 	{
-		if (_event->wheel.y > 0)
-			m_mouseWheel = 1;
+		if (event->wheel.y > 0)
+			mouseWheel_ = 1;
 
-		else if (_event->wheel.y < 0)
-			m_mouseWheel = -1;
+		else if (event->wheel.y < 0)
+			mouseWheel_ = -1;
 
-		_event->wheel.y = 0;
+		event->wheel.y = 0;
 		break;
 	}
 
@@ -328,29 +328,29 @@ void InputHandler::Update(SDL_Event* _event)
 
 vec3& InputHandler::GetRawPosition()
 {
-	return m_rawPosition;
+	return rawPosition_;
 }
 
 vec3& InputHandler::GetOrhtoPosition()
 {
-	float width = GLM::m_width* .5f, height = GLM::m_height* .5f;
-	m_screenPosition.Set(m_rawPosition.x - width, height - m_rawPosition.y, 0./*m_mouseZ*/);
-	return m_screenPosition;
+	float width = GLM::width_* .5f, height = GLM::height_* .5f;
+	screenPosition_.Set(rawPosition_.x - width, height - rawPosition_.y, 0./*m_mouseZ*/);
+	return screenPosition_;
 }
 
 bool InputHandler::AnyKeyDown()
 {
-	return m_keyPressed || m_mousePressed;
+	return keyPressed_ || mousePressed_;
 }
 
 bool InputHandler::KeyDown()
 {
-	return m_keyPressed;
+	return keyPressed_;
 }
 
 bool InputHandler::MouseDown()
 {
-	return m_mousePressed;
+	return mousePressed_;
 }
 
 jeEnd

@@ -13,10 +13,10 @@ const unsigned sizeOfNode = sizeof(Node);
 
 template <class T>
 MemoryAllocator<T>::MemoryAllocator()
-    :m_config(MAConfig())
+    :config_(MAConfig())
 {
-    m_stats.m_objectSize = sizeof(T);
-    m_stats.m_pageSize = m_stats.m_objectSize * m_config.nodePerPage + sizeOfPointer;
+    stats_.objectSize = sizeof(T);
+    stats_.pageSize = stats_.objectSize * config_.nodePerPage + sizeOfPointer;
     AllocateNewPage();
 }
 
@@ -29,30 +29,30 @@ MemoryAllocator<T>::~MemoryAllocator()
 template <class T>
 void MemoryAllocator<T>::AllocateNewPage()
 {
-    static const int nextAddress = m_stats.m_objectSize / sizeOfNode;
+    static const int nextAddress = stats_.objectSize / sizeOfNode;
 
-    if (!m_config.maxPages ||			        // Unlimited pages
-        m_stats.m_pagesInUse < m_config.maxPages)	// Satisfy max pages condition
+    if (!config_.maxPages ||			        // Unlimited pages
+        stats_.pagesInUse < config_.maxPages)	// Satisfy max pages condition
     {
         // Allocate the size of memory as the total sum of the number of nodes(sizeOfNode*m_defaultNumOfNode)
         // and pointer to next page(sizeOfPointer)
-        unsigned char* newPage = jeCastToUnsignedCharPointer(malloc(m_stats.m_pageSize));
+        unsigned char* newPage = jeCastToUnsignedCharPointer(malloc(stats_.pageSize));
 
         // Convert the pages to page type
         Node* NewPageNode = jeCastToNodePointer(newPage);
 
-        if (m_config.debugOn) {
+        if (config_.debugOn) {
             // Set memory
             memset(newPage, JE_NULL, sizeOfPointer);
-            memset(newPage + sizeOfPointer, JE_UNALLOCATED, m_stats.m_pageSize - sizeOfPointer);
+            memset(newPage + sizeOfPointer, JE_UNALLOCATED, stats_.pageSize - sizeOfPointer);
         }
 
         // If there were existing pages
         // Connect the current one and newly allocated page
-        NewPageNode->pNext = m_pagelist;
+        NewPageNode->pNext = pagelist_;
 
         // Move the m_pages to new page's starting point
-        m_pagelist = NewPageNode;
+        pagelist_ = NewPageNode;
 
         // Split the new page into node and connect them each other
         // by setting their pNext
@@ -63,22 +63,22 @@ void MemoryAllocator<T>::AllocateNewPage()
         * Then move the current node to next node and update all the next nodes of every node
         * in m_page(new page) keep doing this
         */
-        for (unsigned index = 0; index < m_config.nodePerPage; ++index) {
+        for (unsigned index = 0; index < config_.nodePerPage; ++index) {
 
             // Connect the current node to next node
-            NewPageNode->pNext = m_freelist;
+            NewPageNode->pNext = freelist_;
 
             // Set the freelist to the starting point of newPage 
             // which is skipping the address of pointer to next page
-            m_freelist = NewPageNode;
+            freelist_ = NewPageNode;
 
             // Move to next node
             NewPageNode += nextAddress;
         }
 
         // Increase the number of availalbe ndoes and pages in use
-        m_stats.m_freeNodes += m_config.nodePerPage;
-        m_stats.m_pagesInUse++;
+        stats_.freeNodes_ += config_.nodePerPage;
+        stats_.pagesInUse++;
     }
 
 }
@@ -92,9 +92,9 @@ void MemoryAllocator<T>::DeallocatePage()
     */
 
     // Remove current page
-    Node* toRemove = m_pagelist;
+    Node* toRemove = pagelist_;
     // Set new current page
-    m_pagelist = toRemove->pNext;
+    pagelist_ = toRemove->pNext;
     // Remove the one to remove
     free(toRemove);
 }
@@ -102,8 +102,8 @@ void MemoryAllocator<T>::DeallocatePage()
 template <class T>
 void MemoryAllocator<T>::ClearPages()
 {
-    if (m_pagelist) {
-        Node* toRemove = m_pagelist;
+    if (pagelist_) {
+        Node* toRemove = pagelist_;
 
         while (toRemove) {
 
@@ -122,54 +122,54 @@ Node* MemoryAllocator<T>::Allocate()
 {
     // If there not enough memory to return,
     // make new page
-    if (m_stats.m_freeNodes == 0)
+    if (stats_.freeNodes_ == 0)
         AllocateNewPage();
 
     // Get the first head from the free list 
-    Node* toReturn = m_freelist;
+    Node* toReturn = freelist_;
     // Set the new head of free list
-    m_freelist = toReturn->pNext;
+    freelist_ = toReturn->pNext;
     // Decrease the number of free nodes
-    m_stats.m_freeNodes--;
+    stats_.freeNodes_--;
     // Increase the number of node in use and allocations
-    m_stats.m_nodesInUse++;
-    m_stats.m_allocations++;
+    stats_.nodesInUse_++;
+    stats_.allocations_++;
 
-    if (m_config.debugOn) {
+    if (config_.debugOn) {
         // Set allocated pattern first
-        std::memset(toReturn, JE_ALLOCATED, m_stats.m_objectSize);
+        std::memset(toReturn, JE_ALLOCATED, stats_.objectSize);
     }
 
     // Get the most number of nodes in used during the application is running
-    unsigned total = m_stats.m_allocations - m_stats.m_deallocations;
-    if (m_stats.m_mostNodes < total)
-        m_stats.m_mostNodes = total;
+    unsigned total = stats_.allocations_ - stats_.deallocations_;
+    if (stats_.mostNodes_ < total)
+        stats_.mostNodes_ = total;
 
     // Return the memory;
     return toReturn;
 }
 
 template <class T>
-void MemoryAllocator<T>::Free(T* _toReturn)
+void MemoryAllocator<T>::Free(T* toReturn)
 {
     // Call its destructor
-    _toReturn->~T();
+    toReturn->~T();
     // Cast to node type
-    Node* newHeadFreelist = jeCastToNodePointer(_toReturn);
+    Node* newHeadFreelist = jeCastToNodePointer(toReturn);
     
-    if (m_config.debugOn) {
+    if (config_.debugOn) {
         // Set freed pattern
-        std::memset(newHeadFreelist, JE_FREED, m_stats.m_objectSize);
+        std::memset(newHeadFreelist, JE_FREED, stats_.objectSize);
     }
     
     // Return the node to the free list again
-    newHeadFreelist->pNext = m_freelist;
-    m_freelist = newHeadFreelist;
+    newHeadFreelist->pNext = freelist_;
+    freelist_ = newHeadFreelist;
     // Increase the number of free nodes and deallocations
-    m_stats.m_freeNodes++;
-    m_stats.m_deallocations++;
+    stats_.freeNodes_++;
+    stats_.deallocations_++;
     // Decrease the number of node in use
-    m_stats.m_nodesInUse--;
+    stats_.nodesInUse_--;
 }
 
 jeEnd

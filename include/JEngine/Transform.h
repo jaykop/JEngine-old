@@ -18,9 +18,9 @@ public:
 
 private:
 
-    Transform(Object* _pOwner);
+    Transform(Object* pOwner);
 	virtual ~Transform() {};
-    void operator= (const Transform& _copy);
+    void operator= (const Transform& copy);
 
     void Load(CR_RJValue _data) override;
     void Register() override {};
@@ -28,7 +28,7 @@ private:
     void EditorUpdate(float dt) override;
 
     Transform() = delete;
-    Transform(const Transform& /*_copy*/) = delete;
+    Transform(const Transform& /*copy*/) = delete;
 
 };
 

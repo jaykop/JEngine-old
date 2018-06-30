@@ -3,6 +3,8 @@
 #include <unordered_map>
 #include "GraphicSystem.h"
 
+struct SDL_Window;
+
 jeBegin
 
 class Mesh;
@@ -37,34 +39,35 @@ class AssetManager {
 
 public:
 
-	static void			TakeAScreenshot(const char* _directory = nullptr);
+	static void		DrawLoadingScreen(SDL_Window* pWindow, const char* directory);
+	static void		TakeAScreenshot(const char* directory = nullptr);
 
-	static void			SetInitDirectory(const char* _dir);
-	static void			SetAssetDirectory(const char* _dir);
-	static void			SetStateDirectory(const char* _dir);
-	static void			SetArchetypeDirectory(const char* _dir);
+	static void		SetInitDirectory(const char* dir);
+	static void		SetAssetDirectory(const char* dir);
+	static void		SetStateDirectory(const char* dir);
+	static void		SetArchetypeDirectory(const char* dir);
 
-	static Font*		GetFont(const char* _key);
-	static State*		GetState(const char* _key);
-	static Audio*		GetAudio(const char* _key);
-	static unsigned		GetTexture(const char* _key);
-	static Archetype*	GetArchetype(const char* _key);
+	static Font*		GetFont(const char* key);
+	static State*		GetState(const char* key);
+	static Audio*		GetAudio(const char* key);
+	static unsigned		GetTexture(const char* key);
+	static Archetype*	GetArchetype(const char* key);
 
 private:
 
-	static std::string m_initDirectory, m_assetDirectory,
-		m_stateDirectory, m_archeDirectory;
+	static std::string initDirectory_, assetDirectory_,
+		stateDirectory_, archeDirectory_;
 	
-	static void ShowLoadingPercentage(unsigned _loadedPercentage, unsigned _size);
+	static void ShowLoadingPercentage(unsigned loadedPercentage, unsigned size);
 
-	static void LoadFont(const char* _path, const char* _audioKey, unsigned _size,
+	static void LoadFont(const char* path, const char* audioKey, unsigned size,
 		unsigned long start, unsigned long end);
-	static void LoadCharacters(Font* _pFont, float& _newLineLevel, unsigned long _start, unsigned long _end);
-	static void LoadAudio(const char* _path, const char* _audioKey);
-	static void LoadImage(const char* _path, const char* _textureKey);
-	static void RegisterImage(Image& _image, const char* _textureKey);
-	static void LoadArchetype(const char* _path, const char* _archetypeKey);
-	static Mesh* LoadObjFile(const char* _path);
+	static void LoadCharacters(Font* pFont, float& newLineLevel, unsigned long start, unsigned long end);
+	static void LoadAudio(const char* path, const char* audioKey);
+	static void LoadImage(const char* path, const char* textureKey);
+	static void RegisterImage(Image& image, const char* textureKey);
+	static void LoadArchetype(const char* path, const char* archetypeKey);
+	static Mesh* LoadObjFile(const char* path);
 
 	// Private member functions
 	static bool SetBuiltInComponents();
@@ -72,14 +75,14 @@ private:
 	static void UnloadAssets();
 
 	// Private member variables
-	static unsigned char* m_pPixelChunk;
-	static std::unordered_map<std::string, Image> m_images;
+	static unsigned char* pPixelChunk_;
+	static std::unordered_map<std::string, Image> images_;
 
-	static FontMap		m_fontMap;
-	static AudioMap		m_audioMap;
-	static StateMap		m_stateMap;
-	static TextureMap	m_textureMap;
-	static ArchetypeMap	m_archetypeMap; 
+	static FontMap		fontMap_;
+	static AudioMap		audioMap_;
+	static StateMap		stateMap_;
+	static TextureMap	textureMap_;
+	static ArchetypeMap	archetypeMap_; 
 
 };
 

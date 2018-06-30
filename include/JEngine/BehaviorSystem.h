@@ -22,8 +22,8 @@ private:
 
 	BehaviorSystem();
 	virtual ~BehaviorSystem() {};
-	BehaviorSystem(const BehaviorSystem& /*_copy*/) = delete;
-	void operator=(const BehaviorSystem& /*_copy*/) = delete;
+	BehaviorSystem(const BehaviorSystem& /*copy*/) = delete;
+	void operator=(const BehaviorSystem& /*copy*/) = delete;
 
 	void Load(CR_RJDoc _data) override;
 	void Init() override;

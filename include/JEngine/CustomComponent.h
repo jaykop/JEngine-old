@@ -21,15 +21,15 @@ public:
 
 protected:
 
-	CustomComponent(Object* _pOwner)
-		: Component(_pOwner, true) {};
+	CustomComponent(Object* pOwner)
+		: Component(pOwner, true) {};
 	virtual	~CustomComponent() {};
 
 private:
 
 	CustomComponent() = delete;
-	CustomComponent(const CustomComponent& /*_copy*/) = delete;
-	void operator=(const CustomComponent& /*_copy*/) = delete;
+	CustomComponent(const CustomComponent& /*copy*/) = delete;
+	void operator=(const CustomComponent& /*copy*/) = delete;
 };
 
 jeEnd

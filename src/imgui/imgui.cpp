@@ -1653,16 +1653,16 @@ bool ImGuiTextFilter::PassFilter(const char* text, const char* text_end) const
 //-----------------------------------------------------------------------------
 
 // On some platform vsnprintf() takes va_list by reference and modifies it.
-// va_copy is the 'correct' way to copy a va_list but Visual Studio prior to 2013 doesn't have it.
-#ifndef va_copy
-#define va_copy(dest, src) (dest = src)
+// vacopy is the 'correct' way to copy a va_list but Visual Studio prior to 2013 doesn't have it.
+#ifndef vacopy
+#define vacopy(dest, src) (dest = src)
 #endif
 
 // Helper: Text buffer for logging/accumulating text
 void ImGuiTextBuffer::appendfv(const char* fmt, va_list args)
 {
-    va_list args_copy;
-    va_copy(args_copy, args);
+    va_list argscopy;
+    vacopy(argscopy, args);
 
     int len = ImFormatStringV(NULL, 0, fmt, args);         // FIXME-OPT: could do a first pass write attempt, likely successful on first pass.
     if (len <= 0)
@@ -1677,7 +1677,7 @@ void ImGuiTextBuffer::appendfv(const char* fmt, va_list args)
     }
 
     Buf.resize(needed_sz);
-    ImFormatStringV(&Buf[write_off - 1], len + 1, fmt, args_copy);
+    ImFormatStringV(&Buf[write_off - 1], len + 1, fmt, argscopy);
 }
 
 void ImGuiTextBuffer::appendf(const char* fmt, ...)
@@ -5192,10 +5192,10 @@ void ImGui::FocusPreviousWindow()
         }
 }
 
-void ImGui::PushItemWidth(float item_width)
+void ImGui::PushItemWidth(float itewidth_)
 {
     ImGuiWindow* window = GetCurrentWindow();
-    window->DC.ItemWidth = (item_width == 0.0f ? window->ItemWidthDefault : item_width);
+    window->DC.ItemWidth = (itewidth_ == 0.0f ? window->ItemWidthDefault : itewidth_);
     window->DC.ItemWidthStack.push_back(window->DC.ItemWidth);
 }
 

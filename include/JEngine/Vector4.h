@@ -23,7 +23,7 @@ struct Vector4
 
 	// Constructors and destructor
 	Vector4(float _x = 0, float _y = 0, float _z = 0, float _w = 0);
-	Vector4(const Vector4& _copy);
+	Vector4(const Vector4& copy);
 
 	// Static variables
 	static const Vector4 ZERO;
@@ -55,7 +55,7 @@ struct Vector4
 	Vector4&	operator/=(float _constant);
 
 	// Trasnforming functions and helpers
-	void		Set(const Vector4& _copy);
+	void		Set(const Vector4& copy);
 	void		Set(float _x, float _y, float _z, float _w);
 	void		SetZero();
 	void		SetOne();

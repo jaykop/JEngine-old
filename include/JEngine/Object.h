@@ -17,9 +17,9 @@ class Object {
 
 	struct StateMachine
 	{
-	    CustomComponent* m_pPreviousState = nullptr;
-	    CustomComponent* m_pCurrentState = nullptr;
-	    CustomComponent* m_pGlobalState = nullptr;
+	    CustomComponent* pPreviousState_ = nullptr;
+	    CustomComponent* pCurrentState_ = nullptr;
+	    CustomComponent* pGlobalState_ = nullptr;
 	};
 
 public:
@@ -35,7 +35,7 @@ public:
 	friend class ImguiManager;
 	friend class MessageDispatcher;
 
-	Object(const char* _name);
+	Object(const char* name);
 	~Object();
 
 	unsigned GetId() const;
@@ -43,17 +43,17 @@ public:
 	void RegisterComponents();
 
 	const std::string&  GetName(void) const;
-	void				SetName(const char* _name);
+	void				SetName(const char* name);
 
-	void	AddChild(Object* _child);
-	void	RemoveChild(const char* _name);
-	Object* GetChild(const char* _name);
-	bool	HasChild(const char* _name);
+	void	AddChild(Object* child);
+	void	RemoveChild(const char* name);
+	Object* GetChild(const char* name);
+	bool	HasChild(const char* name);
 	
 	Object*	GetParent();
 	bool	HasParent();
 
-	void	SetActive(bool _active);
+	void	SetActive(bool active);
 	bool	GetActive(void) const;
 
 	ComponentMap& GetComponentMap();
@@ -70,10 +70,10 @@ public:
 	template<typename ComponentType>
 	inline void RemoveComponent();
 
-	void	    AddComponent(const char* _componentName);
-	Component*  GetComponent(const char* _componentName);
-	bool	    HasComponent(const char* _componentName) const;
-	void	    RemoveComponent(const char* _componentName);
+	void	    AddComponent(const char* componentName);
+	Component*  GetComponent(const char* componentName);
+	bool	    HasComponent(const char* componentName) const;
+	void	    RemoveComponent(const char* componentName);
 
 	template<typename ComponentType>
 	inline void SetGlobalState();
@@ -87,35 +87,35 @@ public:
 	CustomComponent* GetGlobalState() const;
 	CustomComponent* GetCurrentState() const;
 
-	void SetGlobalState(const char* _componentName);
-	void SetCurrentState(const char* _componentName);
+	void SetGlobalState(const char* componentName);
+	void SetCurrentState(const char* componentName);
 	void RevertToPreviousState();
 
 private:
 
 	// Member function
-	void SetParent(Object* _pObject); 
+	void SetParent(Object* pObject); 
 	
 	void ClearComponents();
 	void ClearChildren();
 
 	bool HandleMessage(Telegram& _message);
 
-	unsigned		m_id;
-	bool			m_active;
-	Object*			m_pParent;
-	StateMachine	m_StateMachine;
-	std::string		m_name;
-	ChildObjects	m_childObjs;
-	ComponentMap	m_componentMap;
+	unsigned		id_;
+	bool			active_;
+	Object*			pParent_;
+	StateMachine	stateMachine_;
+	std::string		name_;
+	ChildObjects	childObjs_;
+	ComponentMap	componentMap_;
 	
 	// statiic editor variable and function
 	void	EditorUpdate(float dt);
-	bool	m_showEditor;
+	bool	showEditor_;
 
 	Object() = delete;
-	Object(const Object& /*_copy*/) = delete;
-	void operator=(const Object& /*_copy*/) = delete;
+	Object(const Object& /*copy*/) = delete;
+	void operator=(const Object& /*copy*/) = delete;
 
 };
 

@@ -28,9 +28,9 @@ private:
 
     Font();
     ~Font() {};
-    Font(const Font& /*_copy*/) = delete;
-    void operator= (const Font& /*_copy*/) = delete;
-    void operator= (Font&& /*_copy*/) = delete;
+    Font(const Font& /*copy*/) = delete;
+    void operator= (const Font& /*copy*/) = delete;
+    void operator= (Font&& /*copy*/) = delete;
 
     FontData	m_data;
     FT_Face		m_face;
@@ -69,13 +69,13 @@ private:
 
     Text(Object* pObject);
 	virtual ~Text();
-    void operator=(const Text& _copy);
+    void operator=(const Text& copy);
     void Load(CR_RJValue _data) override;
     void EditorUpdate(float dt) override;
 
     Text() = delete;
-    Text(const Text& /*_copy*/) = delete;
-    Text(Text&& /*_copy*/) = delete;
+    Text(const Text& /*copy*/) = delete;
+    Text(Text&& /*copy*/) = delete;
 };
 
 jeEnd

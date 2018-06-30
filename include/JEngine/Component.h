@@ -12,19 +12,19 @@ class Component {
 
 public:
 
-    bool m_showEditor;
+    bool showEditor_;
 
-    Object* GetOwner() const { return m_pOwner; }
+    Object* GetOwner() const { return pOwner_; }
     virtual void Register() = 0;
 
 protected:
 
-    Component(Object* _pOwner, bool _byUser = false)
-        : m_pOwner(_pOwner), m_byUser(_byUser),
-        m_showEditor(false), m_typeName("Component") {};
+    Component(Object* pOwner, bool byUser = false)
+        : pOwner_(pOwner), byUser_(byUser),
+        showEditor_(false), typeName_("Component") {};
     virtual	~Component() {};
-    void operator=(const Component& _copy) {
-        m_byUser = _copy.m_byUser;
+    void operator=(const Component& copy) {
+        byUser_ = copy.byUser_;
     };
 
     virtual void Load(CR_RJValue _data) = 0;
@@ -32,12 +32,12 @@ protected:
 
 private:
     
-    Object      *m_pOwner;
-    bool		m_byUser;
-    std::string m_typeName;
+    Object      *pOwner_;
+    bool		byUser_;
+    std::string typeName_;
 
     Component() = delete;;
-    Component(const Component& /*_copy*/) = delete;
+    Component(const Component& /*copy*/) = delete;
 
 };
 
