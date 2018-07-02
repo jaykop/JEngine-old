@@ -11,7 +11,6 @@ jeDeclareComponentBuilder(Model);
 
 class Mesh;
 class Transform;
-
 class Model : public Component
 {
     // Keyword Definitions
@@ -43,13 +42,13 @@ public:
 	Mesh*		GetMesh(unsigned index) const;
 	unsigned	GetMeshCount() const;
 
-    void		SetParentToFollow(Object* _pObj);
+    void		SetParentToFollow(Object* pObject);
 
-	unsigned	m_drawMode;
-    int			status;
-    vec4		color;
-    ProjectType projection;
-    unsigned	sfactor, dfactor;
+	unsigned	drawMode_;
+    int			status_;
+    vec4		color_;
+    ProjectType projection_;
+    unsigned	sfactor_, dfactor_;
 
 protected:
 
@@ -57,12 +56,12 @@ protected:
 	Model(Object* pOwner);
     void operator=(const Model& copy);
 
-    void Load(CR_RJValue _data) override;
+    void Load(CR_RJValue data) override;
 
-    bool		m_culled;
-    Transform	*m_pTransform, *m_pInherited;
-    Material	*m_pMaterial;
-    Animation	*m_pAnimation;
+    bool		culled_;
+    Transform	*pTransform_, *pInherited_;
+    Material	*pMaterial_;
+    Animation	*pAnimation_;
 
 private:
 

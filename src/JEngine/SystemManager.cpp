@@ -10,7 +10,7 @@ jeBegin
 // static variables
 //////////////////////////////////////////////////////////////////////////
 SYSTEM::SystemBlock	*SYSTEM::pBlock_ = nullptr;
-SYSTEM::SystemStack	SYSTEM::m_pauseStack;
+SYSTEM::SystemStack	SYSTEM::pauseStack_;
 
 SoundSystem*		SYSTEM::pSound_ = nullptr;
 GraphicSystem*		SYSTEM::pGraphic_ = nullptr;
@@ -20,12 +20,12 @@ BehaviorSystem*		SYSTEM::pBehavior_ = nullptr;
 //////////////////////////////////////////////////////////////////////////
 // class SystemManager's funciton bodues
 //////////////////////////////////////////////////////////////////////////
-void SystemManager::Load(CR_RJDoc _data)
+void SystemManager::Load(CR_RJDoc data)
 {
-	pBehavior_->Load(_data);
-	pSound_->Load(_data);
-	pGraphic_->Load(_data);
-	pPhysics_->Load(_data);
+	pBehavior_->Load(data);
+	pSound_->Load(data);
+	pGraphic_->Load(data);
+	pPhysics_->Load(data);
 }
 
 void SystemManager::Init()
@@ -63,7 +63,7 @@ void SystemManager::Unload()
 void SystemManager::Pause()
 {
 	// Push current systems into the storage stack
-	m_pauseStack.push(pBlock_);
+	pauseStack_.push(pBlock_);
 
 	// Bind new system
 	pBlock_ = nullptr;
@@ -74,10 +74,10 @@ void SystemManager::Resume()
 {
 	// Unbind systems
 	Unbind();
-	pBlock_ = m_pauseStack.top();
+	pBlock_ = pauseStack_.top();
 
 	// Pop the top(currnet system)
-	m_pauseStack.pop();
+	pauseStack_.pop();
 }
 
 void SystemManager::Bind()
@@ -87,10 +87,10 @@ void SystemManager::Bind()
 
 		pBlock_ = new SystemBlock;
 
-		pBlock_->m_pGraphicSystem = pGraphic_ = new GraphicSystem;
-		pBlock_->m_pPhysicsSystem = pPhysics_ = new PhysicsSystem;
-		pBlock_->m_pSoundSystem = pSound_ = new SoundSystem;
-		pBlock_->m_pBehaviorSystem = pBehavior_ = new BehaviorSystem;
+		pBlock_->pGraphicSystem = pGraphic_ = new GraphicSystem;
+		pBlock_->pPhysicsSystem = pPhysics_ = new PhysicsSystem;
+		pBlock_->pSoundSystem = pSound_ = new SoundSystem;
+		pBlock_->pBehaviorSystem = pBehavior_ = new BehaviorSystem;
 
 	}
 }

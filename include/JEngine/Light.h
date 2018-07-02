@@ -14,12 +14,12 @@ class Light : public Model
 
 public:
 
-    LightType	m_type;
+    LightType	type_;
 
-    vec3		direction;
-    vec4		ambient, specular, diffuse;
-    float		constant, linear, quadratic, cutOff, outerCutOff;
-    unsigned	sfactor, dfactor;
+    vec3		direction_;
+    vec4		ambient_, specular_, diffuse_;
+    float		constant_, linear_, quadratic_, cutOff_, outerCutOff_;
+    unsigned	sfactor_, dfactor_;
 
     void Register() override;
 
@@ -32,7 +32,7 @@ private:
     Light() = delete;
     Light(const Light& /*copy*/) = delete;
 
-	void Load(CR_RJValue _data) override;
+	void Load(CR_RJValue data) override;
 	
     void EditorUpdate(float dt) override;
 };

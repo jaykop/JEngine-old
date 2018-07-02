@@ -23,7 +23,7 @@ bool			    STATE::showUpdateMessage_ = true;
 SDL_Window*		    STATE::pWindow_ = nullptr;
 Timer			    STATE::timer_;
 States			    STATE::states_;
-STATE::StateStatus	STATE::status_ = JE_STATE_CHANGE;
+STATE::StateStatus	STATE::status__ = JE_STATE_CHANGE;
 State			    *STATE::pCurrent_ = nullptr,
 					*STATE::pNext = nullptr;
 float			    STATE::frameTime_ = 0.f;
@@ -57,7 +57,7 @@ void StateManager::Update(SDL_Event* pEvent)
     ChangeState();
 
     while (SDL_PollEvent(pEvent) != 0	// Event handler loop
-        || status_ == JE_STATE_NONE) {	// State updating loop
+        || status__ == JE_STATE_NONE) {	// State updating loop
 
         IMGUI::EventUpdate(pEvent);	// Get input by imgui manager
         INPUT::Update(pEvent);		// Get input by input handler
@@ -97,7 +97,7 @@ void StateManager::Update(SDL_Event* pEvent)
         }
     }
 
-    switch (status_) {
+    switch (status__) {
 
 		// Keep updaring
 	case JE_STATE_NONE:
@@ -146,19 +146,19 @@ void StateManager::ChangeState()
 {
     // Load and init agein
     // for next stage
-    if (status_ == JE_STATE_CHANGE
-        || status_ == JE_STATE_PAUSE
-        || status_ == JE_STATE_RESTART) {
+    if (status__ == JE_STATE_CHANGE
+        || status__ == JE_STATE_PAUSE
+        || status__ == JE_STATE_RESTART) {
 
         // Save state to resume
-        if (status_ == JE_STATE_PAUSE) {
+        if (status__ == JE_STATE_PAUSE) {
             State* toResume = pCurrent_;
             pCurrent_ = pNext;
             pCurrent_->pLastStage_ = toResume;
         }
 
         // Just change current state
-        else if (status_ == JE_STATE_CHANGE)
+        else if (status__ == JE_STATE_CHANGE)
             pCurrent_ = pNext;
 
         // Renew the state
@@ -174,7 +174,7 @@ void StateManager::ChangeState()
     }
 
     // Resume state
-    else if (status_ == JE_STATE_RESUME) {
+    else if (status__ == JE_STATE_RESUME) {
         State* release = pCurrent_;
         pCurrent_ = pNext = pCurrent_->pLastStage_;
 		OBJECT::pContainer_ = pCurrent_->pObjContainer_;
@@ -182,15 +182,15 @@ void StateManager::ChangeState()
     }
 
     // Resume and change
-    else if (status_ == JE_STATE_RESUME_AND_CHANGE) {
+    else if (status__ == JE_STATE_RESUME_AND_CHANGE) {
         pCurrent_ = pCurrent_->pLastStage_;
 		OBJECT::pContainer_ = pCurrent_->pObjContainer_;
-        status_ = JE_STATE_CHANGE;
+        status__ = JE_STATE_CHANGE;
     }
 
-    // Refresh the status_
+    // Refresh the status__
     if (pCurrent_ == pNext)
-        status_ = JE_STATE_NONE;
+        status__ = JE_STATE_NONE;
 }
 
 void StateManager::PushState(const char* path, const char* stateName)
@@ -250,7 +250,7 @@ void StateManager::SetStartingState(const char * stateName)
 
 void StateManager::Quit()
 {
-    status_ = JE_STATE_QUIT;
+    status__ = JE_STATE_QUIT;
 }
 
 void StateManager::Restart()
@@ -258,7 +258,7 @@ void StateManager::Restart()
     if (IsPaused())
         jeDebugPrint("!StateManager - Cannot restart on pause state.\n");
     else
-        status_ = JE_STATE_RESTART;
+        status__ = JE_STATE_RESTART;
 }
 
 bool StateManager::IsPaused()
@@ -268,7 +268,7 @@ bool StateManager::IsPaused()
 
 StateManager::StateStatus StateManager::GetStatus(void)
 {
-    return status_;
+    return status__;
 }
 
 void StateManager::SetNextState(const char* nextState)
@@ -283,12 +283,12 @@ void StateManager::SetNextState(const char* nextState)
 
             if (HasState(nextState)) {
                 pNext = GetState(nextState);
-                status_ = JE_STATE_CHANGE;
+                status__ = JE_STATE_CHANGE;
             }
         }
 
         else
-            jeDebugPrint("!StateManager - Cannot move on paused status_.\n");
+            jeDebugPrint("!StateManager - Cannot move on paused status__.\n");
     }
 }
 
@@ -300,7 +300,7 @@ void StateManager::Pause(const char* nextState)
 
     else if (HasState(nextState)) {
         pNext = GetState(nextState);
-        status_ = JE_STATE_PAUSE;
+        status__ = JE_STATE_PAUSE;
     }
 
 }
@@ -309,7 +309,7 @@ void StateManager::Resume()
 {
     // Check state to resume
     if (pCurrent_->pLastStage_)
-        status_ = JE_STATE_RESUME;
+        status__ = JE_STATE_RESUME;
 
     else
         jeDebugPrint("!StateManager - No state to resume.\n");
@@ -318,7 +318,7 @@ void StateManager::Resume()
 void StateManager::ResumeAndNext(const char* nextState)
 {
     if (HasState(nextState)) {
-        status_ = JE_STATE_RESUME_AND_CHANGE;
+        status__ = JE_STATE_RESUME_AND_CHANGE;
         pNext = GetState(nextState);
     }
 }
@@ -390,7 +390,7 @@ void StateManager::EditorUpdate(const float /*dt*/)
     ImGui::Text("*Current State: %s", pCurrent_->name_.c_str());
 
     ImGui::Text("*Total States: %d", states_.size());
-    ImGui::Text("*States Stacked: %d", SYSTEM::m_pauseStack.size());
+    ImGui::Text("*States Stacked: %d", SYSTEM::pauseStack_.size());
 
     if (ImGui::Button("Show Level List"))
         showLevels = !showLevels;

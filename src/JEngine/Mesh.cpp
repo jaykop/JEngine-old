@@ -4,53 +4,53 @@
 
 jeBegin
 
-Mesh::Mesh() : m_vao(0), m_vbo(0), m_ebo(0), 
-	builtIn_(false), m_mainTex(0) {}
+Mesh::Mesh() : vao_(0), vbo_(0), ebo_(0), 
+	builtIn_(false), mainTexture_(0) {}
 
 Mesh::~Mesh() {
 
 	ClearVertexes();
 
 	// Remove textures
-	m_textureMap.clear();
+	textureMap_.clear();
 
 	// Delete buffers
-	glDeleteVertexArrays(1, &m_vao);
-	glDeleteBuffers(1, &m_vbo);
-	glDeleteBuffers(1, &m_ebo);
+	glDeleteVertexArrays(1, &vao_);
+	glDeleteBuffers(1, &vbo_);
+	glDeleteBuffers(1, &ebo_);
 }
 
-void Mesh::AddPoint(CR_Vec3 _point) { m_points.push_back(_point); }
+void Mesh::AddPoint(CR_Vec3 point) { points_.push_back(point); }
 
-void Mesh::AddTextureUV(CR_Vec2 _uv) { m_UVs.push_back(_uv); }
+void Mesh::AddTextureUV(CR_Vec2 uv) { textureUVs_.push_back(uv); }
 
-void Mesh::AddNormal(CR_Vec3 _normal) { m_normals.push_back(_normal); }
+void Mesh::AddNormal(CR_Vec3 normal) { normals_.push_back(normal); }
 
-void Mesh::AddIndice(jeIndex _indice) { m_indices.push_back(_indice); }
+void Mesh::AddIndice(jeIndex indice) { indices_.push_back(indice); }
 
-vec3 Mesh::GetPoint(unsigned _index) const { return m_points.at(_index); }
+vec3 Mesh::GetPoint(unsigned index) const { return points_.at(index); }
 
-vec2 Mesh::GetUV(unsigned _index) const { return m_UVs.at(_index); }
+vec2 Mesh::GetUV(unsigned index) const { return textureUVs_.at(index); }
 
-vec3 Mesh::GetNormal(unsigned _index) const { return m_normals.at(_index); }
+vec3 Mesh::GetNormal(unsigned index) const { return normals_.at(index); }
 
-Mesh::jeIndex Mesh::GetIndice(unsigned _index) const { return m_indices.at(_index); }
+Mesh::jeIndex Mesh::GetIndice(unsigned index) const { return indices_.at(index); }
 
-std::size_t Mesh::GetPointCount() const { return m_points.size(); }
+std::size_t Mesh::GetPointCount() const { return points_.size(); }
 
-std::size_t Mesh::GetIndiceCount() const { return m_indices.size(); }
+std::size_t Mesh::GetIndiceCount() const { return indices_.size(); }
 
-const std::vector<vec3>& Mesh::GetNormals() const { return m_normals; }
+const std::vector<vec3>& Mesh::GetNormals() const { return normals_; }
 
-const std::vector<Mesh::jeIndex>& Mesh::GetIndices() const { return m_indices; }
+const std::vector<Mesh::jeIndex>& Mesh::GetIndices() const { return indices_; }
 
-void Mesh::ClearPoints() { m_points.clear(); }
+void Mesh::ClearPoints() { points_.clear(); }
 
-void Mesh::ClearNormals() { m_normals.clear(); }
+void Mesh::ClearNormals() { normals_.clear(); }
 
-void Mesh::ClearUVs() { m_UVs.clear(); }
+void Mesh::ClearUVs() { textureUVs_.clear(); }
 
-void Mesh::ClearIndices() { m_indices.clear(); }
+void Mesh::ClearIndices() { indices_.clear(); }
 
 void Mesh::ClearVertexes() {
 
@@ -60,46 +60,46 @@ void Mesh::ClearVertexes() {
 	ClearIndices();
 }
 
-void Mesh::AddTexture(const char *_key)
+void Mesh::AddTexture(const char *key)
 {
-	auto found = m_textureMap.find(_key);
-	if (found != m_textureMap.end())
-		jeDebugPrint("!Model - Existing texture: %s.\n", _key);
+	auto found = textureMap_.find(key);
+	if (found != textureMap_.end())
+		jeDebugPrint("!Model - Existing texture: %s.\n", key);
 
 	else {
-		unsigned newTexture = ASSET::GetTexture(_key);
+		unsigned newTexture = ASSET::GetTexture(key);
 
-		if (m_textureMap.empty())
-			m_mainTex = newTexture;
+		if (textureMap_.empty())
+			mainTexture_ = newTexture;
 
-		m_textureMap.insert(
+		textureMap_.insert(
 			TextureMap::value_type(
-				_key, newTexture));
+				key, newTexture));
 	}
 }
 
-void Mesh::RemoveTexture(const char *_key)
+void Mesh::RemoveTexture(const char *key)
 {
-	m_textureMap.erase(_key);
+	textureMap_.erase(key);
 }
 
-void Mesh::SetCurrentTexutre(const char *_key)
+void Mesh::SetCurrentTexutre(const char *key)
 {
-	m_mainTex = GetTexutre(_key);
+	mainTexture_ = GetTexutre(key);
 }
 
 unsigned Mesh::GetCurrentTexutre() const
 {
-	return m_mainTex;
+	return mainTexture_;
 }
 
-unsigned Mesh::GetTexutre(const char *_key)
+unsigned Mesh::GetTexutre(const char *key)
 {
-	auto found = m_textureMap.find(_key);
-	if (found != m_textureMap.end())
+	auto found = textureMap_.find(key);
+	if (found != textureMap_.end())
 		return found->second;
 
-	jeDebugPrint("!Model - No such name of enrolled texture: %s.\n", _key);
+	jeDebugPrint("!Model - No such name of enrolled texture: %s.\n", key);
 	return 0;
 }
 
@@ -109,7 +109,7 @@ Mesh* Mesh::CreatePoint()
 	Mesh *pPoint = new Mesh;
 
 	pPoint->AddPoint(vec3(0, 0));
-	pPoint->AddTextureUV(vec2(0, 0));
+	pPoint->AddTextureUV(vec2(1, 1));
 	pPoint->AddNormal(vec3(0, 0, 1.f));
 	pPoint->AddIndice({ 0,0,0 });
 
@@ -320,7 +320,6 @@ Mesh* Mesh::CreateTetrahedron()
 	pTetrahedron->AddPoint(vec3(-.5f, 0.f, .5f));
 	pTetrahedron->AddPoint(vec3(.5f, 0.f, .5f));
 
-	// TODO
 	pTetrahedron->AddTextureUV(vec2(0, 1));
 	pTetrahedron->AddTextureUV(vec2(0.5f, 1));
 	pTetrahedron->AddTextureUV(vec2(1, 1));

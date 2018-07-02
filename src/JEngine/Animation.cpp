@@ -11,13 +11,13 @@ jeBegin
 jeDefineComponentBuilder(Animation);
 
 Animation::Animation(Object* pOwner)
-	: Component(pOwner), m_currentFrame(0.f), m_animationSpeed(0.f),
-	m_animationFrames(1), m_animationFixFrame(1), m_realSpeed(0.f),
-	m_realFrame(1.f), active_Animation(false)
+	: Component(pOwner), currentFrame_(0.f), animationSpeed_(0.f),
+	animationFrames_(1), animationFixFrame_(1), realSpeed_(0.f),
+	realFrame_(1.f), active_(false)
 {	
 	// Connect to model's pointer
 	if (pOwner->HasComponent<Model>()) 
-		pOwner->GetComponent<Model>()->m_pAnimation = this;
+		pOwner->GetComponent<Model>()->pAnimation_ = this;
 
 	else
 		jeDebugPrint("!Animation - This object has no model componnet: %s\n", pOwner->GetName().c_str());
@@ -27,43 +27,43 @@ Animation::~Animation() {
 
 	// Turn off the toggle
 	if (GetOwner()->HasComponent<Model>()) 
-		GetOwner()->GetComponent<Model>()->m_pAnimation = nullptr;
+		GetOwner()->GetComponent<Model>()->pAnimation_ = nullptr;
 }
 
 void Animation::operator=(const Animation & copy)
 {
-	m_currentFrame = copy.m_currentFrame; 
-	m_animationSpeed = copy.m_animationSpeed;
-	m_animationFrames = copy.m_animationFrames;
-	m_animationFixFrame = copy.m_animationFixFrame;
-	m_realSpeed = copy.m_realSpeed;
-	m_realFrame = copy.m_realFrame;
-	active_Animation = copy.active_Animation;
+	currentFrame_ = copy.currentFrame_; 
+	animationSpeed_ = copy.animationSpeed_;
+	animationFrames_ = copy.animationFrames_;
+	animationFixFrame_ = copy.animationFixFrame_;
+	realSpeed_ = copy.realSpeed_;
+	realFrame_ = copy.realFrame_;
+	active_ = copy.active_;
 
 	// Connect to model's pointer
 	if (GetOwner()->HasComponent<Model>()) 
-		GetOwner()->GetComponent<Model>()->m_pAnimation = this;
+		GetOwner()->GetComponent<Model>()->pAnimation_ = this;
 }
 
-void Animation::Load(CR_RJValue _data)
+void Animation::Load(CR_RJValue data)
 {
-	if (_data.HasMember("FixAt")) {
-		CR_RJValue fix = _data["FixAt"];
+	if (data.HasMember("FixAt")) {
+		CR_RJValue fix = data["FixAt"];
 		FixAnimationFrame(fix.GetInt());
 	}
 
-	if (_data.HasMember("Active")) {
-		CR_RJValue active = _data["Active"];
-		active_Animation = active.GetBool();
+	if (data.HasMember("Active")) {
+		CR_RJValue active = data["Active"];
+		active_ = active.GetBool();
 	}
 
-	if (_data.HasMember("Frame")) {
-		CR_RJValue frame = _data["Frame"];
+	if (data.HasMember("Frame")) {
+		CR_RJValue frame = data["Frame"];
 		SetAnimationFrame(frame.GetInt());
 	}
 
-	if (_data.HasMember("Speed")) {
-		CR_RJValue speed = _data["Speed"];
+	if (data.HasMember("Speed")) {
+		CR_RJValue speed = data["Speed"];
 		SetAnimationSpeed(speed.GetFloat());
 	}
 }
@@ -75,43 +75,43 @@ void Animation::EditorUpdate(const float /*dt*/)
 
 bool Animation::GetActiveAnimationToggle() const
 { 
-	return active_Animation;
+	return active_;
 }
 
-void Animation::ActiveAnimation(bool _toggle)
+void Animation::ActiveAnimation(bool toggle)
 {
-	active_Animation = _toggle;
-	if (active_Animation)
+	active_ = toggle;
+	if (active_)
 		timer_.Start();
 }
 
-void Animation::FixAnimationFrame(int _thFrame)
+void Animation::FixAnimationFrame(int thFrame)
 {
-	m_animationSpeed = 0.f;
-	active_Animation = false;
-	m_currentFrame = float(_thFrame) * m_realFrame;
+	animationSpeed_ = 0.f;
+	active_ = false;
+	currentFrame_ = float(thFrame) * realFrame_;
 }
 
-void Animation::SetAnimationFrame(int _numOfFrame)
+void Animation::SetAnimationFrame(int numOfFrame)
 {
-	m_animationFrames = _numOfFrame;
-	m_realFrame = 1.f / float(m_animationFrames);
+	animationFrames_ = numOfFrame;
+	realFrame_ = 1.f / float(animationFrames_);
 }
 
-void Animation::SetAnimationSpeed(float _speed)
+void Animation::SetAnimationSpeed(float speed)
 {
-	m_animationSpeed = _speed;
-	m_realSpeed = 1.f / _speed;
+	animationSpeed_ = speed;
+	realSpeed_ = 1.f / speed;
 }
 
 int Animation::GetAnimationFrame() const
 {
-	return m_animationFrames;
+	return animationFrames_;
 }
 
 float Animation::GetAnimationSpeed() const
 {
-	return m_animationSpeed;
+	return animationSpeed_;
 }
 
 jeEnd

@@ -22,25 +22,25 @@ void Transform::operator= (const Transform& copy)
 	rotationAxis.Set(copy.rotationAxis);
 }
 
-void Transform::Load(CR_RJValue _data)
+void Transform::Load(CR_RJValue data)
 {
-	if (_data.HasMember("Position")) {
-		CR_RJValue loadedPosition = _data["Position"];
+	if (data.HasMember("Position")) {
+		CR_RJValue loadedPosition = data["Position"];
 		position.Set(loadedPosition[0].GetFloat(), loadedPosition[1].GetFloat(), loadedPosition[2].GetFloat());
 	}
 
-	if (_data.HasMember("Scale")) {
-		CR_RJValue loadedScale = _data["Scale"];
+	if (data.HasMember("Scale")) {
+		CR_RJValue loadedScale = data["Scale"];
 		scale.Set(loadedScale[0].GetFloat(), loadedScale[1].GetFloat(), loadedScale[2].GetFloat());
 	}
 
-	if (_data.HasMember("Rotation")) {
-		CR_RJValue loadedRotation = _data["Rotation"];
+	if (data.HasMember("Rotation")) {
+		CR_RJValue loadedRotation = data["Rotation"];
 		rotation = loadedRotation.GetFloat();
 	}
 
-	if (_data.HasMember("Axis")) {
-		CR_RJValue loadedRotation3D = _data["Axis"];
+	if (data.HasMember("Axis")) {
+		CR_RJValue loadedRotation3D = data["Axis"];
 		rotationAxis.Set(loadedRotation3D[0].GetFloat(), loadedRotation3D[1].GetFloat(), loadedRotation3D[2].GetFloat());
 	}
 }

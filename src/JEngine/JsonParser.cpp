@@ -73,14 +73,14 @@ void JsonParser::LoadObjects()
 	} // for (rapidjson::SizeType i = 0; i < object.Size(); ++i) {
 }
 
-void JsonParser::LoadComponents(CR_RJValue _data)
+void JsonParser::LoadComponents(CR_RJValue data)
 {
-	FACTORY::GetCreatedObject()->AddComponent(_data["Type"].GetString());
+	FACTORY::GetCreatedObject()->AddComponent(data["Type"].GetString());
 	Component* found =
-		FACTORY::GetCreatedObject()->GetComponent(_data["Type"].GetString());
+		FACTORY::GetCreatedObject()->GetComponent(data["Type"].GetString());
 
-	if (_data.HasMember("Values"))
-		found->Load(_data["Values"]);
+	if (data.HasMember("Values"))
+		found->Load(data["Values"]);
 }
 
 jeEnd

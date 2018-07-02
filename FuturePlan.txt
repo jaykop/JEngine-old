@@ -1,5 +1,8 @@
 *Go over ai example and techniques
 *Fix json level files
+*Move point mesh to GLM
+*Render single point
+*Remove vertex conversion of text rendering
 *Add orbiting camera to camera controller
 *Polish text and particle pipeline as well
 *Clone function - copy and move constructor

@@ -35,21 +35,21 @@ public:
 	static Mesh* CreateCube();
 	static Mesh* CreateTetrahedron();
 
-	void		AddTexture(const char* _key);
-	void		RemoveTexture(const char* _key);
-	void		SetCurrentTexutre(const char* _key);
+	void		AddTexture(const char* key);
+	void		RemoveTexture(const char* key);
+	void		SetCurrentTexutre(const char* key);
 	unsigned	GetCurrentTexutre() const;
-	unsigned	GetTexutre(const char* _key);
+	unsigned	GetTexutre(const char* key);
 
-	void AddPoint(CR_Vec3 _point);
-	void AddTextureUV(CR_Vec2 _uv);
-	void AddNormal(CR_Vec3 _normal);
-	void AddIndice(jeIndex _indice);
+	void AddPoint(CR_Vec3 point);
+	void AddTextureUV(CR_Vec2 uv);
+	void AddNormal(CR_Vec3 normal);
+	void AddIndice(jeIndex indice);
 
-	vec3		GetPoint(unsigned _index) const;
-	vec2		GetUV(unsigned _index) const;
-	vec3		GetNormal(unsigned _index) const;
-	jeIndex		GetIndice(unsigned _index) const;
+	vec3		GetPoint(unsigned index) const;
+	vec2		GetUV(unsigned index) const;
+	vec3		GetNormal(unsigned index) const;
+	jeIndex		GetIndice(unsigned index) const;
 
 	std::size_t GetPointCount() const;
 	std::size_t GetIndiceCount() const;
@@ -66,15 +66,15 @@ public:
 
 private:
 
-	unsigned	m_mainTex;
-	TextureMap	m_textureMap;
+	unsigned	mainTexture_;
+	TextureMap	textureMap_;
 
-	std::vector<jeIndex>	m_indices;
-	std::vector<vec3>		m_points;
-	std::vector<vec2>		m_UVs;
-	std::vector<vec3>		m_normals;
+	std::vector<jeIndex>	indices_;
+	std::vector<vec3>		points_;
+	std::vector<vec2>		textureUVs_;
+	std::vector<vec3>		normals_;
 
-	GLuint m_vao, m_vbo, m_ebo;
+	GLuint vao_, vbo_, ebo_;
 
 	bool builtIn_;
 

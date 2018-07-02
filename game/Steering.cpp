@@ -102,7 +102,7 @@ void Steering::Init()
 
 		Model *pathBoxModel = m_detection->GetComponent<Model>();
 		pathBoxModel->SetParentToFollow(GetOwner());
-		pathBoxModel->projection = PROJECTION_PERSPECTIVE;
+		pathBoxModel->projection_ = PROJECTION_PERSPECTIVE;
 
 		for (int index = 0; index < 5; ++index)	{
 			FACTORY::CreateObject(("Obstacle " + std::to_string(index)).c_str());
@@ -116,11 +116,11 @@ void Steering::Init()
 
 			newObstacle->AddComponent<Model>();
 			Model* model = newObstacle->GetComponent<Model>();
-			model->color.Set(1.f, 0.f, 0.f, 1.f);
+			model->color_.Set(1.f, 0.f, 0.f, 1.f);
 			Mesh* newMesh = Mesh::CreateRect();
 			model->AddMesh(newMesh);
 			newMesh->AddTexture("circle");
-			model->projection = PROJECTION_PERSPECTIVE;
+			model->projection_ = PROJECTION_PERSPECTIVE;
 
 			FACTORY::AddCreatedObject();
 

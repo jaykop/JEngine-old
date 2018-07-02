@@ -193,12 +193,12 @@ void GLManager::DescribeVertex(Mesh* pMesh)
 {
 	// Check either if all the objects are initialized
 	// and if not, generate them
-	if (!pMesh->m_vao)
-		glGenVertexArrays(1, &pMesh->m_vao);
-	if (!pMesh->m_vbo)
-		glGenBuffers(1, &pMesh->m_vbo);
-	if (!pMesh->m_ebo)
-		glGenBuffers(1, &pMesh->m_ebo);
+	if (!pMesh->vao_)
+		glGenVertexArrays(1, &pMesh->vao_);
+	if (!pMesh->vbo_)
+		glGenBuffers(1, &pMesh->vbo_);
+	if (!pMesh->ebo_)
+		glGenBuffers(1, &pMesh->ebo_);
 
 	// Set vertices and indices vector container
 	std::vector<Mesh::jeVertex> vertices;
@@ -217,11 +217,11 @@ void GLManager::DescribeVertex(Mesh* pMesh)
 	}
 
 	// Decribe the format of vertex and indice
-	glBindVertexArray(pMesh->m_vao);
-	glBindBuffer(GL_ARRAY_BUFFER, pMesh->m_vbo);
+	glBindVertexArray(pMesh->vao_);
+	glBindBuffer(GL_ARRAY_BUFFER, pMesh->vbo_);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Mesh::jeVertex) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pMesh->m_ebo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, pMesh->ebo_);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * indicies.size(), &indicies[0], GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::jeVertex),

@@ -23,7 +23,7 @@ private:
 	PhysicsSystem(const PhysicsSystem& /*copy*/) = delete;
 	void operator=(const PhysicsSystem& /*copy*/) = delete;
 
-	void Load(CR_RJDoc _data) override;
+	void Load(CR_RJDoc data) override;
 	void Init() override;
 	void Update(float dt) override;
 	void Close() override;
@@ -35,8 +35,8 @@ private:
 	void AddRigidbody(Transform* _rigidbody);
 	void RemoveRigidbody(Transform* _rigidbody);
 	
-	Transforms		m_transforms;
-	Rigidbodies		m_rigidboide;
+	Transforms		transforms_;
+	Rigidbodies		rigidbodies_;
 };
 
 jeEnd

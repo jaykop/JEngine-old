@@ -7,7 +7,7 @@ class System {
 
 protected:
 
-	virtual void Load(CR_RJDoc _data) = 0;
+	virtual void Load(CR_RJDoc data) = 0;
 	virtual void Init() = 0;
 	virtual void Update(float dt) = 0;
 	virtual void Close() = 0;

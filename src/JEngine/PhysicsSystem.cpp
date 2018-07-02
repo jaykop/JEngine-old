@@ -8,7 +8,7 @@ PhysicsSystem::PhysicsSystem()
 {
 }
 
-void PhysicsSystem::Load(CR_RJDoc /*_data*/)
+void PhysicsSystem::Load(CR_RJDoc /*data*/)
 {
 }
 

@@ -37,7 +37,7 @@ public:
 
 private:
 
-    static void Load(CR_RJDoc _data);
+    static void Load(CR_RJDoc data);
     static void Init();
     static void Update(float dt);
     static void Close();

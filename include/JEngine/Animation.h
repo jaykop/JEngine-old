@@ -17,10 +17,10 @@ public:
     int	    GetAnimationFrame() const;
     float   GetAnimationSpeed() const;
     bool    GetActiveAnimationToggle() const;
-    void    ActiveAnimation(bool _toggle);
-    void    FixAnimationFrame(int _thFrame);
-    void    SetAnimationSpeed(float _speed);
-    void    SetAnimationFrame(int _numOfFrame);
+    void    ActiveAnimation(bool toggle);
+    void    FixAnimationFrame(int thFrame);
+    void    SetAnimationSpeed(float speed);
+    void    SetAnimationFrame(int numOfFrame);
 
 private:
 
@@ -32,17 +32,17 @@ private:
     Animation() = delete;
     Animation(const Animation& /*copy*/) = delete;
 
-    void Load(CR_RJValue _data) override;
+    void Load(CR_RJValue data) override;
     void Register() override {};
 
     Timer   timer_;
-    int	    m_animationFrames;
-    int	    m_animationFixFrame;
-    bool    active_Animation;
-    float   m_realSpeed;
-    float   m_realFrame;
-    float   m_currentFrame;
-    float   m_animationSpeed;
+    int	    animationFrames_;
+    int	    animationFixFrame_;
+    bool    active_;
+    float   realSpeed_;
+    float   realFrame_;
+    float   currentFrame_;
+    float   animationSpeed_;
 
     void    EditorUpdate(float dt) override;
 

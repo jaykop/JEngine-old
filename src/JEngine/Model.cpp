@@ -14,16 +14,16 @@ jeBegin
 jeDefineComponentBuilder(Model);
 
 Model::Model(Object* pOwner)
-	:Component(pOwner), m_drawMode(GL_TRIANGLES), color(vec4::ONE), projection(PROJECTION_PERSPECTIVE), 
-	m_pTransform(nullptr), m_culled(false), m_pMaterial(nullptr), sfactor(GL_SRC_ALPHA),
-	dfactor(GL_ONE_MINUS_SRC_ALPHA), m_pAnimation(nullptr), is_(0x0000), m_pInherited(nullptr)
+	:Component(pOwner), drawMode_(GL_TRIANGLES), color_(vec4::ONE), projection_(PROJECTION_PERSPECTIVE), 
+	pTransform_(nullptr), culled_(false), pMaterial_(nullptr), sfactor_(GL_SRC_ALPHA),
+	dfactor_(GL_ONE_MINUS_SRC_ALPHA), pAnimation_(nullptr), is_(0x0000), pInherited_(nullptr)
 {}
 
 void Model::Register()
 {
 	SYSTEM::pGraphic_->AddModel(this);
 	if (GetOwner()->HasComponent<Transform>())
-		m_pTransform = GetOwner()->GetComponent<Transform>();
+		pTransform_ = GetOwner()->GetComponent<Transform>();
 }
 
 void Model::AddMesh(Mesh* pMesh)
@@ -51,14 +51,14 @@ unsigned Model::GetMeshCount() const
 	return unsigned(meshes_.size());
 }
 
-void Model::SetParentToFollow(Object* _pObj)
+void Model::SetParentToFollow(Object* pObject)
 {
-	if (_pObj->HasComponent<Transform>()) {
-		m_pInherited = _pObj->GetComponent<Transform>();
-		status |= Model::IS_INHERITED;
+	if (pObject->HasComponent<Transform>()) {
+		pInherited_ = pObject->GetComponent<Transform>();
+		status_ |= Model::IS_INHERITED;
 	}
 	else
-		jeDebugPrint("!Model - Object to be parent does not habe transform component!: %s\n", _pObj->GetName().c_str());
+		jeDebugPrint("!Model - Object to be parent does not habe transform component!: %s\n", pObject->GetName().c_str());
 }
 
 Model::~Model()
@@ -78,35 +78,34 @@ Model::~Model()
 
 void Model::operator=(const Model & copy)
 {
-	color.Set(copy.color);
-	projection = copy.projection,
-	m_pTransform = GetOwner()->GetComponent<Transform>();
-	m_culled = copy.m_culled;
-	m_pMaterial = GetOwner()->GetComponent<Material>();
+	color_.Set(copy.color_);
+	projection_ = copy.projection_,
+	pTransform_ = GetOwner()->GetComponent<Transform>();
+	culled_ = copy.culled_;
+	pMaterial_ = GetOwner()->GetComponent<Material>();
 	is_ = copy.is_;
 }
 
-void Model::Load(CR_RJValue _data)
+void Model::Load(CR_RJValue data)
 {
-	if (_data.HasMember("Mesh")
-		&& _data["Mesh"].IsArray())
+	if (data.HasMember("Mesh")
+		&& data["Mesh"].IsArray())
 	{
-		CR_RJValue loadedMeshes = _data["Mesh"];
+		CR_RJValue loadedMeshes = data["Mesh"];
 
 		for (unsigned meshIndex = 0; meshIndex < loadedMeshes.Size(); ++meshIndex) {
 
 			CR_RJValue currentMesh = loadedMeshes[meshIndex];
 			if (currentMesh.HasMember("Shape")
-				&& currentMesh["Shape"].IsString()) {
+				&& currentMesh["Shape"].IsString()
+				&& currentMesh.HasMember("Texture")
+				&& currentMesh["Texture"].IsArray()) {
 
 				std::string meshType = currentMesh["Shape"].GetString();
 				Mesh* newMesh = nullptr;
 
 				if (!strcmp(meshType.c_str(), "Point"))
 					newMesh = Mesh::CreatePoint();
-
-				//else if (!strcmp(meshType.c_str(), "Rect"))
-				//	newMesh = Mesh::CreateRect();
 
 				else if (!strcmp(meshType.c_str(), "CrossRect"))
 					newMesh = Mesh::CreateCrossRect();
@@ -121,72 +120,71 @@ void Model::Load(CR_RJValue _data)
 					newMesh = ASSET::LoadObjFile(meshType.c_str());
 
 				else
-					AddMesh(Mesh::CreateRect());
+					newMesh = Mesh::CreateRect();
 
 				AddMesh(newMesh);
 
-				if (currentMesh.HasMember("Texture")
-					&& currentMesh["Texture"].IsArray()) {
-
-					for (unsigned textureIndex = 0; textureIndex < currentMesh["Texture"].Size(); ++textureIndex)
-						newMesh->AddTexture(currentMesh["Texture"][textureIndex].GetString());
-				}
+				for (unsigned textureIndex = 0; textureIndex < currentMesh["Texture"].Size(); ++textureIndex)
+					newMesh->AddTexture(currentMesh["Texture"][textureIndex].GetString());
 			}
 		}
 	}
 
-	if (_data.HasMember("DrawMode")
-		&& _data["DrawMode"].IsString()) {
+	if (data.HasMember("DrawMode")
+		&& data["DrawMode"].IsString()) {
 		
-		std::string drawType = _data["DrawMode"].GetString();
+		std::string drawType = data["DrawMode"].GetString();
 		if (!strcmp(drawType.c_str(), "Triangles"))
-			m_drawMode = GL_TRIANGLES;
+			drawMode_ = GL_TRIANGLES;
 
 		else if (!strcmp(drawType.c_str(), "Triangle_Strip"))
-			m_drawMode = GL_TRIANGLE_STRIP;
+			drawMode_ = GL_TRIANGLE_STRIP;
 
 		else if (!strcmp(drawType.c_str(), "Triangle_Fan"))
-			m_drawMode = GL_TRIANGLE_FAN;
+			drawMode_ = GL_TRIANGLE_FAN;
 
 		else if (!strcmp(drawType.c_str(), "Lines"))
-			m_drawMode = GL_LINES;
+			drawMode_ = GL_LINES;
 
 		else if (!strcmp(drawType.c_str(), "Line_Strip"))
-			m_drawMode = GL_LINE_STRIP;
+			drawMode_ = GL_LINE_STRIP;
 
-		else if (!strcmp("Quad",drawType.c_str()))
-			m_drawMode = GL_QUADS;
+		else if (!strcmp("Quad", drawType.c_str()))
+			drawMode_ = GL_QUADS;
 
 		else if (!strcmp("Quad_Strip", drawType.c_str()))
-			m_drawMode= GL_QUAD_STRIP;
+			drawMode_ = GL_QUAD_STRIP;
+
+		else if (!strcmp("Points", drawType.c_str()))
+			drawMode_ = GL_POINTS;
 	}
 
-	if (_data.HasMember("Flip")
-		&& _data["Flip"].GetBool())
-		status |= IS_FLIPPED;
+	if (data.HasMember("Flip")
+		&& data["Flip"].GetBool())
+		status_ |= IS_FLIPPED;
 
-	if (_data.HasMember("Color")) {
-		CR_RJValue loadedColor = _data["Color"];
-		color.Set(loadedColor[0].GetFloat(), loadedColor[1].GetFloat(),
+	if (data.HasMember("Color")) {
+		CR_RJValue loadedColor = data["Color"];
+		color_.Set(loadedColor[0].GetFloat(), loadedColor[1].GetFloat(),
 			loadedColor[2].GetFloat(), loadedColor[3].GetFloat());
 	}
 
-	if (_data.HasMember("Projection")) {
-		CR_RJValue loadedProjection = _data["Projection"];
+	if (data.HasMember("Projection")) {
+		CR_RJValue loadedProjection = data["Projection"];
 
 		if (!strcmp("Perspective", loadedProjection.GetString()))
-			projection = PROJECTION_PERSPECTIVE;
+			projection_ = PROJECTION_PERSPECTIVE;
 
 		else if (!strcmp("Orthogonal", loadedProjection.GetString()))
-			projection = PROJECTION_ORTHOGONAL;
+			projection_ = PROJECTION_ORTHOGONAL;
 
 		else
 			jeDebugPrint("!Model - Wrong projection type: %s\n", loadedProjection.GetString());
 	}
 
-	if (_data.HasMember("Bilboard")
-		&& _data["Bilboard"].GetBool())
-		status |= IS_BILBOARD;
+	if (data.HasMember("Bilboard")
+		&& data["Bilboard"].GetBool())
+		status_ |= IS_BILBOARD;
 }
 
 void Model::EditorUpdate(const float /*dt*/)

@@ -12,8 +12,8 @@ class Material : public Component {
 
 public:
 
-    int diffuse, specular;
-    float shininess;
+    int diffuse_, specular_;
+    float shininess_;
 
 private:
 
@@ -24,7 +24,7 @@ private:
     Material() = delete;
     Material(const Material& /*copy*/) = delete;
 
-    void Load(CR_RJValue _data) override;
+    void Load(CR_RJValue data) override;
     void Register() override {};
 
     void EditorUpdate(float dt) override;

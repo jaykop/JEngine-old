@@ -17,7 +17,7 @@ unsigned		INPUT::triggerCalled_ = 0;
 
 void InputHandler::Init()
 {
-	// Refresh all keys' status
+	// Refresh all keys' status_
 	for (unsigned i = 0; i < JE_KEY_END; ++i)
 		triggerList_[i] = keys_[i] = false;
 }

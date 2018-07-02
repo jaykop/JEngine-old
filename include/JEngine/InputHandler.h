@@ -91,7 +91,7 @@ class InputHandler {
 
 public:
 	
-	// Key status
+	// Key status_
 	static bool AnyKeyDown();
 	static bool KeyDown();
 	static bool MouseDown();

@@ -62,7 +62,7 @@ private:
 	static unsigned		frames_;
 	static Timer		timer_;
 	static States		states_;
-	static StateStatus	status_;
+	static StateStatus	status__;
 	static State*		pCurrent_, *pNext;
 	static SDL_Window*	pWindow_;
 	

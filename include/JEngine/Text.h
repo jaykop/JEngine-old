@@ -32,11 +32,11 @@ private:
     void operator= (const Font& /*copy*/) = delete;
     void operator= (Font&& /*copy*/) = delete;
 
-    FontData	m_data;
-    FT_Face		m_face;
-    FT_Library	m_lib;
-    unsigned	m_fontSize;
-    float		m_newLineInterval;
+    FontData	data_;
+    FT_Face		face_;
+    FT_Library	lib_;
+    unsigned	fontSize_;
+    float		newline_;
 };
 
 class Text : public Model
@@ -48,29 +48,29 @@ public:
 
     void Register() override;
 
-    void SetText(const char* _text, ...);
+    void SetText(const char* pText, ...);
     const std::string&	GetText() const;
 
-    void SetText(const wchar_t* _wText, ...);
+    void SetText(const wchar_t* pText, ...);
     const std::wstring& GetWText() const;
 
     Font* pFont;
 
 private:
 
-    bool			m_printWide = false;
-	char			*m_pTextStorage = nullptr;
-    wchar_t			*m_pwTextStorage = nullptr;
-	std::string		m_text;
-    std::wstring	m_wText;
-    size_t			m_size = 0;
+    bool			printWide_ = false;
+	char			*pTextBuffer_ = nullptr;
+    wchar_t			*pwTextBuffer = nullptr;
+	std::string		text_;
+    std::wstring	wText_;
+    size_t			size_ = 0;
 
 	static std::vector<unsigned> m_pointIndices;
 
     Text(Object* pObject);
 	virtual ~Text();
     void operator=(const Text& copy);
-    void Load(CR_RJValue _data) override;
+    void Load(CR_RJValue data) override;
     void EditorUpdate(float dt) override;
 
     Text() = delete;

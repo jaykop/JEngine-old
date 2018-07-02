@@ -183,7 +183,7 @@ void AssetManager::LoadFont(const char * path, const char* key, unsigned size,
         // Then get that one
         newFont = found->second;
         // Load the size of that font
-        s_newLineLevel = newFont->m_newLineInterval;
+        s_newLineLevel = newFont->newline_;
     }
 
     else {
@@ -194,11 +194,11 @@ void AssetManager::LoadFont(const char * path, const char* key, unsigned size,
         newFont = new Font;
 
         // Init freetype
-        if (FT_Init_FreeType(&newFont->m_lib))
+        if (FT_Init_FreeType(&newFont->lib_))
             jeDebugPrint("!AssetManager - Could not init freetype library: %s\n", path);
 
         // Check freetype face init
-        if (bool a = !FT_New_Face(newFont->m_lib, path, 0, &newFont->m_face))
+        if (bool a = !FT_New_Face(newFont->lib_, path, 0, &newFont->face_))
             jeDebugPrint("*AssetManager - Loaded font: %s\n", path);
 		else {
 			jeDebugPrint("!AssetManager - Failed to load font: %s\n", path);
@@ -206,11 +206,11 @@ void AssetManager::LoadFont(const char * path, const char* key, unsigned size,
 		}
 
         // Select unicode range
-        FT_Select_Charmap(newFont->m_face, FT_ENCODING_UNICODE);
+        FT_Select_Charmap(newFont->face_, FT_ENCODING_UNICODE);
         // Set pixel size
-        FT_Set_Pixel_Sizes(newFont->m_face, 0, size);
+        FT_Set_Pixel_Sizes(newFont->face_, 0, size);
         // Set size of the font
-        newFont->m_fontSize = size;
+        newFont->fontSize_ = size;
         // Disable byte-alignment restriction
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     }
@@ -220,7 +220,7 @@ void AssetManager::LoadFont(const char * path, const char* key, unsigned size,
     // If there is not existing font in the list,
     // add new one
     if (!s_existing) {
-        newFont->m_newLineInterval = s_newLineLevel;
+        newFont->newline_ = s_newLineLevel;
         fontMap_.insert(FontMap::value_type(key, newFont));
     }
 }
@@ -232,7 +232,7 @@ void AssetManager::LoadCharacters(Font* pFont, float& newLineLevel,
     for (unsigned long c = start; c < end; c++)
     {
         // Load character glyph 
-        if (FT_Load_Char(pFont->m_face, c, FT_LOAD_RENDER))
+        if (FT_Load_Char(pFont->face_, c, FT_LOAD_RENDER))
         {
             jeDebugPrint("!AssetManager - Failed to load Glyph.\n");
             break;
@@ -246,12 +246,12 @@ void AssetManager::LoadCharacters(Font* pFont, float& newLineLevel,
             GL_TEXTURE_2D,
             0,
             GL_RED,
-			pFont->m_face->glyph->bitmap.width,
-			pFont->m_face->glyph->bitmap.rows,
+			pFont->face_->glyph->bitmap.width,
+			pFont->face_->glyph->bitmap.rows,
             0,
             GL_RED,
             GL_UNSIGNED_BYTE,
-			pFont->m_face->glyph->bitmap.buffer
+			pFont->face_->glyph->bitmap.buffer
         );
 
         // Set texture options
@@ -262,13 +262,13 @@ void AssetManager::LoadCharacters(Font* pFont, float& newLineLevel,
 
         // Now store character for later use
         Character character = {
-                texture, GLuint(pFont->m_face->glyph->advance.x),
-                vec2(float(pFont->m_face->glyph->bitmap.width), float(pFont->m_face->glyph->bitmap.rows)),
-                vec2(float(pFont->m_face->glyph->bitmap_left), float(pFont->m_face->glyph->bitmap_top))
+                texture, GLuint(pFont->face_->glyph->advance.x),
+                vec2(float(pFont->face_->glyph->bitmap.width), float(pFont->face_->glyph->bitmap.rows)),
+                vec2(float(pFont->face_->glyph->bitmap_left), float(pFont->face_->glyph->bitmap_top))
         };
         if (newLineLevel < character.size.y)
 			newLineLevel = character.size.y;
-		pFont->m_data.insert(Font::FontData::value_type(c, character));
+		pFont->data_.insert(Font::FontData::value_type(c, character));
     }
 
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -570,17 +570,17 @@ void AssetManager::DrawLoadingScreen(SDL_Window* pWindow, const char* directory)
 	Shader::pCurrentShader_->SetMatrix("m4_scale", Scale(vec3(GLM::width_, GLM::height_, 0.f)));
 	Shader::pCurrentShader_->SetMatrix("m4_rotate", Rotate(0.f, vec3::UNIT_Z));
 
-	float m_right = GLM::width_ * .5f;
-	float m_left = -m_right;
-	float m_top = GLM::height_ * .5f;
-	float m_bottom = -m_top;
+	float right_ = GLM::width_ * .5f;
+	float left_ = -right_;
+	float top_ = GLM::height_ * .5f;
+	float bottom_ = -top_;
 
-	Shader::pCurrentShader_->SetMatrix("m4_projection", Orthogonal(m_left, m_right, m_bottom, m_top, 0.1f, 1000.f));
+	Shader::pCurrentShader_->SetMatrix("m4_projection", Orthogonal(left_, right_, bottom_, top_, 0.1f, 1000.f));
 
 	// Send camera info to shader
 	Shader::pCurrentShader_->SetMatrix("m4_viewport", Scale(vec3(GLM::width_ / 800.f, GLM::height_ / 600.f, 1.f)));
 
-	glBindTexture(GL_TEXTURE, mesh->m_mainTex);
+	glBindTexture(GL_TEXTURE, mesh->mainTexture_);
 
 	// Send color info to shader
 	Shader::pCurrentShader_->SetVector4("v4_color", vec4::ONE);
@@ -588,7 +588,7 @@ void AssetManager::DrawLoadingScreen(SDL_Window* pWindow, const char* directory)
 	Shader::pCurrentShader_->SetMatrix("m4_aniScale", Scale(vec3(1,1,0)));
 	Shader::pCurrentShader_->SetMatrix("m4_aniTranslate", Translate(vec3::ZERO));
 
-	glBindVertexArray(mesh->m_vao);
+	glBindVertexArray(mesh->vao_);
 	glDrawElements(GL_TRIANGLES, sizeOfPlaneIndices, GL_UNSIGNED_INT, nullptr);
 	glBindVertexArray(0);
 
@@ -601,9 +601,9 @@ void AssetManager::DrawLoadingScreen(SDL_Window* pWindow, const char* directory)
 	glDisable(GL_DEPTH_TEST);	//Disable depth test
 
 	// Render to plane 2d
-	glBindVertexArray(GLM::targetMesh_[GLM::JE_TARGET_SCREEN]->m_vao);
+	glBindVertexArray(GLM::targetMesh_[GLM::JE_TARGET_SCREEN]->vao_);
 	Shader::Use(GLM::JE_SHADER_SCREEN);
-	Shader::pCurrentShader_->SetVector4("v4_screenColor", vec4::ONE);
+	Shader::pCurrentShader_->SetVector4("v4_screenColor_", vec4::ONE);
 	Shader::pCurrentShader_->SetEnum("enum_effectType", 0);
 
 	glActiveTexture(GL_TEXTURE0);

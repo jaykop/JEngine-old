@@ -27,7 +27,7 @@ protected:
         byUser_ = copy.byUser_;
     };
 
-    virtual void Load(CR_RJValue _data) = 0;
+    virtual void Load(CR_RJValue data) = 0;
     virtual void EditorUpdate(float dt) = 0;
 
 private:

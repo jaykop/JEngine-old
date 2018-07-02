@@ -72,8 +72,8 @@ vec4 Random::GetRandVec4(const vec4& _minVec4, const vec4& _maxVec4)
 float Random::GetRandomFloat(float _min, float _max) 
 {
 	if (_min > _max) {
-		jeDebugPrint("!Random - Set minimum lower than maximum / returning 0.\n");
-		return 0.f;
+		std::uniform_real_distribution<float>	floatRand(_max, _min);
+		return floatRand(m_randomObject);
 	}
 
 	std::uniform_real_distribution<float>	floatRand(_min, _max);

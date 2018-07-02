@@ -2450,12 +2450,12 @@ unsigned char lodepng_chunk_safetocopy(const unsigned char* chunk)
   return((chunk[7] & 32) != 0);
 }
 
-unsigned char* lodepng_chunk_data(unsigned char* chunk)
+unsigned char* lodepng_chunkdata(unsigned char* chunk)
 {
   return &chunk[8];
 }
 
-const unsigned char* lodepng_chunk_data_const(const unsigned char* chunk)
+const unsigned char* lodepng_chunkdata_const(const unsigned char* chunk)
 {
   return &chunk[8];
 }
@@ -4584,7 +4584,7 @@ static void decodeGeneric(unsigned char** out, unsigned* w, unsigned* h,
       CERROR_BREAK(state->error, 64); /*error: size of the in buffer too small to contain next chunk*/
     }
 
-    data = lodepng_chunk_data_const(chunk);
+    data = lodepng_chunkdata_const(chunk);
 
     /*IDAT chunk, containing compressed image data*/
     if(lodepng_chunk_type_equals(chunk, "IDAT"))
@@ -5070,15 +5070,15 @@ static unsigned addChunk_iTXt(ucvector* out, unsigned compressed, const char* ke
 
   if(compressed)
   {
-    ucvector compressed_data;
-    ucvector_init(&compressed_data);
-    error = zlib_compress(&compressed_data.data, &compressed_data.size,
+    ucvector compresseddata;
+    ucvector_init(&compresseddata);
+    error = zlib_compress(&compresseddata.data, &compresseddata.size,
                           (unsigned char*)textstring, textsize, zlibsettings);
     if(!error)
     {
-      for(i = 0; i != compressed_data.size; ++i) ucvector_push_back(&data, compressed_data.data[i]);
+      for(i = 0; i != compresseddata.size; ++i) ucvector_push_back(&data, compresseddata.data[i]);
     }
-    ucvector_cleanup(&compressed_data);
+    ucvector_cleanup(&compresseddata);
   }
   else /*not compressed*/
   {

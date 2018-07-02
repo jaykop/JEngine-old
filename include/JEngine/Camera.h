@@ -13,10 +13,10 @@ class Camera : public Component
 
 public:
 
-    vec3 position, target;
-	float fovy, near, far;
+    vec3 position_, target_;
+	float fovy_, near_, far_;
 	
-	void SetCamera(const vec3& _eye, const vec3& _look, const vec3& _up, float _fov, float _aspect,float _distance);
+	void SetCamera(const vec3& eye, const vec3& look, const vec3& up, float fov, float aspect,float distance);
 	const vec3& GetViewGeometry() const;
 
 	float GetAspect() const;
@@ -26,17 +26,17 @@ public:
 	const vec3& GetRight() const;
 	const vec3& GetBack() const;
 
-	void Yaw(float _degree);
-	void Pitch(float _degree);
-	void Roll(float _degree);
-	void Zoom(float _zoom);
+	void Yaw(float degree);
+	void Pitch(float degree);
+	void Roll(float degree);
+	void Zoom(float zoom);
 
     void Register() override;
 
 private:
 
-	vec3 m_up, m_right, m_back, m_viewGeometry;
-	float m_distance, m_aspect, width_, height_;
+	vec3 up_, right_, back_, viewGeometry_;
+	float distance_, aspect_, width_, height_;
 
     Camera(Object* pOwner);
 	virtual ~Camera() {};
@@ -45,7 +45,7 @@ private:
     Camera() = delete;
     Camera(const Camera& /*copy*/) = delete;
 
-    void Load(CR_RJValue _data) override;
+    void Load(CR_RJValue data) override;
 
     void EditorUpdate(float dt) override;
 };

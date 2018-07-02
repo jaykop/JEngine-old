@@ -22,7 +22,7 @@ private:
 	virtual ~Transform() {};
     void operator= (const Transform& copy);
 
-    void Load(CR_RJValue _data) override;
+    void Load(CR_RJValue data) override;
     void Register() override {};
 
     void EditorUpdate(float dt) override;
