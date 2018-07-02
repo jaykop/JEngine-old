@@ -15,10 +15,10 @@ class SystemManager {
     jeStaticClassDeclaration(SystemManager)
 
     struct SystemBlock {
-        SoundSystem		*m_pSoundSystem;
-        GraphicSystem	*m_pGraphicSystem;
-        PhysicsSystem	*m_pPhysicsSystem;
-        BehaviorSystem	*m_pBehaviorSystem;
+        SoundSystem		*pSoundSystem;
+        GraphicSystem	*pGraphicSystem;
+        PhysicsSystem	*pPhysicsSystem;
+        BehaviorSystem	*pBehaviorSystem;
     };
 
     friend class State;
@@ -49,7 +49,7 @@ private:
     static void Bind();
     static void Unbind();
 
-    static SystemStack	m_pauseStack;
+    static SystemStack	pauseStack_;
 };
 
 using SYSTEM = SystemManager;

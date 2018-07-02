@@ -14,19 +14,19 @@ class Random {
 
 public:
 
-	static float	GetRandomFloat(float _min, float _max);
-	static int		GetRandomInt(int _min, int _max);
-	static bool		GetRandBoolean(float _probabilityOfTrue);
-	static vec3		GetRandVec3(float _minX, float _minY, float _minZ, float _maxX, float _maxY, float _maxZ);
-	static vec4		GetRandVec4(float _minX, float _minY, float _minZ, float _minW, float _maxX, float _maxY, float _maxZ, float _maxW);
-	static vec3		GetRandVec3(const vec3& _minVec3, const vec3& _maxVec3);
-	static vec4		GetRandVec4(const vec4& _minVec4, const vec4& _maxVec4);
+	static float	GetRandomFloat(float min, float max);
+	static int		GetRandomInt(int min, int max);
+	static bool		GetRandBoolean(float probabilityOfTrue);
+	static vec3		GetRandVec3(float minX, float minY, float minZ, float maxX, float maxY, float maxZ);
+	static vec4		GetRandVec4(float minX, float minY, float minZ, float minW, float maxX, float maxY, float maxZ, float maxW);
+	static vec3		GetRandVec3(const vec3& minVec3, const vec3& maxVec3);
+	static vec4		GetRandVec4(const vec4& minVec4, const vec4& maxVec4);
 
 private:
 	
 	static void	PlantSeed(); 
 	
-	static std::mt19937	m_randomObject;
+	static std::mt19937	randObj_;
 
 };
 

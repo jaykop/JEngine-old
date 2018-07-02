@@ -88,52 +88,52 @@ Vector2::Vector2(const vec2& copy)
 /******************************************************************************/
 /*!
 \brief - Vector2 < operator
-\param _rhs - vector2 to be compared
+\param rhs - vector2 to be compared
 \return bool
 */
 /******************************************************************************/
-bool Vector2::operator<(const vec2& _rhs) const
+bool Vector2::operator<(const vec2& rhs) const
 {
-	return GetLengthSq(*this) < GetLengthSq(_rhs);
+	return GetLengthSq(*this) < GetLengthSq(rhs);
 }
 
 /******************************************************************************/
 /*!
 \brief - Vector2 == operator
-\param _rhs - vector2 to be compared
+\param rhs - vector2 to be compared
 \return bool
 */
 /******************************************************************************/
-bool Vector2::operator==(const vec2& _rhs) const
+bool Vector2::operator==(const vec2& rhs) const
 {
-	return (x == _rhs.x && y == _rhs.y);
+	return (x == rhs.x && y == rhs.y);
 }
 
 /******************************************************************************/
 /*!
 \brief - Vector2 != operator
-\param _rhs - vector2 to be compared
+\param rhs - vector2 to be compared
 \return bool
 */
 /******************************************************************************/
-bool Vector2::operator!=(const vec2& _rhs) const
+bool Vector2::operator!=(const vec2& rhs) const
 {
-	return (x != _rhs.x || y != _rhs.y);
+	return (x != rhs.x || y != rhs.y);
 }
 
 /******************************************************************************/
 /*!
 \brief - Vector2 = operator
-\param _rhs - vector2 to be assigned
+\param rhs - vector2 to be assigned
 \return *this
 */
 /******************************************************************************/
-Vector2& Vector2::operator=(const vec2& _rhs)
+Vector2& Vector2::operator=(const vec2& rhs)
 {
-	if (this !=&_rhs)
+	if (this !=&rhs)
 	{
-		x = _rhs.x;
-		y = _rhs.y;
+		x = rhs.x;
+		y = rhs.y;
 	}
 
 	return *this;
@@ -142,7 +142,7 @@ Vector2& Vector2::operator=(const vec2& _rhs)
 /******************************************************************************/
 /*!
 \brief - Vector2 unary - operator
-\param _rhs - vector2 to be assigned
+\param rhs - vector2 to be assigned
 \return Result
 */
 /******************************************************************************/
@@ -159,14 +159,14 @@ Vector2 Vector2::operator-(void)
 /******************************************************************************/
 /*!
 \brief - Vector2 += operator
-\param _rhs - vector2 to be added
+\param rhs - vector2 to be added
 \return *this
 */
 /******************************************************************************/
-Vector2& Vector2::operator+=(const vec2& _rhs)
+Vector2& Vector2::operator+=(const vec2& rhs)
 {
-	x += _rhs.x;
-	y += _rhs.y;
+	x += rhs.x;
+	y += rhs.y;
 
 	return *this;
 }
@@ -174,14 +174,14 @@ Vector2& Vector2::operator+=(const vec2& _rhs)
 /******************************************************************************/
 /*!
 \brief - Vector2 += operator
-\param _rhs - number to be added
+\param rhs - number to be added
 \return *this
 */
 /******************************************************************************/
-Vector2& Vector2::operator+=(float _constant)
+Vector2& Vector2::operator+=(float constant)
 {
-	x += _constant;
-	y += _constant;
+	x += constant;
+	y += constant;
 
 	return *this;
 }
@@ -189,14 +189,14 @@ Vector2& Vector2::operator+=(float _constant)
 /******************************************************************************/
 /*!
 \brief - Vector2 -= operator
-\param _rhs - vector2 to be subtracted
+\param rhs - vector2 to be subtracted
 \return *this
 */
 /******************************************************************************/
-Vector2& Vector2::operator-=(const vec2& _rhs)
+Vector2& Vector2::operator-=(const vec2& rhs)
 {
-	x -= _rhs.x;
-	y -= _rhs.y;
+	x -= rhs.x;
+	y -= rhs.y;
 
 	return *this;
 }
@@ -204,22 +204,22 @@ Vector2& Vector2::operator-=(const vec2& _rhs)
 /******************************************************************************/
 /*!
 \brief - Vector2 -= operator
-\param _rhs - number to be subtracted
+\param rhs - number to be subtracted
 \return *this
 */
 /******************************************************************************/
-Vector2& Vector2::operator-=(float _constant)
+Vector2& Vector2::operator-=(float constant)
 {
-	x -= _constant;
-	y -= _constant;
+	x -= constant;
+	y -= constant;
 
 	return *this;
 }
 
-Vector2& Vector2::operator*=(const vec2& _rhs)
+Vector2& Vector2::operator*=(const vec2& rhs)
 {
-	x *= _rhs.x;
-	y *= _rhs.y;
+	x *= rhs.x;
+	y *= rhs.y;
 
 	return *this;
 }
@@ -227,24 +227,24 @@ Vector2& Vector2::operator*=(const vec2& _rhs)
 /******************************************************************************/
 /*!
 \brief - Vector2 *= operator
-\param _rhs - vector2 to be multiplied
+\param rhs - vector2 to be multiplied
 \return *this
 */
 /******************************************************************************/
-Vector2& Vector2::operator*=(float _constant)
+Vector2& Vector2::operator*=(float constant)
 {
-	x *= _constant;
-	y *= _constant;
+	x *= constant;
+	y *= constant;
 
 	return *this;
 }
 
-Vector2& Vector2::operator/=(float _constant)
+Vector2& Vector2::operator/=(float constant)
 {
-	// If _constant is not zero,
-	if (_constant) {
-		x /= _constant;
-		y /= _constant;
+	// If constant is not zero,
+	if (constant) {
+		x /= constant;
+		y /= constant;
 	}
 
 	// Unless.
@@ -257,16 +257,16 @@ Vector2& Vector2::operator/=(float _constant)
 /******************************************************************************/
 /*!
 \brief - Vector2 + operator
-\param _rhs - number to be added
+\param rhs - number to be added
 \return result
 */
 /******************************************************************************/
-Vector2 Vector2::operator+(float _constant) const
+Vector2 Vector2::operator+(float constant) const
 {
 	Vector2 result;
 
-	result.x = x + _constant;
-	result.y = y + _constant;
+	result.x = x + constant;
+	result.y = y + constant;
 
 	return result;
 }
@@ -274,16 +274,16 @@ Vector2 Vector2::operator+(float _constant) const
 /******************************************************************************/
 /*!
 \brief - Vector2 + operator
-\param _rhs - vector2 to be added
+\param rhs - vector2 to be added
 \return result
 */
 /******************************************************************************/
-Vector2 Vector2::operator+(const vec2& _rhs) const
+Vector2 Vector2::operator+(const vec2& rhs) const
 {
 	Vector2 result;
 
-	result.x = x + _rhs.x;
-	result.y = y + _rhs.y;
+	result.x = x + rhs.x;
+	result.y = y + rhs.y;
 
 	return result;
 }
@@ -291,16 +291,16 @@ Vector2 Vector2::operator+(const vec2& _rhs) const
 /******************************************************************************/
 /*!
 \brief - Vector2 - operator
-\param _rhs - number to be subtracted
+\param rhs - number to be subtracted
 \return result
 */
 /******************************************************************************/
-Vector2 Vector2::operator-(float _constant) const
+Vector2 Vector2::operator-(float constant) const
 {
 	Vector2 result;
 
-	result.x = x - _constant;
-	result.y = y - _constant;
+	result.x = x - constant;
+	result.y = y - constant;
 
 	return result;
 }
@@ -308,16 +308,16 @@ Vector2 Vector2::operator-(float _constant) const
 /******************************************************************************/
 /*!
 \brief - Vector2 - operator
-\param _rhs - vector2 to be subtracted
+\param rhs - vector2 to be subtracted
 \return result
 */
 /******************************************************************************/
-Vector2 Vector2::operator-(const vec2& _rhs) const
+Vector2 Vector2::operator-(const vec2& rhs) const
 {
 	Vector2 result;
 
-	result.x = x - _rhs.x;
-	result.y = y - _rhs.y;
+	result.x = x - rhs.x;
+	result.y = y - rhs.y;
 
 	return result;
 }
@@ -325,26 +325,26 @@ Vector2 Vector2::operator-(const vec2& _rhs) const
 /******************************************************************************/
 /*!
 \brief - Vector2 * operator
-\param _rhs - number to be nultiplied
+\param rhs - number to be nultiplied
 \return result
 */
 /******************************************************************************/
-Vector2 Vector2::operator*(float _constant) const
+Vector2 Vector2::operator*(float constant) const
 {
 	Vector2 result;
 
-	result.x = x * _constant;
-	result.y = y * _constant;
+	result.x = x * constant;
+	result.y = y * constant;
 
 	return result;
 }
 
-Vector2 Vector2::operator*(const vec2& _rhs) const
+Vector2 Vector2::operator*(const vec2& rhs) const
 {
 	Vector2 result;
 
-	result.x = x * _rhs.x;
-	result.y = y * _rhs.y;
+	result.x = x * rhs.x;
+	result.y = y * rhs.y;
 
 	return result;
 }
@@ -352,18 +352,18 @@ Vector2 Vector2::operator*(const vec2& _rhs) const
 /******************************************************************************/
 /*!
 \brief - Vector2 / operator
-\param _rhs - number to be divided
+\param rhs - number to be divided
 \return result
 */
 /******************************************************************************/
-Vector2 Vector2::operator/(float _constant) const
+Vector2 Vector2::operator/(float constant) const
 {
 	Vector2 result;
 
-	// If _constant is not zero,
-	if (_constant) {
-		result.x = x / _constant;
-		result.y = y / _constant;
+	// If constant is not zero,
+	if (constant) {
+		result.x = x / constant;
+		result.y = y / constant;
 	}
 
 	// Unless.
@@ -376,16 +376,16 @@ Vector2 Vector2::operator/(float _constant) const
 /******************************************************************************/
 /*!
 \brief - Friend function, + operator
-\param _constant - number to be added 
-\param _rhs - *this
+\param constant - number to be added 
+\param rhs - *this
 \return result
 */
 /******************************************************************************/
-Vector2 operator+(float _constant, const vec2& _rhs)
+Vector2 operator+(float constant, const vec2& rhs)
 {
 	Vector2 result;
 
-	result = _rhs + _constant;
+	result = rhs + constant;
 
 	return result;
 }
@@ -393,16 +393,16 @@ Vector2 operator+(float _constant, const vec2& _rhs)
 /******************************************************************************/
 /*!
 \brief - Friend function, * operator
-\param _constant - number to be multiplied
-\param _rhs - *this
+\param constant - number to be multiplied
+\param rhs - *this
 \return result
 */
 /******************************************************************************/
-Vector2 operator*(float _constant, const vec2& _rhs)
+Vector2 operator*(float constant, const vec2& rhs)
 {
 	Vector2 result;
 
-	result = _rhs * _constant;
+	result = rhs * constant;
 
 	return result;
 }

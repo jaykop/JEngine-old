@@ -9,29 +9,29 @@
 
 jeBegin
 
-RJDoc JsonParser::m_document;
+RJDoc JsonParser::document_;
 
-void JsonParser::ReadFile(const char * _dir)
+void JsonParser::ReadFile(const char * directory)
 {
 	Close();
 
-	std::ifstream read(_dir);
+	std::ifstream read(directory);
 	rapidjson::IStreamWrapper toInputStream(read);
-	if (m_document.ParseStream(toInputStream).HasParseError())
-		jeDebugPrint("!JsonParser - Json file has a problem: %s", _dir);
+	if (document_.ParseStream(toInputStream).HasParseError())
+		jeDebugPrint("!JsonParser - Json file has a problem: %s", directory);
 
 }
 
-CR_RJDoc JsonParser::GetDocument() { return m_document;}
+CR_RJDoc JsonParser::GetDocument() { return document_;}
 
 void JsonParser::Close()
 {
-	m_document.Clear();
+	document_.Clear();
 }
 
 void JsonParser::LoadObjects()
 {
-	CR_RJValue object = m_document["Object"];
+	CR_RJValue object = document_["Object"];
 
 	for (rapidjson::SizeType i = 0; i < object.Size(); ++i) {
 

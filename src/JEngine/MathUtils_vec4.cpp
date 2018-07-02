@@ -4,20 +4,20 @@ jeBegin
 
 namespace Math
 {
-	bool IsZero(CR_Vec4 _vec4)
+	bool IsZero(CR_Vec4 vec)
 	{
 		// If both x y z are not 0,
-		if (_vec4.x || _vec4.y || _vec4.z || _vec4.w)
+		if (vec.x || vec.y || vec.z || vec.w)
 			return false;
 
 		// Unless,
 		return true;
 	}
 
-	bool IsOne(CR_Vec4 _vec4)
+	bool IsOne(CR_Vec4 vec)
 	{
 		// If both x y z are not 1,
-		if (_vec4.x != 1.f || _vec4.y != 1.f || _vec4.z != 1.f || _vec4.w != 1.f)
+		if (vec.x != 1.f || vec.y != 1.f || vec.z != 1.f || vec.w != 1.f)
 			return false;
 
 		// Unless,
@@ -30,18 +30,18 @@ namespace Math
 	\return result
 	*/
 	/******************************************************************************/
-	void Normalize(vec4& _vec4)
+	void Normalize(vec4& vec)
 	{
-		_vec4 = GetNormalize(_vec4);
+		vec = GetNormalize(vec);
 	}
 
-	Vector4 GetNormalize(CR_Vec4 _vec4)
+	Vector4 GetNormalize(CR_Vec4 vec)
 	{
-		Vector4 result(_vec4);
+		Vector4 result(vec);
 
 		// If this is not zero,
-		if (!IsZero(_vec4))
-			result = result / GetLength(_vec4);
+		if (!IsZero(vec))
+			result = result / GetLength(vec);
 
 		// Unless.
 		else
@@ -56,14 +56,14 @@ namespace Math
 	\return result
 	*/
 	/******************************************************************************/
-	void Absolute(vec4& _vec4)
+	void Absolute(vec4& vec)
 	{
-		_vec4 = GetAbsolute(_vec4);
+		vec = GetAbsolute(vec);
 	}
 
-	Vector4 GetAbsolute(CR_Vec4 _vec4)
+	Vector4 GetAbsolute(CR_Vec4 vec)
 	{
-		Vector4 result(_vec4);
+		Vector4 result(vec);
 
 		if (result.x < 0)
 			result.x = -result.x;
@@ -83,28 +83,28 @@ namespace Math
 	\return sqrt(x*x + y*y)
 	*/
 	/******************************************************************************/
-	float GetLength(CR_Vec4 _vec4)
+	float GetLength(CR_Vec4 vec)
 	{
-		return sqrt(GetLengthSq(_vec4));
+		return sqrt(GetLengthSq(vec));
 	}
 
-	float GetLengthSq(CR_Vec4 _vec4)
+	float GetLengthSq(CR_Vec4 vec)
 	{
-		return _vec4.x * _vec4.x + _vec4.y * _vec4.y + _vec4.z * _vec4.z + _vec4.w * _vec4.w;
+		return vec.x * vec.x + vec.y * vec.y + vec.z * vec.z + vec.w * vec.w;
 	}
 
 
 	/******************************************************************************/
 	/*!
 	\brief - Get two Vector4s' DotProduct
-	\param _left - to be calculated
-	\param _right - to be calculated
-	\return x * _rhs.x + y * _rhs.y + z * _rhs.z + w * _rhs.w;
+	\param left - to be calculated
+	\param right - to be calculated
+	\return x * rhs.x + y * rhs.y + z * rhs.z + w * rhs.w;
 	*/
 	/******************************************************************************/
-	float DotProduct(CR_Vec4 _left, CR_Vec4 _right)
+	float DotProduct(CR_Vec4 left, CR_Vec4 right)
 	{
-		return _left.x * _right.x + _left.y * _right.y + _left.z * _right.z + _left.w * _right.w;
+		return left.x * right.x + left.y * right.y + left.z * right.z + left.w * right.w;
 	}
 }
 

@@ -34,25 +34,25 @@ struct Vector2
 	static const Vector2 UNIT_Y;
 
 	// Operators
-	bool		operator<(const Vector2& _rhs) const;
-	bool		operator==(const Vector2& _rhs) const;
-	bool		operator!=(const Vector2& _rhs) const;
-	Vector2		operator+(float _constant) const;
-	Vector2		operator+(const Vector2& _rhs) const;
-	Vector2		operator-(float _constant) const;
-	Vector2		operator-(const Vector2& _rhs) const;
-	Vector2		operator*(float _constant) const;
-	Vector2		operator*(const Vector2& _rhs) const;
-	Vector2		operator/(float _constant) const;
-	Vector2&	operator=(const Vector2& _rhs);
+	bool		operator<(const Vector2& rhs) const;
+	bool		operator==(const Vector2& rhs) const;
+	bool		operator!=(const Vector2& rhs) const;
+	Vector2		operator+(float constant) const;
+	Vector2		operator+(const Vector2& rhs) const;
+	Vector2		operator-(float constant) const;
+	Vector2		operator-(const Vector2& rhs) const;
+	Vector2		operator*(float constant) const;
+	Vector2		operator*(const Vector2& rhs) const;
+	Vector2		operator/(float constant) const;
+	Vector2&	operator=(const Vector2& rhs);
 	Vector2		operator-(void);
-	Vector2&	operator+=(const Vector2& _rhs);
-	Vector2&	operator+=(float _constant);
-	Vector2&	operator-=(const Vector2& _rhs);
-	Vector2&	operator-=(float _constant);
-	Vector2&	operator*=(const Vector2& _rhs);
-	Vector2&	operator*=(float _constant);
-	Vector2&	operator/=(float _constant);
+	Vector2&	operator+=(const Vector2& rhs);
+	Vector2&	operator+=(float constant);
+	Vector2&	operator-=(const Vector2& rhs);
+	Vector2&	operator-=(float constant);
+	Vector2&	operator*=(const Vector2& rhs);
+	Vector2&	operator*=(float constant);
+	Vector2&	operator/=(float constant);
 
 	// Transform functions
 	void		Set(const Vector2& copy);
@@ -63,8 +63,8 @@ struct Vector2
 	void		SetUnitY();
 
 	// Friend functions
-	friend Vector2			operator+(float _constant, const Vector2& _rhs);
-	friend Vector2			operator*(float _constant, const Vector2& _rhs);
+	friend Vector2			operator+(float constant, const Vector2& rhs);
+	friend Vector2			operator*(float constant, const Vector2& rhs);
 	friend std::ostream&	operator<<(std::ostream& _os, const Vector2& _constents);
 
 };

@@ -34,25 +34,25 @@ struct Vector4
 	static const Vector4 UNIT_W;
 
 	// Operators
-	bool		operator<(const Vector4& _rhs) const;
-	bool		operator==(const Vector4& _rhs) const;
-	bool		operator!=(const Vector4& _rhs) const;
-	Vector4		operator+(float _constant) const;
-	Vector4		operator+(const Vector4& _rhs) const;
-	Vector4		operator-(float _constant) const;
-	Vector4		operator-(const Vector4& _rhs) const;
-	Vector4		operator*(float _constant) const;
-	Vector4		operator*(const Vector4& _rhs) const;
-	Vector4		operator/(float _constant) const;
-	Vector4&	operator=(const Vector4& _rhs);
+	bool		operator<(const Vector4& rhs) const;
+	bool		operator==(const Vector4& rhs) const;
+	bool		operator!=(const Vector4& rhs) const;
+	Vector4		operator+(float constant) const;
+	Vector4		operator+(const Vector4& rhs) const;
+	Vector4		operator-(float constant) const;
+	Vector4		operator-(const Vector4& rhs) const;
+	Vector4		operator*(float constant) const;
+	Vector4		operator*(const Vector4& rhs) const;
+	Vector4		operator/(float constant) const;
+	Vector4&	operator=(const Vector4& rhs);
 	Vector4		operator-(void) const;
-	Vector4&	operator+=(const Vector4& _rhs);
-	Vector4&	operator+=(float _constant);
-	Vector4&	operator-=(const Vector4& _rhs);
-	Vector4&	operator-=(float _constant);
-	Vector4&	operator*=(const Vector4& _rhs);
-	Vector4&	operator*=(float _constant);
-	Vector4&	operator/=(float _constant);
+	Vector4&	operator+=(const Vector4& rhs);
+	Vector4&	operator+=(float constant);
+	Vector4&	operator-=(const Vector4& rhs);
+	Vector4&	operator-=(float constant);
+	Vector4&	operator*=(const Vector4& rhs);
+	Vector4&	operator*=(float constant);
+	Vector4&	operator/=(float constant);
 
 	// Trasnforming functions and helpers
 	void		Set(const Vector4& copy);

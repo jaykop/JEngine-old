@@ -28,31 +28,31 @@ jeBegin
 * \param _diagonal
 */
 /******************************************************************************/
-Matrix4x4::Matrix4x4(float _diagonal)
+Matrix4x4::Matrix4x4(float diagonal)
 {
-	Math::SetIdentity(*this, _diagonal);
+	Math::SetIdentity(*this, diagonal);
 }
 
 /******************************************************************************/
 /*!
 * \brief - Matrix4x4 Copy Constructor
-* \param _rhs 
+* \param rhs 
 */
 /******************************************************************************/
-Matrix4x4::Matrix4x4(CR_Mat4 _rhs)
+Matrix4x4::Matrix4x4(CR_Mat4 rhs)
 {
-	if (this != &_rhs)
+	if (this != &rhs)
 	{
 		for (int i = 0; i < 4; ++i)
 		for (int j = 0; j < 4; ++j)
-			m[i][j] = _rhs.m[i][j];
+			m[i][j] = rhs.m[i][j];
 	}
 }
 
 /******************************************************************************/
 /*!
 * \brief - Matrix4x4 Copy Constructor
-* \param _member1 ~ _member16
+* \param member1 ~ member16
 * 
 * 01 02 03 04 
 * 05 06 07 08
@@ -60,46 +60,46 @@ Matrix4x4::Matrix4x4(CR_Mat4 _rhs)
 * 13 14 15 16
 */
 /******************************************************************************/
-Matrix4x4::Matrix4x4(float _member1, float _member2, float _member3, float _member4, 
-	float _member5, float _member6, float _member7, float _member8, 
-	float _member9, float _member10, float _member11, float _member12, 
-	float _member13, float _member14, float _member15, float _member16)
+Matrix4x4::Matrix4x4(float member1, float member2, float member3, float member4, 
+	float member5, float member6, float member7, float member8, 
+	float member9, float member10, float member11, float member12, 
+	float member, float member14, float member15, float member16)
 {
-	m[0][0] = _member1;
-	m[0][1] = _member2;
-	m[0][2] = _member3;
-	m[0][3] = _member4;
+	m[0][0] = member1;
+	m[0][1] = member2;
+	m[0][2] = member3;
+	m[0][3] = member4;
 
-	m[1][0] = _member5;
-	m[1][1] = _member6;
-	m[1][2] = _member7;
-	m[1][3] = _member8;
+	m[1][0] = member5;
+	m[1][1] = member6;
+	m[1][2] = member7;
+	m[1][3] = member8;
 
-	m[2][0] = _member9;
-	m[2][1] = _member10;
-	m[2][2] = _member11;
-	m[2][3] = _member12;
+	m[2][0] = member9;
+	m[2][1] = member10;
+	m[2][2] = member11;
+	m[2][3] = member12;
 
-	m[3][0] = _member13;
-	m[3][1] = _member14;
-	m[3][2] = _member15;
-	m[3][3] = _member16;
+	m[3][0] = member;
+	m[3][1] = member14;
+	m[3][2] = member15;
+	m[3][3] = member16;
 }
 
 /******************************************************************************/
 /*!
 * \brief - Matrix4x4 = operator 
-* \param _rhs - matrix to assign
+* \param rhs - matrix to assign
 * \return *this
 */
 /******************************************************************************/
-Matrix4x4& Matrix4x4::operator = (CR_Mat4 _rhs)
+Matrix4x4& Matrix4x4::operator = (CR_Mat4 rhs)
 {
-	if (this != &_rhs)
+	if (this != &rhs)
 	{
 		for (int i = 0; i < 4; ++i)
 		for (int j = 0; j < 4; ++j)
-			m[i][j] = _rhs.m[i][j];
+			m[i][j] = rhs.m[i][j];
 	}
 
 	return *this;
@@ -194,17 +194,17 @@ Matrix4x4 Matrix4x4::operator + (CR_Mat4 rhs) const
 /******************************************************************************/
 /*!
 \brief - Matrix4x4 + operator
-\param _constant - number to add
+\param constant - number to add
 \return result
 */
 /******************************************************************************/
-Matrix4x4 Matrix4x4::operator + (float _constant) const
+Matrix4x4 Matrix4x4::operator + (float constant) const
 {
 	Matrix4x4 result(*this);
 
 	for (int i = 0; i < 4; ++i)
 	for (int j = 0; j < 4; ++j)
-		result.m[i][j] += _constant;
+		result.m[i][j] += constant;
 
 	return result;
 }
@@ -212,17 +212,17 @@ Matrix4x4 Matrix4x4::operator + (float _constant) const
 /******************************************************************************/
 /*!
 \brief - Matrix4x4 - operator
-\param _rhs - matrix to subtract
+\param rhs - matrix to subtract
 \return result
 */
 /******************************************************************************/
-Matrix4x4 Matrix4x4::operator - (CR_Mat4 _rhs) const
+Matrix4x4 Matrix4x4::operator - (CR_Mat4 rhs) const
 {
 	Matrix4x4 result(*this);
 
 	for (int i = 0; i < 4; ++i)
 	for (int j = 0; j < 4; ++j)
-		result.m[i][j] -= _rhs.m[i][j];
+		result.m[i][j] -= rhs.m[i][j];
 
 	return result;
 }
@@ -230,17 +230,17 @@ Matrix4x4 Matrix4x4::operator - (CR_Mat4 _rhs) const
 /******************************************************************************/
 /*!
 \brief - Matrix4x4 - operator
-\param _constant - number to subtract
+\param constant - number to subtract
 \return result
 */
 /******************************************************************************/
-Matrix4x4 Matrix4x4::operator - (float _constant) const
+Matrix4x4 Matrix4x4::operator - (float constant) const
 {
 	Matrix4x4 result(*this);
 
 	for (int i = 0; i < 4; ++i)
 	for (int j = 0; j < 4; ++j)
-		result.m[i][j] -= _constant;
+		result.m[i][j] -= constant;
 
 	return result;
 }
@@ -248,17 +248,17 @@ Matrix4x4 Matrix4x4::operator - (float _constant) const
 /******************************************************************************/
 /*!
 \brief - Matrix4x4 * operator
-\param _constant - number to multiply
+\param constant - number to multiply
 \return result
 */
 /******************************************************************************/
-Matrix4x4 Matrix4x4::operator * (float _constant) const
+Matrix4x4 Matrix4x4::operator * (float constant) const
 {
 	Matrix4x4 result(*this);
 
 	for (int i = 0; i < 4; ++i)
 	for (int j = 0; j < 4; ++j)
-		result.m[i][j] *= _constant;
+		result.m[i][j] *= constant;
 
 	return result;
 }
@@ -266,33 +266,33 @@ Matrix4x4 Matrix4x4::operator * (float _constant) const
 /******************************************************************************/
 /*!
 \brief - Matrix4x4 * operator
-\param _rhs - matrix to multiply
+\param rhs - matrix to multiply
 \return result
 */
 /******************************************************************************/
-Matrix4x4 Matrix4x4::operator*(CR_Mat4 _rhs) const
+Matrix4x4 Matrix4x4::operator*(CR_Mat4 rhs) const
 {
 	Matrix4x4 result;
 
-	result.m[0][0] = m[0][0] * _rhs.m[0][0] + m[0][1] * _rhs.m[1][0] + m[0][2] * _rhs.m[2][0] + m[0][3] * _rhs.m[3][0];
-	result.m[0][1] = m[0][0] * _rhs.m[0][1] + m[0][1] * _rhs.m[1][1] + m[0][2] * _rhs.m[2][1] + m[0][3] * _rhs.m[3][1];
-	result.m[0][2] = m[0][0] * _rhs.m[0][2] + m[0][1] * _rhs.m[1][2] + m[0][2] * _rhs.m[2][2] + m[0][3] * _rhs.m[3][2];
-	result.m[0][3] = m[0][0] * _rhs.m[0][3] + m[0][1] * _rhs.m[1][3] + m[0][2] * _rhs.m[2][3] + m[0][3] * _rhs.m[3][3];
+	result.m[0][0] = m[0][0] * rhs.m[0][0] + m[0][1] * rhs.m[1][0] + m[0][2] * rhs.m[2][0] + m[0][3] * rhs.m[3][0];
+	result.m[0][1] = m[0][0] * rhs.m[0][1] + m[0][1] * rhs.m[1][1] + m[0][2] * rhs.m[2][1] + m[0][3] * rhs.m[3][1];
+	result.m[0][2] = m[0][0] * rhs.m[0][2] + m[0][1] * rhs.m[1][2] + m[0][2] * rhs.m[2][2] + m[0][3] * rhs.m[3][2];
+	result.m[0][3] = m[0][0] * rhs.m[0][3] + m[0][1] * rhs.m[1][3] + m[0][2] * rhs.m[2][3] + m[0][3] * rhs.m[3][3];
 
-	result.m[1][0] = m[1][0] * _rhs.m[0][0] + m[1][1] * _rhs.m[1][0] + m[1][2] * _rhs.m[2][0] + m[1][3] * _rhs.m[3][0];
-	result.m[1][1] = m[1][0] * _rhs.m[0][1] + m[1][1] * _rhs.m[1][1] + m[1][2] * _rhs.m[2][1] + m[1][3] * _rhs.m[3][1];
-	result.m[1][2] = m[1][0] * _rhs.m[0][2] + m[1][1] * _rhs.m[1][2] + m[1][2] * _rhs.m[2][2] + m[1][3] * _rhs.m[3][2];
-	result.m[1][3] = m[1][0] * _rhs.m[0][3] + m[1][1] * _rhs.m[1][3] + m[1][2] * _rhs.m[2][3] + m[1][3] * _rhs.m[3][3];
+	result.m[1][0] = m[1][0] * rhs.m[0][0] + m[1][1] * rhs.m[1][0] + m[1][2] * rhs.m[2][0] + m[1][3] * rhs.m[3][0];
+	result.m[1][1] = m[1][0] * rhs.m[0][1] + m[1][1] * rhs.m[1][1] + m[1][2] * rhs.m[2][1] + m[1][3] * rhs.m[3][1];
+	result.m[1][2] = m[1][0] * rhs.m[0][2] + m[1][1] * rhs.m[1][2] + m[1][2] * rhs.m[2][2] + m[1][3] * rhs.m[3][2];
+	result.m[1][3] = m[1][0] * rhs.m[0][3] + m[1][1] * rhs.m[1][3] + m[1][2] * rhs.m[2][3] + m[1][3] * rhs.m[3][3];
 
-	result.m[2][0] = m[2][0] * _rhs.m[0][0] + m[2][1] * _rhs.m[1][0] + m[2][2] * _rhs.m[2][0] + m[2][3] * _rhs.m[3][0];
-	result.m[2][1] = m[2][0] * _rhs.m[0][1] + m[2][1] * _rhs.m[1][1] + m[2][2] * _rhs.m[2][1] + m[2][3] * _rhs.m[3][1];
-	result.m[2][2] = m[2][0] * _rhs.m[0][2] + m[2][1] * _rhs.m[1][2] + m[2][2] * _rhs.m[2][2] + m[2][3] * _rhs.m[3][2];
-	result.m[2][3] = m[2][0] * _rhs.m[0][3] + m[2][1] * _rhs.m[1][3] + m[2][2] * _rhs.m[2][3] + m[2][3] * _rhs.m[3][3];
+	result.m[2][0] = m[2][0] * rhs.m[0][0] + m[2][1] * rhs.m[1][0] + m[2][2] * rhs.m[2][0] + m[2][3] * rhs.m[3][0];
+	result.m[2][1] = m[2][0] * rhs.m[0][1] + m[2][1] * rhs.m[1][1] + m[2][2] * rhs.m[2][1] + m[2][3] * rhs.m[3][1];
+	result.m[2][2] = m[2][0] * rhs.m[0][2] + m[2][1] * rhs.m[1][2] + m[2][2] * rhs.m[2][2] + m[2][3] * rhs.m[3][2];
+	result.m[2][3] = m[2][0] * rhs.m[0][3] + m[2][1] * rhs.m[1][3] + m[2][2] * rhs.m[2][3] + m[2][3] * rhs.m[3][3];
 
-	result.m[3][0] = m[3][0] * _rhs.m[0][0] + m[3][1] * _rhs.m[1][0] + m[3][2] * _rhs.m[2][0] + m[3][3] * _rhs.m[3][0];
-	result.m[3][1] = m[3][0] * _rhs.m[0][1] + m[3][1] * _rhs.m[1][1] + m[3][2] * _rhs.m[2][1] + m[3][3] * _rhs.m[3][1];
-	result.m[3][2] = m[3][0] * _rhs.m[0][2] + m[3][1] * _rhs.m[1][2] + m[3][2] * _rhs.m[2][2] + m[3][3] * _rhs.m[3][2];
-	result.m[3][3] = m[3][0] * _rhs.m[0][3] + m[3][1] * _rhs.m[1][3] + m[3][2] * _rhs.m[2][3] + m[3][3] * _rhs.m[3][3];
+	result.m[3][0] = m[3][0] * rhs.m[0][0] + m[3][1] * rhs.m[1][0] + m[3][2] * rhs.m[2][0] + m[3][3] * rhs.m[3][0];
+	result.m[3][1] = m[3][0] * rhs.m[0][1] + m[3][1] * rhs.m[1][1] + m[3][2] * rhs.m[2][1] + m[3][3] * rhs.m[3][1];
+	result.m[3][2] = m[3][0] * rhs.m[0][2] + m[3][1] * rhs.m[1][2] + m[3][2] * rhs.m[2][2] + m[3][3] * rhs.m[3][2];
+	result.m[3][3] = m[3][0] * rhs.m[0][3] + m[3][1] * rhs.m[1][3] + m[3][2] * rhs.m[2][3] + m[3][3] * rhs.m[3][3];
 
 	return result;
 }
@@ -300,18 +300,18 @@ Matrix4x4 Matrix4x4::operator*(CR_Mat4 _rhs) const
 /******************************************************************************/
 /*!
 \brief - Matrix4x4 * operator with vector4
-\param _rhs - vector4 to multiply
+\param rhs - vector4 to multiply
 \return result
 */
 /******************************************************************************/
-Vector4 Matrix4x4::operator*(CR_Vec4 _rhs) const
+Vector4 Matrix4x4::operator*(CR_Vec4 rhs) const
 {
 	Vector4 result;
 
-	result.x = m[0][0] * _rhs.x + m[0][1] * _rhs.y + m[0][2] * _rhs.z + m[0][3] * _rhs.w;
-	result.y = m[1][0] * _rhs.x + m[1][1] * _rhs.y + m[1][2] * _rhs.z + m[1][3] * _rhs.w;
-	result.z = m[2][0] * _rhs.x + m[2][1] * _rhs.y + m[2][2] * _rhs.z + m[2][3] * _rhs.w;
-	result.w = m[3][0] * _rhs.x + m[3][1] * _rhs.y + m[3][2] * _rhs.z + m[3][3] * _rhs.w;
+	result.x = m[0][0] * rhs.x + m[0][1] * rhs.y + m[0][2] * rhs.z + m[0][3] * rhs.w;
+	result.y = m[1][0] * rhs.x + m[1][1] * rhs.y + m[1][2] * rhs.z + m[1][3] * rhs.w;
+	result.z = m[2][0] * rhs.x + m[2][1] * rhs.y + m[2][2] * rhs.z + m[2][3] * rhs.w;
+	result.w = m[3][0] * rhs.x + m[3][1] * rhs.y + m[3][2] * rhs.z + m[3][3] * rhs.w;
 
 	return result;
 }
@@ -319,45 +319,45 @@ Vector4 Matrix4x4::operator*(CR_Vec4 _rhs) const
 /******************************************************************************/
 /*!
 \brief - Matrix4x4 / operator 
-\param _constant - number to divide
+\param constant - number to divide
 \return result
 */
 /******************************************************************************/
-Matrix4x4 Matrix4x4::operator / (float _constant) const
+Matrix4x4 Matrix4x4::operator / (float constant) const
 {
 	Matrix4x4 result;
 
 	for (int i = 0; i < 4; ++i)
 	for (int j = 0; j < 4; ++j)
-		result.m[i][j] = m[i][j] / _constant;
+		result.m[i][j] = m[i][j] / constant;
 
 	return result;
 }
 
-void Matrix4x4::Set(float _member1, float _member2, float _member3, float _member4, 
-	float _member5, float _member6, float _member7, float _member8, 
-	float _member9, float _member10, float _member11, float _member12, 
-	float _member13, float _member14, float _member15, float _member16)
+void Matrix4x4::Set(float member1, float member2, float member3, float member4, 
+	float member5, float member6, float member7, float member8, 
+	float member9, float member10, float member11, float member12, 
+	float member, float member14, float member15, float member16)
 {
-	m[0][0] = _member1;
-	m[0][1] = _member2;
-	m[0][2] = _member3;
-	m[0][3] = _member4;
+	m[0][0] = member1;
+	m[0][1] = member2;
+	m[0][2] = member3;
+	m[0][3] = member4;
 
-	m[1][0] = _member5;
-	m[1][1] = _member6;
-	m[1][2] = _member7;
-	m[1][3] = _member8;
+	m[1][0] = member5;
+	m[1][1] = member6;
+	m[1][2] = member7;
+	m[1][3] = member8;
 
-	m[2][0] = _member9;
-	m[2][1] = _member10;
-	m[2][2] = _member11;
-	m[2][3] = _member12;
+	m[2][0] = member9;
+	m[2][1] = member10;
+	m[2][2] = member11;
+	m[2][3] = member12;
 
-	m[3][0] = _member13;
-	m[3][1] = _member14;
-	m[3][2] = _member15;
-	m[3][3] = _member16;
+	m[3][0] = member;
+	m[3][1] = member14;
+	m[3][2] = member15;
+	m[3][3] = member16;
 }
 
 void Matrix4x4::SetZero()
@@ -370,16 +370,16 @@ void Matrix4x4::SetZero()
 /******************************************************************************/
 /*!
 \brief - Friend function + operator
-\param _constant - number to add
-\param _rhs - this
+\param constant - number to add
+\param rhs - this
 \return result
 */
 /******************************************************************************/
-Matrix4x4 operator+(float _constant, CR_Mat4 _rhs)
+Matrix4x4 operator+(float constant, CR_Mat4 rhs)
 {
 	Matrix4x4 result;
 
-	result = _rhs + _constant;
+	result = rhs + constant;
 
 	return result;
 }
@@ -387,21 +387,21 @@ Matrix4x4 operator+(float _constant, CR_Mat4 _rhs)
 /******************************************************************************/
 /*!
 \brief - Friend function * operator
-\param _constant - number to multiply
-\param _rhs - this
+\param constant - number to multiply
+\param rhs - this
 \return result
 */
 /******************************************************************************/
-Matrix4x4 operator*(float _constant, CR_Mat4 _rhs)
+Matrix4x4 operator*(float constant, CR_Mat4 rhs)
 {
 	Matrix4x4 result;
-	result = _rhs * _constant;
+	result = rhs * constant;
 	return result;
 }
 
-Vector4 operator*(CR_Vec4 _vector, CR_Mat4 _rhs)
+Vector4 operator*(CR_Vec4 _vector, CR_Mat4 rhs)
 {
-	return _rhs * _vector;
+	return rhs * _vector;
 }
 
 /******************************************************************************/

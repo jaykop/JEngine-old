@@ -35,7 +35,7 @@ Component* ComponentManager::CreateComponent(
 void ComponentManager::RemoveComponent(Component* component)
 {
     // Check if either there is a existing component builder 
-    auto found = builderMap_.find(_component->typeName_);
+    auto found = builderMap_.find(pComponent->typeName_);
     found->second->RemoveComponent(component);
 }
 #endif // jeUseBuiltInAllocator

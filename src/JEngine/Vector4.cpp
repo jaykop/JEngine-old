@@ -73,23 +73,23 @@ Vector4 Vector4::operator-(void) const
 /******************************************************************************/
 /*!
 \brief - Vector4 + operator
-\param _rhs - number to be added
+\param rhs - number to be added
 \return result
 */
 /******************************************************************************/
-bool Vector4::operator<(const vec4& _rhs) const
+bool Vector4::operator<(const vec4& rhs) const
 {
-	return GetLengthSq(*this) < GetLengthSq(_rhs);
+	return GetLengthSq(*this) < GetLengthSq(rhs);
 }
 
-Vector4 Vector4::operator+(const vec4& _rhs) const
+Vector4 Vector4::operator+(const vec4& rhs) const
 {
 	Vector4 result;
 
-	result.x = x + _rhs.x;
-	result.y = y + _rhs.y;
-	result.z = z + _rhs.z;
-	result.w = w + _rhs.w;
+	result.x = x + rhs.x;
+	result.y = y + rhs.y;
+	result.z = z + rhs.z;
+	result.w = w + rhs.w;
 
 	return result;
 }
@@ -97,18 +97,18 @@ Vector4 Vector4::operator+(const vec4& _rhs) const
 /******************************************************************************/
 /*!
 \brief - Vector4 + operator
-\param _constant - Vector4 to be added
+\param constant - Vector4 to be added
 \return result
 */
 /******************************************************************************/
-Vector4 Vector4::operator+(float _constant) const
+Vector4 Vector4::operator+(float constant) const
 {
 	Vector4 result;
 
-	result.x = x + _constant;
-	result.y = y + _constant;
-	result.z = z + _constant;
-	result.w = w + _constant;
+	result.x = x + constant;
+	result.y = y + constant;
+	result.z = z + constant;
+	result.w = w + constant;
 
 	return result;
 }
@@ -116,18 +116,18 @@ Vector4 Vector4::operator+(float _constant) const
 /******************************************************************************/
 /*!
 \brief - Vector4 - operator
-\param _rhs - Vector4 to be subtracted
+\param rhs - Vector4 to be subtracted
 \return result
 */
 /******************************************************************************/
-Vector4 Vector4::operator-(const vec4& _rhs) const
+Vector4 Vector4::operator-(const vec4& rhs) const
 {
 	Vector4 result;
 
-	result.x = x - _rhs.x;
-	result.y = y - _rhs.y;
-	result.z = z - _rhs.z;
-	result.w = w - _rhs.w;
+	result.x = x - rhs.x;
+	result.y = y - rhs.y;
+	result.z = z - rhs.z;
+	result.w = w - rhs.w;
 
 	return result;
 }
@@ -135,18 +135,18 @@ Vector4 Vector4::operator-(const vec4& _rhs) const
 /******************************************************************************/
 /*!
 \brief - Vector4 - operator
-\param _constant - number to be subtracted
+\param constant - number to be subtracted
 \return result
 */
 /******************************************************************************/
-Vector4 Vector4::operator-(float _constant) const
+Vector4 Vector4::operator-(float constant) const
 {
 	Vector4 result;
 
-	result.x = x - _constant;
-	result.y = y - _constant;
-	result.z = z - _constant;
-	result.w = w - _constant;
+	result.x = x - constant;
+	result.y = y - constant;
+	result.z = z - constant;
+	result.w = w - constant;
 
 	return result;
 }
@@ -154,30 +154,30 @@ Vector4 Vector4::operator-(float _constant) const
 /******************************************************************************/
 /*!
 \brief - Vector4 * operator
-\param _constant - number to be nultiplied
+\param constant - number to be nultiplied
 \return result
 */
 /******************************************************************************/
-Vector4 Vector4::operator*(float _constant) const
+Vector4 Vector4::operator*(float constant) const
 {
 	Vector4 result;
 
-	result.x = x * _constant;
-	result.y = y * _constant;
-	result.z = z * _constant;
-	result.w = w * _constant;
+	result.x = x * constant;
+	result.y = y * constant;
+	result.z = z * constant;
+	result.w = w * constant;
 
 	return result;
 }
 
-Vector4 Vector4::operator*(const vec4& _rhs) const
+Vector4 Vector4::operator*(const vec4& rhs) const
 {
 	Vector4 result;
 
-	result.x = x * _rhs.x;
-	result.y = y * _rhs.y;
-	result.z = z * _rhs.z;
-	result.w = w * _rhs.w;
+	result.x = x * rhs.x;
+	result.y = y * rhs.y;
+	result.z = z * rhs.z;
+	result.w = w * rhs.w;
 
 	return result;
 }
@@ -185,21 +185,21 @@ Vector4 Vector4::operator*(const vec4& _rhs) const
 /******************************************************************************/
 /*!
 \brief - Vector4 / operator
-\param _constant - number to be divided
+\param constant - number to be divided
 \return result
 */
 /******************************************************************************/
 
-Vector4 Vector4::operator / (float _constant) const
+Vector4 Vector4::operator / (float constant) const
 {
 	Vector4 result;
 
-	// If _constant is not zero,
-	if (_constant) {
-		result.x = x / _constant;
-		result.y = y / _constant;
-		result.z = z / _constant;
-		result.w = w / _constant;
+	// If constant is not zero,
+	if (constant) {
+		result.x = x / constant;
+		result.y = y / constant;
+		result.z = z / constant;
+		result.w = w / constant;
 	}
 
 	// Unless.
@@ -209,14 +209,14 @@ Vector4 Vector4::operator / (float _constant) const
 	return result;
 }
 
-Vector4& Vector4::operator=(const vec4& _rhs)
+Vector4& Vector4::operator=(const vec4& rhs)
 {
-	if (this != &_rhs)
+	if (this != &rhs)
 	{
-		x = _rhs.x;
-		y = _rhs.y;
-		z = _rhs.z;
-		w = _rhs.w;
+		x = rhs.x;
+		y = rhs.y;
+		z = rhs.z;
+		w = rhs.w;
 	}
 
 	return *this;
@@ -225,16 +225,16 @@ Vector4& Vector4::operator=(const vec4& _rhs)
 /******************************************************************************/
 /*!
 \brief - Friend function, + operator
-\param _constant - number to be added
-\param _rhs - *this
+\param constant - number to be added
+\param rhs - *this
 \return result
 */
 /******************************************************************************/
-Vector4 operator+(float _constant, const vec4& _rhs)
+Vector4 operator+(float constant, const vec4& rhs)
 {
 	Vector4 result;
 
-	result = _rhs + _constant;
+	result = rhs + constant;
 
 	return result;
 }
@@ -242,16 +242,16 @@ Vector4 operator+(float _constant, const vec4& _rhs)
 /******************************************************************************/
 /*!
 \brief - Friend function, * operator
-\param _constant - number to be multiplied
-\param _rhs - *this
+\param constant - number to be multiplied
+\param rhs - *this
 \return result
 */
 /******************************************************************************/
-Vector4 operator*(float _constant, const vec4& _rhs)
+Vector4 operator*(float constant, const vec4& rhs)
 {
 	Vector4 result;
 
-	result = _rhs * _constant;
+	result = rhs * constant;
 
 	return result;
 }
@@ -273,16 +273,16 @@ std::ostream& operator<<(std::ostream& os, const vec4& contents)
 /******************************************************************************/
 /*!
 \brief - Vector4 += operator
-\param _rhs - Vector4 to be added
+\param rhs - Vector4 to be added
 \return *this
 */
 /******************************************************************************/
-Vector4& Vector4::operator+=(const vec4& _rhs)
+Vector4& Vector4::operator+=(const vec4& rhs)
 {
-	x += _rhs.x;
-	y += _rhs.y;
-	z += _rhs.z;
-	w += _rhs.w;
+	x += rhs.x;
+	y += rhs.y;
+	z += rhs.z;
+	w += rhs.w;
 
 	return *this;
 }
@@ -290,16 +290,16 @@ Vector4& Vector4::operator+=(const vec4& _rhs)
 /******************************************************************************/
 /*!
 \brief - Vector4 += operator
-\param _constant - number to be added
+\param constant - number to be added
 \return *this
 */
 /******************************************************************************/
-Vector4& Vector4::operator+=(float _constant)
+Vector4& Vector4::operator+=(float constant)
 {
-	x += _constant;
-	y += _constant;
-	z += _constant;
-	w += _constant;
+	x += constant;
+	y += constant;
+	z += constant;
+	w += constant;
 
 	return *this;
 }
@@ -307,16 +307,16 @@ Vector4& Vector4::operator+=(float _constant)
 /******************************************************************************/
 /*!
 \brief - Vector4 -= operator
-\param _rhs - Vector4 to be subtracted
+\param rhs - Vector4 to be subtracted
 \return *this
 */
 /******************************************************************************/
-Vector4& Vector4::operator-=(const vec4& _rhs)
+Vector4& Vector4::operator-=(const vec4& rhs)
 {
-	x -= _rhs.x;
-	y -= _rhs.y;
-	z -= _rhs.z;
-	w -= _rhs.w;
+	x -= rhs.x;
+	y -= rhs.y;
+	z -= rhs.z;
+	w -= rhs.w;
 
 	return *this;
 }
@@ -324,26 +324,26 @@ Vector4& Vector4::operator-=(const vec4& _rhs)
 /******************************************************************************/
 /*!
 \brief - Vector4 -= operator
-\param _constant - number to be subtracted
+\param constant - number to be subtracted
 \return *this
 */
 /******************************************************************************/
-Vector4& Vector4::operator-=(float _constant)
+Vector4& Vector4::operator-=(float constant)
 {
-	x -= _constant;
-	y -= _constant;
-	z -= _constant;
-	w -= _constant;
+	x -= constant;
+	y -= constant;
+	z -= constant;
+	w -= constant;
 
 	return *this;
 }
 
-Vector4& Vector4::operator*=(const vec4& _rhs)
+Vector4& Vector4::operator*=(const vec4& rhs)
 {
-	x *= _rhs.x;
-	y *= _rhs.y;
-	z *= _rhs.z;
-	w *= _rhs.w;
+	x *= rhs.x;
+	y *= rhs.y;
+	z *= rhs.z;
+	w *= rhs.w;
 
 	return *this;
 }
@@ -351,28 +351,28 @@ Vector4& Vector4::operator*=(const vec4& _rhs)
 /******************************************************************************/
 /*!
 \brief - Vector4 *= operator
-\param _constant - Vector4 to be multiplied
+\param constant - Vector4 to be multiplied
 \return *this
 */
 /******************************************************************************/
-Vector4& Vector4::operator*=(float _constant)
+Vector4& Vector4::operator*=(float constant)
 {
-	x *= _constant;
-	y *= _constant;
-	z *= _constant;
-	w += _constant;
+	x *= constant;
+	y *= constant;
+	z *= constant;
+	w += constant;
 
 	return *this;
 }
 
-Vector4& Vector4::operator/=(float _constant)
+Vector4& Vector4::operator/=(float constant)
 {
-	// If _constant is not zero,
-	if (_constant) {
-		x /= _constant;
-		y /= _constant;
-		y /= _constant;
-		w /= _constant;
+	// If constant is not zero,
+	if (constant) {
+		x /= constant;
+		y /= constant;
+		y /= constant;
+		w /= constant;
 	}
 
 	// Unless.
@@ -444,13 +444,13 @@ void Vector4::SetUnitW()
 /******************************************************************************/
 /*!
 \brief - Compare == operator
-\param _rhs - to be compared
+\param rhs - to be compared
 \return bool
 */
 /******************************************************************************/
-bool Vector4::operator==(const vec4& _rhs) const
+bool Vector4::operator==(const vec4& rhs) const
 {
-	if (x != _rhs.x || y != _rhs.y || z != _rhs.z || w != _rhs.w)
+	if (x != rhs.x || y != rhs.y || z != rhs.z || w != rhs.w)
 		return false;
 
 	return true;
@@ -459,13 +459,13 @@ bool Vector4::operator==(const vec4& _rhs) const
 /******************************************************************************/
 /*!
 \brief - Compare != operator
-\param _rhs - to be compared
+\param rhs - to be compared
 \return bool
 */
 /******************************************************************************/
-bool Vector4::operator!=(const vec4& _rhs) const
+bool Vector4::operator!=(const vec4& rhs) const
 {
-	if ((*this) == _rhs)
+	if ((*this) == rhs)
 		return false;
 
 	return true;

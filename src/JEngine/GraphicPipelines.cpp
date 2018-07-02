@@ -313,7 +313,7 @@ void GraphicSystem::LightingEffectPipeline(Material *pMaterial)
 	static int s_lightIndex;
 	static std::string s_index, s_light,
 		amb("m_ambient"), spec("m_specular"), diff("m_diffuse"),
-		type("type_"), constant("m_constant"), linear_("m_linear_"), dir("m_direction"), pos("mposition"),
+		type("type_"), constant("mconstant"), linear_("m_linear_"), dir("mdirectoryection"), pos("mposition"),
 		cut("m_cutOff"), outcut("m_outerCutOff"), quad("m_quadratic");
 	s_lightIndex = 0;
 

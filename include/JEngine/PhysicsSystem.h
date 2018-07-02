@@ -29,11 +29,11 @@ private:
 	void Close() override;
 	void Unload() override;
 
-	void AddTransform(Transform* _transform);
-	void RemoveTransform(Transform* _transform);
+	void AddTransform(Transform* pTransform);
+	void RemoveTransform(Transform* pTransform);
 
-	void AddRigidbody(Transform* _rigidbody);
-	void RemoveRigidbody(Transform* _rigidbody);
+	void AddRigidbody(Transform* pRigidbody);
+	void RemoveRigidbody(Transform* pRigidbody);
 	
 	Transforms		transforms_;
 	Rigidbodies		rigidbodies_;

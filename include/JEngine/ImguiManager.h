@@ -28,23 +28,23 @@ class ImguiManager {
 
 private:
 
-	static bool Init(SDL_Window* _window);
-	static void EventUpdate(SDL_Event* _event);
+	static bool Init(SDL_Window* pWindow);
+	static void EventUpdate(SDL_Event* pEvent);
 	static void Update(float dt);
 	static void Close();
 
-	static void AddEditorFunc(const EditorUpdateFunc& _pFunc);
-	static void AddComponentEditor(Component* _component);
-	static void RemoveComponentEditor(Component* _component);
-	static void AddObjectEditor(Object* _object);
-	static void RemoveObjectEditor(Object* _object);
+	static void AddEditorFunc(const EditorUpdateFunc& pFunc);
+	static void AddComponentEditor(Component* pComponent);
+	static void RemoveComponentEditor(Component* pComponent);
+	static void AddObjectEditor(Object* pObject);
+	static void RemoveObjectEditor(Object* pObject);
 	static void ClearComponentEditor();
 	static void ClearObjectEditor();
 
 	static SDL_Window			*pWindow_;
-	static EditorList			m_editors;
-	static ObjectEditorMap		m_objEditors;
-	static ComponentEditorMap	m_cptEditors;
+	static EditorList			editors_;
+	static ObjectEditorMap		objEditors_;
+	static ComponentEditorMap	cptEditors_;
 };
 
 using IMGUI = ImguiManager;

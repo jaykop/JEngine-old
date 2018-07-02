@@ -34,13 +34,13 @@ std::string Shader::fragmentShader_[] = {
 
 		int type_;
 		vec3 m_position;
-		vec3 m_direction;
+		vec3 mdirectoryection;
 	
 		vec4 m_ambient;
 		vec4 m_diffuse;
 		vec4 m_specular;
 	
-		float m_constant;
+		float mconstant;
 		float m_linear;
 		float m_quadratic;
 	
@@ -110,11 +110,11 @@ std::string Shader::fragmentShader_[] = {
 		
 			// Directional light
 			if (light[index].type_ == LIGHT_DIRECTIONAL)
-				lightDirection = normalize(-light[index].m_direction);
+				lightDirection = normalize(-light[index].mdirectoryection);
 		 
 			// Spotlight
 			else if (light[index].type_ == LIGHT_SPOTLIGHT) {
-				theta = dot(lightDirection, normalize(-light[index].m_direction));
+				theta = dot(lightDirection, normalize(-light[index].mdirectoryection));
 				float epsilon = light[index].m_cutOff - light[index].m_outerCutOff;
 				intensity = clamp((theta - light[index].m_outerCutOff) / epsilon, 0.0, 1.0);
 			}
@@ -122,7 +122,7 @@ std::string Shader::fragmentShader_[] = {
 			// Pointlight
 			else if (light[index].type_ == LIGHT_POINTLIGHT) {
 				float distance = length(gap);
-				attenuation = 1.0 / (light[index].m_constant + light[index].m_linear * distance + light[index].m_quadratic * (distance * distance));
+				attenuation = 1.0 / (light[index].mconstant + light[index].m_linear * distance + light[index].m_quadratic * (distance * distance));
 			}
 		
 			// Ambient light
