@@ -92,7 +92,7 @@ Emitter::Particle* Emitter::MakekParticle()
 
 	newParticle->life = Random::GetRandomFloat(0.f, pEmitter->life_);
 	newParticle->velocity = Random::GetRandVec3(vec3::ZERO, pEmitter->velocity_);
-	newParticle->position = s_pTransform->position;
+	newParticle->position = s_pTransform->position_;
 	newParticle->rotation = Random::GetRandomFloat(0.f, 360.f);
 	newParticle->direction = Math::IsZero(pEmitter->direction_) ? Random::GetRandVec3(-vec3::ONE, vec3::ONE) : pEmitter->direction_;
 	Normalize(newParticle->direction);
@@ -123,7 +123,7 @@ void Emitter::RefreshParticle(Particle* pParticle)
 
 	if (pEmitter->type_ == Emitter::PARTICLE_NORMAL) {
 
-		pParticle->position = s_pTransform->position;
+		pParticle->position = s_pTransform->position_;
 		pParticle->hidden = false;
 		pParticle->direction = Math::IsZero(pEmitter->direction_) ? Random::GetRandVec3(-vec3::ONE, vec3::ONE) : pEmitter->direction_;
 	}
@@ -138,7 +138,7 @@ void Emitter::RefreshParticle(Particle* pParticle)
 		else if (!pParticle->dead) {
 
 			// Ready for next update
-			pParticle->position = s_pTransform->position;
+			pParticle->position = s_pTransform->position_;
 			pParticle->direction = Math::IsZero(pEmitter->direction_) ? Random::GetRandVec3(-vec3::ONE, vec3::ONE) : pEmitter->direction_;
 
 			// Set dead and add number
@@ -154,7 +154,7 @@ void Emitter::RefreshParticle(Particle* pParticle)
 
 		static vec3 s_position, s_range;
 		s_range = pEmitter->range_;
-		s_position = s_pTransform->position;
+		s_position = s_pTransform->position_;
 		pParticle->direction  = Math::IsZero(pEmitter->direction_) ? Random::GetRandVec3(-vec3::ONE, vec3::ONE) : pEmitter->direction_;
 		pParticle->position.x = Random::GetRandomFloat(s_position.x - s_range.x, s_position.x + s_range.x);
 		pParticle->position.y = Random::GetRandomFloat(s_position.y - s_range.y, s_position.y + s_range.y);

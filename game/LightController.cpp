@@ -31,22 +31,22 @@ void LightController::Update(float dt)
 {
     float speed = 60.f * dt;
     if (INPUT::KeyPressed(JE_A))
-		transform_->position.x -= speed;
+		transform_->position_.x -= speed;
 
     if (INPUT::KeyPressed(JE_D))
-		transform_->position.x += speed;
+		transform_->position_.x += speed;
 
     if (INPUT::KeyPressed(JE_W))
-		transform_->position.y += speed;
+		transform_->position_.y += speed;
 
     if (INPUT::KeyPressed(JE_S))
-		transform_->position.y -= speed;
+		transform_->position_.y -= speed;
 
     if (INPUT::KeyPressed(JE_Z))
-		transform_->position.z += speed;
+		transform_->position_.z += speed;
 
     if (INPUT::KeyPressed(JE_C))
-		transform_->position.z -= speed;
+		transform_->position_.z -= speed;
 }
 
 void LightController::Close()

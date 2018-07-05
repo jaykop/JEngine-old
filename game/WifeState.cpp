@@ -34,7 +34,7 @@ void WifeState::Init()
 	m_wifeTalks->AddComponent<Transform>();
 	m_wifeTalks->AddComponent<Text>();
 	m_pTalkTransform = m_wifeTalks->GetComponent<Transform>();
-	m_pTalkTransform->scale.Set(.15f, .15f, 0.f);
+	m_pTalkTransform->scale_.Set(.15f, .15f, 0.f);
 	m_talkOffset.Set(15.f, 0.f, 1.f);
 	m_talkText = m_wifeTalks->GetComponent<Text>();
 	m_talkText->Register();
@@ -43,8 +43,8 @@ void WifeState::Init()
 	// Set font
 	m_talkText->pFont = ASSET::GetFont("Default");
 
-	m_pTalkTransform->position.Set(
-		m_pTransform->position + m_talkOffset);
+	m_pTalkTransform->position_.Set(
+		m_pTransform->position_ + m_talkOffset);
 }
 
 void WifeState::Update(const float /*dt*/)

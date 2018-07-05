@@ -66,7 +66,7 @@ void Steering::Init()
 {
 	// Get owner's transform
 	m_transform = GetOwner()->GetComponent<Transform>();
-	zPos = m_transform->position.z;
+	zPos = m_transform->position_.z;
 
 	mass = 1.f;
 	maxSpeed = 50.f;
@@ -88,7 +88,7 @@ void Steering::Init()
 	{
 		m_circle = OBJECT::pContainer_->GetObject("Circle");
 		circleTransform = m_circle->GetComponent<Transform>();
-		wanderRadius = circleTransform->scale.x / 2.f;
+		wanderRadius = circleTransform->scale_.x / 2.f;
 	}
 
 	else if (m_behavior == obstacle_avoidance) {
@@ -96,9 +96,9 @@ void Steering::Init()
 		m_detection = OBJECT::pContainer_->GetObject("PathBox");
 		
 		detectionTransform = m_detection->GetComponent<Transform>();
-		detectionTransform->scale.x = 5.f;
-		detectionTransform->scale.y = 1.f;
-		detectionTransform->position.x += detectionTransform->scale.x / 2.f;
+		detectionTransform->scale_.x = 5.f;
+		detectionTransform->scale_.y = 1.f;
+		detectionTransform->position_.x += detectionTransform->scale_.x / 2.f;
 
 		Model *pathBoxModel = m_detection->GetComponent<Model>();
 		pathBoxModel->SetParentToFollow(GetOwner());
@@ -110,9 +110,9 @@ void Steering::Init()
 			
 			newObstacle->AddComponent<Transform>();
 			Transform* transform = newObstacle->GetComponent<Transform>();
-			transform->position.Set(RAND::GetRandVec3(-50.f, -50.f, -1.f, 50.f, 50.f, -1.f));
+			transform->position_.Set(RAND::GetRandVec3(-50.f, -50.f, -1.f, 50.f, 50.f, -1.f));
 			float randomScale = RAND::GetRandomFloat(5.f, 15.f);
-			transform->scale.Set(randomScale, randomScale, 0.f);
+			transform->scale_.Set(randomScale, randomScale, 0.f);
 
 			newObstacle->AddComponent<Model>();
 			Model* model = newObstacle->GetComponent<Model>();
@@ -148,7 +148,7 @@ void Steering::Update(float dt)
 	// By mouse
 	if (INPUT::KeyTriggered(JE_MOUSE_LEFT)) {
 		vec3 newPos(INPUT::GetOrhtoPosition().x, INPUT::GetOrhtoPosition().y, -1.f);
-		targetTransform->position.Set(newPos);
+		targetTransform->position_.Set(newPos);
 	}
 
 	if (INPUT::KeyTriggered(JE_SPACE))
@@ -161,11 +161,11 @@ void Steering::Update(float dt)
 	}
 
 	if (m_detection)
-		m_detection->GetComponent<Transform>()->position.z = -1.f;
+		m_detection->GetComponent<Transform>()->position_.z = -1.f;
 
 	// By keyboard
 	if (INPUT::KeyTriggered(JE_ENTER))
-		targetTransform->position.Set(
+		targetTransform->position_.Set(
 			Random::GetRandVec3(-350.f, -250.f, -1.f, 350.f, 250.f, -1.f));
 
 	if (m_behavior != none) {
@@ -185,15 +185,15 @@ void Steering::Update(float dt)
 		// Update position
 		vec3 toAdd = velocity * dt;
 		toAdd.z = 0.f;
-		m_transform->position += toAdd;
-		m_transform->rotation = GetAngle(vec3::UNIT_X, velocity);
+		m_transform->position_ += toAdd;
+		m_transform->rotation_ = GetAngle(vec3::UNIT_X, velocity);
 
 		if (GetLengthSq(velocity) > 0.00000001) {
 			heading = GetNormalize(velocity);
 			side = GetPerpendicular(heading);
 		}
 
-		ControlPosition(m_transform->position);
+		ControlPosition(m_transform->position_);
 	}
 }
 

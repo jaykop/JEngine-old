@@ -255,11 +255,11 @@ void GraphicSystem::Ray(Model* /*pModel*/, Transform* /*pTransform*/)
 	//static vec4 s_final, s_position4;
 	//static vec3 s_position3;
 
-	//s_position3 = pTransform->position;
+	//s_position3 = pTransform->position_;
 	//s_position4.Set(s_position3.x, s_position3.y, s_position3.z, 1.f);
 	//s_translate = mat4::Translate(s_position3);
-	//s_scale = mat4::Scale(pTransform->scale);
-	//s_rotation = mat4::Rotate(pTransform->rotation, pTransform->rotationAxis);
+	//s_scale = mat4::Scale(pTransform->scale_);
+	//s_rotation = mat4::Rotate(pTransform->rotation_, pTransform->rotationAxis_);
 	//
 	//if (pModel->projection_ == PROJECTION_PERSPECTIVE) {
 	//	s_projection_ = perspective_;

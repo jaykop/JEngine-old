@@ -119,12 +119,12 @@ void GraphicSystem::LightSourcePipeline()
 			Transform* transform = light->pTransform_;
 
 			Shader::pCurrentShader_->SetMatrix(
-				"m4_translate", Translate(transform->position));
+				"m4_translate", Translate(transform->position_));
 
 			Shader::pCurrentShader_->SetMatrix(
-				"m4_rotate", Rotate(Math::DegToRad(transform->rotation), transform->rotationAxis));
+				"m4_rotate", Rotate(Math::DegToRad(transform->rotation_), transform->rotationAxis_));
 
-			Shader::pCurrentShader_->SetMatrix("m4_scale", Scale(transform->scale));
+			Shader::pCurrentShader_->SetMatrix("m4_scale", Scale(transform->scale_));
 
 			Shader::pCurrentShader_->SetMatrix(
 				"m4_rotateZ", RotateZ(atan2(light->direction_.y, light->direction_.x)));
@@ -179,9 +179,9 @@ void GraphicSystem::ModelPipeline(Model *pModel)
 
 	Shader::Use(GLM::JE_SHADER_MODEL);
 
-	Shader::pCurrentShader_->SetMatrix("m4_translate", Translate(spTransform->position));
-	Shader::pCurrentShader_->SetMatrix("m4_scale", Scale(spTransform->scale));
-	Shader::pCurrentShader_->SetMatrix("m4_rotate", Rotate(Math::DegToRad(spTransform->rotation), spTransform->rotationAxis));
+	Shader::pCurrentShader_->SetMatrix("m4_translate", Translate(spTransform->position_));
+	Shader::pCurrentShader_->SetMatrix("m4_scale", Scale(spTransform->scale_));
+	Shader::pCurrentShader_->SetMatrix("m4_rotate", Rotate(Math::DegToRad(spTransform->rotation_), spTransform->rotationAxis_));
 
 	Shader::pCurrentShader_->SetVector3("v3_cameraPosition", pMainCamera_->position_);
 	Shader::pCurrentShader_->SetBool("boolean_bilboard", (pModel->status_ & Model::IS_BILBOARD) == Model::IS_BILBOARD);
@@ -240,13 +240,13 @@ void GraphicSystem::ModelPipeline(Model *pModel)
 void GraphicSystem::ParentPipeline(Transform* pTransform) const
 {
 	glUniformMatrix4fv(glGetUniformLocation(Shader::pCurrentShader_->programId_, "m4_parentTranslate"),
-		1, GL_FALSE, &Translate(pTransform->position).m[0][0]);
+		1, GL_FALSE, &Translate(pTransform->position_).m[0][0]);
 
 	glUniformMatrix4fv(glGetUniformLocation(Shader::pCurrentShader_->programId_, "m4_parentScale"),
-		1, GL_FALSE, &Scale(pTransform->scale).m[0][0]);
+		1, GL_FALSE, &Scale(pTransform->scale_).m[0][0]);
 
 	glUniformMatrix4fv(glGetUniformLocation(Shader::pCurrentShader_->programId_, "m4_parentRotate"),
-		1, GL_FALSE, &Rotate(DegToRad(pTransform->rotation), pTransform->rotationAxis).m[0][0]);
+		1, GL_FALSE, &Rotate(DegToRad(pTransform->rotation_), pTransform->rotationAxis_).m[0][0]);
 }
 
 void GraphicSystem::MappingPipeline(Model* pModel)
@@ -348,7 +348,7 @@ void GraphicSystem::LightingEffectPipeline(Material *pMaterial)
 			(s_light + quad).c_str(), _light->quadratic_);
 
 		Shader::pCurrentShader_->SetVector3(
-			(s_light + pos).c_str(), _light->pTransform_->position);
+			(s_light + pos).c_str(), _light->pTransform_->position_);
 
 		Shader::pCurrentShader_->SetFloat(
 			(s_light + cut).c_str(), cosf(Math::DegToRad(_light->cutOff_)));
@@ -367,8 +367,8 @@ void GraphicSystem::TextPipeline(Text * pText)
 
 	Shader::Use(GLM::JE_SHADER_TEXT);
 
-	Shader::pCurrentShader_->SetMatrix("m4_scale", Scale(spTransform->scale));
-	Shader::pCurrentShader_->SetMatrix("m4_rotate", Rotate(Math::DegToRad(spTransform->rotation), spTransform->rotationAxis));
+	Shader::pCurrentShader_->SetMatrix("m4_scale", Scale(spTransform->scale_));
+	Shader::pCurrentShader_->SetMatrix("m4_rotate", Rotate(Math::DegToRad(spTransform->rotation_), spTransform->rotationAxis_));
 	Shader::pCurrentShader_->SetBool("boolean_bilboard", (pText->status_ & Model::IS_BILBOARD) == Model::IS_BILBOARD);
 	Shader::pCurrentShader_->SetVector4("v4_color", pText->color_);
 
@@ -437,7 +437,7 @@ void GraphicSystem::ParticlePipeline(Emitter* pEmitter, float dt)
 
 		Shader::Use(GLM::JE_SHADER_PARTICLE);
 
-		Shader::pCurrentShader_->SetMatrix("m4_scale", Scale(spTransform->scale));
+		Shader::pCurrentShader_->SetMatrix("m4_scale", Scale(spTransform->scale_));
 		Shader::pCurrentShader_->SetBool("boolean_bilboard", (pEmitter->status_ & Model::IS_BILBOARD) == Model::IS_BILBOARD);
 
 		// Send projection info to shader
@@ -486,7 +486,7 @@ void GraphicSystem::ParticlePipeline(Emitter* pEmitter, float dt)
 
 				// Send transform info to shader
 				Shader::pCurrentShader_->SetMatrix("m4_translate", Translate(particle->position));
-				Shader::pCurrentShader_->SetMatrix("m4_rotate", Rotate(Math::DegToRad(particle->rotation), spTransform->rotationAxis));
+				Shader::pCurrentShader_->SetMatrix("m4_rotate", Rotate(Math::DegToRad(particle->rotation), spTransform->rotationAxis_));
 
 				// Send color info to shader
 				Shader::pCurrentShader_->SetVector4("v4_color", s_color);
@@ -576,8 +576,8 @@ void GraphicSystem::Render(const Text* pText)
 	if (!c_wcontent.empty() || !c_content.empty()) {
 
 		static vec3 sposition, sscale;
-		sscale = pTransform->scale;
-		sposition = pTransform->position;
+		sscale = pTransform->scale_;
+		sposition = pTransform->position_;
 		const GLfloat nextLineInverval = pFont->newline_ * pFont->fontSize_ * sscale.y / 50.f;
 
 		GLfloat initX = GLfloat(sposition.x), newX = initX, intervalY = 0.f;

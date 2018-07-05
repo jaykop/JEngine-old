@@ -33,7 +33,7 @@ void BullyState::Init()
 	m_bullyTalks->AddComponent<Transform>();
 	m_bullyTalks->AddComponent<Text>();
 	m_pTalkTransform = m_bullyTalks->GetComponent<Transform>();
-	m_pTalkTransform->scale.Set(.15f, .15f, 0.f);
+	m_pTalkTransform->scale_.Set(.15f, .15f, 0.f);
 	m_talkOffset.Set(-25.f, -20.f, 1.f);
 	m_talkText = m_bullyTalks->GetComponent<Text>();
 	m_talkText->Register();
@@ -42,8 +42,8 @@ void BullyState::Init()
 	// Set font
 	m_talkText->pFont = ASSET::GetFont("Default");
 
-	m_pTalkTransform->position.Set(
-		m_pTransform->position + m_talkOffset);
+	m_pTalkTransform->position_.Set(
+		m_pTransform->position_ + m_talkOffset);
 
 	m_pMiner = OBJECT::pContainer_->GetObject("Miner");
 }

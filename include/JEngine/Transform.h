@@ -13,8 +13,8 @@ class Transform : public Component
 
 public:
 
-    vec3    position, scale, rotationAxis;
-    float   rotation;
+    vec3    position_, scale_, rotationAxis_;
+    float   rotation_;
 
 private:
 
