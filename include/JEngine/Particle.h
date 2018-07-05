@@ -31,7 +31,7 @@ public:
     void SetColors(const vec3& start, const vec3& end);
 
 	bool				active_;
-    float				life_, rotationSpeed_;
+    float				life_, rotationSpeed_, pointSize_;
     unsigned			size_;
     ParticleType		type_;
     vec3				direction_, velocity_, range_;

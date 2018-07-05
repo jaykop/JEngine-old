@@ -73,7 +73,7 @@ void GraphicSystem::RenderToScreen() const
 
 	// Bind default framebuffer and render to screen
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(backgroundColor_.x, backgroundColor_.y, backgroundColor_.z, backgroundColor_.w);
 
 	glDisable(GL_CULL_FACE);	//Disable face culling
@@ -82,17 +82,17 @@ void GraphicSystem::RenderToScreen() const
 	// Render to plane 2d
 	glBindVertexArray(GLM::targetMesh_[GLM::JE_TARGET_SCREEN]->vao_);
 	Shader::Use(GLM::JE_SHADER_SCREEN);
-	Shader::pCurrentShader_->SetVector4("v4_screenColor_", screenColor_);
+	Shader::pCurrentShader_->SetVector4("v4_screenColor", screenColor_);
 
 	// Impose screen effect 
 	Shader::pCurrentShader_->SetEnum("enum_effectType", screenEffect_);
 
 	if (screenEffect_ == JE_EFFECT_BLUR) {
-		Shader::pCurrentShader_->SetFloat("float_blurSize_", blurSize_);
-		Shader::pCurrentShader_->SetFloat("float_blurAmount_", blurAmount_);
+		Shader::pCurrentShader_->SetFloat("float_blurSize", blurSize_);
+		Shader::pCurrentShader_->SetFloat("float_blurAmount", blurAmount_);
 	}
 	else if (screenEffect_ == JE_EFFECT_SOBEL)
-		Shader::pCurrentShader_->SetFloat("float_sobelAmount_", sobelAmount_);
+		Shader::pCurrentShader_->SetFloat("float_sobelAmount", sobelAmount_);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, GLM::texColorBuf_);
@@ -174,14 +174,14 @@ void GraphicSystem::LightSourcePipeline()
 //////////////////////////////////////////////////////////////////////////
 void GraphicSystem::ModelPipeline(Model *pModel)
 {
-	static Transform* spTransform;
-	spTransform = pModel->pTransform_;
+	static Transform* s_pTransform;
+	s_pTransform = pModel->pTransform_;
 
 	Shader::Use(GLM::JE_SHADER_MODEL);
 
-	Shader::pCurrentShader_->SetMatrix("m4_translate", Translate(spTransform->position_));
-	Shader::pCurrentShader_->SetMatrix("m4_scale", Scale(spTransform->scale_));
-	Shader::pCurrentShader_->SetMatrix("m4_rotate", Rotate(Math::DegToRad(spTransform->rotation_), spTransform->rotationAxis_));
+	Shader::pCurrentShader_->SetMatrix("m4_translate", Translate(s_pTransform->position_));
+	Shader::pCurrentShader_->SetMatrix("m4_scale", Scale(s_pTransform->scale_));
+	Shader::pCurrentShader_->SetMatrix("m4_rotate", Rotate(Math::DegToRad(s_pTransform->rotation_), s_pTransform->rotationAxis_));
 
 	Shader::pCurrentShader_->SetVector3("v3_cameraPosition", pMainCamera_->position_);
 	Shader::pCurrentShader_->SetBool("boolean_bilboard", (pModel->status_ & Model::IS_BILBOARD) == Model::IS_BILBOARD);
@@ -313,7 +313,7 @@ void GraphicSystem::LightingEffectPipeline(Material *pMaterial)
 	static int s_lightIndex;
 	static std::string s_index, s_light,
 		amb("m_ambient"), spec("m_specular"), diff("m_diffuse"),
-		type("type_"), constant("mconstant"), linear_("m_linear_"), dir("mdirectoryection"), pos("mposition"),
+		type("m_type"), constant("m_constant"), linear("m_linear"), dir("m_direction"), pos("m_position"),
 		cut("m_cutOff"), outcut("m_outerCutOff"), quad("m_quadratic");
 	s_lightIndex = 0;
 
@@ -342,7 +342,7 @@ void GraphicSystem::LightingEffectPipeline(Material *pMaterial)
 			(s_light + constant).c_str(), _light->constant_);
 
 		Shader::pCurrentShader_->SetFloat(
-			(s_light + linear_).c_str(), _light->linear_);
+			(s_light + linear).c_str(), _light->linear_);
 
 		Shader::pCurrentShader_->SetFloat(
 			(s_light + quad).c_str(), _light->quadratic_);
@@ -362,13 +362,13 @@ void GraphicSystem::LightingEffectPipeline(Material *pMaterial)
 
 void GraphicSystem::TextPipeline(Text * pText)
 {
-	static Transform* spTransform;
-	spTransform = pText->pTransform_;
+	static Transform* s_pTransform;
+	s_pTransform = pText->pTransform_;
 
 	Shader::Use(GLM::JE_SHADER_TEXT);
 
-	Shader::pCurrentShader_->SetMatrix("m4_scale", Scale(spTransform->scale_));
-	Shader::pCurrentShader_->SetMatrix("m4_rotate", Rotate(Math::DegToRad(spTransform->rotation_), spTransform->rotationAxis_));
+	Shader::pCurrentShader_->SetMatrix("m4_scale", Scale(s_pTransform->scale_));
+	Shader::pCurrentShader_->SetMatrix("m4_rotate", Rotate(Math::DegToRad(s_pTransform->rotation_), s_pTransform->rotationAxis_));
 	Shader::pCurrentShader_->SetBool("boolean_bilboard", (pText->status_ & Model::IS_BILBOARD) == Model::IS_BILBOARD);
 	Shader::pCurrentShader_->SetVector4("v4_color", pText->color_);
 
@@ -421,23 +421,24 @@ void GraphicSystem::ParticlePipeline(Emitter* pEmitter, float dt)
 		glEnable(GL_BLEND);
 		glDepthMask(GL_FALSE);
 		glBlendFunc(pEmitter->sfactor_, pEmitter->dfactor_);
+		glPointSize(pEmitter->pointSize_);
 
 		static vec3			s_velocity, s_colorDiff_;
 		static bool			s_changeColor, s_rotation;
 		static vec4			s_color;
 		static unsigned	    s_mode;
-		static Transform*   spTransform;
+		static Transform*   s_pTransform;
 
 		s_rotation = pEmitter->rotationSpeed_ != 0.f;
 		s_changeColor = pEmitter->changeColor_;
-		spTransform = pEmitter->pTransform_;
+		s_pTransform = pEmitter->pTransform_;
 		s_velocity = dt * pEmitter->velocity_;
 		s_colorDiff_ = dt * pEmitter->colorDiff_;
 		s_mode = pEmitter->drawMode_;
 
 		Shader::Use(GLM::JE_SHADER_PARTICLE);
 
-		Shader::pCurrentShader_->SetMatrix("m4_scale", Scale(spTransform->scale_));
+		Shader::pCurrentShader_->SetMatrix("m4_scale", Scale(s_pTransform->scale_));
 		Shader::pCurrentShader_->SetBool("boolean_bilboard", (pEmitter->status_ & Model::IS_BILBOARD) == Model::IS_BILBOARD);
 
 		// Send projection info to shader
@@ -486,7 +487,7 @@ void GraphicSystem::ParticlePipeline(Emitter* pEmitter, float dt)
 
 				// Send transform info to shader
 				Shader::pCurrentShader_->SetMatrix("m4_translate", Translate(particle->position));
-				Shader::pCurrentShader_->SetMatrix("m4_rotate", Rotate(Math::DegToRad(particle->rotation), spTransform->rotationAxis_));
+				Shader::pCurrentShader_->SetMatrix("m4_rotate", Rotate(Math::DegToRad(particle->rotation), s_pTransform->rotationAxis_));
 
 				// Send color info to shader
 				Shader::pCurrentShader_->SetVector4("v4_color", s_color);
@@ -498,7 +499,6 @@ void GraphicSystem::ParticlePipeline(Emitter* pEmitter, float dt)
 					static unsigned	 spTexture;
 					spTexture = mesh->mainTexture_;
 					glBindTexture(GL_TEXTURE_2D, spTexture);
-
 					Render(mesh, s_mode);
 				}
 			}

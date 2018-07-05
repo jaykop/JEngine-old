@@ -20,7 +20,7 @@ const unsigned	Emitter::kMaxSize_ = 1000;
 
 Emitter::Emitter(Object* pOwner)
 	:Model(pOwner), startColor_(vec3::ONE), changeColor_(true),
-	endColor_(vec3::ZERO), life_(1.f), type_(PARTICLE_NORMAL),
+	endColor_(vec3::ZERO), life_(1.f), type_(PARTICLE_NORMAL), pointSize_(1.f),
 	direction_(vec3::ZERO), velocity_(vec3::ZERO), active_(true), colorDiff_(vec3::ZERO),
 	deadCount_(0), range_(vec3::ZERO), size_(0), rotationSpeed_(0.f)
 {
@@ -198,9 +198,6 @@ void Emitter::Load(CR_RJValue data)
 				else if (!strcmp(meshType.c_str(), "Rect"))
 					newMesh = Mesh::CreateRect();
 
-				else if (!strcmp(meshType.c_str(), "Point"))
-					newMesh = Mesh::CreatePoint();
-
 				else 
 					newMesh = ASSET::LoadObjFile(meshType.c_str());
 			}
@@ -329,6 +326,9 @@ void Emitter::Load(CR_RJValue data)
 
 	if (data.HasMember("RotationSpeed"))
 		rotationSpeed_ = data["RotationSpeed"].GetFloat();
+
+	if (data.HasMember("PointSize"))
+		pointSize_ = data["PointSize"].GetFloat();
 }
 
 void Emitter::SetQuantity(unsigned quantity)

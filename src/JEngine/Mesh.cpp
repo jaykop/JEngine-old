@@ -109,8 +109,8 @@ Mesh* Mesh::CreatePoint()
 	Mesh *pPoint = new Mesh;
 
 	pPoint->AddPoint(vec3(0, 0));
-	pPoint->AddTextureUV(vec2(1, 1));
-	pPoint->AddNormal(vec3(0, 0, 1.f));
+	pPoint->AddTextureUV(vec2(0, 0));
+	pPoint->AddNormal(vec3(0, 0, 0.f));
 	pPoint->AddIndice({ 0,0,0 });
 
 	GLM::DescribeVertex(pPoint);
@@ -348,6 +348,40 @@ Mesh* Mesh::CreateTetrahedron()
 
 	GLM::DescribeVertex(pTetrahedron);
 	return pTetrahedron;
+}
+
+Mesh* Mesh::CreateWireframeBox()
+{
+	Mesh*  pLineBox = new Mesh;
+
+	pLineBox->AddPoint(vec3(-.5f, .5f, -.5f));
+	pLineBox->AddPoint(vec3(-.5f, .5f, .5f));
+	pLineBox->AddPoint(vec3(.5f, .5f, .5f));
+	pLineBox->AddPoint(vec3(.5f, .5f, -.5f));
+
+	pLineBox->AddPoint(vec3(-.5f, -.5f, -.5f));
+	pLineBox->AddPoint(vec3(-.5f, -.5f, .5f));
+	pLineBox->AddPoint(vec3(.5f, -.5f, .5f));
+	pLineBox->AddPoint(vec3(.5f, -.5f, -.5f));
+
+	pLineBox->AddTextureUV(vec2::ZERO);
+	pLineBox->AddNormal(vec3::ZERO);
+
+	pLineBox->AddIndice({ 0, 0, 0 });
+	pLineBox->AddIndice({ 1, 0, 0 });
+	pLineBox->AddIndice({ 2, 0, 0 });
+	pLineBox->AddIndice({ 3, 0, 0 });
+
+	pLineBox->AddIndice({ 4, 0, 0 });
+	pLineBox->AddIndice({ 5, 0, 0 });
+	pLineBox->AddIndice({ 6, 0, 0 });
+	pLineBox->AddIndice({ 7, 0, 0 });
+
+	pLineBox->builtIn_ = true;
+	
+	GLM::DescribeVertex(pLineBox);
+
+	return pLineBox;
 }
 
 

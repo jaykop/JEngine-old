@@ -34,6 +34,7 @@ public:
 	static Mesh* CreateCrossRect();
 	static Mesh* CreateCube();
 	static Mesh* CreateTetrahedron();
+	static Mesh* CreateWireframeBox();
 
 	void		AddTexture(const char* key);
 	void		RemoveTexture(const char* key);

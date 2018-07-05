@@ -603,7 +603,7 @@ void AssetManager::DrawLoadingScreen(SDL_Window* pWindow, const char* directory)
 	// Render to plane 2d
 	glBindVertexArray(GLM::targetMesh_[GLM::JE_TARGET_SCREEN]->vao_);
 	Shader::Use(GLM::JE_SHADER_SCREEN);
-	Shader::pCurrentShader_->SetVector4("v4_screenColor_", vec4::ONE);
+	Shader::pCurrentShader_->SetVector4("v4_screenColor", vec4::ONE);
 	Shader::pCurrentShader_->SetEnum("enum_effectType", 0);
 
 	glActiveTexture(GL_TEXTURE0);

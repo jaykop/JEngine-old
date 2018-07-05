@@ -1,16 +1,13 @@
 *Go over ai example and techniques
-*Fix json level files
-*Move point mesh to GLM
-*Render single point
+*Move drawMode to mesh
 *Add loading screen
-*Remove vertex conversion of text rendering
 *Add orbiting camera to camera controller
 *Polish text and particle pipeline as well
 *Clone function - copy and move constructor
 *Polish event handler with std function
 *Mouse picking - bounding box
 *Broadcasting design
-*Add dixygen comments
+*Add doxygen comments
 *Deferred rendering
 *premake build/cmake/emscripten/python
 *FMOD Lib
