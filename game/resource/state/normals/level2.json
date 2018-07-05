@@ -30,7 +30,6 @@
 								"Texture" : [ "smoke" ]
 							}
 						],
-
 						"Projection" : "Perspective", "Life" : 1.0, "Velocity" : [15, 15, 0], 
 						"Quantity" : 100, "Direction" : [0, 0, 0], "StartColor" : [1, 1, 1], "EndColor" : [0, 0, 1]
 					}
@@ -49,14 +48,14 @@
 					"Values": {
 						"Mesh" : [
 							{	
-								"Shape" : "Rect",
+								"Shape" : "Point",
 								"Texture" : [ "particle" ]
 							}
 						],
 
 						"Projection" : "Perspective", "Life" : 1.0, "Velocity" : [15, 15, 0], 
 						"Quantity" : 100, "Direction" : [0, 0, 0], "StartColor" : [1, 1, 1],
-						"EndColor" : [0, 0, 1], "Bilboard" : true, "DrawMode" : "Triangles"
+						"EndColor" : [0, 0, 1], "Bilboard" : true, "DrawMode" : "Points"
 					}
 				}
 			]

@@ -534,33 +534,24 @@ void GraphicSystem::RenderCharacter(Character& character, const vec3& position,
 		{ width, 0.f, 0.f, 1.f, 1.f ,0.f, 0.f, 1.f }
 	};
 
-	static unsigned verticesSize = sizeof(vertices) / sizeof(GLfloat);
-	static std::vector<Mesh::jeVertex> s_vertexArray;
-
-	s_vertexArray.clear();
-	s_vertexArray.reserve(verticesSize);
-	for (unsigned index = 0; index < 4; ++index) 
-		s_vertexArray.push_back(Mesh::jeVertex{
-			vec3(vertices[index][0], vertices[index][1], vertices[index][2]), 
-			vec2(vertices[index][3], vertices[index][4]), 
-			vec3(vertices[index][5], vertices[index][6], vertices[index][7])} );
-
 	glBindTexture(GL_TEXTURE_2D, character.texture);
 
 	// Text component does not use member mesh vector,
 	// but pre defined mesh from GLManager
 	glBindVertexArray(GLM::targetMesh_[GLM::JE_TARGET_TEXT]->vao_);
 	glBindBuffer(GL_ARRAY_BUFFER, GLM::targetMesh_[GLM::JE_TARGET_TEXT]->vbo_);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(Mesh::jeVertex) * s_vertexArray.size(),
-		static_cast<const void*>(&s_vertexArray[0]), GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::jeVertex), reinterpret_cast<void*>(offsetof(Mesh::jeVertex, jeVertex::position)));
+	// vertex position
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Mesh::jeVertex), reinterpret_cast<void*>(offsetof(Mesh::jeVertex, jeVertex::uv)));
+	// texture coordinate position
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::jeVertex), reinterpret_cast<void*>(offsetof(Mesh::jeVertex, jeVertex::normal)));
+	// normals of vertices
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
 	glEnableVertexAttribArray(2);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GLM::targetMesh_[GLM::JE_TARGET_TEXT]->ebo_);

@@ -35,7 +35,7 @@
 			"Component" : [
 				{
 					"Type" : "Transform",
-					"Values" : {"Position" : [0, 0, 0], "Scale" : [100, 100, 100]}
+					"Values" : {"Position" : [-25, 0, 0], "Scale" : [100, 100, 100]}
 				},
 				{
 					"Type": "Model",
@@ -46,43 +46,61 @@
 								"Texture" : [ "tetrahedron" ] 
 							}
 						],
-
 						"Color" : [1, 1, 1, 1], "Projection" : "Perspective",
 						"DrawMode" : "Triangles"
 					}
 				}
 			]
+		},
+		{
+			"Name" : "Model",
+			"Component" : [
+				{
+					"Type": "Transform",
+					"Values": {"Position" : [25, 0, 0], "Scale" : [1, 1, 1]}
+				},
+				{
+					"Type": "Model",
+					"Values": {						
+						"Mesh" : [  
+							{
+								"Shape" : "../resource/obj/earth_ball.obj",
+								"Texture" : [ "earth_ball" ] 
+							}
+						], 
+						"Projection" : "Perspective", "DrawMode" : "Triangle_Strip"}
+				}
+/*				{
+					"Type": "Model",
+					"Values": {
+						"Mesh" : [  
+							{
+								"Shape" : "../resource/obj/Narwhal.obj",
+								"Texture" : [ "whale" ] 
+							}
+						], 
+						 "Color" : [1, 1, 1, 1], "Projection" : "Perspective", "DrawMode" : "Triangle_Fan"}
+				}
+				{
+					"Type": "Model",
+					"Values": {"Texture" : "cyborg_diffuse", "Color" : [1, 1, 1, 1], "Projection" : "Perspective",
+								"Mesh" : "../resource/obj/cyborg.obj", "DrawMode" : "Triangles"}
+				}*/
+			]
 		}
-//		{
-//			"Name" : "Model",
-//			"Component" : [
-//				{
-//					"Type": "Transform",
-//					"Values": {"Position" : [0, 0, 0], "Scale" : [1, 1, 1]}
-//				},
-//				{
-//					"Type": "Model",
-//					"Values": {"Texture" : "earth_ball", "Color" : [1, 1, 1, 1], "Projection" : "Perspective",
-//								"Mesh" : "../resource/obj/earth_ball.obj", "DrawMode" : "Triangles"}
-//				}
-//				{
-//					"Type": "Model",
-//					"Values": {"Texture" : "whale", "Color" : [1, 1, 1, 1], "Projection" : "Perspective",
-//								"Mesh" : "../resource/obj/Narwhal.obj", "DrawMode" : "Triangle_Fan"}
-//				}
-//				{
-//					"Type": "Model",
-//					"Values": {"Texture" : "cyborg_diffuse", "Color" : [1, 1, 1, 1], "Projection" : "Perspective",
-//								"Mesh" : "../resource/obj/cyborg.obj", "DrawMode" : "Triangles"}
-//				}
-//			]
-//		}
 /*		{
 			"Name" : "Light1",
 			"Component" : [
 				{
 					"Type": "Light",
-					"Values": {"Type" : "Spot", "Position" : [0, 10, 0],
+					"Values": {
+						"Mesh" : [
+							{	
+								"Shape" : "Cube",
+								"Texture" : [ "uvtemplate" ]
+							}
+						],
+						"Type" : "Spot", "Position" : [0, 10, 0],
 						"Color" : [1, 1, 0, 1], "Direction" : [0, -1, 0],
 						"Diffuse" : [1, 1, 1, 1], "Specular" : [1, 1, 1, 1], 
 						"Ambient" : [1, 1, 1, 1], "Constant" : 1.0,
@@ -96,7 +114,14 @@
 			"Component" : [
 				{
 					"Type": "Light",
-					"Values": {"Type" : "Normal", "Position" : [0, 0, -10],
+					"Values": {
+						"Mesh" : [
+							{	
+								"Shape" : "Cube",
+								"Texture" : [ "uvtemplate" ]
+							}
+						],
+						"Type" : "Normal", "Position" : [0, 0, -10],
 						"Color" : [0, 0, 1, 1], "Direction" : [0, 0, 0],
 						"Diffuse" : [1, 1, 1, 1], "Specular" : [1, 1, 1, 1], 
 						"Ambient" : [1, 1, 1, 1], "Constant" : 1.0,

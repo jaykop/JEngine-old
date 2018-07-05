@@ -29,7 +29,7 @@ int main(int argc, char* args[]) {
 	if (JEngine::RegisterAssets()) {
 
 		// Run engine with imgui toggle parameter
-		JEngine::Run(false);
+		JEngine::Run(true);
 
 		JEngine::CloseConsole();
 

@@ -23,8 +23,14 @@
 				},
 				{
 					"Type": "Model",
-					"Values": {"Texture" : "uvtemplate", "Color" : [1, 1, 1, 1], "Projection" : "Perspective",
-								"Mesh" : "Cube"}
+					"Values": {
+						"Mesh" : [
+							{	
+								"Shape" : "Cube",
+								"Texture" : [ "uvtemplate" ]
+							}
+						],
+						"Color" : [1, 1, 1, 1], "Projection" : "Perspective"}
 				}
 			]
 		},
@@ -37,7 +43,14 @@
 				},
 				{
 					"Type": "Model",
-					"Values": {"Texture" : "testAnimation", "Color" : [1, 1, 1, 1], "Projection" : "Orthogonal"}
+					"Values": {
+						"Mesh" : [
+							{	
+								"Shape" : "Rect",
+								"Texture" : [ "testAnimation" ]
+							}
+						],
+						"Color" : [1, 1, 1, 1], "Projection" : "Orthogonal"}
 				},
 				{
 					"Type": "Animation",

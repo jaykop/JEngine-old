@@ -32,7 +32,14 @@
 				},
 				{
 					"Type": "Model",
-					"Values": { "Texture" : "wife", "Mesh" : "Rect"}
+					"Values": { 
+						"Mesh" : [
+							{	
+								"Shape" : "Rect",
+								"Texture" : [ "wife" ]
+							}
+						]
+					}
 				},
 				{
 					"Type": "StateMachine",
@@ -50,7 +57,14 @@
 				},
 				{
 					"Type": "Model",
-					"Values": { "Texture" : "bully", "Mesh" : "Rect" }
+					"Values": { 			
+						"Mesh" : [
+							{	
+								"Shape" : "Rect",
+								"Texture" : [ "bully" ]
+							}
+						]
+					}
 				},
 				{
 					"Type": "StateMachine",
@@ -68,7 +82,14 @@
 				},
 				{
 					"Type": "Model",
-					"Values": { "Texture" : "miner", "Mesh" : "Rect" }
+					"Values": { 
+						"Mesh" : [
+							{	
+								"Shape" : "Rect",
+								"Texture" : [ "miner" ]
+							}
+						]
+					}
 				},
 				{
 					"Type": "StateMachine",

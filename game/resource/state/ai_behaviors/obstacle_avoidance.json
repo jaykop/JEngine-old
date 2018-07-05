@@ -32,7 +32,14 @@
 				},
 				{
 					"Type" : "Model",
-					"Values" : {"Texture" : "crosshair", "Color" : [0, 0, 0, 1], "Projection" : "Perspective" }
+					"Values" : {
+						"Mesh" : [  
+							{
+								"Shape" : "Rect",
+								"Texture" : [ "crosshair" ] 
+							}
+						],
+						"Color" : [0, 0, 0, 1], "Projection" : "Perspective" }
 				}
 			]
 		},
@@ -45,7 +52,14 @@
 				},
 				{
 					"Type" : "Model", 
-					"Values" : {"Texture" : "box_line"}
+					"Values" : {
+						"Mesh" : [  
+							{
+								"Shape" : "Rect",
+								"Texture" : [ "box_line" ] 
+							}
+						]
+					}
 				}
 			]
 		},
@@ -58,7 +72,14 @@
 				},
 				{
 					"Type" : "Model",
-					"Values" : {"Texture" : "arrow", "Color" : [1, 1, 1, 1], "Projection" : "Perspective" }
+					"Values" : {
+						"Mesh" : [  
+							{
+								"Shape" : "Rect",
+								"Texture" : [ "arrow" ] 
+							}
+						],
+						"Color" : [1, 1, 1, 1], "Projection" : "Perspective" }
 				},
 				{
 					"Type" : "Steering",
@@ -84,7 +105,14 @@
 				},
 				{
 					"Type" : "Model",
-					"Values" : {"Texture" : "circle"}
+					"Values" : {
+						"Mesh" : [  
+							{
+								"Shape" : "Rect",
+								"Texture" : [ "circle" ] 
+							}
+						]
+					}
 				}
 			]
 		}

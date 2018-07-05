@@ -61,34 +61,40 @@ void Light::Load(CR_RJValue data)
 		for (unsigned meshIndex = 0; meshIndex < loadedMeshes.Size(); ++meshIndex) {
 
 			CR_RJValue currentMesh = loadedMeshes[meshIndex];
-			if (currentMesh.HasMember("Shape")
-				&& currentMesh["Shape"].IsString()
-				&& currentMesh.HasMember("Texture")
-				&& currentMesh["Texture"].IsArray()) {
+			Mesh* newMesh = nullptr;
 
+			// Check either if there is shape
+			if (currentMesh.HasMember("Shape")
+				&& currentMesh["Shape"].IsString()) {
 				std::string meshType = currentMesh["Shape"].GetString();
-				Mesh* newMesh = nullptr;
 
 				if (!strcmp(meshType.c_str(), "Point"))
 					newMesh = Mesh::CreatePoint();
 
-				else if (!strcmp(meshType.c_str(), "Rect"))
-					newMesh = Mesh::CreateRect();
-
 				else if (!strcmp(meshType.c_str(), "CrossRect"))
 					newMesh = Mesh::CreateCrossRect();
+
+				else if (!strcmp(meshType.c_str(), "Cube"))
+					newMesh = Mesh::CreateCube();
 
 				else if (!strcmp(meshType.c_str(), "Tetrahedron"))
 					newMesh = Mesh::CreateTetrahedron();
 
-				else if (!strcmp(meshType.c_str(), "Custom"))
+				else if (!strcmp(meshType.c_str(), "Rect"))
+					newMesh = Mesh::CreateRect();
+
+				else 
 					newMesh = ASSET::LoadObjFile(meshType.c_str());
+			}
+			// If not, set default mesh type
+			else
+				newMesh = Mesh::CreateRect();
 
-				else
-					newMesh = Mesh::CreateCube();
+			AddMesh(newMesh);
 
-				AddMesh(newMesh);
-
+			// Load texture
+			if (currentMesh.HasMember("Texture")
+				&& currentMesh["Texture"].IsArray()) {
 				for (unsigned textureIndex = 0; textureIndex < currentMesh["Texture"].Size(); ++textureIndex)
 					newMesh->AddTexture(currentMesh["Texture"][textureIndex].GetString());
 			}
