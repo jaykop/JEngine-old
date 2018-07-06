@@ -158,9 +158,8 @@ void GraphicSystem::LightSourcePipeline()
 			glBlendFunc(light->sfactor_, light->dfactor_);
 
 			// Update every mesh
-			unsigned mode = light->drawMode_;
 			for (auto mesh : light->meshes_)
-				Render(mesh, mode);
+				Render(mesh, mesh->drawMode_);
 			
 		} // for (auto light : lights_) {
 	} // if (isLight_) {
@@ -229,9 +228,8 @@ void GraphicSystem::ModelPipeline(Model *pModel)
 	glBlendFunc(pModel->sfactor_, pModel->dfactor_);
 
 	// Update every mesh
-	unsigned mode = pModel->drawMode_;
 	for (auto mesh : pModel->meshes_)
-		Render(mesh, mode);
+		Render(mesh, mesh->drawMode_);
 
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
@@ -426,7 +424,6 @@ void GraphicSystem::ParticlePipeline(Emitter* pEmitter, float dt)
 		static vec3			s_velocity, s_colorDiff_;
 		static bool			s_changeColor, s_rotation;
 		static vec4			s_color;
-		static unsigned	    s_mode;
 		static Transform*   s_pTransform;
 
 		s_rotation = pEmitter->rotationSpeed_ != 0.f;
@@ -434,7 +431,6 @@ void GraphicSystem::ParticlePipeline(Emitter* pEmitter, float dt)
 		s_pTransform = pEmitter->pTransform_;
 		s_velocity = dt * pEmitter->velocity_;
 		s_colorDiff_ = dt * pEmitter->colorDiff_;
-		s_mode = pEmitter->drawMode_;
 
 		Shader::Use(GLM::JE_SHADER_PARTICLE);
 
@@ -499,7 +495,7 @@ void GraphicSystem::ParticlePipeline(Emitter* pEmitter, float dt)
 					static unsigned	 spTexture;
 					spTexture = mesh->mainTexture_;
 					glBindTexture(GL_TEXTURE_2D, spTexture);
-					Render(mesh, s_mode);
+					Render(mesh, mesh->drawMode_);
 				}
 			}
 		}

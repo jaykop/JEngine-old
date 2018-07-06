@@ -48,7 +48,6 @@ void AssetManager::LoadAssets()
     // Read state info
     JSON::ReadFile(stateDirectory_.c_str());
     CR_RJValue states = JSON::GetDocument()["State"];
-    CR_RJValue fristStates = JSON::GetDocument()["FirstState"];
 
     // Read asset info
     JSON::ReadFile(assetDirectory_.c_str());
@@ -73,8 +72,10 @@ void AssetManager::LoadAssets()
     }
 
     // Set first state
-    STATE::SetStartingState(fristStates.GetString());
-    jeDebugPrint("*AssetManager - The first state is %s.\n", fristStates.GetString());
+	CR_RJValue fristStates = JSON::GetDocument()["FirstState"];
+	std::string firstStateName = STATE::firstState_.empty() ? fristStates.GetString() : STATE::firstState_;
+    STATE::SetStartingState(firstStateName.c_str());
+    jeDebugPrint("*AssetManager - The first state is %s.\n", firstStateName.c_str());
 
     // Load images using thread
     for (rapidjson::SizeType i = 0; i < textureSize; ++i) {

@@ -67,7 +67,7 @@ public:
 
 private:
 
-	unsigned	mainTexture_;
+	unsigned	mainTexture_, drawMode_;;
 	TextureMap	textureMap_;
 
 	std::vector<jeIndex>	indices_;

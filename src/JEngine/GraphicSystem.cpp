@@ -88,8 +88,6 @@ void GraphicSystem::Init()
 void GraphicSystem::Update(float dt)
 {
 	RenderToFramebuffer();
-	glPolygonMode(GL_FRONT_AND_BACK, GL_TRIANGLES);
-
 	UpdatePipelines(dt);
 	RenderToScreen();
 }

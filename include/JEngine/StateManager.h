@@ -65,6 +65,7 @@ private:
 	static StateStatus	status__;
 	static State*		pCurrent_, *pNext;
 	static SDL_Window*	pWindow_;
+	static std::string	firstState_;
 	
 #if defined(_DEBUG)
 	static bool showUpdateMessage_;

@@ -43,11 +43,11 @@
 						"Mesh" : [  
 							{
 								"Shape" : "Tetrahedron",
-								"Texture" : [ "tetrahedron" ] 
+								"Texture" : [ "tetrahedron" ],
+								"DrawMode" : "Triangles"
 							}
 						],
-						"Color" : [1, 1, 1, 1], "Projection" : "Perspective",
-						"DrawMode" : "Triangles"
+						"Color" : [1, 1, 1, 1], "Projection" : "Perspective"
 					}
 				}
 			]
@@ -65,10 +65,11 @@
 						"Mesh" : [  
 							{
 								"Shape" : "../resource/obj/earth_ball.obj",
-								"Texture" : [ "earth_ball" ] 
+								"Texture" : [ "earth_ball" ], 
+								"DrawMode" : "Triangle_Strip"
 							}
 						], 
-						"Projection" : "Perspective", "DrawMode" : "Triangle_Strip"}
+						"Projection" : "Perspective"}
 				}
 /*				{
 					"Type": "Model",
@@ -76,7 +77,8 @@
 						"Mesh" : [  
 							{
 								"Shape" : "../resource/obj/Narwhal.obj",
-								"Texture" : [ "whale" ] 
+								"Texture" : [ "whale" ], 
+								"DrawMode" : "Triangles"
 							}
 						], 
 						 "Color" : [1, 1, 1, 1], "Projection" : "Perspective", "DrawMode" : "Triangle_Fan"}
@@ -84,7 +86,7 @@
 				{
 					"Type": "Model",
 					"Values": {"Texture" : "cyborg_diffuse", "Color" : [1, 1, 1, 1], "Projection" : "Perspective",
-								"Mesh" : "../resource/obj/cyborg.obj", "DrawMode" : "Triangles"}
+								"Mesh" : "../resource/obj/cyborg.obj"}
 				}*/
 			]
 		}

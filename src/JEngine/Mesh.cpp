@@ -5,7 +5,7 @@
 jeBegin
 
 Mesh::Mesh() : vao_(0), vbo_(0), ebo_(0), 
-	builtIn_(false), mainTexture_(0) {}
+	builtIn_(false), mainTexture_(0), drawMode_(GL_TRIANGLES) {}
 
 Mesh::~Mesh() {
 
@@ -368,17 +368,22 @@ Mesh* Mesh::CreateWireframeBox()
 	pLineBox->AddNormal(vec3::ZERO);
 
 	pLineBox->AddIndice({ 0, 0, 0 });
+	pLineBox->AddIndice({ 4, 0, 0 });
+	pLineBox->AddIndice({ 5, 0, 0 });
+	pLineBox->AddIndice({ 1, 0, 0 });
+	pLineBox->AddIndice({ 2, 0, 0 });
+	pLineBox->AddIndice({ 6, 0, 0 });
+	pLineBox->AddIndice({ 7, 0, 0 });
+	pLineBox->AddIndice({ 3, 0, 0 });
+	pLineBox->AddIndice({ 0, 0, 0 });
 	pLineBox->AddIndice({ 1, 0, 0 });
 	pLineBox->AddIndice({ 2, 0, 0 });
 	pLineBox->AddIndice({ 3, 0, 0 });
-
+	pLineBox->AddIndice({ 7, 0, 0 });
 	pLineBox->AddIndice({ 4, 0, 0 });
 	pLineBox->AddIndice({ 5, 0, 0 });
 	pLineBox->AddIndice({ 6, 0, 0 });
-	pLineBox->AddIndice({ 7, 0, 0 });
 
-	pLineBox->builtIn_ = true;
-	
 	GLM::DescribeVertex(pLineBox);
 
 	return pLineBox;

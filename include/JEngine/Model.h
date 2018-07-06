@@ -44,7 +44,6 @@ public:
 
     void		SetParentToFollow(Object* pObject);
 
-	unsigned	drawMode_;
     int			status_;
     vec4		color_;
     ProjectType projection_;

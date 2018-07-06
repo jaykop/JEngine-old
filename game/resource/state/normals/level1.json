@@ -9,7 +9,7 @@
 			"Component" : [
 				{
 					"Type": "Camera",
-					"Values": {"Position" : [ -100, -100, -100], "Target" : [0, 0, 0],	"Up" : [0, 1, 0]}
+					"Values": {"Position" : [ 50, 50, 100], "Target" : [0, 0, 0],	"Up" : [0, 1, 0]}
 				}
 			]
 		},				
@@ -25,12 +25,13 @@
 					"Values": {
 						"Mesh" : [
 							{	
-								"Shape" : "Cube",
-								"Texture" : [ "uvtemplate" ]
+								"Shape" : "WireBox",
+								"Texture" : [ "rect" ],
+								"DrawMode" : "Line_Strip"
 							}
 						],
 
-						"Color" : [1, 1, 1, 1], "Projection" : "Perspective", "DrawMode" : "Triangles"}
+						"Color" : [1, 1, 1, 1], "Projection" : "Perspective"}
 				}
 			]
 		},

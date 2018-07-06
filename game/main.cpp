@@ -28,6 +28,10 @@ int main(int argc, char* args[]) {
 	// Initialize aassets
 	if (JEngine::RegisterAssets()) {
 
+		// Set first state
+		// if user call this function, info from json files will be ignored
+		// JEngine::SetFirstState("level2");
+
 		// Run engine with imgui toggle parameter
 		JEngine::Run(true);
 

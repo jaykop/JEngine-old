@@ -28,6 +28,7 @@ State			    *STATE::pCurrent_ = nullptr,
 					*STATE::pNext = nullptr;
 float			    STATE::frameTime_ = 0.f;
 unsigned			STATE::frames_ = 0;
+std::string			STATE::firstState_;
 
 //////////////////////////////////////////////////////////////////////////
 // funciton bodues
@@ -238,14 +239,18 @@ void StateManager::PopState(const char* stateName)
 
 void StateManager::SetStartingState(const char * stateName)
 {
-    // Find where it is
-    for (auto it = states_.begin();
-        it != states_.end(); ++it) {
+	if (firstState_.empty())
+		firstState_.assign(stateName);
 
-        // Get same name state
-        if (!strcmp((*it)->name_.c_str(), stateName))
-            pNext = pCurrent_ = (*it);
-    }
+	// Find where it is
+	for (auto it = states_.begin();
+		it != states_.end(); ++it) {
+
+		// Get same name state
+		if (!strcmp((*it)->name_.c_str(), firstState_.c_str()))
+			pNext = pCurrent_ = (*it);
+	}
+
 }
 
 void StateManager::Quit()

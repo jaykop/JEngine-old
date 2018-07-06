@@ -14,7 +14,7 @@ jeBegin
 jeDefineComponentBuilder(Model);
 
 Model::Model(Object* pOwner)
-	:Component(pOwner), drawMode_(GL_TRIANGLES), color_(vec4::ONE), projection_(PROJECTION_PERSPECTIVE), 
+	:Component(pOwner), color_(vec4::ONE), projection_(PROJECTION_PERSPECTIVE), 
 	pTransform_(nullptr), culled_(false), pMaterial_(nullptr), sfactor_(GL_SRC_ALPHA),
 	dfactor_(GL_ONE_MINUS_SRC_ALPHA), pAnimation_(nullptr), is_(0x0000), pInherited_(nullptr)
 {}
@@ -118,6 +118,9 @@ void Model::Load(CR_RJValue data)
 				else if (!strcmp(meshType.c_str(), "Rect"))
 					newMesh = Mesh::CreateRect();
 
+				else if (!strcmp(meshType.c_str(), "WireBox"))
+					newMesh = Mesh::CreateWireframeBox();
+
 				else 
 					newMesh = ASSET::LoadObjFile(meshType.c_str());
 			}
@@ -133,36 +136,36 @@ void Model::Load(CR_RJValue data)
 				for (unsigned textureIndex = 0; textureIndex < currentMesh["Texture"].Size(); ++textureIndex)
 					newMesh->AddTexture(currentMesh["Texture"][textureIndex].GetString());
 			}
+
+			if (currentMesh.HasMember("DrawMode")
+				&& currentMesh["DrawMode"].IsString()) {
+
+				std::string drawType = currentMesh["DrawMode"].GetString();
+				if (!strcmp(drawType.c_str(), "Triangles"))
+					newMesh->drawMode_ = GL_TRIANGLES;
+
+				else if (!strcmp(drawType.c_str(), "Triangle_Strip"))
+					newMesh->drawMode_ = GL_TRIANGLE_STRIP;
+
+				else if (!strcmp(drawType.c_str(), "Triangle_Fan"))
+					newMesh->drawMode_ = GL_TRIANGLE_FAN;
+
+				else if (!strcmp(drawType.c_str(), "Lines"))
+					newMesh->drawMode_ = GL_LINES;
+
+				else if (!strcmp(drawType.c_str(), "Line_Strip"))
+					newMesh->drawMode_ = GL_LINE_STRIP;
+
+				else if (!strcmp("Quad", drawType.c_str()))
+					newMesh->drawMode_ = GL_QUADS;
+
+				else if (!strcmp("Quad_Strip", drawType.c_str()))
+					newMesh->drawMode_ = GL_QUAD_STRIP;
+
+				else if (!strcmp("Points", drawType.c_str()))
+					newMesh->drawMode_ = GL_POINTS;
+			}
 		}
-	}
-
-	if (data.HasMember("DrawMode")
-		&& data["DrawMode"].IsString()) {
-		
-		std::string drawType = data["DrawMode"].GetString();
-		if (!strcmp(drawType.c_str(), "Triangles"))
-			drawMode_ = GL_TRIANGLES;
-
-		else if (!strcmp(drawType.c_str(), "Triangle_Strip"))
-			drawMode_ = GL_TRIANGLE_STRIP;
-
-		else if (!strcmp(drawType.c_str(), "Triangle_Fan"))
-			drawMode_ = GL_TRIANGLE_FAN;
-
-		else if (!strcmp(drawType.c_str(), "Lines"))
-			drawMode_ = GL_LINES;
-
-		else if (!strcmp(drawType.c_str(), "Line_Strip"))
-			drawMode_ = GL_LINE_STRIP;
-
-		else if (!strcmp("Quad", drawType.c_str()))
-			drawMode_ = GL_QUADS;
-
-		else if (!strcmp("Quad_Strip", drawType.c_str()))
-			drawMode_ = GL_QUAD_STRIP;
-
-		else if (!strcmp("Points", drawType.c_str()))
-			drawMode_ = GL_POINTS;
 	}
 
 	if (data.HasMember("Flip")

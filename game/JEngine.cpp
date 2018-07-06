@@ -1,6 +1,7 @@
 #include "JEngine.h"
 #include "Application.h"
 #include "AssetManager.h"
+#include "StateManager.h"
 #include "ComponentManager.h"
 #include "CustomLogic.h"
 
@@ -59,7 +60,12 @@ void JEngine::CloseConsole()
 	APP::CloseConsole();
 }
 
-void JEngine::Run(bool _imguiToggle)
+void JEngine::SetFirstState(const char* stateName) 
 {
-    APP::Run(_imguiToggle);
+	STATE::SetStartingState(stateName);
+}
+
+void JEngine::Run(bool imguiToggle)
+{
+    APP::Run(imguiToggle);
 }
