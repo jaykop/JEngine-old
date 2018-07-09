@@ -1,11 +1,11 @@
 *Go over ai example and techniques
-*Move drawMode to mesh
+*Import assimp lib
 *Add loading screen
 *Add orbiting camera to camera controller
 *Polish text and particle pipeline as well
+*Mouse picking - bounding box
 *Clone function - copy and move constructor
 *Polish event handler with std function
-*Mouse picking - bounding box
 *Broadcasting design
 *Add doxygen comments
 *Deferred rendering
@@ -13,7 +13,6 @@
 *FMOD Lib
 *SIMD Tech
 *Rippling effect
-*Polish obj loader/ Efficient obj loader / 4 faces case
 *Math library unit test
 *Look for part to implement thread
 *Culling
