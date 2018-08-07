@@ -3,9 +3,9 @@
 #include <unordered_map>
 #include "GraphicSystem.h"
 
-class aiNode;
-class aiMesh;
-class aiScene;
+//class aiNode;
+//class aiMesh;
+//class aiScene;
 struct SDL_Window;
 
 jeBegin
@@ -72,10 +72,11 @@ private:
 	static void LoadArchetype(const char* path, const char* archetypeKey);
 	static Mesh* LoadObjFile(const char* path);
 
-	static void ProcessNode(aiNode* pNode, const aiScene* pScene);
-	static Mesh* ProcessMesh(aiMesh* pMesh, const aiScene* pScene);
-	static void LoadModel(std::string& path);
-	static std::vector<unsigned> LoadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName);
+	// TODO: Use assimp lib
+	//static void ProcessNode(aiNode* pNode, const aiScene* pScene);
+	//static Mesh* ProcessMesh(aiMesh* pMesh, const aiScene* pScene);
+	//static void LoadModel(std::string& path);
+	//static std::vector<unsigned> LoadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName);
 
 	// Private member functions
 	static bool SetBuiltInComponents();

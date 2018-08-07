@@ -404,116 +404,6 @@ Mesh* AssetManager::LoadObjFile(const char* path)
 	return pNewMesh;
 }
 
-void AssetManager::ProcessNode(aiNode * pNode, const aiScene * pScene)
-{
-	// Process all the node;s mesh
-	for (unsigned i = 0; i < pNode->mNumMeshes; i++) {
-		aiMesh *pMesh = pScene->mMeshes[i];
-		// meshes.push_back(ProcessMesh(pMesh, pScene));
-	}
-
-	// Then do the same for each of its children
-	for (unsigned i = 0; i < pNode->mNumChildren; i++) 
-		ProcessNode(pNode->mChildren[i], pScene);
-}
-
-Mesh * AssetManager::ProcessMesh(aiMesh * pMesh, const aiScene * pScene)
-{
-	std::vector<Mesh::jeVertex> vertices;
-	std::vector<unsigned> indices, textures;
-
-	for (unsigned i = 0; i < pMesh->mNumVertices; i++) {
-		Mesh::jeVertex vertex;
-		vec3 vector;
-
-		// Set positions
-		vector.x = pMesh->mVertices[i].x;
-		vector.y = pMesh->mVertices[i].y;
-		vector.z = pMesh->mVertices[i].z;
-		vertex.position.Set(vector);
-
-		// Set normlas
-		vector.x = pMesh->mNormals[i].x;
-		vector.y = pMesh->mNormals[i].y;
-		vector.z = pMesh->mNormals[i].z;
-		vertex.normal.Set(vector);
-
-		// texture coord
-		if (pMesh->mTextureCoords[0]) {
-			vec2 vec;
-			vec.x = pMesh->mTextureCoords[0][i].x;
-			vec.y = pMesh->mTextureCoords[0][i].y;
-			vertex.uv.Set(vec2);
-		}
-		else
-			vertex.uv.SetZero();
-
-		// TODO: Locked 
-		//// tangent
-		//vector.x = mesh->mTangents[i].x;
-		//vector.y = mesh->mTangents[i].y;
-		//vector.z = mesh->mTangents[i].z;
-		//vertex.Tangent = vector;
-		//// bitangent
-		//vector.x = mesh->mBitangents[i].x;
-		//vector.y = mesh->mBitangents[i].y;
-		//vector.z = mesh->mBitangents[i].z;
-		//vertex.Bitangent = vector;
-		//vertices.push_back(vertex);
-
-		// Go through each mehs's faces
-		for (unsigned i = 0; i < pMesh->mNumFaces; i++) {
-			aiFace face = pMesh->mFaces[i];
-			for (unsigned j = 0; j < face.mNumIndices; j++)
-				indices.push_back(j);
-		}
-	}
-
-	// TODO: Locked
-	//// process materials
-	//aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-	//// we assume a convention for sampler names in the shaders. Each diffuse texture should be named
-	//// as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER. 
-	//// Same applies to other texture as the following list summarizes:
-	//// diffuse: texture_diffuseN
-	//// specular: texture_specularN
-	//// normal: texture_normalN
-
-	//// 1. diffuse maps
-	//vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
-	//textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-	//// 2. specular maps
-	//vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
-	//textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-	//// 3. normal maps
-	//std::vector<Texture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
-	//textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
-	//// 4. height maps
-	//std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
-	//textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
-
-	// return a mesh object created from the extracted mesh data
-	
-	// return new Mesh{ vertices, indices, textures };
-	return nullptr;
-}
-
-void AssetManager::LoadModel(std::string & path)
-{
-	Assimp::Importer import;
-	const aiScene *pScene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
-
-	if (!pScene || pScene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !pScene->mRootNode)
-	{
-		jeDebugPrint("!AssetManager - Error from Assimp: %s", import.GetErrorString());
-		return;
-	}
-
-	// directory = path.substr(0, path.find_last_not_of('/'));
-
-	ProcessNode(pScene->mRootNode, pScene);
-}
-
 void AssetManager::TakeAScreenshot(const char* directory)
 {
 	// Get the total size of image
@@ -732,38 +622,150 @@ void AssetManager::DrawLoadingScreen(SDL_Window* pWindow, const char* directory)
 	delete mesh;
 }
 
-// checks all material textures of a given type and loads the textures if they're not loaded yet.
-// the required info is returned as a Texture struct.
-std::vector<unsigned> LoadMaterialTextures(aiMaterial */*mat*/, aiTextureType /*type*/, std::string /*typeName*/)
-{
-	std::vector<unsigned> textures;
-
-	//for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
-	//{
-	//	aiString str;
-	//	mat->GetTexture(type, i, &str);
-	//	// check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
-	//	bool skip = false;
-	//	for (unsigned int j = 0; j < textures_loaded.size(); j++)
-	//	{
-	//		if (std::strcmp(textures_loaded[j].path.data(), str.C_Str()) == 0)
-	//		{
-	//			textures.push_back(textures_loaded[j]);
-	//			skip = true; // a texture with the same filepath has already been loaded, continue to next one. (optimization)
-	//			break;
-	//		}
-	//	}
-	//	if (!skip)
-	//	{   // if texture hasn't been loaded already, load it
-	//		Texture texture;
-	//		texture.id = TextureFromFile(str.C_Str(), this->directory);
-	//		texture.type = typeName;
-	//		texture.path = str.C_Str();
-	//		textures.push_back(texture);
-	//		textures_loaded.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
-	//	}
-	//}
-	return textures;
-}
+// TODO: Use assimp lib later....
+//
+//void AssetManager::ProcessNode(aiNode * pNode, const aiScene * pScene)
+//{
+//	// Process all the node;s mesh
+//	for (unsigned i = 0; i < pNode->mNumMeshes; i++) {
+//		aiMesh *pMesh = pScene->mMeshes[i];
+//		// meshes.push_back(ProcessMesh(pMesh, pScene));
+//	}
+//
+//	// Then do the same for each of its children
+//	for (unsigned i = 0; i < pNode->mNumChildren; i++)
+//		ProcessNode(pNode->mChildren[i], pScene);
+//}
+//
+//Mesh * AssetManager::ProcessMesh(aiMesh * pMesh, const aiScene * pScene)
+//{
+//	std::vector<Mesh::jeVertex> vertices;
+//	std::vector<unsigned> indices, textures;
+//
+//	for (unsigned i = 0; i < pMesh->mNumVertices; i++) {
+//		Mesh::jeVertex vertex;
+//		vec3 vector;
+//
+//		// Set positions
+//		vector.x = pMesh->mVertices[i].x;
+//		vector.y = pMesh->mVertices[i].y;
+//		vector.z = pMesh->mVertices[i].z;
+//		vertex.position.Set(vector);
+//
+//		// Set normlas
+//		vector.x = pMesh->mNormals[i].x;
+//		vector.y = pMesh->mNormals[i].y;
+//		vector.z = pMesh->mNormals[i].z;
+//		vertex.normal.Set(vector);
+//
+//		// texture coord
+//		if (pMesh->mTextureCoords[0]) {
+//			vec2 vec;
+//			vec.x = pMesh->mTextureCoords[0][i].x;
+//			vec.y = pMesh->mTextureCoords[0][i].y;
+//			vertex.uv.Set(vec2);
+//		}
+//		else
+//			vertex.uv.SetZero();
+//
+//		// TODO: Locked 
+//		//// tangent
+//		//vector.x = mesh->mTangents[i].x;
+//		//vector.y = mesh->mTangents[i].y;
+//		//vector.z = mesh->mTangents[i].z;
+//		//vertex.Tangent = vector;
+//		//// bitangent
+//		//vector.x = mesh->mBitangents[i].x;
+//		//vector.y = mesh->mBitangents[i].y;
+//		//vector.z = mesh->mBitangents[i].z;
+//		//vertex.Bitangent = vector;
+//		//vertices.push_back(vertex);
+//
+//		// Go through each mehs's faces
+//		for (unsigned i = 0; i < pMesh->mNumFaces; i++) {
+//			aiFace face = pMesh->mFaces[i];
+//			for (unsigned j = 0; j < face.mNumIndices; j++)
+//				indices.push_back(j);
+//		}
+//	}
+//
+//	// TODO: Locked
+//	//// process materials
+//	//aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+//	//// we assume a convention for sampler names in the shaders. Each diffuse texture should be named
+//	//// as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER. 
+//	//// Same applies to other texture as the following list summarizes:
+//	//// diffuse: texture_diffuseN
+//	//// specular: texture_specularN
+//	//// normal: texture_normalN
+//
+//	//// 1. diffuse maps
+//	//vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+//	//textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+//	//// 2. specular maps
+//	//vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+//	//textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+//	//// 3. normal maps
+//	//std::vector<Texture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
+//	//textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
+//	//// 4. height maps
+//	//std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
+//	//textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
+//
+//	// return a mesh object created from the extracted mesh data
+//
+//	// return new Mesh{ vertices, indices, textures };
+//	return nullptr;
+//}
+//
+//void AssetManager::LoadModel(std::string & path)
+//{
+//	Assimp::Importer import;
+//	const aiScene *pScene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+//
+//	if (!pScene || pScene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !pScene->mRootNode)
+//	{
+//		jeDebugPrint("!AssetManager - Error from Assimp: %s", import.GetErrorString());
+//		return;
+//	}
+//
+//	// directory = path.substr(0, path.find_last_not_of('/'));
+//
+//	ProcessNode(pScene->mRootNode, pScene);
+//}
+//
+//// checks all material textures of a given type and loads the textures if they're not loaded yet.
+//// the required info is returned as a Texture struct.
+//std::vector<unsigned> LoadMaterialTextures(aiMaterial */*mat*/, aiTextureType /*type*/, std::string /*typeName*/)
+//{
+//	std::vector<unsigned> textures;
+//
+//	//for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
+//	//{
+//	//	aiString str;
+//	//	mat->GetTexture(type, i, &str);
+//	//	// check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
+//	//	bool skip = false;
+//	//	for (unsigned int j = 0; j < textures_loaded.size(); j++)
+//	//	{
+//	//		if (std::strcmp(textures_loaded[j].path.data(), str.C_Str()) == 0)
+//	//		{
+//	//			textures.push_back(textures_loaded[j]);
+//	//			skip = true; // a texture with the same filepath has already been loaded, continue to next one. (optimization)
+//	//			break;
+//	//		}
+//	//	}
+//	//	if (!skip)
+//	//	{   // if texture hasn't been loaded already, load it
+//	//		Texture texture;
+//	//		texture.id = TextureFromFile(str.C_Str(), this->directory);
+//	//		texture.type = typeName;
+//	//		texture.path = str.C_Str();
+//	//		textures.push_back(texture);
+//	//		textures_loaded.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
+//	//	}
+//	//}
+//	return textures;
+//}
 
 jeEnd
