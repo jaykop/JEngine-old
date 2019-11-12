@@ -35,6 +35,7 @@
     <ClCompile Include="..\..\src\mat3.cpp" />
     <ClCompile Include="..\..\src\mat4.cpp" />
     <ClCompile Include="..\..\src\mat4_transform.cpp" />
+    <ClCompile Include="..\..\src\mesh.cpp" />
     <ClCompile Include="..\..\src\model.cpp" />
     <ClCompile Include="..\..\src\object.cpp" />
     <ClCompile Include="..\..\src\object_manager.cpp" />
@@ -72,6 +73,7 @@
     <ClInclude Include="..\..\include\JEngine\mat4.hpp" />
     <ClInclude Include="..\..\include\JEngine\math.hpp" />
     <ClInclude Include="..\..\include\JEngine\math_util.hpp" />
+    <ClInclude Include="..\..\include\JEngine\mesh.hpp" />
     <ClInclude Include="..\..\include\JEngine\model.hpp" />
     <ClInclude Include="..\..\include\JEngine\object.hpp" />
     <ClInclude Include="..\..\include\JEngine\object_manager.hpp" />
@@ -179,7 +181,7 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include\rapidjson;$(SolutionDir)..\..\include\imgui;$(SolutionDir)..\..\include\SDL2;$(SolutionDir)..\..\include\lodePNG;$(SolutionDir)..\..\include\freetype2;$(SolutionDir)..\..\include\assimp;$(SolutionDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include\rapidjson;$(SolutionDir)..\..\include\imgui;$(SolutionDir)..\..\include\SDL2;$(SolutionDir)..\..\include\lodePNG;$(SolutionDir)..\..\include\freetype2;$(SolutionDir)..\..\include\assimp;$(SolutionDir)..\..\include\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -187,7 +189,7 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include\rapidjson;$(SolutionDir)..\..\include\imgui;$(SolutionDir)..\..\include\SDL2;$(SolutionDir)..\..\include\lodePNG;$(SolutionDir)..\..\include\freetype2;$(SolutionDir)..\..\include\assimp;$(SolutionDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include\rapidjson;$(SolutionDir)..\..\include\imgui;$(SolutionDir)..\..\include\SDL2;$(SolutionDir)..\..\include\lodePNG;$(SolutionDir)..\..\include\freetype2;$(SolutionDir)..\..\include\assimp;$(SolutionDir)..\..\include\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -197,7 +199,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include\rapidjson;$(SolutionDir)..\..\include\imgui;$(SolutionDir)..\..\include\SDL2;$(SolutionDir)..\..\include\lodePNG;$(SolutionDir)..\..\include\freetype2;$(SolutionDir)..\..\include\assimp;$(SolutionDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include\rapidjson;$(SolutionDir)..\..\include\imgui;$(SolutionDir)..\..\include\SDL2;$(SolutionDir)..\..\include\lodePNG;$(SolutionDir)..\..\include\freetype2;$(SolutionDir)..\..\include\assimp;$(SolutionDir)..\..\include\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -211,7 +213,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include\rapidjson;$(SolutionDir)..\..\include\imgui;$(SolutionDir)..\..\include\SDL2;$(SolutionDir)..\..\include\lodePNG;$(SolutionDir)..\..\include\freetype2;$(SolutionDir)..\..\include\assimp;$(SolutionDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include\rapidjson;$(SolutionDir)..\..\include\imgui;$(SolutionDir)..\..\include\SDL2;$(SolutionDir)..\..\include\lodePNG;$(SolutionDir)..\..\include\freetype2;$(SolutionDir)..\..\include\assimp;$(SolutionDir)..\..\include\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

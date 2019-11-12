@@ -97,6 +97,9 @@
     <ClCompile Include="..\..\src\application.cpp">
       <Filter>core\app</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\mesh.cpp">
+      <Filter>system\graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\JEngine\macros.hpp" />
@@ -207,6 +210,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\JEngine\shader.hpp">
       <Filter>core\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\mesh.hpp">
+      <Filter>system\graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

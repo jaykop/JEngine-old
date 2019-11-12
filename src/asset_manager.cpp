@@ -19,6 +19,7 @@ Contains the methods of asset_manager class
 #include <text.hpp>
 #include <thread>
 #include <lodepng.h>
+#include <mesh.hpp>
 
 jeBegin
 

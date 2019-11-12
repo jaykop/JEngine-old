@@ -28,6 +28,17 @@ class Shader {
 	static std::vector<const char*> vsDirectory_;
 	static std::vector<const char*> fsDirectory_;
 
+public:
+
+	void set_int(const char* name, int number);
+	void set_bool(const char* name, bool toggle);
+	void set_enum(const char* name, int typr);
+	void set_matrix(const char* name, const mat4& mat4);
+	void set_uint(const char* name, unsigned uInt);
+	void set_float(const char* name, float number);
+	void set_vec3(const char* name, const vec3& vector);
+	void set_vec4(const char* name, const vec4& vector);
+
 private:
 
 	enum Type { JE_VERTEX, JE_GEOMETRY, JE_PIXEL };
@@ -38,15 +49,6 @@ private:
 
 	void create_shader(const char* file_path, Type type);
 	void combine_shaders();
-
-	void set_int(const char* name, int number);
-	void set_bool(const char* name, bool toggle);
-	void set_enum(const char* name, int typr);
-	void set_matrix(const char* name, const mat4& mat4);
-	void set_uint(const char* name, unsigned uInt);
-	void set_float(const char* name, float number);
-	void set_vec3(const char* name, const vec3& vector);
-	void set_vec4(const char* name, const vec4& vector);
 
 	GLuint  programId_, vertexId_, fragmentId_, geometryId_;
 	int	    infoLogLength_;
