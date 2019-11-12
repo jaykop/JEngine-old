@@ -85,7 +85,7 @@ private:
 	// scene info
 	static Scenes scenes_;
 	static SceneStatus status_;
-	static Scene* currentScene_, *nextScene_;
+	static Scene *currentScene_, *nextScene_;
 	static SDL_Window *window_;
 	static std::string	firstScene_;
 

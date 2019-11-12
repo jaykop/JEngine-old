@@ -37,7 +37,7 @@ private:
 
 	Object* owner_ = nullptr;
 	bool bulitIn_ = false;
-	std::string typeName_;
+	const char* typeName_;
 
 	// No default constructor
 	Component() = delete;

@@ -35,11 +35,11 @@ private:
 	static void update();
 	static void close();
 
-	void add_model(Model* pModel);
-	void remove_model(Model* pMmodel);
+	void add_model(Model* m);
+	void remove_model(Model* m);
 
-	void add_camera(Camera* pCamera);
-	void remove_camera(Camera* pCamera);
+	void add_camera(Camera* c);
+	void remove_camera(Camera* c);
 
 	//void add_light(Light* pLight);
 	//void remove_light(Light* pLight);

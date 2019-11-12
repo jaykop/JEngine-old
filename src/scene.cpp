@@ -43,7 +43,7 @@ void Scene::unbind_system()
 Scene::Scene(const char* name)
 {
 	// assign the scene name
-	name_.assign(name);
+	name_ = name;
 }
 
 Scene::~Scene()
@@ -110,7 +110,7 @@ void Scene::unload()
 
 const char* Scene::get_name() const
 {
-	return name_.c_str();
+	return name_;
 }
 
 jeEnd

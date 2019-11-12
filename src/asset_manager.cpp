@@ -26,7 +26,7 @@ std::string	AssetManager::initDirectory_, AssetManager::assetDirectory_,
 AssetManager::stateDirectory_, AssetManager::archeDirectory_;
 
 unsigned char* AssetManager::pixel_chunk = nullptr;
-std::unordered_map<std::string, AssetManager::Image> AssetManager::images_;
+AssetManager::Images AssetManager::images_;
 
 AssetManager::FontMap		AssetManager::fontMap_;
 AssetManager::AudioMap		AssetManager::audioMap_;
@@ -237,7 +237,7 @@ void AssetManager::load_image(const char* path, const char* textureKey)
 		jeDebugPrint("!AssetManager - Decoder error %d / %s.\n", error, lodepng_error_text(error));
 
 	else
-		images_.insert(std::unordered_map<std::string, Image>::value_type(textureKey, image));
+		images_.insert(Images::value_type(textureKey, image));
 }
 
 void AssetManager::register_image(Image& image, const char* textureKey)

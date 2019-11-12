@@ -38,25 +38,23 @@ void Object::register_components()
 
 const char* Object::get_name()
 {
-	return name_.c_str();
+	return name_;
 }
 
 void Object::add_component(const char* componentName)
 {
-	static std::string typeName;
-	typeName = ComponentManager::key_to_type(componentName);
+	const char* typeName = ComponentManager::key_to_type(componentName);
 	auto found = components_.find(typeName);
 
 	DEBUG_ASSERT(found == components_.end(), "Trying to add an existing component!");
 
-	Component* newComponent = ComponentManager::create_component(typeName.c_str());
+	Component* newComponent = ComponentManager::create_component(typeName);
 	components_.insert(Components::value_type(typeName, newComponent));
 }
 
 Component* Object::get_component(const char* componentName)
 {
-	static std::string typeName;
-	typeName = ComponentManager::key_to_type(componentName);
+	const char* typeName = ComponentManager::key_to_type(componentName);
 	auto found = components_.find(typeName);
 
 	DEBUG_ASSERT(found != components_.end(), "No such name of component!");
@@ -66,8 +64,7 @@ Component* Object::get_component(const char* componentName)
 
 bool Object::has_component(const char* componentName)
 {
-	static std::string typeName;
-	typeName = ComponentManager::key_to_type(componentName);
+	const char* typeName = ComponentManager::key_to_type(componentName);
 	auto found = components_.find(typeName);
 
 	return found != components_.end();
@@ -75,8 +72,7 @@ bool Object::has_component(const char* componentName)
 
 void Object::remove_component(const char* componentName)
 {
-	static std::string typeName;
-	typeName = ComponentManager::key_to_type(componentName);
+	const char* typeName = ComponentManager::key_to_type(componentName);
 	auto found = components_.find(typeName);
 
 	DEBUG_ASSERT(found != components_.end(), "No such name of component!");

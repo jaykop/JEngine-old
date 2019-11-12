@@ -94,7 +94,7 @@ void SceneManager::push_scene(const char* path, const char* stateName)
 
 		// make a new scene as intended
 		Scene* newState = new Scene(stateName);
-		newState->directory_.assign(path);
+		newState->directory_ = path;
 
 		// push to the vector
 		scenes_.push_back(newState);
@@ -112,7 +112,7 @@ void SceneManager::pop_scene(const char* stateName)
 	for (auto it = scenes_.begin();	it != scenes_.end(); ++it) {
 
 		// get the same scene with the name given 
-		if (!strcmp((*it)->name_.c_str(), stateName)) {
+		if (!strcmp((*it)->name_, stateName)) {
 			delete (*it);		// return the memory
 			scenes_.erase(it);	// remove from the vector
 			break;
@@ -130,10 +130,9 @@ void SceneManager::set_first_scene(const char* stateName)
 	// unless, find the correct scene from the vector
 	for (auto it = scenes_.begin(); it != scenes_.end(); ++it) {
 
-		if (!strcmp((*it)->name_.c_str(), firstScene_.c_str()))
+		if (!strcmp((*it)->name_, firstScene_.c_str()))
 			nextScene_ = currentScene_ = (*it);
 	}
-
 }
 
 void SceneManager::quit()
@@ -213,7 +212,7 @@ Scene* SceneManager::get_scene(const char* stateName)
 {
 	// find the scene
 	for (auto it : scenes_)
-		if (!strcmp(stateName, it->name_.c_str()))
+		if (!strcmp(stateName, it->name_))
 			return it;
 
 	// If there is no,
@@ -227,7 +226,7 @@ bool SceneManager::has_scene(const char* stateName)
 	for (auto scene : scenes_) {
 
 		// If found the one,
-		if (!strcmp(stateName, scene->name_.c_str())) {
+		if (!strcmp(stateName, scene->name_)) {
 			found = true;
 			return found;
 		}

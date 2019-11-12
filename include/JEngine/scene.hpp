@@ -11,7 +11,6 @@ Contains the definition of Scene class
 /******************************************************************************/
 
 #pragma once
-#include <string>
 #include <macros.hpp>
 #include <unordered_map>
 #include <vec4.hpp>
@@ -19,7 +18,7 @@ Contains the definition of Scene class
 jeBegin
 
 class Object;
-using ObjectMap = std::unordered_map<std::string, Object*>;
+using ObjectMap = std::unordered_map<const char*, Object*>;
 
 // Generic scene class
 class Scene {
@@ -46,8 +45,7 @@ private:
 	void unload();
 
 	Scene* lastScene_ = nullptr; // pointer to the last scene (before this scene)
-	std::string	name_, // scene name
-		directory_; // directory of this scene
+	const char* name_, *directory_; 
 
 	// container
 	ObjectMap objects_;

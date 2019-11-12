@@ -99,6 +99,10 @@ void GLManager::initialize_shaders()
 		shader_.push_back(newShader);
 	}
 
+	// remove shader directories
+	Shader::vsDirectory_.clear();
+	Shader::fsDirectory_.clear();
+
 	jeDebugPrint("*GLManager - Compiled and linked shaders.\n");
 }
 

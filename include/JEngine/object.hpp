@@ -18,8 +18,8 @@ jeBegin
 
 class Object;
 class Component;
-using Children = std::unordered_map<std::string, Object*>;
-using Components = std::unordered_map<std::string, Component*>;
+using Children = std::unordered_map<const char*, Object*>;
+using Components = std::unordered_map<const char*, Component*>;
 
 class Object {
 
@@ -64,7 +64,7 @@ private:
 	int id_ = -1;
 	bool active_ = true;
 	Object* parent_ = nullptr;
-	std::string name_;
+	const char* name_;
 	Children children_;
 	Components components_;
 

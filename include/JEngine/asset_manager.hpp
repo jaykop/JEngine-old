@@ -29,16 +29,18 @@ class AssetManager {
 
 	friend class Application;
 
-	using FontMap =	std::unordered_map<std::string, Font*>;
-	using AudioMap = std::unordered_map<std::string, Audio*>;
-	using SceneMap = std::unordered_map<std::string, Scene*>;
-	using TextureMap = std::unordered_map<std::string, unsigned>;
-	using ArchetypeMap = std::unordered_map<std::string, Archetype*>;
+	using FontMap =	std::unordered_map<const char*, Font*>;
+	using AudioMap = std::unordered_map<const char*, Audio*>;
+	using SceneMap = std::unordered_map<const char*, Scene*>;
+	using TextureMap = std::unordered_map<const char*, unsigned>;
+	using ArchetypeMap = std::unordered_map<const char*, Archetype*>;
 
 	struct Image {
 		std::vector<unsigned char> pixels;
 		unsigned handle, width, height;
 	};
+
+	using Images = std::unordered_map<const char*, AssetManager::Image>;
 
 public:
 
@@ -72,7 +74,7 @@ private:
 	static void unload_assets();
 
 	static unsigned char* pixel_chunk;
-	static std::unordered_map<std::string, Image> images_;
+	static std::unordered_map<const char*, Image> images_;
 
 	static FontMap		fontMap_;
 	static AudioMap		audioMap_;

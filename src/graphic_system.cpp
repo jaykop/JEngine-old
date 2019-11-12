@@ -31,19 +31,19 @@ void GraphicSystem::close()
 
 }
 
-void GraphicSystem::add_model(Model* pModel)
+void GraphicSystem::add_model(Model* m)
 {
 }
 
-void GraphicSystem::remove_model(Model* pMmodel)
+void GraphicSystem::remove_model(Model* m)
 {
 }
 
-void GraphicSystem::add_camera(Camera* pCamera)
+void GraphicSystem::add_camera(Camera* c)
 {
 }
 
-void GraphicSystem::remove_camera(Camera* pCamera)
+void GraphicSystem::remove_camera(Camera* c)
 {
 }
 

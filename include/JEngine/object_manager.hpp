@@ -18,7 +18,7 @@ Contains the definition of ObjectManager class
 jeBegin
 
 class Object;
-using ObjectMap = std::unordered_map<std::string, Object*>;
+using ObjectMap = std::unordered_map<const char*, Object*>;
 
 class ObjectManager {
 
