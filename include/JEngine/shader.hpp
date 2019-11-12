@@ -11,7 +11,6 @@ Contains the definition of Shader class
 /******************************************************************************/
 #pragma once
 
-#define GLEW_STATIC
 #include <glew.h>
 #include <macros.hpp>
 #include <mat4.hpp>

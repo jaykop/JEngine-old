@@ -11,8 +11,8 @@ Contains the definition of GLManager class
 /******************************************************************************/
 #pragma once
 
-#define GLEW_STATIC
 #include <glew.h>
+#define GLEW_STATIC
 #include <macros.hpp>
 #include <vector>
 

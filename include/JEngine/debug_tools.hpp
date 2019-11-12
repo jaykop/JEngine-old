@@ -17,6 +17,8 @@ Contains the definition of the debug console
 #include <cstdio>
 #include <crtdbg.h>
 
+#pragma comment(lib,"user32.lib")
+
 namespace DebugTools
 {
 	//These functios should NOT be called
