@@ -1,416 +1,282 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="..\..\include\JEngine\Macro.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\System.h">
-      <Filter>System</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\SystemManager.h">
-      <Filter>System</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\Application.h">
-      <Filter>Core\App</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\AssetManager.h">
-      <Filter>Core\Asset</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\Component.h">
-      <Filter>Core\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\ComponentBuilder.h">
-      <Filter>Core\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\ComponentManager.h">
-      <Filter>Core\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\InputHandler.h">
-      <Filter>Core\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\Object.h">
-      <Filter>Core\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\ObjectContainer.h">
-      <Filter>Core\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\ObjectFactory.h">
-      <Filter>Core\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\StateManager.h">
-      <Filter>Core\State</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\State.h">
-      <Filter>Core\State</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\Debug.h">
-      <Filter>Utils\Debug</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\ImguiManager.h">
-      <Filter>Utils\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\JsonParser.h">
-      <Filter>Utils\Json</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\MathUtils.h">
-      <Filter>Utils\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\Matrix4x4.h">
-      <Filter>Utils\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\Vector4.h">
-      <Filter>Utils\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\Vector3.h">
-      <Filter>Utils\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\Vector2.h">
-      <Filter>Utils\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\Random.h">
-      <Filter>Utils\Random</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\Timer.h">
-      <Filter>Utils\Timer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\GraphicComponents.h">
-      <Filter>System\Graphic</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\GraphicSystem.h">
-      <Filter>System\Graphic</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\BehaviorSystem.h">
-      <Filter>System\Behavior</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\PhysicsSystem.h">
-      <Filter>System\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\PhysicsComponents.h">
-      <Filter>System\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\SoundComponents.h">
-      <Filter>System\Sound</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\SoundSystem.h">
-      <Filter>System\Sound</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\external\imgui\imgui_impl_sdl_gl3.h">
-      <Filter>Utils\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\external\imgui\imgui_internal.h">
-      <Filter>Utils\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\external\imgui\stb_rect_pack.h">
-      <Filter>Utils\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\external\imgui\stb_textedit.h">
-      <Filter>Utils\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\external\imgui\stb_truetype.h">
-      <Filter>Utils\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\external\imgui\imconfig.h">
-      <Filter>Utils\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\external\imgui\imgui.h">
-      <Filter>Utils\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\external\lodePNG\lodepng_util.h">
-      <Filter>Utils\lodePNG</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\external\lodePNG\lodepng.h">
-      <Filter>Utils\lodePNG</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\GLManager.h">
-      <Filter>Core\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\Shader.h">
-      <Filter>Core\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\CustomComponent.h">
-      <Filter>System\Behavior</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\MessageDispatcher.h">
-      <Filter>System\Behavior</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\Telegram.h">
-      <Filter>System\Behavior</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\MemoryAllocator.h">
-      <Filter>Core\Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\Transform.h">
-      <Filter>System\PhysicsComponent</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\Rigidbody.h">
-      <Filter>System\PhysicsComponent</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\Animation.h">
-      <Filter>System\GraphicComponent</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\Camera.h">
-      <Filter>System\GraphicComponent</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\Light.h">
-      <Filter>System\GraphicComponent</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\Material.h">
-      <Filter>System\GraphicComponent</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\Model.h">
-      <Filter>System\GraphicComponent</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\Particle.h">
-      <Filter>System\GraphicComponent</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\Text.h">
-      <Filter>System\GraphicComponent</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\Mesh.h">
-      <Filter>System\Graphic</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\include\JEngine\Object.inl">
-      <Filter>Core\Object</Filter>
-    </None>
-    <None Include="..\..\include\JEngine\ObjectContainer.inl">
-      <Filter>Core\Object</Filter>
-    </None>
-    <None Include="..\..\include\JEngine\ComponentManager.inl">
-      <Filter>Core\Component</Filter>
-    </None>
-    <None Include="..\..\include\JEngine\MemoryAllocator.inl">
-      <Filter>Core\Memory</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\src\JEngine\SystemManager.cpp">
-      <Filter>System</Filter>
+    <ClCompile Include="..\..\src\asset_manager.cpp">
+      <Filter>core\asset</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\Application.cpp">
-      <Filter>Core\App</Filter>
+    <ClCompile Include="..\..\src\component_manager.cpp">
+      <Filter>core\component</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\AssetManager.cpp">
-      <Filter>Core\Asset</Filter>
+    <ClCompile Include="..\..\src\gl_manager.cpp">
+      <Filter>core\opengl</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\ComponentManager.cpp">
-      <Filter>Core\Component</Filter>
+    <ClCompile Include="..\..\src\object.cpp">
+      <Filter>core\object</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\InputHandler.cpp">
-      <Filter>Core\Input</Filter>
+    <ClCompile Include="..\..\src\object_manager.cpp">
+      <Filter>core\object</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\Object.cpp">
-      <Filter>Core\Object</Filter>
+    <ClCompile Include="..\..\src\input_handler.cpp">
+      <Filter>core\input</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\ObjectContainer.cpp">
-      <Filter>Core\Object</Filter>
+    <ClCompile Include="..\..\src\scene_controller.cpp">
+      <Filter>core\scene</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\ObjectFactory.cpp">
-      <Filter>Core\Object</Filter>
+    <ClCompile Include="..\..\src\scene_manager.cpp">
+      <Filter>core\scene</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\State.cpp">
-      <Filter>Core\State</Filter>
+    <ClCompile Include="..\..\src\scene.cpp">
+      <Filter>core\scene</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\StateManager.cpp">
-      <Filter>Core\State</Filter>
+    <ClCompile Include="..\..\src\mat3.cpp">
+      <Filter>util\math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\Debug.cpp">
-      <Filter>Utils\Debug</Filter>
+    <ClCompile Include="..\..\src\mat4.cpp">
+      <Filter>util\math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\ImguiManager.cpp">
-      <Filter>Utils\Imgui</Filter>
+    <ClCompile Include="..\..\src\mat4_transform.cpp">
+      <Filter>util\math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\JsonParser.cpp">
-      <Filter>Utils\Json</Filter>
+    <ClCompile Include="..\..\src\vec2.cpp">
+      <Filter>util\math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\MathUtils.cpp">
-      <Filter>Utils\Math</Filter>
+    <ClCompile Include="..\..\src\vec3.cpp">
+      <Filter>util\math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\Matrix4x4.cpp">
-      <Filter>Utils\Math</Filter>
+    <ClCompile Include="..\..\src\vec4.cpp">
+      <Filter>util\math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\Vector4.cpp">
-      <Filter>Utils\Math</Filter>
+    <ClCompile Include="..\..\src\json_parser.cpp">
+      <Filter>util\json</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\Vector3.cpp">
-      <Filter>Utils\Math</Filter>
+    <ClCompile Include="..\..\src\debug_tools.cpp">
+      <Filter>util\debug</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\Vector2.cpp">
-      <Filter>Utils\Math</Filter>
+    <ClCompile Include="..\..\src\random.cpp">
+      <Filter>util\rand</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\Random.cpp">
-      <Filter>Utils\Random</Filter>
+    <ClCompile Include="..\..\src\timer.cpp">
+      <Filter>util\time</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\Timer.cpp">
-      <Filter>Utils\Timer</Filter>
+    <ClCompile Include="..\..\include\lodepng\lodepng.cpp">
+      <Filter>util\lodepng</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\GraphicSystem.cpp">
-      <Filter>System\Graphic</Filter>
+    <ClCompile Include="..\..\include\lodepng\lodepng_util.cpp">
+      <Filter>util\lodepng</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\BehaviorSystem.cpp">
-      <Filter>System\Behavior</Filter>
+    <ClCompile Include="..\..\src\camera.cpp">
+      <Filter>system\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\PhysicsSystem.cpp">
-      <Filter>System\Physics</Filter>
+    <ClCompile Include="..\..\src\emitter.cpp">
+      <Filter>system\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\SoundSystem.cpp">
-      <Filter>System\Sound</Filter>
+    <ClCompile Include="..\..\src\graphic_system.cpp">
+      <Filter>system\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\GraphicPipelines.cpp">
-      <Filter>System\Graphic</Filter>
+    <ClCompile Include="..\..\src\model.cpp">
+      <Filter>system\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\imgui\imgui_draw.cpp">
-      <Filter>Utils\Imgui</Filter>
+    <ClCompile Include="..\..\src\text.cpp">
+      <Filter>system\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\imgui\imgui_impl_sdl_gl3.cpp">
-      <Filter>Utils\Imgui</Filter>
+    <ClCompile Include="..\..\src\behavior_system.cpp">
+      <Filter>system\behavior</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\imgui\imgui.cpp">
-      <Filter>Utils\Imgui</Filter>
+    <ClCompile Include="..\..\src\sound_system.cpp">
+      <Filter>system\sound</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\imgui\imgui_demo.cpp">
-      <Filter>Utils\Imgui</Filter>
+    <ClCompile Include="..\..\src\physics_system.cpp">
+      <Filter>system\physics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\lodePNG\lodepng_util.cpp">
-      <Filter>Utils\lodePNG</Filter>
+    <ClCompile Include="..\..\src\transform.cpp">
+      <Filter>system\physics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\lodePNG\lodepng.cpp">
-      <Filter>Utils\lodePNG</Filter>
+    <ClCompile Include="..\..\src\shader.cpp">
+      <Filter>core\opengl</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\GLManager.cpp">
-      <Filter>Core\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\Shader.cpp">
-      <Filter>Core\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\GeometryShader.cpp">
-      <Filter>Core\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\FragmentShader.cpp">
-      <Filter>Core\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\VertexShader.cpp">
-      <Filter>Core\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\MessageDispatcher.cpp">
-      <Filter>System\Behavior</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\MathUtils_mat4.cpp">
-      <Filter>Utils\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\MathUtils_vec2.cpp">
-      <Filter>Utils\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\MathUtils_vec3.cpp">
-      <Filter>Utils\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\MathUtils_vec4.cpp">
-      <Filter>Utils\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\Rigidbody.cpp">
-      <Filter>System\PhysicsComponent</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\Transform.cpp">
-      <Filter>System\PhysicsComponent</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\Animation.cpp">
-      <Filter>System\GraphicComponent</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\Camera.cpp">
-      <Filter>System\GraphicComponent</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\Light.cpp">
-      <Filter>System\GraphicComponent</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\Material.cpp">
-      <Filter>System\GraphicComponent</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\Model.cpp">
-      <Filter>System\GraphicComponent</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\Particle.cpp">
-      <Filter>System\GraphicComponent</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\Text.cpp">
-      <Filter>System\GraphicComponent</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\Mesh.cpp">
-      <Filter>System\Graphic</Filter>
+    <ClCompile Include="..\..\src\application.cpp">
+      <Filter>core\app</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Core">
-      <UniqueIdentifier>{eb0aec9b-9903-4c7f-bc17-ad693640e631}</UniqueIdentifier>
+    <ClInclude Include="..\..\include\JEngine\macros.hpp" />
+    <ClInclude Include="..\..\include\JEngine\application.hpp">
+      <Filter>core\app</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\asset_manager.hpp">
+      <Filter>core\asset</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\component.hpp">
+      <Filter>core\component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\component_builder.hpp">
+      <Filter>core\component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\component_manager.hpp">
+      <Filter>core\component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\gl_manager.hpp">
+      <Filter>core\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\object_manager.hpp">
+      <Filter>core\object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\object.hpp">
+      <Filter>core\object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\key_map.hpp">
+      <Filter>core\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\input_handler.hpp">
+      <Filter>core\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\scene_manager.hpp">
+      <Filter>core\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\scene.hpp">
+      <Filter>core\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\math_util.hpp">
+      <Filter>util\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\mat3.hpp">
+      <Filter>util\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\mat4.hpp">
+      <Filter>util\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\math.hpp">
+      <Filter>util\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\vec2.hpp">
+      <Filter>util\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\vec3.hpp">
+      <Filter>util\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\vec4.hpp">
+      <Filter>util\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\json_parser.hpp">
+      <Filter>util\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\debug_tools.hpp">
+      <Filter>util\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\random.hpp">
+      <Filter>util\rand</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\timer.hpp">
+      <Filter>util\time</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\lodepng\lodepng_util.h">
+      <Filter>util\lodepng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\lodepng\lodepng.h">
+      <Filter>util\lodepng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\model.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\camera.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\emitter.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\graphic_system.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\text.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\sprite.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\behavior_system.hpp">
+      <Filter>system\behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\sound_system.hpp">
+      <Filter>system\sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\physics_system.hpp">
+      <Filter>system\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\transform.hpp">
+      <Filter>system\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\shader.hpp">
+      <Filter>core\opengl</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\JEngine\component_manager.inl">
+      <Filter>core\component</Filter>
+    </None>
+    <None Include="..\..\include\JEngine\object.inl">
+      <Filter>core\object</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="core">
+      <UniqueIdentifier>{3b9aff31-9fa6-4f60-9318-5b2dda65c158}</UniqueIdentifier>
     </Filter>
-    <Filter Include="System">
-      <UniqueIdentifier>{e471d0f1-0c15-4c26-ba1b-6b857ee55b20}</UniqueIdentifier>
+    <Filter Include="system">
+      <UniqueIdentifier>{77ef7fb6-118c-4c35-a465-e2d1326f7dc6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utils">
-      <UniqueIdentifier>{9f679f07-69e3-4c4d-9fe3-79d83de77100}</UniqueIdentifier>
+    <Filter Include="util">
+      <UniqueIdentifier>{e23664a9-6e92-4db4-a359-6460f6f15ceb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Component">
-      <UniqueIdentifier>{f239c628-a9c8-4ecb-a136-c3bfc8e1d7ca}</UniqueIdentifier>
+    <Filter Include="core\app">
+      <UniqueIdentifier>{456dc550-b427-41a6-ad16-c2c768e94054}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Input">
-      <UniqueIdentifier>{0c69cde0-ae5f-486d-b627-b5d22a3311da}</UniqueIdentifier>
+    <Filter Include="core\asset">
+      <UniqueIdentifier>{0a2b12d0-e46d-431b-86b5-e992d18cf25b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Object">
-      <UniqueIdentifier>{8f6f0a2a-fc88-4e1b-82c1-3fd3a7dfc20f}</UniqueIdentifier>
+    <Filter Include="core\component">
+      <UniqueIdentifier>{2460f6e4-70cf-448d-a5d3-d8c097d42b99}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utils\Debug">
-      <UniqueIdentifier>{2d0a1f13-24f1-471f-9753-19ec9fc668d2}</UniqueIdentifier>
+    <Filter Include="core\opengl">
+      <UniqueIdentifier>{31613505-fdba-4d93-bd2a-3c819746390a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utils\Imgui">
-      <UniqueIdentifier>{5d120135-443c-46a3-b36a-7889c78c0c52}</UniqueIdentifier>
+    <Filter Include="core\object">
+      <UniqueIdentifier>{f79c0a07-0a96-4a30-9a72-26ca130a1da1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utils\Json">
-      <UniqueIdentifier>{0c0a1fa0-ad1b-459b-b059-462c2cdade0b}</UniqueIdentifier>
+    <Filter Include="core\input">
+      <UniqueIdentifier>{3587a097-dbd1-4623-8df2-1e19e721d1c3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utils\Math">
-      <UniqueIdentifier>{63b29dbe-025f-4559-af53-04c09458de15}</UniqueIdentifier>
+    <Filter Include="core\scene">
+      <UniqueIdentifier>{d3939a4f-5806-45b4-8134-58d37c5b3d25}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utils\Random">
-      <UniqueIdentifier>{4cddc6ae-f7c9-4a14-87bd-eb49b3d02368}</UniqueIdentifier>
+    <Filter Include="util\math">
+      <UniqueIdentifier>{ee0bff7c-d17a-4e64-bc7e-68b0f6c14e29}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utils\Timer">
-      <UniqueIdentifier>{1b91e43a-f123-4868-a8a5-75203a26f990}</UniqueIdentifier>
+    <Filter Include="util\json">
+      <UniqueIdentifier>{7d9d8899-322f-4c1a-a1af-cbad8a4484b9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utils\lodePNG">
-      <UniqueIdentifier>{10c782e7-b26b-42df-baea-1e61e059c282}</UniqueIdentifier>
+    <Filter Include="util\debug">
+      <UniqueIdentifier>{b84da476-b315-4d87-a62f-53be29a35379}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Asset">
-      <UniqueIdentifier>{35a0dba4-537c-4076-b283-e04ced48544a}</UniqueIdentifier>
+    <Filter Include="util\rand">
+      <UniqueIdentifier>{a76eaccf-5000-4054-a702-113320b5f001}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Memory">
-      <UniqueIdentifier>{5a991f34-d6ae-43d5-a4ea-4351cde65642}</UniqueIdentifier>
+    <Filter Include="util\time">
+      <UniqueIdentifier>{67d112e9-6362-4814-ba13-474193229338}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\App">
-      <UniqueIdentifier>{9942681c-700b-4db6-ad0a-c55c71ca1c59}</UniqueIdentifier>
+    <Filter Include="util\lodepng">
+      <UniqueIdentifier>{1a27ba93-86e5-4c7e-b0e8-25aa7b29cb53}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\OpenGL">
-      <UniqueIdentifier>{58b0b6ad-5921-44da-a0be-91458f0dfd57}</UniqueIdentifier>
+    <Filter Include="system\graphics">
+      <UniqueIdentifier>{1969b8eb-17d4-4463-8040-e97da1886719}</UniqueIdentifier>
     </Filter>
-    <Filter Include="System\GraphicComponent">
-      <UniqueIdentifier>{fc1bffac-361e-4aad-8fe8-04aab140b8e2}</UniqueIdentifier>
+    <Filter Include="system\physics">
+      <UniqueIdentifier>{25e60a44-fcca-43e4-8251-94d9f49af4a1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="System\PhysicsComponent">
-      <UniqueIdentifier>{37318ba6-1fde-436e-b9d5-437079f0fb5d}</UniqueIdentifier>
+    <Filter Include="system\behavior">
+      <UniqueIdentifier>{fe408b21-608c-42ab-bbd3-1675e88e9dae}</UniqueIdentifier>
     </Filter>
-    <Filter Include="System\Behavior">
-      <UniqueIdentifier>{11db6293-4b93-4c19-bc49-3a60f60025f0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="System\Graphic">
-      <UniqueIdentifier>{d165d957-87ce-4184-ba8e-cac04a9b745a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="System\Physics">
-      <UniqueIdentifier>{717b2a28-3cde-48bf-99b5-86f9e11f92ba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="System\Sound">
-      <UniqueIdentifier>{31ba595e-3307-4569-b706-ba218c23f96d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\State">
-      <UniqueIdentifier>{d402ee56-8d56-42d6-a6d0-91ea2c15e0ae}</UniqueIdentifier>
+    <Filter Include="system\sound">
+      <UniqueIdentifier>{340b4a86-cf49-4e83-a96e-33e155d85e22}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
