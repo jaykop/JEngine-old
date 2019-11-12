@@ -11,9 +11,11 @@ Contains the definition of InputHandler class
 /******************************************************************************/
 #pragma once
 
-#include <SDL.h>
 #include <key_map.hpp>
 #include <unordered_map>
+
+union SDL_Event;
+struct SDL_Window;
 
 jeBegin
 

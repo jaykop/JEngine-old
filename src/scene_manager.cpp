@@ -10,12 +10,12 @@ Contains the methods of SceneManager class
 */
 /******************************************************************************/
 
-#include <SDL.h>
 #include <scene_manager.hpp>
 #include <timer.hpp>
 #include <scene.hpp>
 #include <input_handler.hpp>
 #include <gl_manager.hpp>
+#include <SDL.h>
 
 jeBegin
 
@@ -57,7 +57,7 @@ void SceneManager::update(SDL_Event* event)
 	timer_.start();
 	change_scene();
 
-	while (window_->pollEvent(*event)
+	while (SDL_PollEvent(event)
 		|| status_ == JE_STATE_NONE) // state updating loop
 	{
 		InputHandler::update(*event);

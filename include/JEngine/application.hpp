@@ -11,9 +11,9 @@ Contains the definition of application class
 /******************************************************************************/
 #pragma once
 
+#include <SDL.h>
 #include <macros.hpp>
 #include <string>
-#include <SDL.h>
 
 jeBegin
 
@@ -56,7 +56,7 @@ private:
 	static SDL_Window* window_;				// SDL window
 	static SDL_Event event_;				// SDL Event
 	static SDL_GLContext context_;			// SDL GL context
-	static SDL_Surface* surface_, * icon_;	// SDL screen surface
+	static SDL_Surface* surface_, *icon_;	// SDL screen surface
 	static bool run_;
 
 	// Prevent to clone this class

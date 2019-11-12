@@ -11,14 +11,17 @@ Contains the definition of GLManager class
 /******************************************************************************/
 #pragma once
 
-#include <glew.h>
 #define GLEW_STATIC
+#include <glew.h>
 #include <macros.hpp>
+#include <vector>
+
+union SDL_Event;
+struct SDL_Window;
 
 jeBegin
 
 class Shader;
-struct SDL_Event;
 class GLManager
 {
 	friend class Application;

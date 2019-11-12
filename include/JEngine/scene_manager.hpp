@@ -17,8 +17,8 @@ Contains the definition of SceneManager class
 #include <string>
 #include <timer.hpp>
 
+union SDL_Event;
 struct SDL_Window;
-struct SDL_Event;
 
 jeBegin
 

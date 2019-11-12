@@ -38,10 +38,7 @@ void JsonParser::read_file(const char* directory)
 
 const rapidjson::Document& JsonParser::get_document() { return document_; }
 
-void JsonParser::close()
-{
-	document_.Clear();
-}
+void JsonParser::close() { document_.Clear();}
 
 void JsonParser::load_objects()
 {

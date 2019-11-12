@@ -10,7 +10,7 @@ Contains the methods of GraphicSystem class
 */
 /******************************************************************************/
 
-#include <OpenGL.hpp>
+#include <glew.h>
 #include <graphic_system.hpp>
 
 jeBegin

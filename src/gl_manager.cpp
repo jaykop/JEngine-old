@@ -10,6 +10,7 @@ Contains the methods of GLManager class
 */
 /******************************************************************************/
 
+#include <SDL_Video.h>
 #include <gl_manager.hpp>
 #include <debug_tools.hpp>
 #include <shader.hpp>
@@ -63,13 +64,13 @@ void GLManager::initialize(float w, float h)
 
 void GLManager::update(const SDL_Event& event)
 {
-	if (event.type == SDL_Event::Resized) {
-		glViewport(0, 0, event.size.width, event.size.height);
-		width_ = float(event.size.width), height_ = float(event.size.height);
-	}
-	else if (event.type == SDL_Event::Closed) {
-		// TODO
-	}
+	//if (event.type == SDL_Event::Resized) {
+	//	glViewport(0, 0, event.size.width, event.size.height);
+	//	width_ = float(event.size.width), height_ = float(event.size.height);
+	//}
+	//else if (event.type == SDL_Event::Closed) {
+	//	// TODO
+	//}
 }
 
 void GLManager::close()

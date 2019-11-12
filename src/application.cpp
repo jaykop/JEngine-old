@@ -13,6 +13,7 @@ jeBegin
 //////////////////////////////////////////////////////////////////////////
 // static variables
 //////////////////////////////////////////////////////////////////////////
+bool Application::run_ = true;
 SDL_Event		Application::event_;
 SDL_Window*		Application::window_ = nullptr;
 SDL_Surface		*Application::surface_ = nullptr, *Application::icon_= nullptr;
@@ -143,7 +144,7 @@ void Application::update()
 {
 	// If the intiailization does not have done properly,
 	// stop updating the scene manager
-	if (!SceneManager::initialize(&window_))
+	if (!SceneManager::initialize(window_))
 		return;
 
 	// update the window 

@@ -10,6 +10,7 @@ Contains the methods of InputHandler class
 */
 /******************************************************************************/
 
+#include <SDL_events.h>
 #include <debug_tools.hpp>
 #include <input_handler.hpp>
 #include <iostream>
@@ -49,135 +50,217 @@ bool InputHandler::key_triggered(KEY key)
 
 KEY InputHandler::key_translator(const SDL_Event& event)
 {
-	// keyboards
-	switch (event.key.code) {
+	// Keyboard translator
+	switch (event.key.keysym.sym) {
 
-		// alphabets
-	case sf::Keyboard::A:
-		return KEY::A;
-	case sf::Keyboard::B:
-		return KEY::B;
-	case sf::Keyboard::C:
-		return KEY::C;
-	case sf::Keyboard::D:
-		return KEY::D;
-	case sf::Keyboard::E:
-		return KEY::E;
-	case sf::Keyboard::F:
-		return KEY::F;
-	case sf::Keyboard::G:
-		return KEY::G;
-	case sf::Keyboard::H:
-		return KEY::H;
-	case sf::Keyboard::I:
-		return KEY::I;
-	case sf::Keyboard::J:
-		return KEY::J;
-	case sf::Keyboard::K:
-		return KEY::K;
-	case sf::Keyboard::L:
-		return KEY::L;
-	case sf::Keyboard::M:
-		return KEY::M;
-	case sf::Keyboard::N:
-		return KEY::N;
-	case sf::Keyboard::O:
-		return KEY::O;
-	case sf::Keyboard::P:
-		return KEY::P;
-	case sf::Keyboard::Q:
-		return KEY::Q;
-	case sf::Keyboard::R:
-		return KEY::R;
-	case sf::Keyboard::S:
-		return KEY::S;
-	case sf::Keyboard::T:
-		return KEY::T;
-	case sf::Keyboard::U:
-		return KEY::U;
-	case sf::Keyboard::V:
-		return KEY::V;
-	case sf::Keyboard::W:
-		return KEY::W;
-	case sf::Keyboard::X:
-		return KEY::X;
-	case sf::Keyboard::Y:
-		return KEY::Y;
-	case sf::Keyboard::Z:
-		return KEY::Z;
+	case SDLK_UNKNOWN:
+		break;
 
-		// numbers
-	case sf::Keyboard::Num0:
-		return KEY::NUM_0;
-	case sf::Keyboard::Num1:
-		return KEY::NUM_1;
-	case sf::Keyboard::Num2:
-		return KEY::NUM_2;
-	case sf::Keyboard::Num3:
-		return KEY::NUM_3;
-	case sf::Keyboard::Num4:
-		return KEY::NUM_4;
-	case sf::Keyboard::Num5:
-		return KEY::NUM_5;
-	case sf::Keyboard::Num6:
-		return KEY::NUM_6;
-	case sf::Keyboard::Num7:
-		return KEY::NUM_7;
-	case sf::Keyboard::Num8:
-		return KEY::NUM_8;
-	case sf::Keyboard::Num9:
-		return KEY::NUM_9;
-
-		// function keys
-	case sf::Keyboard::Escape:
-		return KEY::ESC;
-	case sf::Keyboard::LControl:
-		return KEY::LCONTROL;
-	case sf::Keyboard::LShift:
-		return KEY::LSHIFT;
-	case sf::Keyboard::LAlt:
-		return KEY::LALT;
-	case sf::Keyboard::RControl:
-		return KEY::RCONTROL;
-	case sf::Keyboard::RShift:
-		return KEY::RSHIFT;
-	case sf::Keyboard::RAlt:
-		return KEY::RALT;
-	case sf::Keyboard::Space:
-		return KEY::SPACE;
-	case sf::Keyboard::Enter:
+	case SDLK_RETURN:
 		return KEY::ENTER;
-	case sf::Keyboard::Backspace:
-		return KEY::BACK;
-	case sf::Keyboard::Tab:
-		return KEY::TAB;
+		break;
 
-		// arrows
-	case sf::Keyboard::Left:
-		return KEY::LEFT;
-	case sf::Keyboard::Right:
+	case SDLK_ESCAPE:
+		return KEY::ESC;
+		break;
+
+	case SDLK_BACKSPACE:
+		return KEY::BACK;
+		break;
+
+	case SDLK_TAB:
+		return KEY::TAB;
+		break;
+
+	case SDLK_SPACE:
+		return KEY::SPACE;
+		break;
+
+	case SDLK_RIGHT:
 		return KEY::RIGHT;
-	case sf::Keyboard::Up:
-		return KEY::UP;
-	case sf::Keyboard::Down:
+		break;
+
+	case SDLK_LEFT:
+		return KEY::LEFT;
+		break;
+
+	case SDLK_DOWN:
 		return KEY::DOWN;
+		break;
+
+	case SDLK_UP:
+		return KEY::UP;
+		break;
+
+	case SDLK_0:
+		return KEY::NUM_0;
+		break;
+
+	case SDLK_1:
+		return KEY::NUM_1;
+		break;
+
+	case SDLK_2:
+		return KEY::NUM_2;
+		break;
+
+	case SDLK_3:
+		return KEY::NUM_3;
+		break;
+
+	case SDLK_4:
+		return KEY::NUM_4;
+		break;
+
+	case SDLK_5:
+		return KEY::NUM_5;
+		break;
+
+	case SDLK_6:
+		return KEY::NUM_6;
+		break;
+
+	case SDLK_7:
+		return KEY::NUM_7;
+		break;
+
+	case SDLK_8:
+		return KEY::NUM_8;
+		break;
+
+	case SDLK_9:
+		return KEY::NUM_9;
+		break;
+
+	case SDLK_a:
+		return KEY::A;
+		break;
+
+	case SDLK_b:
+		return KEY::B;
+		break;
+
+	case SDLK_c:
+		return KEY::C;
+		break;
+
+	case SDLK_d:
+		return KEY::D;
+		break;
+
+	case SDLK_e:
+		return KEY::E;
+		break;
+
+	case SDLK_f:
+		return KEY::F;
+		break;
+
+	case SDLK_g:
+		return KEY::G;
+		break;
+
+	case SDLK_h:
+		return KEY::H;
+		break;
+
+	case SDLK_i:
+		return KEY::I;
+		break;
+
+	case SDLK_j:
+		return KEY::J;
+		break;
+
+	case SDLK_k:
+		return KEY::K;
+		break;
+
+	case SDLK_l:
+		return KEY::L;
+		break;
+
+	case SDLK_m:
+		return KEY::M;
+		break;
+
+	case SDLK_n:
+		return KEY::N;
+		break;
+
+	case SDLK_o:
+		return KEY::O;
+		break;
+
+	case SDLK_p:
+		return KEY::P;
+		break;
+
+	case SDLK_q:
+		return KEY::Q;
+		break;
+
+	case SDLK_r:
+		return KEY::R;
+		break;
+
+	case SDLK_s:
+		return KEY::S;
+		break;
+
+	case SDLK_t:
+		return KEY::T;
+		break;
+
+	case SDLK_u:
+		return KEY::U;
+		break;
+
+	case SDLK_v:
+		return KEY::V;
+		break;
+
+	case SDLK_w:
+		return KEY::W;
+		break;
+
+	case SDLK_x:
+		return KEY::X;
+		break;
+
+	case SDLK_y:
+		return KEY::Y;
+		break;
+
+	case SDLK_z:
+		return KEY::Z;
+		break;
+
+	//case SDLK_CAPSLOCK:
+	//	return JE_CAPSLOCK;
+	//	break;
+
 	}
 
-	// None of key pressed
 	return KEY::NONE;
 }
 
 KEY InputHandler::mouse_translator(const SDL_Event& event)
 {
-	// mouse
-	switch (event.mouseButton.button) {
+		// Mouse translator
+	switch (event.button.button) {
 
-	case sf::Mouse::Button::Left:
-		return KEY::MOUSE_LEFT;
-	case sf::Mouse::Button::Right:
+	case SDL_BUTTON_RIGHT:
 		return KEY::MOUSE_RIGHT;
-	case sf::Mouse::Button::Middle:
+		break;
+
+	case SDL_BUTTON_LEFT:
+		return KEY::MOUSE_LEFT;
+		break;
+
+	case SDL_BUTTON_MIDDLE:
 		return KEY::MOUSE_MIDDLE;
+		break;
 	}
 
 	// mouse wheel
@@ -210,7 +293,7 @@ void InputHandler::update(const SDL_Event& event)
 {
 	switch (event.type) {
 	
-	case SDL_Event::EventType::KeyReleased:
+	case SDL_KEYUP:
 	{
 		auto key = key_translator(event);
 		triggerMap[key] = keyMap[key] = false;
@@ -219,7 +302,7 @@ void InputHandler::update(const SDL_Event& event)
 		break;
 	}
 
-	case SDL_Event::EventType::KeyPressed:
+	case SDL_KEYDOWN:
 	{
 		keyMap[key_translator(event)] = true;
 		keyDown = true;
@@ -227,7 +310,7 @@ void InputHandler::update(const SDL_Event& event)
 		break;
 	}
 	
-	case SDL_Event::EventType::MouseButtonReleased:
+	case SDL_MOUSEBUTTONUP:
 	{
 		auto key = mouse_translator(event);
 		triggerMap[key] = keyMap[key] = false;
@@ -236,7 +319,7 @@ void InputHandler::update(const SDL_Event& event)
 		break;
 	}
 
-	case SDL_Event::EventType::MouseButtonPressed:
+	case SDL_MOUSEBUTTONDOWN:
 	{
 		keyMap[mouse_translator(event)] = true;
 		mouseDown = true;
@@ -244,12 +327,12 @@ void InputHandler::update(const SDL_Event& event)
 		break;
 	}
 
-	case SDL_Event::EventType::MouseWheelScrolled:
+	case SDL_MOUSEWHEEL:
 	{
-		if (event.mouseWheelScroll.delta > wheelSensitivity_)
+		if (event.wheel.y > wheelSensitivity_)
 			mouseWheel_ = UP;
 
-		else if (event.mouseWheelScroll.delta < -wheelSensitivity_)
+		else if (event.wheel.y < -wheelSensitivity_)
 			mouseWheel_ = DOWN;
 
 		break;
@@ -266,7 +349,7 @@ void InputHandler::mouse_refresh(SDL_Event& event)
 {
 	// set default wheel level
 	mouseWheel_ = NONE;
-	event.mouseWheelScroll.delta = 0.f;
+	event.wheel.y = 0.f;
 }
 
 InputHandler::MouseWheel InputHandler::get_mouse_wheel_status()
