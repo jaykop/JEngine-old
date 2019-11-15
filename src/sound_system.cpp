@@ -18,7 +18,7 @@ void SoundSystem::initialize()
 {
 }
 
-void SoundSystem::update()
+void SoundSystem::update(float /*dt*/)
 {
 }
 

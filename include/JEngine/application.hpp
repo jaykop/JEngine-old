@@ -22,6 +22,12 @@ jeBegin
 //////////////////////////////////////////////////////////////////////////
 class Application {
 
+	// Prevent to clone this class
+	Application() = delete;
+	~Application() = delete;
+
+	jePreventClone(Application)
+
 	// application data structure
 	struct AppData {
 
@@ -59,13 +65,6 @@ private:
 	static SDL_Surface* surface_, *icon_;	// SDL screen surface
 	static bool run_;
 
-	// Prevent to clone this class
-	Application() = delete;
-	~Application() = delete;
-	Application(Application&&) = delete;
-	Application(const Application&) = delete;
-	Application& operator= (Application&&) = delete;
-	Application& operator= (const Application&) = delete;
 };
 
 jeEnd

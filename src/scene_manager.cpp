@@ -33,16 +33,10 @@ SceneManager::SceneStatus SceneManager::status_ = SceneManager::SceneStatus::JE_
 bool SceneManager::initialize(SDL_Window* window)
 {
 	if (window) {
-		
-		window_ = window;
-		
-		// Initialize input system
-		
-		// 
 
-		// bind current state's system
-		Scene::bind_system();
-		
+		// get window
+		window_ = window;
+	
 		return true;
 	}
 
@@ -96,18 +90,18 @@ void SceneManager::update(SDL_Event* event)
 
 		// The case to quit app
 	case JE_STATE_QUIT:				
-		//while (pCurrent_) {
-		//	State* pLast = pCurrent_->pLastStage_;
-		//	pCurrent_->Close();
-		//	pCurrent_->Unload();
-		//	pCurrent_ = pLast;
-		//}
+		while (currentScene_) {
+			Scene* last = currentScene_->lastScene_;
+			currentScene_->close();
+			currentScene_->unload();
+			currentScene_ = last;
+		}
 		break;
 
 		// The case to resume to last state
 	case JE_STATE_RESUME:				
-		/*pCurrent_->Close();
-		pCurrent_->Unload();
+		/*currentScene_->close();
+		currentScene_->unload();
 		SYSTEM::Resume();*/
 		break;
 
@@ -116,9 +110,9 @@ void SceneManager::update(SDL_Event* event)
 		// The case to resume and change
 	case JE_STATE_RESTART:				
 	case JE_STATE_CHANGE:				
-	case JE_STATE_RESUME_AND_CHANGE:	
-		//pCurrent_->Close();
-		//pCurrent_->Unload();
+	case JE_STATE_RESUME_AND_CHANGE:
+		currentScene_->close();
+		currentScene_->unload();
 		break;
 
 		// Keep updaring - this should not happen
@@ -131,7 +125,6 @@ void SceneManager::update(SDL_Event* event)
 void SceneManager::close()
 {
 	clear_scenes();
-	Scene::unbind_system();
 }
 
 jeEnd

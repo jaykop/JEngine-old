@@ -21,24 +21,11 @@ Contains the methods of scene class
 #include <iostream>
 #include <application.hpp>
 #include <input_handler.hpp>
+#include <object.hpp>
+#include <transform.hpp>
+#include <model.hpp>
 
 jeBegin
-
-void Scene::bind_system()
-{
-	GraphicSystem::initialize();
-	PhysicsSystem::initialize();
-	SoundSystem::initialize();
-	BehaviorSystem::initialize();
-}
-
-void Scene::unbind_system()
-{
-	BehaviorSystem::close();
-	SoundSystem::close();
-	PhysicsSystem::close();
-	GraphicSystem::close();
-}
 
 Scene::Scene(const char* name)
 {
@@ -52,21 +39,33 @@ Scene::~Scene()
 
 void Scene::load()
 {
+	// bind the objects to the manager
+	ObjectManager::objects_ = &objects_;
+
+	// Here load from json file...
+
+	// TODO
+	Object* test = ObjectManager::create_object("3d model");
+	test->add_component<Model>();
+	test->add_component<Transform>();
+	register_object(test);
 }
 
 void Scene::initialize()
 {
-	// bind the objects to the manager
-	ObjectManager::objects_ = &objects_;
+	BehaviorSystem::initialize();
+	GraphicSystem::initialize();
+	PhysicsSystem::initialize();
+	SoundSystem::initialize();
 }
 
 void Scene::update(float dt)
 {
 	// update all systems
-	BehaviorSystem::update();
-	SoundSystem::update();
-	PhysicsSystem::update();
-	GraphicSystem::update();
+	BehaviorSystem::update(dt);
+	SoundSystem::update(dt);
+	PhysicsSystem::update(dt);
+	GraphicSystem::update(dt);
 
 	//TODO
 	//INPUT TEST CODE
@@ -94,6 +93,14 @@ void Scene::update(float dt)
 
 void Scene::close()
 {
+	BehaviorSystem::close();
+	SoundSystem::close();
+	PhysicsSystem::close();
+	GraphicSystem::close();
+}
+
+void Scene::unload()
+{	
 	// make sure current object map belongs to the current scene
 	ObjectManager::objects_ = &objects_;
 
@@ -104,13 +111,18 @@ void Scene::close()
 	ObjectManager::objects_ = nullptr;
 }
 
-void Scene::unload()
-{
-}
-
 const char* Scene::get_name() const
 {
 	return name_;
+}
+
+void Scene::register_object(Object* obj) {
+
+	// check if the object is pointing null
+	if (!ObjectManager::objects_) {
+		ObjectManager::objects_->insert({ obj->get_name(), obj });
+		obj->register_components();
+	}
 }
 
 jeEnd

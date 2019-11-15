@@ -28,6 +28,12 @@ using Scenes = std::vector<Scene*>;
 
 class SceneManager {
 
+	// Prevent to clone this class
+	SceneManager() = delete;
+	~SceneManager() = delete;
+
+	jePreventClone(SceneManager)
+
 	friend class Application;
 	friend class AssetManager;
 
@@ -88,14 +94,6 @@ private:
 	static Scene *currentScene_, *nextScene_;
 	static SDL_Window *window_;
 	static std::string	firstScene_;
-
-	// Prevent to clone this class
-	SceneManager() = delete;
-	~SceneManager() = delete;
-	SceneManager(SceneManager&&) = delete;
-	SceneManager(const SceneManager&) = delete;
-	SceneManager& operator= (SceneManager&&) = delete;
-	SceneManager& operator= (const SceneManager&) = delete;
 
 };
 

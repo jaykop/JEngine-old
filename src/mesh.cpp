@@ -4,7 +4,7 @@
 jeBegin
 
 Mesh::Mesh(const std::vector<Vertex>& vertices, 
-	const std::vector<unsigned int>& indices, const std::vector<unsigned>& textures)
+	const std::vector<unsigned int>& indices, const std::vector<Texture>& textures)
 {
 	this->vertices = vertices;
 	this->indices = indices;
@@ -20,17 +20,17 @@ void Mesh::draw(Shader* shader)
 	for (unsigned int i = 0; i < textures.size(); i++)
 	{
 		// todo: modify this code
-		//glActiveTexture(GL_TEXTURE0 + i); // activate proper texture unit before binding
-		//// retrieve texture number (the N in diffuse_textureN)
-		//std::string number;
-		//std::string name = textures[i].type;
-		//if (name == "texture_diffuse")
-		//	number = std::to_string(diffuseNr++);
-		//else if (name == "texture_specular")
-		//	number = std::to_string(specularNr++);
+		glActiveTexture(GL_TEXTURE0 + i); // activate proper texture unit before binding
+		// retrieve texture number (the N in diffuse_textureN)
+		std::string number;
+		std::string name = textures[i].type;
+		if (name == "texture_diffuse")
+			number = std::to_string(diffuseNr++);
+		else if (name == "texture_specular")
+			number = std::to_string(specularNr++);
 
-		//shader->set_float(("material." + name + number).c_str(), i);
-		//glBindTexture(GL_TEXTURE_2D, textures[i].id);
+		shader->set_float(("material." + name + number).c_str(), i);
+		glBindTexture(GL_TEXTURE_2D, textures[i].id);
 	}
 	glActiveTexture(GL_TEXTURE0);
 

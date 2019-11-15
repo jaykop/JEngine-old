@@ -18,7 +18,7 @@ void PhysicsSystem::initialize()
 {
 }
 
-void PhysicsSystem::update()
+void PhysicsSystem::update(float /*dt*/)
 {
 }
 

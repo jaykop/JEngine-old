@@ -24,6 +24,12 @@ jeBegin
 class Shader;
 class GLManager
 {
+	// Prevent to clone this class
+	GLManager() = delete;
+	~GLManager() = delete;
+
+	jePreventClone(GLManager)
+
 	friend class Application;
 	friend class SceneManager;
 
@@ -45,13 +51,6 @@ private:
 
 	static void initialize_shaders();
 	static void initialize_framebuffer(); 
-
-	GLManager() = delete;
-	~GLManager() = delete;
-	GLManager(GLManager&&) = delete;
-	GLManager(const GLManager&) = delete;
-	GLManager& operator= (GLManager&&) = delete;
-	GLManager& operator= (const GLManager&) = delete;
 
 	static float width_, height_;
 	static GLint buffers_, samples_, attributes_;

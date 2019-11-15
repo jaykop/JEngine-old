@@ -1,34 +1,41 @@
 #pragma once
 #include <component.hpp>
-#include <vector>
-#include <string>
+#include <mesh.hpp>
+
+// assimp
+#include <Importer.hpp>
+#include <scene.h>
+#include <postprocess.h>
 
 jeBegin
 
-class Mesh;
+unsigned texture_from_file(const char* path, const std::string& directory, bool gamma = false);
+
 class Shader;
 class Object;
 
-class Model : protected Component {
+class Model {
 
 public:
 
 private:
+	/*  Model Data */
+	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
+	std::vector<Texture> textures_loaded;	
+	std::vector<Mesh> meshes;
+	std::string directory;
+	bool gammaCorrection;
 
 	/*  Functions   */
 	Model(char* path) { load_model(path); }
 	void draw(Shader* shader);
 
-	/*  Model Data  */
-	std::vector<Mesh*> meshes;
-	std::string directory;
 	/*  Functions   */
 	void load_model(const std::string& path);
 	void process_node(aiNode* node, const aiScene* scene);
-	Mesh* process_mesh(aiMesh* mesh, const aiScene* scene);
-	std::vector<unsigned> load_materialTextures(aiMaterial* mat, aiTextureType type,
+	Mesh process_mesh(aiMesh* mesh, const aiScene* scene);
+	std::vector<Texture> load_materialTextures(aiMaterial* mat, aiTextureType type,
 		const std::string& typeName);
-	unsigned int texture_from_file(const char* path, const std::string& directory, bool gamma);
 
 	Model(Object* owner);
 	virtual ~Model() {};

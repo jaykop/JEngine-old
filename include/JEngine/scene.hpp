@@ -23,17 +23,22 @@ using ObjectMap = std::unordered_map<const char*, Object*>;
 // Generic scene class
 class Scene {
 
+	// Prevent to clone this class
+	Scene() = delete;
+	jePreventClone(Scene)
+
 	// Only SceneManager can manage this class
 	friend class SceneManager;
 
 public:
 
 	const char* get_name() const;
+	void register_object(Object* obj);
+
+	// colors
+	vec4 background, screen;
 
 private:
-
-	static void bind_system();
-	static void unbind_system();
 
 	Scene(const char* name);
 	~Scene();
@@ -47,18 +52,9 @@ private:
 	Scene* lastScene_ = nullptr; // pointer to the last scene (before this scene)
 	const char* name_, *directory_; 
 
-	// container
+	// obj container
 	ObjectMap objects_;
-
-	vec4 background, screen;
-
-
-	// Prevent to clone this class
-	Scene() = delete;
-	Scene(Scene&&) = delete;
-	Scene(const Scene&) = delete;
-	Scene& operator= (Scene&&) = delete;
-	Scene& operator= (const Scene&) = delete;
+	
 };
 
 jeEnd

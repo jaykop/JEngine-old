@@ -12,43 +12,66 @@ Contains the methods of GraphicSystem class
 
 #include <glew.h>
 #include <graphic_system.hpp>
+#include <scene_manager.hpp>
+#include <scene.hpp>
+#include <camera.hpp>
+#include <model.hpp>
 
 jeBegin
 
-void GraphicSystem::initialize()
-{
+Camera* GraphicSystem::mainCamera_ = nullptr;
+GraphicSystem::Models GraphicSystem::models_;
+GraphicSystem::Cameras GraphicSystem::cameras_;
+
+void GraphicSystem::initialize() {
+
+	if (!mainCamera_)
+		mainCamera_ = *cameras_.begin();
+
+	//for (auto& model : models_)
+	//	model->initialize();
 }
 
-void GraphicSystem::update()
-{
-	glClearColor(1.f, 0.f, 0.f, 1.f);
+void GraphicSystem::update(float /*dt*/) {
+
+	// get current scene color
+	vec4 bgColor = SceneManager::get_current_scene()->background;
+
+	// clear buffers
+	glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-}
-
-void GraphicSystem::close()
-{
+	//for (auto& model : models_)
+	//	models_->update();
 
 }
 
-void GraphicSystem::add_model(Model* m)
-{
-}
+void GraphicSystem::close() {
 
-void GraphicSystem::remove_model(Model* m)
-{
-}
+	//for (auto& model : models_)
+	//	models_->close();
 
-void GraphicSystem::add_camera(Camera* c)
-{
-}
-
-void GraphicSystem::remove_camera(Camera* c)
-{
+	mainCamera_ = nullptr;
 }
 
 void GraphicSystem::render()
 {
+}
+
+void GraphicSystem::add_model(Model* model) { 
+	models_.push_back(model); 
+}
+
+void GraphicSystem::add_camera(Camera* camera) { 
+	cameras_.push_back(camera); 
+}
+
+void GraphicSystem::remove_model(Model* model) { 
+	models_.erase(std::remove(models_.begin(), models_.end(), model), models_.end()); 
+}
+
+void GraphicSystem::remove_camera(Camera* camera) {
+	cameras_.erase(std::remove(cameras_.begin(), cameras_.end(), camera), cameras_.end());
 }
 
 jeEnd

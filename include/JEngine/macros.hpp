@@ -29,3 +29,10 @@ Contains the engine's generic macros
 
 // Set variable as unreferenced
 #define jeUnused(unused) (void)unused
+
+// Prevent to clone this class
+#define jePreventClone(x)			\
+	x(x&&) = delete;				\
+	x(const x&) = delete;			\
+	x& operator=(x&&) = delete;		\
+	x& operator=(const x&) = delete;	

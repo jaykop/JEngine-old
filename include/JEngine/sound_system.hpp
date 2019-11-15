@@ -17,6 +17,12 @@ jeBegin
 
 class SoundSystem {
 
+	// Prevent to clone this class
+	SoundSystem() = delete;
+	~SoundSystem() = delete;
+
+	jePreventClone(SoundSystem)
+
 	friend class Scene;
 
 public:
@@ -26,15 +32,8 @@ public:
 private:
 
 	static void initialize();
-	static void update();
+	static void update(float dt);
 	static void close();
-
-	SoundSystem() = delete;
-	~SoundSystem() = delete;
-	SoundSystem(SoundSystem&&) = delete;
-	SoundSystem(const SoundSystem&) = delete;
-	SoundSystem& operator=(SoundSystem&&) = delete;
-	SoundSystem& operator=(const SoundSystem&) = delete;
 
 };
 

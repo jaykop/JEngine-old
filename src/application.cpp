@@ -170,7 +170,6 @@ void Application::close()
 	InputHandler::close();
 	AssetManager::unload_assets();
 	GLManager::close();
-	// JsonParser::close();
 }
 
 void Application::quit()

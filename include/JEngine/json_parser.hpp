@@ -18,6 +18,12 @@ jeBegin
 
 class JsonParser {
 
+	// Prevent to clone this class
+	JsonParser() = delete;
+	~JsonParser() = delete;
+
+	jePreventClone(JsonParser)
+
 	friend class Scene;
 	friend class Application;
 	friend class AssetManager;

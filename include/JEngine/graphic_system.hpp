@@ -13,45 +13,52 @@ Contains the definition of GraphicSystem class
 #pragma once
 #include <macros.hpp>
 #include <vec4.hpp>
+#include <vector>
 
 jeBegin
 
-class Camera;
 class Model;
+class Camera;
 class GraphicSystem {
 
+	// Prevent to clone this class
+	GraphicSystem() = delete;
+	~GraphicSystem() = delete;
+
+	jePreventClone(GraphicSystem)
+
 	friend class Scene;
+
+	using Models = std::vector<Model*>;
+	using Cameras = std::vector<Camera*>;
 
 public:
 
 	static void set_camera(Camera* mainCameras);
-	static Camera get_camera();
+	static Camera* get_camera();
 
 	vec4 backgroundColor_, screenColor_;
 
 private:
 
 	static void initialize();
-	static void update();
+	static void update(float dt);
 	static void close();
 
-	void add_model(Model* m);
-	void remove_model(Model* m);
+	static void add_model(Model* model);
+	static void remove_model(Model* model);
 
-	void add_camera(Camera* c);
-	void remove_camera(Camera* c);
+	static void add_camera(Camera* camera);
+	static void remove_camera(Camera* camera);
 
 	//void add_light(Light* pLight);
 	//void remove_light(Light* pLight);
 
-	void render();
+	static void render();
 
-	GraphicSystem() = delete;
-	~GraphicSystem() = delete;
-	GraphicSystem(GraphicSystem&&) = delete;
-	GraphicSystem(const GraphicSystem&) = delete;
-	GraphicSystem& operator=(GraphicSystem&&) = delete;
-	GraphicSystem& operator=(const GraphicSystem&) = delete;
+	static Camera* mainCamera_;
+	static Models models_;
+	static Cameras cameras_;
 
 };
 

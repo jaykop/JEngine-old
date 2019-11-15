@@ -21,6 +21,13 @@ jeBegin
 // random class
 class Random {
 
+	// Prevent to clone this class
+	Random() = delete;
+	~Random() = delete;
+
+	jePreventClone(Random)
+
+	// only application class can seed initially
 	friend class Application;
 
 public:

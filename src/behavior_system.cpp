@@ -17,7 +17,7 @@ void BehaviorSystem::initialize()
 {
 }
 
-void BehaviorSystem::update()
+void BehaviorSystem::update(float /*dt*/)
 {
 }
 

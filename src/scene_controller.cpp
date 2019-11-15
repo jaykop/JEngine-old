@@ -84,9 +84,12 @@ void SceneManager::push_scene(const char* path, const char* stateName)
 	bool sameOne = false;
 	for (auto it = scenes_.begin();	it != scenes_.end(); ++it) {
 
-		// If there is already same one, assert
-		DEBUG_ASSERT(strcmp((*it)->name_.c_str(), stateName), "Trying to add an identical scene!");
-		sameOne = true;
+		// If there is already same one, 
+		if (!strcmp((*it)->name_, stateName)) {
+			jeDoPrint("Trying to add an identical scene!");
+			sameOne = true;
+			break;
+		}
 	}
 
 	// prevent to have duplicated states
@@ -142,7 +145,9 @@ void SceneManager::quit()
 
 void SceneManager::restart()
 {
-	DEBUG_ASSERT(!is_paused(), "Cannot restart on a pause scene");
+	if (is_paused())
+		jeDoPrint("Cannot restart on a pause scene");
+
 	status_ = JE_STATE_RESTART;
 }
 
@@ -161,12 +166,12 @@ SceneManager::SceneStatus SceneManager::get_status(void)
 void SceneManager::set_next_scene(const char* nextState)
 {
 	// current state is the state
-	DEBUG_ASSERT(!strcmp(currentScene_->name_.c_str(), nextState),
-		"The scene you are trying to set is the current scene");
-
+	if (strcmp(currentScene_->name_, nextState)) 
+		jeDoPrint("Cannot set the current scene as the next scene");
+	
 	// if there is no scene to resume
-	DEBUG_ASSERT(!currentScene_->lastScene_, 
-		"Cannot change on a pause scene.\nUse resume_and_next function");
+	if (currentScene_->lastScene_)
+		jeDoPrint("Cannot change on a pause scene.\nUse resume_and_next function");
 
 	if (has_scene(nextState)) {
 		nextScene_ = get_scene(nextState);
@@ -178,8 +183,8 @@ void SceneManager::set_next_scene(const char* nextState)
 void SceneManager::pause(const char* nextState)
 {
 	// current state is the state
-	DEBUG_ASSERT(!strcmp(currentScene_->name_.c_str(), nextState), 
-		"The scene you are trying to set is the current scene");
+	if (strcmp(currentScene_->name_, nextState))
+		jeDoPrint("Cannot set the current scene as the next scene");
 
 	// set the pause state
 	if (has_scene(nextState)) {
@@ -191,7 +196,9 @@ void SceneManager::pause(const char* nextState)
 void SceneManager::resume()
 {
 	// Check state to resume
-	DEBUG_ASSERT(currentScene_->lastScene_ != nullptr, "No state to resume");
+	if (currentScene_->lastScene_ == nullptr)
+		jeDoPrint("No state to resume");
+
 	status_ = JE_STATE_RESUME;
 }
 
@@ -216,7 +223,7 @@ Scene* SceneManager::get_scene(const char* stateName)
 			return it;
 
 	// If there is no,
-	DEBUG_ASSERT(false, "No such name of scene");
+	jeDoPrint("No such name of scene");
 	return nullptr;
 }
 
@@ -232,7 +239,7 @@ bool SceneManager::has_scene(const char* stateName)
 		}
 	}
 
-	DEBUG_ASSERT(found, "No such name of scene");
+	jeDoPrint("No such name of scene");
 	return found;
 }
 

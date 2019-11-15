@@ -19,8 +19,7 @@ jeBegin
 template <class ComponentType>
 void Object::add_component()
 {
-	static std::string typeName;
-	typeName = ComponentManager::key_to_type(typeid(ComponentType).name());
+	const char* typeName = ComponentManager::key_to_type(typeid(ComponentType).name());
 	auto found = components_.find(typeName);
 
 	DEBUG_ASSERT(found == components_.end(), "Trying to add an existing component!");
@@ -32,8 +31,7 @@ void Object::add_component()
 template <class ComponentType>
 ComponentType* Object::get_component()
 {
-	static std::string typeName;
-	typeName = typeid(ComponentType).name();
+	const char* typeName = typeid(ComponentType).name();
 	auto found = components_.find(typeName);
 
 	DEBUG_ASSERT(found != components_.end(), "No such name of component!");
@@ -44,8 +42,7 @@ ComponentType* Object::get_component()
 template <class ComponentType>
 bool Object::has_component()
 {
-	static std::string typeName;
-	typeName = typeid(ComponentType).name();
+	const char* typeName = typeid(ComponentType).name();
 	auto found = components_.find(typeName);
 	
 	return found != components_.end();
@@ -54,8 +51,7 @@ bool Object::has_component()
 template <class ComponentType>
 void Object::remove_component()
 {
-	static std::string typeName;
-	typeName = ComponentManager::key_to_type(typeid(ComponentType).name());
+	const char* typeName = ComponentManager::key_to_type(typeid(ComponentType).name());
 	auto found = components_.find(typeName);
 
 	DEBUG_ASSERT(found != components_.end(), "No such name of component!");

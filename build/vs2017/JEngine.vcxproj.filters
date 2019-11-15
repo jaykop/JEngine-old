@@ -214,6 +214,9 @@
     <ClInclude Include="..\..\include\JEngine\mesh.hpp">
       <Filter>system\graphics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\elements.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\include\JEngine\component_manager.inl">

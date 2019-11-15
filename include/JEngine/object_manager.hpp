@@ -22,6 +22,12 @@ using ObjectMap = std::unordered_map<const char*, Object*>;
 
 class ObjectManager {
 
+	// Prevent to clone this class
+	ObjectManager() = delete;
+	~ObjectManager() = delete;
+
+	jePreventClone(ObjectManager)
+
 	friend class Scene;
 	friend class Object;
 
@@ -43,12 +49,6 @@ private:
 	static int idGenerator_;
 	static ObjectMap* objects_;
 
-	ObjectManager() = delete;
-	~ObjectManager() = delete;
-	ObjectManager(ObjectManager&&) = delete;
-	ObjectManager(const ObjectManager&) = delete;
-	ObjectManager& operator=(ObjectManager&&) = delete;
-	ObjectManager& operator=(const ObjectManager&) = delete;
 };
 
 jeEnd

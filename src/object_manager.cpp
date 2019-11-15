@@ -66,7 +66,7 @@ ObjectMap* ObjectManager::get_objects()
 
 void ObjectManager::clear_objects()
 {
-	for (auto obj : *objects_) {
+	for (auto& obj : *objects_) {
 		
 		delete obj.second;
 		obj.second = nullptr;

@@ -11,12 +11,24 @@ Contains the definition of BehaviorSystem class
 /******************************************************************************/
 #pragma once
 #include <macros.hpp>
+#include <vector>
+#include <unordered_map>
 
 jeBegin
 
+class Object;
+class Behavior;
 class BehaviorSystem {
 
+	// Prevent to clone this class
+	BehaviorSystem() = delete;
+	~BehaviorSystem() = delete;
+
+	jePreventClone(BehaviorSystem)
+
 	friend class Scene;
+
+	using Behaviors = std::vector<Behavior*>;
 
 public:
 
@@ -25,16 +37,10 @@ public:
 private:
 
 	static void initialize();
-	static void update();
+	static void update(float dt);
 	static void close();
 
-	BehaviorSystem() = delete;
-	~BehaviorSystem() = delete;
-	BehaviorSystem(BehaviorSystem&&) = delete;
-	BehaviorSystem(const BehaviorSystem&) = delete;
-	BehaviorSystem& operator=(BehaviorSystem&&) = delete;
-	BehaviorSystem& operator=(const BehaviorSystem&) = delete;
-
+	Behaviors behabiors_;
 };
 
 jeEnd

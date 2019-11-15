@@ -26,6 +26,12 @@ using BuilderMap = std::unordered_map<std::string, ComponentBuilder*>;
 
 class ComponentManager {
 
+	// Prevent to clone this class
+	ComponentManager() = delete;
+	~ComponentManager() = delete;
+
+	jePreventClone(ComponentManager)
+
 	friend class Object;
 
 private:

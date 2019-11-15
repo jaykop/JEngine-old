@@ -27,6 +27,12 @@ struct Font;
 // generic asset manager class
 class AssetManager {
 
+	// Prevent to clone this class
+	AssetManager() = delete;
+	~AssetManager() = delete;
+
+	jePreventClone(AssetManager)
+
 	friend class Application;
 
 	using FontMap =	std::unordered_map<const char*, Font*>;

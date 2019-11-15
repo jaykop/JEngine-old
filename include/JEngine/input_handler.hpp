@@ -23,6 +23,12 @@ using KeyMap = std::unordered_map<KEY, bool>;
 
 class InputHandler {
 
+	// Prevent to clone this class
+	InputHandler() = delete;
+	~InputHandler() = delete;
+
+	jePreventClone(InputHandler)
+
 	friend class Application;
 	friend class SceneManager;
 
@@ -55,14 +61,7 @@ private:
 	static bool mouseDown, keyDown;
 	static KeyMap keyMap, triggerMap;
 	static MouseWheel mouseWheel_;
-
-	InputHandler() = delete;
-	~InputHandler() = delete;
-	InputHandler(InputHandler&&) = delete;
-	InputHandler& operator=(InputHandler&&) = delete;
-	InputHandler(const InputHandler&) = delete;
-	InputHandler& operator=(const InputHandler&) = delete;
-
+	
 };
 
 jeEnd

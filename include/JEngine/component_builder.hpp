@@ -19,6 +19,9 @@ class Object;
 class Component;
 
 class ComponentBuilder {
+	
+	// Prevent to clone this class
+	jePreventClone(ComponentBuilder)
 
 	friend class ComponentManager;
 
@@ -32,12 +35,6 @@ protected:
 	virtual ~ComponentBuilder() {};
 
 private:
-
-	// Prevent to clone this class
-	ComponentBuilder(ComponentBuilder&&) = delete;
-	ComponentBuilder(const ComponentBuilder&) = delete;
-	ComponentBuilder& operator=(ComponentBuilder&&) = delete;
-	ComponentBuilder& operator=(const ComponentBuilder&) = delete;
 
 };
 

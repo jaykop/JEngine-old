@@ -2,17 +2,13 @@
 #include <shader.hpp>
 #include <mesh.hpp>
 #include <stb_image.h>
-// assimp
-#include <Importer.hpp>
-#include <scene.h>
-#include <postprocess.h>
 
 jeBegin
 
 void Model::draw(Shader* shader)
 {
 	for (unsigned int i = 0; i < meshes.size(); i++)
-		meshes[i]->draw(shader);
+		meshes[i].draw(shader);
 }
 
 /*  Functions   */
@@ -25,7 +21,7 @@ void Model::load_model(std::string const& path)
 	// check for errors
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
 	{
-		cout << "ERROR::ASSIMP:: " << importer.GetErrorString() << endl;
+		jeDebugPrint("ERROR::ASSIMP:: %s", importer.GetErrorString());
 		return;
 	}
 	// retrieve the directory path of the filepath
@@ -54,7 +50,7 @@ void Model::process_node(aiNode* node, const aiScene* scene)
 
 }
 
-Mesh* Model::process_mesh(aiMesh* mesh, const aiScene* scene)
+Mesh Model::process_mesh(aiMesh* mesh, const aiScene* scene)
 {
 	// data to fill
 	std::vector<Vertex> vertices;
@@ -75,7 +71,7 @@ Mesh* Model::process_mesh(aiMesh* mesh, const aiScene* scene)
 		vector.x = mesh->mNormals[i].x;
 		vector.y = mesh->mNormals[i].y;
 		vector.z = mesh->mNormals[i].z;
-		vertex.rormal = vector;
+		vertex.normal = vector;
 		// texture coordinates
 		if (mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
 		{
@@ -84,20 +80,20 @@ Mesh* Model::process_mesh(aiMesh* mesh, const aiScene* scene)
 			// use models where a vertex can have multiple texture coordinates so we always take the first set (0).
 			vec.x = mesh->mTextureCoords[0][i].x;
 			vec.y = mesh->mTextureCoords[0][i].y;
-			vertex.TexCoords = vec;
+			vertex.texCoords = vec;
 		}
 		else
-			vertex.TexCoords = vec2(0.0f, 0.0f);
+			vertex.texCoords = vec2(0.0f, 0.0f);
 		// tangent
 		vector.x = mesh->mTangents[i].x;
 		vector.y = mesh->mTangents[i].y;
 		vector.z = mesh->mTangents[i].z;
-		vertex.Tangent = vector;
+		vertex.tangent = vector;
 		// bitangent
 		vector.x = mesh->mBitangents[i].x;
 		vector.y = mesh->mBitangents[i].y;
 		vector.z = mesh->mBitangents[i].z;
-		vertex.Bitangent = vector;
+		vertex.bitangent = vector;
 		vertices.push_back(vertex);
 	}
 	// now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
@@ -131,7 +127,7 @@ Mesh* Model::process_mesh(aiMesh* mesh, const aiScene* scene)
 	textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
 	// return a mesh object created from the extracted mesh data
-	return new Mesh(vertices, indices, textures);
+	return Mesh(vertices, indices, textures);
 }
 
 // checks all material textures of a given type and loads the textures if they're not loaded yet.
@@ -167,11 +163,9 @@ std::vector<Texture> Model::load_materialTextures(aiMaterial* mat, aiTextureType
 	}
 	return textures;
 }
-};
 
+unsigned texture_from_file(const char* path, const std::string& directory, bool gamma) {
 
-unsigned int Model::texture_from_file(const char* path, const std::string& directory, bool gamma)
-{
 	std::string filename = std::string(path);
 	filename = directory + '/' + filename;
 
@@ -180,8 +174,7 @@ unsigned int Model::texture_from_file(const char* path, const std::string& direc
 
 	int width, height, nrComponents;
 	unsigned char* data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
-	if (data)
-	{
+	if (data) {
 		GLenum format;
 		if (nrComponents == 1)
 			format = GL_RED;
@@ -201,12 +194,13 @@ unsigned int Model::texture_from_file(const char* path, const std::string& direc
 
 		stbi_image_free(data);
 	}
-	else
-	{
-		std::cout << "Texture failed to load at path: " << path << std::endl;
+
+	else {
+		jeDebugPrint("Texture failed to load at path: %s", path);
 		stbi_image_free(data);
 	}
 
 	return textureID;
+}
 
 jeEnd

@@ -17,6 +17,12 @@ jeBegin
 
 class PhysicsSystem {
 
+	// Prevent to clone this class
+	PhysicsSystem() = delete;
+	~PhysicsSystem() = delete;
+
+	jePreventClone(PhysicsSystem)
+
 	friend class Scene;
 
 public:
@@ -26,15 +32,8 @@ public:
 private:
 
 	static void initialize();
-	static void update();
+	static void update(float dt);
 	static void close();
-
-	PhysicsSystem() = delete;
-	~PhysicsSystem() = delete;
-	PhysicsSystem(PhysicsSystem&&) = delete;
-	PhysicsSystem(const PhysicsSystem&) = delete;
-	PhysicsSystem& operator=(PhysicsSystem&&) = delete;
-	PhysicsSystem& operator=(const PhysicsSystem&) = delete;
 
 };
 
