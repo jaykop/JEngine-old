@@ -40,6 +40,9 @@ public:
 
 private:
 
+	// todo: remove this later!
+	void tes_func();
+
 	Scene(const char* name);
 	~Scene();
 

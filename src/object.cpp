@@ -11,7 +11,7 @@ Contains the methods of Object class
 /******************************************************************************/
 
 #include <object.hpp>
-#include <component.hpp>
+#include <transform.hpp>
 #include <debug_tools.hpp>
 #include <object_manager.hpp>
 #include <component_manager.hpp>
@@ -22,6 +22,10 @@ Object::Object(const char* name)
 	:name_(name), active_(true), parent_(nullptr)
 {
 	id_ = ObjectManager::assign_id();
+
+	// automatically add transform component
+	// todo: change this to const char later!
+	add_component<Transform>();
 }
 
 Object::~Object()
@@ -48,7 +52,7 @@ void Object::add_component(const char* componentName)
 
 	DEBUG_ASSERT(found == components_.end(), "Trying to add an existing component!");
 
-	Component* newComponent = ComponentManager::create_component(typeName);
+	Component* newComponent = ComponentManager::create_component(typeName, this);
 	components_.insert(Components::value_type(typeName, newComponent));
 }
 

@@ -1,12 +1,17 @@
 #pragma once
-#include <vec3.hpp>
+#include <component_builder.hpp>
 #include <component.hpp>
+#include <vec3.hpp>
 
 jeBegin
 
-class Object; 
+class Object;
+
+jeDeclareComponentBuilder(Camera);
+
 class Camera : public Component
 {
+	jeBaseFriends(Camera);
 	friend class GraphicSystem;
 
 public:
@@ -28,6 +33,12 @@ public:
 	void pitch(float degree);
 	void roll(float degree);
 	void zoom(float zoom);
+
+protected:
+
+	virtual void add_to_system();
+	virtual void remove_from_system();
+	virtual void load(const rapidjson::Value& data);
 
 private:
 

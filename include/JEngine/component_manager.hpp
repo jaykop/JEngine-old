@@ -17,7 +17,6 @@ Contains the definition of ComponentManager class
 
 jeBegin
 
-class Object;
 class Component;
 class ComponentBuilder;
 
@@ -33,10 +32,11 @@ class ComponentManager {
 	jePreventClone(ComponentManager)
 
 	friend class Object;
+	friend class AssetManager;
 
 private:
 
-	static Component* create_component(const char* componentName);
+	static Component* create_component(const char* componentName, Object* owner);
 
 	static const char* key_to_type(const char* name);
 	static const char* type_to_key(const char* type);
@@ -50,6 +50,11 @@ private:
 	static Directory types_, keys_;
 	 
 };
+
+// Component manager macro
+#define jeStringfy(x)			#x
+#define jeConcat(a, b)			a ## b
+#define jeRegisterComponent(c)	ComponentManager::register_builder<c>(jeStringfy(c), new jeConcat(c, Builder))
 
 jeEnd
 

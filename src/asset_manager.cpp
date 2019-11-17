@@ -21,6 +21,12 @@ Contains the methods of asset_manager class
 #include <lodepng.h>
 #include <mesh.hpp>
 
+// component list
+#include <component_manager.hpp>
+#include <transform.hpp>
+#include <Model.hpp>
+#include <Camera.hpp>
+
 jeBegin
 
 std::string	AssetManager::initDirectory_, AssetManager::assetDirectory_, 
@@ -37,6 +43,17 @@ AssetManager::ArchetypeMap	AssetManager::archetypeMap_;
 
 bool AssetManager::set_bulit_in_components()
 {
+	jeRegisterComponent(Transform);
+
+	// Graphic components
+	//jeCheckComponentRegistration(jeRegisterComponent(Text));
+	jeRegisterComponent(Model);
+	jeRegisterComponent(Camera);
+	//jeCheckComponentRegistration(jeRegisterComponent(Emitter));
+	//jeCheckComponentRegistration(jeRegisterComponent(Light));
+	//jeCheckComponentRegistration(jeRegisterComponent(Material));
+	//jeCheckComponentRegistration(jeRegisterComponent(Animation));
+
 	return false;
 }
 

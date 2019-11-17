@@ -105,7 +105,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\include\JEngine;$(ProjectDir)..\..\include\SDL2;$(ProjectDir)..\..\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>JEngine_d.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;freetype.lib;opengl32.lib;glew32.lib</AdditionalDependencies>
+      <AdditionalDependencies>JEngine_d.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;freetype.lib;opengl32.lib;glew32.lib;assimp-vc142-mtd.lib</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(ProjectDir)..\..\lib\SDL2\$(Platform);$(ProjectDir)..\..\lib\GL\$(Platform);$(ProjectDir)..\..\lib\assimp\$(Configuration)\$(Platform);$(ProjectDir)..\..\lib\jengine\$(Configuration)\$(Platform);$(ProjectDir)..\..\lib\freetype\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
@@ -113,7 +113,8 @@
       <Command>xcopy /y /d "..\..\lib\SDL2\$(Platform)\*.dll" "$(TargetDir)"
 xcopy /y /d "..\..\lib\GL\$(Platform)\*.dll" "$(TargetDir)"
 xcopy /y /d "..\..\lib\freetype\$(Platform)\*.dll" "$(TargetDir)"
-xcopy /y /s /i "$(ProjectDir)\resource" "$(TargetDir)\resource"</Command>
+xcopy /y /s /i "$(ProjectDir)\resource" "$(TargetDir)\resource"
+xcopy /y /d "..\..\lib\assimp\$(Configuration)\$(Platform)\*.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -124,7 +125,7 @@ xcopy /y /s /i "$(ProjectDir)\resource" "$(TargetDir)\resource"</Command>
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\include\JEngine;$(ProjectDir)..\..\include\SDL2;$(ProjectDir)..\..\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>JEngine_d.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;freetype.lib;opengl32.lib;glew32.lib</AdditionalDependencies>
+      <AdditionalDependencies>JEngine_d.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;freetype.lib;opengl32.lib;glew32.lib;assimp-vc142-mtd.lib</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(ProjectDir)..\..\lib\SDL2\$(Platform);$(ProjectDir)..\..\lib\GL\$(Platform);$(ProjectDir)..\..\lib\assimp\$(Configuration)\$(Platform);$(ProjectDir)..\..\lib\jengine\$(Configuration)\$(Platform);$(ProjectDir)..\..\lib\freetype\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
@@ -132,7 +133,8 @@ xcopy /y /s /i "$(ProjectDir)\resource" "$(TargetDir)\resource"</Command>
       <Command>xcopy /y /d "..\..\lib\SDL2\$(Platform)\*.dll" "$(TargetDir)"
 xcopy /y /d "..\..\lib\GL\$(Platform)\*.dll" "$(TargetDir)"
 xcopy /y /d "..\..\lib\freetype\$(Platform)\*.dll" "$(TargetDir)"
-xcopy /y /s /i "$(ProjectDir)\resource" "$(TargetDir)\resource"</Command>
+xcopy /y /s /i "$(ProjectDir)\resource" "$(TargetDir)\resource"
+xcopy /y /d "..\..\lib\assimp\$(Configuration)\$(Platform)\*.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -147,7 +149,7 @@ xcopy /y /s /i "$(ProjectDir)\resource" "$(TargetDir)\resource"</Command>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>JEngine.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;freetype.lib;opengl32.lib;glew32s.lib</AdditionalDependencies>
+      <AdditionalDependencies>JEngine.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;freetype.lib;opengl32.lib;glew32.lib;assimp-vc142-mt.lib</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(ProjectDir)..\..\lib\SDL2\$(Platform);$(ProjectDir)..\..\lib\GL\$(Platform);$(ProjectDir)..\..\lib\assimp\$(Configuration)\$(Platform);$(ProjectDir)..\..\lib\jengine\$(Configuration)\$(Platform);$(ProjectDir)..\..\lib\freetype\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
@@ -155,7 +157,8 @@ xcopy /y /s /i "$(ProjectDir)\resource" "$(TargetDir)\resource"</Command>
       <Command>xcopy /y /d "..\..\lib\SDL2\$(Platform)\*.dll" "$(TargetDir)"
 xcopy /y /d "..\..\lib\GL\$(Platform)\*.dll" "$(TargetDir)"
 xcopy /y /d "..\..\lib\freetype\$(Platform)\*.dll" "$(TargetDir)"
-xcopy /y /s /i "$(ProjectDir)\resource" "$(TargetDir)\resource"</Command>
+xcopy /y /s /i "$(ProjectDir)\resource" "$(TargetDir)\resource"
+xcopy /y /d "..\..\lib\assimp\$(Configuration)\$(Platform)\*.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -170,7 +173,7 @@ xcopy /y /s /i "$(ProjectDir)\resource" "$(TargetDir)\resource"</Command>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>JEngine.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;freetype.lib;opengl32.lib;glew32.lib</AdditionalDependencies>
+      <AdditionalDependencies>JEngine.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;freetype.lib;opengl32.lib;glew32.lib;assimp-vc142-mt.lib</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(ProjectDir)..\..\lib\SDL2\$(Platform);$(ProjectDir)..\..\lib\GL\$(Platform);$(ProjectDir)..\..\lib\assimp\$(Configuration)\$(Platform);$(ProjectDir)..\..\lib\jengine\$(Configuration)\$(Platform);$(ProjectDir)..\..\lib\freetype\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
@@ -178,7 +181,8 @@ xcopy /y /s /i "$(ProjectDir)\resource" "$(TargetDir)\resource"</Command>
       <Command>xcopy /y /d "..\..\lib\SDL2\$(Platform)\*.dll" "$(TargetDir)"
 xcopy /y /d "..\..\lib\GL\$(Platform)\*.dll" "$(TargetDir)"
 xcopy /y /d "..\..\lib\freetype\$(Platform)\*.dll" "$(TargetDir)"
-xcopy /y /s /i "$(ProjectDir)\resource" "$(TargetDir)\resource"</Command>
+xcopy /y /s /i "$(ProjectDir)\resource" "$(TargetDir)\resource"
+xcopy /y /d "..\..\lib\assimp\$(Configuration)\$(Platform)\*.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

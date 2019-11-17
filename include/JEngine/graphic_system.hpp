@@ -28,6 +28,8 @@ class GraphicSystem {
 	jePreventClone(GraphicSystem)
 
 	friend class Scene;
+	friend class Camera;
+	friend class Model;
 
 	using Models = std::vector<Model*>;
 	using Cameras = std::vector<Camera*>;

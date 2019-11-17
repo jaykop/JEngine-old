@@ -1,6 +1,8 @@
 #pragma once
+#include <component_builder.hpp>
 #include <component.hpp>
 #include <mesh.hpp>
+#include <string>
 
 // assimp
 #include <Importer.hpp>
@@ -14,9 +16,20 @@ unsigned texture_from_file(const char* path, const std::string& directory, bool 
 class Shader;
 class Object;
 
-class Model {
+class Model : public Component {
+
+	jeBaseFriends(Model);
+	friend class GraphicSystem;
 
 public:
+
+	void load_model(const std::string& path);
+
+protected:
+
+	virtual void add_to_system();
+	virtual void remove_from_system();
+	virtual void load(const rapidjson::Value& data);
 
 private:
 	/*  Model Data */
@@ -27,21 +40,21 @@ private:
 	bool gammaCorrection;
 
 	/*  Functions   */
-	Model(char* path) { load_model(path); }
+	Model(Object* owner);
+	virtual ~Model() {}
+
 	void draw(Shader* shader);
 
 	/*  Functions   */
-	void load_model(const std::string& path);
 	void process_node(aiNode* node, const aiScene* scene);
 	Mesh process_mesh(aiMesh* mesh, const aiScene* scene);
 	std::vector<Texture> load_materialTextures(aiMaterial* mat, aiTextureType type,
 		const std::string& typeName);
 
-	Model(Object* owner);
-	virtual ~Model() {};
-
 	Model() = delete;
 
 };
+
+jeDeclareComponentBuilder(Model);
 
 jeEnd

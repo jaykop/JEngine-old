@@ -18,16 +18,18 @@ jeBegin
 BuilderMap ComponentManager::builderMap_;
 Directory ComponentManager::keys_, ComponentManager::types_;
 
-Component* ComponentManager::create_component(const char* componentName) {
+Component* ComponentManager::create_component(const char* componentName,
+	Object* owner) {
 	
 	// find component builder
 	auto found = builderMap_.find(componentName);
-
-	// catch error
-	DEBUG_ASSERT(found != builderMap_.end(), "No such name of component");
+	if (found == builderMap_.end()) {
+		jeDebugPrint("No such name of component");
+		return nullptr;
+	}
 	
 	// return new component created
-	return found->second->create_component();
+	return found->second->create_component(owner);
 } 
 
 const char* ComponentManager::key_to_type(const char* name)
@@ -41,7 +43,10 @@ const char* ComponentManager::key_to_type(const char* name)
 const char* ComponentManager::type_to_key(const char* type)
 {
 	auto found = keys_.find(type);
-	DEBUG_ASSERT(found == keys_.end(), "No such name of conmponent");
+	if (found == keys_.end()) {
+		jeDebugPrint("No such name of conmponent");
+		return nullptr;
+	}
 	return found->second.c_str();
 }
 

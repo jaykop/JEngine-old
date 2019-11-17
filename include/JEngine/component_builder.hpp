@@ -25,10 +25,6 @@ class ComponentBuilder {
 
 	friend class ComponentManager;
 
-public:
-
-	virtual Component* create_component() const = 0;
-
 protected:
 
 	ComponentBuilder() {};
@@ -36,6 +32,41 @@ protected:
 
 private:
 
+	virtual Component* create_component(Object* owner) const = 0;
+
 };
+
+#define jeBaseFriends(c)				\
+	friend class jeConcat(c, Builder);	\
+	friend class ComponentManager;
+#define jeConcat(a, b)			a ## b
+#define jeDefineComponentBuilder(c)					\
+	jeConcat(c, Builder)::jeConcat(c, Builder)() {} \
+	Component* jeConcat(c, Builder)::create_component(Object* owner) const { return new (c)(owner);}
+#define jeDeclareComponentBuilder(c)	\
+	class jeConcat(c, Builder) : public ComponentBuilder { \
+	friend class AssetManager; \
+	jeConcat(c, Builder)(); \
+	~jeConcat(c, Builder)() {}; \
+	jeConcat(c, Builder)(const jeConcat(c, Builder)& /*copy*/) = delete; \
+	jeConcat(c, Builder)& operator=(const jeConcat(c, Builder)& /*copy*/) = delete; \
+	jeConcat(c, Builder)(jeConcat(c, Builder) && /*copy*/) = delete; \
+	jeConcat(c, Builder)& operator=(jeConcat(c, Builder) && /*copy*/) = delete; \
+	Component* create_component(Object* owner) const override; \
+	}
+#define jeDefineCustomComponentBuilder(c)	\
+	jeConcat(c, Builder)::jeConcat(c, Builder)() {} \
+	CustomComponent* jeConcat(c, Builder)::create_component(Object* owner) const { return new (c)(owner); } 
+#define jeDeclareCustomComponentBuilder(c)	\
+	class jeConcat(c, Builder) : public ComponentBuilder { \
+	friend class JEngine; \
+	jeConcat(c, Builder)(); \
+	~jeConcat(c, Builder)() {}; \
+	jeConcat(c, Builder)(const jeConcat(c, Builder)& /*copy*/) = delete; \
+	jeConcat(c, Builder)& operator=(const jeConcat(c, Builder)& /*copy*/) = delete; \
+	jeConcat(c, Builder)(jeConcat(c, Builder) && /*copy*/) = delete; \
+	jeConcat(c, Builder)& operator=(jeConcat(c, Builder) && /*copy*/) = delete; \
+	CustomComponent* create_component(Object* owner) const override; \
+	}
 
 jeEnd

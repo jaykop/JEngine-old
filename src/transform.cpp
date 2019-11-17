@@ -2,6 +2,8 @@
 
 jeBegin
 
+jeDefineComponentBuilder(Transform);
+
 Transform::Transform(Object* owner) 
 : Component(owner), position_(vec3::zero), scale_(vec3::zero),
 rotation_(0.f), axis_(vec3(0, 0, 1)) {};

@@ -28,7 +28,7 @@ int SceneManager::frames_ = 0;
 float SceneManager::frameTime_ = 0.f;
 SDL_Window* SceneManager::window_ = nullptr;
 Scene* SceneManager::currentScene_ = nullptr;
-SceneManager::SceneStatus SceneManager::status_ = SceneManager::SceneStatus::JE_STATE_NONE;
+SceneManager::SceneStatus SceneManager::status_ = SceneManager::SceneStatus::JE_STATE_CHANGE;
 
 bool SceneManager::initialize(SDL_Window* window)
 {

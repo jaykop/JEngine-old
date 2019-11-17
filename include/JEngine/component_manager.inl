@@ -30,7 +30,7 @@ void ComponentManager::register_builder(
 
 	// add the builder
 	builderMap_.insert(
-		BhilderMap::value_type(typeName, builder));
+		BuilderMap::value_type(typeName, builder));
 
 	// add key and type name
 	types_.insert(Directory::value_type(componentName, typeName));

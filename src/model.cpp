@@ -1,9 +1,30 @@
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
 #include <model.hpp>
 #include <shader.hpp>
 #include <mesh.hpp>
-#include <stb_image.h>
+#include <graphic_system.hpp>
 
 jeBegin
+
+jeDefineComponentBuilder(Model);
+
+void Model::add_to_system() {
+	GraphicSystem::add_model(this);
+}
+
+void Model::remove_from_system() {
+	GraphicSystem::remove_model(this);
+}
+
+void Model::load(const rapidjson::Value& data) {
+
+}
+
+Model::Model(Object* owner) 
+: Component(owner) {
+	;
+}
 
 void Model::draw(Shader* shader)
 {

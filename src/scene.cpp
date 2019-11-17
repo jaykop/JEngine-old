@@ -24,8 +24,22 @@ Contains the methods of scene class
 #include <object.hpp>
 #include <transform.hpp>
 #include <model.hpp>
+#include <camera.hpp>
 
 jeBegin
+
+void Scene::tes_func() {
+
+	// TODO
+	Object* camera = ObjectManager::create_object("camera");
+	camera->add_component<Camera>();
+	register_object(camera);
+
+	Object* test = ObjectManager::create_object("3d_model");
+	test->add_component<Model>();
+	test->get_component<Model>()->load_model("../../game/unicket/resource/obj/nanosuit.obj");
+	register_object(test);
+}
 
 Scene::Scene(const char* name)
 {
@@ -44,11 +58,8 @@ void Scene::load()
 
 	// Here load from json file...
 
-	// TODO
-	Object* test = ObjectManager::create_object("3d model");
-	test->add_component<Model>();
-	test->add_component<Transform>();
-	register_object(test);
+	// todo: remove this later!
+	tes_func();
 }
 
 void Scene::initialize()
@@ -119,7 +130,7 @@ const char* Scene::get_name() const
 void Scene::register_object(Object* obj) {
 
 	// check if the object is pointing null
-	if (!ObjectManager::objects_) {
+	if (ObjectManager::objects_) {
 		ObjectManager::objects_->insert({ obj->get_name(), obj });
 		obj->register_components();
 	}

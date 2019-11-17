@@ -3,8 +3,22 @@
 #include <mat4.hpp>
 #include <vec4.hpp>
 #include <math_util.hpp>
+#include <graphic_system.hpp>
 
 jeBegin
+
+jeDefineComponentBuilder(Camera);
+
+void Camera::add_to_system() {
+	GraphicSystem::add_camera(this);
+}
+
+void Camera::remove_from_system() {
+	GraphicSystem::remove_camera(this);
+}
+
+void Camera::load(const rapidjson::Value& data) {
+}
 
 Camera::Camera(Object* pOwner)
 	: Component(pOwner),

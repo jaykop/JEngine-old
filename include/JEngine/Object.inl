@@ -17,31 +17,36 @@ Contains the inline methods of Object class
 jeBegin
 
 template <class ComponentType>
-void Object::add_component()
-{
-	const char* typeName = ComponentManager::key_to_type(typeid(ComponentType).name());
+void Object::add_component() {
+
+	const char* typeName = typeid(ComponentType).name();
 	auto found = components_.find(typeName);
+	if (found != components_.end()) {
+		jeDebugPrint("Trying to add an existing component!");
+		return;
+	}
 
-	DEBUG_ASSERT(found == components_.end(), "Trying to add an existing component!");
-
-	Component* newComponent = ComponentManager::create_component(typeName);
+	Component* newComponent = ComponentManager::create_component(typeName, this);
 	components_.insert(Components::value_type(typeName, newComponent));
 }
 
 template <class ComponentType>
-ComponentType* Object::get_component()
-{
+ComponentType* Object::get_component() {
+
 	const char* typeName = typeid(ComponentType).name();
 	auto found = components_.find(typeName);
 
-	DEBUG_ASSERT(found != components_.end(), "No such name of component!");
+	if (found == components_.end()) {
+		jeDebugPrint("No such name of component!");
+		return nullptr;
+	}
 
 	return reinterpret_cast<ComponentType*>(found->second);
 }
 
 template <class ComponentType>
-bool Object::has_component()
-{
+bool Object::has_component() {
+
 	const char* typeName = typeid(ComponentType).name();
 	auto found = components_.find(typeName);
 	
@@ -49,8 +54,8 @@ bool Object::has_component()
 }
 
 template <class ComponentType>
-void Object::remove_component()
-{
+void Object::remove_component() {
+
 	const char* typeName = ComponentManager::key_to_type(typeid(ComponentType).name());
 	auto found = components_.find(typeName);
 

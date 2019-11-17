@@ -22,9 +22,12 @@ ObjectMap* ObjectManager::objects_ = nullptr;
 Object* ObjectManager::create_object(const char* name)
 {
 	auto found = objects_->find(name);
-	DEBUG_ASSERT(found == objects_->end(), "The object with same name is already in the map!");
-	Object* newObject = new Object(name);
+	if (found != objects_->end()) {
+		jeDebugPrint("The object with same name is already in the map!");
+		return nullptr;
+	}
 
+	Object* newObject = new Object(name);
 	return newObject;
 }
 
