@@ -8,7 +8,7 @@ PhysicsSystem::PhysicsSystem()
 {
 }
 
-void PhysicsSystem::Load(CR_RJDoc /*_data*/)
+void PhysicsSystem::Load(CR_RJDoc /*data*/)
 {
 }
 
@@ -16,7 +16,7 @@ void PhysicsSystem::Init()
 {
 }
 
-void PhysicsSystem::Update(const float /*_dt*/)
+void PhysicsSystem::Update(const float /*dt*/)
 {
 }
 

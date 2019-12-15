@@ -5,22 +5,22 @@
 
 jeBegin
 
-State::State(const char* _name)
-	:m_pLastStage(nullptr)
+State::State(const char* name)
+	:pLastStage_(nullptr)
 {
-	m_name.assign(_name);
+	name_.assign(name);
 }
 
 void State::Load()
 {
-	jeDebugPrint("*State - Loading %s...\n", m_name.c_str());
+	jeDebugPrint("*State - Loading %s...\n", name_.c_str());
 	
 	// Allocate new object container;
-	OBJECT::m_pSharedContainer 
-		= m_pObjContainer = new ObjectContainer;
+	OBJECT::pContainer_
+		= pObjContainer_ = new ObjectContainer;
 	
 	// Read flie from json state file
-	JSON::ReadFile(m_loadDirectory.c_str());
+	JSON::ReadFile(loadDirectory_.c_str());
 
 	// Load objects and components, and system information
 	JSON::LoadObjects();
@@ -30,56 +30,56 @@ void State::Load()
 void State::Init()
 {
 #if defined(_DEBUG)
-		STATE::m_showUpdateMessage = true;
+		STATE::showUpdateMessage_ = true;
 #endif // _DEBUG
 
-	jeDebugPrint("*State - Initializing %s...\n", m_name.c_str());
+	jeDebugPrint("*State - Initializing %s...\n", name_.c_str());
 	SYSTEM::Init();
 }
 
-void State::Update(const float _dt)
+void State::Update(float dt)
 {
 #if defined(_DEBUG)
-	if (STATE::m_showUpdateMessage) {
-		jeDebugPrint("*State - Updating %s...\n", m_name.c_str());
-		STATE::m_showUpdateMessage = false;
+	if (STATE::showUpdateMessage_) {
+		jeDebugPrint("*State - Updating %s...\n", name_.c_str());
+		STATE::showUpdateMessage_ = false;
 	}
 #endif // _DEBUG
 
-	SYSTEM::Update(_dt);
+	SYSTEM::Update(dt);
 }
 
 void State::Close()
 {
 #if defined(_DEBUG)
-	STATE::m_showUpdateMessage = true;
+	STATE::showUpdateMessage_ = true;
 #endif // _DEBUG
 
-	OBJECT::m_pSharedContainer = STATE::GetCurrentState()->m_pObjContainer;
+	OBJECT::pContainer_ = STATE::GetCurrentState()->pObjContainer_;
 
-	jeDebugPrint("*State - Closing %s...\n", m_name.c_str());
+	jeDebugPrint("*State - Closing %s...\n", name_.c_str());
 	SYSTEM::Close();
 }
 
 void State::Unload()
 {
-	jeDebugPrint("*State - Unloading %s...\n", m_name.c_str());
+	jeDebugPrint("*State - Unloading %s...\n", name_.c_str());
 	SYSTEM::Unload();
 	ClearObjectContainer();
 }
 
 void State::ClearObjectContainer()
 {
-	if (m_pObjContainer) {
-		m_pObjContainer->ClearObjectMap();
-		delete m_pObjContainer;
-		m_pObjContainer = nullptr;
+	if (pObjContainer_) {
+		pObjContainer_->ClearObjectMap();
+		delete pObjContainer_;
+		pObjContainer_ = nullptr;
 	}
 }
 
 const char* State::GetName() const
 {
-	return m_name.c_str();
+	return name_.c_str();
 }
 
 

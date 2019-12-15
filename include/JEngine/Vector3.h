@@ -26,7 +26,7 @@ struct Vector3
 
 	// Constructor and destructor
 	Vector3(float _x = 0, float _y = 0, float _z = 0);
-	Vector3(const Vector3& _copy);
+	Vector3(const Vector3& copy);
 
 	// Static variables
 	static const Vector3 ZERO;
@@ -36,28 +36,28 @@ struct Vector3
 	static const Vector3 UNIT_Z;
 
 	// Operators
-	bool		operator<(const Vector3& _rhs) const;
-	bool		operator==(const Vector3& _rhs) const;
-	bool		operator!=(const Vector3& _rhs) const;
-	Vector3		operator+(float _constant) const;
-	Vector3		operator+(const Vector3& _rhs) const;
-	Vector3		operator-(float _constant) const;
-	Vector3		operator-(const Vector3& _rhs) const;
-	Vector3		operator*(float _constant) const;
-	Vector3		operator*(const Vector3& _rhs) const;
-	Vector3		operator/(float _constant) const;
-	Vector3&	operator=(const Vector3& _rhs);
+	bool		operator<(const Vector3& rhs) const;
+	bool		operator==(const Vector3& rhs) const;
+	bool		operator!=(const Vector3& rhs) const;
+	Vector3		operator+(float constant) const;
+	Vector3		operator+(const Vector3& rhs) const;
+	Vector3		operator-(float constant) const;
+	Vector3		operator-(const Vector3& rhs) const;
+	Vector3		operator*(float constant) const;
+	Vector3		operator*(const Vector3& rhs) const;
+	Vector3		operator/(float constant) const;
+	Vector3&	operator=(const Vector3& rhs);
 	Vector3		operator-(void) const;
-	Vector3&	operator+=(const Vector3& _rhs);
-	Vector3&	operator+=(float _constant);
-	Vector3&	operator-=(const Vector3& _rhs);
-	Vector3&	operator-=(float _constant);
-	Vector3&	operator*=(const Vector3& _rhs);
-	Vector3&	operator*=(float _constant);
-	Vector3&	operator/=(float _constant);
+	Vector3&	operator+=(const Vector3& rhs);
+	Vector3&	operator+=(float constant);
+	Vector3&	operator-=(const Vector3& rhs);
+	Vector3&	operator-=(float constant);
+	Vector3&	operator*=(const Vector3& rhs);
+	Vector3&	operator*=(float constant);
+	Vector3&	operator/=(float constant);
 
 	// Transforming functions
-	void		Set(const Vector3& _copy);
+	void		Set(const Vector3& copy);
 	void		Set(float _x, float _y, float _z);
 	void		SetZero();
 	void		SetOne();
@@ -66,8 +66,8 @@ struct Vector3
 	void		SetUnitZ();
 
 	// Friend Functions
-	friend Vector3			operator+(float _constant, const Vector3& _rhs);
-	friend Vector3			operator*(float _constant, const Vector3& _rhs);
+	friend Vector3			operator+(float constant, const Vector3& rhs);
+	friend Vector3			operator*(float constant, const Vector3& rhs);
 	friend std::ostream&	operator<<(std::ostream& _os, const Vector3& _constents);
 
 };

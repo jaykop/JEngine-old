@@ -17,24 +17,23 @@ public:
 
 private:
 
-	State(const char* _name);
+	State(const char* name);
 	~State() {};
 	State() = delete;
-	State(const State& /*_copy*/) = delete;
-	void operator=(const State& /*_copy*/) = delete;
+	State(const State& /*copy*/) = delete;
+	void operator=(const State& /*copy*/) = delete;
 
 	void Load();
 	void Init();
-	void Update(const float _dt);
+	void Update(float dt);
 	void Close();
 	void Unload();
 
 	void ClearObjectContainer();
 
-	State*				m_pLastStage;
-	bool				m_paused;
-	std::string			m_name, m_loadDirectory;
-	ObjectContainer*	m_pObjContainer;
+	State*				pLastStage_;
+	std::string			name_, loadDirectory_;
+	ObjectContainer*	pObjContainer_;
 };
 
 jeEnd

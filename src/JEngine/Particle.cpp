@@ -1,5 +1,4 @@
 #include "Particle.h"
-#include "GLManager.h"
 #include "Transform.h"
 #include "SystemManager.h"
 #include "Random.h"
@@ -17,340 +16,353 @@ jeDefineComponentBuilder(Emitter);
 
 using namespace Math;
 
-const unsigned	Emitter::m_maxSize = 1000;
+const unsigned	Emitter::kMaxSize_ = 1000;
 
-Emitter::Particle::Particle(Emitter* _emitter)
-	: m_pEmitter(_emitter), dead(false)
+Emitter::Emitter(Object* pOwner)
+	:Model(pOwner), startColor_(vec3::ONE), changeColor_(true),
+	endColor_(vec3::ZERO), life_(1.f), type_(PARTICLE_NORMAL), pointSize_(1.f),
+	direction_(vec3::ZERO), velocity_(vec3::ZERO), active_(true), colorDiff_(vec3::ZERO),
+	deadCount_(0), range_(vec3::ZERO), size_(0), rotationSpeed_(0.f)
 {
-	static Transform* s_pTransform;
-	s_pTransform = m_pEmitter->GetOwner()->GetComponent<Transform>();
-	
-	life		= Random::GetRandomFloat(0.f, m_pEmitter->life);
-	velocity	= Random::GetRandVec3(vec3::ZERO, m_pEmitter->velocity);
-	position	= s_pTransform->position;
-	rotation	= Random::GetRandomFloat(0.f, 360.f);
-	direction	= Random::GetRandVec3(-m_pEmitter->direction, m_pEmitter->direction);
-	Normalize(direction);
-	color.Set(m_pEmitter->m_startColor);
-	
-	static float s_rotationSpeed = m_pEmitter->rotationSpeed;
-
-	if (m_pEmitter->type == PARTICLE_EXPLODE)
-		hidden = false;
-	else
-		hidden = true;
-
-	if (s_rotationSpeed)
-		rotationSpeed = Random::GetRandomFloat(0., s_rotationSpeed);
-
-	if (m_pEmitter->is2d)
-		direction.z = 0.f;
-}
-
-void Emitter::Particle::operator=(const Particle & _copy)
-{
-	static Transform* s_pTransform;
-	s_pTransform = m_pEmitter->GetOwner()->GetComponent<Transform>();
-
-	dead = _copy.dead;
-	life = _copy.life;
-	velocity.Set(_copy.velocity);
-	position.Set(s_pTransform->position);
-	rotation = _copy.rotation;
-	direction.Set(_copy.direction);
-	Normalize(direction);
-	color.Set(_copy.color);
-	hidden = _copy.hidden;
-	rotationSpeed = _copy.rotationSpeed;
-	direction.z = _copy.direction.z;;
-}
-
-void Emitter::Particle::Refresh()
-{
-	static Transform* s_pTransform;
-	s_pTransform = m_pEmitter->GetOwner()->GetComponent<Transform>();
-
-	rotation = Random::GetRandomFloat(0.f, 360.f);
-	rotationSpeed = Random::GetRandomFloat(0., m_pEmitter->rotationSpeed);
-
-	life = Random::GetRandomFloat(0.f, m_pEmitter->life);
-	color.Set(m_pEmitter->m_startColor);
-
-	if (m_pEmitter->type == Emitter::PARTICLE_NORMAL) {
-
-		position = s_pTransform->position;
-		hidden = false;
-		direction = Random::GetRandVec3(-m_pEmitter->direction, m_pEmitter->direction);
-	}
-
-	else if (m_pEmitter->type == PARTICLE_EXPLODE) {
-
-		// No more particle to update,
-		// turn off the active toggle
-		if (m_pEmitter->size == m_pEmitter->m_deadCount)
-			m_pEmitter->active = false;
-
-		else if (!dead) {
-
-			// Ready for next update
-			position = s_pTransform->position;
-			direction = Random::GetRandVec3(-m_pEmitter->direction, m_pEmitter->direction);
-
-			// Set dead and add number
-			dead = true;
-			hidden = true;
-			m_pEmitter->m_deadCount++;
-		}
-	}
-
-	else if (m_pEmitter->type == Emitter::PARTICLE_WIDE) {
-
-		direction.y = -1;
-		hidden = false;
-
-		static vec3 s_position, s_range;
-		s_range = m_pEmitter->range;
-		s_position = s_pTransform->position;
-		position.x = Random::GetRandomFloat(s_position.x - s_range.x, s_position.x + s_range.x);
-		position.y = Random::GetRandomFloat(s_position.y - s_range.y, s_position.y + s_range.y);
-		position.z = Random::GetRandomFloat(s_position.z - s_range.z, s_position.z + s_range.z);
-
-		life = Random::GetRandomFloat(0.f, m_pEmitter->life);
-		color.Set(m_pEmitter->m_startColor);
-
-	}
-
-	if (m_pEmitter->is2d)
-		direction.z = 0.f;
-}
-
-Emitter::Emitter(Object* _pOwner)
-	:Model(_pOwner), m_startColor(vec3::ONE), m_changeColor(true),
-	m_endColor(vec3::ZERO), life(1.f), type(PARTICLE_NORMAL), is2d(false),
-	direction(vec3::ZERO), velocity(vec3::ZERO), active(true), colorDiff(vec3::ZERO),
-	m_deadCount(0), pointSize(0.f), range(vec3::ZERO), size(0), rotationSpeed(0.f)
-{
-	sfactor = GL_SRC_ALPHA;
-	dfactor = GL_ONE;
-	m_hiddenStatus |= IS_EMITTER;
+	sfactor_ = GL_SRC_ALPHA;
+	dfactor_ = GL_ONE;
+	is_ |= IS_EMITTER;
 }
 
 Emitter::~Emitter() 
 {
 	// Clear particles
-	for (auto particle : m_particles) {
+	for (auto particle : particles_) {
 		delete particle;
 		particle = nullptr;
 	}
 
-	SYSTEM::GetGraphicSystem()->RemoveModel(this);
+	SYSTEM::pGraphic_->RemoveModel(this);
 }
 
-void Emitter::operator=(const Emitter & _copy)
+void Emitter::operator=(const Emitter & /*copy*/)
 {
-	m_startColor.Set(_copy.m_startColor);
-	m_changeColor = _copy.m_changeColor;
-	m_endColor.Set(_copy.m_endColor);
-	life = _copy.life;
-	type = _copy.type;
-	is2d = _copy.is2d;
-	direction.Set(_copy.direction);
-	velocity.Set(_copy.velocity);
-	active = _copy.active;
-	m_deadCount = _copy.m_deadCount;
-	pointSize = _copy.pointSize;
-	range.Set(_copy.range);
-	size = _copy.size;
-	colorDiff.Set(_copy.colorDiff);
-	rotationSpeed = _copy.rotationSpeed;
+	//startColor_.Set(copy.startColor_);
+	//changeColor_ = copy.changeColor_;
+	//endColor_.Set(copy.endColor_);
+	//life = copy.life;
+	//type = copy.type;
+	//is2d = copy.is2d;
+	//direction.Set(copy.direction);
+	//velocity.Set(copy.velocity);
+	//active = copy.active;
+	//deadCount_ = copy.deadCount_;
+	//pointSize = copy.pointSize;
+	//range.Set(copy.range);
+	//size = copy.size;
+	//colorDiff_.Set(copy.colorDiff_);
+	//rotationSpeed = copy.rotationSpeed;
 
-	SetQuantity(size);
-	auto copy = _copy.m_particles.begin();
-	for (auto particle = m_particles.begin(); particle != m_particles.end();
-		particle++, copy++) 
-		(*particle) = (*copy);
-	
+	//SetQuantity(size);
+	//auto copy = copy.particles_.begin();
+	//for (auto particle = particles_.begin(); particle != particles_.end();
+	//	particle++, copy++) 
+	//	(*particle) = (*copy);
+	//
 }
 
 void Emitter::Register()
 {
-	SYSTEM::GetGraphicSystem()->AddModel(this);
+	SYSTEM::pGraphic_->AddModel(this);
 	if (GetOwner()->HasComponent<Transform>()) 
-		m_pTransform = GetOwner()->GetComponent<Transform>();
+		pTransform_ = GetOwner()->GetComponent<Transform>();
 }
 
-void Emitter::ManualRefresh()
+void Emitter::RefreshParticles()
 {
-	m_deadCount = 0;
-	for (auto particle : m_particles)
-		particle->Refresh();
+	deadCount_ = 0;
+	for (auto particle : particles_)
+		RefreshParticle(particle);
 }
 
-void Emitter::Load(CR_RJValue _data)
+Emitter::Particle* Emitter::MakekParticle()
 {
-	if (_data.HasMember("Mesh")
-		&& _data["Mesh"].GetString())
+	Particle* newParticle = new Particle();
+
+	Emitter* pEmitter = newParticle->pEmitter = this;
+	newParticle->dead = false;
+
+	static Transform* s_pTransform;
+	s_pTransform = pEmitter->GetOwner()->GetComponent<Transform>();
+
+	newParticle->life = Random::GetRandomFloat(0.f, pEmitter->life_);
+	newParticle->velocity = Random::GetRandVec3(vec3::ZERO, pEmitter->velocity_);
+	newParticle->position = s_pTransform->position_;
+	newParticle->rotation = Random::GetRandomFloat(0.f, 360.f);
+	newParticle->direction = Math::IsZero(pEmitter->direction_) ? Random::GetRandVec3(-vec3::ONE, vec3::ONE) : pEmitter->direction_;
+	Normalize(newParticle->direction);
+	newParticle->color.Set(pEmitter->startColor_);
+
+	static float s_rotationSpeed = pEmitter->rotationSpeed_;
+
+	newParticle->hidden = pEmitter->type_ == PARTICLE_EXPLODE ? false : true;
+
+	if (s_rotationSpeed)
+		newParticle->rotationSpeed = Random::GetRandomFloat(0., s_rotationSpeed);
+
+	return newParticle;
+}
+
+void Emitter::RefreshParticle(Particle* pParticle)
+{
+	Emitter* pEmitter = pParticle->pEmitter;
+
+	static Transform* s_pTransform;
+	s_pTransform = pEmitter->GetOwner()->GetComponent<Transform>();
+
+	pParticle->rotation = Random::GetRandomFloat(0.f, 360.f);
+	pParticle->rotationSpeed = Random::GetRandomFloat(0., pEmitter->rotationSpeed_);
+
+	pParticle->life = Random::GetRandomFloat(0.f, pEmitter->life_);
+	pParticle->color.Set(pEmitter->startColor_);
+
+	if (pEmitter->type_ == Emitter::PARTICLE_NORMAL) {
+
+		pParticle->position = s_pTransform->position_;
+		pParticle->hidden = false;
+		pParticle->direction = Math::IsZero(pEmitter->direction_) ? Random::GetRandVec3(-vec3::ONE, vec3::ONE) : pEmitter->direction_;
+	}
+
+	else if (pEmitter->type_ == PARTICLE_EXPLODE) {
+
+		// No more particle to update,
+		// turn off the active toggle
+		if (pEmitter->size_ == pEmitter->deadCount_)
+			pEmitter->active_ = false;
+
+		else if (!pParticle->dead) {
+
+			// Ready for next update
+			pParticle->position = s_pTransform->position_;
+			pParticle->direction = Math::IsZero(pEmitter->direction_) ? Random::GetRandVec3(-vec3::ONE, vec3::ONE) : pEmitter->direction_;
+
+			// Set dead and add number
+			pParticle->dead = true;
+			pParticle->hidden = true;
+			pEmitter->deadCount_++;
+		}
+	}
+
+	else if (pEmitter->type_ == Emitter::PARTICLE_WIDE) {
+
+		pParticle->hidden = false;
+
+		static vec3 s_position, s_range;
+		s_range = pEmitter->range_;
+		s_position = s_pTransform->position_;
+		pParticle->direction  = Math::IsZero(pEmitter->direction_) ? Random::GetRandVec3(-vec3::ONE, vec3::ONE) : pEmitter->direction_;
+		pParticle->position.x = Random::GetRandomFloat(s_position.x - s_range.x, s_position.x + s_range.x);
+		pParticle->position.y = Random::GetRandomFloat(s_position.y - s_range.y, s_position.y + s_range.y);
+		pParticle->position.z = Random::GetRandomFloat(s_position.z - s_range.z, s_position.z + s_range.z);
+
+		pParticle->life = Random::GetRandomFloat(0.f, pEmitter->life_);
+		pParticle->color.Set(pEmitter->startColor_);
+
+	}
+}
+
+void Emitter::Load(CR_RJValue data)
+{
+	if (data.HasMember("Mesh")
+		&& data["Mesh"].IsArray())
 	{
-		std::string meshType = _data["Mesh"].GetString();
-		if (!strcmp(meshType.c_str(), "Point")) {
-			m_pMeshes = Mesh::CreatePoint();
-			m_pMeshes->m_shape = Mesh::MESH_POINT;
-		}
-		else if (!strcmp(meshType.c_str(), "Rect")) {
-			m_pMeshes = Mesh::CreateRect();
-			m_pMeshes->m_shape = Mesh::MESH_RECT;
-		}
-		else if (!strcmp(meshType.c_str(), "CrossRect")) {
-			m_pMeshes = Mesh::CreateCrossRect();
-			m_pMeshes->m_shape = Mesh::MESH_CROSSRECT;
-		}
-		else if (!strcmp(meshType.c_str(), "Cube")) {
-			m_pMeshes = Mesh::CreateCube();
-			m_pMeshes->m_shape = Mesh::MESH_CUBE;
-		}
-		else if (!strcmp(meshType.c_str(), "Tetrahedron")) {
-			m_pMeshes = Mesh::CreateTetrahedron();
-			m_pMeshes->m_shape = Mesh::MESH_TETRAHEDRON;
-		}
-		else /*if (!strcmp(meshType.c_str(), "Custom"))*/ {
-			m_pMeshes = ASSET::LoadObj(meshType.c_str());
-			m_pMeshes->m_shape = Mesh::MESH_NONE;
-			m_pMeshes->CreateCustomObject();
+		CR_RJValue loadedMeshes = data["Mesh"];
+
+		for (unsigned meshIndex = 0; meshIndex < loadedMeshes.Size(); ++meshIndex) {
+
+			CR_RJValue currentMesh = loadedMeshes[meshIndex];
+			Mesh* newMesh = nullptr;
+
+			// Check either if there is shape
+			if (currentMesh.HasMember("Shape")
+				&& currentMesh["Shape"].IsString()) {
+				std::string meshType = currentMesh["Shape"].GetString();
+
+				if (!strcmp(meshType.c_str(), "Point"))
+					newMesh = Mesh::CreatePoint();
+
+				else if (!strcmp(meshType.c_str(), "CrossRect"))
+					newMesh = Mesh::CreateCrossRect();
+
+				else if (!strcmp(meshType.c_str(), "Cube"))
+					newMesh = Mesh::CreateCube();
+
+				else if (!strcmp(meshType.c_str(), "Tetrahedron"))
+					newMesh = Mesh::CreateTetrahedron();
+
+				else if (!strcmp(meshType.c_str(), "Rect"))
+					newMesh = Mesh::CreateRect();
+
+				else 
+					newMesh = ASSET::LoadObjFile(meshType.c_str());
+			}
+			// If not, set default mesh type
+			else
+				newMesh = Mesh::CreateRect();
+
+			AddMesh(newMesh);
+
+			// Load texture
+			if (currentMesh.HasMember("Texture")
+				&& currentMesh["Texture"].IsArray()) {
+				for (unsigned textureIndex = 0; textureIndex < currentMesh["Texture"].Size(); ++textureIndex)
+					newMesh->AddTexture(currentMesh["Texture"][textureIndex].GetString());
+			}
+
+			if (currentMesh.HasMember("DrawMode")
+				&& currentMesh["DrawMode"].IsString()) {
+
+				std::string drawType = currentMesh["DrawMode"].GetString();
+				if (!strcmp(drawType.c_str(), "Triangles"))
+					newMesh->drawMode_ = GL_TRIANGLES;
+
+				else if (!strcmp(drawType.c_str(), "Triangle_Strip"))
+					newMesh->drawMode_ = GL_TRIANGLE_STRIP;
+
+				else if (!strcmp(drawType.c_str(), "Triangle_Fan"))
+					newMesh->drawMode_ = GL_TRIANGLE_FAN;
+
+				else if (!strcmp(drawType.c_str(), "Lines"))
+					newMesh->drawMode_ = GL_LINES;
+
+				else if (!strcmp(drawType.c_str(), "Line_Strip"))
+					newMesh->drawMode_ = GL_LINE_STRIP;
+
+				else if (!strcmp("Quad", drawType.c_str()))
+					newMesh->drawMode_ = GL_QUADS;
+
+				else if (!strcmp("Quad_Strip", drawType.c_str()))
+					newMesh->drawMode_ = GL_QUAD_STRIP;
+
+				else if (!strcmp("Points", drawType.c_str()))
+					newMesh->drawMode_ = GL_POINTS;
+			}
 		}
 	}
-	else {
-		m_pMeshes = Mesh::CreateRect();
-		m_pMeshes->m_shape = Mesh::MESH_RECT;
+
+	if (data.HasMember("Flip")
+		&& data["Flip"].GetBool())
+		status_ |= IS_FLIPPED;
+
+	if (data.HasMember("Projection")) {
+		CR_RJValue loadedProjection = data["Projection"];
+
+		if (!strcmp("Perspective", loadedProjection.GetString()))
+			projection_ = PROJECTION_PERSPECTIVE;
+
+		else if (!strcmp("Orthogonal", loadedProjection.GetString()))
+			projection_ = PROJECTION_ORTHOGONAL;
+
+		else
+			jeDebugPrint("!Model - Wrong projection type: %s\n", loadedProjection.GetString());
 	}
 
-	if (_data.HasMember("Active"))
-		active = _data["Active"].GetBool();
+	if (data.HasMember("Bilboard")
+		&& data["Bilboard"].GetBool())
+		status_ |= IS_BILBOARD;
 
-	if (_data.HasMember("Bilboard")
-		&& _data["Bilboard"].GetBool())
-		status |= Model::IS_BILBOARD;
+	if (data.HasMember("Active"))
+		active_ = data["Active"].GetBool();
 
-	if (_data.HasMember("Iis2d"))
-		is2d = _data["Iis2d"].GetBool();
+	if (data.HasMember("Life")) 
+		life_ = data["Life"].GetFloat();
 
-	if (_data.HasMember("Projection")) {
-		CR_RJValue loadedProjection = _data["Projection"];
+	if (data.HasMember("StartColor") 
+		&& data.HasMember("EndColor")) {
 
-		if (!strcmp("Perspective", loadedProjection.GetString())) {
-			projection = PROJECTION_PERSPECTIVE;
-		}
+		CR_RJValue loadedStartColor = data["StartColor"],
+			loadedEndColor = data["EndColor"];
 
-		else if (!strcmp("Orhtogonal", loadedProjection.GetString())) {
-			projection = PROJECTION_PERSPECTIVE;
-		}
-	}
-
-	if (_data.HasMember("Texture")) {
-		CR_RJValue loadedTexture = _data["Texture"];
-		AddTexture(loadedTexture.GetString());
-	}
-
-	if (_data.HasMember("Life")) 
-		life = _data["Life"].GetFloat();
-
-	if (_data.HasMember("StartColor") 
-		&& _data.HasMember("EndColor")) {
-
-		CR_RJValue loadedStartColor = _data["StartColor"],
-			loadedEndColor = _data["EndColor"];
-
-		m_startColor.Set(loadedStartColor[0].GetFloat(),
+		startColor_.Set(loadedStartColor[0].GetFloat(),
 			loadedStartColor[1].GetFloat(),
 			loadedStartColor[2].GetFloat());
 
-		m_endColor.Set(loadedEndColor[0].GetFloat(),
+		endColor_.Set(loadedEndColor[0].GetFloat(),
 			loadedEndColor[1].GetFloat(),
 			loadedEndColor[2].GetFloat());
 
-		SetColors(m_startColor, m_endColor);
+		SetColors(startColor_, endColor_);
 	}
 
-	if (_data.HasMember("Type")) {
-		CR_RJValue loadedType = _data["Type"];
+	if (data.HasMember("Type")) {
+		CR_RJValue loadedType = data["Type"];
 		
 		if (!strcmp(loadedType.GetString(), "Normal"))
-			type = PARTICLE_NORMAL;
+			type_ = PARTICLE_NORMAL;
 		else if (!strcmp(loadedType.GetString(), "Wide"))
-			type = PARTICLE_WIDE;
+			type_ = PARTICLE_WIDE;
 		else if (!strcmp(loadedType.GetString(), "Explosion"))
-			type = PARTICLE_EXPLODE;
+			type_ = PARTICLE_EXPLODE;
 	}
 
-	if (_data.HasMember("Range")) {
-		CR_RJValue loadedRange = _data["Range"];
-		range.Set(loadedRange[0].GetFloat(),
+	if (data.HasMember("Range")) {
+		CR_RJValue loadedRange = data["Range"];
+		range_.Set(loadedRange[0].GetFloat(),
 			loadedRange[1].GetFloat(),
 			loadedRange[2].GetFloat());
 	}
 
-	if (_data.HasMember("Direction")) {
-		CR_RJValue loadedDirection = _data["Direction"];
-		direction.Set(loadedDirection[0].GetFloat(),
+	if (data.HasMember("Direction")) {
+		CR_RJValue loadedDirection = data["Direction"];
+		direction_.Set(loadedDirection[0].GetFloat(),
 			loadedDirection[1].GetFloat(),
 			loadedDirection[2].GetFloat());
 	}
 	
-	if (_data.HasMember("Velocity")) {
-		CR_RJValue loadedVelocity = _data["Velocity"];
-		velocity.Set(loadedVelocity[0].GetFloat(),
+	if (data.HasMember("Velocity")) {
+		CR_RJValue loadedVelocity = data["Velocity"];
+		velocity_.Set(loadedVelocity[0].GetFloat(),
 			loadedVelocity[1].GetFloat(),
 			loadedVelocity[2].GetFloat());
 	}
 
-	if (_data.HasMember("Quantity"))
-		SetQuantity(_data["Quantity"].GetUint());
+	if (data.HasMember("Quantity"))
+		SetQuantity(data["Quantity"].GetUint());
 
-	if (_data.HasMember("RotationSpeed"))
-		rotationSpeed = _data["RotationSpeed"].GetFloat();
+	if (data.HasMember("RotationSpeed"))
+		rotationSpeed_ = data["RotationSpeed"].GetFloat();
 
-	if (_data.HasMember("PointSize"))
-		pointSize = _data["PointSize"].GetFloat();
+	if (data.HasMember("PointSize"))
+		pointSize_ = data["PointSize"].GetFloat();
 }
 
-void Emitter::SetQuantity(unsigned _quantity)
+void Emitter::SetQuantity(unsigned quantity)
 {
-	if (m_particles.empty()) {
+	if (particles_.empty()) {
 
-		if (m_maxSize < _quantity) {
-			_quantity = m_maxSize;
+		if (kMaxSize_ < quantity) {
+			quantity = kMaxSize_;
 			jeDebugPrint("!Emitter - The quantity of particle must be less than 1000.\n");
 		}
 
-		for (unsigned i = 0; i < _quantity; ++i)
-			m_particles.push_back(new Particle(this));
-		size = _quantity;
+		for (unsigned i = 0; i < quantity; ++i)
+			particles_.push_back(MakekParticle());
+		size_ = quantity;
 	}
 
 	else
 		jeDebugPrint("!Emitter - Already allocated.\n");
 }
 
-void Emitter::SetColors(const vec3& _start, const vec3& _end)
+void Emitter::SetColors(const vec3& start, const vec3& end)
 {
-	m_startColor = _start, m_endColor = _end;
-	colorDiff = (m_endColor - m_startColor) / life;
+	startColor_ = start, endColor_ = end;
+	colorDiff_ = (endColor_ - startColor_) / life_;
 
 	// If the idff is zero, no need to add diff
-	if (colorDiff == vec3::ZERO)
-		m_changeColor = false;
+	if (colorDiff_ == vec3::ZERO)
+		changeColor_ = false;
 
 	else
-		m_changeColor = true;
+		changeColor_ = true;
 }
 
-void Emitter::Refresh(Particle *_particle)
-{
-	_particle->position = m_pTransform->position;
-	_particle->color = m_startColor;
-
-}
-
-void Emitter::EditorUpdate(const float /*_dt*/)
+void Emitter::EditorUpdate(const float /*dt*/)
 {
 	// TODO
 }

@@ -23,7 +23,14 @@
 				},
 				{
 					"Type": "Model",
-					"Values": {"Texture" : "uvtemplate", "Color" : [1, 1, 1, 1], "Projection" : "Perspective"}
+					"Values": {
+						"Mesh" : [
+							{	
+								"Shape" : "Cube",
+								"Texture" : [ "uvtemplate" ]
+							}
+						],
+						"Color" : [1, 1, 1, 1], "Projection" : "Perspective"}
 				}
 			]
 		},		

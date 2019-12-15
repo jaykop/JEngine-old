@@ -9,43 +9,43 @@
 
 jeBegin
 
-SDL_Window*					IMGUI::m_pWindow = nullptr;
-IMGUI::EditorList			IMGUI::m_editors;
-IMGUI::ObjectEditorMap		IMGUI::m_objEditors;
-IMGUI::ComponentEditorMap	IMGUI::m_cptEditors;
+SDL_Window*					IMGUI::pWindow_ = nullptr;
+IMGUI::EditorList			IMGUI::editors_;
+IMGUI::ObjectEditorMap		IMGUI::objEditors_;
+IMGUI::ComponentEditorMap	IMGUI::cptEditors_;
 
 void ImguiManager::AddEditorFunc(const EditorUpdateFunc &_pFunc)
 {
-	m_editors.push_back(_pFunc);
+	editors_.push_back(_pFunc);
 }
 
-void ImguiManager::AddComponentEditor(Component* _component)
+void ImguiManager::AddComponentEditor(Component* pComponent)
 {
-	m_cptEditors.push_back(_component);
+	cptEditors_.push_back(pComponent);
 }
 
-void ImguiManager::RemoveComponentEditor(Component* _component)
+void ImguiManager::RemoveComponentEditor(Component* pComponent)
 {
-	for (auto component = m_cptEditors.begin();
-		component != m_cptEditors.end(); ++component) {
-		if (*component == _component) {
-			m_cptEditors.erase(component);
+	for (auto component = cptEditors_.begin();
+		component != cptEditors_.end(); ++component) {
+		if (*component == pComponent) {
+			cptEditors_.erase(component);
 			break;
 		}
 	}
 }
 
-void ImguiManager::AddObjectEditor(Object* _object)
+void ImguiManager::AddObjectEditor(Object* pObject)
 {
-	m_objEditors.push_back(_object);
+	objEditors_.push_back(pObject);
 }
 
-void ImguiManager::RemoveObjectEditor(Object* _object)
+void ImguiManager::RemoveObjectEditor(Object* pObject)
 {
-	for (auto object = m_objEditors.begin();
-		object != m_objEditors.end(); ++object) {
-		if (*object == _object) {
-			m_objEditors.erase(object);
+	for (auto object = objEditors_.begin();
+		object != objEditors_.end(); ++object) {
+		if (*object == pObject) {
+			objEditors_.erase(object);
 			break;
 		}
 	}
@@ -53,21 +53,21 @@ void ImguiManager::RemoveObjectEditor(Object* _object)
 
 void ImguiManager::ClearComponentEditor()
 {
-	if (!m_cptEditors.empty())
-		m_cptEditors.clear();
+	if (!cptEditors_.empty())
+		cptEditors_.clear();
 }
 
 void ImguiManager::ClearObjectEditor()
 {
-	if (!m_objEditors.empty())
-		m_objEditors.clear();
+	if (!objEditors_.empty())
+		objEditors_.clear();
 }
 
-bool ImguiManager::Init(SDL_Window* _window)
+bool ImguiManager::Init(SDL_Window* pWindow)
 {
-	if (APP::m_IMGUI) {
-		m_pWindow = _window;
-		bool result = ImGui_ImplSdlGL3_Init(_window);
+	if (APP::activateIMGUI_) {
+		pWindow_ = pWindow;
+		bool result = ImGui_ImplSdlGL3_Init(pWindow);
 		if (!result)
 			jeDebugPrint("!ImguiManager: Could not initialize IMGUI.\n");
 		return result;
@@ -76,18 +76,18 @@ bool ImguiManager::Init(SDL_Window* _window)
 	return true;
 }
 
-void ImguiManager::EventUpdate(SDL_Event* _event)
+void ImguiManager::EventUpdate(SDL_Event* pEvent)
 {
-	if (APP::m_IMGUI)
-		ImGui_ImplSdlGL3_ProcessEvent(_event);
+	if (APP::activateIMGUI_)
+		ImGui_ImplSdlGL3_ProcessEvent(pEvent);
 }
 
-void ImguiManager::Update(const float _dt)
+void ImguiManager::Update(float dt)
 {
-	if (APP::m_IMGUI) {
+	if (APP::activateIMGUI_) {
 
 		ImVec4 clear_color = ImColor(114, 144, 154);
-		ImGui_ImplSdlGL3_NewFrame(m_pWindow);
+		ImGui_ImplSdlGL3_NewFrame(pWindow_);
 
 		//TODO Add...
 		//// System Manager
@@ -104,16 +104,16 @@ void ImguiManager::Update(const float _dt)
 		//	ImGui::End();
 		//}
 		// Updated added editor functions
-		for (auto editorUpdate : m_editors)
-			editorUpdate(_dt);
+		for (auto editorUpdate : editors_)
+			editorUpdate(dt);
 
 		// Update object's eidtor window
-		for (auto objEditor : m_objEditors)
-			objEditor->EditorUpdate(_dt);
+		for (auto objEditor : objEditors_)
+			objEditor->EditorUpdate(dt);
 
 		// Update component's eidtor window
-		for (auto componentEditor : m_cptEditors)
-			componentEditor->EditorUpdate(_dt);
+		for (auto componentEditor : cptEditors_)
+			componentEditor->EditorUpdate(dt);
 
 		// Rendering
 		glViewport(0, 0, (int)ImGui::GetIO().DisplaySize.x, (int)ImGui::GetIO().DisplaySize.y);
@@ -123,7 +123,7 @@ void ImguiManager::Update(const float _dt)
 
 void ImguiManager::Close()
 {
-	if (APP::m_IMGUI)
+	if (APP::activateIMGUI_)
 		ImGui_ImplSdlGL3_Shutdown();
 }
 

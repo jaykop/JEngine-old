@@ -22,32 +22,32 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{51D36CA1-1DAA-44C3-896B-86690F8BC886}</ProjectGuid>
     <RootNamespace>JEngine</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -102,7 +102,7 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\include\imgui;$(SolutionDir)..\..\include\SDL2;$(SolutionDir)..\..\include\lodePNG;$(SolutionDir)..\..\include\freetype2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\include\imgui;$(SolutionDir)..\..\include\SDL2;$(SolutionDir)..\..\include\lodePNG;$(SolutionDir)..\..\include\freetype2;$(SolutionDir)..\..\include\assimp;$(SolutionDir)..\..\include</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -110,7 +110,7 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\include\imgui;$(SolutionDir)..\..\include\SDL2;$(SolutionDir)..\..\include\lodePNG;$(SolutionDir)..\..\include\freetype2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\include\imgui;$(SolutionDir)..\..\include\SDL2;$(SolutionDir)..\..\include\lodePNG;$(SolutionDir)..\..\include\freetype2;$(SolutionDir)..\..\include\assimp;$(SolutionDir)..\..\include</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -120,7 +120,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\include\imgui;$(SolutionDir)..\..\include\SDL2;$(SolutionDir)..\..\include\lodePNG;$(SolutionDir)..\..\include\freetype2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\include\imgui;$(SolutionDir)..\..\include\SDL2;$(SolutionDir)..\..\include\lodePNG;$(SolutionDir)..\..\include\freetype2;$(SolutionDir)..\..\include\assimp;$(SolutionDir)..\..\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -134,7 +134,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\include\imgui;$(SolutionDir)..\..\include\SDL2;$(SolutionDir)..\..\include\lodePNG;$(SolutionDir)..\..\include\freetype2</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\include\imgui;$(SolutionDir)..\..\include\SDL2;$(SolutionDir)..\..\include\lodePNG;$(SolutionDir)..\..\include\freetype2;$(SolutionDir)..\..\include\assimp;$(SolutionDir)..\..\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -271,7 +271,6 @@
     <ClCompile Include="..\..\src\JEngine\Random.cpp" />
     <ClCompile Include="..\..\src\JEngine\Rigidbody.cpp" />
     <ClCompile Include="..\..\src\JEngine\Shader.cpp" />
-    <ClCompile Include="..\..\src\JEngine\SystemBlock.cpp" />
     <ClCompile Include="..\..\src\JEngine\VertexShader.cpp" />
     <ClCompile Include="..\..\src\JEngine\SoundSystem.cpp" />
     <ClCompile Include="..\..\src\JEngine\State.cpp" />

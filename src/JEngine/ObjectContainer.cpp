@@ -7,20 +7,20 @@
 
 jeBegin
 
-ObjectContainer* OBJECT::m_pSharedContainer = nullptr;
+ObjectContainer* OBJECT::pContainer_ = nullptr;
 
 ObjectContainer::~ObjectContainer()
 {
     ClearObjectMap();
 }
 
-void ObjectContainer::RemoveObject(const char* _name)
+void ObjectContainer::RemoveObject(const char* name)
 {
     // Find the one to remove
-    auto toRemove = m_objectMap.find(_name);
+    auto toRemove = objectMap_.find(name);
 
     // If found the one
-    if (toRemove != m_objectMap.end()) {
+    if (toRemove != objectMap_.end()) {
         IMGUI::RemoveObjectEditor(toRemove->second);
 #ifdef jeUseBuiltInAllocator
         FACTORY::allocator.Free(toRemove->second);
@@ -28,20 +28,20 @@ void ObjectContainer::RemoveObject(const char* _name)
         delete toRemove->second;
         toRemove->second = nullptr;
 #endif // jeUseBuiltInAllocator
-        m_objectMap.erase(toRemove);
+        objectMap_.erase(toRemove);
     }
 
     else
-        jeDebugPrint("!ObjectContainer - No such name of enrolled object: %s\n", _name);
+        jeDebugPrint("!ObjectContainer - No such name of enrolled object: %s\n", name);
 }
 
-void ObjectContainer::RemoveObject(Object* _pObj)
+void ObjectContainer::RemoveObject(Object* pObject)
 {
     bool notFound = true;
-    for (auto object = m_objectMap.begin();
-        object != m_objectMap.end(); ++object) {
+    for (auto object = objectMap_.begin();
+        object != objectMap_.end(); ++object) {
 
-        if (_pObj == object->second) {
+        if (pObject == object->second) {
             notFound = false;
             IMGUI::RemoveObjectEditor(object->second);
 #ifdef jeUseBuiltInAllocator
@@ -50,24 +50,24 @@ void ObjectContainer::RemoveObject(Object* _pObj)
             delete object->second;
             object->second = nullptr;
 #endif // jeUseBuiltInAllocator
-            m_objectMap.erase(object);
+            objectMap_.erase(object);
 
             break;
         }
     }
 
     if (notFound)
-        jeDebugPrint("!ObjectContainer - No such name of enrolled object: %s\n", _pObj->GetName().c_str());
+        jeDebugPrint("!ObjectContainer - No such name of enrolled object: %s\n", pObject->GetName().c_str());
 }
 
-void ObjectContainer::RemoveObject(unsigned _id)
+void ObjectContainer::RemoveObject(unsigned id)
 {
     bool notFound = true;
-    for (auto object = m_objectMap.begin();
-        object != m_objectMap.end(); ++object) {
+    for (auto object = objectMap_.begin();
+        object != objectMap_.end(); ++object) {
 
         Object* theOne = object->second;
-        if (_id == theOne->GetId()) {
+        if (id == theOne->GetId()) {
             notFound = false;
             IMGUI::RemoveObjectEditor(theOne);
 #ifdef jeUseBuiltInAllocator
@@ -76,82 +76,77 @@ void ObjectContainer::RemoveObject(unsigned _id)
             delete theOne;
             theOne = nullptr;
 #endif // jeUseBuiltInAllocator
-            m_objectMap.erase(object);
+            objectMap_.erase(object);
 
             break;
         }
     }
 
     if (notFound)
-        jeDebugPrint("!ObjectContainer - No such name of enrolled object: %i\n", _id);
+        jeDebugPrint("!ObjectContainer - No such name of enrolled object: %i\n", id);
 }
 
-Object* ObjectContainer::GetObject(const char *_name)
+Object* ObjectContainer::GetObject(const char *name)
 {
     // Find the one to remove
-    auto found = m_objectMap.find(_name);
+    auto found = objectMap_.find(name);
 
     // If found the one
-    if (found != m_objectMap.end())
+    if (found != objectMap_.end())
         return found->second;
 
-    jeDebugPrint("!ObjectContainer - No such name of enrolled object: %s\n", _name);
+    jeDebugPrint("!ObjectContainer - No such name of enrolled object: %s\n", name);
     return nullptr;
 
 }
 
-Object* ObjectContainer::GetObject(unsigned _id)
+Object* ObjectContainer::GetObject(unsigned id)
 {
-    for (auto object : m_objectMap) {
-        if (_id == object.second->GetId()) {
+    for (auto object : objectMap_) {
+        if (id == object.second->GetId()) {
             return object.second;
         }
     }
 
-    jeDebugPrint("!ObjectContainer - No such name of enrolled object: %i\n", _id);
+    jeDebugPrint("!ObjectContainer - No such name of enrolled object: %i\n", id);
     return nullptr;
 }
 
 ObjectMap& ObjectContainer::GetObjectMap()
 {
-    return m_objectMap;
+    return objectMap_;
 }
 
-bool ObjectContainer::HasObject(const char* _name)
+bool ObjectContainer::HasObject(const char* name)
 {
     // Find the one to remove
-    auto found = m_objectMap.find(_name);
+    auto found = objectMap_.find(name);
 
     // If found the one
-    if (found != m_objectMap.end())
+    if (found != objectMap_.end())
         return true;
 
-    jeDebugPrint("!ObjectContainer - No such name of enrolled object: %s\n", _name);
+    jeDebugPrint("!ObjectContainer - No such name of enrolled object: %s\n", name);
     return false;
 }
 
-bool ObjectContainer::HasObject(unsigned _id)
+bool ObjectContainer::HasObject(unsigned id)
 {
-    for (auto object : m_objectMap) {
-        if (_id == object.second->GetId()) {
+    for (auto object : objectMap_) {
+        if (id == object.second->GetId()) {
             return true;
         }
     }
 
-    jeDebugPrint("!ObjectContainer - No such name of enrolled object: %i\n", _id);
+    jeDebugPrint("!ObjectContainer - No such name of enrolled object: %i\n", id);
     return false;
-}
-
-ObjectContainer* ObjectContainer::GetCurrentContainer()
-{
-    return m_pSharedContainer;
 }
 
 void ObjectContainer::ClearObjectMap()
 {
-    for (auto obj : m_objectMap)
+    for (auto obj : objectMap_)
     {
-        if (obj.second && !obj.second->m_pParent) {
+        if (obj.second && !obj.second->pParent_) {
             IMGUI::RemoveObjectEditor(obj.second);
 #ifdef jeUseBuiltInAllocator
             FACTORY::allocator.Free(obj.second);
@@ -163,16 +158,16 @@ void ObjectContainer::ClearObjectMap()
     }
 
     IMGUI::ClearObjectEditor();
-    m_objectMap.clear();
+    objectMap_.clear();
 }
 
-void ObjectContainer::EditorUpdate(const float /*_dt*/)
+void ObjectContainer::EditorUpdate(const float /*dt*/)
 {
     static bool foundObject = false, showObjsList = false;
 
     // Main object container window
     ImGui::Begin("ObjectContainer");
-    ImGui::Text("*Total Objects: %d", m_pSharedContainer->m_objectMap.size());
+    ImGui::Text("*Total Objects: %d", pContainer_->objectMap_.size());
     if (ImGui::Button("Show Object List"))
         showObjsList = !showObjsList;
 
@@ -181,9 +176,9 @@ void ObjectContainer::EditorUpdate(const float /*_dt*/)
 
     ImGui::SameLine();
     if (ImGui::Button("Search")) {
-        static Object* s_pObj = nullptr;
-        s_pObj = m_pSharedContainer->GetObject(ObjId);
-        s_pObj->m_showEditor = true;
+        static Object* spObject = nullptr;
+        spObject = pContainer_->GetObject(ObjId);
+        spObject->showEditor_ = true;
     }
 
     ImGui::End();
@@ -191,7 +186,7 @@ void ObjectContainer::EditorUpdate(const float /*_dt*/)
     // Object list window
     if (showObjsList) {
         ImGui::Begin("ObjectList");
-        for (auto Obj : m_pSharedContainer->m_objectMap)
+        for (auto Obj : pContainer_->objectMap_)
             ImGui::Text(Obj.second->GetName().c_str());
         ImGui::End();
     }

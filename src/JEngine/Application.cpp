@@ -9,7 +9,6 @@
 #include "ImguiManager.h"
 #include "imgui.h"
 #include "Debug.h"
-#include "InputHandler.h"
 
 #define jeCheck(c) if (!c) return false
 
@@ -18,47 +17,65 @@ jeBegin
 //////////////////////////////////////////////////////////////////////////
 // static variables
 //////////////////////////////////////////////////////////////////////////
-int				APP::m_samples = 0;
-int				APP::m_buffers = 0;
-SDL_Event		APP::m_pEvent;
-SDL_Window*		APP::m_pWindow = nullptr;
-SDL_Surface		*APP::m_pSurface = nullptr, *APP::m_pIcon= nullptr;
-SDL_GLContext	APP::m_pContext = nullptr;
-APP::InitData	APP::m_Data = { "demo", "../resource/ico/main.ico", false, 800, 600 };
-bool			APP::m_IMGUI = false;
+SDL_Event		APP::pEvent_;
+SDL_Window*		APP::pWindow_ = nullptr;
+SDL_Surface		*APP::pSurface_ = nullptr, *APP::pIcon_= nullptr;
+SDL_GLContext	APP::pContext_ = nullptr;
+APP::AppData	APP::data_ = { "demo", "../resource/ico/main.ico", false, 800, 600 };
+bool			APP::activateIMGUI_ = false, APP::openCMD_ = false;
 
-int Application::Run(bool _imgui)
+void Application::Run(bool imgui)
 {
-	m_IMGUI = _imgui;
-
-	// Pop console window 
-	// and check memory leak
-	DEBUG_LEAK_CHECKS(-1);
-	DEBUG_CREATE_CONSOLE();
+	activateIMGUI_ = imgui;
+	if (activateIMGUI_)
+		jeDebugPrint("*Application - IMGUI Activated.\n");
 
 	// Initialize app info
 	// and update
 	if (Initialize())
 		Update();
 
-	// return error value if app info
-	// does not initialize correctly
-	else
-		return -1;
-
 	// Wrap up application
 	Close();
 	
-	// Delete console window
-	DEBUG_DESTROY_CONSOLE();
+}
 
-	return 0;
+void Application::CreateConsole()
+{
+	// Pop console window 
+	// and check memory leak
+	if (!openCMD_) {
+		DEBUG_LEAK_CHECKS(-1);
+		DEBUG_CREATE_CONSOLE();
+
+		openCMD_ = true;
+	}
+}
+
+void Application::CloseConsole()
+{
+	if (openCMD_) {
+		// Delete console window
+		DEBUG_DESTROY_CONSOLE();
+
+		openCMD_ = false;
+	}
+}
+
+void Application::ActivateVSync(bool on)
+{
+	SDL_GL_SetSwapInterval(on);
+}
+
+APP::AppData Application::GetAppData()
+{
+	return data_;
 }
 
 bool Application::Initialize()
 {
 	// Load app init data
-	JSON::ReadFile(ASSET::m_initDirectory.c_str());
+	JSON::ReadFile(ASSET::initDirectory_.c_str());
 
 	CR_RJValue title = JSON::GetDocument()["Title"];
 	CR_RJValue fullscreen = JSON::GetDocument()["Fullscreen"];
@@ -70,11 +87,11 @@ bool Application::Initialize()
 		&& width.IsInt() && height.IsInt()
 		&& icon.IsString()) {
 
-		m_Data.m_title.assign(title.GetString());
-		m_Data.m_icon.assign(icon.GetString());
-		m_Data.m_isFullScreen = fullscreen.GetBool();
-		m_Data.m_width = width.GetInt();
-		m_Data.m_height = height.GetInt();
+		data_.title.assign(title.GetString());
+		data_.icon.assign(icon.GetString());
+		data_.isFullscreen = fullscreen.GetBool();
+		data_.width = width.GetInt();
+		data_.height = height.GetInt();
 	}
 
 	else {
@@ -89,7 +106,7 @@ bool Application::Initialize()
 	jeCheck(InitSDL());
 
 	// Initialize opengl setting
-	GLM::Resize(m_Data.m_width, m_Data.m_height);
+	GLM::Resize(data_.width, data_.height);
 	jeCheck(GLM::Init());
 
 	// Generate built-in components
@@ -99,13 +116,13 @@ bool Application::Initialize()
 	ASSET::LoadAssets();		
 
 	// Set up imgui
-	jeCheck(IMGUI::Init(m_pWindow));
+	jeCheck(IMGUI::Init(pWindow_));
 	IMGUI::AddEditorFunc(APP::EditorUpdate);
 	IMGUI::AddEditorFunc(GLM::EditorUpdate);
 	IMGUI::AddEditorFunc(STATE::EditorUpdate);
 
 	// Load state info and bind systems here
-	jeCheck(STATE::Init(m_pWindow));
+	jeCheck(STATE::Init(pWindow_));
 
 	return true;
 }
@@ -114,16 +131,9 @@ void Application::Update()
 {
 	// Update the surface
 	while (STATE::GetStatus()
-		!= STATE::StateStatus::STATE_QUIT) {
-
+		!= STATE::StateStatus::JE_STATE_QUIT)
 		// Update state manager
-		STATE::Update(&m_pEvent);
-
-		// Update sdl window
-		SDL_UpdateWindowSurface(m_pWindow);
-
-	}	// while (STATE::GetStatus()
-		// != STATE::StateStatus::STATE_QUIT) {
+		STATE::Update(&pEvent_);
 }
 
 void Application::Close()
@@ -169,68 +179,68 @@ bool Application::InitSDL()
 	SDL_GetCurrentDisplayMode(0, &current);
 
 	//Create window
-	m_pWindow = SDL_CreateWindow(m_Data.m_title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-		m_Data.m_width, m_Data.m_height, SDL_WINDOW_OPENGL);
+	pWindow_ = SDL_CreateWindow(data_.title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+		data_.width, data_.height, SDL_WINDOW_OPENGL);
 
-	if (!m_pWindow) {
+	if (!pWindow_) {
 		jeDebugPrint("!Application - Window could not be created. SDL_Error: %s\n", SDL_GetError());
 		return false;
 	}
 
 	// Set window icon
-	m_pIcon = IMG_Load(m_Data.m_icon.c_str());
+	pIcon_ = IMG_Load(data_.icon.c_str());
 
-	SDL_SetWindowIcon(m_pWindow, m_pIcon);
+	SDL_SetWindowIcon(pWindow_, pIcon_);
 
 	// Get context
-	m_pContext = SDL_GL_CreateContext(m_pWindow);
+	pContext_ = SDL_GL_CreateContext(pWindow_);
 
-	SDL_SetWindowFullscreen(m_pWindow, m_Data.m_isFullScreen);
+	SDL_SetWindowFullscreen(pWindow_, data_.isFullscreen);
 
 	// Get window surface
-	m_pSurface = SDL_GetWindowSurface(m_pWindow);
+	pSurface_ = SDL_GetWindowSurface(pWindow_);
 
 	// Fill the surface white
-	SDL_FillRect(m_pSurface, nullptr, SDL_MapRGB(m_pSurface->format, 0xFF, 0xFF, 0xFF));
+	SDL_FillRect(pSurface_, nullptr, SDL_MapRGB(pSurface_->format, 0xFF, 0xFF, 0xFF));
 
 	return true;
 }
 
 void Application::CloseSDL()
 {
-	// Delete m_pIcon
-	SDL_FreeSurface(m_pIcon);
+	// Delete pIcon_
+	SDL_FreeSurface(pIcon_);
 
 	// Destroy
-	SDL_GL_DeleteContext(m_pContext);
+	SDL_GL_DeleteContext(pContext_);
 
 	//Destroy window
-	SDL_DestroyWindow(m_pWindow);
+	SDL_DestroyWindow(pWindow_);
 
 	//Quit SDL subsystems
 	SDL_Quit();
 }
 
-void Application::EditorUpdate(const float /*_dt*/)
+void Application::EditorUpdate(const float /*dt*/)
 {
 	// Basic debug window
 	ImGui::Begin("Debug");
-	ImGui::Text("*JEngine Frame Time: %.11f", STATE::m_frameTime);
-	ImGui::Text("*Resolution: %d x %d", m_Data.m_width, m_Data.m_height);
+	ImGui::Text("*JEngine Frame Time: %.11f", STATE::frameTime_);
+	ImGui::Text("*Resolution: %d x %d", data_.width, data_.height);
 
-	if (!m_Data.m_isFullScreen) {
+	if (!data_.isFullscreen) {
 		ImGui::Text("*Screen Mode: Window Mode");
 		if (ImGui::Button("Fullscreen")) {
-			m_Data.m_isFullScreen = true;
-			SDL_SetWindowFullscreen(m_pWindow, m_Data.m_isFullScreen);
+			data_.isFullscreen = true;
+			SDL_SetWindowFullscreen(pWindow_, data_.isFullscreen);
 		}
 	}
 
 	else {
 		ImGui::Text("*Screen Mode: Fullscreen");
 		if (ImGui::Button("Window Mode")) {
-			m_Data.m_isFullScreen = false;
-			SDL_SetWindowFullscreen(m_pWindow, m_Data.m_isFullScreen);
+			data_.isFullscreen = false;
+			SDL_SetWindowFullscreen(pWindow_, data_.isFullscreen);
 		}
 	}
 

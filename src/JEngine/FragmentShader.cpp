@@ -5,7 +5,7 @@ jeBegin
 //////////////////////////////////////////////////////////////////////////
 // Fragment shaders
 //////////////////////////////////////////////////////////////////////////
-std::string Shader::m_fragmentShader[] = {
+std::string Shader::fragmentShader_[] = {
 
 	/*************** Model Shader **************/
 	R"glsl(
@@ -40,7 +40,7 @@ std::string Shader::m_fragmentShader[] = {
 		vec4 m_diffuse;
 		vec4 m_specular;
 	
-		float m_constant;
+		float mconstant;
 		float m_linear;
 		float m_quadratic;
 	
@@ -122,7 +122,7 @@ std::string Shader::m_fragmentShader[] = {
 			// Pointlight
 			else if (light[index].m_type == LIGHT_POINTLIGHT) {
 				float distance = length(gap);
-				attenuation = 1.0 / (light[index].m_constant + light[index].m_linear * distance + light[index].m_quadratic * (distance * distance));
+				attenuation = 1.0 / (light[index].mconstant + light[index].m_linear * distance + light[index].m_quadratic * (distance * distance));
 			}
 		
 			// Ambient light
@@ -226,10 +226,10 @@ std::string Shader::m_fragmentShader[] = {
 
 	layout (location = 0) out vec4 v4_fragColor;
 
-	const int EFFECT_NONE		= 0;
-	const int EFFECT_BLUR		= 1;
-	const int EFFECT_SOBEL		= 2;
-	const int EFFECT_INVERSE	= 3;
+	const int JE_EFFECT_NONE		= 0;
+	const int JE_EFFECT_BLUR		= 1;
+	const int JE_EFFECT_SOBEL		= 2;
+	const int JE_EFFECT_INVERSE	= 3;
 
 	in vec2 v2_outTexCoord;
 
@@ -250,7 +250,7 @@ std::string Shader::m_fragmentShader[] = {
 		vec4 finalScreen = texture(Framebuffer, textureCoord) * v4_screenColor;
 	
 		// Impose visual effect here...
-		if (enum_effectType != EFFECT_NONE)
+		if (enum_effectType != JE_EFFECT_NONE)
 			VisualEffect(finalScreen, textureCoord);
 
 		if (finalScreen.a <= 0.0)
@@ -262,7 +262,7 @@ std::string Shader::m_fragmentShader[] = {
 	void VisualEffect(inout vec4 _color, inout vec2 _textureCoord){
 
 		// Blur effect
-		if (enum_effectType == EFFECT_BLUR) {
+		if (enum_effectType == JE_EFFECT_BLUR) {
 		
 			int x_range = int(float_blurSize / 2.0);
 			int y_range = int(float_blurSize / 2.0);
@@ -280,7 +280,7 @@ std::string Shader::m_fragmentShader[] = {
 		}
 	
 		// Sobel effect
-		else if (enum_effectType == EFFECT_SOBEL){
+		else if (enum_effectType == JE_EFFECT_SOBEL){
 			vec4 top         = texture(Framebuffer, vec2(_textureCoord.x, _textureCoord.y + float_sobelAmount));
 			vec4 bottom      = texture(Framebuffer, vec2(_textureCoord.x, _textureCoord.y - float_sobelAmount));
 			vec4 left        = texture(Framebuffer, vec2(_textureCoord.x - float_sobelAmount, _textureCoord.y));
@@ -295,7 +295,7 @@ std::string Shader::m_fragmentShader[] = {
 		}
 	
 		// Inverse effect
-		else if (enum_effectType == EFFECT_INVERSE)
+		else if (enum_effectType == JE_EFFECT_INVERSE)
 		{
 			vec4 inversed = vec4(1,1,1,1) - _color;
 			inversed.w = 1.f;

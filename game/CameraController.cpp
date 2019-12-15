@@ -8,90 +8,143 @@ jeDefineCustomComponentBuilder(CameraController);
 
 using namespace Math;
 
-CameraController::CameraController(Object* _pObject)
-	:CustomComponent(_pObject), m_camera(nullptr),
-	position(vec3::ZERO), m_target(vec3::ZERO)
+CameraController::CameraController(Object* pObject)
+	:CustomComponent(pObject), m_camera(nullptr)
 {}
 
 void CameraController::Register()
 {
-	SYSTEM::GetBehaviorSystem()->AddBehavior(this);
+	SYSTEM::pBehavior_->AddBehavior(this);
 }
 
-void CameraController::Load(CR_RJValue /*_data*/)
-{}
+void CameraController::Load(CR_RJValue /*_data*/) {}
 
 void CameraController::Init()
 {
 	m_camera = GetOwner()->GetComponent<Camera>();
-	position = m_camera->position;
-	//m_camera->target = m_camera->position + vec3::UNIT_Z/*m_camera->position.GetNormalize()*/;
+	m_camera->SetCamera(
+		m_camera->position_,
+		-vec3::UNIT_Z,
+		m_camera->GetUp(),
+		45.f,
+		SYSTEM::pGraphic_->GetWidth() / float(SYSTEM::pGraphic_->GetHeight()),
+		1.f
+	);
+
+	//mode_ = CAMERA_ORBIT;
+	mode_ = CAMERA_FREE;
 }
 
-void CameraController::Update(const float _dt)
+void CameraController::Update(float dt)
 {
-	//static float s_speed = 5.f, s_speedByDt;
-	//static vec4 s_v4Target;
-	//static vec3 s_right, s_v3Target;
-	//s_v4Target.Set(m_camera->target.x, m_camera->target.y,
-	//	m_camera->target.z, 1.f);
-	//s_v3Target.Set(m_camera->target);
-
-	//s_speedByDt = _dt * s_speed;
-
-	//if (INPUT::KeyPressed(JE_UP))
-	//	position.z += s_speedByDt;
-
-	//if (INPUT::KeyPressed(JE_LEFT))
-	//	position.x += s_speedByDt;
-
-	//if (INPUT::KeyPressed(JE_RIGHT))
-	//	position.x -= s_speedByDt;
-
-	//if (INPUT::KeyPressed(JE_DOWN))
-	//	position.z -= s_speedByDt;
-
-	//if (INPUT::KeyPressed(JE_A)) {
-	//	s_v4Target = s_v4Target * Rotate(s_speedByDt, m_camera->up);
-	//	s_v3Target.Set(s_v4Target.x, s_v4Target.y, s_v4Target.z);
-	//}
-	//
-	//if (INPUT::KeyPressed(JE_D)){
-	//	s_v4Target = s_v4Target * Rotate(-s_speedByDt, m_camera->up);
-	//	s_v3Target.Set(s_v4Target.x, s_v4Target.y, s_v4Target.z);
-	//}
-	//
-	//if (INPUT::KeyPressed(JE_W)) {
-	///*	s_right = CrossProduct(m_camera->up, GetNormalize(s_v3Target));
-	//	s_v4Target.Set(s_v3Target.x, s_v3Target.y, s_v3Target.z, 1.f);
-	//	s_v4Target = s_v4Target * Rotate(-s_speedByDt, s_right);
-	//	s_v3Target.Set(s_v4Target.x, s_v4Target.y, s_v4Target.z);
-	//	m_camera->up = CrossProduct(s_v3Target, GetNormalize(s_right));*/
-	//	m_camera->position += _dt * m_camera->;
-	//}
-	//
-	//if (INPUT::KeyPressed(JE_S)) {
-	//	s_right = CrossProduct(m_camera->up, GetNormalize(s_v3Target));
-	//	s_v4Target.Set(s_v3Target.x, s_v3Target.y, s_v3Target.z, 1.f);
-	//	s_v4Target = s_v4Target * Rotate(s_speedByDt, s_right);
-	//	s_v3Target.Set(s_v4Target.x, s_v4Target.y, s_v4Target.z);
-	//	m_camera->up = CrossProduct(s_v3Target, GetNormalize(s_right));
-	//}
-
-	////vec3 newTarget = (s_v3Target - position).GetNormalize();
-	//m_camera->position = position;
-	//m_camera->target.Set(position - GetNormalize(s_v3Target));// (position + vec3::UNIT_Z);
+	if (mode_ == CAMERA_FREE)
+		FreeMovingCamera(dt);
+	else
+		OrbitingCamera(dt);
 }
 
-void CameraController::Close()
-{}
+void CameraController::Close() {}
 
-void CameraController::Unload()
-{}
+void CameraController::Unload() {}
 
-void CameraController::EditorUpdate(const float /*_dt*/)
+void CameraController::EditorUpdate(const float /*dt*/)
 {
 	// TODO
+}
+
+void CameraController::FreeMovingCamera(float dt)
+{
+	static vec3 lastPosition, currentPosition = vec3::ZERO, diff;
+	static float yaw = 0.f, pitch = 0.f;
+	static bool active = false;
+
+	// rotate the camera
+	if (INPUT::KeyPressed(JE_MOUSE_LEFT)) {
+		lastPosition = currentPosition;
+		currentPosition = INPUT::GetOrhtoPosition();
+		diff = lastPosition - currentPosition;
+		if (active) {
+			yaw = diff.x * m_camera->fovy_ / SYSTEM::pGraphic_->GetWidth();
+			pitch = diff.y * m_camera->fovy_ / SYSTEM::pGraphic_->GetHeight();
+
+			m_camera->Yaw(-yaw);
+			m_camera->Pitch(pitch);
+		}
+		active = true;
+	}
+	else
+		active = false;
+	
+	static float move = 150.f, zoom = 25.f;
+
+	// move back and forward
+	if (INPUT::KeyPressed(JE_W))
+		m_camera->position_ -= move * dt * m_camera->GetBack();
+
+	else if (INPUT::KeyPressed(JE_S))
+		m_camera->position_ += move * dt * m_camera->GetBack();
+
+	// move left and right
+	if (INPUT::KeyPressed(JE_D))
+		m_camera->position_ += move * dt * m_camera->GetRight();
+
+	else if (INPUT::KeyPressed(JE_A))
+		m_camera->position_ -= move * dt * m_camera->GetRight();
+
+	// zoom in/out by scrolling mouse wheel
+	if (INPUT::KeyPressed(JE_MOUSE_WHEEL_UP))
+		m_camera->fovy_ += zoom * dt;
+
+	else if (INPUT::KeyPressed(JE_MOUSE_WHEEL_DOWN))
+		m_camera->fovy_ -= zoom * dt;
+
+	if (INPUT::KeyPressed(JE_MOUSE_MIDDLE)) {
+		m_camera->position_.Set(0, 0, 250);
+		m_camera->fovy_ = 45.f;
+	}
+
+	// Update target as well
+	m_camera->target_ = m_camera->position_ - m_camera->GetBack();
+}
+
+void CameraController::OrbitingCamera(float /*dt*/)
+{
+	static vec3 lastPosition, currentPosition = vec3::ZERO, 
+		diff, newPosition;
+	static float distance = 250.f;
+	static float degreeVertical = 0.f, degreeHorizontal = 0.f;
+	static bool active = false;
+
+	newPosition.Set(m_camera->position_);
+
+	if (INPUT::KeyPressed(JE_MOUSE_LEFT)) {
+		lastPosition = currentPosition;
+		currentPosition = INPUT::GetOrhtoPosition();
+		diff = lastPosition - currentPosition;
+		if (active) {
+			degreeVertical += diff.x * 180.f / SYSTEM::pGraphic_->GetWidth();
+			degreeHorizontal += diff.y * 180.f / SYSTEM::pGraphic_->GetHeight();
+		}
+		active = true;
+	}
+	else
+		active = false;
+
+	// TODO
+	// Degree to vector
+
+	//float v_x = cosf(DegToRad(degreeVertical)), v_y = sinf(DegToRad(degreeVertical));
+	//newPosition.x = distance * v_x;
+	//newPosition.y = 0.f;
+	//newPosition.z = distance * v_y;
+
+	float h_x = cosf(DegToRad(degreeHorizontal)), h_y = sinf(DegToRad(degreeHorizontal));
+	newPosition.x = 0.f;
+	newPosition.y = distance * h_y;
+	newPosition.z = distance * h_x;
+
+	// 
+	m_camera->position_.Set(newPosition);
 }
 
 jeEnd

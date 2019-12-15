@@ -4,55 +4,55 @@
 
 jeBegin
 
-BuilderMap	    COMPONENT::m_builderMap;
-ComponentTypeMap    COMPONENT::m_typeMap,
-                    COMPONENT::m_nameMap;
-bool		    COMPONENT::m_loadingCustomLogic = true;
+BuilderMap			COMPONENT::builderMap_;
+ComponentTypeMap    COMPONENT::typeMap_,
+                    COMPONENT::nameMap_;
+bool				COMPONENT::loadingCustomLogic_ = true;
 
 Component* ComponentManager::CreateComponent(
-    const char* _componentName, Object* _pOwner)
+    const char* componentName, Object* pOwner)
 {
     // Check if either there is a existing component builder 
-    auto found = m_builderMap.find(_componentName);
+    auto found = builderMap_.find(componentName);
 
     // If there is nothing like that,
     // return null
-    if (found == m_builderMap.end()) {
-        jeDebugPrint("!ComponentManager - No such name of enrolled component: %s\n", _componentName);
+    if (found == builderMap_.end()) {
+        jeDebugPrint("!ComponentManager - No such name of enrolled component: %s\n", componentName);
         return nullptr;
     }
 
 #ifdef  jeUseBuiltInAllocator
     // Unless, return new component
-    return found->second->CreateComponent(_pOwner, _componentName);
+    return found->second->CreateComponent(pOwner, componentName);
 #else
     // Unless, return new component
-    return found->second->CreateComponent(_pOwner);
+    return found->second->CreateComponent(pOwner);
 #endif // jeUseBuiltInAllocator
 }
 
 #ifdef  jeUseBuiltInAllocator
-void ComponentManager::RemoveComponent(Component* _component)
+void ComponentManager::RemoveComponent(Component* component)
 {
     // Check if either there is a existing component builder 
-    auto found = m_builderMap.find(_component->m_typeName);
-    found->second->RemoveComponent(_component);
+    auto found = builderMap_.find(pComponent->typeName_);
+    found->second->RemoveComponent(component);
 }
 #endif // jeUseBuiltInAllocator
 
-const char* ComponentManager::KeyToTypeTranslator(const char* _name)
+const char* ComponentManager::KeyToTypeTranslator(const char* name)
 {
-    auto found = m_typeMap.find(_name);
-    if (found != m_typeMap.end())
+    auto found = typeMap_.find(name);
+    if (found != typeMap_.end())
         return found->second.c_str();
 
     return nullptr;
 }
 
-const char* ComponentManager::TypeToKeyTranslator(const char *_type)
+const char* ComponentManager::TypeToKeyTranslator(const char *type)
 {
-    auto found = m_nameMap.find(_type);
-    if (found != m_nameMap.end())
+    auto found = nameMap_.find(type);
+    if (found != nameMap_.end())
         return found->second.c_str();
 
     return nullptr;
@@ -61,13 +61,13 @@ const char* ComponentManager::TypeToKeyTranslator(const char *_type)
 void ComponentManager::ClearBuilders()
 {
     // Delete instance
-    for (auto it = m_builderMap.begin();
-        it != m_builderMap.end(); )
+    for (auto it = builderMap_.begin();
+        it != builderMap_.end(); )
         delete (it++)->second;
 
     // Clear nodes
-    m_builderMap.clear();
-    m_typeMap.clear();
+    builderMap_.clear();
+    typeMap_.clear();
 }
 
 jeEnd

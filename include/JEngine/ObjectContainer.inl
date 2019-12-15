@@ -9,7 +9,7 @@ inline ObjectMap ObjectContainer::GetObjects()
 {
 	ObjectMap container;
 
-	for (auto object : m_objectMap) {
+	for (auto object : objectMap_) {
 		if (object.second->HasComponent<ComponentType>())
 			container.insert(
 				ObjectMap::value_type(

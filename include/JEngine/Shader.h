@@ -10,40 +10,41 @@ class Shader {
 
 private:
 
-    enum Type { VERTEX, GEOMETRY, PIXEL };
+    enum Type { JE_VERTEX, JE_GEOMETRY, JE_PIXEL };
 
     friend class GLManager;
     friend class GraphicSystem;
+	friend class AssetManager;
 
-    static void Use(const GLManager::ShaderType& _shaderType);
+    static void Use(const GLManager::ShaderType& shaderType);
 
-    void CreateShader(std::string& _shaderContents, Type _type);
+    void CreateShader(std::string& shaderContents, Type type);
     void CombineShaders();
 
     // By const character
-    void SetInt(const char * _name, int _int);
-    void SetBool(const char* _name, bool _bool);
-    void SetEnum(const char * _name, int _enum);
-	void SetMatrix(const char * _name, const mat4& _mat4);
-    void SetuInt(const char*_name, unsigned _uInt);
-    void SetFloat(const char * _name, float _float);
-    void SetVector3(const char * _name, const vec3& _vector);
-    void SetVector4(const char * _name, const vec4& _vector);
+    void SetInt(const char * name, int number);
+    void SetBool(const char* name, bool toggle);
+    void SetEnum(const char * name, int typr);
+	void SetMatrix(const char * name, const mat4& mat4);
+    void SetuInt(const char*name, unsigned uInt);
+    void SetFloat(const char * name, float number);
+    void SetVector3(const char * name, const vec3& vector);
+    void SetVector4(const char * name, const vec4& vector);
 
     Shader();
     ~Shader() {};
 
-    static Shader* m_pCurrentShader;
+    static Shader* pCurrentShader_;
 
-    GLuint  m_programId, m_vertexId, m_fragmentId, m_geometryId;
-    int	    m_infoLogLength;
-    GLint   m_result;
+    GLuint  programId_, vertexId_, fragmentId_, geometryId_;
+    int	    infoLogLength_;
+    GLint   result_;
 
-    static std::string  m_vertexShader[GLM::SHADER_END], m_fragmentShader[GLM::SHADER_END], 
-		m_geometryShader[GLM::SHADER_END];
+    static std::string  vertexShader_[GLM::JE_SHADER_END], fragmentShader_[GLM::JE_SHADER_END], 
+		m_geometryShader[GLM::JE_SHADER_END];
 
-    Shader(const Shader& /*_copy*/) = delete;
-    void operator=(const Shader& /*_copy*/) = delete;
+    Shader(const Shader& /*copy*/) = delete;
+    void operator=(const Shader& /*copy*/) = delete;
 
 };
 

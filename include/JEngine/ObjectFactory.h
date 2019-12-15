@@ -22,15 +22,15 @@ class ObjectFactory {
 
 public:
 
-    static void	    CreateObject(const char* _name);
+    static void	    CreateObject(const char* name);
     static Object*  GetCreatedObject();
     static void	    AddCreatedObject();
 
 private:
 
-    static bool	    m_added;
-    static unsigned m_registerNumber;
-    static Object*  m_pLastMade;
+    static bool	    added_;
+    static unsigned registerNumber_;
+    static Object*  pLastMade_;
 
 };
 

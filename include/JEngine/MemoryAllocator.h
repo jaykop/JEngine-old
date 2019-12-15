@@ -23,21 +23,21 @@ private:
 struct MAStats
 {
     // The size of each object
-    unsigned	m_objectSize = 0;
+    unsigned	objectSize = 0;
     // The number of nodes in the free list (available nodes)
-    unsigned	m_freeNodes = 0;
+    unsigned	freeNodes = 0;
     // The number of nodes in use (occupied nodes)
-    unsigned	m_nodesInUse = 0;
+    unsigned	nodesInUse = 0;
     // The size of a page
-    unsigned	m_pageSize = 0;
+    unsigned	pageSize = 0;
     // The nuber of pages in use (occupied pages)
-    unsigned	m_pagesInUse = 0;
+    unsigned	pagesInUse = 0;
     // Total requests to allocate memory
-    unsigned	m_allocations = 0;
+    unsigned	allocations = 0;
     // Total requests to free memory
-    unsigned	m_deallocations = 0;
+    unsigned	deallocations = 0;
     // The most nodes in use by client at one time
-    unsigned	m_mostNodes = 0;
+    unsigned	mostNodes = 0;
 };
 
 struct MAConfig
@@ -62,7 +62,7 @@ class MemoryAllocator {
     MemoryAllocator(const MemoryAllocator&) = delete;
     MemoryAllocator(MemoryAllocator&&) = delete;
 
-    enum STATUS : int {
+    enum JE_MEMORY_STATUS : int {
 
         JE_NULL = 0x00,
         JE_UNALLOCATED = 0xaa,
@@ -77,7 +77,7 @@ public:
     ~MemoryAllocator();
 
     Node*   Allocate();
-    void    Free(T* _toReturn);
+    void    Free(T* toReturn);
 
 private:
 
@@ -85,11 +85,11 @@ private:
     void DeallocatePage();
     void ClearPages();
 
-    MAConfig    m_config{};
-    MAStats	m_stats{};
+    MAConfig    config_{};
+    MAStats		stats_{};
 
-    Node* m_freelist = nullptr;
-    Node* m_pagelist = nullptr;
+    Node* freelist_ = nullptr;
+    Node* pagelist_ = nullptr;
 };
 
 jeEnd

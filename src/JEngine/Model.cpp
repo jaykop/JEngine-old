@@ -1,5 +1,4 @@
 #include "Model.h"
-#include "GLManager.h"
 #include "Material.h"
 #include "Transform.h"
 #include "AssetManager.h"
@@ -14,187 +13,190 @@
 jeBegin
 jeDefineComponentBuilder(Model);
 
-Model::Model(Object* _pOwner)
-	:Component(_pOwner), color(vec4::ONE), projection(PROJECTION_PERSPECTIVE), m_mainTex(0),
-	m_pTransform(nullptr), m_culled(false), m_pMaterial(nullptr), sfactor(GL_SRC_ALPHA),
-	dfactor(GL_ONE_MINUS_SRC_ALPHA), m_pAnimation(nullptr), m_hiddenStatus(0x0000), m_pInherited(nullptr)
+Model::Model(Object* pOwner)
+	:Component(pOwner), color_(vec4::ONE), projection_(PROJECTION_PERSPECTIVE), 
+	pTransform_(nullptr), culled_(false), pMaterial_(nullptr), sfactor_(GL_SRC_ALPHA),
+	dfactor_(GL_ONE_MINUS_SRC_ALPHA), pAnimation_(nullptr), is_(0x0000), pInherited_(nullptr)
 {}
 
 void Model::Register()
 {
-	SYSTEM::GetGraphicSystem()->AddModel(this);
+	SYSTEM::pGraphic_->AddModel(this);
 	if (GetOwner()->HasComponent<Transform>())
-		m_pTransform = GetOwner()->GetComponent<Transform>();
+		pTransform_ = GetOwner()->GetComponent<Transform>();
 }
 
-void Model::SetParentToFollow(Object* _pObj)
+void Model::AddMesh(Mesh* pMesh)
 {
-	if (_pObj->HasComponent<Transform>()) {
-		m_pInherited = _pObj->GetComponent<Transform>();
-		status |= Model::IS_INHERITED;
+	return meshes_.push_back(pMesh);
+}
+
+void Model::RemoveMesh(unsigned index)
+{
+	unsigned count = 0;
+	for (auto it = meshes_.begin();
+		it != meshes_.end(); ++it, ++count) {
+		if (count == index)
+			meshes_.erase(it);
+	}
+}
+
+Mesh* Model::GetMesh(unsigned index) const
+{
+	return meshes_.at(index);
+}
+
+unsigned Model::GetMeshCount() const
+{
+	return unsigned(meshes_.size());
+}
+
+void Model::SetParentToFollow(Object* pObject)
+{
+	if (pObject->HasComponent<Transform>()) {
+		pInherited_ = pObject->GetComponent<Transform>();
+		status_ |= Model::IS_INHERITED;
 	}
 	else
-		jeDebugPrint("!Model - Object to be parent does not habe transform component!: %s\n", _pObj->GetName().c_str());
-}
-
-void Model::AddTexture(const char *_key)
-{
-	auto found = m_textureMap.find(_key);
-	if (found != m_textureMap.end())
-		jeDebugPrint("!Model - Existing texture: %s.\n", _key);
-
-	else {
-		unsigned newTexture = ASSET::GetTexture(_key);
-
-		if (m_textureMap.empty())
-			m_mainTex = newTexture;
-
-		m_textureMap.insert(
-			TextureMap::value_type(
-				_key, newTexture));
-	}
-}
-
-void Model::RemoveTexture(const char *_key)
-{
-	m_textureMap.erase(_key);
-}
-
-void Model::SetCurrentTexutre(const char *_key)
-{
-	m_mainTex = GetTexutre(_key);
-}
-
-unsigned Model::GetCurrentTexutre() const
-{
-	return m_mainTex;
-}
-
-unsigned Model::GetTexutre(const char *_key)
-{
-	auto found = m_textureMap.find(_key);
-	if (found != m_textureMap.end())
-		return found->second;
-
-	jeDebugPrint("!Model - No such name of enrolled texture: %s.\n", _key);
-	return 0;
+		jeDebugPrint("!Model - Object to be parent does not habe transform component!: %s\n", pObject->GetName().c_str());
 }
 
 Model::~Model()
 {
-	// Remove textures
-	m_textureMap.clear();
-	
-	if (m_pMeshes) {
-		delete m_pMeshes;
-		m_pMeshes = nullptr;
+	// Clear mesh container
+	for (auto mesh : meshes_) {
+		if (!mesh->builtIn_) {
+			delete mesh;
+			mesh = nullptr;
+		}
 	}
+	meshes_.clear();
 
-	SYSTEM::GetGraphicSystem()->RemoveModel(this);
+	if (IS_LIGHT != is_)
+		SYSTEM::pGraphic_->RemoveModel(this);
 }
 
-void Model::operator=(const Model & _copy)
+void Model::operator=(const Model & copy)
 {
-	color.Set(_copy.color);
-	projection = _copy.projection,
-	m_mainTex = _copy.m_mainTex;
-	m_pTransform = GetOwner()->GetComponent<Transform>();
-	m_culled = _copy.m_culled;
-	m_pMaterial = GetOwner()->GetComponent<Material>();
-	m_hiddenStatus = _copy.m_hiddenStatus;
+	color_.Set(copy.color_);
+	projection_ = copy.projection_,
+	pTransform_ = GetOwner()->GetComponent<Transform>();
+	culled_ = copy.culled_;
+	pMaterial_ = GetOwner()->GetComponent<Material>();
+	is_ = copy.is_;
 }
 
-void Model::Load(CR_RJValue _data)
+void Model::Load(CR_RJValue data)
 {
-	if (_data.HasMember("Mesh")
-		&& _data["Mesh"].GetString())
+	if (data.HasMember("Mesh")
+		&& data["Mesh"].IsArray())
 	{
-		std::string meshType = _data["Mesh"].GetString();
-		if (!strcmp(meshType.c_str(), "Point")) {
-			m_pMeshes = Mesh::CreatePoint();
-			m_pMeshes->m_shape = Mesh::MESH_POINT;
-		}
-		else if (!strcmp(meshType.c_str(), "Rect")) {
-			m_pMeshes = Mesh::CreateRect();
-			m_pMeshes->m_shape = Mesh::MESH_RECT;
-		}
-		else if (!strcmp(meshType.c_str(), "CrossRect")) {
-			m_pMeshes = Mesh::CreateCrossRect();
-			m_pMeshes->m_shape = Mesh::MESH_CROSSRECT;
-		}
-		else if (!strcmp(meshType.c_str(), "Cube")) {
-			m_pMeshes = Mesh::CreateCube();
-			m_pMeshes->m_shape = Mesh::MESH_CUBE;
-		}
-		else if (!strcmp(meshType.c_str(), "Tetrahedron")) {
-			m_pMeshes = Mesh::CreateTetrahedron();
-			m_pMeshes->m_shape = Mesh::MESH_TETRAHEDRON;
-		}
-		else /*if (!strcmp(meshType.c_str(), "Custom"))*/ {
-			m_pMeshes = ASSET::LoadObj(meshType.c_str());
-			m_pMeshes->m_shape = Mesh::MESH_NONE;
-			m_pMeshes->CreateCustomObject();
+		CR_RJValue loadedMeshes = data["Mesh"];
+
+		for (unsigned meshIndex = 0; meshIndex < loadedMeshes.Size(); ++meshIndex) {
+
+			CR_RJValue currentMesh = loadedMeshes[meshIndex];
+			Mesh* newMesh = nullptr;
+
+			// Check either if there is shape
+			if (currentMesh.HasMember("Shape")
+				&& currentMesh["Shape"].IsString()) {
+				std::string meshType = currentMesh["Shape"].GetString();
+
+				if (!strcmp(meshType.c_str(), "Point"))
+					newMesh = Mesh::CreatePoint();
+
+				else if (!strcmp(meshType.c_str(), "CrossRect"))
+					newMesh = Mesh::CreateCrossRect();
+
+				else if (!strcmp(meshType.c_str(), "Cube"))
+					newMesh = Mesh::CreateCube();
+
+				else if (!strcmp(meshType.c_str(), "Tetrahedron"))
+					newMesh = Mesh::CreateTetrahedron();
+
+				else if (!strcmp(meshType.c_str(), "Rect"))
+					newMesh = Mesh::CreateRect();
+
+				else if (!strcmp(meshType.c_str(), "WireBox"))
+					newMesh = Mesh::CreateWireframeBox();
+
+				else 
+					newMesh = ASSET::LoadObjFile(meshType.c_str());
+			}
+			// If not, set default mesh type
+			else
+				newMesh = Mesh::CreateRect();
+
+			AddMesh(newMesh);
+
+			// Load texture
+			if (currentMesh.HasMember("Texture")
+				&& currentMesh["Texture"].IsArray()) {
+				for (unsigned textureIndex = 0; textureIndex < currentMesh["Texture"].Size(); ++textureIndex)
+					newMesh->AddTexture(currentMesh["Texture"][textureIndex].GetString());
+			}
+
+			if (currentMesh.HasMember("DrawMode")
+				&& currentMesh["DrawMode"].IsString()) {
+
+				std::string drawType = currentMesh["DrawMode"].GetString();
+				if (!strcmp(drawType.c_str(), "Triangles"))
+					newMesh->drawMode_ = GL_TRIANGLES;
+
+				else if (!strcmp(drawType.c_str(), "Triangle_Strip"))
+					newMesh->drawMode_ = GL_TRIANGLE_STRIP;
+
+				else if (!strcmp(drawType.c_str(), "Triangle_Fan"))
+					newMesh->drawMode_ = GL_TRIANGLE_FAN;
+
+				else if (!strcmp(drawType.c_str(), "Lines"))
+					newMesh->drawMode_ = GL_LINES;
+
+				else if (!strcmp(drawType.c_str(), "Line_Strip"))
+					newMesh->drawMode_ = GL_LINE_STRIP;
+
+				else if (!strcmp("Quad", drawType.c_str()))
+					newMesh->drawMode_ = GL_QUADS;
+
+				else if (!strcmp("Quad_Strip", drawType.c_str()))
+					newMesh->drawMode_ = GL_QUAD_STRIP;
+
+				else if (!strcmp("Points", drawType.c_str()))
+					newMesh->drawMode_ = GL_POINTS;
+			}
 		}
 	}
-	else {
-		m_pMeshes = Mesh::CreateRect();
-		m_pMeshes->m_shape = Mesh::MESH_RECT;
-	}
 
-	if (_data.HasMember("DrawMode")
-		&& _data["DrawMode"].IsString()) {
-		
-		std::string drawType = _data["DrawMode"].GetString();
-		if (!strcmp(drawType.c_str(), "Triangles"))
-			m_pMeshes->m_drawMode = GL_TRIANGLES;
+	if (data.HasMember("Flip")
+		&& data["Flip"].GetBool())
+		status_ |= IS_FLIPPED;
 
-		else if (!strcmp(drawType.c_str(), "Triangle_Strip"))
-			m_pMeshes->m_drawMode = GL_TRIANGLE_STRIP;
-
-		else if (!strcmp(drawType.c_str(), "Triangle_Fan")) 
-			m_pMeshes->m_drawMode = GL_TRIANGLE_FAN;
-
-		else if (!strcmp(drawType.c_str(), "Lines")) 
-			m_pMeshes->m_drawMode = GL_LINES;
-
-		else if (!strcmp(drawType.c_str(), "Line_Strip")) 
-			m_pMeshes->m_drawMode = GL_LINE_STRIP;
-	}
-
-	if (_data.HasMember("Flip")
-		&& _data["Flip"].GetBool())
-		status |= IS_FLIPPED;
-
-	if (_data.HasMember("Color")) {
-		CR_RJValue loadedColor = _data["Color"];
-		color.Set(loadedColor[0].GetFloat(), loadedColor[1].GetFloat(),
+	if (data.HasMember("Color")) {
+		CR_RJValue loadedColor = data["Color"];
+		color_.Set(loadedColor[0].GetFloat(), loadedColor[1].GetFloat(),
 			loadedColor[2].GetFloat(), loadedColor[3].GetFloat());
 	}
 
-	if (_data.HasMember("Projection")) {
-		CR_RJValue loadedProjection = _data["Projection"];
+	if (data.HasMember("Projection")) {
+		CR_RJValue loadedProjection = data["Projection"];
 
 		if (!strcmp("Perspective", loadedProjection.GetString()))
-			projection = PROJECTION_PERSPECTIVE;
+			projection_ = PROJECTION_PERSPECTIVE;
 
 		else if (!strcmp("Orthogonal", loadedProjection.GetString()))
-			projection = PROJECTION_ORTHOGONAL;
+			projection_ = PROJECTION_ORTHOGONAL;
 
 		else
 			jeDebugPrint("!Model - Wrong projection type: %s\n", loadedProjection.GetString());
 	}
 
-	if (_data.HasMember("Texture")) {
-		CR_RJValue loadedTexture = _data["Texture"];
-		AddTexture(loadedTexture.GetString());
-	}
-
-	if (_data.HasMember("Bilboard")
-		&& _data["Bilboard"].GetBool())
-		status |= IS_BILBOARD;
+	if (data.HasMember("Bilboard")
+		&& data["Bilboard"].GetBool())
+		status_ |= IS_BILBOARD;
 }
 
-void Model::EditorUpdate(const float /*_dt*/)
+void Model::EditorUpdate(const float /*dt*/)
 {
 	// TODO
 }

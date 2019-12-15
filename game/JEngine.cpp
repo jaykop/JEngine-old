@@ -1,12 +1,11 @@
 #include "JEngine.h"
 #include "Application.h"
 #include "AssetManager.h"
+#include "StateManager.h"
 #include "ComponentManager.h"
 #include "CustomLogic.h"
 
 jeUsingNamespace;
-
-bool	JEngine::imguiToggle = false;
 
 bool JEngine::RegisterAssets()
 {
@@ -51,7 +50,22 @@ bool JEngine::RegisterAssets()
 	return true;
 }
 
-int JEngine::Run()
+void JEngine::CreateConsole()
 {
-    return APP::Run(imguiToggle);
+	APP::CreateConsole();
+}
+
+void JEngine::CloseConsole()
+{
+	APP::CloseConsole();
+}
+
+void JEngine::SetFirstState(const char* stateName) 
+{
+	STATE::SetStartingState(stateName);
+}
+
+void JEngine::Run(bool imguiToggle)
+{
+    APP::Run(imguiToggle);
 }

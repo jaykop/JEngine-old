@@ -9,38 +9,38 @@ BehaviorSystem::BehaviorSystem()
 	:System()
 {}
 
-void BehaviorSystem::AddBehavior(CustomComponent* _behavior)
+void BehaviorSystem::AddBehavior(CustomComponent* behavior)
 {
-	m_behaviors.push_back(_behavior);
+	behaviors_.push_back(behavior);
 }
 
-void BehaviorSystem::RemoveBehavior(CustomComponent* _behavior)
+void BehaviorSystem::RemoveBehavior(CustomComponent* behavior)
 {
-	for (Behaviors::iterator it = m_behaviors.begin();
-		it != m_behaviors.end(); ++it) {
-		if ((*it)->GetOwner()->GetId() == _behavior->GetOwner()->GetId()) {
-			m_behaviors.erase(it);
+	for (Behaviors::iterator it = behaviors_.begin();
+		it != behaviors_.end(); ++it) {
+		if ((*it)->GetOwner()->GetId() == behavior->GetOwner()->GetId()) {
+			behaviors_.erase(it);
 			break;
 		}
 	}
 }
 
-void BehaviorSystem::Load(CR_RJDoc /*_data*/)
+void BehaviorSystem::Load(CR_RJDoc /*data*/)
 {
 	// None...
 }
 
 void BehaviorSystem::Init()
 {
-	for (auto behavior : m_behaviors)
+	for (auto behavior : behaviors_)
 		behavior->Init();
 }
 
-void BehaviorSystem::Update(const float _dt)
+void BehaviorSystem::Update(float dt)
 {
 	// Update normal game logics
-	for (auto behavior : m_behaviors) 
-		behavior->Update(_dt);
+	for (auto behavior : behaviors_) 
+		behavior->Update(dt);
 
 	// Deal with delayed event
 	DISPATCHER::DispatchDelayedMessage();
@@ -48,7 +48,7 @@ void BehaviorSystem::Update(const float _dt)
 
 void BehaviorSystem::Close()
 {
-	for (auto behavior : m_behaviors) 
+	for (auto behavior : behaviors_) 
 		behavior->Close();
 }
 
@@ -56,11 +56,11 @@ void BehaviorSystem::Unload()
 {
 	// TODO
 	// Is this really necessary?
-	for (auto behavior : m_behaviors) {
+	for (auto behavior : behaviors_) {
 		behavior->Unload();
 	}
 
-	m_behaviors.clear();
+	behaviors_.clear();
 }
 
 jeEnd

@@ -2450,12 +2450,12 @@ unsigned char lodepng_chunk_safetocopy(const unsigned char* chunk)
   return((chunk[7] & 32) != 0);
 }
 
-unsigned char* lodepng_chunk_data(unsigned char* chunk)
+unsigned char* lodepng_chunkdata(unsigned char* chunk)
 {
   return &chunk[8];
 }
 
-const unsigned char* lodepng_chunk_data_const(const unsigned char* chunk)
+const unsigned char* lodepng_chunkdata_const(const unsigned char* chunk)
 {
   return &chunk[8];
 }
@@ -2594,7 +2594,7 @@ void lodepng_color_mode_cleanup(LodePNGColorMode* info)
   lodepng_palette_clear(info);
 }
 
-unsigned lodepng_color_mode_copy(LodePNGColorMode* dest, const LodePNGColorMode* source)
+unsigned lodepng_color_modecopy(LodePNGColorMode* dest, const LodePNGColorMode* source)
 {
   size_t i;
   lodepng_color_mode_cleanup(dest);
@@ -2749,7 +2749,7 @@ static void LodePNGUnknownChunks_cleanup(LodePNGInfo* info)
   for(i = 0; i != 3; ++i) lodepng_free(info->unknown_chunks_data[i]);
 }
 
-static unsigned LodePNGUnknownChunks_copy(LodePNGInfo* dest, const LodePNGInfo* src)
+static unsigned LodePNGUnknownChunkscopy(LodePNGInfo* dest, const LodePNGInfo* src)
 {
   unsigned i;
 
@@ -2791,7 +2791,7 @@ static void LodePNGText_cleanup(LodePNGInfo* info)
   lodepng_free(info->text_strings);
 }
 
-static unsigned LodePNGText_copy(LodePNGInfo* dest, const LodePNGInfo* source)
+static unsigned LodePNGTextcopy(LodePNGInfo* dest, const LodePNGInfo* source)
 {
   size_t i = 0;
   dest->text_keys = 0;
@@ -2860,7 +2860,7 @@ static void LodePNGIText_cleanup(LodePNGInfo* info)
   lodepng_free(info->itext_strings);
 }
 
-static unsigned LodePNGIText_copy(LodePNGInfo* dest, const LodePNGInfo* source)
+static unsigned LodePNGITextcopy(LodePNGInfo* dest, const LodePNGInfo* source)
 {
   size_t i = 0;
   dest->itext_keys = 0;
@@ -2950,19 +2950,19 @@ void lodepng_info_cleanup(LodePNGInfo* info)
 #endif /*LODEPNG_COMPILE_ANCILLARY_CHUNKS*/
 }
 
-unsigned lodepng_info_copy(LodePNGInfo* dest, const LodePNGInfo* source)
+unsigned lodepng_infocopy(LodePNGInfo* dest, const LodePNGInfo* source)
 {
   lodepng_info_cleanup(dest);
   *dest = *source;
   lodepng_color_mode_init(&dest->color);
-  CERROR_TRY_RETURN(lodepng_color_mode_copy(&dest->color, &source->color));
+  CERROR_TRY_RETURN(lodepng_color_modecopy(&dest->color, &source->color));
 
 #ifdef LODEPNG_COMPILE_ANCILLARY_CHUNKS
-  CERROR_TRY_RETURN(LodePNGText_copy(dest, source));
-  CERROR_TRY_RETURN(LodePNGIText_copy(dest, source));
+  CERROR_TRY_RETURN(LodePNGTextcopy(dest, source));
+  CERROR_TRY_RETURN(LodePNGITextcopy(dest, source));
 
   LodePNGUnknownChunks_init(dest);
-  CERROR_TRY_RETURN(LodePNGUnknownChunks_copy(dest, source));
+  CERROR_TRY_RETURN(LodePNGUnknownChunkscopy(dest, source));
 #endif /*LODEPNG_COMPILE_ANCILLARY_CHUNKS*/
   return 0;
 }
@@ -3804,7 +3804,7 @@ unsigned lodepng_auto_choose_color(LodePNGColorMode* mode_out,
     {
       /*If input should have same palette colors, keep original to preserve its order and prevent conversion*/
       lodepng_color_mode_cleanup(mode_out);
-      lodepng_color_mode_copy(mode_out, mode_in);
+      lodepng_color_modecopy(mode_out, mode_in);
     }
   }
   else /*8-bit or 16-bit per channel*/
@@ -4584,7 +4584,7 @@ static void decodeGeneric(unsigned char** out, unsigned* w, unsigned* h,
       CERROR_BREAK(state->error, 64); /*error: size of the in buffer too small to contain next chunk*/
     }
 
-    data = lodepng_chunk_data_const(chunk);
+    data = lodepng_chunkdata_const(chunk);
 
     /*IDAT chunk, containing compressed image data*/
     if(lodepng_chunk_type_equals(chunk, "IDAT"))
@@ -4746,7 +4746,7 @@ unsigned lodepng_decode(unsigned char** out, unsigned* w, unsigned* h,
     the raw image has to the end user*/
     if(!state->decoder.color_convert)
     {
-      state->error = lodepng_color_mode_copy(&state->info_raw, &state->info_png.color);
+      state->error = lodepng_color_modecopy(&state->info_raw, &state->info_png.color);
       if(state->error) return state->error;
     }
   }
@@ -4860,14 +4860,14 @@ void lodepng_state_cleanup(LodePNGState* state)
   lodepng_info_cleanup(&state->info_png);
 }
 
-void lodepng_state_copy(LodePNGState* dest, const LodePNGState* source)
+void lodepng_statecopy(LodePNGState* dest, const LodePNGState* source)
 {
   lodepng_state_cleanup(dest);
   *dest = *source;
   lodepng_color_mode_init(&dest->info_raw);
   lodepng_info_init(&dest->info_png);
-  dest->error = lodepng_color_mode_copy(&dest->info_raw, &source->info_raw); if(dest->error) return;
-  dest->error = lodepng_info_copy(&dest->info_png, &source->info_png); if(dest->error) return;
+  dest->error = lodepng_color_modecopy(&dest->info_raw, &source->info_raw); if(dest->error) return;
+  dest->error = lodepng_infocopy(&dest->info_png, &source->info_png); if(dest->error) return;
 }
 
 #endif /* defined(LODEPNG_COMPILE_DECODER) || defined(LODEPNG_COMPILE_ENCODER) */
@@ -5070,15 +5070,15 @@ static unsigned addChunk_iTXt(ucvector* out, unsigned compressed, const char* ke
 
   if(compressed)
   {
-    ucvector compressed_data;
-    ucvector_init(&compressed_data);
-    error = zlib_compress(&compressed_data.data, &compressed_data.size,
+    ucvector compresseddata;
+    ucvector_init(&compresseddata);
+    error = zlib_compress(&compresseddata.data, &compresseddata.size,
                           (unsigned char*)textstring, textsize, zlibsettings);
     if(!error)
     {
-      for(i = 0; i != compressed_data.size; ++i) ucvector_push_back(&data, compressed_data.data[i]);
+      for(i = 0; i != compresseddata.size; ++i) ucvector_push_back(&data, compresseddata.data[i]);
     }
-    ucvector_cleanup(&compressed_data);
+    ucvector_cleanup(&compresseddata);
   }
   else /*not compressed*/
   {
@@ -5686,7 +5686,7 @@ unsigned lodepng_encode(unsigned char** out, size_t* outsize,
 
   /* color convert and compute scanline filter types */
   lodepng_info_init(&info);
-  lodepng_info_copy(&info, &state->info_png);
+  lodepng_infocopy(&info, &state->info_png);
   if(state->encoder.auto_convert)
   {
     state->error = lodepng_auto_choose_color(&info.color, image, w, h, &state->info_raw);
@@ -6100,7 +6100,7 @@ State::State()
 State::State(const State& other)
 {
   lodepng_state_init(this);
-  lodepng_state_copy(this, &other);
+  lodepng_statecopy(this, &other);
 }
 
 State::~State()
@@ -6110,7 +6110,7 @@ State::~State()
 
 State& State::operator=(const State& other)
 {
-  lodepng_state_copy(this, &other);
+  lodepng_statecopy(this, &other);
   return *this;
 }
 

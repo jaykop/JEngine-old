@@ -1,6 +1,5 @@
 #include "Text.h"
 #include "Transform.h"
-#include "GLManager.h"
 #include "AssetManager.h"
 #include "SystemManager.h"
 #include "Object.h"
@@ -12,171 +11,178 @@
 jeBegin
 jeDefineComponentBuilder(Text);
 
-std::vector<unsigned> Text::m_idices = { 0, 2, 3, 1, 0, 2 };
+std::vector<unsigned> Text::m_pointIndices = { 0, 2, 3, 1, 0, 2 };
 
 Font::Font()
-	:m_fontSize(0), m_newLineInterval(0.f)
+	:fontSize_(0), newline_(0.f)
 {}
 
-Text::Text(Object* _pOwner)
-	:Model(_pOwner)
+Text::Text(Object* pOwner)
+	:Model(pOwner)
 {
-	m_hiddenStatus |= IS_TEXT;
+	is_ |= IS_TEXT;
 }
 
 Text::~Text()
 {
-	if (m_pTextStorage) {
-		delete[] m_pTextStorage;
-		m_pTextStorage = nullptr;
+	if (pTextBuffer_) {
+		delete[] pTextBuffer_;
+		pTextBuffer_ = nullptr;
 	}
 
-	if (m_pwTextStorage) {
-		delete[] m_pwTextStorage;
-		m_pwTextStorage = nullptr;
+	if (pwTextBuffer) {
+		delete[] pwTextBuffer;
+		pwTextBuffer = nullptr;
 	}
 
-	SYSTEM::GetGraphicSystem()->RemoveModel(this);
+	SYSTEM::pGraphic_->RemoveModel(this);
 }
 
-void Text::operator=(const Text & _copy)
+void Text::operator=(const Text & copy)
 {
-	pFont = _copy.pFont;
-	m_text = _copy.m_text;
-	m_wText = _copy.m_wText;
-	m_printWide = _copy.m_printWide;
+	pFont = copy.pFont;
+	text_ = copy.text_;
+	wText_ = copy.wText_;
+	printWide_ = copy.printWide_;
 }
 
 void Text::Register()
 {
-	SYSTEM::GetGraphicSystem()->AddModel(this);
+	SYSTEM::pGraphic_->AddModel(this);
 	if (GetOwner()->HasComponent<Transform>())
-		m_pTransform = GetOwner()->GetComponent<Transform>();
+		pTransform_ = GetOwner()->GetComponent<Transform>();
 }
 
-void Text::SetText(const char * _text, ...)
+void Text::SetText(const char * pText, ...)
 {
 	// Set render to print ascii characters
-	m_printWide = false;
+	printWide_ = false;
 
 	// Clear wide character conatiner
-	if (!m_wText.empty()) {
-		m_wText.clear();
-		delete[] m_pwTextStorage;
-		m_pwTextStorage = nullptr;
+	if (!wText_.empty()) {
+		wText_.clear();
+		delete[] pwTextBuffer;
+		pwTextBuffer = nullptr;
 	}
 
-	if (_text)
+	if (pText)
 	{
 		static unsigned newSize = 0;
-		m_text.assign(_text); 
+		text_.assign(pText); 
 		va_list argumens;
 
-		va_start(argumens, _text);
+		va_start(argumens, pText);
 		
 		// Get size of new text
-		newSize = _vscprintf(_text, argumens) + 1;
+		newSize = _vscprintf(pText, argumens) + 1;
 
 		// If the new size is greater than old one,
 		// delete existing one and reallocate heap memories
-		if (m_size < newSize) {
-			m_size = newSize;					// Refresh the size info
-			delete[] m_pTextStorage;			// Delete heap
-			m_pTextStorage = nullptr;
-			m_pTextStorage = new char[m_size];	// Reallocate memory
+		if (size_ < newSize) {
+			size_ = newSize;					// Refresh the size info
+			delete[] pTextBuffer_;			// Delete heap
+			pTextBuffer_ = nullptr;
+			pTextBuffer_ = new char[size_];	// Reallocate memory
 		}
 
-		vsprintf_s(m_pTextStorage, m_size, _text, argumens);
+		vsprintf_s(pTextBuffer_, size_, pText, argumens);
 		va_end(argumens);
 
 		// Refresh the text with additional arguments
-		m_text = m_pTextStorage;
+		text_ = pTextBuffer_;
 	}
 }
 
 const std::string& Text::GetText(void) const
 {
-	return m_text;
+	return text_;
 }
 
-void Text::SetText(const wchar_t* _wText, ...)
+void Text::SetText(const wchar_t* pwText, ...)
 {
 	// Set render to print wide characters
-	m_printWide = true;
+	printWide_ = true;
 
 	// Clear ascii texts container
-	if (!m_text.empty()) {
-		m_text.clear();
-		delete[] m_pTextStorage;
-		m_pTextStorage = nullptr;
+	if (!text_.empty()) {
+		text_.clear();
+		delete[] pTextBuffer_;
+		pTextBuffer_ = nullptr;
 	}
 
-	if (_wText)
+	if (pwText)
 	{
 		static size_t newSize = 0;
-		m_wText.assign(_wText);
+		wText_.assign(pwText);
 		va_list argumens;
 
-		va_start(argumens, _wText);
+		va_start(argumens, pwText);
 		// Get new size of the new text
-		newSize = _vscwprintf(_wText, argumens) + 1;
+		newSize = _vscwprintf(pwText, argumens) + 1;
 
 		// If new size is greater than one,
 		// reallocate the new heap memories
-		if (m_size < newSize) {
-			m_size = newSize;						// Initialize new size
-			delete[] m_pwTextStorage;				// Deallocate heap memories
-			m_pwTextStorage = nullptr;
-			m_pwTextStorage = new wchar_t[m_size];	// Reallocate new memories
+		if (size_ < newSize) {
+			size_ = newSize;						// Initialize new size
+			delete[] pwTextBuffer;				// Deallocate heap memories
+			pwTextBuffer = nullptr;
+			pwTextBuffer = new wchar_t[size_];	// Reallocate new memories
 		}
 
-		vswprintf_s(m_pwTextStorage, m_size, _wText, argumens);
+		vswprintf_s(pwTextBuffer, size_, pwText, argumens);
 		va_end(argumens);
 
 		// Refresh the text with additional arguments
-		m_wText = m_pwTextStorage;
+		wText_ = pwTextBuffer;
 	}
 }
 
 const std::wstring& Text::GetWText() const
 {
-	return m_wText;
+	return wText_;
 }
 
-void Text::Load(CR_RJValue _data)
+void Text::Load(CR_RJValue data)
 {
-	if (_data.HasMember("Text")) {
-		CR_RJValue loadedText = _data["Text"];
-		m_text.assign(loadedText.GetString());
+	if (data.HasMember("Text")) {
+		CR_RJValue loadedText = data["Text"];
+		text_.assign(loadedText.GetString());
 	}
 
-	if (_data.HasMember("Font")) {
-		CR_RJValue loadedFont = _data["Font"];
+	if (data.HasMember("Font")) {
+		CR_RJValue loadedFont = data["Font"];
 		pFont = ASSET::GetFont(loadedFont.GetString());
 	}
 
-	if (_data.HasMember("Color")) {
-		CR_RJValue loadedColor = _data["Color"];
-		color.Set(loadedColor[0].GetFloat(), loadedColor[1].GetFloat(),
+	if (data.HasMember("Flip")
+		&& data["Flip"].GetBool())
+		status_ |= IS_FLIPPED;
+
+	if (data.HasMember("Color")) {
+		CR_RJValue loadedColor = data["Color"];
+		color_.Set(loadedColor[0].GetFloat(), loadedColor[1].GetFloat(),
 			loadedColor[2].GetFloat(), loadedColor[3].GetFloat());
 	}
 
-	if (_data.HasMember("Projection")) {
-		CR_RJValue loadedProjection = _data["Projection"];
+	if (data.HasMember("Projection")) {
+		CR_RJValue loadedProjection = data["Projection"];
 
-		if (!strcmp("Perspective", loadedProjection.GetString())) {
-			projection = PROJECTION_PERSPECTIVE;
-		}
+		if (!strcmp("Perspective", loadedProjection.GetString()))
+			projection_ = PROJECTION_PERSPECTIVE;
 
-		else if (!strcmp("Orthogonal", loadedProjection.GetString())) {
-			projection = PROJECTION_ORTHOGONAL;
-		}
+		else if (!strcmp("Orthogonal", loadedProjection.GetString()))
+			projection_ = PROJECTION_ORTHOGONAL;
+
 		else
 			jeDebugPrint("!Model - Wrong projection type: %s\n", loadedProjection.GetString());
 	}
+
+	if (data.HasMember("Bilboard")
+		&& data["Bilboard"].GetBool())
+		status_ |= IS_BILBOARD;
 }
 
-void Text::EditorUpdate(const float /*_dt*/)
+void Text::EditorUpdate(const float /*dt*/)
 {
 	// TODO
 }

@@ -11,28 +11,23 @@ jeDeclareComponentBuilder(Model);
 
 class Mesh;
 class Transform;
-
 class Model : public Component
 {
     // Keyword Definitions
     jeBaseFriends(Model);
     friend class GraphicSystem;
-
     friend class Material;
     friend class Animation;
-
     friend class AssetManager;
-
-    using Image = std::vector<unsigned char>;
-    using TextureMap = std::unordered_map<std::string, unsigned>;
 
 protected:
 
     const static int IS_TEXT = 0x10;
     const static int IS_EMITTER = 0x01;
+	const static int IS_LIGHT = 0x11;
 
-	Mesh	*m_pMeshes = nullptr;
-    int		m_hiddenStatus;
+	std::vector<Mesh*>	meshes_;
+    int					is_;
 
 public:
 
@@ -42,41 +37,38 @@ public:
 
     void Register() override;
 
-    void		SetParentToFollow(Object* _pObj);
-    void		AddTexture(const char* _key);
-    void		RemoveTexture(const char* _key);
-    void		SetCurrentTexutre(const char* _key);
-    unsigned	GetCurrentTexutre() const;
-    unsigned	GetTexutre(const char* _key);
+	void		AddMesh(Mesh* pMesh);
+	void		RemoveMesh(unsigned index);
+	Mesh*		GetMesh(unsigned index) const;
+	unsigned	GetMeshCount() const;
 
-    int			status;
-    vec4		color;
-    ProjectType projection;
+    void		SetParentToFollow(Object* pObject);
 
-    unsigned	sfactor, dfactor;
+    int			status_;
+    vec4		color_;
+    ProjectType projection_;
+    unsigned	sfactor_, dfactor_;
 
 protected:
 
-    ~Model();
-	Model(Object* _pOwner);
-    void operator=(const Model& _copy);
+    virtual ~Model();
+	Model(Object* pOwner);
+    void operator=(const Model& copy);
 
-    void Load(CR_RJValue _data) override;
+    void Load(CR_RJValue data) override;
 
-    bool		m_culled;
-    unsigned	m_mainTex;
-    TextureMap	m_textureMap;
-    Transform	*m_pTransform, *m_pInherited;
-    Material	*m_pMaterial;
-    Animation	*m_pAnimation;
+    bool		culled_;
+    Transform	*pTransform_, *pInherited_;
+    Material	*pMaterial_;
+    Animation	*pAnimation_;
 
 private:
 
     // Locked constuctors and destructor
 	Model() = delete;
-	Model(const Model& /*_copy*/) = delete;
+	Model(const Model& /*copy*/) = delete;
 
-    void EditorUpdate(const float _dt) override;
+    void EditorUpdate(float dt) override;
 };
 
 jeEnd

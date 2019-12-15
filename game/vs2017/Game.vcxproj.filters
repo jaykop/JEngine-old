@@ -1,12 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\JEngine.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="..\main.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="..\WifeState.cpp">
       <Filter>CustomLogic\AIExamples_message</Filter>
     </ClCompile>
@@ -37,11 +31,14 @@
     <ClCompile Include="..\Behaviors.cpp">
       <Filter>CustomLogic\AIExamples_behaviors</Filter>
     </ClCompile>
+    <ClCompile Include="..\JEngine.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\main.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\JEngine.h">
-      <Filter>Main</Filter>
-    </ClInclude>
     <ClInclude Include="..\WifeState.h">
       <Filter>CustomLogic\AIExamples_message</Filter>
     </ClInclude>
@@ -78,13 +75,13 @@
     <ClInclude Include="..\Steering.h">
       <Filter>CustomLogic\AIExamples_behaviors</Filter>
     </ClInclude>
+    <ClInclude Include="..\JEngine.h">
+      <Filter>Main</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="CustomLogic">
       <UniqueIdentifier>{c9a76ff4-1b2d-48c3-a6f0-1a2a79688ed4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Main">
-      <UniqueIdentifier>{89a0d958-d371-4abd-aed1-7317268a58c1}</UniqueIdentifier>
     </Filter>
     <Filter Include="CustomLogic\ExistingLogics">
       <UniqueIdentifier>{1ebec2de-1ad8-4275-a90a-5f69dfef5652}</UniqueIdentifier>
@@ -94,6 +91,9 @@
     </Filter>
     <Filter Include="CustomLogic\AIExamples_behaviors">
       <UniqueIdentifier>{e17a3ab1-77fa-4041-9853-03682cf2efcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{5ba0fc83-5252-4962-99e2-698b0d0143ff}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

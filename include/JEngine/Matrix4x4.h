@@ -29,46 +29,46 @@ struct Matrix4x4
 	float m[4][4];
 
 	// Copy cons
-	Matrix4x4(float _element = 0);
-	Matrix4x4(const Matrix4x4& _rhs);
-	Matrix4x4(float _member1, float _member2, float _member3, float _member4,
-		float _member5, float _member6, float _member7, float _member8,
-		float _member9, float _member10, float _member11, float _member12,
-		float _member13, float _member14, float _member15, float _member16);
+	Matrix4x4(float diagonal = 0);
+	Matrix4x4(const Matrix4x4& rhs);
+	Matrix4x4(float member1, float member2, float member3, float member4,
+		float member5, float member6, float member7, float member8,
+		float member9, float member10, float member11, float member12,
+		float member, float member14, float member15, float member16);
 
 	// Operators
-	Matrix4x4&	operator=(const Matrix4x4& _rhs);
+	Matrix4x4&	operator=(const Matrix4x4& rhs);
 	Matrix4x4	operator-(void) const;
 
-	void operator+=(const Matrix4x4& _rhs);
-	void operator*=(const Matrix4x4& _rhs);
-	void operator-=(const Matrix4x4& _rhs);
+	void operator+=(const Matrix4x4& rhs);
+	void operator*=(const Matrix4x4& rhs);
+	void operator-=(const Matrix4x4& rhs);
 
-	void operator+=(float _constant);
-	void operator-=(float _constant);
-	void operator*=(float _constant);
-	void operator/=(float _constant);
+	void operator+=(float constant);
+	void operator-=(float constant);
+	void operator*=(float constant);
+	void operator/=(float constant);
 
-	Vector4	  operator*(const vec4& _rhs) const;
-	Matrix4x4 operator+(const Matrix4x4& _rhs) const;
-	Matrix4x4 operator*(const Matrix4x4& _rhs) const;
-	Matrix4x4 operator-(const Matrix4x4& _rhs) const;
+	Vector4	  operator*(const vec4& rhs) const;
+	Matrix4x4 operator+(const Matrix4x4& rhs) const;
+	Matrix4x4 operator*(const Matrix4x4& rhs) const;
+	Matrix4x4 operator-(const Matrix4x4& rhs) const;
 
-	Matrix4x4 operator+(float _constant) const;
-	Matrix4x4 operator-(float _constant) const;
-	Matrix4x4 operator*(float _constant) const;
-	Matrix4x4 operator/(float _constant) const;
+	Matrix4x4 operator+(float constant) const;
+	Matrix4x4 operator-(float constant) const;
+	Matrix4x4 operator*(float constant) const;
+	Matrix4x4 operator/(float constant) const;
 
-	void Set(float _member1, float _member2, float _member3, float _member4,
-				float _member5, float _member6, float _member7, float _member8, 
-				float _member9, float _member10, float _member11, float _member12, 
-				float _member13, float _member14, float _member15, float _member16);
+	void Set(float member1, float member2, float member3, float member4,
+				float member5, float member6, float member7, float member8, 
+				float member9, float member10, float member11, float member12, 
+				float member, float member14, float member15, float member16);
 	void SetZero();
 
 	//Friend functions
-	friend Matrix4x4		operator+(float _constant, const Matrix4x4& _rhs);
-	friend Matrix4x4		operator*(float _constant, const Matrix4x4& _rhs);
-	friend Vector4			operator*(const Vector4& _vector, const Matrix4x4& _rhs);
+	friend Matrix4x4		operator+(float constant, const Matrix4x4& rhs);
+	friend Matrix4x4		operator*(float constant, const Matrix4x4& rhs);
+	friend Vector4			operator*(const Vector4& _vector, const Matrix4x4& rhs);
 	friend std::ostream&	operator<<(std::ostream& _os, const Matrix4x4& _contents);
 
 };

@@ -749,12 +749,12 @@ void ImGui::ShowDemoWindow(bool* p_open)
             ImGui::Separator();
 
             // Animate a simple progress bar
-            static float progress = 0.0f, progress_dir = 1.0f;
+            static float progress = 0.0f, progressdirectory = 1.0f;
             if (animate)
             {
-                progress += progress_dir * 0.4f * ImGui::GetIO().DeltaTime;
-                if (progress >= +1.1f) { progress = +1.1f; progress_dir *= -1.0f; }
-                if (progress <= -0.1f) { progress = -0.1f; progress_dir *= -1.0f; }
+                progress += progressdirectory * 0.4f * ImGui::GetIO().DeltaTime;
+                if (progress >= +1.1f) { progress = +1.1f; progressdirectory *= -1.0f; }
+                if (progress <= -0.1f) { progress = -0.1f; progressdirectory *= -1.0f; }
             }
 
             // Typically we would use ImVec2(-1.0f,0.0f) to use all available width, or ImVec2(width,0.0f) for a specified width. ImVec2(0.0f,0.0f) uses ItemWidth.
@@ -2959,7 +2959,7 @@ static void ShowExampleAppPropertyEditor(bool* p_open)
             ImGui::NextColumn();
             if (node_open)
             {
-                static float dummy_members[8] = { 0.0f,0.0f,1.0f,3.1416f,100.0f,999.0f };
+                static float dummymembers[8] = { 0.0f,0.0f,1.0f,3.1416f,100.0f,999.0f };
                 for (int i = 0; i < 8; i++)
                 {
                     ImGui::PushID(i); // Use field index as identifier.
@@ -2979,9 +2979,9 @@ static void ShowExampleAppPropertyEditor(bool* p_open)
                         ImGui::NextColumn();
                         ImGui::PushItemWidth(-1);
                         if (i >= 5)
-                            ImGui::InputFloat("##value", &dummy_members[i], 1.0f);
+                            ImGui::InputFloat("##value", &dummymembers[i], 1.0f);
                         else
-                            ImGui::DragFloat("##value", &dummy_members[i], 0.01f);
+                            ImGui::DragFloat("##value", &dummymembers[i], 0.01f);
                         ImGui::PopItemWidth();
                         ImGui::NextColumn();
                     }

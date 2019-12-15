@@ -13,7 +13,7 @@ class CustomComponent : public Component {
 public:
 
 	virtual void Init() = 0;
-	virtual void Update(const float _dt) = 0;
+	virtual void Update(float dt) = 0;
 	virtual void Close() = 0;
 	virtual void Unload() = 0;
 
@@ -21,15 +21,15 @@ public:
 
 protected:
 
-	CustomComponent(Object* _pOwner)
-		: Component(_pOwner, true) {};
+	CustomComponent(Object* pOwner)
+		: Component(pOwner, true) {};
 	virtual	~CustomComponent() {};
 
 private:
 
 	CustomComponent() = delete;
-	CustomComponent(const CustomComponent& /*_copy*/) = delete;
-	void operator=(const CustomComponent& /*_copy*/) = delete;
+	CustomComponent(const CustomComponent& /*copy*/) = delete;
+	void operator=(const CustomComponent& /*copy*/) = delete;
 };
 
 jeEnd

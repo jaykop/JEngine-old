@@ -4,10 +4,10 @@
 #include "Vector2.h"
 #include "Vector3.h"
 #include "Matrix4x4.h"
+#include "Mesh.h"
 
 jeBegin
 
-class Mesh;
 class Font;
 class Shader;
 class Material;
@@ -19,15 +19,6 @@ enum ProjectType { PROJECTION_PERSPECTIVE, PROJECTION_ORTHOGONAL };
 
 class GraphicSystem : public System
 {
-public:
-
-	struct jeVertex {
-
-		vec3 position;
-		vec2 uv;
-		vec3 normal;
-	};
-
 private:
 	
     friend class Text;
@@ -38,53 +29,52 @@ private:
 	friend class GLManager;
     friend class SystemManager;
 
+	using VertexIndices = std::vector<Mesh::jeIndex>;
 	using Indices = std::vector<unsigned>;
-	using Vertexes = std::vector<jeVertex>;
     using Lights = std::vector<Light*>;
     using Models = std::vector<Model*>;
     using Cameras = std::vector<Camera*>;
 
-    enum ScreenEffect { EFFECT_NONE, EFFECT_BLUR, EFFECT_SOBEL, EFFECT_INVERSE };
-    enum Alias { ALIAS_ALIASED, ALIAS_ANTIALIASED, ALIAS_MULTISAMPLE };
+    enum ScreenEffect { JE_EFFECT_NONE, JE_EFFECT_BLUR, JE_EFFECT_SOBEL, JE_EFFECT_INVERSE };
+    enum Alias { JE_ALIAS_ALIASED, JE_ALIAS_ANTIALIASED, JE_ALIAS_MULTISAMPLE };
 
 public:
 
-
     // TODO
-    void    Ray(Model* _model, Transform* _transform);
+    void    Ray(Model* _model, Transform* pTransform);
 
     int	    GetWidth() const;
     int	    GetHeight() const;
-    void    SetMainCamera(Camera* _camera);
+    void    SetMainCamera(Camera* pCamera);
 
     Camera* GetMainCamera() const;
 
-    vec4			backgroundColor, screenColor;
-    bool			orthoComesFirst;
-    float			sobelAmount, blurSize, blurAmount, sobelSize, aspect, zNear, zFar;
-    Alias			aliasMode;
-    ScreenEffect    screenEffect;
+    vec4			backgroundColor_, screenColor_;
+    bool			orthoComesFirst_;
+	float			sobelAmount_, blurSize_, blurAmount_, sobelSize_;
+    Alias			aliasMode_;
+    ScreenEffect    screenEffect_;
 
 private:
 
     GraphicSystem();
-    ~GraphicSystem() {};
+	virtual ~GraphicSystem() {};
 
-    void Load(CR_RJDoc _data) override;
+    void Load(CR_RJDoc data) override;
     void Init() override;
-    void Update(const float _dt) override;
+    void Update(float dt) override;
     void Close() override;
     void Unload() override;
 
     // Helper functions
-    void AddModel(Model* _model);
-    void RemoveModel(Model* _model);
+    void AddModel(Model* pModel);
+    void RemoveModel(Model* pMmodel);
 
-    void AddCamera(Camera* _camera);
-    void RemoveCamera(Camera* _camera);
+    void AddCamera(Camera* pCamera);
+    void RemoveCamera(Camera* pCamera);
 
-    void AddLight(Light* _light);
-    void RemoveLight(Light* _light);
+    void AddLight(Light* pLight);
+    void RemoveLight(Light* pLight);
 
     void StartAntialiasing();
     void EndAntialiasing();
@@ -92,45 +82,39 @@ private:
     void RenderToFramebuffer() const;
     void RenderToScreen() const;
 
-    void UpdatePipelines(const float _dt);
+    void UpdatePipelines(float dt);
     void LightSourcePipeline();
-    void TextPipeline(Text * _text);
-    void ModelPipeline(Model * _model);
-    void ParentPipeline(Transform* _pTransform) const;
-    void MappingPipeline(Model* _model);
-    void LightingEffectPipeline(Material* _material);
-    void ParticlePipeline(Emitter* _emitter, const float _dt);
+    void TextPipeline(Text * pText);
+    void ModelPipeline(Model * pModel);
+    void ParentPipeline(Transform* pTransform) const;
+    void MappingPipeline(Model* pModel);
+    void LightingEffectPipeline(Material* pMaterial);
+    void ParticlePipeline(Emitter* pEmitter, float dt);
+	void SortModels();
 
-	// New method
-	void Render(const Mesh* _pMesh);
-	void Render(unsigned _vao, unsigned _vbo, unsigned _ebo, 
-		const Vertexes& _vertexes, const Indices& _indices, unsigned _drawMode);
-
-    void Render(Font* _font, Text*_text, Transform* _transform, bool _printUnicode);
-    void RenderCharacter(Character& _character, const vec3& _position,
-        const vec3& _scale, float& _newX, float _intervalY);
-    void SortModels();
+	// Render functions
+	void Render(const Mesh* pMesh, unsigned drawMode);
+	void Render(const Text*pText);
+    void RenderCharacter(Character& character, const vec3& position,
+        const vec3& scale, float& newX, float intervalY);
 
     // Member variables
-    Lights	m_lights;
-    Models	m_models;
-    Cameras	m_cameras;
-    Camera*	m_pMainCamera;
+    Lights	lights_;
+    Models	models_;
+    Cameras	cameras_;
+    Camera*	pMainCamera_;
 
-    vec3	m_resolutionScaler;
+    vec3		resolutionScaler_;
+    unsigned	maxLights_;
 
-    unsigned	m_maxLights;
-
-	Vertexes	m_vertexArray;
-
-    int		m_width, m_height;
-    bool	m_inside, m_isLight;
-    mat4	m_perspective, m_orthogonal, m_viewport;
-    vec3	m_aniScale, m_aniTranslate;
-    float	m_left, m_right, m_top, m_bottom, m_mouseZ;
+    int		width_, height_;
+    bool	inside_, isLight_;
+    mat4	perspective_, orthogonal_, viewport_;
+    vec3	aniScale_, aniTranslate_;
+    float	left_, right_, top_, bottom_;
 	
-    GraphicSystem(const GraphicSystem& /*_copy*/) = delete;
-    void operator=(const GraphicSystem& /*_copy*/) = delete;
+    GraphicSystem(const GraphicSystem& /*copy*/) = delete;
+    void operator=(const GraphicSystem& /*copy*/) = delete;
 };
 
 jeEnd

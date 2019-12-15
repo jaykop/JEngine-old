@@ -11,29 +11,29 @@ jeBegin
 //////////////////////////////////////////////////////////////////////////
 // static variables
 //////////////////////////////////////////////////////////////////////////
-Object*			FACTORY::m_pLastMade = nullptr;
-unsigned		FACTORY::m_registerNumber = 0;
-bool			FACTORY::m_added = true;
+Object*			FACTORY::pLastMade_ = nullptr;
+unsigned		FACTORY::registerNumber_ = 0;
+bool			FACTORY::added_ = true;
 
 #ifdef jeUseBuiltInAllocator
 MemoryAllocator<Object> FACTORY::allocator;
 #endif // jeUseBuiltInAllocator
 
-void ObjectFactory::CreateObject(const char* _name)
+void ObjectFactory::CreateObject(const char* name)
 {
     // If there is ex-created and non-added object 
     // give user warning
-    if (!m_added)
-        jeDebugPrint("!ObjectFactory - Holding not added object yet: %s\n", _name);
+    if (!added_)
+        jeDebugPrint("!ObjectFactory - Holding not added object yet: %s\n", name);
 
     // unless just make new object
     else {
-        m_added = false;
-        ++m_registerNumber;
+        added_ = false;
+        ++registerNumber_;
 #ifdef jeUseBuiltInAllocator
-        m_pLastMade = new(allocator.Allocate()) Object(_name);
+        pLastMade_ = new(allocator.Allocate()) Object(name);
 #else
-        m_pLastMade = new Object(_name);
+        pLastMade_ = new Object(name);
 #endif // jeUseBuiltInAllocator
     }
 }
@@ -41,18 +41,18 @@ void ObjectFactory::CreateObject(const char* _name)
 Object* ObjectFactory::GetCreatedObject()
 {
     // Return the lastly created one
-    return m_pLastMade;
+    return pLastMade_;
 }
 
 void ObjectFactory::AddCreatedObject()
 {
     // Register the object
-    CONTAINER->m_objectMap.insert(
+	OBJECT::pContainer_->objectMap_.insert(
         ObjectMap::value_type(
-            m_pLastMade->m_name, m_pLastMade));
-    IMGUI::AddObjectEditor(m_pLastMade);
-    m_pLastMade->RegisterComponents();
-    m_added = true;
+            pLastMade_->name_, pLastMade_));
+    IMGUI::AddObjectEditor(pLastMade_);
+    pLastMade_->RegisterComponents();
+    added_ = true;
 }
 
 jeEnd

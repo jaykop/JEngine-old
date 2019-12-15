@@ -15,8 +15,8 @@ jeDefineCustomComponentBuilder(EnterMineAndDigForNugget);
 /////////////////////////////////////////////////////////////////////////
 // Global miner state
 /////////////////////////////////////////////////////////////////////////
-MinerState::MinerState(Object* _pObject)
-    :CustomComponent(_pObject)
+MinerState::MinerState(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void MinerState::Register()
@@ -37,7 +37,7 @@ void MinerState::Init()
     m_minerTalks->AddComponent<Transform>();
     m_minerTalks->AddComponent<Text>();
     m_talkTransform = m_minerTalks->GetComponent<Transform>();
-    m_talkTransform->scale.Set(.15f, .15f, 0.f);
+    m_talkTransform->scale_.Set(.15f, .15f, 0.f);
     m_talkOffset.Set(15.f, 10.f, 1.f);
     m_talkText = m_minerTalks->GetComponent<Text>();
     m_talkText->Register();
@@ -48,7 +48,7 @@ void MinerState::Init()
 
 }
 
-void MinerState::Update(const float /*_dt*/)
+void MinerState::Update(const float /*dt*/)
 {}
 
 void MinerState::Close()
@@ -62,8 +62,8 @@ bool MinerState::OnMessage(Telegram& /*msg*/)
 /////////////////////////////////////////////////////////////////////////
 // GoHomeAndSleepTilRested state
 /////////////////////////////////////////////////////////////////////////
-GoHomeAndSleepTilRested::GoHomeAndSleepTilRested(Object* _pObject)
-    :CustomComponent(_pObject)
+GoHomeAndSleepTilRested::GoHomeAndSleepTilRested(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void GoHomeAndSleepTilRested::Register()
@@ -82,25 +82,25 @@ void GoHomeAndSleepTilRested::Init()
 		if (!m_globalState->m_ateStew)
 			DISPATCHER::DispatchMessage(0.0,			//time delay
 				GetOwner()->GetId(),								//sender ID
-				CONTAINER->GetObject("Wife")->GetId(),	//receiver ID
+				OBJECT::pContainer_->GetObject("Wife")->GetId(),	//receiver ID
 				"HoneyI'mHome",							//msg
 				nullptr);
 	}
 
     m_globalState->m_location = HOME;
 
-	m_globalState->m_pTransform->position.Set(-80.f, 0.f, 0.f);
+	m_globalState->m_pTransform->position_.Set(-80.f, 0.f, 0.f);
 	m_globalState->m_content = "Location: Home\nGetting sleep...";
 	m_globalState->m_talkText->SetText("%s\nFatigue: %d\nThirst: %d\nGold: %d\nSaved: %d",
 		m_globalState->m_content, m_globalState->m_fatigue, m_globalState->m_thirst,
 		m_globalState->m_gold, m_globalState->m_saved);
-	m_globalState->m_talkTransform->position.Set(
-		m_globalState->m_pTransform->position + m_globalState->m_talkOffset);
+	m_globalState->m_talkTransform->position_.Set(
+		m_globalState->m_pTransform->position_ + m_globalState->m_talkOffset);
 
 	m_globalState->m_ateStew = firstTIme = false;
 }
 
-void GoHomeAndSleepTilRested::Update(const float /*_dt*/)
+void GoHomeAndSleepTilRested::Update(const float /*dt*/)
 {
     if (m_globalState->m_fatigue <= 0) 
         GetOwner()->ChangeState<EnterMineAndDigForNugget>();
@@ -131,8 +131,8 @@ bool GoHomeAndSleepTilRested::OnMessage(Telegram& msg)
 /////////////////////////////////////////////////////////////////////////
 // EnterMineAndDigForNugget state
 /////////////////////////////////////////////////////////////////////////
-EnterMineAndDigForNugget::EnterMineAndDigForNugget(Object* _pObject)
-    :CustomComponent(_pObject)
+EnterMineAndDigForNugget::EnterMineAndDigForNugget(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void EnterMineAndDigForNugget::Register()
@@ -159,17 +159,17 @@ void EnterMineAndDigForNugget::Init()
 	else {
 		m_globalState->m_location = GOLD_MINE;
 
-		m_globalState->m_pTransform->position.Set(0.f, 0.f, 0.f);
+		m_globalState->m_pTransform->position_.Set(0.f, 0.f, 0.f);
 		m_globalState->m_content = "Location: Mine\nDigging nugget...";
 		m_globalState->m_talkText->SetText("%s\nFatigue: %d\nThirst: %d\nGold: %d\nSaved: %d",
 			m_globalState->m_content, m_globalState->m_fatigue, m_globalState->m_thirst,
 			m_globalState->m_gold, m_globalState->m_saved);
-		m_globalState->m_talkTransform->position.Set(
-			m_globalState->m_pTransform->position + m_globalState->m_talkOffset);
+		m_globalState->m_talkTransform->position_.Set(
+			m_globalState->m_pTransform->position_ + m_globalState->m_talkOffset);
 	}
 }
 
-void EnterMineAndDigForNugget::Update(const float /*_dt*/)
+void EnterMineAndDigForNugget::Update(const float /*dt*/)
 {
     if (m_globalState->m_gold >= 10)
         GetOwner()->ChangeState<VisitBankAndDepositGold>();
@@ -205,8 +205,8 @@ bool EnterMineAndDigForNugget::OnMessage(Telegram& /*msg*/)
 /////////////////////////////////////////////////////////////////////////
 // VisitBankAndDepositGold state
 /////////////////////////////////////////////////////////////////////////
-VisitBankAndDepositGold::VisitBankAndDepositGold(Object* _pObject)
-    :CustomComponent(_pObject)
+VisitBankAndDepositGold::VisitBankAndDepositGold(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void VisitBankAndDepositGold::Register()
@@ -220,7 +220,7 @@ void VisitBankAndDepositGold::Init()
     m_globalState = (MinerState*)GetOwner()->GetGlobalState();
     m_globalState->m_location = BANK;
 
-	m_globalState->m_pTransform->position.Set(50.f, -50.f, 0.f);	
+	m_globalState->m_pTransform->position_.Set(50.f, -50.f, 0.f);	
 	m_globalState->m_saved += m_globalState->m_gold;
 	m_globalState->m_gold = 0;
 
@@ -229,11 +229,11 @@ void VisitBankAndDepositGold::Init()
 		m_globalState->m_content, m_globalState->m_fatigue, m_globalState->m_thirst,
 		m_globalState->m_gold, m_globalState->m_saved);
 
-	m_globalState->m_talkTransform->position.Set(
-		m_globalState->m_pTransform->position + m_globalState->m_talkOffset);
+	m_globalState->m_talkTransform->position_.Set(
+		m_globalState->m_pTransform->position_ + m_globalState->m_talkOffset);
 }
 
-void VisitBankAndDepositGold::Update(const float /*_dt*/)
+void VisitBankAndDepositGold::Update(const float /*dt*/)
 {
     if (m_globalState->m_saved >= 100)
         GetOwner()->ChangeState<GoHomeAndSleepTilRested>();
@@ -254,8 +254,8 @@ bool VisitBankAndDepositGold::OnMessage(Telegram& /*msg*/)
 /////////////////////////////////////////////////////////////////////////
 // QuenchThirst state
 /////////////////////////////////////////////////////////////////////////
-QuenchThirst::QuenchThirst(Object* _pObject)
-    :CustomComponent(_pObject)
+QuenchThirst::QuenchThirst(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void QuenchThirst::Register()
@@ -269,18 +269,18 @@ void QuenchThirst::Init()
     m_globalState = (MinerState*)GetOwner()->GetGlobalState();
     m_globalState->m_location = PUB;
 
-	m_globalState->m_pTransform->position.Set(-50.f, -50.f, 0.f);
+	m_globalState->m_pTransform->position_.Set(-50.f, -50.f, 0.f);
 	m_globalState->m_thirst = 0;
 
 	m_globalState->m_content = "Location: Pub\nRum! Rum! Rum!";
 	m_globalState->m_talkText->SetText("%s\nFatigue: %d\nThirst: %d\nGold: %d\nSaved: %d",
 		m_globalState->m_content, m_globalState->m_fatigue, m_globalState->m_thirst,
 		m_globalState->m_gold, m_globalState->m_saved);
-	m_globalState->m_talkTransform->position.Set(
-		m_globalState->m_pTransform->position + m_globalState->m_talkOffset);
+	m_globalState->m_talkTransform->position_.Set(
+		m_globalState->m_pTransform->position_ + m_globalState->m_talkOffset);
 }
 
-void QuenchThirst::Update(const float /*_dt*/)
+void QuenchThirst::Update(const float /*dt*/)
 {
 	if (m_globalState->m_thirst == 0)
 		GetOwner()->ChangeState<EnterMineAndDigForNugget>();
@@ -303,8 +303,8 @@ bool QuenchThirst::OnMessage(Telegram& msg)
 /////////////////////////////////////////////////////////////////////////
 // BeatBully state
 /////////////////////////////////////////////////////////////////////////
-BeatBully::BeatBully(Object* _pObject)
-    :CustomComponent(_pObject)
+BeatBully::BeatBully(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void BeatBully::Register()
@@ -321,7 +321,7 @@ void BeatBully::Init()
 	m_globalState->m_talkText->SetText("%s", m_globalState->m_content);
 }
 
-void BeatBully::Update(const float /*_dt*/)
+void BeatBully::Update(const float /*dt*/)
 {
 	if (!m_beaten) 
 		m_beaten = true;
@@ -329,7 +329,7 @@ void BeatBully::Update(const float /*_dt*/)
 	else {
 		DISPATCHER::DispatchMessage(0.0,			//time delay
 			GetOwner()->GetId(),								//sender ID
-			CONTAINER->GetObject("Bully")->GetId(),	//receiver ID
+			OBJECT::pContainer_->GetObject("Bully")->GetId(),	//receiver ID
 			"Fight",								//msg
 			nullptr);
 	}
@@ -352,8 +352,8 @@ bool BeatBully::OnMessage(Telegram& msg)
 /////////////////////////////////////////////////////////////////////////
 // EatStew state
 /////////////////////////////////////////////////////////////////////////
-EatStew::EatStew(Object* _pObject)
-    :CustomComponent(_pObject)
+EatStew::EatStew(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void EatStew::Register()
@@ -372,7 +372,7 @@ void EatStew::Init()
 	m_globalState->m_ateStew = true;
 }
 
-void EatStew::Update(const float /*_dt*/)
+void EatStew::Update(const float /*dt*/)
 {
     GetOwner()->RevertToPreviousState();
 }

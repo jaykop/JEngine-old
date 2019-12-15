@@ -19,14 +19,14 @@ class JsonParser {
 
 private:
 
-	static void		ReadFile(const char* _dir);
+	static void		ReadFile(const char* directory);
 	static CR_RJDoc GetDocument();
 	static void		Close();
 
 	static void LoadObjects();
-	static void LoadComponents(CR_RJValue _data);
+	static void LoadComponents(CR_RJValue data);
 
-	static RJDoc m_document;
+	static RJDoc document_;
 
 };
 

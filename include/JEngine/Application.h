@@ -32,23 +32,28 @@ class Application {
 	// Locked constuctor, destructor, assign operator
 	jeStaticClassDeclaration(Application)
 
-public:
-
-	static int Run(bool _imgui);
-
-private:
-
 	//////////////////////////////////////////////////////////////////////////
 	// Init data for application
 	//////////////////////////////////////////////////////////////////////////
-	struct InitData
+	struct AppData
 	{
-		std::string	m_title;		// Title
-		std::string m_icon;			// Icon directory
-		bool		m_isFullScreen;	// Flag of fullscr
-		int			m_width;		// Width size
-		int			m_height;		// Height size
+		std::string	title;			// Title
+		std::string icon;			// Icon directory
+		bool		isFullscreen;	// Flag of fullscr
+		int			width;			// Width size
+		int			height;			// Height size
 	};
+
+public:
+
+	static void Run(bool imgui);
+	static void CreateConsole();
+	static void CloseConsole();
+
+	static void		ActivateVSync(bool on);
+	static AppData	GetAppData();
+
+private:
 
 	static bool	Initialize();
 	static void	Update();
@@ -57,16 +62,15 @@ private:
 	static bool InitSDL();
 	static void CloseSDL();
 
-	static void EditorUpdate(const float _dt);
+	static void EditorUpdate(float dt);
 
 	// Private variables
-	static InitData			m_Data;					// Window config
-	static SDL_Window*		m_pWindow;				// SDL window
-	static SDL_Event		m_pEvent;				// SDL Event
-	static SDL_GLContext	m_pContext;				// SDL GL context
-	static SDL_Surface		*m_pSurface, *m_pIcon;	// SDL screen surface
-	static int				m_buffers, m_samples;
-	static bool				m_IMGUI;
+	static AppData			data_;					// Window config
+	static SDL_Window*		pWindow_;				// SDL window
+	static SDL_Event		pEvent_;				// SDL Event
+	static SDL_GLContext	pContext_;				// SDL GL context
+	static SDL_Surface		*pSurface_, *pIcon_;	// SDL screen surface
+	static bool				activateIMGUI_, openCMD_;
 };
 
 using APP = Application;

@@ -5,13 +5,13 @@ jeBegin
 
 jeDefineCustomComponentBuilder(LevelController);
 
-LevelController::LevelController(Object* _pObject)
-    :CustomComponent(_pObject)
+LevelController::LevelController(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void LevelController::Register()
 {
-    SYSTEM::GetBehaviorSystem()->AddBehavior(this);
+    SYSTEM::pBehavior_->AddBehavior(this);
 }
 
 void LevelController::Load(CR_RJValue /*_data*/)
@@ -20,9 +20,8 @@ void LevelController::Load(CR_RJValue /*_data*/)
 void LevelController::Init()
 {}
 
-void LevelController::Update(const float /*_dt*/)
+void LevelController::Update(const float /*dt*/)
 {
-
     //if (INPUT::KeyTriggered(JE_1))
     //	STATE::SetNextState("level1");
 
@@ -47,13 +46,14 @@ void LevelController::Update(const float /*_dt*/)
     //	else
     //		STATE::Pause();
     //}
+
 	if (INPUT::KeyTriggered(JE_SPACE))
 		ASSET::TakeAScreenshot("../resource/screenshot/");
 
     if (INPUT::KeyTriggered(JE_R))
         STATE::Restart();
 
-    if (INPUT::KeyPressed(JE_ESC)) {
+    if (INPUT::KeyTriggered(JE_ESC)) {
         jeDebugPrint("Quit\n");
         STATE::Quit();
     }
@@ -65,7 +65,7 @@ void LevelController::Close()
 void LevelController::Unload()
 {}
 
-void LevelController::EditorUpdate(const float /*_dt*/)
+void LevelController::EditorUpdate(const float /*dt*/)
 {
     // TODO
 }

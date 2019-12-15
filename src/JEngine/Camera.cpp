@@ -1,7 +1,8 @@
 #include "Camera.h"
 #include "SystemManager.h"
 #include "GraphicSystem.h"
-#include "../../game/CustomLogicHeader.h"
+#include "MathUtils.h"
+#include "GLManager.h"
 
 #ifdef  jeUseBuiltInAllocator
 #include "MemoryAllocator.h"
@@ -12,128 +13,158 @@ jeDefineComponentBuilder(Camera);
 
 using namespace Math;
 
-Camera::Camera(Object* _pOwner)
-	: Component(_pOwner),
-	position(vec3::ZERO), near(0.0001f), far(1000.f),
-	m_up(vec3::UNIT_Y),m_target(vec3::ZERO), m_right(vec3::ZERO), m_back(vec3::ZERO),
-	m_viewGeometry(vec3::ZERO), m_distance(1.f), m_fovy(0.f), m_aspect(0.f),
-	m_width(0.f), m_height(0.f), zoom(45.f)
-{}
-
-void Camera::SetCamera(const vec3& _eye, const vec3& _look, const vec3& _up, 
-	float _fov, float _aspect, float _distance)
+Camera::Camera(Object* pOwner)
+	: Component(pOwner),
+	position_(vec3::ZERO), near_(.1f), far_(1000.f),
+	up_(vec3::UNIT_Y), target_(vec3::ZERO), right_(vec3::ZERO), back_(vec3::ZERO),
+	viewGeometry_(vec3::ZERO), distance_(1.f), fovy_(0.f), aspect_(0.f),
+	width_(0.f), height_(0.f)
 {
-	position = _eye;
-	m_right = GetNormalize(CrossProduct(_look, _up));
-	m_up = GetNormalize(CrossProduct(m_right, _look));
-	m_back = GetNormalize(-_look);
+	SetCamera(position_, vec3::UNIT_Z, up_,	45.f, GLM::width_ / GLM::height_, 1.f);
+}
 
-	m_fovy = _fov;
-	m_aspect = _aspect;
-	m_distance = _distance;
-	m_width = 2 * tanf(.5f*m_fovy);
-	m_height = m_width / m_aspect;
+void Camera::SetCamera(const vec3& eye, const vec3& look, const vec3& up, 
+	float fov, float aspect, float distance)
+{
+	position_ = eye;
+	right_ = GetNormalize(CrossProduct(look, up));
+	up_ = GetNormalize(CrossProduct(right_, look));
+	back_ = GetNormalize(-look);
 
-	m_viewGeometry.Set(m_width, m_height, m_distance);
+	fovy_ = fov;
+	aspect_ = aspect;
+	distance_ = distance;
+	width_ = 2 * tanf(.5f*fovy_);
+	height_ = width_ / aspect_;
+
+	viewGeometry_.Set(width_, height_, distance_);
 }
 
 const vec3& Camera::GetViewGeometry() const
 {
-	return m_viewGeometry;
-}
-
-float Camera::GetFovy() const
-{
-	return m_fovy;
+	return viewGeometry_;
 }
 
 float Camera::GetAspect() const
 {
-	return m_aspect;
+	return aspect_;
 }
 
 float Camera::GetDistance() const
 {
-	return m_distance;
+	return distance_;
 }
 
-void Camera::Yaw(float _degree)
+const vec3& Camera::GetUp() const
 {
-	mat4 rotate = Rotate(_degree, m_up);
+	return up_;
+}
 
-	vec4 right(m_right.x, m_right.y, m_right.z, 1.f);
+const vec3& Camera::GetRight() const
+{
+	return right_;
+}
+
+const vec3& Camera::GetBack() const
+{
+	return back_;
+}
+
+void Camera::Yaw(float degree)
+{
+	mat4 rotate = Rotate(DegToRad(degree), up_);
+
+	vec4 right(right_.x, right_.y, right_.z, 1.f);
 	right = rotate * right;
-	m_right.Set(right.x, right.y, right.z);
+	right_.Set(right.x, right.y, right.z);
 
-	vec4 back(m_back.x, m_back.y, m_back.z, 1.f);
+	vec4 back(back_.x, back_.y, back_.z, 1.f);
 	back = rotate * back;
-	m_back.Set(back.x, back.y, back.z);
+	back_.Set(back.x, back.y, back.z);
 }
 
-void Camera::Pitch(float _degree)
+void Camera::Pitch(float degree)
 {
-	mat4 rotate = Rotate(_degree, m_right);
+	mat4 rotate = Rotate(DegToRad(degree), right_);
 
-	vec4 up(m_up.x, m_up.y, m_up.z, 1.f);
+	vec4 up(up_.x, up_.y, up_.z, 1.f);
 	up = rotate * up;
-	m_up.Set(up.x, up.y, up.z);
+	up_.Set(up.x, up.y, up.z);
 
-	vec4 back(m_back.x, m_back.y, m_back.z, 1.f);
+	vec4 back(back_.x, back_.y, back_.z, 1.f);
 	back = rotate * back;
-	m_back.Set(back.x, back.y, back.z);
+	back_.Set(back.x, back.y, back.z);
 }
 
-void Camera::Roll(float _degree)
+void Camera::Roll(float degree)
 {
-	mat4 rotate = Rotate(_degree, m_back);
+	mat4 rotate = Rotate(DegToRad(degree), back_);
 
-	vec4 right(m_right.x, m_right.y, m_right.z, 1.f);
+	vec4 right(right_.x, right_.y, right_.z, 1.f);
 	right = rotate * right;
-	m_right.Set(right.x, right.y, right.z);
+	right_.Set(right.x, right.y, right.z);
 
-	vec4 up(m_up.x, m_up.y, m_up.z, 1.f);
+	vec4 up(up_.x, up_.y, up_.z, 1.f);
 	up = rotate * up;
-	m_up.Set(up.x, up.y, up.z);
+	up_.Set(up.x, up.y, up.z);
 }
 
-void Camera::Zoom(float _zoom)
+void Camera::Zoom(float zoom)
 {
-	m_width *= _zoom;
-	m_height += _zoom;
+	width_ *= zoom;
+	height_ += zoom;
 }
 
 void Camera::Register()
 {
-	SystemManager::GetGraphicSystem()->AddCamera(this);
+	SYSTEM::pGraphic_->AddCamera(this);
 }
 
-void Camera::operator=(const Camera & _copy)
+void Camera::operator=(const Camera & copy)
 {
-	position.Set(_copy.position);
-	m_up.Set(_copy.m_up);
-	m_target.Set(_copy.m_target);
+	position_.Set(copy.position_);
+	up_.Set(copy.up_);
+	target_.Set(copy.target_);
 }
 
-void Camera::Load(CR_RJValue _data)
+void Camera::Load(CR_RJValue data)
 {
-	// TODO: Add other attribute loader
-	if (_data.HasMember("Up")) {
-		CR_RJValue loadedUp = _data["Up"];
-		m_up.Set(loadedUp[0].GetFloat(), loadedUp[1].GetFloat(), loadedUp[2].GetFloat());
+
+	if (data.HasMember("Up")) {
+		CR_RJValue loadedUp = data["Up"];
+		up_.Set(loadedUp[0].GetFloat(), loadedUp[1].GetFloat(), loadedUp[2].GetFloat());
+	}
+	
+	if (data.HasMember("Position")) {
+		CR_RJValue loadedPosition = data["Position"];
+		position_.Set(loadedPosition[0].GetFloat(), loadedPosition[1].GetFloat(), loadedPosition[2].GetFloat());
 	}
 
-	if (_data.HasMember("Target")) {
-		CR_RJValue loadedTarget = _data["Target"];
-		m_target.Set(loadedTarget[0].GetFloat(), loadedTarget[1].GetFloat(), loadedTarget[2].GetFloat());
+	if (data.HasMember("Target")) {
+		CR_RJValue loadedTarget = data["Target"];
+		target_.Set(loadedTarget[0].GetFloat(), loadedTarget[1].GetFloat(), loadedTarget[2].GetFloat());
 	}
 
-	if (_data.HasMember("Position")) {
-		CR_RJValue loadedPosition = _data["Position"];
-		position.Set(loadedPosition[0].GetFloat(), loadedPosition[1].GetFloat(), loadedPosition[2].GetFloat());
+	if (data.HasMember("Far"))
+		far_ = data["Far"].GetFloat();
+
+	if (data.HasMember("Near"))
+		near_ = data["Near"].GetFloat();
+
+	if (data.HasMember("Look")
+		&& data.HasMember("Fovy")
+		&& data.HasMember("Distance")) {
+
+		CR_RJValue loadedLook = data["Look"];
+		vec3 look(loadedLook[0].GetFloat(), loadedLook[1].GetFloat(), loadedLook[2].GetFloat());
+
+		SetCamera(position_, look, up_, 
+			data["Fovy"].GetFloat(), GLM::width_ / GLM::height_, data["Distance"].GetFloat());
 	}
+
 }
 
-void Camera::EditorUpdate(const float /*_dt*/)
+void Camera::EditorUpdate(const float /*dt*/)
 {
 	// TODO
 }

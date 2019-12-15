@@ -15,23 +15,23 @@ class BehaviorSystem : public System
 
 public:
 
-	void AddBehavior(CustomComponent* _behavior);
-	void RemoveBehavior(CustomComponent* _behavior);
+	void AddBehavior(CustomComponent* behavior);
+	void RemoveBehavior(CustomComponent* behavior);
 
 private:
 
 	BehaviorSystem();
-	~BehaviorSystem() {};
-	BehaviorSystem(const BehaviorSystem& /*_copy*/) = delete;
-	void operator=(const BehaviorSystem& /*_copy*/) = delete;
+	virtual ~BehaviorSystem() {};
+	BehaviorSystem(const BehaviorSystem& /*copy*/) = delete;
+	void operator=(const BehaviorSystem& /*copy*/) = delete;
 
-	void Load(CR_RJDoc _data) override;
+	void Load(CR_RJDoc data) override;
 	void Init() override;
-	void Update(const float _dt) override;
+	void Update(float dt) override;
 	void Close() override;
 	void Unload() override;
 
-	Behaviors m_behaviors;
+	Behaviors behaviors_;
 
 };
 

@@ -1,6 +1,5 @@
 #include "Light.h"
 #include "SystemManager.h"
-#include "GLManager.h"
 #include "Mesh.h"
 #include "AssetManager.h"
 
@@ -11,158 +10,213 @@
 jeBegin
 jeDefineComponentBuilder(Light);
 
-Light::Light(Object * _pOwner)
-	:Component(_pOwner), color(vec4::ONE),
-	ambient(vec4::ONE), diffuse(vec4::ONE),
-	specular(vec4::ONE), position(vec3(0.f, 0.f, 1.f)),
-	direction(vec3::ZERO), constant(0.f), linear(0.f),
-	quadratic(0.f), cutOff(0.f), outerCutOff(0.f),
-	projection(PROJECTION_PERSPECTIVE), scale(vec3::ONE),
-	sfactor(GL_SRC_ALPHA), dfactor(GL_ONE_MINUS_SRC_ALPHA)
+Light::Light(Object * pOwner)
+	:Model(pOwner), ambient_(vec4::ONE), diffuse_(vec4::ONE),
+	specular_(vec4::ONE), direction_(vec3::ZERO), constant_(0.f), 
+	linear_(0.f), quadratic_(0.f), cutOff_(0.f), outerCutOff_(0.f),
+	sfactor_(GL_SRC_ALPHA), dfactor_(GL_ONE_MINUS_SRC_ALPHA)
 {}
 
 Light::~Light()
 {
-	if (m_pMeshes) {
-		delete m_pMeshes;
-		m_pMeshes = nullptr;
+	// Clear mesh container
+	for (auto mesh : meshes_) {
+		if (!mesh->builtIn_) {
+			delete mesh;
+			mesh = nullptr;
+		}
 	}
+	meshes_.clear();
 
-	SYSTEM::GetGraphicSystem()->RemoveLight(this);
+	SYSTEM::pGraphic_->RemoveLight(this);
 }
 
-void Light::operator=(const Light & _copy)
+void Light::operator=(const Light & /*copy*/)
 {
-	color.Set(_copy.color);
-	ambient.Set(_copy.ambient); 
-	diffuse.Set(_copy.diffuse);
-	specular.Set(_copy.specular); 
-	position.Set(_copy.position);
-	direction.Set(_copy.direction); 
-	constant = _copy.constant; 
-	linear = _copy.linear;
-	quadratic = _copy.quadratic;
-	cutOff = _copy.cutOff;
-	outerCutOff = _copy.outerCutOff;
-	projection = _copy.projection;
+	//color_.Set(copy.color_);
+	//ambient_.Set(copy.ambient); 
+	//diffuse_.Set(copy.diffuse);
+	//specular_.Set(copy.specular); 
+	//direction_.Set(copy.direction); 
+	//constant_ = copy.constant; 
+	//linear_ = copy.linear;
+	//quadratic_ = copy.quadratic;
+	//cutOff_ = copy.cutOff;
+	//outerCutOff_ = copy.outerCutOff;
+	//projection_ = copy.projection_;
 }
 
 void Light::Register()
 {
-	SYSTEM::GetGraphicSystem()->AddLight(this);
+	SYSTEM::pGraphic_->AddLight(this);
 }
 
-void Light::Load(CR_RJValue _data)
+void Light::Load(CR_RJValue data)
 {
-	if (_data.HasMember("Type")) {
-		CR_RJValue loadedType = _data["Type"];
-		if (!strcmp(loadedType.GetString(), "Normal"))
-			m_type = NORMALLIGHT;
-		else if (!strcmp(loadedType.GetString(), "Directional"))
-			m_type = DIRECTIONALLIGHT;
-		else if (!strcmp(loadedType.GetString(), "Spot"))
-			m_type = SPOTLIGHT;
-		else if (!strcmp(loadedType.GetString(), "Point"))
-			m_type = POINTLIGHT;
-	}
-
-	if (_data.HasMember("Mesh")
-		&& _data["Mesh"].GetString())
+	if (data.HasMember("Mesh")
+		&& data["Mesh"].IsArray())
 	{
-		std::string meshType = _data["Mesh"].GetString();
-		if (!strcmp(meshType.c_str(), "Point")) {
-			m_pMeshes = Mesh::CreatePoint();
-			m_pMeshes->m_shape = Mesh::MESH_POINT;
+		CR_RJValue loadedMeshes = data["Mesh"];
+
+		for (unsigned meshIndex = 0; meshIndex < loadedMeshes.Size(); ++meshIndex) {
+
+			CR_RJValue currentMesh = loadedMeshes[meshIndex];
+			Mesh* newMesh = nullptr;
+
+			// Check either if there is shape
+			if (currentMesh.HasMember("Shape")
+				&& currentMesh["Shape"].IsString()) {
+				std::string meshType = currentMesh["Shape"].GetString();
+
+				if (!strcmp(meshType.c_str(), "Point"))
+					newMesh = Mesh::CreatePoint();
+
+				else if (!strcmp(meshType.c_str(), "CrossRect"))
+					newMesh = Mesh::CreateCrossRect();
+
+				else if (!strcmp(meshType.c_str(), "Cube"))
+					newMesh = Mesh::CreateCube();
+
+				else if (!strcmp(meshType.c_str(), "Tetrahedron"))
+					newMesh = Mesh::CreateTetrahedron();
+
+				else if (!strcmp(meshType.c_str(), "Rect"))
+					newMesh = Mesh::CreateRect();
+
+				else 
+					newMesh = ASSET::LoadObjFile(meshType.c_str());
+			}
+			// If not, set default mesh type
+			else
+				newMesh = Mesh::CreateRect();
+
+			AddMesh(newMesh);
+
+			// Load texture
+			if (currentMesh.HasMember("Texture")
+				&& currentMesh["Texture"].IsArray()) {
+				for (unsigned textureIndex = 0; textureIndex < currentMesh["Texture"].Size(); ++textureIndex)
+					newMesh->AddTexture(currentMesh["Texture"][textureIndex].GetString());
+			}
+
+			if (currentMesh.HasMember("DrawMode")
+				&& currentMesh["DrawMode"].IsString()) {
+
+				std::string drawType = currentMesh["DrawMode"].GetString();
+				if (!strcmp(drawType.c_str(), "Triangles"))
+					newMesh->drawMode_ = GL_TRIANGLES;
+
+				else if (!strcmp(drawType.c_str(), "Triangle_Strip"))
+					newMesh->drawMode_ = GL_TRIANGLE_STRIP;
+
+				else if (!strcmp(drawType.c_str(), "Triangle_Fan"))
+					newMesh->drawMode_ = GL_TRIANGLE_FAN;
+
+				else if (!strcmp(drawType.c_str(), "Lines"))
+					newMesh->drawMode_ = GL_LINES;
+
+				else if (!strcmp(drawType.c_str(), "Line_Strip"))
+					newMesh->drawMode_ = GL_LINE_STRIP;
+
+				else if (!strcmp("Quad", drawType.c_str()))
+					newMesh->drawMode_ = GL_QUADS;
+
+				else if (!strcmp("Quad_Strip", drawType.c_str()))
+					newMesh->drawMode_ = GL_QUAD_STRIP;
+
+				else if (!strcmp("Points", drawType.c_str()))
+					newMesh->drawMode_ = GL_POINTS;
+			}
 		}
-		else if (!strcmp(meshType.c_str(), "Rect")) {
-			m_pMeshes = Mesh::CreateRect();
-			m_pMeshes->m_shape = Mesh::MESH_RECT;
-		}
-		else if (!strcmp(meshType.c_str(), "CrossRect")) {
-			m_pMeshes = Mesh::CreateCrossRect();
-			m_pMeshes->m_shape = Mesh::MESH_CROSSRECT;
-		}
-		else if (!strcmp(meshType.c_str(), "Cube")) {
-			m_pMeshes = Mesh::CreateCube();
-			m_pMeshes->m_shape = Mesh::MESH_CUBE;
-		}
-		else if (!strcmp(meshType.c_str(), "Tetrahedron")) {
-			m_pMeshes = Mesh::CreateTetrahedron();
-			m_pMeshes->m_shape = Mesh::MESH_TETRAHEDRON;
-		}
-		else /*if (!strcmp(meshType.c_str(), "Custom"))*/ {
-			m_pMeshes = ASSET::LoadObj(meshType.c_str());
-			m_pMeshes->m_shape = Mesh::MESH_NONE;
-			m_pMeshes->CreateCustomObject();
-		}
-	}
-	else {
-		m_pMeshes = Mesh::CreateCube();
-		m_pMeshes->m_shape = Mesh::MESH_CUBE;
 	}
 
-	if (_data.HasMember("CutOff")) {
-		CR_RJValue loadedCutOff = _data["CutOff"];
-		cutOff = loadedCutOff.GetFloat();
+	if (data.HasMember("Flip")
+		&& data["Flip"].GetBool())
+		status_ |= IS_FLIPPED;
+
+	if (data.HasMember("Color")) {
+		CR_RJValue loadedColor = data["Color"];
+		color_.Set(loadedColor[0].GetFloat(), loadedColor[1].GetFloat(),
+			loadedColor[2].GetFloat(), loadedColor[3].GetFloat());
 	}
 
-	if (_data.HasMember("OuterCutOff")) {
-		CR_RJValue loadedOutCutOff = _data["OuterCutOff"];
-		outerCutOff = loadedOutCutOff.GetFloat();
+	if (data.HasMember("Projection")) {
+		CR_RJValue loadedProjection = data["Projection"];
+
+		if (!strcmp("Perspective", loadedProjection.GetString()))
+			projection_ = PROJECTION_PERSPECTIVE;
+
+		else if (!strcmp("Orthogonal", loadedProjection.GetString()))
+			projection_ = PROJECTION_ORTHOGONAL;
+
+		else
+			jeDebugPrint("!Model - Wrong projection type: %s\n", loadedProjection.GetString());
 	}
 
-	if (_data.HasMember("Constant")) {
-		CR_RJValue loadedConstant = _data["Constant"];
-		constant = loadedConstant.GetFloat();
+	if (data.HasMember("Bilboard")
+		&& data["Bilboard"].GetBool())
+		status_ |= IS_BILBOARD;
+
+	if (data.HasMember("Type")) {
+		CR_RJValue loadedType = data["Type"];
+		if (!strcmp(loadedType.GetString(), "Normal"))
+			type_ = NORMALLIGHT;
+		else if (!strcmp(loadedType.GetString(), "Directional"))
+			type_ = DIRECTIONALLIGHT;
+		else if (!strcmp(loadedType.GetString(), "Spot"))
+			type_ = SPOTLIGHT;
+		else if (!strcmp(loadedType.GetString(), "Point"))
+			type_ = POINTLIGHT;
 	}
 
-	if (_data.HasMember("Linear")) {
-		CR_RJValue loadedlinear = _data["Linear"];
-		linear = loadedlinear.GetFloat();
+	if (data.HasMember("CutOff")) {
+		CR_RJValue loadedCutOff = data["CutOff"];
+		cutOff_ = loadedCutOff.GetFloat();
 	}
 
-	if (_data.HasMember("Quadratic")) {
-		CR_RJValue loadedQuadratic = _data["Quadratic"];
-		quadratic = loadedQuadratic.GetFloat();
+	if (data.HasMember("OuterCutOff")) {
+		CR_RJValue loadedOutCutOff = data["OuterCutOff"];
+		outerCutOff_ = loadedOutCutOff.GetFloat();
 	}
 
-	if (_data.HasMember("Direction")) {
-		CR_RJValue loadedDirection = _data["Direction"];
-		direction.Set(loadedDirection[0].GetFloat(), loadedDirection[1].GetFloat(), loadedDirection[2].GetFloat());
+	if (data.HasMember("Constant")) {
+		CR_RJValue loadedConstant = data["Constant"];
+		constant_ = loadedConstant.GetFloat();
 	}
 
-	if (_data.HasMember("Color")) {
-		CR_RJValue loadedColor = _data["Color"];
-		color.Set(loadedColor[0].GetFloat(), loadedColor[1].GetFloat(), loadedColor[2].GetFloat(), loadedColor[3].GetFloat());
+	if (data.HasMember("Linear")) {
+		CR_RJValue loadedlinear = data["Linear"];
+		linear_ = loadedlinear.GetFloat();
 	}
 
-	if (_data.HasMember("Ambient")) {
-		CR_RJValue loadedAmbient = _data["Ambient"];
-		ambient.Set(loadedAmbient[0].GetFloat(), loadedAmbient[1].GetFloat(), loadedAmbient[2].GetFloat(), loadedAmbient[3].GetFloat());
+	if (data.HasMember("Quadratic")) {
+		CR_RJValue loadedQuadratic = data["Quadratic"];
+		quadratic_ = loadedQuadratic.GetFloat();
+	}
+
+	if (data.HasMember("Direction")) {
+		CR_RJValue loadedDirection = data["Direction"];
+		direction_.Set(loadedDirection[0].GetFloat(), loadedDirection[1].GetFloat(), loadedDirection[2].GetFloat());
+	}
+
+	if (data.HasMember("Ambient")) {
+		CR_RJValue loadedAmbient = data["Ambient"];
+		ambient_.Set(loadedAmbient[0].GetFloat(), loadedAmbient[1].GetFloat(), loadedAmbient[2].GetFloat(), loadedAmbient[3].GetFloat());
 	}
 	
-	if (_data.HasMember("Diffuse")) {
-		CR_RJValue loadedDiffuse = _data["Diffuse"];
-		diffuse.Set(loadedDiffuse[0].GetFloat(), loadedDiffuse[1].GetFloat(), loadedDiffuse[2].GetFloat(), loadedDiffuse[3].GetFloat());
+	if (data.HasMember("Diffuse")) {
+		CR_RJValue loadedDiffuse = data["Diffuse"];
+		diffuse_.Set(loadedDiffuse[0].GetFloat(), loadedDiffuse[1].GetFloat(), loadedDiffuse[2].GetFloat(), loadedDiffuse[3].GetFloat());
 	}
 	
-	if (_data.HasMember("Specular")) {
-		CR_RJValue loadedSpecular = _data["Specular"];
-		specular.Set(loadedSpecular[0].GetFloat(), loadedSpecular[1].GetFloat(), loadedSpecular[2].GetFloat(), loadedSpecular[3].GetFloat());
-	}
-	
-	if (_data.HasMember("Position")) {
-		CR_RJValue loadedPosition = _data["Position"];
-		position.Set(loadedPosition[0].GetFloat(), loadedPosition[1].GetFloat(), loadedPosition[2].GetFloat());
+	if (data.HasMember("Specular")) {
+		CR_RJValue loadedSpecular = data["Specular"];
+		specular_.Set(loadedSpecular[0].GetFloat(), loadedSpecular[1].GetFloat(), loadedSpecular[2].GetFloat(), loadedSpecular[3].GetFloat());
 	}
 
-	if (_data.HasMember("Scale")) {
-		CR_RJValue loadedScale = _data["Scale"];
-		scale.Set(loadedScale[0].GetFloat(), loadedScale[1].GetFloat(), loadedScale[2].GetFloat());
-	}
 }
 
-void Light::EditorUpdate(const float /*_dt*/)
+void Light::EditorUpdate(const float /*dt*/)
 {
 	// TODO
 }

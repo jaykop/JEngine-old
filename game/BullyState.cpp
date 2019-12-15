@@ -11,8 +11,8 @@ jeDefineCustomComponentBuilder(GoFight);
 /////////////////////////////////////////////////////////////////////////
 // Global bully state
 /////////////////////////////////////////////////////////////////////////
-BullyState::BullyState(Object* _pObject)
-    :CustomComponent(_pObject)
+BullyState::BullyState(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void BullyState::Register()
@@ -33,7 +33,7 @@ void BullyState::Init()
 	m_bullyTalks->AddComponent<Transform>();
 	m_bullyTalks->AddComponent<Text>();
 	m_pTalkTransform = m_bullyTalks->GetComponent<Transform>();
-	m_pTalkTransform->scale.Set(.15f, .15f, 0.f);
+	m_pTalkTransform->scale_.Set(.15f, .15f, 0.f);
 	m_talkOffset.Set(-25.f, -20.f, 1.f);
 	m_talkText = m_bullyTalks->GetComponent<Text>();
 	m_talkText->Register();
@@ -42,13 +42,13 @@ void BullyState::Init()
 	// Set font
 	m_talkText->pFont = ASSET::GetFont("Default");
 
-	m_pTalkTransform->position.Set(
-		m_pTransform->position + m_talkOffset);
+	m_pTalkTransform->position_.Set(
+		m_pTransform->position_ + m_talkOffset);
 
-	m_pMiner = CONTAINER->GetObject("Miner");
+	m_pMiner = OBJECT::pContainer_->GetObject("Miner");
 }
 
-void BullyState::Update(const float /*_dt*/)
+void BullyState::Update(const float /*dt*/)
 {}
 
 void BullyState::Close()
@@ -62,8 +62,8 @@ bool BullyState::OnMessage(Telegram& /*msg*/)
 /////////////////////////////////////////////////////////////////////////
 // Hating state
 /////////////////////////////////////////////////////////////////////////
-JustHatingMiner::JustHatingMiner(Object* _pObject)
-    :CustomComponent(_pObject)
+JustHatingMiner::JustHatingMiner(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void JustHatingMiner::Register()
@@ -81,7 +81,7 @@ void JustHatingMiner::Init()
 		m_globalState->m_content, m_globalState->m_hateMiner);
 }
 
-void JustHatingMiner::Update(const float /*_dt*/)
+void JustHatingMiner::Update(const float /*dt*/)
 {
 	MinerState* pMinerState = (MinerState*)m_globalState->m_pMiner->GetGlobalState();
 	if (m_globalState->m_hateMiner > 10
@@ -109,8 +109,8 @@ bool JustHatingMiner::OnMessage(Telegram& /*msg*/)
 /////////////////////////////////////////////////////////////////////////
 // Go fight to miner
 /////////////////////////////////////////////////////////////////////////
-GoFight::GoFight(Object* _pObject)
-    :CustomComponent(_pObject)
+GoFight::GoFight(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void GoFight::Register()
@@ -125,7 +125,7 @@ void GoFight::Init()
 
 	DISPATCHER::DispatchMessage(0.0,			//time delay
 		GetOwner()->GetId(),								//sender ID
-		CONTAINER->GetObject("Miner")->GetId(),	//receiver ID
+		OBJECT::pContainer_->GetObject("Miner")->GetId(),	//receiver ID
 		"Fight",								//msg
 		nullptr);
 
@@ -134,7 +134,7 @@ void GoFight::Init()
 
 }
 
-void GoFight::Update(const float /*_dt*/)
+void GoFight::Update(const float /*dt*/)
 {
 	if (m_beaten) {
 		m_beaten = false;
@@ -154,7 +154,7 @@ bool GoFight::OnMessage(Telegram& msg)
 
 		DISPATCHER::DispatchMessage(0.0,			//time delay
 			GetOwner()->GetId(),								//sender ID
-			CONTAINER->GetObject("Miner")->GetId(),	//receiver ID
+			OBJECT::pContainer_->GetObject("Miner")->GetId(),	//receiver ID
 			"Surrender",								//msg
 			nullptr);
 

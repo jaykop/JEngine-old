@@ -9,55 +9,55 @@
 jeBegin
 jeDefineComponentBuilder(Material);
 
-Material::Material(Object* _pOwner)
-	:Component(_pOwner), diffuse(0), 
-	specular(0), shininess(1.f)
+Material::Material(Object* pOwner)
+	:Component(pOwner), diffuse_(0), 
+	specular_(0), shininess_(1.f)
 {
 	// Connect to model's pointer
-	if (_pOwner->HasComponent<Model>()) 
-		_pOwner->GetComponent<Model>()->m_pMaterial = this;
+	if (pOwner->HasComponent<Model>()) 
+		pOwner->GetComponent<Model>()->pMaterial_ = this;
 
 	else
-		jeDebugPrint("!Material - This object has no model componnet: %s\n", _pOwner->GetName().c_str());
+		jeDebugPrint("!Material - This object has no model componnet: %s\n", pOwner->GetName().c_str());
 }
 
 Material::~Material()
 {
 	// Turn off the toggle
 	if (GetOwner()->HasComponent<Model>()) 
-		GetOwner()->GetComponent<Model>()->m_pMaterial = nullptr;
+		GetOwner()->GetComponent<Model>()->pMaterial_ = nullptr;
 }
 
-void Material::operator=(const Material & _copy)
+void Material::operator=(const Material & copy)
 {
-	diffuse = _copy.diffuse;
-	specular = _copy.specular;
-	shininess = _copy.shininess;
+	diffuse_ = copy.diffuse_;
+	specular_ = copy.specular_;
+	shininess_ = copy.shininess_;
 	
 	if (GetOwner()->HasComponent<Model>()) 
-		GetOwner()->GetComponent<Model>()->m_pMaterial = this;
+		GetOwner()->GetComponent<Model>()->pMaterial_ = this;
 
 }
 
-void Material::Load(CR_RJValue _data)
+void Material::Load(CR_RJValue data)
 {
-	if (_data.HasMember("Diffuse")) {
-		CR_RJValue loadedDiffuse = _data["Diffuse"];
-		diffuse = loadedDiffuse.GetInt();
+	if (data.HasMember("Diffuse")) {
+		CR_RJValue loadedDiffuse = data["Diffuse"];
+		diffuse_ = loadedDiffuse.GetInt();
 	}
 
-	if (_data.HasMember("Specular")) {
-		CR_RJValue loadedSpecular = _data["Specular"];
-		specular = loadedSpecular.GetInt();
+	if (data.HasMember("Specular")) {
+		CR_RJValue loadedSpecular = data["Specular"];
+		specular_ = loadedSpecular.GetInt();
 	}
 	
-	if (_data.HasMember("Shininess")) {
-		CR_RJValue loadedShininess = _data["Shininess"];
-		shininess = loadedShininess.GetFloat();
+	if (data.HasMember("Shininess")) {
+		CR_RJValue loadedShininess = data["Shininess"];
+		shininess_ = loadedShininess.GetFloat();
 	}
 }
 
-void Material::EditorUpdate(const float /*_dt*/)
+void Material::EditorUpdate(const float /*dt*/)
 {
 	// TODO
 }
