@@ -12,30 +12,12 @@ class Emitter : public Model
 
     enum ParticleType { PARTICLE_NORMAL, PARTICLE_EXPLODE, PARTICLE_WIDE, PARTICLE_SMOG };
 
-    class Particle {
-
-        friend class GraphicSystem;
-        friend class Emitter;
-
-    public:
-
-        void	Refresh();
+    struct Particle {
 
         bool	hidden, dead;
         vec3	color, position, direction, velocity;
         float	life, rotationSpeed, rotation;
-
-    private:
-
-        Particle(Emitter* _emitter);
-        ~Particle() {};
-        void operator=(const Particle& _copy);
-
-        Emitter* m_pEmitter;
-
-        Particle() = delete;
-        Particle(const Particle& /*_copy*/) = delete;
-
+		Emitter	*pEmitter;
     };
 
     using Particles = std::vector<Particle*>;
@@ -44,36 +26,38 @@ public:
 
     void Register() override;
 
-    void ManualRefresh();
-    void SetQuantity(unsigned _quantity);
-    void SetColors(const vec3& _start, const vec3& _end);
+	void RefreshParticles();
+    void SetQuantity(unsigned quantity);
+    void SetColors(const vec3& start, const vec3& end);
 
-    bool				active, is2d;
-    float				life, rotationSpeed, pointSize;
-    unsigned			size;
-    ParticleType		type;
-    vec3				direction, velocity, range;
+	bool				active_;
+    float				life_, rotationSpeed_, pointSize_;
+    unsigned			size_;
+    ParticleType		type_;
+    vec3				direction_, velocity_, range_;
 
 private:
 
-    Emitter(Object* _pOwner);
-    ~Emitter();
-    void operator=(const Emitter& _copy);
+    Emitter(Object* pOwner);
+	virtual ~Emitter();
+    void operator=(const Emitter& copy);
 
-    void Load(CR_RJValue _data) override;
-    void Refresh(Particle* _particle);
+    void Load(CR_RJValue data) override;
 
-    Particles	m_particles;
-    vec3		m_startColor, m_endColor, colorDiff;
-    bool		m_changeColor;
-    unsigned	m_deadCount;
+	Particle* MakekParticle();
+	void RefreshParticle(Particle* pParticle);
+
+    Particles	particles_;
+    vec3		startColor_, endColor_, colorDiff_;
+    bool		changeColor_;
+    unsigned	deadCount_;
 
     Emitter() = delete;
-    Emitter(const Emitter& /*_copy*/) = delete;
+    Emitter(const Emitter& /*copy*/) = delete;
 
-    void EditorUpdate(const float _dt) override;
+    void EditorUpdate(float dt) override;
 
-    const static unsigned m_maxSize;
+    const static unsigned kMaxSize_;
 
 };
 

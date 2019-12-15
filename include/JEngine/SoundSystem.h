@@ -13,13 +13,13 @@ public:
 private:
 
 	SoundSystem();
-	~SoundSystem() {};
-	SoundSystem(const SoundSystem& /*_copy*/) = delete;
-	void operator=(const SoundSystem& /*_copy*/) = delete;
+	virtual ~SoundSystem() {};
+	SoundSystem(const SoundSystem& /*copy*/) = delete;
+	void operator=(const SoundSystem& /*copy*/) = delete;
 
-	void Load(CR_RJDoc _data) override;
+	void Load(CR_RJDoc data) override;
 	void Init() override;
-	void Update(const float _dt) override;
+	void Update(float dt) override;
 	void Close() override;
 	void Unload() override;
 

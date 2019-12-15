@@ -17,34 +17,34 @@ public:
     int	    GetAnimationFrame() const;
     float   GetAnimationSpeed() const;
     bool    GetActiveAnimationToggle() const;
-    void    ActiveAnimation(bool _toggle);
-    void    FixAnimationFrame(int _thFrame);
-    void    SetAnimationSpeed(float _speed);
-    void    SetAnimationFrame(int _numOfFrame);
+    void    ActiveAnimation(bool toggle);
+    void    FixAnimationFrame(int thFrame);
+    void    SetAnimationSpeed(float speed);
+    void    SetAnimationFrame(int numOfFrame);
 
 private:
 
     // Locked constuctors and destructor
-    ~Animation();
-    Animation(Object* _pOwner);
-    void operator=(const Animation& _copy);
+	virtual ~Animation();
+    Animation(Object* pOwner);
+    void operator=(const Animation& copy);
 
     Animation() = delete;
-    Animation(const Animation& /*_copy*/) = delete;
+    Animation(const Animation& /*copy*/) = delete;
 
-    void Load(CR_RJValue _data) override;
+    void Load(CR_RJValue data) override;
     void Register() override {};
 
-    Timer   m_timer;
-    int	    m_animationFrames;
-    int	    m_animationFixFrame;
-    bool    m_activeAnimation;
-    float   m_realSpeed;
-    float   m_realFrame;
-    float   m_currentFrame;
-    float   m_animationSpeed;
+    Timer   timer_;
+    int	    animationFrames_;
+    int	    animationFixFrame_;
+    bool    active_;
+    float   realSpeed_;
+    float   realFrame_;
+    float   currentFrame_;
+    float   animationSpeed_;
 
-    void    EditorUpdate(const float _dt) override;
+    void    EditorUpdate(float dt) override;
 
 };
 

@@ -5,43 +5,45 @@
 #include "GraphicComponents.h"
 #include "Transform.h"
 #include "MathUtils.h"
-#include "Mesh.h"
 
 jeBegin
 
 using namespace Math;
 
-void GraphicSystem::UpdatePipelines(const float _dt)
+void GraphicSystem::UpdatePipelines(float dt)
 {
 	// Update the perpsective matrix by camera's zoom
-	m_perspective = Perspective(m_pMainCamera->zoom, aspect, zNear, zFar);
+	perspective_ = Perspective(
+		pMainCamera_->fovy_, pMainCamera_->aspect_,
+		pMainCamera_->near_, pMainCamera_->far_);
 
 	// Update the projection size by window screen size
 	static vec3 s_windowSize, s_resolutionStandard(1.f / 800.f, 1.f / 600.f, 1.f);
-	s_windowSize.Set(float(m_width), float(m_height), 1.f);
+	s_windowSize.Set(float(width_), float(height_), 1.f);
 
-	m_resolutionScaler = s_windowSize * s_resolutionStandard;
+	resolutionScaler_ = s_windowSize * s_resolutionStandard;
 
 	// Update models and lights
-	m_isLight = !m_lights.empty();
+	isLight_ = !lights_.empty();
 
 	LightSourcePipeline();
 
-	Shader::Use(GLM::SHADER_MODEL);
+	Shader::Use(GLM::JE_SHADER_MODEL);
 
 	// Inform that there are lights
-	Shader::m_pCurrentShader->SetBool("boolean_light", m_isLight);
+	Shader::pCurrentShader_->SetBool("boolean_light", isLight_);
 	
 	// Sort orthogonal objects and perspective objects
 	SortModels();
 
-	for (auto model : m_models) {
+	for (auto model : models_) {
 
 		// Emitter
-		if ((model->m_hiddenStatus & Model::IS_EMITTER) == Model::IS_EMITTER)
-			ParticlePipeline(static_cast<Emitter*>(model), _dt);
+		if ((model->is_ & Model::IS_EMITTER) == Model::IS_EMITTER)
+			ParticlePipeline(static_cast<Emitter*>(model), dt);
 
-		else if ((model->m_hiddenStatus & Model::IS_TEXT) == Model::IS_TEXT)
+		// Text
+		else if ((model->is_ & Model::IS_TEXT) == Model::IS_TEXT)
 			TextPipeline(static_cast<Text*>(model));
 
 		// Normal models
@@ -53,49 +55,51 @@ void GraphicSystem::UpdatePipelines(const float _dt)
 void GraphicSystem::RenderToFramebuffer() const
 {
 	// Render to framebuffer
-	glBindFramebuffer(GL_FRAMEBUFFER, GLM::m_fbo);
+	glBindFramebuffer(GL_FRAMEBUFFER, GLM::fbo_);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.f, 0.f, 0.f, 0.f);
-	glViewport(0, 0, GLint(m_width), GLint(m_height));
+	glViewport(0, 0, GLint(width_), GLint(height_));
 
 	// Backface culling
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
-	glFrontFace(GL_CW);
+	glFrontFace(GL_CCW);
 }
 
 void GraphicSystem::RenderToScreen() const
 {
-	static GLsizei sizeOfPlaneIndices = static_cast<GLsizei>(GLM::m_planeIndices.size());
+	const static GLsizei sizeOfPlaneIndices
+		= static_cast<GLsizei>(GLM::targetMesh_[GLM::JE_TARGET_SCREEN]->GetIndiceCount());
 
 	// Bind default framebuffer and render to screen
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, backgroundColor.w);
+	glClearColor(backgroundColor_.x, backgroundColor_.y, backgroundColor_.z, backgroundColor_.w);
 
 	glDisable(GL_CULL_FACE);	//Disable face culling
 	glDisable(GL_DEPTH_TEST);	//Disable depth test
 
 	// Render to plane 2d
-	glBindVertexArray(GLM::m_vao[GLM::SHAPE_PLANE]);
-	Shader::Use(GLM::SHADER_SCREEN);
-	Shader::m_pCurrentShader->SetVector4("v4_screenColor", screenColor);
+	glBindVertexArray(GLM::targetMesh_[GLM::JE_TARGET_SCREEN]->vao_);
+	Shader::Use(GLM::JE_SHADER_SCREEN);
+	Shader::pCurrentShader_->SetVector4("v4_screenColor", screenColor_);
 
 	// Impose screen effect 
-	Shader::m_pCurrentShader->SetEnum("enum_effectType", screenEffect);
+	Shader::pCurrentShader_->SetEnum("enum_effectType", screenEffect_);
 
-	if (screenEffect == EFFECT_BLUR) {
-		Shader::m_pCurrentShader->SetFloat("float_blurSize", blurSize);
-		Shader::m_pCurrentShader->SetFloat("float_blurAmount", blurAmount);
+	if (screenEffect_ == JE_EFFECT_BLUR) {
+		Shader::pCurrentShader_->SetFloat("float_blurSize", blurSize_);
+		Shader::pCurrentShader_->SetFloat("float_blurAmount", blurAmount_);
 	}
-	else if (screenEffect == EFFECT_SOBEL)
-		Shader::m_pCurrentShader->SetFloat("float_sobelAmount", sobelAmount);
+	else if (screenEffect_ == JE_EFFECT_SOBEL)
+		Shader::pCurrentShader_->SetFloat("float_sobelAmount", sobelAmount_);
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, GLM::m_renderTarget);
+	glBindTexture(GL_TEXTURE_2D, GLM::texColorBuf_);
 	glDrawElements(GL_TRIANGLES, sizeOfPlaneIndices, GL_UNSIGNED_INT, nullptr);
 	glEnable(GL_DEPTH_TEST);
 
+	glBindVertexArray(0);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -103,51 +107,62 @@ void GraphicSystem::RenderToScreen() const
 //////////////////////////////////////////////////////////////////////////
 void GraphicSystem::LightSourcePipeline()
 {
-	if (m_isLight) {
+	if (isLight_) {
 
-		if (GLM::m_mode == GLM::DRAW_FILL)
-			glEnable(GL_BLEND);
-		else
-			glDisable(GL_BLEND);
-
+		glEnable(GL_BLEND);
 		glEnable(GL_DEPTH_TEST);
 
-		Shader::Use(GLM::SHADER_LIGHTING);
+		Shader::Use(GLM::JE_SHADER_LIGHTING);
 		
-		for (auto light : m_lights) {
+		for (auto light : lights_) {
 
-			Shader::m_pCurrentShader->SetMatrix(
-				"m4_translate", Translate(light->position));
+			Transform* transform = light->pTransform_;
 
-			Shader::m_pCurrentShader->SetMatrix("m4_scale", Scale(light->scale));
+			Shader::pCurrentShader_->SetMatrix(
+				"m4_translate", Translate(transform->position_));
 
-			Shader::m_pCurrentShader->SetMatrix(
-				"m4_rotateZ", RotateZ(atan2(light->direction.y, light->direction.x)));
+			Shader::pCurrentShader_->SetMatrix(
+				"m4_rotate", Rotate(Math::DegToRad(transform->rotation_), transform->rotationAxis_));
 
-			Shader::m_pCurrentShader->SetMatrix(
-				"m4_rotateY", RotateY(-atan2(light->direction.z, light->direction.x)));
+			Shader::pCurrentShader_->SetMatrix("m4_scale", Scale(transform->scale_));
 
-			if (light->projection == PROJECTION_PERSPECTIVE) {
-				Shader::m_pCurrentShader->SetMatrix("m4_projection", m_perspective);
+			Shader::pCurrentShader_->SetMatrix(
+				"m4_rotateZ", RotateZ(atan2(light->direction_.y, light->direction_.x)));
 
-				m_viewport = LookAt(m_pMainCamera->position, m_pMainCamera->m_target, m_pMainCamera->m_up);
+			Shader::pCurrentShader_->SetMatrix(
+				"m4_rotateY", RotateY(-atan2(light->direction_.z, light->direction_.x)));
+
+			if (light->projection_ == PROJECTION_PERSPECTIVE) {
+				Shader::pCurrentShader_->SetMatrix("m4_projection", perspective_);
+
+				viewport_ = LookAt(pMainCamera_->position_, pMainCamera_->target_, pMainCamera_->up_);
 			}
 
 			else {
-				Shader::m_pCurrentShader->SetMatrix("m4_projection", m_orthogonal);
+				right_ = width_ * .5f;
+				left_ = -right_;
+				top_ = height_ * .5f;
+				bottom_ = -top_;
 
-				SetIdentity(m_viewport);
-				m_viewport = Scale(m_resolutionScaler);
+				orthogonal_ = Orthogonal(left_, right_, bottom_, top_, pMainCamera_->near_, pMainCamera_->far_);
+
+				Shader::pCurrentShader_->SetMatrix("m4_projection", orthogonal_);
+
+				SetIdentity(viewport_);
+				viewport_ = Scale(resolutionScaler_);
 			}
 			
-			Shader::m_pCurrentShader->SetMatrix("m4_viewport", m_viewport);
-			Shader::m_pCurrentShader->SetVector4("v4_color", light->color);
+			Shader::pCurrentShader_->SetMatrix("m4_viewport", viewport_);
+			Shader::pCurrentShader_->SetVector4("v4_color", light->color_);
 
-			glBlendFunc(light->sfactor, light->dfactor);
-			Render(light->m_pMeshes);
+			glBlendFunc(light->sfactor_, light->dfactor_);
+
+			// Update every mesh
+			for (auto mesh : light->meshes_)
+				Render(mesh, mesh->drawMode_);
 			
-		} // for (auto light : m_lights) {
-	} // if (m_isLight) {
+		} // for (auto light : lights_) {
+	} // if (isLight_) {
 
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
@@ -156,134 +171,142 @@ void GraphicSystem::LightSourcePipeline()
 //////////////////////////////////////////////////////////////////////////
 // Model(model) pipeline
 //////////////////////////////////////////////////////////////////////////
-void GraphicSystem::ModelPipeline(Model *_model)
+void GraphicSystem::ModelPipeline(Model *pModel)
 {
 	static Transform* s_pTransform;
-	s_pTransform = _model->m_pTransform;
+	s_pTransform = pModel->pTransform_;
 
-	Shader::Use(GLM::SHADER_MODEL);
+	Shader::Use(GLM::JE_SHADER_MODEL);
 
-	Shader::m_pCurrentShader->SetMatrix("m4_translate", Translate(s_pTransform->position));
-	Shader::m_pCurrentShader->SetMatrix("m4_scale", Scale(s_pTransform->scale));
-	Shader::m_pCurrentShader->SetMatrix("m4_rotate", Rotate(Math::DegToRad(s_pTransform->rotation), s_pTransform->rotationAxis));
+	Shader::pCurrentShader_->SetMatrix("m4_translate", Translate(s_pTransform->position_));
+	Shader::pCurrentShader_->SetMatrix("m4_scale", Scale(s_pTransform->scale_));
+	Shader::pCurrentShader_->SetMatrix("m4_rotate", Rotate(Math::DegToRad(s_pTransform->rotation_), s_pTransform->rotationAxis_));
 
-	Shader::m_pCurrentShader->SetVector3("v3_cameraPosition", m_pMainCamera->position);
-	Shader::m_pCurrentShader->SetBool("boolean_bilboard", (_model->status & Model::IS_BILBOARD) == Model::IS_BILBOARD);
+	Shader::pCurrentShader_->SetVector3("v3_cameraPosition", pMainCamera_->position_);
+	Shader::pCurrentShader_->SetBool("boolean_bilboard", (pModel->status_ & Model::IS_BILBOARD) == Model::IS_BILBOARD);
 
 	// Send projection info to shader
-	if (_model->projection == PROJECTION_PERSPECTIVE) {
+	if (pModel->projection_ == PROJECTION_PERSPECTIVE) {
 
-		Shader::m_pCurrentShader->SetMatrix("m4_projection", m_perspective);
-		m_viewport = LookAt(m_pMainCamera->position, m_pMainCamera->m_target, m_pMainCamera->m_up);
+		Shader::pCurrentShader_->SetMatrix("m4_projection", perspective_);
+		viewport_ = LookAt(pMainCamera_->position_, pMainCamera_->target_, pMainCamera_->up_);
 	}
 
 	else {
-		Shader::m_pCurrentShader->SetMatrix("m4_projection", m_orthogonal);
+		right_ = width_ * .5f;
+		left_ = -right_;
+		top_ = height_ * .5f;
+		bottom_ = -top_;
 
-		SetIdentity(m_viewport);
-		m_viewport = Scale(m_resolutionScaler);
+		orthogonal_ = Orthogonal(left_, right_, bottom_, top_, pMainCamera_->near_, pMainCamera_->far_);
+
+		Shader::pCurrentShader_->SetMatrix("m4_projection", orthogonal_);
+
+		SetIdentity(viewport_);
+		viewport_ = Scale(resolutionScaler_);
 	}
 
 	// Send camera info to shader
-	Shader::m_pCurrentShader->SetMatrix("m4_viewport", m_viewport);
+	Shader::pCurrentShader_->SetMatrix("m4_viewport", viewport_);
 
 	// TODO
 	// It so, not draw
-	//if (!_model->m_culled) {
+	//if (!pModel->culled_) {
 
-	MappingPipeline(_model);
+	MappingPipeline(pModel);
 
-	bool hasParent = (_model->status & Model::IS_INHERITED ) == Model::IS_INHERITED;
-	glUniform1i(glGetUniformLocation(Shader::m_pCurrentShader->m_programId, "hasParent"), hasParent);
+	bool hasParent = (pModel->status_ & Model::IS_INHERITED ) == Model::IS_INHERITED;
+	glUniform1i(glGetUniformLocation(Shader::pCurrentShader_->programId_, "hasParent"), hasParent);
 	if (hasParent)
-	    ParentPipeline(_model->m_pInherited);
+	    ParentPipeline(pModel->pInherited_);
 
-	if (_model->m_pMaterial && m_isLight)
-	    LightingEffectPipeline(_model->m_pMaterial);
+	if (pModel->pMaterial_ && isLight_)
+	    LightingEffectPipeline(pModel->pMaterial_);
 
-	if (GLM::m_mode == GLM::DRAW_FILL)
-	    glEnable(GL_BLEND);
-	else
-	    glDisable(GL_BLEND);
-
+	glEnable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
-	glBlendFunc(_model->sfactor, _model->dfactor);
+	glBlendFunc(pModel->sfactor_, pModel->dfactor_);
 
-	Render(_model->m_pMeshes);
+	// Update every mesh
+	for (auto mesh : pModel->meshes_)
+		Render(mesh, mesh->drawMode_);
 
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
 }
 
-void GraphicSystem::ParentPipeline(Transform* _pTransform) const
+void GraphicSystem::ParentPipeline(Transform* pTransform) const
 {
-	glUniformMatrix4fv(glGetUniformLocation(Shader::m_pCurrentShader->m_programId, "m4_parentTranslate"),
-		1, GL_FALSE, &Translate(_pTransform->position).m[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(Shader::pCurrentShader_->programId_, "m4_parentTranslate"),
+		1, GL_FALSE, &Translate(pTransform->position_).m[0][0]);
 
-	glUniformMatrix4fv(glGetUniformLocation(Shader::m_pCurrentShader->m_programId, "m4_parentScale"),
-		1, GL_FALSE, &Scale(_pTransform->scale).m[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(Shader::pCurrentShader_->programId_, "m4_parentScale"),
+		1, GL_FALSE, &Scale(pTransform->scale_).m[0][0]);
 
-	glUniformMatrix4fv(glGetUniformLocation(Shader::m_pCurrentShader->m_programId, "m4_parentRotate"),
-		1, GL_FALSE, &Rotate(DegToRad(_pTransform->rotation), _pTransform->rotationAxis).m[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(Shader::pCurrentShader_->programId_, "m4_parentRotate"),
+		1, GL_FALSE, &Rotate(DegToRad(pTransform->rotation_), pTransform->rotationAxis_).m[0][0]);
 }
 
-void GraphicSystem::MappingPipeline(Model* _model)
+void GraphicSystem::MappingPipeline(Model* pModel)
 {
-	glBindTexture(GL_TEXTURE_2D, _model->GetCurrentTexutre());
+	for (auto mesh : pModel->meshes_) {
 
-	if (_model->m_pAnimation) {
+		glBindTexture(GL_TEXTURE_2D, mesh->mainTexture_);
 
-		static Animation* animation;
-		animation = _model->m_pAnimation;
+		if (pModel->pAnimation_) {
 
-		if (animation->m_activeAnimation) {
+			static Animation* animation;
+			animation = pModel->pAnimation_;
 
-			static float realSpeed;
-			realSpeed = animation->m_realSpeed;
+			if (animation->active_) {
 
-			if (realSpeed <= animation->m_timer.GetTime()) {
+				static float realSpeed;
+				realSpeed = animation->realSpeed_;
 
-				static float nextFrame;
-				if ((_model->status & Model::IS_FLIPPED) == Model::IS_FLIPPED)
-					nextFrame = animation->m_currentFrame - animation->m_realFrame;
-				else
-					nextFrame = animation->m_currentFrame + animation->m_realFrame;
+				if (realSpeed <= animation->timer_.GetTime()) {
 
-				if (nextFrame >= 1.f)
-					animation->m_currentFrame = 0.f;
-				else
-					animation->m_currentFrame = nextFrame;
+					static float nextFrame;
+					if ((pModel->status_ & Model::IS_FLIPPED) == Model::IS_FLIPPED)
+						nextFrame = animation->currentFrame_ - animation->realFrame_;
+					else
+						nextFrame = animation->currentFrame_ + animation->realFrame_;
 
-				animation->m_timer.Start();
-			} // if (realSpeed <= animation->m_timer.GetTime()) {
-		} // if (animation->activeAnimation) {
+					if (nextFrame >= 1.f)
+						animation->currentFrame_ = 0.f;
+					else
+						animation->currentFrame_ = nextFrame;
 
-		m_aniScale.Set(animation->m_realFrame, 1.f, 0.f);
-		m_aniTranslate.Set(animation->m_currentFrame, 0.f, 0.f);
+					animation->timer_.Start();
+				} // if (realSpeed <= animation->timer_.GetTime()) {
+			} // if (animation->activeAnimation) {
 
-	} // if (_model->m_hasAnimation) {
+			aniScale_.Set(animation->realFrame_, 1.f, 0.f);
+			aniTranslate_.Set(animation->currentFrame_, 0.f, 0.f);
 
-	else {
-		m_aniScale.Set(1, 1, 0);
-		m_aniTranslate.Set(0, 0, 0);
+		} // if (pModel->m_hasAnimation) {
+
+		else {
+			aniScale_.Set(1, 1, 0);
+			aniTranslate_.Set(0, 0, 0);
+		}
+
+		// Send color info to shader
+		Shader::pCurrentShader_->SetVector4("v4_color", pModel->color_);
+		Shader::pCurrentShader_->SetBool(
+			"boolean_flip", (pModel->status_ & Model::IS_FLIPPED) == Model::IS_FLIPPED);
+		Shader::pCurrentShader_->SetMatrix("m4_aniScale", Scale(aniScale_));
+		Shader::pCurrentShader_->SetMatrix("m4_aniTranslate", Translate(aniTranslate_));
 	}
-
-	// Send color info to shader
-	Shader::m_pCurrentShader->SetVector4("v4_color", _model->color);
-	Shader::m_pCurrentShader->SetBool(
-		"boolean_flip", (_model->status & Model::IS_FLIPPED) == Model::IS_FLIPPED);
-	Shader::m_pCurrentShader->SetMatrix("m4_aniScale", Scale(m_aniScale));
-	Shader::m_pCurrentShader->SetMatrix("m4_aniTranslate", Translate(m_aniTranslate));
 }
 
-void GraphicSystem::LightingEffectPipeline(Material *_material)
+void GraphicSystem::LightingEffectPipeline(Material *pMaterial)
 {
-	Shader::m_pCurrentShader->SetInt("int_lightSize", int(m_lights.size()));
+	Shader::pCurrentShader_->SetInt("int_lightSize", int(lights_.size()));
 
 	// Send material info to shader
-	Shader::m_pCurrentShader->SetInt("material.m_specular", _material->specular);
-	Shader::m_pCurrentShader->SetInt("material.m_diffuse", _material->diffuse);
-	Shader::m_pCurrentShader->SetFloat("material.m_shininess", _material->shininess);
+	Shader::pCurrentShader_->SetInt("material.m_specular", pMaterial->specular_);
+	Shader::pCurrentShader_->SetInt("material.m_diffuse", pMaterial->diffuse_);
+	Shader::pCurrentShader_->SetFloat("material.m_shininess", pMaterial->shininess_);
 
 	static int s_lightIndex;
 	static std::string s_index, s_light,
@@ -292,189 +315,188 @@ void GraphicSystem::LightingEffectPipeline(Material *_material)
 		cut("m_cutOff"), outcut("m_outerCutOff"), quad("m_quadratic");
 	s_lightIndex = 0;
 
-	for (auto _light : m_lights) {
+	for (auto _light : lights_) {
 
 		s_index = std::to_string(s_lightIndex);
 
-		Shader::m_pCurrentShader->SetVector4(
-			("v4_lightColor[" + s_index + "]").c_str(), _light->color);
+		Shader::pCurrentShader_->SetVector4(
+			("v4_lightColor[" + s_index + "]").c_str(), _light->color_);
 
 		s_light = "light[" + s_index + "].";
 
-		Shader::m_pCurrentShader->SetVector4(
-			(s_light + spec).c_str(), _light->specular);
+		Shader::pCurrentShader_->SetVector4(
+			(s_light + spec).c_str(), _light->specular_);
 
-		Shader::m_pCurrentShader->SetVector4(
-			(s_light + diff).c_str(), _light->diffuse);
+		Shader::pCurrentShader_->SetVector4(
+			(s_light + diff).c_str(), _light->diffuse_);
 
-		Shader::m_pCurrentShader->SetEnum(
-			(s_light + type).c_str(), _light->m_type);
+		Shader::pCurrentShader_->SetEnum(
+			(s_light + type).c_str(), _light->type_);
 
-		Shader::m_pCurrentShader->SetVector3(
-			(s_light + dir).c_str(), _light->direction);
+		Shader::pCurrentShader_->SetVector3(
+			(s_light + dir).c_str(), _light->direction_);
 
-		Shader::m_pCurrentShader->SetFloat(
-			(s_light + constant).c_str(), _light->constant);
+		Shader::pCurrentShader_->SetFloat(
+			(s_light + constant).c_str(), _light->constant_);
 
-		Shader::m_pCurrentShader->SetFloat(
-			(s_light + linear).c_str(), _light->linear);
+		Shader::pCurrentShader_->SetFloat(
+			(s_light + linear).c_str(), _light->linear_);
 
-		Shader::m_pCurrentShader->SetFloat(
-			(s_light + quad).c_str(), _light->quadratic);
+		Shader::pCurrentShader_->SetFloat(
+			(s_light + quad).c_str(), _light->quadratic_);
 
-		Shader::m_pCurrentShader->SetVector3(
-			(s_light + pos).c_str(), _light->position);
+		Shader::pCurrentShader_->SetVector3(
+			(s_light + pos).c_str(), _light->pTransform_->position_);
 
-		Shader::m_pCurrentShader->SetFloat(
-			(s_light + cut).c_str(), cosf(Math::DegToRad(_light->cutOff)));
+		Shader::pCurrentShader_->SetFloat(
+			(s_light + cut).c_str(), cosf(Math::DegToRad(_light->cutOff_)));
 
-		Shader::m_pCurrentShader->SetFloat(
-			(s_light + outcut).c_str(), cosf(Math::DegToRad(_light->outerCutOff)));
+		Shader::pCurrentShader_->SetFloat(
+			(s_light + outcut).c_str(), cosf(Math::DegToRad(_light->outerCutOff_)));
 
 		s_lightIndex++;
 	}
 }
 
-void GraphicSystem::TextPipeline(Text * _text)
+void GraphicSystem::TextPipeline(Text * pText)
 {
 	static Transform* s_pTransform;
-	s_pTransform = _text->m_pTransform;
+	s_pTransform = pText->pTransform_;
 
-	Shader::Use(GLM::SHADER_TEXT);
+	Shader::Use(GLM::JE_SHADER_TEXT);
 
-	Shader::m_pCurrentShader->SetMatrix("m4_scale", Scale(s_pTransform->scale));
-	Shader::m_pCurrentShader->SetMatrix("m4_rotate", Rotate(Math::DegToRad(s_pTransform->rotation), s_pTransform->rotationAxis));
-	Shader::m_pCurrentShader->SetBool("boolean_bilboard", (_text->status & Model::IS_BILBOARD) == Model::IS_BILBOARD);
-	Shader::m_pCurrentShader->SetVector4("v4_color", _text->color);
+	Shader::pCurrentShader_->SetMatrix("m4_scale", Scale(s_pTransform->scale_));
+	Shader::pCurrentShader_->SetMatrix("m4_rotate", Rotate(Math::DegToRad(s_pTransform->rotation_), s_pTransform->rotationAxis_));
+	Shader::pCurrentShader_->SetBool("boolean_bilboard", (pText->status_ & Model::IS_BILBOARD) == Model::IS_BILBOARD);
+	Shader::pCurrentShader_->SetVector4("v4_color", pText->color_);
 
 	// Send projection info to shader
-	if (_text->projection == PROJECTION_PERSPECTIVE) {
-		Shader::m_pCurrentShader->SetMatrix("m4_projection", m_perspective);
+	if (pText->projection_ == PROJECTION_PERSPECTIVE) {
+		Shader::pCurrentShader_->SetMatrix("m4_projection", perspective_);
 
-		m_viewport = LookAt(
-			m_pMainCamera->position, m_pMainCamera->m_target, m_pMainCamera->m_up);
+		viewport_ = LookAt(
+			pMainCamera_->position_, pMainCamera_->target_, pMainCamera_->up_);
 	}
 
 	else {
-		Shader::m_pCurrentShader->SetMatrix("m4_projection", m_orthogonal);
+		right_ = width_ * .5f;
+		left_ = -right_;
+		top_ = height_ * .5f;
+		bottom_ = -top_;
 
-		SetIdentity(m_viewport);
-		m_viewport = Scale(m_resolutionScaler);
+		orthogonal_ = Orthogonal(left_, right_, bottom_, top_, pMainCamera_->near_, pMainCamera_->far_);
+
+		Shader::pCurrentShader_->SetMatrix("m4_projection", orthogonal_);
+
+		SetIdentity(viewport_);
+		viewport_ = Scale(resolutionScaler_);
 	}
 
 	// Send camera info to shader
-	Shader::m_pCurrentShader->SetMatrix("m4_viewport", m_viewport);
+	Shader::pCurrentShader_->SetMatrix("m4_viewport", viewport_);
 
 	// TODO
 	// It so, not draw
-	//if (!_model->m_culled) {
+	//if (!pModel->culled_) {
 
-	if (GLM::m_mode == GLM::DRAW_FILL)
-		glEnable(GL_BLEND);
-	else
-		glDisable(GL_BLEND);
-
+	glEnable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
-	glBlendFunc(_text->sfactor, _text->dfactor);
+	glBlendFunc(pText->sfactor_, pText->dfactor_);
 
-	Render(_text->pFont, _text, s_pTransform, _text->m_printWide);
+	// Text does not render its own mesh list
+	Render(pText);
 
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
 }
 
-void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
+void GraphicSystem::ParticlePipeline(Emitter* pEmitter, float dt)
 {
 	// Check emitter's active toggle
-	if (_emitter->active) {
+	if (pEmitter->active_) {
 
 		// Particle render attributes setting
-		if (GLM::m_mode == GLM::DRAW_FILL)
-			glEnable(GL_BLEND);
-		else
-			glDisable(GL_BLEND);
-
+		glEnable(GL_BLEND);
 		glDepthMask(GL_FALSE);
-		glBlendFunc(_emitter->sfactor, _emitter->dfactor);
+		glBlendFunc(pEmitter->sfactor_, pEmitter->dfactor_);
+		glPointSize(pEmitter->pointSize_);
 
-		// Points
-		if (_emitter->m_pMeshes->m_shape == Mesh::MESH_POINT) {
-			glPointSize(_emitter->pointSize);
-			glEnable(GL_POINT_SMOOTH);
-		}
-
-		// Plane 2d and 3d form
-		else
-			glDisable(GL_POINT_SMOOTH);
-
-		static vec3			s_velocity, s_colorDiff;
+		static vec3			s_velocity, s_colorDiff_;
 		static bool			s_changeColor, s_rotation;
 		static vec4			s_color;
-		static unsigned	    s_texture;
 		static Transform*   s_pTransform;
-		static Mesh			*s_pMesh;
 
-		s_pMesh = _emitter->m_pMeshes;
-		s_rotation = _emitter->rotationSpeed != 0.f;
-		s_changeColor = _emitter->m_changeColor;
-		s_pTransform = _emitter->m_pTransform;
-		s_texture = _emitter->m_mainTex;
-		s_velocity = _dt * _emitter->velocity;
-		s_colorDiff = _dt * _emitter->colorDiff;
+		s_rotation = pEmitter->rotationSpeed_ != 0.f;
+		s_changeColor = pEmitter->changeColor_;
+		s_pTransform = pEmitter->pTransform_;
+		s_velocity = dt * pEmitter->velocity_;
+		s_colorDiff_ = dt * pEmitter->colorDiff_;
 
-		Shader::Use(GLM::SHADER_PARTICLE);
+		Shader::Use(GLM::JE_SHADER_PARTICLE);
 
-		Shader::m_pCurrentShader->SetMatrix("m4_scale", Scale(s_pTransform->scale));
-		Shader::m_pCurrentShader->SetBool("boolean_bilboard", (_emitter->status & Model::IS_BILBOARD) == Model::IS_BILBOARD);
+		Shader::pCurrentShader_->SetMatrix("m4_scale", Scale(s_pTransform->scale_));
+		Shader::pCurrentShader_->SetBool("boolean_bilboard", (pEmitter->status_ & Model::IS_BILBOARD) == Model::IS_BILBOARD);
 
 		// Send projection info to shader
-		if (_emitter->projection == PROJECTION_PERSPECTIVE) {
-			Shader::m_pCurrentShader->SetMatrix("m4_projection", m_perspective);
+		if (pEmitter->projection_ == PROJECTION_PERSPECTIVE) {
+			Shader::pCurrentShader_->SetMatrix("m4_projection", perspective_);
 
-			m_viewport = LookAt(
-				m_pMainCamera->position, m_pMainCamera->m_target, m_pMainCamera->m_up);
+			viewport_ = LookAt(
+				pMainCamera_->position_, pMainCamera_->target_, pMainCamera_->up_);
 		}
 
 		else {
-			Shader::m_pCurrentShader->SetMatrix("m4_projection", m_orthogonal);
+			right_ = width_ * .5f;
+			left_ = -right_;
+			top_ = height_ * .5f;
+			bottom_ = -top_;
 
-			SetIdentity(m_viewport);
-			m_viewport = Scale(m_resolutionScaler);
+			orthogonal_ = Orthogonal(left_, right_, bottom_, top_, pMainCamera_->near_, pMainCamera_->far_);
+
+			Shader::pCurrentShader_->SetMatrix("m4_projection", orthogonal_);
+
+			SetIdentity(viewport_);
+			viewport_ = Scale(resolutionScaler_);
 		}
 
 		// Send camera info to shader
-		Shader::m_pCurrentShader->SetMatrix("m4_viewport", m_viewport);
+		Shader::pCurrentShader_->SetMatrix("m4_viewport", viewport_);
 
-		glBindTexture(GL_TEXTURE_2D, s_texture);
-
-		for (auto particle : _emitter->m_particles) {
+		for (auto particle : pEmitter->particles_) {
 
 			if (particle->life < 0.f)
-				particle->Refresh();
+				pEmitter->RefreshParticle(particle);
 
 			else {
 
-				particle->life -= _dt;
+				particle->life -= dt;
 				particle->position += particle->direction * s_velocity;
 
 				if (s_rotation)
-					particle->rotation += particle->rotationSpeed * _dt;
+					particle->rotation += particle->rotationSpeed * dt;
 
 				if (s_changeColor)
-					particle->color += s_colorDiff;
+					particle->color += s_colorDiff_;
 
 				s_color.Set(particle->color.x, particle->color.y, particle->color.z,
 					particle->life);
 
 				// Send transform info to shader
-				Shader::m_pCurrentShader->SetMatrix("m4_translate", Translate(particle->position));
-				Shader::m_pCurrentShader->SetMatrix("m4_rotate", Rotate(Math::DegToRad(particle->rotation), s_pTransform->rotationAxis));
+				Shader::pCurrentShader_->SetMatrix("m4_translate", Translate(particle->position));
+				Shader::pCurrentShader_->SetMatrix("m4_rotate", Rotate(Math::DegToRad(particle->rotation), s_pTransform->rotationAxis_));
 
 				// Send color info to shader
-				Shader::m_pCurrentShader->SetVector4("v4_color", s_color);
-				Shader::m_pCurrentShader->SetBool("boolean_hide", particle->hidden);
+				Shader::pCurrentShader_->SetVector4("v4_color", s_color);
+				Shader::pCurrentShader_->SetBool("boolean_hide", particle->hidden);
 
-				Render(s_pMesh);
+				// Update every mesh
+				for (auto mesh : pEmitter->meshes_) {
+
+					static unsigned	 spTexture;
+					spTexture = mesh->mainTexture_;
+					glBindTexture(GL_TEXTURE_2D, spTexture);
+					Render(mesh, mesh->drawMode_);
+				}
 			}
 		}
 
@@ -485,20 +507,20 @@ void GraphicSystem::ParticlePipeline(Emitter* _emitter, const float _dt)
 	glBindVertexArray(0);
 }
 
-void GraphicSystem::RenderCharacter(Character& _character, const vec3& _position,
-	const vec3& _scale, float& _newX, float _intervalY)
+void GraphicSystem::RenderCharacter(Character& character, const vec3& position,
+	const vec3& scale, float& newX, float intervalY)
 {
 	const static int sc_shift = 6;
 	static vec3 s_realPosition;
 
-	s_realPosition.x = _newX + _character.bearing.x * _scale.x;
-	s_realPosition.y = _position.y - (_character.size.y - _character.bearing.y) * _scale.y - _intervalY;
-	s_realPosition.z = _position.z;
+	s_realPosition.x = newX + character.bearing.x * scale.x;
+	s_realPosition.y = position.y - (character.size.y - character.bearing.y) * scale.y - intervalY;
+	s_realPosition.z = position.z;
 
-	GLfloat width = _character.size.x;
-	GLfloat height = _character.size.y;
+	GLfloat width = character.size.x;
+	GLfloat height = character.size.y;
 
-	Shader::m_pCurrentShader->SetMatrix("m4_translate", Translate(s_realPosition));
+	Shader::pCurrentShader_->SetMatrix("m4_translate", Translate(s_realPosition));
 
 	//Update vbo
 	float vertices[4][8] = {
@@ -508,43 +530,57 @@ void GraphicSystem::RenderCharacter(Character& _character, const vec3& _position
 		{ width, 0.f, 0.f, 1.f, 1.f ,0.f, 0.f, 1.f }
 	};
 
-	static unsigned verticesSize = sizeof(vertices) / sizeof(GLfloat);
+	glBindTexture(GL_TEXTURE_2D, character.texture);
 
-	m_vertexArray.clear();
-	m_vertexArray.reserve(verticesSize);
-	for (unsigned index = 0; index < 4; ++index) 
-		m_vertexArray.push_back(jeVertex{ 
-			vec3(vertices[index][0], vertices[index][1], vertices[index][2]), 
-			vec2(vertices[index][3], vertices[index][4]), 
-			vec3(vertices[index][5], vertices[index][6], vertices[index][7])} );
+	// Text component does not use member mesh vector,
+	// but pre defined mesh from GLManager
+	glBindVertexArray(GLM::targetMesh_[GLM::JE_TARGET_TEXT]->vao_);
+	glBindBuffer(GL_ARRAY_BUFFER, GLM::targetMesh_[GLM::JE_TARGET_TEXT]->vbo_);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	glBindTexture(GL_TEXTURE_2D, _character.texture);
-	Render(GLM::m_vao[GLM::SHAPE_TEXT], GLM::m_vbo[GLM::SHAPE_TEXT], GLM::m_ebo[GLM::SHAPE_TEXT],
-		m_vertexArray, Text::m_idices, GL_TRIANGLE_STRIP);
+	// vertex position
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
 
-	_newX += (_character.advance >> sc_shift) * _scale.x;
+	// texture coordinate position
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+
+	// normals of vertices
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
+	glEnableVertexAttribArray(2);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GLM::targetMesh_[GLM::JE_TARGET_TEXT]->ebo_);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * Text::m_pointIndices.size(),
+		static_cast<const void*>(&Text::m_pointIndices[0]), GL_DYNAMIC_DRAW);
+	glDrawElements(GL_TRIANGLE_STRIP, GLsizei(Text::m_pointIndices.size()), GL_UNSIGNED_INT, nullptr);
+
+	glBindVertexArray(0);
+
+	newX += (character.advance >> sc_shift) * scale.x;
 }
 
-void GraphicSystem::Render(Font* _font, Text*_text, Transform* _transform, bool _printUnicode)
+void GraphicSystem::Render(const Text* pText)
 {
-	const std::wstring c_wcontent = _text->GetWText();
-	const std::string c_content = _text->GetText();
+	Font* pFont = pText->pFont;
+	Transform* pTransform = pText->pTransform_;
+
+	const std::wstring c_wcontent = pText->GetWText();
+	const std::string c_content = pText->GetText();
 
 	// Check there are contents to print out
 	if (!c_wcontent.empty() || !c_content.empty()) {
 
-		static vec3 s_position, s_scale;
-		s_scale = _transform->scale;
-		s_position = _transform->position;
-		const GLfloat nextLineInverval = _font->m_newLineInterval * _font->m_fontSize * s_scale.y / 50.f;
+		static vec3 sposition, sscale;
+		sscale = pTransform->scale_;
+		sposition = pTransform->position_;
+		const GLfloat nextLineInverval = pFont->newline_ * pFont->fontSize_ * sscale.y / 50.f;
 
-		GLfloat initX = GLfloat(s_position.x), newX = initX, intervalY = 0.f;
+		GLfloat initX = GLfloat(sposition.x), newX = initX, intervalY = 0.f;
 		int num_newline = 1;
 
-		glBindVertexArray(GLM::m_vao[GLM::SHAPE_PLANE]);
-
 		// Iterate all character
-		if (_printUnicode) {
+		if (pText->printWide_) {
 			std::wstring::const_iterator letter;
 			for (letter = c_wcontent.begin(); letter != c_wcontent.end(); ++letter)
 			{
@@ -556,8 +592,8 @@ void GraphicSystem::Render(Font* _font, Text*_text, Transform* _transform, bool 
 				}
 
 				else {
-					Character character = _font->m_data[*letter];
-					RenderCharacter(character, s_position, s_scale, newX, intervalY);
+					Character character = pFont->data_[*letter];
+					RenderCharacter(character, sposition, sscale, newX, intervalY);
 				}
 			}
 		}
@@ -576,85 +612,20 @@ void GraphicSystem::Render(Font* _font, Text*_text, Transform* _transform, bool 
 				}
 
 				else {
-					Character character = _font->m_data[*letter];
-					RenderCharacter(character, s_position, s_scale, newX, intervalY);
+					Character character = pFont->data_[*letter];
+					RenderCharacter(character, sposition, sscale, newX, intervalY);
 				}
 			}
 		}
-
-		glBindVertexArray(0);
 	}
 }
 
 
-void GraphicSystem::Render(const Mesh* _pMesh)
+void GraphicSystem::Render(const Mesh* pMesh, unsigned drawMode)
 {
-	m_vertexArray.clear();
-	m_vertexArray.reserve(_pMesh->GetPointCount());
-	for (unsigned index = 0; index < _pMesh->GetPointCount(); ++index)
-		m_vertexArray.push_back(jeVertex{_pMesh->GetPoint(index), _pMesh->GetUV(index), _pMesh->GetNormal(index)});
-	
-	switch (_pMesh->m_shape)
-	{
-	case Mesh::MESH_NONE:
-		Render(_pMesh->m_vao, _pMesh->m_vbo, _pMesh->m_ebo, m_vertexArray, _pMesh->GetIndices(), _pMesh->m_drawMode);
-		break;
-
-	case Mesh::MESH_POINT:
-		Render(GLM::m_vao[GLM::SHAPE_POINT], GLM::m_vbo[GLM::SHAPE_POINT], GLM::m_ebo[GLM::SHAPE_POINT],
-			m_vertexArray, _pMesh->GetIndices(), _pMesh->m_drawMode);
-		break;
-
-	case Mesh::MESH_RECT:
-		Render(GLM::m_vao[GLM::SHAPE_PLANE], GLM::m_vbo[GLM::SHAPE_PLANE], GLM::m_ebo[GLM::SHAPE_PLANE],
-			m_vertexArray, _pMesh->GetIndices(), _pMesh->m_drawMode);
-		break;
-
-	case Mesh::MESH_CROSSRECT:
-		Render(GLM::m_vao[GLM::SHAPE_PLANE3D], GLM::m_vbo[GLM::SHAPE_PLANE3D], GLM::m_ebo[GLM::SHAPE_PLANE3D],
-			m_vertexArray, _pMesh->GetIndices(), _pMesh->m_drawMode);
-		break;
-
-	case Mesh::MESH_CUBE:
-		Render(GLM::m_vao[GLM::SHAPE_CUBE], GLM::m_vbo[GLM::SHAPE_CUBE], GLM::m_ebo[GLM::SHAPE_CUBE],
-			m_vertexArray, _pMesh->GetIndices(), _pMesh->m_drawMode);
-		break;
-
-	case Mesh::MESH_TETRAHEDRON:
-		Render(GLM::m_vao[GLM::SHAPE_CONE], GLM::m_vbo[GLM::SHAPE_CONE], GLM::m_ebo[GLM::SHAPE_CONE], 
-			m_vertexArray, _pMesh->GetIndices(), _pMesh->m_drawMode);
-		break;
-
-	default:
-		break;
-	}
-}
-
-void GraphicSystem::Render(unsigned _vao, unsigned _vbo, unsigned _ebo, 
-	const Vertexes& _vertexes, const Indices& _indices, unsigned _drawMode)
-{
-	// This part actual render
-	glBindVertexArray(_vao);
-	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(jeVertex) * _vertexes.size(),
-	    static_cast<const void*>(&_vertexes[0]), GL_DYNAMIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(jeVertex), reinterpret_cast<void*>(offsetof(jeVertex, jeVertex::position)));
-	glEnableVertexAttribArray(0);
-
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(jeVertex), reinterpret_cast<void*>(offsetof(jeVertex, jeVertex::uv)));
-	glEnableVertexAttribArray(1);
-
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(jeVertex), reinterpret_cast<void*>(offsetof(jeVertex, jeVertex::normal)));
-	glEnableVertexAttribArray(2);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * _indices.size(),
-		static_cast<const void*>(&_indices[0]), GL_DYNAMIC_DRAW);
-
-	glDrawElements(_drawMode, static_cast<GLsizei>(_indices.size()), GL_UNSIGNED_INT, nullptr);
+	glBindVertexArray(pMesh->vao_);
+	glDrawElements(drawMode, unsigned(pMesh->GetIndiceCount()), GL_UNSIGNED_INT, nullptr);
 	glBindVertexArray(0);
 }
-
 
 jeEnd

@@ -18,7 +18,14 @@ class CameraController : public CustomComponent
 	friend class ComponentManager;
 	friend class CameraControllerBuilder;
 
+	enum CameraMode { CAMERA_FREE, CAMERA_ORBIT };
+
 public:
+
+	void FreeMovingCamera(float dt);
+	void OrbitingCamera(float dt);
+
+	CameraMode mode_ = CAMERA_FREE;
 
 private:
 
@@ -28,15 +35,14 @@ private:
 	void Register() override;
 	void Load(CR_RJValue _data) override;
 	void Init() override;
-	void Update(const float _dt) override;
+	void Update(float dt) override;
 	void Close() override;
 	void Unload() override;
 	bool OnMessage(Telegram& msg) override { msg; return false; }
 
 	Camera* m_camera;
-	vec3 position, m_target;
 
-	void EditorUpdate(const float _dt) override;
+	void EditorUpdate(float dt) override;
 };
 
 jeDeclareCustomComponentBuilder(CameraController);

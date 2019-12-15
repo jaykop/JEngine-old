@@ -12,22 +12,22 @@ class Material : public Component {
 
 public:
 
-    int diffuse, specular;
-    float shininess;
+    int diffuse_, specular_;
+    float shininess_;
 
 private:
 
-    Material(Object* _pOwner);
-    ~Material();
-    void operator= (const Material& _copy);
+    Material(Object* pOwner);
+	virtual ~Material();
+    void operator= (const Material& copy);
 
     Material() = delete;
-    Material(const Material& /*_copy*/) = delete;
+    Material(const Material& /*copy*/) = delete;
 
-    void Load(CR_RJValue _data) override;
+    void Load(CR_RJValue data) override;
     void Register() override {};
 
-    void EditorUpdate(const float _dt) override;
+    void EditorUpdate(float dt) override;
 };
 
 jeDeclareComponentBuilder(Material);

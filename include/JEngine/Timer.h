@@ -11,7 +11,7 @@ class Timer {
 
 public:
 
-	Timer():m_time(0.f) {};
+	Timer():time_(0.f) {};
 	~Timer() {};
 
 	void	Start(void);
@@ -21,7 +21,7 @@ public:
 
 private:
 
-	float m_time;
+	float time_;
 
 	Timer(Timer&&) = delete;
 	Timer(const Timer&) = delete;

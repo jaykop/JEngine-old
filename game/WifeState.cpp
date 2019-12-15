@@ -12,8 +12,8 @@ jeDefineCustomComponentBuilder(GoToBathroom);
 /////////////////////////////////////////////////////////////////////////
 // Global wife state
 /////////////////////////////////////////////////////////////////////////
-WifeState::WifeState(Object* _pObject)
-    :CustomComponent(_pObject)
+WifeState::WifeState(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void WifeState::Register()
@@ -34,7 +34,7 @@ void WifeState::Init()
 	m_wifeTalks->AddComponent<Transform>();
 	m_wifeTalks->AddComponent<Text>();
 	m_pTalkTransform = m_wifeTalks->GetComponent<Transform>();
-	m_pTalkTransform->scale.Set(.15f, .15f, 0.f);
+	m_pTalkTransform->scale_.Set(.15f, .15f, 0.f);
 	m_talkOffset.Set(15.f, 0.f, 1.f);
 	m_talkText = m_wifeTalks->GetComponent<Text>();
 	m_talkText->Register();
@@ -43,11 +43,11 @@ void WifeState::Init()
 	// Set font
 	m_talkText->pFont = ASSET::GetFont("Default");
 
-	m_pTalkTransform->position.Set(
-		m_pTransform->position + m_talkOffset);
+	m_pTalkTransform->position_.Set(
+		m_pTransform->position_ + m_talkOffset);
 }
 
-void WifeState::Update(const float /*_dt*/)
+void WifeState::Update(const float /*dt*/)
 {}
 
 void WifeState::Close()
@@ -70,8 +70,8 @@ bool WifeState::OnMessage(Telegram& msg)
 /////////////////////////////////////////////////////////////////////////
 // Housework state
 /////////////////////////////////////////////////////////////////////////
-DoHousework::DoHousework(Object* _pObject)
-    :CustomComponent(_pObject)
+DoHousework::DoHousework(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void DoHousework::Register()
@@ -89,7 +89,7 @@ void DoHousework::Init()
 		m_globalState->m_content, m_globalState->m_chores, m_globalState->m_natureCalling);
 }
 
-void DoHousework::Update(const float /*_dt*/)
+void DoHousework::Update(const float /*dt*/)
 {
 	m_globalState->m_natureCalling++;
 	m_globalState->m_chores--;
@@ -114,8 +114,8 @@ bool DoHousework::OnMessage(Telegram& /*msg*/)
 /////////////////////////////////////////////////////////////////////////
 // Cook Stew state
 /////////////////////////////////////////////////////////////////////////
-CookStew::CookStew(Object* _pObject)
-    :CustomComponent(_pObject)
+CookStew::CookStew(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void CookStew::Register()
@@ -142,7 +142,7 @@ void CookStew::Init()
     }
 }
 
-void CookStew::Update(const float /*_dt*/)
+void CookStew::Update(const float /*dt*/)
 {}
 
 void CookStew::Close()
@@ -155,7 +155,7 @@ bool CookStew::OnMessage(Telegram& msg)
         //let miner know the stew is ready
         DISPATCHER::DispatchMessage(0.0,
             GetOwner()->GetId(),
-			CONTAINER->GetObject("Miner")->GetId(),
+			OBJECT::pContainer_->GetObject("Miner")->GetId(),
             "StewReady",
             nullptr);
 
@@ -172,8 +172,8 @@ bool CookStew::OnMessage(Telegram& msg)
 /////////////////////////////////////////////////////////////////////////
 // GoToBathroom state
 /////////////////////////////////////////////////////////////////////////
-GoToBathroom::GoToBathroom(Object* _pObject)
-    :CustomComponent(_pObject)
+GoToBathroom::GoToBathroom(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void GoToBathroom::Register()
@@ -195,7 +195,7 @@ void GoToBathroom::Init()
 		m_globalState->m_content, m_globalState->m_chores, m_globalState->m_natureCalling);
 }
 
-void GoToBathroom::Update(const float /*_dt*/)
+void GoToBathroom::Update(const float /*dt*/)
 {
 	if (!m_globalState->m_natureCalling)
 		GetOwner()->ChangeState<DoHousework>();

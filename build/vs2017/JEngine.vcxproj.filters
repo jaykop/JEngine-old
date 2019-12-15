@@ -163,9 +163,6 @@
     <ClInclude Include="..\..\include\JEngine\Particle.h">
       <Filter>System\GraphicComponent</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\Sprite.h">
-      <Filter>System\GraphicComponent</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\JEngine\Text.h">
       <Filter>System\GraphicComponent</Filter>
     </ClInclude>
@@ -299,9 +296,6 @@
     <ClCompile Include="..\..\src\JEngine\MessageDispatcher.cpp">
       <Filter>System\Behavior</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\SystemBlock.cpp">
-      <Filter>System</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\JEngine\MathUtils_mat4.cpp">
       <Filter>Utils\Math</Filter>
     </ClCompile>
@@ -338,9 +332,6 @@
     <ClCompile Include="..\..\src\JEngine\Particle.cpp">
       <Filter>System\GraphicComponent</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\JEngine\Sprite.cpp">
-      <Filter>System\GraphicComponent</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\JEngine\Text.cpp">
       <Filter>System\GraphicComponent</Filter>
     </ClCompile>
@@ -366,9 +357,6 @@
     </Filter>
     <Filter Include="Core\Object">
       <UniqueIdentifier>{8f6f0a2a-fc88-4e1b-82c1-3fd3a7dfc20f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\State">
-      <UniqueIdentifier>{d402ee56-8d56-42d6-a6d0-91ea2c15e0ae}</UniqueIdentifier>
     </Filter>
     <Filter Include="Utils\Debug">
       <UniqueIdentifier>{2d0a1f13-24f1-471f-9753-19ec9fc668d2}</UniqueIdentifier>
@@ -420,6 +408,9 @@
     </Filter>
     <Filter Include="System\Sound">
       <UniqueIdentifier>{31ba595e-3307-4569-b706-ba218c23f96d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\State">
+      <UniqueIdentifier>{d402ee56-8d56-42d6-a6d0-91ea2c15e0ae}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

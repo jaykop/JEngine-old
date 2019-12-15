@@ -1,57 +1,106 @@
 #include "Mesh.h"
-#include "GraphicSystem.h"
+#include "AssetManager.h"
+#include "GLManager.h"
 
 jeBegin
 
-Mesh::Mesh() : m_shape(MESH_NONE), m_drawMode(GL_TRIANGLES),
-	m_vao(0), m_vbo(0), m_ebo(0) {}
+Mesh::Mesh() : vao_(0), vbo_(0), ebo_(0), 
+	builtIn_(false), mainTexture_(0), drawMode_(GL_TRIANGLES) {}
 
-Mesh::~Mesh()
-{
+Mesh::~Mesh() {
+
 	ClearVertexes();
 
-	if (m_shape == MESH_NONE)
-	{
-		glDeleteVertexArrays(1, &m_vao);
-		glDeleteBuffers(1, &m_vbo);
-		glDeleteBuffers(1, &m_ebo);
-	}
+	// Remove textures
+	textureMap_.clear();
+
+	// Delete buffers
+	glDeleteVertexArrays(1, &vao_);
+	glDeleteBuffers(1, &vbo_);
+	glDeleteBuffers(1, &ebo_);
 }
 
-void Mesh::AddPoint(CR_Vec3 _point) { m_points.push_back(_point); }
+void Mesh::AddPoint(CR_Vec3 point) { points_.push_back(point); }
 
-void Mesh::AddTextureUV(CR_Vec2 _uv) { m_UVs.push_back(_uv); }
+void Mesh::AddTextureUV(CR_Vec2 uv) { textureUVs_.push_back(uv); }
 
-void Mesh::AddNormal(CR_Vec3 _normal) { m_normals.push_back(_normal); }
+void Mesh::AddNormal(CR_Vec3 normal) { normals_.push_back(normal); }
 
-void Mesh::AddIndice(unsigned _indice) { m_indices.push_back(_indice); }
+void Mesh::AddIndice(jeIndex indice) { indices_.push_back(indice); }
 
-vec3 Mesh::GetPoint(unsigned _index) const { return m_points.at(_index); }
+vec3 Mesh::GetPoint(unsigned index) const { return points_.at(index); }
 
-vec2 Mesh::GetUV(unsigned _index) const { return m_UVs.at(_index); }
+vec2 Mesh::GetUV(unsigned index) const { return textureUVs_.at(index); }
 
-vec3 Mesh::GetNormal(unsigned _index) const { return m_normals.at(_index); }
+vec3 Mesh::GetNormal(unsigned index) const { return normals_.at(index); }
 
-unsigned Mesh::GetIndice(unsigned _index) const { return m_indices.at(_index); }
+Mesh::jeIndex Mesh::GetIndice(unsigned index) const { return indices_.at(index); }
 
-std::size_t Mesh::GetPointCount() const { return m_points.size(); }
+std::size_t Mesh::GetPointCount() const { return points_.size(); }
 
-const std::vector<unsigned>& Mesh::GetIndices() const { return m_indices; }
+std::size_t Mesh::GetIndiceCount() const { return indices_.size(); }
 
-void Mesh::ClearPoints() { m_points.clear(); }
+const std::vector<vec3>& Mesh::GetNormals() const { return normals_; }
 
-void Mesh::ClearNormals() { m_normals.clear(); }
+const std::vector<Mesh::jeIndex>& Mesh::GetIndices() const { return indices_; }
 
-void Mesh::ClearUVs() { m_UVs.clear(); }
+void Mesh::ClearPoints() { points_.clear(); }
 
-void Mesh::ClearIndices() { m_indices.clear(); }
+void Mesh::ClearNormals() { normals_.clear(); }
 
-void Mesh::ClearVertexes()
-{
+void Mesh::ClearUVs() { textureUVs_.clear(); }
+
+void Mesh::ClearIndices() { indices_.clear(); }
+
+void Mesh::ClearVertexes() {
+
 	ClearPoints();
 	ClearUVs();
 	ClearNormals();
 	ClearIndices();
+}
+
+void Mesh::AddTexture(const char *key)
+{
+	auto found = textureMap_.find(key);
+	if (found != textureMap_.end())
+		jeDebugPrint("!Model - Existing texture: %s.\n", key);
+
+	else {
+		unsigned newTexture = ASSET::GetTexture(key);
+
+		if (textureMap_.empty())
+			mainTexture_ = newTexture;
+
+		textureMap_.insert(
+			TextureMap::value_type(
+				key, newTexture));
+	}
+}
+
+void Mesh::RemoveTexture(const char *key)
+{
+	textureMap_.erase(key);
+}
+
+void Mesh::SetCurrentTexutre(const char *key)
+{
+	mainTexture_ = GetTexutre(key);
+}
+
+unsigned Mesh::GetCurrentTexutre() const
+{
+	return mainTexture_;
+}
+
+unsigned Mesh::GetTexutre(const char *key)
+{
+	auto found = textureMap_.find(key);
+	if (found != textureMap_.end())
+		return found->second;
+
+	jeDebugPrint("!Model - No such name of enrolled texture: %s.\n", key);
+	return 0;
 }
 
 
@@ -61,9 +110,10 @@ Mesh* Mesh::CreatePoint()
 
 	pPoint->AddPoint(vec3(0, 0));
 	pPoint->AddTextureUV(vec2(0, 0));
-	pPoint->AddNormal(vec3(0, 0, 1.f));
-	pPoint->AddIndice(0);
+	pPoint->AddNormal(vec3(0, 0, 0.f));
+	pPoint->AddIndice({ 0,0,0 });
 
+	GLM::DescribeVertex(pPoint);
 	return pPoint;
 }
 
@@ -72,27 +122,25 @@ Mesh* Mesh::CreateRect()
 	Mesh *pRect = new Mesh;
 
 	pRect->AddPoint(vec3(-.5f, .5f, 0.f));
-	pRect->AddPoint(vec3(.5f, .5f, 0.f));
-	pRect->AddPoint(vec3(.5f, -.5f, 0.f));
 	pRect->AddPoint(vec3(-.5f, -.5f, 0.f));
+	pRect->AddPoint(vec3(.5f, -.5f, 0.f));
+	pRect->AddPoint(vec3(.5f, .5f, 0.f));
 
 	pRect->AddTextureUV(vec2(0.f, 0.f));
-	pRect->AddTextureUV(vec2(1.f, 0.f));
-	pRect->AddTextureUV(vec2(1.f, 1.f));
 	pRect->AddTextureUV(vec2(0.f, 1.f));
+	pRect->AddTextureUV(vec2(1.f, 1.f));
+	pRect->AddTextureUV(vec2(1.f, 0.f));
 
 	pRect->AddNormal(vec3(0, 0, 1.f));
-	pRect->AddNormal(vec3(0, 0, 1.f));
-	pRect->AddNormal(vec3(0, 0, 1.f));
-	pRect->AddNormal(vec3(0, 0, 1.f));
 
-	pRect->AddIndice(0);
-	pRect->AddIndice(2);
-	pRect->AddIndice(3);
-	pRect->AddIndice(2);
-	pRect->AddIndice(0);
-	pRect->AddIndice(1);
+	pRect->AddIndice({ 2, 2, 0 });
+	pRect->AddIndice({ 0, 0, 0 });
+	pRect->AddIndice({ 1, 1, 0 });
+	pRect->AddIndice({ 2, 2, 0 });
+	pRect->AddIndice({ 3, 3, 0 });
+	pRect->AddIndice({ 0, 0, 0 });
 
+	GLM::DescribeVertex(pRect);
 	return pRect;
 }
 
@@ -139,27 +187,28 @@ Mesh* Mesh::CreateCrossRect()
 	pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
 	pCrossRect->AddNormal(vec3(0.0f, 0.0f, 1.0f));
 
-	pCrossRect->AddIndice(0);
-	pCrossRect->AddIndice(2);
-	pCrossRect->AddIndice(3);
-	pCrossRect->AddIndice(2);
-	pCrossRect->AddIndice(0);
-	pCrossRect->AddIndice(1);
+	pCrossRect->AddIndice({ 0, 0, 0 });
+	pCrossRect->AddIndice({ 2, 2, 2 });
+	pCrossRect->AddIndice({ 3, 3, 3 });
+	pCrossRect->AddIndice({ 2, 2, 2 });
+	pCrossRect->AddIndice({ 0, 0, 0 });
+	pCrossRect->AddIndice({ 1, 1, 1 });
 
-	pCrossRect->AddIndice(5);
-	pCrossRect->AddIndice(7);
-	pCrossRect->AddIndice(6);
-	pCrossRect->AddIndice(7);
-	pCrossRect->AddIndice(5);
-	pCrossRect->AddIndice(4);
+	pCrossRect->AddIndice({ 5, 5, 5 });
+	pCrossRect->AddIndice({ 7, 7, 7 });
+	pCrossRect->AddIndice({ 6, 6, 6 });
+	pCrossRect->AddIndice({ 7, 7, 7 });
+	pCrossRect->AddIndice({ 5, 5, 5 });
+	pCrossRect->AddIndice({ 4, 4, 4 });
 
-	pCrossRect->AddIndice(8);
-	pCrossRect->AddIndice(10);
-	pCrossRect->AddIndice(11);
-	pCrossRect->AddIndice(10);
-	pCrossRect->AddIndice(8);
-	pCrossRect->AddIndice(9);
+	pCrossRect->AddIndice({ 8, 8, 8 });
+	pCrossRect->AddIndice({ 10, 10, 10 });
+	pCrossRect->AddIndice({ 11, 11, 11 });
+	pCrossRect->AddIndice({ 10, 10, 10 });
+	pCrossRect->AddIndice({ 8, 8, 8 });
+	pCrossRect->AddIndice({ 9, 9, 9 });
 
+	GLM::DescribeVertex(pCrossRect);
 	return pCrossRect;
 }
 
@@ -171,27 +220,22 @@ Mesh* Mesh::CreateCube()
 	pCube->AddPoint(vec3(.5f, .5f, .5f));
 	pCube->AddPoint(vec3(.5f, -.5f, .5f));
 	pCube->AddPoint(vec3(-.5f, -.5f, .5f));
-
 	pCube->AddPoint(vec3(.5f, .5f, -.5f));
 	pCube->AddPoint(vec3(-.5f, .5f, -.5f));
 	pCube->AddPoint(vec3(-.5f, -.5f, -.5f));
 	pCube->AddPoint(vec3(.5f, -.5f, -.5f));
-
 	pCube->AddPoint(vec3(-.5f, .5f, -.5f));
 	pCube->AddPoint(vec3(-.5f, .5f, .5f));
 	pCube->AddPoint(vec3(-.5f, -.5f, .5f));
 	pCube->AddPoint(vec3(-.5f, -.5f, -.5f));
-
 	pCube->AddPoint(vec3(.5f, .5f, .5f));
 	pCube->AddPoint(vec3(.5f, .5f, -.5f));
 	pCube->AddPoint(vec3(.5f, -.5f, -.5f));
 	pCube->AddPoint(vec3(.5f, -.5f, .5f));
-
 	pCube->AddPoint(vec3(-.5f, -.5f, .5f));
 	pCube->AddPoint(vec3(.5f, -.5f, .5f));
 	pCube->AddPoint(vec3(.5f, -.5f, -.5f));
 	pCube->AddPoint(vec3(-.5f, -.5f, -.5f));
-
 	pCube->AddPoint(vec3(-.5f, .5f, -.5f));
 	pCube->AddPoint(vec3(.5f, .5f, -.5f));
 	pCube->AddPoint(vec3(.5f, .5f, .5f));
@@ -201,150 +245,149 @@ Mesh* Mesh::CreateCube()
 	pCube->AddTextureUV(vec2(.5f, .25f));
 	pCube->AddTextureUV(vec2(.5f, .5f));
 	pCube->AddTextureUV(vec2(.25f, .5f));
-
 	pCube->AddTextureUV(vec2(.75f, .25f));
 	pCube->AddTextureUV(vec2(1.f, .25f));
 	pCube->AddTextureUV(vec2(1.f, .5f));
 	pCube->AddTextureUV(vec2(.75f, .5f));
-
 	pCube->AddTextureUV(vec2(0.f, .25f));
-	pCube->AddTextureUV(vec2(.25f, .25f));
-	pCube->AddTextureUV(vec2(.25f, .5f));
 	pCube->AddTextureUV(vec2(0.f, .5f));
-
-	pCube->AddTextureUV(vec2(.5f, .25f));
-	pCube->AddTextureUV(vec2(.75f, .25f));
-	pCube->AddTextureUV(vec2(.75f, .5f));
-	pCube->AddTextureUV(vec2(.5f, .5f));
-
-	pCube->AddTextureUV(vec2(.25f, .5f));
-	pCube->AddTextureUV(vec2(.5f, .5f));
 	pCube->AddTextureUV(vec2(.5f, .75f));
 	pCube->AddTextureUV(vec2(.25f, .75f));
-
 	pCube->AddTextureUV(vec2(.25f, 0.f));
 	pCube->AddTextureUV(vec2(.5f, 0.f));
-	pCube->AddTextureUV(vec2(.5f, .25f));
-	pCube->AddTextureUV(vec2(.25f, .25f));
 
 	pCube->AddNormal(vec3(0.0f, 0.0f, 1.0f));
-	pCube->AddNormal(vec3(0.0f, 0.0f, 1.0f));
-	pCube->AddNormal(vec3(0.0f, 0.0f, 1.0f));
-	pCube->AddNormal(vec3(0.0f, 0.0f, 1.0f));
-
 	pCube->AddNormal(vec3(0.0f, 0.0f, -1.0f));
-	pCube->AddNormal(vec3(0.0f, 0.0f, -1.0f));
-	pCube->AddNormal(vec3(0.0f, 0.0f, -1.0f));
-	pCube->AddNormal(vec3(0.0f, 0.0f, -1.0f));
-
 	pCube->AddNormal(vec3(-1.0f, 0.0f, 0.0f));
-	pCube->AddNormal(vec3(-1.0f, 0.0f, 0.0f));
-	pCube->AddNormal(vec3(-1.0f, 0.0f, 0.0f));
-	pCube->AddNormal(vec3(-1.0f, 0.0f, 0.0f));
-
 	pCube->AddNormal(vec3(1.0f, 0.0f, 0.0f));
-	pCube->AddNormal(vec3(1.0f, 0.0f, 0.0f));
-	pCube->AddNormal(vec3(1.0f, 0.0f, 0.0f));
-	pCube->AddNormal(vec3(1.0f, 0.0f, 0.0f));
-
 	pCube->AddNormal(vec3(0.0f, -1.0f, 0.0f));
-	pCube->AddNormal(vec3(0.0f, -1.0f, 0.0f));
-	pCube->AddNormal(vec3(0.0f, -1.0f, 0.0f));
-	pCube->AddNormal(vec3(0.0f, -1.0f, 0.0f));
-
-	pCube->AddNormal(vec3(0.0f, 1.0f, 0.0f));
-	pCube->AddNormal(vec3(0.0f, 1.0f, 0.0f));
-	pCube->AddNormal(vec3(0.0f, 1.0f, 0.0f));
 	pCube->AddNormal(vec3(0.0f, 1.0f, 0.0f));
 
-	pCube->AddIndice(3);
-	pCube->AddIndice(0);
-	pCube->AddIndice(2);
-	pCube->AddIndice(1);
-	pCube->AddIndice(2);
-	pCube->AddIndice(0);
+	pCube->AddIndice({ 1 ,1, 0 });
+	pCube->AddIndice({ 0, 0, 0 });
+	pCube->AddIndice({ 2 ,2, 0 });
+	pCube->AddIndice({ 3, 3, 0 });
+	pCube->AddIndice({ 2 ,2, 0 });
+	pCube->AddIndice({ 0, 0, 0 });
 
-	pCube->AddIndice(6);
-	pCube->AddIndice(7);
-	pCube->AddIndice(5);
-	pCube->AddIndice(4);
-	pCube->AddIndice(5);
-	pCube->AddIndice(7);
+	pCube->AddIndice({ 5 ,5, 1 });
+	pCube->AddIndice({ 7 ,7, 1 });
+	pCube->AddIndice({ 6, 6, 1 });
+	pCube->AddIndice({ 7 ,7, 1 });
+	pCube->AddIndice({ 5 ,5, 1 });
+	pCube->AddIndice({ 4 ,4, 1 });
 
-	pCube->AddIndice(8);
-	pCube->AddIndice(10);
-	pCube->AddIndice(11);
-	pCube->AddIndice(10);
-	pCube->AddIndice(8);
-	pCube->AddIndice(9);
+	pCube->AddIndice({ 11, 9, 2 });
+	pCube->AddIndice({ 10 ,3, 2 });
+	pCube->AddIndice({ 8 ,8, 2 });
+	pCube->AddIndice({ 9, 0, 2 });
+	pCube->AddIndice({ 8 ,8, 2 });
+	pCube->AddIndice({ 10 ,3, 2 });
 
-	pCube->AddIndice(14);
-	pCube->AddIndice(15);
-	pCube->AddIndice(13);
-	pCube->AddIndice(12);
-	pCube->AddIndice(13);
-	pCube->AddIndice(15);
+	pCube->AddIndice({ 13 ,4, 3 });
+	pCube->AddIndice({ 15, 2, 3 });
+	pCube->AddIndice({ 14, 7, 3 });
+	pCube->AddIndice({ 15 ,2, 3 });
+	pCube->AddIndice({ 13, 4, 3 });
+	pCube->AddIndice({ 12 ,1, 3 });
 
-	pCube->AddIndice(16);
-	pCube->AddIndice(18);
-	pCube->AddIndice(19);
-	pCube->AddIndice(18);
-	pCube->AddIndice(16);
-	pCube->AddIndice(17);
+	pCube->AddIndice({ 19, 11, 4 });
+	pCube->AddIndice({ 18, 10, 4 });
+	pCube->AddIndice({ 16, 3, 4 });
+	pCube->AddIndice({ 17, 2, 4 });
+	pCube->AddIndice({ 16, 3, 4 });
+	pCube->AddIndice({ 18, 10, 4 });
 
-	pCube->AddIndice(20);
-	pCube->AddIndice(22);
-	pCube->AddIndice(23);
-	pCube->AddIndice(22);
-	pCube->AddIndice(20);
-	pCube->AddIndice(21);
+	pCube->AddIndice({ 23, 0, 5 });
+	pCube->AddIndice({ 22, 1, 5 });
+	pCube->AddIndice({ 20, 12, 5 });
+	pCube->AddIndice({ 21, 13, 5 });
+	pCube->AddIndice({ 20, 12, 5 });
+	pCube->AddIndice({ 22, 1, 5 });
 
+	GLM::DescribeVertex(pCube);
 	return pCube;
 }
 
 Mesh* Mesh::CreateTetrahedron()
 {
-	// TODO
 	Mesh *pTetrahedron = new Mesh;
 
-	//pTetrahedron->AddPoint();
-	//pTetrahedron->AddTextureUV();
-	//pTetrahedron->AddNormal();
+	const static float height = sqrt(3.f) / 2.f;
 
+	pTetrahedron->AddPoint(vec3(0.f, 1.f, 0.f));
+	pTetrahedron->AddPoint(vec3(0.f, 0.f, -height));
+	pTetrahedron->AddPoint(vec3(-.5f, 0.f, .5f));
+	pTetrahedron->AddPoint(vec3(.5f, 0.f, .5f));
+
+	pTetrahedron->AddTextureUV(vec2(0, 1));
+	pTetrahedron->AddTextureUV(vec2(0.5f, 1));
+	pTetrahedron->AddTextureUV(vec2(1, 1));
+	pTetrahedron->AddTextureUV(vec2(0.25f, 1 - height * .5f));
+	pTetrahedron->AddTextureUV(vec2(0.75f, 1 - height * .5f));
+	pTetrahedron->AddTextureUV(vec2(0.5f, 1 - height));
+
+	// TODO Get proper normals
+	pTetrahedron->AddNormal(vec3(0, 0, 0));
+
+	pTetrahedron->AddIndice({ 2, 3, 0 });
+	pTetrahedron->AddIndice({ 3, 4, 0 });
+	pTetrahedron->AddIndice({ 0, 5, 0 });
+
+	pTetrahedron->AddIndice({ 3, 4, 0 });
+	pTetrahedron->AddIndice({ 1, 1, 0 });
+	pTetrahedron->AddIndice({ 0, 2, 0 });
+
+	pTetrahedron->AddIndice({ 1, 1, 0 });
+	pTetrahedron->AddIndice({ 2, 3, 0 });
+	pTetrahedron->AddIndice({ 0, 0, 0 });
+
+	pTetrahedron->AddIndice({ 1, 1, 0 });
+	pTetrahedron->AddIndice({ 3, 4, 0 });
+	pTetrahedron->AddIndice({ 2, 3, 0 });
+
+	GLM::DescribeVertex(pTetrahedron);
 	return pTetrahedron;
 }
 
-void Mesh::CreateCustomObject()
+Mesh* Mesh::CreateWireframeBox()
 {
-	glGenVertexArrays(1, &m_vao);
-	glGenBuffers(1, &m_vbo);
-	glGenBuffers(1, &m_ebo);
+	Mesh*  pLineBox = new Mesh;
 
-	std::vector<GraphicSystem::jeVertex> vertices;
+	pLineBox->AddPoint(vec3(-.5f, .5f, -.5f));
+	pLineBox->AddPoint(vec3(-.5f, .5f, .5f));
+	pLineBox->AddPoint(vec3(.5f, .5f, .5f));
+	pLineBox->AddPoint(vec3(.5f, .5f, -.5f));
 
-	for (std::size_t index = 0; index < GetPointCount(); ++index)
-		vertices.push_back({ m_points[index], m_UVs[index], m_normals[index] });
-	
-	glBindVertexArray(m_vao);
-	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GraphicSystem::jeVertex),
-		reinterpret_cast<const void*>(&vertices[0]), GL_DYNAMIC_DRAW);
+	pLineBox->AddPoint(vec3(-.5f, -.5f, -.5f));
+	pLineBox->AddPoint(vec3(-.5f, -.5f, .5f));
+	pLineBox->AddPoint(vec3(.5f, -.5f, .5f));
+	pLineBox->AddPoint(vec3(.5f, -.5f, -.5f));
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GraphicSystem::jeVertex),
-		reinterpret_cast<void*>(offsetof(GraphicSystem::jeVertex, jeVertex::position)));
-	glEnableVertexAttribArray(0);
+	pLineBox->AddTextureUV(vec2::ZERO);
+	pLineBox->AddNormal(vec3::ZERO);
 
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(GraphicSystem::jeVertex),
-		reinterpret_cast<void*>(offsetof(GraphicSystem::jeVertex, jeVertex::uv)));
-	glEnableVertexAttribArray(1);
+	pLineBox->AddIndice({ 0, 0, 0 });
+	pLineBox->AddIndice({ 4, 0, 0 });
+	pLineBox->AddIndice({ 5, 0, 0 });
+	pLineBox->AddIndice({ 1, 0, 0 });
+	pLineBox->AddIndice({ 2, 0, 0 });
+	pLineBox->AddIndice({ 6, 0, 0 });
+	pLineBox->AddIndice({ 7, 0, 0 });
+	pLineBox->AddIndice({ 3, 0, 0 });
+	pLineBox->AddIndice({ 0, 0, 0 });
+	pLineBox->AddIndice({ 1, 0, 0 });
+	pLineBox->AddIndice({ 2, 0, 0 });
+	pLineBox->AddIndice({ 3, 0, 0 });
+	pLineBox->AddIndice({ 7, 0, 0 });
+	pLineBox->AddIndice({ 4, 0, 0 });
+	pLineBox->AddIndice({ 5, 0, 0 });
+	pLineBox->AddIndice({ 6, 0, 0 });
 
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(GraphicSystem::jeVertex),
-		reinterpret_cast<void*>(offsetof(GraphicSystem::jeVertex, jeVertex::normal)));
-	glEnableVertexAttribArray(2);
+	GLM::DescribeVertex(pLineBox);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * m_indices.size(),
-		static_cast<const void*>(&m_indices[0]), GL_DYNAMIC_DRAW);
+	return pLineBox;
 }
+
 
 jeEnd

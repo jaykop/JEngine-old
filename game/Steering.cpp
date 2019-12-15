@@ -18,8 +18,8 @@ void Truncate(vec3& vector, float _max)
 
 void ControlPosition(vec3& _position)
 {
-	static const float halfWidth = SYSTEM::GetGraphicSystem()->GetWidth() / 2.f;
-	static const float halfHeight = SYSTEM::GetGraphicSystem()->GetHeight() / 2.f;
+	static const float halfWidth = SYSTEM::pGraphic_->GetWidth() / 2.f;
+	static const float halfHeight = SYSTEM::pGraphic_->GetHeight() / 2.f;
 
 	if (_position.x > halfWidth)
 		_position.x = -halfWidth;
@@ -35,13 +35,13 @@ void ControlPosition(vec3& _position)
 
 }
 
-Steering::Steering(Object* _pObject)
-	:CustomComponent(_pObject)
+Steering::Steering(Object* pObject)
+	:CustomComponent(pObject)
 {}
 
 void Steering::Register()
 {
-	SYSTEM::GetBehaviorSystem()->AddBehavior(this);
+	SYSTEM::pBehavior_->AddBehavior(this);
 }
 
 void Steering::Load(CR_RJValue _data)
@@ -66,7 +66,7 @@ void Steering::Init()
 {
 	// Get owner's transform
 	m_transform = GetOwner()->GetComponent<Transform>();
-	zPos = m_transform->position.z;
+	zPos = m_transform->position_.z;
 
 	mass = 1.f;
 	maxSpeed = 50.f;
@@ -79,30 +79,30 @@ void Steering::Init()
 
 	// Setting for each behavior mode
 	if (m_behavior == pursuit)
-		m_evader = CONTAINER->GetObject("Seeker")->GetComponent<Steering>();
+		m_evader = OBJECT::pContainer_->GetObject("Seeker")->GetComponent<Steering>();
 
 	else if (m_behavior == evade)
-		m_pursuer = CONTAINER->GetObject("Pursuer")->GetComponent<Steering>();
+		m_pursuer = OBJECT::pContainer_->GetObject("Pursuer")->GetComponent<Steering>();
 
 	else if (m_behavior == wander)
 	{
-		m_circle = CONTAINER->GetObject("Circle");
+		m_circle = OBJECT::pContainer_->GetObject("Circle");
 		circleTransform = m_circle->GetComponent<Transform>();
-		wanderRadius = circleTransform->scale.x / 2.f;
+		wanderRadius = circleTransform->scale_.x / 2.f;
 	}
 
 	else if (m_behavior == obstacle_avoidance) {
 		
-		m_detection = CONTAINER->GetObject("PathBox");
+		m_detection = OBJECT::pContainer_->GetObject("PathBox");
 		
 		detectionTransform = m_detection->GetComponent<Transform>();
-		detectionTransform->scale.x = 5.f;
-		detectionTransform->scale.y = 1.f;
-		detectionTransform->position.x += detectionTransform->scale.x / 2.f;
+		detectionTransform->scale_.x = 5.f;
+		detectionTransform->scale_.y = 1.f;
+		detectionTransform->position_.x += detectionTransform->scale_.x / 2.f;
 
 		Model *pathBoxModel = m_detection->GetComponent<Model>();
 		pathBoxModel->SetParentToFollow(GetOwner());
-		pathBoxModel->projection = PROJECTION_PERSPECTIVE;
+		pathBoxModel->projection_ = PROJECTION_PERSPECTIVE;
 
 		for (int index = 0; index < 5; ++index)	{
 			FACTORY::CreateObject(("Obstacle " + std::to_string(index)).c_str());
@@ -110,15 +110,17 @@ void Steering::Init()
 			
 			newObstacle->AddComponent<Transform>();
 			Transform* transform = newObstacle->GetComponent<Transform>();
-			transform->position.Set(RAND::GetRandVec3(-50.f, -50.f, -1.f, 50.f, 50.f, -1.f));
+			transform->position_.Set(RAND::GetRandVec3(-50.f, -50.f, -1.f, 50.f, 50.f, -1.f));
 			float randomScale = RAND::GetRandomFloat(5.f, 15.f);
-			transform->scale.Set(randomScale, randomScale, 0.f);
+			transform->scale_.Set(randomScale, randomScale, 0.f);
 
 			newObstacle->AddComponent<Model>();
 			Model* model = newObstacle->GetComponent<Model>();
-			model->color.Set(1.f, 0.f, 0.f, 1.f);
-			model->AddTexture("circle");
-			model->projection = PROJECTION_PERSPECTIVE;
+			model->color_.Set(1.f, 0.f, 0.f, 1.f);
+			Mesh* newMesh = Mesh::CreateRect();
+			model->AddMesh(newMesh);
+			newMesh->AddTexture("circle");
+			model->projection_ = PROJECTION_PERSPECTIVE;
 
 			FACTORY::AddCreatedObject();
 
@@ -127,7 +129,7 @@ void Steering::Init()
 	}
 
 	// Get target transform
-	m_target = CONTAINER->GetObject("Target");
+	m_target = OBJECT::pContainer_->GetObject("Target");
 	targetTransform = m_target->GetComponent<Transform>();
 
 }
@@ -141,12 +143,12 @@ vec3 GetPerpendicular(const vec3& vector)
 	return result;
 }
 
-void Steering::Update(const float _dt)
+void Steering::Update(float dt)
 {
 	// By mouse
 	if (INPUT::KeyTriggered(JE_MOUSE_LEFT)) {
 		vec3 newPos(INPUT::GetOrhtoPosition().x, INPUT::GetOrhtoPosition().y, -1.f);
-		targetTransform->position.Set(newPos);
+		targetTransform->position_.Set(newPos);
 	}
 
 	if (INPUT::KeyTriggered(JE_SPACE))
@@ -159,11 +161,11 @@ void Steering::Update(const float _dt)
 	}
 
 	if (m_detection)
-		m_detection->GetComponent<Transform>()->position.z = -1.f;
+		m_detection->GetComponent<Transform>()->position_.z = -1.f;
 
 	// By keyboard
 	if (INPUT::KeyTriggered(JE_ENTER))
-		targetTransform->position.Set(
+		targetTransform->position_.Set(
 			Random::GetRandVec3(-350.f, -250.f, -1.f, 350.f, 250.f, -1.f));
 
 	if (m_behavior != none) {
@@ -175,23 +177,23 @@ void Steering::Update(const float _dt)
 
 		// Add force to velocity
 		vec3 acceleration = GetNormalize(steeringForce) / mass;
-		velocity += acceleration * _dt * maxSpeed;
+		velocity += acceleration * dt * maxSpeed;
 
 		// Limit the velocity magnitude
 		Truncate(velocity, maxSpeed);
 
 		// Update position
-		vec3 toAdd = velocity * _dt;
+		vec3 toAdd = velocity * dt;
 		toAdd.z = 0.f;
-		m_transform->position += toAdd;
-		m_transform->rotation = GetAngle(vec3::UNIT_X, velocity);
+		m_transform->position_ += toAdd;
+		m_transform->rotation_ = GetAngle(vec3::UNIT_X, velocity);
 
 		if (GetLengthSq(velocity) > 0.00000001) {
 			heading = GetNormalize(velocity);
 			side = GetPerpendicular(heading);
 		}
 
-		ControlPosition(m_transform->position);
+		ControlPosition(m_transform->position_);
 	}
 }
 

@@ -21,9 +21,9 @@ Contains Debug's macros in debug mode
 namespace DebugTools
 {
 	//These functios should NOT be called
-	bool Assert(int _expression, const char* _outputMessage,
-		const char* _functionName, const char* _fileName,
-		unsigned _lineNumber);
+	bool Assert(int expression, const char* outputMessage,
+		const char* functionName, const char* fileName,
+		unsigned lineNumber);
 
 	void CreateConsole(void);
 	void DestroyConsole(void);

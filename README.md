@@ -1,13 +1,12 @@
-*JEngine 3D Framework
-*Writter: 
-	J.Jeong(jaykop)
-*Description: 
-	3D game engine for personal project. 
-	Main purpose is to test graphic and A.I. techniques. 
-	Based on C++. 
-	Using OpenGL, SDL and IMGUI.
-*Technical Help: 
-	Jingyu.Lee, 
-	David.Ly, 
-	Ilkwon.Ha, 
-	Rudy.Castan
+**Description:**  
+This is a personal 3D game engine project.  
+The main purpose of this project is to test out new C++ syntax, graphic, A.I. techniques.  
+Based on C++, also using OpenGL, GLSL, SDL, and IMGUI. So far developed input, scene, component, factory, graphic engine and other small features.  
+Planning to import 3rd party audio, physics, obj-loader libraries.
+
+---
+**Technical Helps from:**  
+  - Rudy Castan
+  - Jingyu Lee
+  - Ilkwon Ha
+  - David Ly

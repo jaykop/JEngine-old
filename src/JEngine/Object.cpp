@@ -9,9 +9,9 @@
 
 jeBegin
 
-Object::Object(const char* _name)
-    :m_name(_name), m_active(true), m_pParent(nullptr),
-    m_id(ObjectFactory::m_registerNumber), m_showEditor(false)
+Object::Object(const char* name)
+    :name_(name), active_(true), pParent_(nullptr),
+    id_(ObjectFactory::registerNumber_), showEditor_(false)
 {}
 
 Object::~Object()
@@ -22,123 +22,123 @@ Object::~Object()
 
 unsigned Object::GetId() const
 {
-    return m_id;
+    return id_;
 }
 
 void Object::RegisterComponents()
 {
-    for (auto component : m_componentMap)
+    for (auto component : componentMap_)
         component.second->Register();
 }
 
 const std::string& Object::GetName(void) const
 {
-    return m_name;
+    return name_;
 }
 
-void Object::SetName(const char* _name)
+void Object::SetName(const char* name)
 {
-    m_name.assign(_name);
+    name_.assign(name);
 }
 
-void Object::AddChild(Object* _child)
+void Object::AddChild(Object* child)
 {
     // Find if there is the once
-    auto found = m_childObjs.find(_child->GetName());
+    auto found = childObjs_.find(child->GetName());
 
     // If there is not, add
-    if (found == m_childObjs.end()) {
-        m_childObjs.insert(
+    if (found == childObjs_.end()) {
+        childObjs_.insert(
             ChildObjects::value_type(
-                _child->GetName(), _child));
+                child->GetName(), child));
 
-        _child->SetParent(this);
+        child->SetParent(this);
     }
 
     // Unless...
     else
-        jeDebugPrint("!Object - Existing child: %s\n", _child->GetName().c_str());
+        jeDebugPrint("!Object - Existing child: %s\n", child->GetName().c_str());
 }
 
-void Object::RemoveChild(const char* _name)
+void Object::RemoveChild(const char* name)
 {
     // Find if there is the once
-    auto found = m_childObjs.find(_name);
+    auto found = childObjs_.find(name);
 
     // If there is, remove
-    if (found != m_childObjs.end()) {
-        m_childObjs.erase(_name);		// Remove from the child list
-        CONTAINER->RemoveObject(_name);	// Remove from obj manager
+    if (found != childObjs_.end()) {
+        childObjs_.erase(name);		// Remove from the child list
+		OBJECT::pContainer_->RemoveObject(name);	// Remove from obj manager
     }
 
     else
-        jeDebugPrint("!Object - No such name of enrolled object: %s\n", _name);
+        jeDebugPrint("!Object - No such name of enrolled object: %s\n", name);
 }
 
-Object* Object::GetChild(const char* _name)
+Object* Object::GetChild(const char* name)
 {
     // Find if there is the once
-    auto found = m_childObjs.find(_name);
+    auto found = childObjs_.find(name);
 
     // If there is return the one
-    if (found != m_childObjs.end())
+    if (found != childObjs_.end())
         return found->second;
 
     // Unless...
     else {
-        jeDebugPrint("!Object - No such name of enrolled object: %s\n", _name);
+        jeDebugPrint("!Object - No such name of enrolled object: %s\n", name);
         return nullptr;
     }
 }
 
-bool Object::HasChild(const char* _name)
+bool Object::HasChild(const char* name)
 {
     // Find if there is the once
-    auto found = m_childObjs.find(_name);
+    auto found = childObjs_.find(name);
 
     // If there is return the one
-    if (found != m_childObjs.end())
+    if (found != childObjs_.end())
         return true;
 
     // Unless...
-    jeDebugPrint("!Object - No such name of enrolled object: %s\n", _name);
+    jeDebugPrint("!Object - No such name of enrolled object: %s\n", name);
     return false;
 }
 
-void Object::SetParent(Object* _pObject)
+void Object::SetParent(Object* pObject)
 {
-    m_pParent = _pObject;
+    pParent_ = pObject;
 }
 
 Object* Object::GetParent()
 {
-    return m_pParent;
+    return pParent_;
 }
 
 bool Object::HasParent()
 {
-    return m_pParent != nullptr ? true : false;
+    return pParent_ != nullptr ? true : false;
 }
 
-void Object::SetActive(bool _active)
+void Object::SetActive(bool active)
 {
-    m_active = _active;
+    active_ = active;
 }
 
 bool Object::GetActive(void) const
 {
-    return m_active;
+    return active_;
 }
 
 ComponentMap& Object::GetComponentMap()
 {
-    return m_componentMap;
+    return componentMap_;
 }
 
 void Object::ClearComponents()
 {
     // Clear all components in the list
-    for (auto component : m_componentMap) {
+    for (auto component : componentMap_) {
 
         if (component.second) {
             IMGUI::RemoveComponentEditor(component.second);
@@ -152,75 +152,75 @@ void Object::ClearComponents()
     }
 
     IMGUI::ClearComponentEditor();
-    m_componentMap.clear();
+    componentMap_.clear();
 }
 
 void Object::ClearChildren()
 {
-    for (auto child : m_childObjs)
-        CONTAINER->RemoveObject(child.second);
+    for (auto child : childObjs_)
+		OBJECT::pContainer_->RemoveObject(child.second);
 
-    m_childObjs.clear();
+    childObjs_.clear();
 }
 
-void Object::AddComponent(const char* _componentName)
+void Object::AddComponent(const char* componentName)
 {
-    static std::string s_name;
-    s_name = COMPONENT::KeyToTypeTranslator(_componentName);
-    auto found = m_componentMap.find(s_name);
+    static std::string sname;
+    sname = COMPONENT::KeyToTypeTranslator(componentName);
+    auto found = componentMap_.find(sname);
 
     // Found nothing exsting component type
     // Insert new component to the list
-    if (found == m_componentMap.end()) {
-        Component* newComponent = COMPONENT::CreateComponent(s_name.c_str(), this);
-        m_componentMap.insert(
-            ComponentMap::value_type(s_name,
+    if (found == componentMap_.end()) {
+        Component* newComponent = COMPONENT::CreateComponent(sname.c_str(), this);
+        componentMap_.insert(
+            ComponentMap::value_type(sname,
                 newComponent));
         IMGUI::AddComponentEditor(newComponent);
     }
 
     else
-        jeDebugPrint("!Object - Cannot add identical component again: %s\n", _componentName);
+        jeDebugPrint("!Object - Cannot add identical component again: %s\n", componentName);
 }
 
-Component* Object::GetComponent(const char* _componentName)
+Component* Object::GetComponent(const char* componentName)
 {
     // Find if there is the one
-    static std::string s_name;
-    s_name = COMPONENT::KeyToTypeTranslator(_componentName);
-    auto found = m_componentMap.find(s_name);
+    static std::string sname;
+    sname = COMPONENT::KeyToTypeTranslator(componentName);
+    auto found = componentMap_.find(sname);
 
     // If there is return it
-    if (found != m_componentMap.end())
+    if (found != componentMap_.end())
         return found->second;
 
-    jeDebugPrint("!Object - No such name of enrolled component: %s\n", _componentName);
+    jeDebugPrint("!Object - No such name of enrolled component: %s\n", componentName);
     return nullptr;
 }
 
-bool Object::HasComponent(const char* _componentName) const
+bool Object::HasComponent(const char* componentName) const
 {
     // Find if there is the one
-    static std::string s_name;
-    s_name = COMPONENT::KeyToTypeTranslator(_componentName);
-    auto found = m_componentMap.find(s_name);
+    static std::string sname;
+    sname = COMPONENT::KeyToTypeTranslator(componentName);
+    auto found = componentMap_.find(sname);
 
     // If there is return it
-    if (found != m_componentMap.end())
+    if (found != componentMap_.end())
         return true;
 
-    jeDebugPrint("!Object - No such name of enrolled component: %s\n", _componentName);
+    jeDebugPrint("!Object - No such name of enrolled component: %s\n", componentName);
     return false;
 
 }
 
-void Object::RemoveComponent(const char* _componentName)
+void Object::RemoveComponent(const char* componentName)
 {
     // Find if there is the one
-    auto found = m_componentMap.find(_componentName);
+    auto found = componentMap_.find(componentName);
 
     // If there is, remove it
-    if (found != m_componentMap.end()) {
+    if (found != componentMap_.end()) {
         IMGUI::RemoveComponentEditor(found->second);
 #ifdef jeUseBuiltInAllocator
         COMPONENT::RemoveComponent(found->second);
@@ -231,18 +231,18 @@ void Object::RemoveComponent(const char* _componentName)
     }
 
     else
-        jeDebugPrint("!Object - No such name of enrolled component: %s\n", _componentName);
+        jeDebugPrint("!Object - No such name of enrolled component: %s\n", componentName);
 
 }
 
-bool Object::HandleMessage(Telegram& _message)
+bool Object::HandleMessage(Telegram& message)
 {
-    if (m_StateMachine.m_pCurrentState
-        && m_StateMachine.m_pCurrentState->OnMessage(_message))
+    if (stateMachine_.pCurrentState_
+        && stateMachine_.pCurrentState_->OnMessage(message))
         return true;
 
-    if (m_StateMachine.m_pGlobalState
-        && m_StateMachine.m_pGlobalState->OnMessage(_message))
+    if (stateMachine_.pGlobalState_
+        && stateMachine_.pGlobalState_->OnMessage(message))
         return true;
 
     return false;
@@ -250,13 +250,13 @@ bool Object::HandleMessage(Telegram& _message)
 
 void Object::RevertToPreviousState()
 {
-    if (m_StateMachine.m_pPreviousState) {
-        m_StateMachine.m_pCurrentState->Close();
-        m_StateMachine.m_pCurrentState->Unload();
-        CustomComponent* pTempState = m_StateMachine.m_pCurrentState;
-        m_StateMachine.m_pCurrentState = m_StateMachine.m_pPreviousState;
-        m_StateMachine.m_pPreviousState = pTempState;
-        m_StateMachine.m_pCurrentState->Init();
+    if (stateMachine_.pPreviousState_) {
+        stateMachine_.pCurrentState_->Close();
+        stateMachine_.pCurrentState_->Unload();
+        CustomComponent* pTempState = stateMachine_.pCurrentState_;
+        stateMachine_.pCurrentState_ = stateMachine_.pPreviousState_;
+        stateMachine_.pPreviousState_ = pTempState;
+        stateMachine_.pCurrentState_->Init();
     }
 
     else
@@ -265,87 +265,87 @@ void Object::RevertToPreviousState()
 
 CustomComponent* Object::GetGlobalState() const
 {
-    return m_StateMachine.m_pGlobalState;
+    return stateMachine_.pGlobalState_;
 }
 
 CustomComponent* Object::GetCurrentState() const
 {
-    return m_StateMachine.m_pCurrentState;
+    return stateMachine_.pCurrentState_;
 }
 
-void Object::SetGlobalState(const char* _componentName)
+void Object::SetGlobalState(const char* componentName)
 {
-    if (!m_StateMachine.m_pGlobalState) {
-        static std::string s_name;
-        s_name = COMPONENT::KeyToTypeTranslator(_componentName);
-        auto found = m_componentMap.find(s_name);
+    if (!stateMachine_.pGlobalState_) {
+        static std::string sname;
+        sname = COMPONENT::KeyToTypeTranslator(componentName);
+        auto found = componentMap_.find(sname);
 
         // Found same name of component,
         // then put that to global state
-        if (found != m_componentMap.end())
-            m_StateMachine.m_pGlobalState = (CustomComponent*)found->second;
+        if (found != componentMap_.end())
+            stateMachine_.pGlobalState_ = (CustomComponent*)found->second;
 
         else
-            jeDebugPrint("!Object - No such name of enrolled component: %s\n", _componentName);
+            jeDebugPrint("!Object - No such name of enrolled component: %s\n", componentName);
     }
 
     else
-        jeDebugPrint("!Object - There is an allocated global state already: %s\n", _componentName);
+        jeDebugPrint("!Object - There is an allocated global state already: %s\n", componentName);
 }
 
-void Object::SetCurrentState(const char* _componentName)
+void Object::SetCurrentState(const char* componentName)
 {
-    if (!m_StateMachine.m_pCurrentState) {
-        static std::string s_name;
-        s_name = COMPONENT::KeyToTypeTranslator(_componentName);
-        auto found = m_componentMap.find(s_name);
+    if (!stateMachine_.pCurrentState_) {
+        static std::string sname;
+        sname = COMPONENT::KeyToTypeTranslator(componentName);
+        auto found = componentMap_.find(sname);
 
         // Found same name of component,
         // then put that to current state
-        if (found != m_componentMap.end())
-            m_StateMachine.m_pCurrentState = (CustomComponent*)found->second;
+        if (found != componentMap_.end())
+            stateMachine_.pCurrentState_ = (CustomComponent*)found->second;
 
         else
-            jeDebugPrint("!Object - No such name of enrolled component: %s\n", _componentName);
+            jeDebugPrint("!Object - No such name of enrolled component: %s\n", componentName);
     }
 
     else
-        jeDebugPrint("!Object - There is an allocated current state already: %s\n", _componentName);
+        jeDebugPrint("!Object - There is an allocated current state already: %s\n", componentName);
 }
 
-void Object::EditorUpdate(const float /*_dt*/)
+void Object::EditorUpdate(const float /*dt*/)
 {
     // Searched object window
-    if (m_showEditor)
+    if (showEditor_)
     {
         ImGui::Begin("Object");
-        ImGui::Text("*Object Name: %s", m_name.c_str());
-        ImGui::Text("*Object Id: %d", m_id);
+        ImGui::Text("*Object Name: %s", name_.c_str());
+        ImGui::Text("*Object Id: %d", id_);
         if (GetParent())
-            ImGui::Text("*Parent Object: %s", m_pParent->m_name.c_str());
+            ImGui::Text("*Parent Object: %s", pParent_->name_.c_str());
         else
             ImGui::Text("*Parent Object: None");
 
-        if (!m_componentMap.empty()) {
+        if (!componentMap_.empty()) {
             ImGui::Text("*Component List:");
-            for (auto component : m_componentMap) {
+            for (auto component : componentMap_) {
                 if (ImGui::Button(COMPONENT::TypeToKeyTranslator(component.first.c_str())))
-                    component.second->m_showEditor = true;
+                    component.second->showEditor_ = true;
             }
         }
         else
             ImGui::Text("*Component List: None");
 
-        if (!m_componentMap.empty()) {
+        if (!componentMap_.empty()) {
             ImGui::Text("*Children List:");
-            for (auto child : m_childObjs)
-                ImGui::Button(child.second->m_name.c_str());
+            for (auto child : childObjs_)
+                ImGui::Button(child.second->name_.c_str());
         }
         else
             ImGui::Text("*Children List: None");
 
         if (ImGui::Button("Close"))
-            m_showEditor = false;
+            showEditor_ = false;
 
         ImGui::End();
     }

@@ -19,24 +19,24 @@ public:
 private:
 
 	PhysicsSystem();
-	~PhysicsSystem() {};
-	PhysicsSystem(const PhysicsSystem& /*_copy*/) = delete;
-	void operator=(const PhysicsSystem& /*_copy*/) = delete;
+	virtual ~PhysicsSystem() {};
+	PhysicsSystem(const PhysicsSystem& /*copy*/) = delete;
+	void operator=(const PhysicsSystem& /*copy*/) = delete;
 
-	void Load(CR_RJDoc _data) override;
+	void Load(CR_RJDoc data) override;
 	void Init() override;
-	void Update(const float _dt) override;
+	void Update(float dt) override;
 	void Close() override;
 	void Unload() override;
 
-	void AddTransform(Transform* _transform);
-	void RemoveTransform(Transform* _transform);
+	void AddTransform(Transform* pTransform);
+	void RemoveTransform(Transform* pTransform);
 
-	void AddRigidbody(Transform* _rigidbody);
-	void RemoveRigidbody(Transform* _rigidbody);
+	void AddRigidbody(Transform* pRigidbody);
+	void RemoveRigidbody(Transform* pRigidbody);
 	
-	Transforms		m_transforms;
-	Rigidbodies		m_rigidboide;
+	Transforms		transforms_;
+	Rigidbodies		rigidbodies_;
 };
 
 jeEnd

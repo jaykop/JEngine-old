@@ -23,12 +23,24 @@ int main(int argc, char* args[]) {
 	jeUnusedParam(argc);	// No argc - Block the warnings
 	jeUnusedParam(args);	// No args - Block the warnings
 	
-	JEngine::imguiToggle = false;
+	JEngine::CreateConsole();
+	
+	// Initialize aassets
+	if (JEngine::RegisterAssets()) {
 
-	if (JEngine::RegisterAssets())
-		return JEngine::Run();
+		// Set first state
+		// if user call this function, info from json files will be ignored
+		// JEngine::SetFirstState("level2");
+
+		// Run engine with imgui toggle parameter
+		JEngine::Run(true);
+
+		JEngine::CloseConsole();
+
+		// Close properly
+		return 0;
+	}
 
 	// Improper finish
 	return -1;
-
 }

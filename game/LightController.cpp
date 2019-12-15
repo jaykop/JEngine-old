@@ -6,13 +6,13 @@ jeBegin
 
 jeDefineCustomComponentBuilder(LightController);
 
-LightController::LightController(Object* _pObject)
-    :CustomComponent(_pObject)
+LightController::LightController(Object* pObject)
+    :CustomComponent(pObject)
 {}
 
 void LightController::Register()
 {
-    SYSTEM::GetBehaviorSystem()->AddBehavior(this);
+    SYSTEM::pBehavior_->AddBehavior(this);
 }
 
 void LightController::Load(CR_RJValue /*_data*/)
@@ -22,28 +22,31 @@ void LightController::Init()
 {
     if (GetOwner()->HasComponent<Light>())
         m_light = GetOwner()->GetComponent<Light>();
+
+	if (GetOwner()->HasComponent<Transform>())
+		transform_ = GetOwner()->GetComponent<Transform>();
 }
 
-void LightController::Update(const float _dt)
+void LightController::Update(float dt)
 {
-    float speed = 60.f * _dt;
+    float speed = 60.f * dt;
     if (INPUT::KeyPressed(JE_A))
-        m_light->position.x -= speed;
+		transform_->position_.x -= speed;
 
     if (INPUT::KeyPressed(JE_D))
-        m_light->position.x += speed;
+		transform_->position_.x += speed;
 
     if (INPUT::KeyPressed(JE_W))
-        m_light->position.y += speed;
+		transform_->position_.y += speed;
 
     if (INPUT::KeyPressed(JE_S))
-        m_light->position.y -= speed;
+		transform_->position_.y -= speed;
 
     if (INPUT::KeyPressed(JE_Z))
-        m_light->position.z += speed;
+		transform_->position_.z += speed;
 
     if (INPUT::KeyPressed(JE_C))
-        m_light->position.z -= speed;
+		transform_->position_.z -= speed;
 }
 
 void LightController::Close()
@@ -52,7 +55,7 @@ void LightController::Close()
 void LightController::Unload()
 {}
 
-void LightController::EditorUpdate(const float /*_dt*/)
+void LightController::EditorUpdate(const float /*dt*/)
 {
     // TODO
 }

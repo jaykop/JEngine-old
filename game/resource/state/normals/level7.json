@@ -9,39 +9,100 @@
 			"Component" : [
 				{
 					"Type": "Camera",
-					"Values": {"Position" : [25, 25, -25], "Target" : [0, 0, 0],
-						"Up" : [0, 1, 0]}
+					"Values": {"Position" : [0, 0, 50], "Target" : [0, 0, 0], "Up" : [0, 1, 0]}
 				},
 				{
 					"Type" : "CameraController",
-					"Values" : {}
+					"Values": {}
 				}
 			]
 		},			
+		{
+			"Name" : "LevelController",
+			"Component" : [
+				{
+					"Type": "LevelController",
+					"Values": {}
+				},
+				{
+					"Type": "TestLogic",
+					"Values": {}
+				}
+			]
+		},
+		{
+			"Name" : "Tetrahedron",
+			"Component" : [
+				{
+					"Type" : "Transform",
+					"Values" : {"Position" : [-25, 0, 0], "Scale" : [100, 100, 100]}
+				},
+				{
+					"Type": "Model",
+					"Values": { 
+						"Mesh" : [  
+							{
+								"Shape" : "Tetrahedron",
+								"Texture" : [ "tetrahedron" ],
+								"DrawMode" : "Triangles"
+							}
+						],
+						"Color" : [1, 1, 1, 1], "Projection" : "Perspective"
+					}
+				}
+			]
+		},
 		{
 			"Name" : "Model",
 			"Component" : [
 				{
 					"Type": "Transform",
-					"Values": {"Position" : [0, 0, 0], "Scale" : [1, 1, 1]}
+					"Values": {"Position" : [25, 0, 0], "Scale" : [1, 1, 1]}
 				},
 				{
 					"Type": "Model",
-					"Values": {"Texture" : "rect", "Color" : [1, 1, 1, 1], "Projection" : "Perspective",
-								"Mesh" : "../resource/obj/Paper Airplane.obj", "DrawMode" : "Triangle_Strip"}
-				},
-				{
-					"Type" : "Material",
-					"Values" : {}
+					"Values": {						
+						"Mesh" : [  
+							{
+								"Shape" : "../resource/obj/earth_ball.obj",
+								"Texture" : [ "earth_ball" ], 
+								"DrawMode" : "Triangle_Strip"
+							}
+						], 
+						"Projection" : "Perspective"}
 				}
+/*				{
+					"Type": "Model",
+					"Values": {
+						"Mesh" : [  
+							{
+								"Shape" : "../resource/obj/Narwhal.obj",
+								"Texture" : [ "whale" ], 
+								"DrawMode" : "Triangles"
+							}
+						], 
+						 "Color" : [1, 1, 1, 1], "Projection" : "Perspective", "DrawMode" : "Triangle_Fan"}
+				}
+				{
+					"Type": "Model",
+					"Values": {"Texture" : "cyborg_diffuse", "Color" : [1, 1, 1, 1], "Projection" : "Perspective",
+								"Mesh" : "../resource/obj/cyborg.obj"}
+				}*/
 			]
-		},
-		{
+		}
+/*		{
 			"Name" : "Light1",
 			"Component" : [
 				{
 					"Type": "Light",
-					"Values": {"Type" : "Spot", "Position" : [0, 10, 0],
+					"Values": {
+						"Mesh" : [
+							{	
+								"Shape" : "Cube",
+								"Texture" : [ "uvtemplate" ]
+							}
+						],
+						"Type" : "Spot", "Position" : [0, 10, 0],
 						"Color" : [1, 1, 0, 1], "Direction" : [0, -1, 0],
 						"Diffuse" : [1, 1, 1, 1], "Specular" : [1, 1, 1, 1], 
 						"Ambient" : [1, 1, 1, 1], "Constant" : 1.0,
@@ -55,7 +116,14 @@
 			"Component" : [
 				{
 					"Type": "Light",
-					"Values": {"Type" : "Normal", "Position" : [0, 0, -10],
+					"Values": {
+						"Mesh" : [
+							{	
+								"Shape" : "Cube",
+								"Texture" : [ "uvtemplate" ]
+							}
+						],
+						"Type" : "Normal", "Position" : [0, 0, -10],
 						"Color" : [0, 0, 1, 1], "Direction" : [0, 0, 0],
 						"Diffuse" : [1, 1, 1, 1], "Specular" : [1, 1, 1, 1], 
 						"Ambient" : [1, 1, 1, 1], "Constant" : 1.0,
@@ -63,15 +131,6 @@
 						"CutOff" : 12.5, "OuterCutOff" : 17.5}
 				}
 			]
-		},
-		{
-			"Name" : "LevelController",
-			"Component" : [
-				{
-					"Type": "LevelController",
-					"Values": {}
-				}
-			]
-		}
+		},*/
 	]
 }

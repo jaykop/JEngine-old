@@ -28,24 +28,24 @@ namespace DebugTools
 	\param lineNumber - Show line number where crashed
 	*/
 	/******************************************************************************/
-	bool Assert(int _expression, const char* _outputMessage,
-		const char* _functionName, const char* _fileName,
-		unsigned _lineNumber)
+	bool Assert(int expression, const char* outputMessage,
+		const char* functionName, const char* fileName,
+		unsigned lineNumber)
 	{
-		if (!_expression)
+		if (!expression)
 		{
 			int returnValue;
 			std::stringstream ss;
 			// Set output message
 			ss << "ASSERTION FAILIURE: ";
 			ss << "\nFile: ";
-			ss << _fileName;
+			ss << fileName;
 			ss << "\nLine: ";
-			ss << _lineNumber;
+			ss << lineNumber;
 			ss << "\nfunctionName: ";
-			ss << _functionName;
+			ss << functionName;
 			ss << "\n\n Description: ";
-			ss << _outputMessage;
+			ss << outputMessage;
 			ss << "\n\nYes: Brek into the Debugger.";
 			ss << "\nNo: Exit immediately";
 

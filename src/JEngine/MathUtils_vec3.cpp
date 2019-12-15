@@ -4,20 +4,20 @@ jeBegin
 
 namespace Math
 {
-	bool IsZero(CR_Vec3 _vec3)
+	bool IsZero(CR_Vec3 vec)
 	{
 		// If both x y z are not 0,
-		if (_vec3.x || _vec3.y || _vec3.z)
+		if (vec.x || vec.y || vec.z)
 			return false;
 
 		// Unless,
 		return true;
 	}
 
-	bool IsOne(CR_Vec3 _vec3)
+	bool IsOne(CR_Vec3 vec)
 	{
 		// If both x y z are not 1,
-		if (_vec3.x != 1.f || _vec3.y != 1.f || _vec3.z != 1.f)
+		if (vec.x != 1.f || vec.y != 1.f || vec.z != 1.f)
 			return false;
 
 		// Unless,
@@ -27,31 +27,31 @@ namespace Math
 	/******************************************************************************/
 	/*!
 	\brief - Get two vector3s' DotProduct
-	\param _left - to be calculated
-	\param _right - to be calculated
-	\return x * _rhs.x + y * _rhs.y;
+	\param left - to be calculated
+	\param right - to be calculated
+	\return x * rhs.x + y * rhs.y;
 	*/
 	/******************************************************************************/
-	float DotProduct(CR_Vec3 _left, CR_Vec3 _right)
+	float DotProduct(CR_Vec3 left, CR_Vec3 right)
 	{
-		return _left.x * _right.x + _left.y * _right.y + _left.z * _right.z;
+		return left.x * right.x + left.y * right.y + left.z * right.z;
 	}
 
 	/******************************************************************************/
 	/*!
 	\brief - Get two vector3s' CrossProduct
-	\param _left - to be calculated
-	\param _right - to be calculated
-	\return x * x * _rhs.y - y * _rhs.x;
+	\param left - to be calculated
+	\param right - to be calculated
+	\return x * x * rhs.y - y * rhs.x;
 	*/
 	/******************************************************************************/
-	Vector3 CrossProduct(CR_Vec3 _left, CR_Vec3 _right)
+	Vector3 CrossProduct(CR_Vec3 left, CR_Vec3 right)
 	{
 		Vector3 result;
 
-		result.x = _left.y * _right.z - _left.z * _right.y;
-		result.y = _left.z * _right.x - _left.x * _right.z;
-		result.z = _left.x * _right.y - _left.y * _right.x;
+		result.x = left.y * right.z - left.z * right.y;
+		result.y = left.z * right.x - left.x * right.z;
+		result.z = left.x * right.y - left.y * right.x;
 
 		return result;
 	}
@@ -62,18 +62,18 @@ namespace Math
 	\return result
 	*/
 	/******************************************************************************/
-	void Normalize(vec3& _vec3)
+	void Normalize(vec3& vec)
 	{
-		_vec3 = GetNormalize(_vec3);
+		vec = GetNormalize(vec);
 	}
 
-	Vector3 GetNormalize(CR_Vec3 _vec3)
+	Vector3 GetNormalize(CR_Vec3 vec)
 	{
-		Vector3 result(_vec3);
+		Vector3 result(vec);
 
 		// If this is not zero,
-		if (!IsZero(_vec3))
-			result = result / GetLength(_vec3);
+		if (!IsZero(vec))
+			result = result / GetLength(vec);
 
 		// Unless.
 		else
@@ -88,14 +88,14 @@ namespace Math
 	\return sqrt(x*x + y*y)
 	*/
 	/******************************************************************************/
-	float GetLength(CR_Vec3 _vec3)
+	float GetLength(CR_Vec3 vec)
 	{
-		return sqrt(GetLengthSq(_vec3));
+		return sqrt(GetLengthSq(vec));
 	}
 
-	float GetLengthSq(CR_Vec3 _vec3)
+	float GetLengthSq(CR_Vec3 vec)
 	{
-		return _vec3.x * _vec3.x + _vec3.y * _vec3.y + _vec3.z * _vec3.z;
+		return vec.x * vec.x + vec.y * vec.y + vec.z * vec.z;
 	}
 
 	/******************************************************************************/
@@ -104,14 +104,14 @@ namespace Math
 	\return result
 	*/
 	/******************************************************************************/
-	void Absolute(vec3& _vec3)
+	void Absolute(vec3& vec)
 	{
-		_vec3 = GetAbsolute(_vec3);
+		vec = GetAbsolute(vec);
 	}
 
-	Vector3 GetAbsolute(CR_Vec3 _vec3)
+	Vector3 GetAbsolute(CR_Vec3 vec)
 	{
-		Vector3 result(_vec3.x, _vec3.y, _vec3.z);
+		Vector3 result(vec.x, vec.y, vec.z);
 
 		if (result.x < 0)
 			result.x = -result.x;
@@ -126,51 +126,51 @@ namespace Math
 	/******************************************************************************/
 	/*!
 	\brief - Calculate vector's rotated position; Regard vector as a point
-	\param _angle - degree to rotate
-	\param _pivot - pivot point
+	\param angle - degree to rotate
+	\param pivot - pivot point
 	\return point
 	*/
 	/******************************************************************************/
-	void Rotate(vec3& _vec3, float _angle, CR_Vec3 _pivot)
+	void Rotate(vec3& vec, float angle, CR_Vec3 pivot)
 	{
-		_vec3 = GetRotated(_vec3, _angle, _pivot);
+		vec = GetRotated(vec, angle, pivot);
 	}
 
 	/******************************************************************************/
 	/*!
 	\brief - Get Rotated point around specific pivot point
-	\param _vec3 - point to be rotated
-	\param _angle - rotate degree
-	\param _pivot - pivot point
+	\param vec - point to be rotated
+	\param angle - rotate degree
+	\param pivot - pivot point
 	\return new_point
 	*/
 	/******************************************************************************/
-	Vector3 GetRotated(CR_Vec3 _vec3, float _angle, CR_Vec3 _pivot)
+	Vector3 GetRotated(CR_Vec3 vec, float angle, CR_Vec3 pivot)
 	{
-		vec3 new_point(_vec3);
-		float radian = Math::DegToRad(_angle);
+		vec3 new_point(vec);
+		float radian = Math::DegToRad(angle);
 
 		float s = sinf(radian);
 		float c = cosf(radian);
 
-		new_point.x -= _pivot.x;
-		new_point.y -= _pivot.y;
+		new_point.x -= pivot.x;
+		new_point.y -= pivot.y;
 
 		float new_x = new_point.x * c - new_point.y * s;
 		float new_y = new_point.x * s + new_point.y * c;
 
-		new_point.x = new_x + _pivot.x;
-		new_point.y = new_y + _pivot.y;
+		new_point.x = new_x + pivot.x;
+		new_point.y = new_y + pivot.y;
 
 		return new_point;
 	}
 
 
-	Vector3	GetReflected(CR_Vec3 _vec3, CR_Vec3 _pivot)
+	Vector3	GetReflected(CR_Vec3 vec, CR_Vec3 pivot)
 	{
-		vec3 result(_vec3);
+		vec3 result(vec);
 
-		Vector3 norm = GetNormalize(_pivot);
+		Vector3 norm = GetNormalize(pivot);
 
 		result = result - 2 * (DotProduct(result, norm)) * norm;
 
@@ -180,27 +180,27 @@ namespace Math
 	/******************************************************************************/
 	/*!
 	\brief - Calculate vector's reflection
-	\param _vec3 - vector to be reflected
-	\param _pivot - pivot point
+	\param vec - vector to be reflected
+	\param pivot - pivot point
 	\return reflected
 	*/
 	/******************************************************************************/
-	void Reflection(vec3& _vec3, CR_Vec3 _pivot)
+	void Reflection(vec3& vec, CR_Vec3 pivot)
 	{
-		_vec3 = GetReflected(_vec3, _pivot);
+		vec = GetReflected(vec, pivot);
 	}
 
 	/******************************************************************************/
 	/*!
 	\brief - Calculate 2 vectors' included angle
-	\param _vec3 - 1st vector
-	\param _pivot - 2nd vector
+	\param vec - 1st vector
+	\param pivot - 2nd vector
 	\return Math::RadToDeg(radian)
 	*/
 	/******************************************************************************/
-	float GetAngle(CR_Vec3 _vec3, CR_Vec3 _pivot)
+	float GetAngle(CR_Vec3 vec, CR_Vec3 pivot)
 	{
-		float radian = atan2(_vec3.x * _pivot.y - _pivot.x * _vec3.y, DotProduct(_vec3, _pivot));
+		float radian = atan2(vec.x * pivot.y - pivot.x * vec.y, DotProduct(vec, pivot));
 
 		return Math::RadToDeg(radian);
 	}
@@ -213,16 +213,16 @@ namespace Math
 	//\return distance
 	//*/
 	///******************************************************************************/
-	//float DistanceToLine(CR_Vec3 _vec3, CR_Vec3 _lineStart, CR_Vec3 _lineEnd)
+	//float DistanceToLine(CR_Vec3 vec, CR_Vec3 _lineStart, CR_Vec3 _lineEnd)
 	//{
 	//	// segment is nit a segment; a point
 	//	float length = GetLength(_lineStart - _lineEnd);
 	//	if (!length)
-	//		return  GetLength(_vec3 - _lineStart);
+	//		return  GetLength(vec - _lineStart);
 
 	//	// Unless...
-	//	float projection = ((_vec3.x - _lineStart.x) * (_lineEnd.x - _lineStart.x) +
-	//		(_vec3.y - _lineStart.y) * (_lineEnd.y - _lineStart.y)) / length;
+	//	float projection = ((vec.x - _lineStart.x) * (_lineEnd.x - _lineStart.x) +
+	//		(vec.y - _lineStart.y) * (_lineEnd.y - _lineStart.y)) / length;
 
 	//	//
 	//	//			1st case	2nd case	3rd case
@@ -232,13 +232,13 @@ namespace Math
 
 	//	// 1st case
 	//	if (projection < 0)
-	//		return GetLength(_vec3 - _lineStart);
+	//		return GetLength(vec - _lineStart);
 	//	// 3rd case
 	//	else if (projection > length)
-	//		return GetLength(_vec3 - _lineEnd);
+	//		return GetLength(vec - _lineEnd);
 	//	// 2nd case
-	//	else return abs((_vec3.y - _lineStart.y) * (_lineEnd.x - _lineStart.x)
-	//		- (_vec3.x - _lineStart.x) * (_lineEnd.y - _lineStart.y)) / length;
+	//	else return abs((vec.y - _lineStart.y) * (_lineEnd.x - _lineStart.x)
+	//		- (vec.x - _lineStart.x) * (_lineEnd.y - _lineStart.y)) / length;
 	//}
 
 	///******************************************************************************/

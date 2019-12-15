@@ -10,7 +10,7 @@ jeBegin
 /******************************************************************************/
 void Timer::Start(void)
 {
-	m_time = static_cast<float>(clock());
+	time_ = static_cast<float>(clock());
 }
 
 /******************************************************************************/
@@ -20,7 +20,7 @@ void Timer::Start(void)
 /******************************************************************************/
 float Timer::GetTime(void) const
 {
-	return (static_cast<float>(clock()) - m_time) / static_cast<float>(CLOCKS_PER_SEC);
+	return (static_cast<float>(clock()) - time_) / static_cast<float>(CLOCKS_PER_SEC);
 }
 
 /******************************************************************************/

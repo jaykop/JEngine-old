@@ -1,50 +1,40 @@
 #pragma once
-#include "Component.h"
-#include "ComponentManager.h"
-#include "ComponentBuilder.h"
-
-// For enum ProjectType
-#include "GraphicSystem.h"
+#include "Model.h"
 
 jeBegin
 jeDeclareComponentBuilder(Light);
 
 class Mesh;
-class Light : public Component
+class Light : public Model
 {
-
     jeBaseFriends(Light);
     friend class GraphicSystem;
 
     enum LightType { NORMALLIGHT, DIRECTIONALLIGHT, SPOTLIGHT, POINTLIGHT };
 
-
 public:
 
-    LightType	m_type;
-    ProjectType	projection;
+    LightType	type_;
 
-    vec3		position, direction, scale;
-    vec4		ambient, specular, diffuse, color;
-    float		constant, linear, quadratic, cutOff, outerCutOff;
-    unsigned	sfactor, dfactor;
+    vec3		direction_;
+    vec4		ambient_, specular_, diffuse_;
+    float		constant_, linear_, quadratic_, cutOff_, outerCutOff_;
+    unsigned	sfactor_, dfactor_;
 
     void Register() override;
 
 private:
-
-	Mesh *m_pMeshes = nullptr;
-
-    Light(Object* _pOwner);
-    ~Light();
-    void operator=(const Light& _copy);
+	
+    Light(Object* pOwner);
+    virtual ~Light();
+    void operator=(const Light& copy);
 
     Light() = delete;
-    Light(const Light& /*_copy*/) = delete;
+    Light(const Light& /*copy*/) = delete;
 
-    void Load(CR_RJValue _data) override;
-
-    void EditorUpdate(const float _dt) override;
+	void Load(CR_RJValue data) override;
+	
+    void EditorUpdate(float dt) override;
 };
 
 jeEnd

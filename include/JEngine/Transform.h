@@ -13,22 +13,22 @@ class Transform : public Component
 
 public:
 
-    vec3    position, scale, rotationAxis;
-    float   rotation;
+    vec3    position_, scale_, rotationAxis_;
+    float   rotation_;
 
 private:
 
-    Transform(Object* _pOwner);
-    ~Transform() {};
-    void operator= (const Transform& _copy);
+    Transform(Object* pOwner);
+	virtual ~Transform() {};
+    void operator= (const Transform& copy);
 
-    void Load(CR_RJValue _data) override;
+    void Load(CR_RJValue data) override;
     void Register() override {};
 
-    void EditorUpdate(const float _dt) override;
+    void EditorUpdate(float dt) override;
 
     Transform() = delete;
-    Transform(const Transform& /*_copy*/) = delete;
+    Transform(const Transform& /*copy*/) = delete;
 
 };
 

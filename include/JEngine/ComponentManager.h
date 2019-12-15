@@ -23,14 +23,14 @@ class ComponentManager {
 
 public:
 
-    static const char* KeyToTypeTranslator(const char* _name);
-    static const char* TypeToKeyTranslator(const char* _type);
+    static const char* KeyToTypeTranslator(const char* name);
+    static const char* TypeToKeyTranslator(const char* type);
 
     static Component*	CreateComponent(
-        const char* _componentName, Object* _pOwner);
+        const char* componentName, Object* pOwner);
 
 #ifdef  jeUseBuiltInAllocator
-    static void	RemoveComponent(Component* _component);
+    static void	RemoveComponent(Component* component);
 #endif // jeUseBuiltInAllocator
 
 private:
@@ -39,11 +39,11 @@ private:
 
     template <class ComponentType>
     static bool RegisterBuilder(
-        const char* _componentName, ComponentBuilder* _pBuilder);
+        const char* componentName, ComponentBuilder* pBuilder);
 
-    static BuilderMap	    m_builderMap;
-    static ComponentTypeMap m_typeMap, m_nameMap;
-    static bool				m_loadingCustomLogic;
+    static BuilderMap	    builderMap_;
+    static ComponentTypeMap typeMap_, nameMap_;
+    static bool				loadingCustomLogic_;
 };
 
 using COMPONENT = ComponentManager;
