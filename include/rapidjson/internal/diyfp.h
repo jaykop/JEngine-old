@@ -21,11 +21,7 @@
 
 #include "../rapidjson.h"
 
-<<<<<<< HEAD
-#if defined(_MSC_VER) && defined(_M_AMD64)
-=======
 #if defined(_MSC_VER) && defined(_M_AMD64) && !defined(__INTEL_COMPILER)
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 #include <intrin.h>
 #pragma intrinsic(_BitScanReverse64)
 #pragma intrinsic(_umul128)

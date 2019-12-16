@@ -3,11 +3,7 @@
 Open Asset Import Library (assimp)
 ---------------------------------------------------------------------------
 
-<<<<<<< HEAD
-Copyright (c) 2006-2019, assimp team
-=======
 Copyright (c) 2006-2018, assimp team
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 
 
@@ -133,11 +129,7 @@ struct aiMetadata {
     /** 
      *  @brief  The default constructor, set all members to zero by default.
      */
-<<<<<<< HEAD
-    aiMetadata() AI_NO_EXCEPT
-=======
     aiMetadata()
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     : mNumProperties(0)
     , mKeys(nullptr)
     , mValues(nullptr) {
@@ -149,18 +141,6 @@ struct aiMetadata {
     , mKeys( nullptr )
     , mValues( nullptr ) {
         mKeys = new aiString[ mNumProperties ];
-<<<<<<< HEAD
-        for ( size_t i = 0; i < static_cast<size_t>( mNumProperties ); ++i ) {
-            mKeys[ i ] = rhs.mKeys[ i ];
-        }
-        mValues = new aiMetadataEntry[ mNumProperties ];
-        for ( size_t i = 0; i < static_cast<size_t>(mNumProperties); ++i ) {
-            mValues[ i ].mType = rhs.mValues[ i ].mType;
-            switch ( rhs.mValues[ i ].mType ) {
-            case AI_BOOL:
-                mValues[ i ].mData = new bool;
-                ::memcpy( mValues[ i ].mData, rhs.mValues[ i ].mData, sizeof(bool) );
-=======
         for ( unsigned int i = 0; i < mNumProperties; ++i ) {
             mKeys[ i ] = rhs.mKeys[ i ];
         }
@@ -170,7 +150,6 @@ struct aiMetadata {
             switch ( rhs.mValues[ i ].mType ) {
             case AI_BOOL:
                 mValues[ i ].mData = new bool( rhs.mValues[i].mData );
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
                 break;
             case AI_INT32: {
                 int32_t v;

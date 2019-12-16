@@ -2,11 +2,7 @@
 Open Asset Import Library (assimp)
 ----------------------------------------------------------------------
 
-<<<<<<< HEAD
-Copyright (c) 2006-2019, assimp team
-=======
 Copyright (c) 2006-2018, assimp team
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 
 All rights reserved.
@@ -66,21 +62,11 @@ class ASSIMP_API ProgressHandler
 #endif
 {
 protected:
-<<<<<<< HEAD
-    /// @brief  Default constructor
-    ProgressHandler () AI_NO_EXCEPT {
-        // empty
-    }
-
-public:
-    /// @brief  Virtual destructor.
-=======
     /** @brief  Default constructor */
     ProgressHandler () {
     }
 public:
     /** @brief  Virtual destructor  */
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     virtual ~ProgressHandler () {
     }
 
@@ -134,29 +120,8 @@ public:
         Update( f * 0.5f + 0.5f );
     }
 
-<<<<<<< HEAD
-
-    // -------------------------------------------------------------------
-    /** @brief Progress callback for export steps.
-     *  @param numberOfSteps The number of total processing
-     *   steps
-     *  @param currentStep The index of the current post-processing
-     *   step that will run, or equal to numberOfSteps if all of
-     *   them has finished. This number is always strictly monotone
-     *   increasing, although not necessarily linearly.
-     *   */
-    virtual void UpdateFileWrite(int currentStep /*= 0*/, int numberOfSteps /*= 0*/) {
-        float f = numberOfSteps ? currentStep / (float)numberOfSteps : 1.0f;
-        Update(f * 0.5f);
-    }
-}; // !class ProgressHandler
-
-// ------------------------------------------------------------------------------------
-
-=======
 }; // !class ProgressHandler
 // ------------------------------------------------------------------------------------
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 } // Namespace Assimp
 
 #endif // AI_PROGRESSHANDLER_H_INC

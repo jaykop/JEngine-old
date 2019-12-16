@@ -1,9 +1,5 @@
 // Tencent is pleased to support the open source community by making RapidJSON available.
-<<<<<<< HEAD
-// 
-=======
 //
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 // Copyright (C) 2015 THL A29 Limited, a Tencent company, and Milo Yip. All rights reserved.
 //
 // Licensed under the MIT License (the "License"); you may not use this file except
@@ -11,15 +7,9 @@
 //
 // http://opensource.org/licenses/MIT
 //
-<<<<<<< HEAD
-// Unless required by applicable law or agreed to in writing, software distributed 
-// under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR 
-// CONDITIONS OF ANY KIND, either express or implied. See the License for the 
-=======
 // Unless required by applicable law or agreed to in writing, software distributed
 // under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
 // CONDITIONS OF ANY KIND, either express or implied. See the License for the
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 // specific language governing permissions and limitations under the License.
 
 #include "rapidjson.h"
@@ -111,8 +101,6 @@ inline void PutN(Stream& stream, Ch c, size_t n) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-<<<<<<< HEAD
-=======
 // GenericStreamWrapper
 
 //! A Stream Wrapper
@@ -157,7 +145,6 @@ RAPIDJSON_DIAG_POP
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 // StringStream
 
 //! Read-only string stream.

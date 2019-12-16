@@ -2,11 +2,7 @@
 Open Asset Import Library (assimp)
 ----------------------------------------------------------------------
 
-<<<<<<< HEAD
-Copyright (c) 2006-2019, assimp team
-=======
 Copyright (c) 2006-2018, assimp team
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 
 All rights reserved.
@@ -73,11 +69,7 @@ class ASSIMP_API DefaultIOStream : public IOStream
 #endif // __ANDROID__
 
 protected:
-<<<<<<< HEAD
-    DefaultIOStream() AI_NO_EXCEPT;
-=======
     DefaultIOStream();
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     DefaultIOStream(FILE* pFile, const std::string &strFilename);
 
 public:
@@ -119,46 +111,27 @@ private:
     FILE* mFile;
     //  Filename
     std::string mFilename;
-<<<<<<< HEAD
-=======
 
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     // Cached file size
     mutable size_t mCachedSize;
 };
 
 // ----------------------------------------------------------------------------------
-<<<<<<< HEAD
-inline
-DefaultIOStream::DefaultIOStream() AI_NO_EXCEPT
-: mFile(nullptr)
-, mFilename("")
-, mCachedSize(SIZE_MAX) {
-=======
 inline DefaultIOStream::DefaultIOStream () :
     mFile       (NULL),
     mFilename   (""),
     mCachedSize(SIZE_MAX)
 {
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     // empty
 }
 
 // ----------------------------------------------------------------------------------
-<<<<<<< HEAD
-inline
-DefaultIOStream::DefaultIOStream (FILE* pFile, const std::string &strFilename)
-: mFile(pFile)
-, mFilename(strFilename)
-, mCachedSize(SIZE_MAX) {
-=======
 inline DefaultIOStream::DefaultIOStream (FILE* pFile,
         const std::string &strFilename) :
     mFile(pFile),
     mFilename(strFilename),
     mCachedSize(SIZE_MAX)
 {
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     // empty
 }
 // ----------------------------------------------------------------------------------

@@ -3,11 +3,7 @@
 Open Asset Import Library (assimp)
 ---------------------------------------------------------------------------
 
-<<<<<<< HEAD
-Copyright (c) 2006-2019, assimp team
-=======
 Copyright (c) 2006-2018, assimp team
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 
 
@@ -99,11 +95,7 @@ public:
      *  Create an instance of your derived class and assign it to an
      *  #Assimp::Importer instance by calling Importer::SetIOHandler().
      */
-<<<<<<< HEAD
-    IOSystem() AI_NO_EXCEPT;
-=======
     IOSystem();
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
     // -------------------------------------------------------------------
     /** @brief Virtual destructor.
@@ -113,12 +105,9 @@ public:
      */
     virtual ~IOSystem();
 
-<<<<<<< HEAD
-=======
 
 public:
 
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     // -------------------------------------------------------------------
     /** @brief For backward compatibility
      *  @see Exists(const char*)
@@ -244,11 +233,7 @@ private:
 
 // ----------------------------------------------------------------------------
 AI_FORCE_INLINE
-<<<<<<< HEAD
-IOSystem::IOSystem() AI_NO_EXCEPT
-=======
 IOSystem::IOSystem()
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 : m_pathStack() {
     // empty
 }

@@ -49,14 +49,11 @@
 // token stringification
 #define RAPIDJSON_STRINGIFY(x) RAPIDJSON_DO_STRINGIFY(x)
 #define RAPIDJSON_DO_STRINGIFY(x) #x
-<<<<<<< HEAD
-=======
 
 // token concatenation
 #define RAPIDJSON_JOIN(X, Y) RAPIDJSON_DO_JOIN(X, Y)
 #define RAPIDJSON_DO_JOIN(X, Y) RAPIDJSON_DO_JOIN2(X, Y)
 #define RAPIDJSON_DO_JOIN2(X, Y) X##Y
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 //!@endcond
 
 /*! \def RAPIDJSON_MAJOR_VERSION
@@ -244,11 +241,7 @@
 #    define RAPIDJSON_ENDIAN RAPIDJSON_BIGENDIAN
 #  elif defined(__i386__) || defined(__alpha__) || defined(__ia64) || defined(__ia64__) || defined(_M_IX86) || defined(_M_IA64) || defined(_M_ALPHA) || defined(__amd64) || defined(__amd64__) || defined(_M_AMD64) || defined(__x86_64) || defined(__x86_64__) || defined(_M_X64) || defined(__bfin__)
 #    define RAPIDJSON_ENDIAN RAPIDJSON_LITTLEENDIAN
-<<<<<<< HEAD
-#  elif defined(_MSC_VER) && defined(_M_ARM)
-=======
 #  elif defined(_MSC_VER) && (defined(_M_ARM) || defined(_M_ARM64))
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 #    define RAPIDJSON_ENDIAN RAPIDJSON_LITTLEENDIAN
 #  elif defined(RAPIDJSON_DOXYGEN_RUNNING)
 #    define RAPIDJSON_ENDIAN
@@ -332,19 +325,6 @@
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////
-<<<<<<< HEAD
-// RAPIDJSON_SSE2/RAPIDJSON_SSE42/RAPIDJSON_SIMD
-
-/*! \def RAPIDJSON_SIMD
-    \ingroup RAPIDJSON_CONFIG
-    \brief Enable SSE2/SSE4.2 optimization.
-
-    RapidJSON supports optimized implementations for some parsing operations
-    based on the SSE2 or SSE4.2 SIMD extensions on modern Intel-compatible
-    processors.
-
-    To enable these optimizations, two different symbols can be defined;
-=======
 // RAPIDJSON_SSE2/RAPIDJSON_SSE42/RAPIDJSON_NEON/RAPIDJSON_SIMD
 
 /*! \def RAPIDJSON_SIMD
@@ -356,7 +336,6 @@
     or ARM compatible processors.
 
     To enable these optimizations, three different symbols can be defined;
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     \code
     // Enable SSE2 optimization.
     #define RAPIDJSON_SSE2
@@ -365,25 +344,17 @@
     #define RAPIDJSON_SSE42
     \endcode
 
-<<<<<<< HEAD
-    \c RAPIDJSON_SSE42 takes precedence, if both are defined.
-=======
     // Enable ARM Neon optimization.
     #define RAPIDJSON_NEON
     \endcode
 
     \c RAPIDJSON_SSE42 takes precedence over SSE2, if both are defined.
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
     If any of these symbols is defined, RapidJSON defines the macro
     \c RAPIDJSON_SIMD to indicate the availability of the optimized code.
 */
 #if defined(RAPIDJSON_SSE2) || defined(RAPIDJSON_SSE42) \
-<<<<<<< HEAD
-    || defined(RAPIDJSON_DOXYGEN_RUNNING)
-=======
     || defined(RAPIDJSON_NEON) || defined(RAPIDJSON_DOXYGEN_RUNNING)
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 #define RAPIDJSON_SIMD
 #endif
 
@@ -443,9 +414,6 @@ RAPIDJSON_NAMESPACE_END
 ///////////////////////////////////////////////////////////////////////////////
 // RAPIDJSON_STATIC_ASSERT
 
-<<<<<<< HEAD
-// Adopt from boost
-=======
 // Prefer C++11 static_assert, if available
 #ifndef RAPIDJSON_STATIC_ASSERT
 #if __cplusplus >= 201103L || ( defined(_MSC_VER) && _MSC_VER >= 1800 )
@@ -455,7 +423,6 @@ RAPIDJSON_NAMESPACE_END
 #endif // RAPIDJSON_STATIC_ASSERT
 
 // Adopt C++03 implementation from boost
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 #ifndef RAPIDJSON_STATIC_ASSERT
 #ifndef __clang__
 //!@cond RAPIDJSON_HIDDEN_FROM_DOXYGEN
@@ -463,19 +430,9 @@ RAPIDJSON_NAMESPACE_END
 RAPIDJSON_NAMESPACE_BEGIN
 template <bool x> struct STATIC_ASSERTION_FAILURE;
 template <> struct STATIC_ASSERTION_FAILURE<true> { enum { value = 1 }; };
-<<<<<<< HEAD
-template<int x> struct StaticAssertTest {};
-RAPIDJSON_NAMESPACE_END
-
-#define RAPIDJSON_JOIN(X, Y) RAPIDJSON_DO_JOIN(X, Y)
-#define RAPIDJSON_DO_JOIN(X, Y) RAPIDJSON_DO_JOIN2(X, Y)
-#define RAPIDJSON_DO_JOIN2(X, Y) X##Y
-
-=======
 template <size_t x> struct StaticAssertTest {};
 RAPIDJSON_NAMESPACE_END
 
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 #if defined(__GNUC__)
 #define RAPIDJSON_STATIC_ASSERT_UNUSED_ATTRIBUTE __attribute__((unused))
 #else
@@ -494,11 +451,7 @@ RAPIDJSON_NAMESPACE_END
     typedef ::RAPIDJSON_NAMESPACE::StaticAssertTest< \
       sizeof(::RAPIDJSON_NAMESPACE::STATIC_ASSERTION_FAILURE<bool(x) >)> \
     RAPIDJSON_JOIN(StaticAssertTypedef, __LINE__) RAPIDJSON_STATIC_ASSERT_UNUSED_ATTRIBUTE
-<<<<<<< HEAD
-#endif
-=======
 #endif // RAPIDJSON_STATIC_ASSERT
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 ///////////////////////////////////////////////////////////////////////////////
 // RAPIDJSON_LIKELY, RAPIDJSON_UNLIKELY
@@ -628,11 +581,7 @@ RAPIDJSON_NAMESPACE_END
 #ifndef RAPIDJSON_HAS_CXX11_RANGE_FOR
 #if defined(__clang__)
 #define RAPIDJSON_HAS_CXX11_RANGE_FOR __has_feature(cxx_range_for)
-<<<<<<< HEAD
-#elif (defined(RAPIDJSON_GNUC) && (RAPIDJSON_GNUC >= RAPIDJSON_VERSION_CODE(4,3,0)) && defined(__GXX_EXPERIMENTAL_CXX0X__)) || \
-=======
 #elif (defined(RAPIDJSON_GNUC) && (RAPIDJSON_GNUC >= RAPIDJSON_VERSION_CODE(4,6,0)) && defined(__GXX_EXPERIMENTAL_CXX0X__)) || \
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
       (defined(_MSC_VER) && _MSC_VER >= 1700)
 #define RAPIDJSON_HAS_CXX11_RANGE_FOR 1
 #else
@@ -647,11 +596,7 @@ RAPIDJSON_NAMESPACE_END
 
 #ifndef RAPIDJSON_NEW
 ///! customization point for global \c new
-<<<<<<< HEAD
-#define RAPIDJSON_NEW(x) new x
-=======
 #define RAPIDJSON_NEW(TypeName) new TypeName
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 #endif
 #ifndef RAPIDJSON_DELETE
 ///! customization point for global \c delete

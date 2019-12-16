@@ -240,11 +240,7 @@ public:
     template <typename T>
     RAPIDJSON_DISABLEIF_RETURN((internal::NotExpr<internal::IsSame<typename internal::RemoveConst<T>::Type, Ch> >), (GenericPointer))
     Append(T* name, Allocator* allocator = 0) const {
-<<<<<<< HEAD
-        return Append(name, StrLen(name), allocator);
-=======
         return Append(name, internal::StrLen(name), allocator);
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     }
 
 #if RAPIDJSON_HAS_STDSTRING
@@ -278,11 +274,7 @@ public:
         else {
             Ch name[21];
             for (size_t i = 0; i <= length; i++)
-<<<<<<< HEAD
-                name[i] = buffer[i];
-=======
                 name[i] = static_cast<Ch>(buffer[i]);
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
             Token token = { name, length, index };
             return Append(token, allocator);
         }
@@ -766,11 +758,7 @@ private:
     */
     Ch* CopyFromRaw(const GenericPointer& rhs, size_t extraToken = 0, size_t extraNameBufferSize = 0) {
         if (!allocator_) // allocator is independently owned.
-<<<<<<< HEAD
-            ownAllocator_ = allocator_ = RAPIDJSON_NEW(Allocator());
-=======
             ownAllocator_ = allocator_ = RAPIDJSON_NEW(Allocator)();
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
         size_t nameBufferSize = rhs.tokenCount_; // null terminators for tokens
         for (Token *t = rhs.tokens_; t != rhs.tokens_ + rhs.tokenCount_; ++t)
@@ -818,11 +806,7 @@ private:
 
         // Create own allocator if user did not supply.
         if (!allocator_)
-<<<<<<< HEAD
-            ownAllocator_ = allocator_ = RAPIDJSON_NEW(Allocator());
-=======
             ownAllocator_ = allocator_ = RAPIDJSON_NEW(Allocator)();
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
         // Count number of '/' as tokenCount
         tokenCount_ = 0;
@@ -1045,13 +1029,8 @@ private:
             unsigned char u = static_cast<unsigned char>(c);
             static const char hexDigits[16] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
             os_.Put('%');
-<<<<<<< HEAD
-            os_.Put(hexDigits[u >> 4]);
-            os_.Put(hexDigits[u & 15]);
-=======
             os_.Put(static_cast<typename OutputStream::Ch>(hexDigits[u >> 4]));
             os_.Put(static_cast<typename OutputStream::Ch>(hexDigits[u & 15]));
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         }
     private:
         OutputStream& os_;

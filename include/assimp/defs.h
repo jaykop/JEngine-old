@@ -3,11 +3,7 @@
 Open Asset Import Library (assimp)
 ---------------------------------------------------------------------------
 
-<<<<<<< HEAD
-Copyright (c) 2006-2019, assimp team
-=======
 Copyright (c) 2006-2018, assimp team
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 
 
@@ -101,10 +97,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * CALCTANGENTS
  * JOINVERTICES
  * TRIANGULATE
-<<<<<<< HEAD
- * DROPFACENORMALS
-=======
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
  * GENFACENORMALS
  * GENVERTEXNORMALS
  * REMOVEVC
@@ -129,12 +121,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * OPTIMIZEANIMS
  * OPTIMIZEGRAPH
  * GENENTITYMESHES
-<<<<<<< HEAD
- * FIXTEXTUREPATHS
- * GENBOUNDINGBOXES */
-=======
  * FIXTEXTUREPATHS */
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 //////////////////////////////////////////////////////////////////////////
 
 #ifdef _MSC_VER
@@ -226,14 +213,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endif
 
 #if (defined(__BORLANDC__) || defined (__BCPLUSPLUS__))
-<<<<<<< HEAD
-#   error Currently, Borland is unsupported. Feel free to port Assimp.
-=======
 #error Currently, Borland is unsupported. Feel free to port Assimp.
 
 // "W8059 Packgröße der Struktur geändert"
 
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 #endif
 
 
@@ -259,22 +242,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     typedef double ai_real;
     typedef signed long long int ai_int;
     typedef unsigned long long int ai_uint;
-<<<<<<< HEAD
-#ifndef ASSIMP_AI_REAL_TEXT_PRECISION
-#define ASSIMP_AI_REAL_TEXT_PRECISION 16
-#endif // ASSIMP_AI_REAL_TEXT_PRECISION
-=======
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 #else // ASSIMP_DOUBLE_PRECISION
     typedef float ai_real;
     typedef signed int ai_int;
     typedef unsigned int ai_uint;
-<<<<<<< HEAD
-#ifndef ASSIMP_AI_REAL_TEXT_PRECISION
-#define ASSIMP_AI_REAL_TEXT_PRECISION 8
-#endif // ASSIMP_AI_REAL_TEXT_PRECISION
-=======
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 #endif // ASSIMP_DOUBLE_PRECISION
 
     //////////////////////////////////////////////////////////////////////////
@@ -295,12 +266,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define AI_DEG_TO_RAD(x) ((x)*(ai_real)0.0174532925)
 #define AI_RAD_TO_DEG(x) ((x)*(ai_real)57.2957795)
 
-<<<<<<< HEAD
-/* Numerical limits */
-static const ai_real ai_epsilon = (ai_real) 0.00001;
-
-=======
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 /* Support for big-endian builds */
 #if defined(__BYTE_ORDER__)
 #   if (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
@@ -324,17 +289,4 @@ static const ai_real ai_epsilon = (ai_real) 0.00001;
  */
 #define AI_MAX_ALLOC(type) ((256U * 1024 * 1024) / sizeof(type))
 
-<<<<<<< HEAD
-#ifndef _MSC_VER
-#  define AI_NO_EXCEPT noexcept
-#else
-#  if (_MSC_VER >= 1915 )
-#    define AI_NO_EXCEPT noexcept
-#  else
-#    define AI_NO_EXCEPT
-#  endif
-#endif // _MSC_VER
-
-=======
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 #endif // !! AI_DEFINES_H_INC

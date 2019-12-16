@@ -3,11 +3,7 @@
 Open Asset Import Library (assimp)
 ---------------------------------------------------------------------------
 
-<<<<<<< HEAD
-Copyright (c) 2006-2019, assimp team
-=======
 Copyright (c) 2006-2018, assimp team
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 
 
@@ -73,11 +69,7 @@ class aiMatrix3x3t
 {
 public:
 
-<<<<<<< HEAD
-    aiMatrix3x3t() AI_NO_EXCEPT :
-=======
     aiMatrix3x3t () :
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         a1(static_cast<TReal>(1.0f)), a2(), a3(),
         b1(), b2(static_cast<TReal>(1.0f)), b3(),
         c1(), c2(), c3(static_cast<TReal>(1.0f)) {}

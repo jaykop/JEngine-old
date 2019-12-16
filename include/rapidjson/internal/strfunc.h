@@ -16,10 +16,7 @@
 #define RAPIDJSON_INTERNAL_STRFUNC_H_
 
 #include "../stream.h"
-<<<<<<< HEAD
-=======
 #include <cwchar>
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 RAPIDJSON_NAMESPACE_BEGIN
 namespace internal {
@@ -32,20 +29,12 @@ namespace internal {
 */
 template <typename Ch>
 inline SizeType StrLen(const Ch* s) {
-<<<<<<< HEAD
-=======
     RAPIDJSON_ASSERT(s != 0);
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     const Ch* p = s;
     while (*p) ++p;
     return SizeType(p - s);
 }
 
-<<<<<<< HEAD
-//! Returns number of code points in a encoded string.
-template<typename Encoding>
-bool CountStringCodePoint(const typename Encoding::Ch* s, SizeType length, SizeType* outCount) {
-=======
 template <>
 inline SizeType StrLen(const char* s) {
     return SizeType(std::strlen(s));
@@ -61,7 +50,6 @@ template<typename Encoding>
 bool CountStringCodePoint(const typename Encoding::Ch* s, SizeType length, SizeType* outCount) {
     RAPIDJSON_ASSERT(s != 0);
     RAPIDJSON_ASSERT(outCount != 0);
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     GenericStringStream<Encoding> is(s);
     const typename Encoding::Ch* end = s + length;
     SizeType count = 0;

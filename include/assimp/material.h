@@ -3,11 +3,7 @@
 Open Asset Import Library (assimp)
 ---------------------------------------------------------------------------
 
-<<<<<<< HEAD
-Copyright (c) 2006-2019, assimp team
-=======
 Copyright (c) 2006-2018, assimp team
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 
 
@@ -200,66 +196,36 @@ enum aiTextureType
      *  (#aiMaterialProperty::mSemantic) for all material properties
      *  *not* related to textures.
      */
-<<<<<<< HEAD
-    aiTextureType_NONE = 0,
-
-    /** LEGACY API MATERIALS 
-     * Legacy refers to materials which 
-     * Were originally implemented in the specifications around 2000.
-     * These must never be removed, as most engines support them.
-     */
-=======
     aiTextureType_NONE = 0x0,
 
 
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
     /** The texture is combined with the result of the diffuse
      *  lighting equation.
      */
-<<<<<<< HEAD
-    aiTextureType_DIFFUSE = 1,
-=======
     aiTextureType_DIFFUSE = 0x1,
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
     /** The texture is combined with the result of the specular
      *  lighting equation.
      */
-<<<<<<< HEAD
-    aiTextureType_SPECULAR = 2,
-=======
     aiTextureType_SPECULAR = 0x2,
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
     /** The texture is combined with the result of the ambient
      *  lighting equation.
      */
-<<<<<<< HEAD
-    aiTextureType_AMBIENT = 3,
-=======
     aiTextureType_AMBIENT = 0x3,
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
     /** The texture is added to the result of the lighting
      *  calculation. It isn't influenced by incoming light.
      */
-<<<<<<< HEAD
-    aiTextureType_EMISSIVE = 4,
-=======
     aiTextureType_EMISSIVE = 0x4,
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
     /** The texture is a height map.
      *
      *  By convention, higher gray-scale values stand for
      *  higher elevations from the base height.
      */
-<<<<<<< HEAD
-    aiTextureType_HEIGHT = 5,
-=======
     aiTextureType_HEIGHT = 0x5,
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
     /** The texture is a (tangent space) normal-map.
      *
@@ -267,11 +233,7 @@ enum aiTextureType
      *  normal maps. Assimp does (intentionally) not
      *  distinguish here.
      */
-<<<<<<< HEAD
-    aiTextureType_NORMALS = 6,
-=======
     aiTextureType_NORMALS = 0x6,
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
     /** The texture defines the glossiness of the material.
      *
@@ -280,33 +242,21 @@ enum aiTextureType
      *  function defined to map the linear color values in the
      *  texture to a suitable exponent. Have fun.
     */
-<<<<<<< HEAD
-    aiTextureType_SHININESS = 7,
-=======
     aiTextureType_SHININESS = 0x7,
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
     /** The texture defines per-pixel opacity.
      *
      *  Usually 'white' means opaque and 'black' means
      *  'transparency'. Or quite the opposite. Have fun.
     */
-<<<<<<< HEAD
-    aiTextureType_OPACITY = 8,
-=======
     aiTextureType_OPACITY = 0x8,
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
     /** Displacement texture
      *
      *  The exact purpose and format is application-dependent.
      *  Higher color values stand for higher vertex displacements.
     */
-<<<<<<< HEAD
-    aiTextureType_DISPLACEMENT = 9,
-=======
     aiTextureType_DISPLACEMENT = 0x9,
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
     /** Lightmap texture (aka Ambient Occlusion)
      *
@@ -315,50 +265,22 @@ enum aiTextureType
      *  scaling value for the final color value of a pixel. Its
      *  intensity is not affected by incoming light.
     */
-<<<<<<< HEAD
-    aiTextureType_LIGHTMAP = 10,
-=======
     aiTextureType_LIGHTMAP = 0xA,
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
     /** Reflection texture
      *
      * Contains the color of a perfect mirror reflection.
      * Rarely used, almost never for real-time applications.
     */
-<<<<<<< HEAD
-    aiTextureType_REFLECTION = 11,
-
-    /** PBR Materials
-     * PBR definitions from maya and other modelling packages now use this standard.
-     * This was originally introduced around 2012.
-     * Support for this is in game engines like Godot, Unreal or Unity3D.
-     * Modelling packages which use this are very common now.
-     */
-
-    aiTextureType_BASE_COLOR = 12,
-    aiTextureType_NORMAL_CAMERA = 13,
-    aiTextureType_EMISSION_COLOR = 14,
-    aiTextureType_METALNESS = 15,
-    aiTextureType_DIFFUSE_ROUGHNESS = 16,
-    aiTextureType_AMBIENT_OCCLUSION = 17,
-=======
     aiTextureType_REFLECTION = 0xB,
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
     /** Unknown texture
      *
      *  A texture reference that does not match any of the definitions
      *  above is considered to be 'unknown'. It is still imported,
-<<<<<<< HEAD
-     *  but is excluded from any further post-processing.
-    */
-    aiTextureType_UNKNOWN = 18,
-=======
      *  but is excluded from any further postprocessing.
     */
     aiTextureType_UNKNOWN = 0xC,
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 
 #ifndef SWIG
@@ -453,11 +375,7 @@ enum aiShadingMode
 */
 enum aiTextureFlags
 {
-<<<<<<< HEAD
-    /** The texture's color values have to be inverted (component-wise 1-n)
-=======
     /** The texture's color values have to be inverted (componentwise 1-n)
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
      */
     aiTextureFlags_Invert = 0x1,
 
@@ -565,11 +483,7 @@ struct aiUVTransform
 
 
 #ifdef __cplusplus
-<<<<<<< HEAD
-    aiUVTransform() AI_NO_EXCEPT
-=======
     aiUVTransform()
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         :   mTranslation (0.0,0.0)
         ,   mScaling    (1.0,1.0)
         ,   mRotation   (0.0)
@@ -693,15 +607,6 @@ struct aiMaterialProperty
 
 #ifdef __cplusplus
 
-<<<<<<< HEAD
-    aiMaterialProperty() AI_NO_EXCEPT
-    : mSemantic( 0 )
-    , mIndex( 0 )
-    , mDataLength( 0 )
-    , mType( aiPTI_Float )
-    , mData(nullptr) {
-        // empty
-=======
     aiMaterialProperty()
         : mSemantic( 0 )
         , mIndex( 0 )
@@ -709,15 +614,10 @@ struct aiMaterialProperty
         , mType( aiPTI_Float )
         , mData( NULL )
     {
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     }
 
     ~aiMaterialProperty()   {
         delete[] mData;
-<<<<<<< HEAD
-        mData = nullptr;
-=======
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     }
 
 #endif
@@ -752,17 +652,6 @@ public:
     ~aiMaterial();
 
     // -------------------------------------------------------------------
-<<<<<<< HEAD
-    /**
-      * @brief  Returns the name of the material.
-      * @return The name of the material.
-      */
-    // -------------------------------------------------------------------
-    aiString GetName();
-
-    // -------------------------------------------------------------------
-=======
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     /** @brief Retrieve an array of Type values with a specific key
      *  from the material
      *
@@ -1004,10 +893,6 @@ extern "C" {
 #define AI_MATKEY_ENABLE_WIREFRAME "$mat.wireframe",0,0
 #define AI_MATKEY_BLEND_FUNC "$mat.blend",0,0
 #define AI_MATKEY_OPACITY "$mat.opacity",0,0
-<<<<<<< HEAD
-#define AI_MATKEY_TRANSPARENCYFACTOR "$mat.transparencyfactor",0,0
-=======
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 #define AI_MATKEY_BUMPSCALING "$mat.bumpscaling",0,0
 #define AI_MATKEY_SHININESS "$mat.shininess",0,0
 #define AI_MATKEY_REFLECTIVITY "$mat.reflectivity",0,0
@@ -1020,16 +905,6 @@ extern "C" {
 #define AI_MATKEY_COLOR_TRANSPARENT "$clr.transparent",0,0
 #define AI_MATKEY_COLOR_REFLECTIVE "$clr.reflective",0,0
 #define AI_MATKEY_GLOBAL_BACKGROUND_IMAGE "?bg.global",0,0
-<<<<<<< HEAD
-#define AI_MATKEY_GLOBAL_SHADERLANG "?sh.lang",0,0
-#define AI_MATKEY_SHADER_VERTEX "?sh.vs",0,0
-#define AI_MATKEY_SHADER_FRAGMENT "?sh.fs",0,0
-#define AI_MATKEY_SHADER_GEO "?sh.gs",0,0
-#define AI_MATKEY_SHADER_TESSELATION "?sh.ts",0,0
-#define AI_MATKEY_SHADER_PRIMITIVE "?sh.ps",0,0
-#define AI_MATKEY_SHADER_COMPUTE "?sh.cs",0,0
-=======
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 // ---------------------------------------------------------------------------
 // Pure key names for all texture-related properties
@@ -1573,11 +1448,8 @@ inline aiReturn aiGetMaterialInteger(const C_STRUCT aiMaterial* pMat,
 
 #endif //!__cplusplus
 
-<<<<<<< HEAD
-=======
 
 
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 // ---------------------------------------------------------------------------
 /** @brief Retrieve a color value from the material property table
 *
@@ -1684,18 +1556,10 @@ C_ENUM aiReturn aiGetMaterialTexture(const C_STRUCT aiMaterial* mat,
     unsigned int* flags                 /*= NULL*/);
 #endif // !#ifdef __cplusplus
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 #ifdef __cplusplus
 }
 
 #include "material.inl"
 
 #endif //!__cplusplus
-<<<<<<< HEAD
-
-=======
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 #endif //!!AI_MATERIAL_H_INC

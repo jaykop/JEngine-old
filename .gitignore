@@ -1,6 +1,6 @@
-bin/
-temp/
-.vs/
+bin
+temp
+.vs
 lib/JEngine/
 *.db
 *.suo

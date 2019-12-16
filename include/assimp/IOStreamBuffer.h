@@ -4,11 +4,7 @@
 Open Asset Import Library (assimp)
 ----------------------------------------------------------------------
 
-<<<<<<< HEAD
-Copyright (c) 2006-2019, assimp team
-=======
 Copyright (c) 2006-2018, assimp team
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 
 All rights reserved.
@@ -247,11 +243,7 @@ template<class T>
 inline
 bool IOStreamBuffer<T>::getNextDataLine( std::vector<T> &buffer, T continuationToken ) {
     buffer.resize( m_cacheSize );
-<<<<<<< HEAD
-    if ( m_cachePos >= m_cacheSize || 0 == m_filePos ) {
-=======
     if ( m_cachePos == m_cacheSize || 0 == m_filePos ) {
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         if ( !readNextBlock() ) {
             return false;
         }
@@ -281,12 +273,6 @@ bool IOStreamBuffer<T>::getNextDataLine( std::vector<T> &buffer, T continuationT
         buffer[ i ] = m_cache[ m_cachePos ];
         ++m_cachePos;
         ++i;
-<<<<<<< HEAD
-        if (m_cachePos >= size()) {
-            break;
-        }
-=======
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         if ( m_cachePos >= m_cacheSize ) {
             if ( !readNextBlock() ) {
                 return false;

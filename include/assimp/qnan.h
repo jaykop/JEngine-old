@@ -3,11 +3,7 @@
 Open Asset Import Library (assimp)
 ---------------------------------------------------------------------------
 
-<<<<<<< HEAD
-Copyright (c) 2006-2019, assimp team
-=======
 Copyright (c) 2006-2018, assimp team
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 
 
@@ -102,15 +98,8 @@ AI_FORCE_INLINE bool is_qnan(float in)
     //   compare <register-with-different-width> against <in>
 
     // FIXME: Use <float> stuff instead? I think fpclassify needs C99
-<<<<<<< HEAD
-    _IEEESingle temp;
-    memcpy(&temp, &in, sizeof(float));
-    return (temp.IEEE.Exp == (1u << 8)-1 &&
-        temp.IEEE.Frac);
-=======
     return (reinterpret_cast<_IEEESingle*>(&in)->IEEE.Exp == (1u << 8)-1 &&
         reinterpret_cast<_IEEESingle*>(&in)->IEEE.Frac);
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 }
 
 // ---------------------------------------------------------------------------
@@ -125,15 +114,8 @@ AI_FORCE_INLINE bool is_qnan(double in)
     //   compare <register-with-different-width> against <in>
 
     // FIXME: Use <float> stuff instead? I think fpclassify needs C99
-<<<<<<< HEAD
-    _IEEEDouble temp;
-    memcpy(&temp, &in, sizeof(in));
-    return (temp.IEEE.Exp == (1u << 11)-1 &&
-        temp.IEEE.Frac);
-=======
     return (reinterpret_cast<_IEEEDouble*>(&in)->IEEE.Exp == (1u << 11)-1 &&
         reinterpret_cast<_IEEEDouble*>(&in)->IEEE.Frac);
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 }
 
 // ---------------------------------------------------------------------------
@@ -143,13 +125,7 @@ AI_FORCE_INLINE bool is_qnan(double in)
  *  @param in Input value */
 AI_FORCE_INLINE bool is_special_float(float in)
 {
-<<<<<<< HEAD
-    _IEEESingle temp;
-    memcpy(&temp, &in, sizeof(float));
-    return (temp.IEEE.Exp == (1u << 8)-1);
-=======
     return (reinterpret_cast<_IEEESingle*>(&in)->IEEE.Exp == (1u << 8)-1);
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 }
 
 // ---------------------------------------------------------------------------
@@ -159,13 +135,7 @@ AI_FORCE_INLINE bool is_special_float(float in)
  *  @param in Input value */
 AI_FORCE_INLINE bool is_special_float(double in)
 {
-<<<<<<< HEAD
-   _IEEESingle temp;
-    memcpy(&temp, &in, sizeof(float));
-    return (temp.IEEE.Exp == (1u << 11)-1);
-=======
     return (reinterpret_cast<_IEEEDouble*>(&in)->IEEE.Exp == (1u << 11)-1);
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 }
 
 // ---------------------------------------------------------------------------

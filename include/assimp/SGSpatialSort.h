@@ -2,11 +2,7 @@
 Open Asset Import Library (assimp)
 ----------------------------------------------------------------------
 
-<<<<<<< HEAD
-Copyright (c) 2006-2019, assimp team
-=======
 Copyright (c) 2006-2018, assimp team
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 
 All rights reserved.
@@ -115,44 +111,16 @@ protected:
 
     // -------------------------------------------------------------------
     /** An entry in a spatially sorted position array. Consists of a
-<<<<<<< HEAD
-     *  vertex index, its position and its pre-calculated distance from
-     *  the reference plane */
-    // -------------------------------------------------------------------
-    struct Entry {
-=======
      *  vertex index, its position and its precalculated distance from
      *  the reference plane */
     // -------------------------------------------------------------------
     struct Entry
     {
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         unsigned int mIndex;    ///< The vertex referred by this entry
         aiVector3D mPosition;   ///< Position
         uint32_t mSmoothGroups;
         float mDistance;        ///< Distance of this vertex to the sorting plane
 
-<<<<<<< HEAD
-        Entry() AI_NO_EXCEPT
-        : mIndex(0)
-        , mPosition()
-        , mSmoothGroups(0)
-        , mDistance(0.0f) {
-            // empty
-        }
-
-        Entry( unsigned int pIndex, const aiVector3D& pPosition, float pDistance,uint32_t pSG)
-        : mIndex( pIndex)
-        , mPosition( pPosition)
-        , mSmoothGroups(pSG)
-        , mDistance( pDistance) {
-            // empty
-        }
-
-        bool operator < (const Entry& e) const {
-            return mDistance < e.mDistance;
-        }
-=======
         Entry() { /** intentionally not initialized.*/ }
         Entry( unsigned int pIndex, const aiVector3D& pPosition, float pDistance,uint32_t pSG)
         :
@@ -163,7 +131,6 @@ protected:
             {   }
 
         bool operator < (const Entry& e) const { return mDistance < e.mDistance; }
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     };
 
     // all positions, sorted by distance to the sorting plane

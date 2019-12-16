@@ -2,11 +2,7 @@
 Open Asset Import Library (assimp)
 ----------------------------------------------------------------------
 
-<<<<<<< HEAD
-Copyright (c) 2006-2019, assimp team
-=======
 Copyright (c) 2006-2018, assimp team
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 
 All rights reserved.
@@ -69,10 +65,6 @@ struct aiLight;
 struct aiMetadata;
 struct aiBone;
 struct aiMesh;
-<<<<<<< HEAD
-struct aiAnimMesh;
-=======
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 struct aiAnimation;
 struct aiNodeAnim;
 
@@ -371,10 +363,6 @@ public:
     static void Copy     (aiMesh** dest, const aiMesh* src);
 
     // similar to Copy():
-<<<<<<< HEAD
-    static void Copy  (aiAnimMesh** dest, const aiAnimMesh* src);
-=======
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     static void Copy  (aiMaterial** dest, const aiMaterial* src);
     static void Copy  (aiTexture** dest, const aiTexture* src);
     static void Copy  (aiAnimation** dest, const aiAnimation* src);

@@ -39,40 +39,22 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ---------------------------------------------------------------------------
 */
 
-<<<<<<< HEAD
-#pragma once
-
-/** @file  MathFunctions.h
-*  @brief Implementation of math utility functions.
- *
-*/
-
-#include <limits>
-=======
 /** @file  MathFunctions.h
  *  @brief Implementation of the math functions (gcd and lcm)
  *
  *  Copied from BoostWorkaround/math
  */
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 namespace Assimp {
 namespace Math {
 
 // TODO: use binary GCD for unsigned integers ....
 template < typename IntegerType >
-<<<<<<< HEAD
-inline
-IntegerType gcd( IntegerType a, IntegerType b ) {
-	const IntegerType zero = (IntegerType)0;
-	while ( true ) {
-=======
 IntegerType  gcd( IntegerType a, IntegerType b )
 {
 	const IntegerType zero = (IntegerType)0;
 	while ( true )
 	{
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 		if ( a == zero )
 			return b;
 		b %= a;
@@ -84,22 +66,6 @@ IntegerType  gcd( IntegerType a, IntegerType b )
 }
 
 template < typename IntegerType >
-<<<<<<< HEAD
-inline
-IntegerType lcm( IntegerType a, IntegerType b ) {
-	const IntegerType t = gcd (a,b);
-	if (!t)
-        return t;
-	return a / t * b;
-}
-
-template<class T>
-inline
-T getEpsilon() {
-    return std::numeric_limits<T>::epsilon();
-}
-
-=======
 IntegerType  lcm( IntegerType a, IntegerType b )
 {
 	const IntegerType t = gcd (a,b);
@@ -107,6 +73,5 @@ IntegerType  lcm( IntegerType a, IntegerType b )
 	return a / t * b;
 }
 
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 }
 }

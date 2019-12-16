@@ -2,11 +2,7 @@
 Open Asset Import Library (assimp)
 ----------------------------------------------------------------------
 
-<<<<<<< HEAD
-Copyright (c) 2006-2019, assimp team
-=======
 Copyright (c) 2006-2018, assimp team
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 
 All rights reserved.
@@ -138,33 +134,6 @@ public:
         }
     }
 
-<<<<<<< HEAD
-    // ----------------------------------------------------------------------------
-    /** Extract a particular vertex from a anim mesh and interleave all components */
-    explicit Vertex(const aiAnimMesh* msh, unsigned int idx) {
-        ai_assert(idx < msh->mNumVertices);
-        position = msh->mVertices[idx];
-
-        if (msh->HasNormals()) {
-            normal = msh->mNormals[idx];
-        }
-
-        if (msh->HasTangentsAndBitangents()) {
-            tangent = msh->mTangents[idx];
-            bitangent = msh->mBitangents[idx];
-        }
-
-        for (unsigned int i = 0; msh->HasTextureCoords(i); ++i) {
-            texcoords[i] = msh->mTextureCoords[i][idx];
-        }
-
-        for (unsigned int i = 0; msh->HasVertexColors(i); ++i) {
-           colors[i] = msh->mColors[i][idx];
-        }
-    }
-
-=======
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 public:
 
     Vertex& operator += (const Vertex& v) {

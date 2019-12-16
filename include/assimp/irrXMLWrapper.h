@@ -2,11 +2,7 @@
 Open Asset Import Library (assimp)
 ----------------------------------------------------------------------
 
-<<<<<<< HEAD
-Copyright (c) 2006-2019, assimp team
-=======
 Copyright (c) 2006-2018, assimp team
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 
 All rights reserved.
@@ -48,17 +44,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define INCLUDED_AI_IRRXML_WRAPPER
 
 // some long includes ....
-<<<<<<< HEAD
-#ifdef ASSIMP_USE_HUNTER
-#  include <irrXML/irrXML.h>
-#else
-#  include <irrXML.h>
-#endif
-#include "IOStream.hpp"
-=======
 #include <irrXML.h>
 #include "./../include/assimp/IOStream.hpp"
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 #include "BaseImporter.h"
 #include <vector>
 
@@ -104,17 +91,6 @@ public:
         stream->Read(&data[0],data.size(),1);
 
         // Remove null characters from the input sequence otherwise the parsing will utterly fail
-<<<<<<< HEAD
-        // std::find is usually much faster than manually iterating
-        // It is very unlikely that there will be any null characters
-        auto null_char_iter = std::find(data.begin(), data.end(), '\0');
-
-        while (null_char_iter != data.end())
-        {
-            null_char_iter = data.erase(null_char_iter);
-            null_char_iter = std::find(null_char_iter, data.end(), '\0');
-        }
-=======
         unsigned int size = 0;
         unsigned int size_max = static_cast<unsigned int>(data.size());
         for(unsigned int i = 0; i < size_max; i++) {
@@ -123,7 +99,6 @@ public:
             }
         }
         data.resize(size);
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
         BaseImporter::ConvertToUTF8(data);
     }

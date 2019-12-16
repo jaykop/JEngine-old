@@ -3,11 +3,7 @@
 Open Asset Import Library (assimp)
 ---------------------------------------------------------------------------
 
-<<<<<<< HEAD
-Copyright (c) 2006-2019, assimp team
-=======
 Copyright (c) 2006-2018, assimp team
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 
 
@@ -52,20 +48,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef AI_STREAMREADER_H_INCLUDED
 #define AI_STREAMREADER_H_INCLUDED
 
-<<<<<<< HEAD
-#include <assimp/IOStream.hpp>
-#include <assimp/Defines.h>
-
-#include "ByteSwapper.h"
-#include "Exceptional.h"
-#include <memory>
-=======
 #include "ByteSwapper.h"
 #include "Exceptional.h"
 #include <memory>
 #include <assimp/IOStream.hpp>
 #include <assimp/Defines.h>
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 namespace Assimp {
 
@@ -80,15 +67,6 @@ namespace Assimp {
  *  XXX switch from unsigned int for size types to size_t? or ptrdiff_t?*/
 // --------------------------------------------------------------------------------------------
 template <bool SwapEndianess = false, bool RuntimeSwitch = false>
-<<<<<<< HEAD
-class StreamReader {
-public:
-    // FIXME: use these data types throughout the whole library,
-    // then change them to 64 bit values :-)
-    using diff = int;
-    using pos  = unsigned int;
-
-=======
 class StreamReader
 {
 public:
@@ -99,7 +77,6 @@ public:
     typedef unsigned int pos;
 
 public:
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     // ---------------------------------------------------------------------
     /** Construction from a given stream with a well-defined endianness.
      *
@@ -134,11 +111,8 @@ public:
         delete[] buffer;
     }
 
-<<<<<<< HEAD
-=======
 public:
 
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     // deprecated, use overloaded operator>> instead
 
     // ---------------------------------------------------------------------
@@ -202,10 +176,7 @@ public:
         return Get<uint64_t>();
     }
 
-<<<<<<< HEAD
-=======
 public:
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     // ---------------------------------------------------------------------
     /** Get the remaining stream size (to the end of the stream) */
     unsigned int GetRemainingSize() const {
@@ -349,11 +320,7 @@ private:
         const size_t read = stream->Read(current,1,s);
         // (read < s) can only happen if the stream was opened in text mode, in which case FileSize() is not reliable
         ai_assert(read <= s);
-<<<<<<< HEAD
-        end = limit = &buffer[read-1] + 1;
-=======
         end = limit = &buffer[read];
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     }
 
 private:

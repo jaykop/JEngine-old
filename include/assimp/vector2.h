@@ -3,11 +3,7 @@
 Open Asset Import Library (assimp)
 ---------------------------------------------------------------------------
 
-<<<<<<< HEAD
-Copyright (c) 2006-2019, assimp team
-=======
 Copyright (c) 2006-2018, assimp team
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 
 
@@ -57,10 +53,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #   include <math.h>
 #endif
 
-<<<<<<< HEAD
-=======
 #include "./Compiler/pushpack1.h"
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 #include "defs.h"
 
 // ----------------------------------------------------------------------------------
@@ -69,14 +62,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #ifdef __cplusplus
 template <typename TReal>
-<<<<<<< HEAD
-class aiVector2t {
-public:
-    aiVector2t () : x(), y() {}
-    aiVector2t (TReal _x, TReal _y) : x(_x), y(_y) {}
-    explicit aiVector2t (TReal _xyz) : x(_xyz), y(_xyz) {}
-    aiVector2t (const aiVector2t& o) = default;
-=======
 class aiVector2t
 {
 public:
@@ -87,18 +72,14 @@ public:
     aiVector2t (const aiVector2t& o) : x(o.x), y(o.y) {}
 
 public:
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
     void Set( TReal pX, TReal pY);
     TReal SquareLength() const ;
     TReal Length() const ;
     aiVector2t& Normalize();
 
-<<<<<<< HEAD
-=======
 public:
 
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     const aiVector2t& operator += (const aiVector2t& o);
     const aiVector2t& operator -= (const aiVector2t& o);
     const aiVector2t& operator *= (TReal f);
@@ -130,9 +111,6 @@ struct aiVector2D {
 
 #endif // __cplusplus
 
-<<<<<<< HEAD
-=======
 #include "./Compiler/poppack1.h"
 
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 #endif // AI_VECTOR2D_H_INC

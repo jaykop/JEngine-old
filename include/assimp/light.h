@@ -3,11 +3,7 @@
 Open Asset Import Library (assimp)
 ---------------------------------------------------------------------------
 
-<<<<<<< HEAD
-Copyright (c) 2006-2019, assimp team
-=======
 Copyright (c) 2006-2018, assimp team
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 
 
@@ -241,11 +237,7 @@ struct aiLight
 
 #ifdef __cplusplus
 
-<<<<<<< HEAD
-    aiLight() AI_NO_EXCEPT
-=======
     aiLight()
->>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         :   mType                 (aiLightSource_UNDEFINED)
         ,   mAttenuationConstant  (0.f)
         ,   mAttenuationLinear    (1.f)
