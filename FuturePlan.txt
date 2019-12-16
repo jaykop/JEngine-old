@@ -1,0 +1,18 @@
+*Go over ai example and techniques
+*Import assimp lib
+*Add loading screen
+*Add orbiting camera to camera controller
+*Polish text and particle pipeline as well
+*Mouse picking - bounding box
+*Clone function - copy and move constructor
+*Polish event handler with std function
+*Broadcasting design
+*Add doxygen comments
+*Deferred rendering
+*premake build/cmake/emscripten/python
+*FMOD Lib
+*SIMD Tech
+*Rippling effect
+*Math library unit test
+*Look for part to implement thread
+*Culling
