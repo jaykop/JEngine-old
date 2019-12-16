@@ -3,7 +3,11 @@
 Open Asset Import Library (assimp)
 ---------------------------------------------------------------------------
 
+<<<<<<< HEAD
 Copyright (c) 2006-2019, assimp team
+=======
+Copyright (c) 2006-2018, assimp team
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 
 All rights reserved.
@@ -48,8 +52,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef AI_MESH_H_INC
 #define AI_MESH_H_INC
 
+<<<<<<< HEAD
 #include <assimp/types.h>
 #include <assimp/aabb.h>
+=======
+#include "types.h"
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 #ifdef __cplusplus
 extern "C" {
@@ -137,10 +145,17 @@ struct aiFace
 #ifdef __cplusplus
 
     //! Default constructor
+<<<<<<< HEAD
     aiFace() AI_NO_EXCEPT
     : mNumIndices( 0 )
     , mIndices( nullptr ) {
         // empty
+=======
+    aiFace()
+      : mNumIndices( 0 )
+      , mIndices( NULL )
+    {
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     }
 
     //! Default destructor. Delete the index array
@@ -151,31 +166,51 @@ struct aiFace
 
     //! Copy constructor. Copy the index array
     aiFace( const aiFace& o)
+<<<<<<< HEAD
     : mNumIndices(0)
     , mIndices( nullptr ) {
+=======
+      : mIndices( NULL )
+    {
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         *this = o;
     }
 
     //! Assignment operator. Copy the index array
+<<<<<<< HEAD
     aiFace& operator = ( const aiFace& o) {
         if (&o == this) {
             return *this;
         }
+=======
+    aiFace& operator = ( const aiFace& o)
+    {
+        if (&o == this)
+            return *this;
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
         delete[] mIndices;
         mNumIndices = o.mNumIndices;
         if (mNumIndices) {
             mIndices = new unsigned int[mNumIndices];
             ::memcpy( mIndices, o.mIndices, mNumIndices * sizeof( unsigned int));
+<<<<<<< HEAD
         } else {
             mIndices = nullptr;
         }
 
+=======
+        }
+        else {
+            mIndices = NULL;
+        }
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         return *this;
     }
 
     //! Comparison operator. Checks whether the index array
     //! of two faces is identical
+<<<<<<< HEAD
     bool operator== (const aiFace& o) const {
         if (mIndices == o.mIndices) {
             return true;
@@ -196,11 +231,28 @@ struct aiFace
         }
 
         return true;
+=======
+    bool operator== (const aiFace& o) const
+    {
+        if (mIndices == o.mIndices)return true;
+        else if (mIndices && mNumIndices == o.mNumIndices)
+        {
+            for (unsigned int i = 0;i < this->mNumIndices;++i)
+                if (mIndices[i] != o.mIndices[i])return false;
+            return true;
+        }
+        return false;
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     }
 
     //! Inverse comparison operator. Checks whether the index
     //! array of two faces is NOT identical
+<<<<<<< HEAD
     bool operator != (const aiFace& o) const {
+=======
+    bool operator != (const aiFace& o) const
+    {
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         return !(*this == o);
     }
 #endif // __cplusplus
@@ -221,13 +273,21 @@ struct aiVertexWeight {
 #ifdef __cplusplus
 
     //! Default constructor
+<<<<<<< HEAD
     aiVertexWeight() AI_NO_EXCEPT
+=======
+    aiVertexWeight()
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     : mVertexId(0)
     , mWeight(0.0f) {
         // empty
     }
 
+<<<<<<< HEAD
     //! Initialization from a given index and vertex weight factor
+=======
+    //! Initialisation from a given index and vertex weight factor
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     //! \param pID ID
     //! \param pWeight Vertex weight factor
     aiVertexWeight( unsigned int pID, float pWeight )
@@ -283,21 +343,37 @@ struct aiBone {
 #ifdef __cplusplus
 
     //! Default constructor
+<<<<<<< HEAD
     aiBone() AI_NO_EXCEPT
     : mName()
     , mNumWeights( 0 )
     , mWeights( nullptr )
     , mOffsetMatrix() {
+=======
+    aiBone()
+    : mName()
+    , mNumWeights( 0 )
+    , mWeights( nullptr ) {
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         // empty
     }
 
     //! Copy constructor
     aiBone(const aiBone& other)
+<<<<<<< HEAD
     : mName( other.mName )
     , mNumWeights( other.mNumWeights )
     , mWeights(nullptr)
     , mOffsetMatrix( other.mOffsetMatrix ) {
         if (other.mWeights && other.mNumWeights) {
+=======
+      : mName( other.mName )
+      , mNumWeights( other.mNumWeights )
+      , mOffsetMatrix( other.mOffsetMatrix )
+    {
+        if (other.mWeights && other.mNumWeights)
+        {
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
             mWeights = new aiVertexWeight[mNumWeights];
             ::memcpy(mWeights,other.mWeights,mNumWeights * sizeof(aiVertexWeight));
         }
@@ -305,7 +381,12 @@ struct aiBone {
 
 
     //! Assignment operator
+<<<<<<< HEAD
     aiBone &operator=(const aiBone& other) {
+=======
+    aiBone &operator=(const aiBone& other)
+    {
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         if (this == &other) {
             return *this;
         }
@@ -341,7 +422,12 @@ struct aiBone {
         return true;
     }
     //! Destructor - deletes the array of vertex weights
+<<<<<<< HEAD
     ~aiBone() {
+=======
+    ~aiBone()
+    {
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         delete [] mWeights;
     }
 #endif // __cplusplus
@@ -403,7 +489,11 @@ enum aiPrimitiveType
 
 
 // ---------------------------------------------------------------------------
+<<<<<<< HEAD
 /** @brief An AnimMesh is an attachment to an #aiMesh stores per-vertex
+=======
+/** @brief NOT CURRENTLY IN USE. An AnimMesh is an attachment to an #aiMesh stores per-vertex
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
  *  animations for a particular frame.
  *
  *  You may think of an #aiAnimMesh as a `patch` for the host mesh, which
@@ -415,9 +505,12 @@ enum aiPrimitiveType
 */
 struct aiAnimMesh
 {
+<<<<<<< HEAD
     /**Anim Mesh name */
     C_STRUCT aiString mName;
 
+=======
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     /** Replacement for aiMesh::mVertices. If this array is non-NULL,
      *  it *must* contain mNumVertices entries. The corresponding
      *  array in the host mesh must be non-NULL as well - animation
@@ -458,6 +551,7 @@ struct aiAnimMesh
 
 #ifdef __cplusplus
 
+<<<<<<< HEAD
     aiAnimMesh() AI_NO_EXCEPT
         : mVertices( nullptr )
         , mNormals(nullptr)
@@ -465,15 +559,29 @@ struct aiAnimMesh
         , mBitangents(nullptr)
         , mColors()
         , mTextureCoords()
+=======
+    aiAnimMesh()
+        : mVertices( NULL )
+        , mNormals( NULL )
+        , mTangents( NULL )
+        , mBitangents( NULL )
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         , mNumVertices( 0 )
         , mWeight( 0.0f )
     {
         // fixme consider moving this to the ctor initializer list as well
         for( unsigned int a = 0; a < AI_MAX_NUMBER_OF_TEXTURECOORDS; a++){
+<<<<<<< HEAD
             mTextureCoords[a] = nullptr;
         }
         for( unsigned int a = 0; a < AI_MAX_NUMBER_OF_COLOR_SETS; a++) {
             mColors[a] = nullptr;
+=======
+            mTextureCoords[a] = NULL;
+        }
+        for( unsigned int a = 0; a < AI_MAX_NUMBER_OF_COLOR_SETS; a++) {
+            mColors[a] = NULL;
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         }
     }
 
@@ -494,34 +602,54 @@ struct aiAnimMesh
     /** Check whether the anim mesh overrides the vertex positions
      *  of its host mesh*/
     bool HasPositions() const {
+<<<<<<< HEAD
         return mVertices != nullptr;
+=======
+        return mVertices != NULL;
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     }
 
     /** Check whether the anim mesh overrides the vertex normals
      *  of its host mesh*/
     bool HasNormals() const {
+<<<<<<< HEAD
         return mNormals != nullptr;
+=======
+        return mNormals != NULL;
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     }
 
     /** Check whether the anim mesh overrides the vertex tangents
      *  and bitangents of its host mesh. As for aiMesh,
      *  tangents and bitangents always go together. */
     bool HasTangentsAndBitangents() const {
+<<<<<<< HEAD
         return mTangents != nullptr;
+=======
+        return mTangents != NULL;
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     }
 
     /** Check whether the anim mesh overrides a particular
      * set of vertex colors on his host mesh.
      *  @param pIndex 0<index<AI_MAX_NUMBER_OF_COLOR_SETS */
     bool HasVertexColors( unsigned int pIndex) const    {
+<<<<<<< HEAD
         return pIndex >= AI_MAX_NUMBER_OF_COLOR_SETS ? false : mColors[pIndex] != nullptr;
+=======
+        return pIndex >= AI_MAX_NUMBER_OF_COLOR_SETS ? false : mColors[pIndex] != NULL;
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     }
 
     /** Check whether the anim mesh overrides a particular
      * set of texture coordinates on his host mesh.
      *  @param pIndex 0<index<AI_MAX_NUMBER_OF_TEXTURECOORDS */
     bool HasTextureCoords( unsigned int pIndex) const   {
+<<<<<<< HEAD
         return pIndex >= AI_MAX_NUMBER_OF_TEXTURECOORDS ? false : mTextureCoords[pIndex] != nullptr;
+=======
+        return pIndex >= AI_MAX_NUMBER_OF_TEXTURECOORDS ? false : mTextureCoords[pIndex] != NULL;
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     }
 
 #endif
@@ -715,15 +843,19 @@ struct aiMesh
      *  Method of morphing when animeshes are specified. 
      */
     unsigned int mMethod;
+<<<<<<< HEAD
 
     /**
      *
      */
     C_STRUCT aiAABB mAABB;
+=======
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 	
 #ifdef __cplusplus
 
     //! Default constructor. Initializes all members to 0
+<<<<<<< HEAD
     aiMesh() AI_NO_EXCEPT
     : mPrimitiveTypes( 0 )
     , mNumVertices( 0 )
@@ -755,6 +887,37 @@ struct aiMesh
 
     //! Deletes all storage allocated for the mesh
     ~aiMesh() {
+=======
+    aiMesh()
+        : mPrimitiveTypes( 0 )
+        , mNumVertices( 0 )
+        , mNumFaces( 0 )
+        , mVertices( NULL )
+        , mNormals( NULL )
+        , mTangents( NULL )
+        , mBitangents( NULL )
+        , mFaces( NULL )
+        , mNumBones( 0 )
+        , mBones( NULL )
+        , mMaterialIndex( 0 )
+        , mNumAnimMeshes( 0 )
+        , mAnimMeshes( NULL )
+        , mMethod( 0 )
+    {
+        for( unsigned int a = 0; a < AI_MAX_NUMBER_OF_TEXTURECOORDS; a++)
+        {
+            mNumUVComponents[a] = 0;
+            mTextureCoords[a] = NULL;
+        }
+
+        for( unsigned int a = 0; a < AI_MAX_NUMBER_OF_COLOR_SETS; a++)
+            mColors[a] = NULL;
+    }
+
+    //! Deletes all storage allocated for the mesh
+    ~aiMesh()
+    {
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         delete [] mVertices;
         delete [] mNormals;
         delete [] mTangents;
@@ -787,22 +950,35 @@ struct aiMesh
     //! Check whether the mesh contains positions. Provided no special
     //! scene flags are set, this will always be true
     bool HasPositions() const
+<<<<<<< HEAD
         { return mVertices != nullptr && mNumVertices > 0; }
+=======
+        { return mVertices != NULL && mNumVertices > 0; }
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
     //! Check whether the mesh contains faces. If no special scene flags
     //! are set this should always return true
     bool HasFaces() const
+<<<<<<< HEAD
         { return mFaces != nullptr && mNumFaces > 0; }
 
     //! Check whether the mesh contains normal vectors
     bool HasNormals() const
         { return mNormals != nullptr && mNumVertices > 0; }
+=======
+        { return mFaces != NULL && mNumFaces > 0; }
+
+    //! Check whether the mesh contains normal vectors
+    bool HasNormals() const
+        { return mNormals != NULL && mNumVertices > 0; }
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
     //! Check whether the mesh contains tangent and bitangent vectors
     //! It is not possible that it contains tangents and no bitangents
     //! (or the other way round). The existence of one of them
     //! implies that the second is there, too.
     bool HasTangentsAndBitangents() const
+<<<<<<< HEAD
         { return mTangents != nullptr && mBitangents != nullptr && mNumVertices > 0; }
 
     //! Check whether the mesh contains a vertex color set
@@ -813,10 +989,23 @@ struct aiMesh
         } else {
             return mColors[pIndex] != nullptr && mNumVertices > 0;
         }
+=======
+        { return mTangents != NULL && mBitangents != NULL && mNumVertices > 0; }
+
+    //! Check whether the mesh contains a vertex color set
+    //! \param pIndex Index of the vertex color set
+    bool HasVertexColors( unsigned int pIndex) const
+    {
+        if( pIndex >= AI_MAX_NUMBER_OF_COLOR_SETS)
+            return false;
+        else
+            return mColors[pIndex] != NULL && mNumVertices > 0;
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     }
 
     //! Check whether the mesh contains a texture coordinate set
     //! \param pIndex Index of the texture coordinates set
+<<<<<<< HEAD
     bool HasTextureCoords( unsigned int pIndex) const {
         if (pIndex >= AI_MAX_NUMBER_OF_TEXTURECOORDS) {
             return false;
@@ -832,22 +1021,49 @@ struct aiMesh
             ++n;
         }
 
+=======
+    bool HasTextureCoords( unsigned int pIndex) const
+    {
+        if( pIndex >= AI_MAX_NUMBER_OF_TEXTURECOORDS)
+            return false;
+        else
+            return mTextureCoords[pIndex] != NULL && mNumVertices > 0;
+    }
+
+    //! Get the number of UV channels the mesh contains
+    unsigned int GetNumUVChannels() const
+    {
+        unsigned int n = 0;
+        while (n < AI_MAX_NUMBER_OF_TEXTURECOORDS && mTextureCoords[n])++n;
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         return n;
     }
 
     //! Get the number of vertex color channels the mesh contains
+<<<<<<< HEAD
     unsigned int GetNumColorChannels() const {
         unsigned int n(0);
         while (n < AI_MAX_NUMBER_OF_COLOR_SETS && mColors[n]) {
             ++n;
         }
+=======
+    unsigned int GetNumColorChannels() const
+    {
+        unsigned int n = 0;
+        while (n < AI_MAX_NUMBER_OF_COLOR_SETS && mColors[n])++n;
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         return n;
     }
 
     //! Check whether the mesh contains bones
+<<<<<<< HEAD
     bool HasBones() const {
         return mBones != nullptr && mNumBones > 0;
     }
+=======
+    inline bool HasBones() const
+        { return mBones != NULL && mNumBones > 0; }
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 #endif // __cplusplus
 };

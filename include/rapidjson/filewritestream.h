@@ -62,7 +62,11 @@ public:
 
     void Flush() {
         if (current_ != buffer_) {
+<<<<<<< HEAD
             size_t result = fwrite(buffer_, 1, static_cast<size_t>(current_ - buffer_), fp_);
+=======
+            size_t result = std::fwrite(buffer_, 1, static_cast<size_t>(current_ - buffer_), fp_);
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
             if (result < static_cast<size_t>(current_ - buffer_)) {
                 // failure deliberately ignored at this time
                 // added to avoid warn_unused_result build errors

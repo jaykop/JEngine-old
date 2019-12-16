@@ -2,7 +2,11 @@
 Open Asset Import Library (assimp)
 ----------------------------------------------------------------------
 
+<<<<<<< HEAD
 Copyright (c) 2006-2019, assimp team
+=======
+Copyright (c) 2006-2018, assimp team
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 
 All rights reserved.
@@ -196,7 +200,12 @@ bool GetNextLine( const char_t*& buffer, char_t out[ BufferSize ] ) {
 
 // ---------------------------------------------------------------------------------
 template <class char_t>
+<<<<<<< HEAD
 AI_FORCE_INLINE bool IsNumeric( char_t in) {
+=======
+AI_FORCE_INLINE bool IsNumeric( char_t in)
+{
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     return ( in >= '0' && in <= '9' ) || '-' == in || '+' == in;
 }
 

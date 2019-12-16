@@ -3,7 +3,11 @@
 Open Asset Import Library (assimp)
 ---------------------------------------------------------------------------
 
+<<<<<<< HEAD
 Copyright (c) 2006-2019, assimp team
+=======
+Copyright (c) 2006-2018, assimp team
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 
 
@@ -70,7 +74,11 @@ struct aiVectorKey
 #ifdef __cplusplus
 
     /// @brief  The default constructor.
+<<<<<<< HEAD
     aiVectorKey() AI_NO_EXCEPT
+=======
+    aiVectorKey() 
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     : mTime( 0.0 )
     , mValue() {
         // empty
@@ -79,14 +87,21 @@ struct aiVectorKey
     /// @brief  Construction from a given time and key value.
 
     aiVectorKey(double time, const aiVector3D& value)
+<<<<<<< HEAD
     : mTime( time )
     , mValue( value ) {
         // empty
     }
+=======
+        :   mTime   (time)
+        ,   mValue  (value)
+    {}
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
     typedef aiVector3D elem_type;
 
     // Comparison operators. For use with std::find();
+<<<<<<< HEAD
     bool operator == (const aiVectorKey& rhs) const {
         return rhs.mValue == this->mValue;
     }
@@ -100,6 +115,21 @@ struct aiVectorKey
     }
     bool operator > (const aiVectorKey& rhs ) const {
         return mTime > rhs.mTime;
+=======
+    bool operator == (const aiVectorKey& o) const {
+        return o.mValue == this->mValue;
+    }
+    bool operator != (const aiVectorKey& o) const {
+        return o.mValue != this->mValue;
+    }
+
+    // Relational operators. For use with std::sort();
+    bool operator < (const aiVectorKey& o) const {
+        return mTime < o.mTime;
+    }
+    bool operator > (const aiVectorKey& o) const {
+        return mTime > o.mTime;
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     }
 #endif // __cplusplus
 };
@@ -116,7 +146,11 @@ struct aiQuatKey
     C_STRUCT aiQuaternion mValue;
 
 #ifdef __cplusplus
+<<<<<<< HEAD
     aiQuatKey() AI_NO_EXCEPT
+=======
+    aiQuatKey()
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     : mTime( 0.0 )
     , mValue() {
         // empty
@@ -131,6 +165,7 @@ struct aiQuatKey
     typedef aiQuaternion elem_type;
 
     // Comparison operators. For use with std::find();
+<<<<<<< HEAD
     bool operator == (const aiQuatKey& rhs ) const {
         return rhs.mValue == this->mValue;
     }
@@ -144,12 +179,31 @@ struct aiQuatKey
     }
     bool operator > (const aiQuatKey& rhs ) const {
         return mTime > rhs.mTime;
+=======
+    bool operator == (const aiQuatKey& o) const {
+        return o.mValue == this->mValue;
+    }
+    bool operator != (const aiQuatKey& o) const {
+        return o.mValue != this->mValue;
+    }
+
+    // Relational operators. For use with std::sort();
+    bool operator < (const aiQuatKey& o) const {
+        return mTime < o.mTime;
+    }
+    bool operator > (const aiQuatKey& o) const {
+        return mTime > o.mTime;
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     }
 #endif
 };
 
 // ---------------------------------------------------------------------------
+<<<<<<< HEAD
 /** Binds a anim-mesh to a specific point in time. */
+=======
+/** Binds a anim mesh to a specific point in time. */
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 struct aiMeshKey
 {
     /** The time of this key */
@@ -163,7 +217,11 @@ struct aiMeshKey
 
 #ifdef __cplusplus
 
+<<<<<<< HEAD
     aiMeshKey() AI_NO_EXCEPT
+=======
+    aiMeshKey()
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     : mTime(0.0)
     , mValue(0)
     {
@@ -210,10 +268,17 @@ struct aiMeshMorphKey
     /** The number of values and weights */
     unsigned int mNumValuesAndWeights;
 #ifdef __cplusplus
+<<<<<<< HEAD
 	aiMeshMorphKey() AI_NO_EXCEPT
 		: mTime(0.0)
 		, mValues(nullptr)
 		, mWeights(nullptr)
+=======
+	aiMeshMorphKey()
+		: mTime(0.0)
+		, mValues(NULL)
+		, mWeights(NULL)
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 		, mNumValuesAndWeights(0)
 	{
 
@@ -324,6 +389,7 @@ struct aiNodeAnim {
     C_ENUM aiAnimBehaviour mPostState;
 
 #ifdef __cplusplus
+<<<<<<< HEAD
     aiNodeAnim() AI_NO_EXCEPT
     : mNumPositionKeys( 0 )
     , mPositionKeys( nullptr )
@@ -331,6 +397,15 @@ struct aiNodeAnim {
     , mRotationKeys( nullptr )
     , mNumScalingKeys( 0 )
     , mScalingKeys( nullptr )
+=======
+    aiNodeAnim() 
+    : mNumPositionKeys( 0 )
+    , mPositionKeys( NULL )
+    , mNumRotationKeys( 0 )
+    , mRotationKeys( NULL )
+    , mNumScalingKeys( 0 )
+    , mScalingKeys( NULL )
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     , mPreState( aiAnimBehaviour_DEFAULT )
     , mPostState( aiAnimBehaviour_DEFAULT ) {
          // empty
@@ -366,7 +441,11 @@ struct aiMeshAnim
 
 #ifdef __cplusplus
 
+<<<<<<< HEAD
     aiMeshAnim() AI_NO_EXCEPT
+=======
+    aiMeshAnim()
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         : mNumKeys()
         , mKeys()
     {}
@@ -397,7 +476,11 @@ struct aiMeshMorphAnim
 
 #ifdef __cplusplus
 
+<<<<<<< HEAD
     aiMeshMorphAnim() AI_NO_EXCEPT
+=======
+    aiMeshMorphAnim()
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         : mNumKeys()
         , mKeys()
     {}
@@ -451,6 +534,7 @@ struct aiAnimation {
     C_STRUCT aiMeshMorphAnim **mMorphMeshChannels;
 
 #ifdef __cplusplus
+<<<<<<< HEAD
     aiAnimation() AI_NO_EXCEPT
     : mDuration(-1.)
     , mTicksPerSecond(0.)
@@ -460,6 +544,17 @@ struct aiAnimation {
     , mMeshChannels(nullptr)
     , mNumMorphMeshChannels(0)
     , mMorphMeshChannels(nullptr) {
+=======
+    aiAnimation()
+    : mDuration(-1.)
+    , mTicksPerSecond(0.)
+    , mNumChannels(0)
+    , mChannels(NULL)
+    , mNumMeshChannels(0)
+    , mMeshChannels(NULL)
+    , mNumMorphMeshChannels(0)
+    , mMorphMeshChannels(NULL) {
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         // empty
     }
 

@@ -126,6 +126,10 @@ public:
 
     template<typename T>
     RAPIDJSON_FORCEINLINE T* PushUnsafe(size_t count = 1) {
+<<<<<<< HEAD
+=======
+        RAPIDJSON_ASSERT(stackTop_);
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         RAPIDJSON_ASSERT(stackTop_ + sizeof(T) * count <= stackEnd_);
         T* ret = reinterpret_cast<T*>(stackTop_);
         stackTop_ += sizeof(T) * count;
@@ -183,7 +187,11 @@ private:
         size_t newCapacity;
         if (stack_ == 0) {
             if (!allocator_)
+<<<<<<< HEAD
                 ownAllocator_ = allocator_ = RAPIDJSON_NEW(Allocator());
+=======
+                ownAllocator_ = allocator_ = RAPIDJSON_NEW(Allocator)();
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
             newCapacity = initialCapacity_;
         } else {
             newCapacity = GetCapacity();

@@ -236,7 +236,11 @@ private:
     */
     bool AddChunk(size_t capacity) {
         if (!baseAllocator_)
+<<<<<<< HEAD
             ownBaseAllocator_ = baseAllocator_ = RAPIDJSON_NEW(BaseAllocator());
+=======
+            ownBaseAllocator_ = baseAllocator_ = RAPIDJSON_NEW(BaseAllocator)();
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         if (ChunkHeader* chunk = reinterpret_cast<ChunkHeader*>(baseAllocator_->Malloc(RAPIDJSON_ALIGN(sizeof(ChunkHeader)) + capacity))) {
             chunk->capacity = capacity;
             chunk->size = 0;

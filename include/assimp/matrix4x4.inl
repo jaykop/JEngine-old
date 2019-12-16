@@ -3,7 +3,13 @@
 Open Asset Import Library (assimp)
 ---------------------------------------------------------------------------
 
+<<<<<<< HEAD
 Copyright (c) 2006-2019, assimp team
+=======
+Copyright (c) 2006-2018, assimp team
+
+
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 All rights reserved.
 
@@ -51,7 +57,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "matrix4x4.h"
 #include "matrix3x3.h"
 #include "quaternion.h"
+<<<<<<< HEAD
 #include "MathFunctions.h"
+=======
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 #include <algorithm>
 #include <limits>
@@ -59,7 +68,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 // ----------------------------------------------------------------------------------------
 template <typename TReal>
+<<<<<<< HEAD
 aiMatrix4x4t<TReal>::aiMatrix4x4t() AI_NO_EXCEPT :
+=======
+aiMatrix4x4t<TReal> ::aiMatrix4x4t () :
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     a1(1.0f), a2(), a3(), a4(),
     b1(), b2(1.0f), b3(), b4(),
     c1(), c2(), c3(1.0f), c4(),
@@ -70,7 +83,11 @@ aiMatrix4x4t<TReal>::aiMatrix4x4t() AI_NO_EXCEPT :
 
 // ----------------------------------------------------------------------------------------
 template <typename TReal>
+<<<<<<< HEAD
 aiMatrix4x4t<TReal>::aiMatrix4x4t (TReal _a1, TReal _a2, TReal _a3, TReal _a4,
+=======
+aiMatrix4x4t<TReal> ::aiMatrix4x4t (TReal _a1, TReal _a2, TReal _a3, TReal _a4,
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
               TReal _b1, TReal _b2, TReal _b3, TReal _b4,
               TReal _c1, TReal _c2, TReal _c3, TReal _c4,
               TReal _d1, TReal _d2, TReal _d3, TReal _d4) :
@@ -419,8 +436,13 @@ inline void aiMatrix4x4t<TReal>::Decompose (aiVector3t<TReal>& pScaling, aiQuate
 }
 
 template <typename TReal>
+<<<<<<< HEAD
 inline
 void aiMatrix4x4t<TReal>::Decompose(aiVector3t<TReal>& pScaling, aiVector3t<TReal>& pRotation, aiVector3t<TReal>& pPosition) const {
+=======
+inline void aiMatrix4x4t<TReal>::Decompose(aiVector3t<TReal>& pScaling, aiVector3t<TReal>& pRotation, aiVector3t<TReal>& pPosition) const
+{
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 	ASSIMP_MATRIX4_4_DECOMPOSE_PART;
 
     /*
@@ -441,7 +463,11 @@ void aiMatrix4x4t<TReal>::Decompose(aiVector3t<TReal>& pScaling, aiVector3t<TRea
 	*/
 
 	// Use a small epsilon to solve floating-point inaccuracies
+<<<<<<< HEAD
     const TReal epsilon = Assimp::Math::getEpsilon<TReal>();
+=======
+    const TReal epsilon = 10e-3f;
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 	pRotation.y  = std::asin(-vCols[0].z);// D. Angle around oY.
 
@@ -526,6 +552,7 @@ inline aiMatrix4x4t<TReal>& aiMatrix4x4t<TReal>::FromEulerAnglesXYZ(TReal x, TRe
 {
     aiMatrix4x4t<TReal>& _this = *this;
 
+<<<<<<< HEAD
     TReal cx = std::cos(x);
     TReal sx = std::sin(x);
     TReal cy = std::cos(y);
@@ -545,6 +572,29 @@ inline aiMatrix4x4t<TReal>& aiMatrix4x4t<TReal>::FromEulerAnglesXYZ(TReal x, TRe
     _this.c1 = -sy;
     _this.c2 = cy * sx;
     _this.c3 = cy * cx;
+=======
+    TReal cr = std::cos( x );
+    TReal sr = std::sin( x );
+    TReal cp = std::cos( y );
+    TReal sp = std::sin( y );
+    TReal cy = std::cos( z );
+    TReal sy = std::sin( z );
+
+    _this.a1 = cp*cy ;
+    _this.a2 = cp*sy;
+    _this.a3 = -sp ;
+
+    TReal srsp = sr*sp;
+    TReal crsp = cr*sp;
+
+    _this.b1 = srsp*cy-cr*sy ;
+    _this.b2 = srsp*sy+cr*cy ;
+    _this.b3 = sr*cp ;
+
+    _this.c1 =  crsp*cy+sr*sy ;
+    _this.c2 =  crsp*sy-sr*cy ;
+    _this.c3 = cr*cp ;
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
     return *this;
 }

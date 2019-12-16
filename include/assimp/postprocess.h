@@ -2,7 +2,11 @@
 Open Asset Import Library (assimp)
 ----------------------------------------------------------------------
 
+<<<<<<< HEAD
 Copyright (c) 2006-2019, assimp team
+=======
+Copyright (c) 2006-2018, assimp team
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 
 All rights reserved.
@@ -438,7 +442,11 @@ enum aiPostProcessSteps
     aiProcess_FindInstances = 0x100000,
 
     // -------------------------------------------------------------------------
+<<<<<<< HEAD
     /** <hr>A post-processing step to reduce the number of meshes.
+=======
+    /** <hr>A postprocessing step to reduce the number of meshes.
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
      *
      *  This will, in fact, reduce the number of draw calls.
      *
@@ -450,7 +458,11 @@ enum aiPostProcessSteps
 
 
     // -------------------------------------------------------------------------
+<<<<<<< HEAD
     /** <hr>A post-processing step to optimize the scene hierarchy.
+=======
+    /** <hr>A postprocessing step to optimize the scene hierarchy.
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
      *
      *  Nodes without animations, bones, lights or cameras assigned are
      *  collapsed and joined.
@@ -514,7 +526,11 @@ enum aiPostProcessSteps
 
     // -------------------------------------------------------------------------
     /** <hr>This step splits meshes with many bones into sub-meshes so that each
+<<<<<<< HEAD
      * sub-mesh has fewer or as many bones as a given limit.
+=======
+     * su-bmesh has fewer or as many bones as a given limit.
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     */
     aiProcess_SplitByBoneCount  = 0x2000000,
 
@@ -541,7 +557,11 @@ enum aiPostProcessSteps
     *  global scaling from your importer settings like in FBX. Use the flag
     *  AI_CONFIG_GLOBAL_SCALE_FACTOR_KEY from the global property table to configure this.
     *
+<<<<<<< HEAD
     *  Use <tt>#AI_CONFIG_GLOBAL_SCALE_FACTOR_KEY</tt> to setup the global scaling factor.
+=======
+    *  Use <tt>#AI_CONFIG_GLOBAL_SCALE_FACTOR_KEY</tt> to setup the global scaing factor.
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     */
     aiProcess_GlobalScale = 0x8000000,
 
@@ -555,6 +575,7 @@ enum aiPostProcessSteps
      *  of the imported model. And if so, it uses that.
      */
     aiProcess_EmbedTextures  = 0x10000000,
+<<<<<<< HEAD
         
     // aiProcess_GenEntityMeshes = 0x100000,
     // aiProcess_OptimizeAnimations = 0x200000
@@ -579,6 +600,12 @@ enum aiPostProcessSteps
     /**
      */
     aiProcess_GenBoundingBoxes = 0x80000000
+=======
+
+    // aiProcess_GenEntityMeshes = 0x100000,
+    // aiProcess_OptimizeAnimations = 0x200000
+    // aiProcess_FixTexturePaths = 0x200000
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 };
 
 

@@ -2,7 +2,11 @@
 Open Asset Import Library (assimp)
 ----------------------------------------------------------------------
 
+<<<<<<< HEAD
 Copyright (c) 2006-2019, assimp team
+=======
+Copyright (c) 2006-2018, assimp team
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 
 All rights reserved.
@@ -52,10 +56,19 @@ http://www.jalix.org/ressources/graphics/3DS/_unofficials/3ds-unofficial.txt */
 
 // ---------------------------------------------------------------------------
 /** Helper structure representing a face with smoothing groups assigned */
+<<<<<<< HEAD
 struct FaceWithSmoothingGroup {
     FaceWithSmoothingGroup() AI_NO_EXCEPT
     : mIndices()
     , iSmoothGroup(0) {
+=======
+struct FaceWithSmoothingGroup
+{
+    FaceWithSmoothingGroup()
+        : mIndices(),
+        iSmoothGroup(0)
+    {
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         // in debug builds set all indices to a common magic value
 #ifdef ASSIMP_BUILD_DEBUG
         this->mIndices[0] = 0xffffffff;

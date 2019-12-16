@@ -48,13 +48,21 @@ public:
     int IntegerExponent() const { return (IsNormal() ? Exponent() : kDenormalExponent) - kSignificandSize; }
     uint64_t ToBias() const { return (u_ & kSignMask) ? ~u_ + 1 : u_ | kSignMask; }
 
+<<<<<<< HEAD
     static unsigned EffectiveSignificandSize(int order) {
+=======
+    static int EffectiveSignificandSize(int order) {
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         if (order >= -1021)
             return 53;
         else if (order <= -1074)
             return 0;
         else
+<<<<<<< HEAD
             return static_cast<unsigned>(order) + 1074;
+=======
+            return order + 1074;
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     }
 
 private:

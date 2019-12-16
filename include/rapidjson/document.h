@@ -12,8 +12,11 @@
 // CONDITIONS OF ANY KIND, either express or implied. See the License for the 
 // specific language governing permissions and limitations under the License.
 
+<<<<<<< HEAD
 #define NOMINMAX
 
+=======
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 #ifndef RAPIDJSON_DOCUMENT_H_
 #define RAPIDJSON_DOCUMENT_H_
 

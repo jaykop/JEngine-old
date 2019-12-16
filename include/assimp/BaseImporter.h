@@ -2,7 +2,11 @@
 Open Asset Import Library (assimp)
 ----------------------------------------------------------------------
 
+<<<<<<< HEAD
 Copyright (c) 2006-2019, assimp team
+=======
+Copyright (c) 2006-2018, assimp team
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 
 All rights reserved.
@@ -48,10 +52,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <vector>
 #include <set>
+<<<<<<< HEAD
 #include <map>
 #include <assimp/types.h>
 #include <assimp/ProgressHandler.hpp>
 #include <assimp/ai_assert.h>
+=======
+#include <assimp/types.h>
+#include <assimp/ProgressHandler.hpp>
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 struct aiScene;
 struct aiImporterDesc;
@@ -79,6 +88,7 @@ class IOStream;
  * imports the given file. ReadFile is not overridable, it just calls
  * InternReadFile() and catches any ImportErrorException that might occur.
  */
+<<<<<<< HEAD
 class ASSIMP_API BaseImporter {
     friend class Importer;
 
@@ -90,10 +100,24 @@ public:
 
     /** Constructor to be privately used by #Importer */
     BaseImporter() AI_NO_EXCEPT;
+=======
+class ASSIMP_API BaseImporter
+{
+    friend class Importer;
+
+public:
+
+    /** Constructor to be privately used by #Importer */
+    BaseImporter();
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
     /** Destructor, private as well */
     virtual ~BaseImporter();
 
+<<<<<<< HEAD
+=======
+public:
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     // -------------------------------------------------------------------
     /** Returns whether the class can handle the format of the given file.
      *
@@ -138,7 +162,11 @@ public:
      *  a suitable response to the caller.
      */
     aiScene* ReadFile(
+<<<<<<< HEAD
         Importer* pImp,
+=======
+        const Importer* pImp,
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         const std::string& pFile,
         IOSystem* pIOHandler
         );
@@ -167,6 +195,7 @@ public:
      *  some loader features. Importers must provide this information. */
     virtual const aiImporterDesc* GetInfo() const = 0;
 
+<<<<<<< HEAD
     /**
      * Will be called only by scale process when scaling is requested.
      */
@@ -213,12 +242,15 @@ public:
         return applicationUnits;
     }
 
+=======
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     // -------------------------------------------------------------------
     /** Called by #Importer::GetExtensionList for each loaded importer.
      *  Take the extension list contained in the structure returned by
      *  #GetInfo and insert all file extensions into the given set.
      *  @param extension set to collect file extensions in*/
     void GetExtensionList(std::set<std::string>& extensions);
+<<<<<<< HEAD
     
 protected:    
     ImporterUnits applicationUnits = ImporterUnits::M;
@@ -226,6 +258,10 @@ protected:
     double fileScale = 1.0;
 
 
+=======
+
+protected:
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
     // -------------------------------------------------------------------
     /** Imports the given file into the given scene structure. The
@@ -299,8 +335,12 @@ public: // static utilities
         const char** tokens,
         unsigned int numTokens,
         unsigned int searchBytes = 200,
+<<<<<<< HEAD
         bool tokensSol = false,
         bool noAlphaBeforeTokens = false);
+=======
+        bool tokensSol = false);
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
     // -------------------------------------------------------------------
     /** @brief Check whether a file has a specific file extension

@@ -3,7 +3,11 @@
 Open Asset Import Library (assimp)
 ---------------------------------------------------------------------------
 
+<<<<<<< HEAD
 Copyright (c) 2006-2019, assimp team
+=======
+Copyright (c) 2006-2018, assimp team
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 
 
@@ -71,7 +75,11 @@ class ASSIMP_API IOStream
 {
 protected:
     /** Constructor protected, use IOSystem::Open() to create an instance. */
+<<<<<<< HEAD
     IOStream() AI_NO_EXCEPT;
+=======
+    IOStream();
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 public:
     // -------------------------------------------------------------------
@@ -126,7 +134,11 @@ public:
 
 // ----------------------------------------------------------------------------------
 inline
+<<<<<<< HEAD
 IOStream::IOStream() AI_NO_EXCEPT {
+=======
+IOStream::IOStream() {
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     // empty
 }
 

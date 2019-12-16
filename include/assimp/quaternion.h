@@ -2,7 +2,11 @@
 Open Asset Import Library (assimp)
 ----------------------------------------------------------------------
 
+<<<<<<< HEAD
 Copyright (c) 2006-2019, assimp team
+=======
+Copyright (c) 2006-2018, assimp team
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 
 All rights reserved.
@@ -60,7 +64,11 @@ template <typename TReal>
 class aiQuaterniont
 {
 public:
+<<<<<<< HEAD
     aiQuaterniont() AI_NO_EXCEPT : w(1.0), x(), y(), z() {}
+=======
+    aiQuaterniont() : w(1.0), x(), y(), z() {}
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     aiQuaterniont(TReal pw, TReal px, TReal py, TReal pz)
         : w(pw), x(px), y(py), z(pz) {}
 

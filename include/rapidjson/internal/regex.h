@@ -29,6 +29,12 @@ RAPIDJSON_DIAG_OFF(implicit-fallthrough)
 #ifdef __GNUC__
 RAPIDJSON_DIAG_PUSH
 RAPIDJSON_DIAG_OFF(effc++)
+<<<<<<< HEAD
+=======
+#if __GNUC__ >= 7
+RAPIDJSON_DIAG_OFF(implicit-fallthrough)
+#endif
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 #endif
 
 #ifdef _MSC_VER
@@ -44,11 +50,45 @@ RAPIDJSON_NAMESPACE_BEGIN
 namespace internal {
 
 ///////////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
+=======
+// DecodedStream
+
+template <typename SourceStream, typename Encoding>
+class DecodedStream {
+public:
+    DecodedStream(SourceStream& ss) : ss_(ss), codepoint_() { Decode(); }
+    unsigned Peek() { return codepoint_; }
+    unsigned Take() {
+        unsigned c = codepoint_;
+        if (c) // No further decoding when '\0'
+            Decode();
+        return c;
+    }
+
+private:
+    void Decode() {
+        if (!Encoding::Decode(ss_, &codepoint_))
+            codepoint_ = 0;
+    }
+
+    SourceStream& ss_;
+    unsigned codepoint_;
+};
+
+///////////////////////////////////////////////////////////////////////////////
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 // GenericRegex
 
 static const SizeType kRegexInvalidState = ~SizeType(0);  //!< Represents an invalid index in GenericRegex::State::out, out1
 static const SizeType kRegexInvalidRange = ~SizeType(0);
 
+<<<<<<< HEAD
+=======
+template <typename Encoding, typename Allocator>
+class GenericRegexSearch;
+
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 //! Regular expression engine with subset of ECMAscript grammar.
 /*!
     Supported regular expression syntax:
@@ -84,6 +124,7 @@ static const SizeType kRegexInvalidRange = ~SizeType(0);
 template <typename Encoding, typename Allocator = CrtAllocator>
 class GenericRegex {
 public:
+<<<<<<< HEAD
     typedef typename Encoding::Ch Ch;
 
     GenericRegex(const Ch* source, Allocator* allocator = 0) : 
@@ -98,11 +139,28 @@ public:
     ~GenericRegex() {
         Allocator::Free(stateSet_);
     }
+=======
+    typedef Encoding EncodingType;
+    typedef typename Encoding::Ch Ch;
+    template <typename, typename> friend class GenericRegexSearch;
+
+    GenericRegex(const Ch* source, Allocator* allocator = 0) : 
+        states_(allocator, 256), ranges_(allocator, 256), root_(kRegexInvalidState), stateCount_(), rangeCount_(), 
+        anchorBegin_(), anchorEnd_()
+    {
+        GenericStringStream<Encoding> ss(source);
+        DecodedStream<GenericStringStream<Encoding>, Encoding> ds(ss);
+        Parse(ds);
+    }
+
+    ~GenericRegex() {}
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
     bool IsValid() const {
         return root_ != kRegexInvalidState;
     }
 
+<<<<<<< HEAD
     template <typename InputStream>
     bool Match(InputStream& is) const {
         return SearchWithAnchoring(is, true, true);
@@ -123,6 +181,8 @@ public:
         return Search(is);
     }
 
+=======
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 private:
     enum Operator {
         kZeroOrOne,
@@ -157,6 +217,7 @@ private:
         SizeType minIndex;
     };
 
+<<<<<<< HEAD
     template <typename SourceStream>
     class DecodedStream {
     public:
@@ -179,6 +240,8 @@ private:
         unsigned codepoint_;
     };
 
+=======
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     State& GetState(SizeType index) {
         RAPIDJSON_ASSERT(index < stateCount_);
         return states_.template Bottom<State>()[index];
@@ -200,7 +263,11 @@ private:
     }
 
     template <typename InputStream>
+<<<<<<< HEAD
     void Parse(DecodedStream<InputStream>& ds) {
+=======
+    void Parse(DecodedStream<InputStream, Encoding>& ds) {
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         Allocator allocator;
         Stack<Allocator> operandStack(&allocator, 256);     // Frag
         Stack<Allocator> operatorStack(&allocator, 256);    // Operator
@@ -327,6 +394,7 @@ private:
             printf("\n");
 #endif
         }
+<<<<<<< HEAD
 
         // Preallocate buffer for SearchWithAnchoring()
         RAPIDJSON_ASSERT(stateSet_ == 0);
@@ -335,6 +403,8 @@ private:
             state0_.template Reserve<SizeType>(stateCount_);
             state1_.template Reserve<SizeType>(stateCount_);
         }
+=======
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     }
 
     SizeType NewState(SizeType out, SizeType out1, unsigned codepoint) {
@@ -483,7 +553,11 @@ private:
     }
 
     template <typename InputStream>
+<<<<<<< HEAD
     bool ParseUnsigned(DecodedStream<InputStream>& ds, unsigned* u) {
+=======
+    bool ParseUnsigned(DecodedStream<InputStream, Encoding>& ds, unsigned* u) {
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         unsigned r = 0;
         if (ds.Peek() < '0' || ds.Peek() > '9')
             return false;
@@ -497,7 +571,11 @@ private:
     }
 
     template <typename InputStream>
+<<<<<<< HEAD
     bool ParseRange(DecodedStream<InputStream>& ds, SizeType* range) {
+=======
+    bool ParseRange(DecodedStream<InputStream, Encoding>& ds, SizeType* range) {
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         bool isBegin = true;
         bool negate = false;
         int step = 0;
@@ -575,7 +653,11 @@ private:
     }
 
     template <typename InputStream>
+<<<<<<< HEAD
     bool CharacterEscape(DecodedStream<InputStream>& ds, unsigned* escapedCodepoint) {
+=======
+    bool CharacterEscape(DecodedStream<InputStream, Encoding>& ds, unsigned* escapedCodepoint) {
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         unsigned codepoint;
         switch (codepoint = ds.Take()) {
             case '^':
@@ -603,34 +685,115 @@ private:
         }
     }
 
+<<<<<<< HEAD
     template <typename InputStream>
     bool SearchWithAnchoring(InputStream& is, bool anchorBegin, bool anchorEnd) const {
         RAPIDJSON_ASSERT(IsValid());
         DecodedStream<InputStream> ds(is);
+=======
+    Stack<Allocator> states_;
+    Stack<Allocator> ranges_;
+    SizeType root_;
+    SizeType stateCount_;
+    SizeType rangeCount_;
+
+    static const unsigned kInfinityQuantifier = ~0u;
+
+    // For SearchWithAnchoring()
+    bool anchorBegin_;
+    bool anchorEnd_;
+};
+
+template <typename RegexType, typename Allocator = CrtAllocator>
+class GenericRegexSearch {
+public:
+    typedef typename RegexType::EncodingType Encoding;
+    typedef typename Encoding::Ch Ch;
+
+    GenericRegexSearch(const RegexType& regex, Allocator* allocator = 0) : 
+        regex_(regex), allocator_(allocator), ownAllocator_(0),
+        state0_(allocator, 0), state1_(allocator, 0), stateSet_()
+    {
+        RAPIDJSON_ASSERT(regex_.IsValid());
+        if (!allocator_)
+            ownAllocator_ = allocator_ = RAPIDJSON_NEW(Allocator)();
+        stateSet_ = static_cast<unsigned*>(allocator_->Malloc(GetStateSetSize()));
+        state0_.template Reserve<SizeType>(regex_.stateCount_);
+        state1_.template Reserve<SizeType>(regex_.stateCount_);
+    }
+
+    ~GenericRegexSearch() {
+        Allocator::Free(stateSet_);
+        RAPIDJSON_DELETE(ownAllocator_);
+    }
+
+    template <typename InputStream>
+    bool Match(InputStream& is) {
+        return SearchWithAnchoring(is, true, true);
+    }
+
+    bool Match(const Ch* s) {
+        GenericStringStream<Encoding> is(s);
+        return Match(is);
+    }
+
+    template <typename InputStream>
+    bool Search(InputStream& is) {
+        return SearchWithAnchoring(is, regex_.anchorBegin_, regex_.anchorEnd_);
+    }
+
+    bool Search(const Ch* s) {
+        GenericStringStream<Encoding> is(s);
+        return Search(is);
+    }
+
+private:
+    typedef typename RegexType::State State;
+    typedef typename RegexType::Range Range;
+
+    template <typename InputStream>
+    bool SearchWithAnchoring(InputStream& is, bool anchorBegin, bool anchorEnd) {
+        DecodedStream<InputStream, Encoding> ds(is);
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
         state0_.Clear();
         Stack<Allocator> *current = &state0_, *next = &state1_;
         const size_t stateSetSize = GetStateSetSize();
         std::memset(stateSet_, 0, stateSetSize);
 
+<<<<<<< HEAD
         bool matched = AddState(*current, root_);
+=======
+        bool matched = AddState(*current, regex_.root_);
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         unsigned codepoint;
         while (!current->Empty() && (codepoint = ds.Take()) != 0) {
             std::memset(stateSet_, 0, stateSetSize);
             next->Clear();
             matched = false;
             for (const SizeType* s = current->template Bottom<SizeType>(); s != current->template End<SizeType>(); ++s) {
+<<<<<<< HEAD
                 const State& sr = GetState(*s);
                 if (sr.codepoint == codepoint ||
                     sr.codepoint == kAnyCharacterClass || 
                     (sr.codepoint == kRangeCharacterClass && MatchRange(sr.rangeStart, codepoint)))
+=======
+                const State& sr = regex_.GetState(*s);
+                if (sr.codepoint == codepoint ||
+                    sr.codepoint == RegexType::kAnyCharacterClass || 
+                    (sr.codepoint == RegexType::kRangeCharacterClass && MatchRange(sr.rangeStart, codepoint)))
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
                 {
                     matched = AddState(*next, sr.out) || matched;
                     if (!anchorEnd && matched)
                         return true;
                 }
                 if (!anchorBegin)
+<<<<<<< HEAD
                     AddState(*next, root_);
+=======
+                    AddState(*next, regex_.root_);
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
             }
             internal::Swap(current, next);
         }
@@ -639,6 +802,7 @@ private:
     }
 
     size_t GetStateSetSize() const {
+<<<<<<< HEAD
         return (stateCount_ + 31) / 32 * 4;
     }
 
@@ -647,28 +811,51 @@ private:
         RAPIDJSON_ASSERT(index != kRegexInvalidState);
 
         const State& s = GetState(index);
+=======
+        return (regex_.stateCount_ + 31) / 32 * 4;
+    }
+
+    // Return whether the added states is a match state
+    bool AddState(Stack<Allocator>& l, SizeType index) {
+        RAPIDJSON_ASSERT(index != kRegexInvalidState);
+
+        const State& s = regex_.GetState(index);
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         if (s.out1 != kRegexInvalidState) { // Split
             bool matched = AddState(l, s.out);
             return AddState(l, s.out1) || matched;
         }
+<<<<<<< HEAD
         else if (!(stateSet_[index >> 5] & (1 << (index & 31)))) {
             stateSet_[index >> 5] |= (1 << (index & 31));
+=======
+        else if (!(stateSet_[index >> 5] & (1u << (index & 31)))) {
+            stateSet_[index >> 5] |= (1u << (index & 31));
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
             *l.template PushUnsafe<SizeType>() = index;
         }
         return s.out == kRegexInvalidState; // by using PushUnsafe() above, we can ensure s is not validated due to reallocation.
     }
 
     bool MatchRange(SizeType rangeIndex, unsigned codepoint) const {
+<<<<<<< HEAD
         bool yes = (GetRange(rangeIndex).start & kRangeNegationFlag) == 0;
         while (rangeIndex != kRegexInvalidRange) {
             const Range& r = GetRange(rangeIndex);
             if (codepoint >= (r.start & ~kRangeNegationFlag) && codepoint <= r.end)
+=======
+        bool yes = (regex_.GetRange(rangeIndex).start & RegexType::kRangeNegationFlag) == 0;
+        while (rangeIndex != kRegexInvalidRange) {
+            const Range& r = regex_.GetRange(rangeIndex);
+            if (codepoint >= (r.start & ~RegexType::kRangeNegationFlag) && codepoint <= r.end)
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
                 return yes;
             rangeIndex = r.next;
         }
         return !yes;
     }
 
+<<<<<<< HEAD
     Stack<Allocator> states_;
     Stack<Allocator> ranges_;
     SizeType root_;
@@ -686,6 +873,18 @@ private:
 };
 
 typedef GenericRegex<UTF8<> > Regex;
+=======
+    const RegexType& regex_;
+    Allocator* allocator_;
+    Allocator* ownAllocator_;
+    Stack<Allocator> state0_;
+    Stack<Allocator> state1_;
+    uint32_t* stateSet_;
+};
+
+typedef GenericRegex<UTF8<> > Regex;
+typedef GenericRegexSearch<Regex> RegexSearch;
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 } // namespace internal
 RAPIDJSON_NAMESPACE_END

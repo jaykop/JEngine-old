@@ -22,6 +22,14 @@ RAPIDJSON_DIAG_PUSH
 RAPIDJSON_DIAG_OFF(effc++)
 #endif
 
+<<<<<<< HEAD
+=======
+#if defined(__clang__)
+RAPIDJSON_DIAG_PUSH
+RAPIDJSON_DIAG_OFF(c++98-compat)
+#endif
+
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 RAPIDJSON_NAMESPACE_BEGIN
 
 //! Combination of PrettyWriter format flags.
@@ -42,7 +50,11 @@ enum PrettyFormatOptions {
 template<typename OutputStream, typename SourceEncoding = UTF8<>, typename TargetEncoding = UTF8<>, typename StackAllocator = CrtAllocator, unsigned writeFlags = kWriteDefaultFlags>
 class PrettyWriter : public Writer<OutputStream, SourceEncoding, TargetEncoding, StackAllocator, writeFlags> {
 public:
+<<<<<<< HEAD
     typedef Writer<OutputStream, SourceEncoding, TargetEncoding, StackAllocator> Base;
+=======
+    typedef Writer<OutputStream, SourceEncoding, TargetEncoding, StackAllocator, writeFlags> Base;
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     typedef typename Base::Ch Ch;
 
     //! Constructor
@@ -57,6 +69,14 @@ public:
     explicit PrettyWriter(StackAllocator* allocator = 0, size_t levelDepth = Base::kDefaultLevelDepth) : 
         Base(allocator, levelDepth), indentChar_(' '), indentCharCount_(4) {}
 
+<<<<<<< HEAD
+=======
+#if RAPIDJSON_HAS_CXX11_RVALUE_REFS
+    PrettyWriter(PrettyWriter&& rhs) :
+        Base(std::forward<PrettyWriter>(rhs)), indentChar_(rhs.indentChar_), indentCharCount_(rhs.indentCharCount_), formatOptions_(rhs.formatOptions_) {}
+#endif
+
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     //! Set custom indentation.
     /*! \param indentChar       Character for indentation. Must be whitespace character (' ', '\\t', '\\n', '\\r').
         \param indentCharCount  Number of indent characters for each indentation level.
@@ -91,12 +111,20 @@ public:
     bool Double(double d)       { PrettyPrefix(kNumberType); return Base::WriteDouble(d); }
 
     bool RawNumber(const Ch* str, SizeType length, bool copy = false) {
+<<<<<<< HEAD
+=======
+        RAPIDJSON_ASSERT(str != 0);
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         (void)copy;
         PrettyPrefix(kNumberType);
         return Base::WriteString(str, length);
     }
 
     bool String(const Ch* str, SizeType length, bool copy = false) {
+<<<<<<< HEAD
+=======
+        RAPIDJSON_ASSERT(str != 0);
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         (void)copy;
         PrettyPrefix(kStringType);
         return Base::WriteString(str, length);
@@ -124,8 +152,15 @@ public:
 	
     bool EndObject(SizeType memberCount = 0) {
         (void)memberCount;
+<<<<<<< HEAD
         RAPIDJSON_ASSERT(Base::level_stack_.GetSize() >= sizeof(typename Base::Level));
         RAPIDJSON_ASSERT(!Base::level_stack_.template Top<typename Base::Level>()->inArray);
+=======
+        RAPIDJSON_ASSERT(Base::level_stack_.GetSize() >= sizeof(typename Base::Level)); // not inside an Object
+        RAPIDJSON_ASSERT(!Base::level_stack_.template Top<typename Base::Level>()->inArray); // currently inside an Array, not Object
+        RAPIDJSON_ASSERT(0 == Base::level_stack_.template Top<typename Base::Level>()->valueCount % 2); // Object has a Key without a Value
+       
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         bool empty = Base::level_stack_.template Pop<typename Base::Level>(1)->valueCount == 0;
 
         if (!empty) {
@@ -136,7 +171,11 @@ public:
         (void)ret;
         RAPIDJSON_ASSERT(ret == true);
         if (Base::level_stack_.Empty()) // end of json text
+<<<<<<< HEAD
             Base::os_->Flush();
+=======
+            Base::Flush();
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         return true;
     }
 
@@ -160,7 +199,11 @@ public:
         (void)ret;
         RAPIDJSON_ASSERT(ret == true);
         if (Base::level_stack_.Empty()) // end of json text
+<<<<<<< HEAD
             Base::os_->Flush();
+=======
+            Base::Flush();
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
         return true;
     }
 
@@ -184,7 +227,15 @@ public:
         \param type Type of the root of json.
         \note When using PrettyWriter::RawValue(), the result json may not be indented correctly.
     */
+<<<<<<< HEAD
     bool RawValue(const Ch* json, size_t length, Type type) { PrettyPrefix(type); return Base::WriteRawValue(json, length); }
+=======
+    bool RawValue(const Ch* json, size_t length, Type type) {
+        RAPIDJSON_ASSERT(json != 0);
+        PrettyPrefix(type);
+        return Base::WriteRawValue(json, length);
+    }
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 protected:
     void PrettyPrefix(Type type) {
@@ -233,7 +284,11 @@ protected:
 
     void WriteIndent()  {
         size_t count = (Base::level_stack_.GetSize() / sizeof(typename Base::Level)) * indentCharCount_;
+<<<<<<< HEAD
         PutN(*Base::os_, static_cast<typename TargetEncoding::Ch>(indentChar_), count);
+=======
+        PutN(*Base::os_, static_cast<typename OutputStream::Ch>(indentChar_), count);
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     }
 
     Ch indentChar_;
@@ -248,6 +303,13 @@ private:
 
 RAPIDJSON_NAMESPACE_END
 
+<<<<<<< HEAD
+=======
+#if defined(__clang__)
+RAPIDJSON_DIAG_POP
+#endif
+
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 #ifdef __GNUC__
 RAPIDJSON_DIAG_POP
 #endif

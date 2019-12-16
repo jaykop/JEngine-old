@@ -54,7 +54,11 @@ public:
 
     Ch Peek() const { 
         typename StreamType::int_type c = stream_.peek();
+<<<<<<< HEAD
         return RAPIDJSON_LIKELY(c != StreamType::traits_type::eof()) ? static_cast<Ch>(c) : '\0';
+=======
+        return RAPIDJSON_LIKELY(c != StreamType::traits_type::eof()) ? static_cast<Ch>(c) : static_cast<Ch>('\0');
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     }
 
     Ch Take() { 

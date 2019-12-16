@@ -3,7 +3,11 @@
 Open Asset Import Library (assimp)
 ---------------------------------------------------------------------------
 
+<<<<<<< HEAD
 Copyright (c) 2006-2019, assimp team
+=======
+Copyright (c) 2006-2018, assimp team
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 
 
@@ -59,11 +63,20 @@ template <typename TReal>
 class aiColor4t
 {
 public:
+<<<<<<< HEAD
     aiColor4t() AI_NO_EXCEPT : r(), g(), b(), a() {}
     aiColor4t (TReal _r, TReal _g, TReal _b, TReal _a)
         : r(_r), g(_g), b(_b), a(_a) {}
     explicit aiColor4t (TReal _r) : r(_r), g(_r), b(_r), a(_r) {}
     aiColor4t (const aiColor4t& o) = default;
+=======
+    aiColor4t () : r(), g(), b(), a() {}
+    aiColor4t (TReal _r, TReal _g, TReal _b, TReal _a)
+        : r(_r), g(_g), b(_b), a(_a) {}
+    explicit aiColor4t (TReal _r) : r(_r), g(_r), b(_r), a(_r) {}
+    aiColor4t (const aiColor4t& o)
+        : r(o.r), g(o.g), b(o.b), a(o.a) {}
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 public:
     // combined operators

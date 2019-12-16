@@ -1,7 +1,11 @@
 /*
 LodePNG Utils
 
+<<<<<<< HEAD
 Copyright (c) 2005-2019 Lode Vandevenne
+=======
+Copyright (c) 2005-2018 Lode Vandevenne
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
@@ -25,7 +29,10 @@ freely, subject to the following restrictions:
 
 /*
 Extra C++ utilities for LodePNG, for convenience.
+<<<<<<< HEAD
 Not part of the stable API of lodepng, more loose separate utils.
+=======
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 */
 
 #ifndef LODEPNG_UTIL_H
@@ -35,7 +42,12 @@ Not part of the stable API of lodepng, more loose separate utils.
 #include <vector>
 #include "lodepng.h"
 
+<<<<<<< HEAD
 namespace lodepng {
+=======
+namespace lodepng
+{
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
 
 /*
 Returns info from the header of the PNG by value, purely for convenience.
@@ -115,6 +127,7 @@ is the second half of the 3th byte, in big endian (PNG's endian order).
 */
 int getPaletteValue(const unsigned char* data, size_t i, int bits);
 
+<<<<<<< HEAD
 #ifdef LODEPNG_COMPILE_ANCILLARY_CHUNKS
 
 /* Similar to convertRGBModel, but the 'to' model is sRGB. The pixel format
@@ -256,6 +269,13 @@ unsigned convertFromXYZFloat(float* out, const float* in, unsigned w, unsigned h
 The information for extractZlibInfo.
 */
 struct ZlibBlockInfo {
+=======
+/*
+The information for extractZlibInfo.
+*/
+struct ZlibBlockInfo
+{
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
   int btype; //block type (0-2)
   size_t compressedbits; //size of compressed block in bits
   size_t uncompressedbytes; //size of uncompressed block in bytes

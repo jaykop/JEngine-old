@@ -78,8 +78,17 @@ public:
         return stack_.template Bottom<Ch>();
     }
 
+<<<<<<< HEAD
     size_t GetSize() const { return stack_.GetSize(); }
 
+=======
+    //! Get the size of string in bytes in the string buffer.
+    size_t GetSize() const { return stack_.GetSize(); }
+
+    //! Get the length of string in Ch in the string buffer.
+    size_t GetLength() const { return stack_.GetSize() / sizeof(Ch); }
+
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     static const size_t kDefaultCapacity = 256;
     mutable internal::Stack<Allocator> stack_;
 

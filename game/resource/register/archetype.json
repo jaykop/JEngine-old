@@ -1,0 +1,6 @@
+// This file contains archetype information
+{
+	"Archetype" : [
+		{"Key" : "Cube", 	"Directory" : "../resource/archetype/cube.json"}
+	]
+}

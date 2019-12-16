@@ -18,6 +18,7 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+<<<<<<< HEAD
   <ItemGroup>
     <ClCompile Include="..\..\include\lodepng\lodepng.cpp" />
     <ClCompile Include="..\..\include\lodepng\lodepng_util.cpp" />
@@ -98,11 +99,17 @@
     <None Include="..\..\include\JEngine\component_manager.inl" />
     <None Include="..\..\include\JEngine\object.inl" />
   </ItemGroup>
+=======
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{51D36CA1-1DAA-44C3-896B-86690F8BC886}</ProjectGuid>
     <RootNamespace>JEngine</RootNamespace>
+<<<<<<< HEAD
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+=======
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -152,37 +159,65 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <TargetExt>.lib</TargetExt>
     <TargetName>JEngine_d</TargetName>
+<<<<<<< HEAD
     <OutDir>$(SolutionDir)..\..\lib\$(ProjectName)\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)..\..\temp\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
     <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+=======
+    <OutDir>$(SolutionDir)..\..\lib\JEngine\Debug\x86\</OutDir>
+    <IntDir>$(SolutionDir)..\..\temp\JEngine\Debug\x86\</IntDir>
+    <LibraryPath>$(SolutionDir)..\..\lib\GL\x86;$(SolutionDir)..\..\lib\SDL2\x86;$(SolutionDir)..\..\lib\freetype\x86;$(LibraryPath)</LibraryPath>
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <TargetExt>.lib</TargetExt>
     <TargetName>JEngine</TargetName>
+<<<<<<< HEAD
     <OutDir>$(SolutionDir)..\..\lib\$(ProjectName)\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)..\..\temp\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
     <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+=======
+    <OutDir>$(SolutionDir)..\..\lib\JEngine\Release\x86\</OutDir>
+    <IntDir>$(SolutionDir)..\..\temp\JEngine\Release\x86\</IntDir>
+    <LibraryPath>$(SolutionDir)..\..\lib\GL\x86;$(SolutionDir)..\..\lib\SDL2\x86;$(SolutionDir)..\..\lib\freetype\x86;$(LibraryPath)</LibraryPath>
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetExt>.lib</TargetExt>
     <TargetName>JEngine_d</TargetName>
+<<<<<<< HEAD
     <OutDir>$(SolutionDir)..\..\lib\$(ProjectName)\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)..\..\temp\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
+=======
+    <OutDir>$(SolutionDir)..\..\lib\JEngine\Debug\x64\</OutDir>
+    <IntDir>$(SolutionDir)..\..\temp\JEngine\Debug\x64\</IntDir>
+    <LibraryPath>$(SolutionDir)..\..\lib\GL\x64;$(SolutionDir)..\..\lib\SDL2\x64;$(SolutionDir)..\..\lib\freetype\x64;$(LibraryPath)</LibraryPath>
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetExt>.lib</TargetExt>
     <TargetName>JEngine</TargetName>
+<<<<<<< HEAD
     <OutDir>$(SolutionDir)..\..\lib\$(ProjectName)\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)..\..\temp\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
+=======
+    <OutDir>$(SolutionDir)..\..\lib\JEngine\Release\x64\</OutDir>
+    <IntDir>$(SolutionDir)..\..\temp\JEngine\Release\x64\</IntDir>
+    <LibraryPath>$(SolutionDir)..\..\lib\GL\x64;$(SolutionDir)..\..\lib\SDL2\x64;$(SolutionDir)..\..\lib\freetype\x64;$(LibraryPath)</LibraryPath>
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+<<<<<<< HEAD
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include\rapidjson;$(SolutionDir)..\..\include\imgui;$(SolutionDir)..\..\include\SDL2;$(SolutionDir)..\..\include\lodePNG;$(SolutionDir)..\..\include\freetype2;$(SolutionDir)..\..\include\assimp;$(SolutionDir)..\..\include\stb_image;$(SolutionDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+=======
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\include\imgui;$(SolutionDir)..\..\include\SDL2;$(SolutionDir)..\..\include\lodePNG;$(SolutionDir)..\..\include\freetype2;$(SolutionDir)..\..\include\assimp;$(SolutionDir)..\..\include</AdditionalIncludeDirectories>
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -190,7 +225,11 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+<<<<<<< HEAD
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include\rapidjson;$(SolutionDir)..\..\include\imgui;$(SolutionDir)..\..\include\SDL2;$(SolutionDir)..\..\include\lodePNG;$(SolutionDir)..\..\include\freetype2;$(SolutionDir)..\..\include\assimp;$(SolutionDir)..\..\include\stb_image;$(SolutionDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+=======
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\include\imgui;$(SolutionDir)..\..\include\SDL2;$(SolutionDir)..\..\include\lodePNG;$(SolutionDir)..\..\include\freetype2;$(SolutionDir)..\..\include\assimp;$(SolutionDir)..\..\include</AdditionalIncludeDirectories>
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -200,7 +239,11 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+<<<<<<< HEAD
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include\rapidjson;$(SolutionDir)..\..\include\imgui;$(SolutionDir)..\..\include\SDL2;$(SolutionDir)..\..\include\lodePNG;$(SolutionDir)..\..\include\freetype2;$(SolutionDir)..\..\include\assimp;$(SolutionDir)..\..\include\stb_image;$(SolutionDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+=======
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\include\imgui;$(SolutionDir)..\..\include\SDL2;$(SolutionDir)..\..\include\lodePNG;$(SolutionDir)..\..\include\freetype2;$(SolutionDir)..\..\include\assimp;$(SolutionDir)..\..\include</AdditionalIncludeDirectories>
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -214,13 +257,164 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+<<<<<<< HEAD
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include\rapidjson;$(SolutionDir)..\..\include\imgui;$(SolutionDir)..\..\include\SDL2;$(SolutionDir)..\..\include\lodePNG;$(SolutionDir)..\..\include\freetype2;$(SolutionDir)..\..\include\assimp;$(SolutionDir)..\..\include\stb_image;$(SolutionDir)..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+=======
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\JEngine;$(SolutionDir)..\..\include\GL;$(SolutionDir)..\..\include\rapidjson;$(ExecutablePath);$(SolutionDir)..\..\include\imgui;$(SolutionDir)..\..\include\SDL2;$(SolutionDir)..\..\include\lodePNG;$(SolutionDir)..\..\include\freetype2;$(SolutionDir)..\..\include\assimp;$(SolutionDir)..\..\include</AdditionalIncludeDirectories>
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
+<<<<<<< HEAD
+=======
+  <ItemGroup>
+    <ClInclude Include="..\..\external\imgui\imconfig.h" />
+    <ClInclude Include="..\..\external\imgui\imgui.h" />
+    <ClInclude Include="..\..\external\imgui\imgui_impl_sdl_gl3.h" />
+    <ClInclude Include="..\..\external\imgui\imgui_internal.h" />
+    <ClInclude Include="..\..\external\imgui\stb_rect_pack.h" />
+    <ClInclude Include="..\..\external\imgui\stb_textedit.h" />
+    <ClInclude Include="..\..\external\imgui\stb_truetype.h" />
+    <ClInclude Include="..\..\external\lodePNG\lodepng.h" />
+    <ClInclude Include="..\..\external\lodePNG\lodepng_util.h" />
+    <ClInclude Include="..\..\include\JEngine\Animation.h" />
+    <ClInclude Include="..\..\include\JEngine\Application.h" />
+    <ClInclude Include="..\..\include\JEngine\AssetManager.h" />
+    <ClInclude Include="..\..\include\JEngine\BehaviorSystem.h" />
+    <ClInclude Include="..\..\include\JEngine\Camera.h" />
+    <ClInclude Include="..\..\include\JEngine\Component.h" />
+    <ClInclude Include="..\..\include\JEngine\ComponentBuilder.h" />
+    <ClInclude Include="..\..\include\JEngine\ComponentManager.h" />
+    <ClInclude Include="..\..\include\JEngine\Debug.h" />
+    <ClInclude Include="..\..\include\JEngine\GLManager.h" />
+    <ClInclude Include="..\..\include\JEngine\GraphicComponents.h" />
+    <ClInclude Include="..\..\include\JEngine\GraphicSystem.h" />
+    <ClInclude Include="..\..\include\JEngine\ImguiManager.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\InputHandler.h" />
+    <ClInclude Include="..\..\include\JEngine\JsonParser.h" />
+    <ClInclude Include="..\..\include\JEngine\Light.h" />
+    <ClInclude Include="..\..\include\JEngine\Macro.h" />
+    <ClInclude Include="..\..\include\JEngine\Material.h" />
+    <ClInclude Include="..\..\include\JEngine\MathUtils.h" />
+    <ClInclude Include="..\..\include\JEngine\Matrix4x4.h" />
+    <ClInclude Include="..\..\include\JEngine\MemoryAllocator.h" />
+    <ClInclude Include="..\..\include\JEngine\Mesh.h" />
+    <ClInclude Include="..\..\include\JEngine\MessageDispatcher.h" />
+    <ClInclude Include="..\..\include\JEngine\Model.h" />
+    <ClInclude Include="..\..\include\JEngine\Object.h" />
+    <ClInclude Include="..\..\include\JEngine\ObjectContainer.h" />
+    <ClInclude Include="..\..\include\JEngine\ObjectFactory.h" />
+    <ClInclude Include="..\..\include\JEngine\Particle.h" />
+    <ClInclude Include="..\..\include\JEngine\PhysicsComponents.h" />
+    <ClInclude Include="..\..\include\JEngine\PhysicsSystem.h" />
+    <ClInclude Include="..\..\include\JEngine\Random.h" />
+    <ClInclude Include="..\..\include\JEngine\Rigidbody.h" />
+    <ClInclude Include="..\..\include\JEngine\Shader.h" />
+    <ClInclude Include="..\..\include\JEngine\SoundComponents.h" />
+    <ClInclude Include="..\..\include\JEngine\SoundSystem.h" />
+    <ClInclude Include="..\..\include\JEngine\State.h" />
+    <ClInclude Include="..\..\include\JEngine\StateManager.h" />
+    <ClInclude Include="..\..\include\JEngine\System.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\SystemManager.h" />
+    <ClInclude Include="..\..\include\JEngine\Telegram.h" />
+    <ClInclude Include="..\..\include\JEngine\Text.h" />
+    <ClInclude Include="..\..\include\JEngine\Timer.h" />
+    <ClInclude Include="..\..\include\JEngine\Transform.h" />
+    <ClInclude Include="..\..\include\JEngine\CustomComponent.h" />
+    <ClInclude Include="..\..\include\JEngine\Vector2.h" />
+    <ClInclude Include="..\..\include\JEngine\Vector3.h" />
+    <ClInclude Include="..\..\include\JEngine\Vector4.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\include\JEngine\ComponentManager.inl" />
+    <None Include="..\..\include\JEngine\MemoryAllocator.inl" />
+    <None Include="..\..\include\JEngine\Object.inl" />
+    <None Include="..\..\include\JEngine\ObjectContainer.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\imgui\imgui.cpp" />
+    <ClCompile Include="..\..\src\imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\..\src\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\..\src\imgui\imgui_impl_sdl_gl3.cpp" />
+    <ClCompile Include="..\..\src\JEngine\Animation.cpp" />
+    <ClCompile Include="..\..\src\JEngine\Application.cpp" />
+    <ClCompile Include="..\..\src\JEngine\AssetManager.cpp" />
+    <ClCompile Include="..\..\src\JEngine\BehaviorSystem.cpp" />
+    <ClCompile Include="..\..\src\JEngine\Camera.cpp" />
+    <ClCompile Include="..\..\src\JEngine\ComponentManager.cpp" />
+    <ClCompile Include="..\..\src\JEngine\Debug.cpp" />
+    <ClCompile Include="..\..\src\JEngine\GeometryShader.cpp" />
+    <ClCompile Include="..\..\src\JEngine\FragmentShader.cpp" />
+    <ClCompile Include="..\..\src\JEngine\GLManager.cpp" />
+    <ClCompile Include="..\..\src\JEngine\GraphicPipelines.cpp" />
+    <ClCompile Include="..\..\src\JEngine\GraphicSystem.cpp" />
+    <ClCompile Include="..\..\src\JEngine\ImguiManager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JEngine\InputHandler.cpp" />
+    <ClCompile Include="..\..\src\JEngine\JsonParser.cpp" />
+    <ClCompile Include="..\..\src\JEngine\Light.cpp" />
+    <ClCompile Include="..\..\src\JEngine\Material.cpp" />
+    <ClCompile Include="..\..\src\JEngine\MathUtils.cpp" />
+    <ClCompile Include="..\..\src\JEngine\MathUtils_mat4.cpp" />
+    <ClCompile Include="..\..\src\JEngine\MathUtils_vec2.cpp" />
+    <ClCompile Include="..\..\src\JEngine\MathUtils_vec3.cpp" />
+    <ClCompile Include="..\..\src\JEngine\MathUtils_vec4.cpp" />
+    <ClCompile Include="..\..\src\JEngine\Matrix4x4.cpp" />
+    <ClCompile Include="..\..\src\JEngine\Mesh.cpp" />
+    <ClCompile Include="..\..\src\JEngine\MessageDispatcher.cpp" />
+    <ClCompile Include="..\..\src\JEngine\Model.cpp" />
+    <ClCompile Include="..\..\src\JEngine\Object.cpp" />
+    <ClCompile Include="..\..\src\JEngine\ObjectContainer.cpp" />
+    <ClCompile Include="..\..\src\JEngine\ObjectFactory.cpp" />
+    <ClCompile Include="..\..\src\JEngine\Particle.cpp" />
+    <ClCompile Include="..\..\src\JEngine\PhysicsSystem.cpp" />
+    <ClCompile Include="..\..\src\JEngine\Random.cpp" />
+    <ClCompile Include="..\..\src\JEngine\Rigidbody.cpp" />
+    <ClCompile Include="..\..\src\JEngine\Shader.cpp" />
+    <ClCompile Include="..\..\src\JEngine\VertexShader.cpp" />
+    <ClCompile Include="..\..\src\JEngine\SoundSystem.cpp" />
+    <ClCompile Include="..\..\src\JEngine\State.cpp" />
+    <ClCompile Include="..\..\src\JEngine\StateManager.cpp" />
+    <ClCompile Include="..\..\src\JEngine\SystemManager.cpp" />
+    <ClCompile Include="..\..\src\JEngine\Text.cpp" />
+    <ClCompile Include="..\..\src\JEngine\Timer.cpp" />
+    <ClCompile Include="..\..\src\JEngine\Transform.cpp" />
+    <ClCompile Include="..\..\src\JEngine\Vector2.cpp" />
+    <ClCompile Include="..\..\src\JEngine\Vector3.cpp" />
+    <ClCompile Include="..\..\src\JEngine\Vector4.cpp" />
+    <ClCompile Include="..\..\src\lodePNG\lodepng.cpp" />
+    <ClCompile Include="..\..\src\lodePNG\lodepng_util.cpp" />
+  </ItemGroup>
+>>>>>>> 4af9948ac99f35dbd94753136ac865176a80e124
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
