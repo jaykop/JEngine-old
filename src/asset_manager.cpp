@@ -127,11 +127,11 @@ void AssetManager::load_assets()
 	//			static_cast<unsigned long>(fonts[i]["Additional"][j][1].GetUint64()));
 	//	}
 	//}
-
 }
 
 void AssetManager::unload_assets()
 {
+	ComponentManager::clear_builders();
 }
 
 void AssetManager::load_font(const char* path, const char* key, unsigned size,

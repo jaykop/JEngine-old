@@ -59,11 +59,11 @@ void GraphicSystem::render()
 }
 
 void GraphicSystem::add_model(Model* model) { 
-	models_.push_back(model); 
+	models_.emplace_back(model); 
 }
 
 void GraphicSystem::add_camera(Camera* camera) { 
-	cameras_.push_back(camera); 
+	cameras_.emplace_back(camera);
 }
 
 void GraphicSystem::remove_model(Model* model) { 
