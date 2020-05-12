@@ -39,7 +39,7 @@ public:
 	static void set_camera(Camera* mainCameras);
 	static Camera* get_camera();
 
-	vec4 backgroundColor_, screenColor_;
+	static vec4 backgroundColor_, screenColor_;
 
 private:
 

@@ -35,10 +35,12 @@ void Scene::tes_func() {
 	camera->add_component<Camera>();
 	register_object(camera);
 
-	Object* test = ObjectManager::create_object("3d_model");
-	test->add_component<Model>();
-	test->get_component<Model>()->load_model("../../game/unicket/resource/obj/nanosuit.obj");
-	register_object(test);
+	//Object* test = ObjectManager::create_object("3d_model");
+	//test->add_component<Model>();
+	//test->get_component<Model>()->load_model("../../game/unicket/resource/obj/nanosuit.obj");
+	//register_object(test);
+
+	background.set(1.f, 0.f, 0.f, 1.f);
 }
 
 Scene::Scene(const char* name)
@@ -86,11 +88,17 @@ void Scene::update(float dt)
 	if (InputHandler::key_triggered(KEY::B))
 		std::cout << "B\n";
 
-	if (InputHandler::key_pressed(KEY::MOUSE_LEFT))
-		std::cout << "MOUSE_LEFT\n";
+	if (InputHandler::key_pressed(KEY::LEFT)) {
 
-	if (InputHandler::key_triggered(KEY::MOUSE_RIGHT))
-		std::cout << "MOUSE_RIGHT\n";
+		background.r -= dt;
+		std::cout << background.r;
+	}
+
+	if (InputHandler::key_pressed(KEY::RIGHT)) {
+
+		background.r += dt;
+		std::cout << background.r;
+	}
 
 	if (InputHandler::get_mouse_wheel_status() == InputHandler::MouseWheel::UP)
 		std::cout << "Mouse Wheel Up\n";

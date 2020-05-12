@@ -37,8 +37,7 @@ void GLManager::initialize(float w, float h)
 
 	GLuint vertexBuffer;
 	glGenBuffers(1, &vertexBuffer);
-
-	printf("%u\n", vertexBuffer);
+	// printf("%u\n", vertexBuffer);
 
 	// show GL version info
 	const GLubyte* pRenderer_ = glGetString(GL_RENDERER);
@@ -58,12 +57,12 @@ void GLManager::initialize(float w, float h)
 	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &attributes_);
 	jeDebugPrint("*GLManager - Maximum number of vertex attributes supported: %d\n", attributes_);
 
-	initialize_shaders();
-
+	// initialize_shaders();
 }
 
 void GLManager::update(const SDL_Event& event)
 {
+	glViewport(0, 0, (GLsizei)width_, (GLsizei)height_);
 	//if (event.type == SDL_Event::Resized) {
 	//	glViewport(0, 0, event.size.width, event.size.height);
 	//	width_ = float(event.size.width), height_ = float(event.size.height);
@@ -75,10 +74,10 @@ void GLManager::update(const SDL_Event& event)
 
 void GLManager::close()
 {
-	for (unsigned i = 0; i < JE_SHADER_END; ++i) 
-		delete shader_[i];
+	//for (unsigned i = 0; i < JE_SHADER_END; ++i) 
+	//	delete shader_[i];
 
-	shader_.clear();
+	//shader_.clear();
 }
 
 void GLManager::initialize_shaders()

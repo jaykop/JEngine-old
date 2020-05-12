@@ -72,12 +72,13 @@ void SceneManager::update(SDL_Event* event)
 
 			currentTime = elapsedTime; // refresh the current time
 			currentScene_->update(frameTime_); // update the current scene
+
+			SDL_GL_SwapWindow(window_);
+
 			InputHandler::mouse_refresh(*event); // refresh mouse wheel status
 
 			frames_ = 0;
 			timeStack = 0.f;
-
-			SDL_GL_SwapWindow(window_);
 		}
 	}
 

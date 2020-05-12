@@ -22,6 +22,7 @@ jeBegin
 Camera* GraphicSystem::mainCamera_ = nullptr;
 GraphicSystem::Models GraphicSystem::models_;
 GraphicSystem::Cameras GraphicSystem::cameras_;
+vec4 GraphicSystem::backgroundColor_ = vec4::zero, GraphicSystem::screenColor_ = vec4::zero;
 
 void GraphicSystem::initialize() {
 
@@ -35,11 +36,15 @@ void GraphicSystem::initialize() {
 void GraphicSystem::update(float /*dt*/) {
 
 	// get current scene color
-	vec4 bgColor = SceneManager::get_current_scene()->background;
+	backgroundColor_ = SceneManager::get_current_scene()->background;
 
 	// clear buffers
-	glClearColor(bgColor.r, bgColor.g, bgColor.b, bgColor.a);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(
+		backgroundColor_.r, 
+		backgroundColor_.g, 
+		backgroundColor_.b, 
+		backgroundColor_.a);
 
 	//for (auto& model : models_)
 	//	models_->update();
