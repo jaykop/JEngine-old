@@ -26,7 +26,7 @@ vec4 GraphicSystem::backgroundColor_ = vec4::zero, GraphicSystem::screenColor_ =
 
 void GraphicSystem::initialize() {
 
-	if (!mainCamera_)
+	if (!mainCamera_ && !(cameras_.empty()))
 		mainCamera_ = *cameras_.begin();
 
 	//for (auto& model : models_)

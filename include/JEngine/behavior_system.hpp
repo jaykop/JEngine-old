@@ -32,7 +32,8 @@ class BehaviorSystem {
 
 public:
 
-
+	static void add_behavior(Behavior* behavior);
+	static void remove_behavior(Behavior* behavior);
 
 private:
 
@@ -40,7 +41,7 @@ private:
 	static void update(float dt);
 	static void close();
 
-	Behaviors behabiors_;
+	static Behaviors behaviors_;
 };
 
 jeEnd

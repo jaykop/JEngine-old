@@ -96,16 +96,43 @@ void SceneManager::push_scene(const char* path, const char* stateName)
 	if (!sameOne) {
 
 		// make a new scene as intended
-		Scene* newState = new Scene(stateName);
-		newState->directory_ = path;
+		Scene* newScene = new Scene(stateName);
+		newScene->directory_ = path;
 
 		// push to the vector
-		scenes_.push_back(newState);
+		scenes_.push_back(newScene);
 
 		// if there is only single scene,
 		// make it the starting scene
 		if (scenes_.size() == 1)
 			set_first_scene(stateName);
+	}
+}
+
+void SceneManager::add_scene(Scene* scene)
+{
+	bool sameOne = false;
+	for (auto it = scenes_.begin(); it != scenes_.end(); ++it) {
+
+		// If there is already same one, 
+		if (!strcmp((*it)->name_, scene->name_)) {
+			jeDoPrint("Trying to add an identical scene!");
+			sameOne = true;
+			break;
+		}
+	}
+
+	// prevent to have duplicated states
+	if (!sameOne) {
+
+		// push to the vector
+		scenes_.push_back(scene);
+		jeDoPrint("Added scene->name_");
+
+		// if there is only single scene,
+		// make it the starting scene
+		if (scenes_.size() == 1)
+			set_first_scene(scene->name_);
 	}
 }
 

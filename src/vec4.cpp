@@ -1,5 +1,5 @@
 #include <vec4.hpp>
-#include <math.hpp>
+#include <math_util.hpp>
 #include <cmath>
 
 using namespace Math;

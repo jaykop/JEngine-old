@@ -1,6 +1,6 @@
 #include <cmath>
 #include <vec2.hpp>
-#include <math.hpp>
+#include <math_util.hpp>
 
 using namespace Math;
 

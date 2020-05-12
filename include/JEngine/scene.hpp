@@ -38,25 +38,24 @@ public:
 	// colors
 	vec4 background, screen;
 
-private:
+protected:
 
-	// todo: remove this later!
-	void tes_func();
+	Scene(const char* name) : name_(name) {}
+	~Scene() {};
 
-	Scene(const char* name);
-	~Scene();
-
-	void load();
-	void initialize();
-	void update(float dt);
-	void close();
-	void unload();
+	virtual void load();
+	virtual void initialize();
+	virtual void update(float dt);
+	virtual void close();
+	virtual void unload();
 
 	Scene* lastScene_ = nullptr; // pointer to the last scene (before this scene)
-	const char* name_, *directory_; 
+	const char* name_, * directory_;
 
 	// obj container
 	ObjectMap objects_;
+
+private:
 	
 };
 

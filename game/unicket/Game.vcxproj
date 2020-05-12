@@ -191,7 +191,18 @@ xcopy /y /d "..\..\lib\assimp\$(Configuration)\$(Platform)\*.dll" "$(TargetDir)"
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="JEngine.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="scene_control.cpp" />
+    <ClCompile Include="test_scene.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="game_logics.h" />
+    <ClInclude Include="game_scenes.h" />
+    <ClInclude Include="JEngine.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="scene_control.h" />
+    <ClInclude Include="test_scene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

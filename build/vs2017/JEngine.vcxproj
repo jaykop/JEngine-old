@@ -56,6 +56,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\include\JEngine\application.hpp" />
     <ClInclude Include="..\..\include\JEngine\asset_manager.hpp" />
+    <ClInclude Include="..\..\include\JEngine\behavior.hpp" />
     <ClInclude Include="..\..\include\JEngine\behavior_system.hpp" />
     <ClInclude Include="..\..\include\JEngine\camera.hpp" />
     <ClInclude Include="..\..\include\JEngine\component.hpp" />
@@ -72,7 +73,6 @@
     <ClInclude Include="..\..\include\JEngine\macros.hpp" />
     <ClInclude Include="..\..\include\JEngine\mat3.hpp" />
     <ClInclude Include="..\..\include\JEngine\mat4.hpp" />
-    <ClInclude Include="..\..\include\JEngine\math.hpp" />
     <ClInclude Include="..\..\include\JEngine\math_util.hpp" />
     <ClInclude Include="..\..\include\JEngine\mesh.hpp" />
     <ClInclude Include="..\..\include\JEngine\model.hpp" />

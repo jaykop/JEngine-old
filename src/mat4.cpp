@@ -1,6 +1,6 @@
 #include <mat4.hpp>
 #include <vec4.hpp>
-#include <math.hpp>
+#include <math_util.hpp>
 #include <algorithm>
 
 using namespace Math;

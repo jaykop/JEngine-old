@@ -148,9 +148,6 @@
     <ClInclude Include="..\..\include\JEngine\mat4.hpp">
       <Filter>util\math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\math.hpp">
-      <Filter>util\math</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\JEngine\vec2.hpp">
       <Filter>util\math</Filter>
     </ClInclude>
@@ -216,6 +213,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\JEngine\transform.hpp">
       <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\behavior.hpp">
+      <Filter>system\behavior</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
