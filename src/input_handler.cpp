@@ -352,9 +352,13 @@ void InputHandler::mouse_refresh(SDL_Event& event)
 	event.wheel.y = 0.f;
 }
 
-InputHandler::MouseWheel InputHandler::get_mouse_wheel_status()
+bool InputHandler::get_mouse_wheel_status(KEY key)
 {
-	return mouseWheel_;
+	if ((key == MOUSE_WHEEL_UP && mouseWheel_ == UP)
+		|| (key == MOUSE_WHEEL_DOWN && mouseWheel_ == DOWN))
+		return true;
+	
+	return false;
 }
 
 jeEnd

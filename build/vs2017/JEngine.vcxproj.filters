@@ -100,6 +100,9 @@
     <ClCompile Include="..\..\src\transform.cpp">
       <Filter>system</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\behavior.cpp">
+      <Filter>system\behavior</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\JEngine\macros.hpp" />

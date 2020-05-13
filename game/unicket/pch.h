@@ -9,6 +9,7 @@
 #include "object.hpp"
 #include "object_manager.hpp"
 #include "asset_manager.hpp"
+#include "component_builder.hpp"
 
 /////////////////////////////////////////////////////////////////////////
 // Systems
@@ -17,6 +18,7 @@
 #include "graphic_system.hpp"
 #include "physics_system.hpp"
 #include "sound_system.hpp"
+#include "behavior.hpp"
 
 /////////////////////////////////////////////////////////////////////////
 // Math headers

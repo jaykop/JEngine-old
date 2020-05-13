@@ -27,7 +27,7 @@
     <ClInclude Include="pch.h">
       <Filter>provided</Filter>
     </ClInclude>
-    <ClInclude Include="scene_control.h">
+    <ClInclude Include="scene_controller.h">
       <Filter>game_logics</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,7 +41,7 @@
     <ClCompile Include="test_scene.cpp">
       <Filter>game_scene</Filter>
     </ClCompile>
-    <ClCompile Include="scene_control.cpp">
+    <ClCompile Include="scene_controller.cpp">
       <Filter>game_logics</Filter>
     </ClCompile>
   </ItemGroup>

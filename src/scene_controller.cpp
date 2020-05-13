@@ -165,11 +165,6 @@ void SceneManager::set_first_scene(const char* stateName)
 	}
 }
 
-void SceneManager::quit()
-{
-	status_ = JE_STATE_QUIT;
-}
-
 void SceneManager::restart()
 {
 	if (is_paused())

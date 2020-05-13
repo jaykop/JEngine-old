@@ -16,6 +16,7 @@ Contains the definition of ComponentBuilder class
 jeBegin
 
 class Object;
+class Behavior;
 class Component;
 
 class ComponentBuilder {
@@ -54,10 +55,10 @@ private:
 	jeConcat(c, Builder)& operator=(jeConcat(c, Builder) && /*copy*/) = delete; \
 	Component* create_component(Object* owner) const override; \
 	}
-#define jeDefineCustomComponentBuilder(c)	\
+#define jeDefineUserComponentBuilder(c)	\
 	jeConcat(c, Builder)::jeConcat(c, Builder)() {} \
-	CustomComponent* jeConcat(c, Builder)::create_component(Object* owner) const { return new (c)(owner); } 
-#define jeDeclareCustomComponentBuilder(c)	\
+	Behavior* jeConcat(c, Builder)::create_component(Object* owner) const { return new (c)(owner); } 
+#define jeDeclareUserComponentBuilder(c)	\
 	class jeConcat(c, Builder) : public ComponentBuilder { \
 	friend class JEngine; \
 	jeConcat(c, Builder)(); \
@@ -66,7 +67,7 @@ private:
 	jeConcat(c, Builder)& operator=(const jeConcat(c, Builder)& /*copy*/) = delete; \
 	jeConcat(c, Builder)(jeConcat(c, Builder) && /*copy*/) = delete; \
 	jeConcat(c, Builder)& operator=(jeConcat(c, Builder) && /*copy*/) = delete; \
-	CustomComponent* create_component(Object* owner) const override; \
+	Behavior* create_component(Object* owner) const override; \
 	}
 
 jeEnd

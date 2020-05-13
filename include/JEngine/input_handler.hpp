@@ -42,8 +42,8 @@ public:
 
 	static bool key_pressed(KEY key);
 	static bool key_triggered(KEY key);
+	static bool get_mouse_wheel_status(KEY key);
 
-	static InputHandler::MouseWheel get_mouse_wheel_status();
 	static float wheelSensitivity_;
 
 	// mouse position

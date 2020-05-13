@@ -31,6 +31,7 @@ class ComponentManager {
 
 	jePreventClone(ComponentManager)
 
+	friend class JEngine;
 	friend class Object;
 	friend class AssetManager;
 

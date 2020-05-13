@@ -23,6 +23,7 @@
     <ClCompile Include="..\..\include\lodepng\lodepng_util.cpp" />
     <ClCompile Include="..\..\src\application.cpp" />
     <ClCompile Include="..\..\src\asset_manager.cpp" />
+    <ClCompile Include="..\..\src\behavior.cpp" />
     <ClCompile Include="..\..\src\behavior_system.cpp" />
     <ClCompile Include="..\..\src\camera.cpp" />
     <ClCompile Include="..\..\src\component_manager.cpp" />

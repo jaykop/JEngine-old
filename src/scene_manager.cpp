@@ -51,9 +51,9 @@ void SceneManager::update(SDL_Event* event)
 	timer_.start();
 	change_scene();
 
-	while (SDL_PollEvent(event)
-		|| status_ == JE_STATE_NONE) // state updating loop
+	while (status_ == JE_STATE_NONE) // state updating loop
 	{
+		SDL_PollEvent(event);
 		InputHandler::update(*event);
 		GLManager::update(*event);
 

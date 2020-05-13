@@ -10,7 +10,6 @@ using ObjectMap = std::unordered_map<const char*, Object*>;
 // Generic scene class
 class TestScene : public Scene
 {
-
 	// Only SceneManager can manage this class
 	friend class SceneManager;
 
@@ -21,11 +20,9 @@ public:
 
 protected:
 
-	void load() override;
 	void initialize() override;
 	void update(float dt) override;
 	void close() override;
-	void unload() override;
 
 private:
 

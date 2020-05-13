@@ -10,6 +10,7 @@ using namespace JE;
 void JEngine::register_builders()
 {
 	// add game logic builders here
+	jeRegisterComponent(SceneController);
 }
 
 void JEngine::register_scenes()

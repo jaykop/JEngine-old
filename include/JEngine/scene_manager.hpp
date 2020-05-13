@@ -53,7 +53,6 @@ public:
 	static void add_scene(Scene* scene);
 
 	// methods to control the scenes
-	static void quit();
 	static void restart();
 	static void resume();
 	static void pause(const char* nextState);

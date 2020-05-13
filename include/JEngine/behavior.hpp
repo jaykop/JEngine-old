@@ -1,5 +1,5 @@
 #pragma once
-#include "Component.hpp"
+#include <component.hpp>
 
 jeBegin
 
@@ -20,8 +20,8 @@ public:
 
 protected:
 
-	virtual void add_to_system() {};
-	virtual void remove_from_system() {};
+	void add_to_system() override;
+	void remove_from_system() override;
 	virtual void load(const rapidjson::Value& data) {};
 
 	Behavior(Object* owner) : Component(owner) {};
