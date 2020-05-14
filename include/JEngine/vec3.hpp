@@ -35,10 +35,10 @@ struct vec3
 	vec3(float x, float y, float z);
 	vec3(const vec3& v3);
 
-
 	// public methods
 	void set(float x, float y, float z);
 	void set(const vec3& v3);
+	void set(float f);
 	void set_zero(void);
 	void set_one(void);
 	float length(void) const;

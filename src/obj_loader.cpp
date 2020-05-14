@@ -2,6 +2,11 @@
 #include <fstream>
 #include <sstream>
 #include <mesh.hpp>
+#include <half_edge_mesh.hpp>
+#include <math_util.hpp>
+#include <colors.hpp>
+
+using namespace Math;
 
 jeBegin
 
@@ -9,7 +14,7 @@ static const float normScale = 0.05f;
 static const unsigned max_unsinged = (std::numeric_limits<unsigned>::max)();
 
 std::string ObjLoader::key;
-MeshList ObjLoader::meshList;
+ObjLoader::MeshList ObjLoader::meshList;
 vec3 ObjLoader::maxPoint, ObjLoader::minPoint;
 
 bool ObjLoader::load(const char* path)
@@ -25,19 +30,18 @@ bool ObjLoader::load(const char* path)
 		// Check if obj file is valid 
 		if (!obj) return false;
 
-		Mesh* newMesh = new Mesh;
-		newMesh->setNormals_ = true;
-
-		newMesh->key_ = parsed_key;
+		Mesh* newMesh = new Mesh();
+		newMesh->setNormals = true;
+		newMesh->key = parsed_key;
 
 		// Initialize checkers
-		minPoint.set(max_f), maxPoint.set(min_f);
+		minPoint.set(max_float), maxPoint.set(min_float);
 
 		parse_vertex(buffer.str(), &newMesh);
 		convert_mesh(&newMesh);
-		newMesh->hEdgeMesh_ = new HalfEdgeMesh(newMesh->vertex_, newMesh->indices_);
+		newMesh->hEdgeMesh = new HalfEdgeMesh(newMesh->vertex, newMesh->indices_);
 		calculate_normals(&newMesh);
-		Mesh::DescribeMeshAttrib(newMesh);
+		Mesh::describe_mesh_attribs(newMesh);
 
 		meshList.insert({ parsed_key, newMesh });
 	}
@@ -98,63 +102,63 @@ void ObjLoader::update_max_min(const vec3& v)
 		maxPoint.z = v.z;
 }
 
-void ObjLoader::convert_mesh(Mesh** pMesh)
+void ObjLoader::convert_mesh(Mesh** mesh)
 {
 	// Assign the min and max
-	(*pMesh)->min_ = minPoint;
-	(*pMesh)->max_ = maxPoint;
+	(*mesh)->min = minPoint;
+	(*mesh)->max = maxPoint;
 
-	vec3 sum = { (*pMesh)->max_.x - (*pMesh)->min_.x,
-		(*pMesh)->max_.y - (*pMesh)->min_.y,
-		(*pMesh)->max_.z - (*pMesh)->min_.z };
+	vec3 sum = { (*mesh)->max.x - (*mesh)->min.x,
+		(*mesh)->max.y - (*mesh)->min.y,
+		(*mesh)->max.z - (*mesh)->min.z };
 
 	sum *= .5f;
 
-	if ((*pMesh)->absMax_ < sum.x)
-		(*pMesh)->absMax_ = sum.x;
-	if ((*pMesh)->absMax_ < sum.y)
-		(*pMesh)->absMax_ = sum.y;
-	if ((*pMesh)->absMax_ < sum.z)
-		(*pMesh)->absMax_ = sum.z;
+	if ((*mesh)->absMax < sum.x)
+		(*mesh)->absMax = sum.x;
+	if ((*mesh)->absMax < sum.y)
+		(*mesh)->absMax = sum.y;
+	if ((*mesh)->absMax < sum.z)
+		(*mesh)->absMax = sum.z;
 
-	(*pMesh)->max_ /= (*pMesh)->absMax_;
-	(*pMesh)->min_ /= (*pMesh)->absMax_;
-	(*pMesh)->centerOffset_ = (((*pMesh)->max_ + (*pMesh)->min_) * .5f);
-	(*pMesh)->min_ -= (*pMesh)->centerOffset_;
-	(*pMesh)->max_ -= (*pMesh)->centerOffset_;
+	(*mesh)->max /= (*mesh)->absMax;
+	(*mesh)->min /= (*mesh)->absMax;
+	(*mesh)->centerOffset = (((*mesh)->max + (*mesh)->min) * .5f);
+	(*mesh)->min -= (*mesh)->centerOffset;
+	(*mesh)->max -= (*mesh)->centerOffset;
 
-	unsigned size = unsigned((*pMesh)->points_.size());
-	vec3 centerOffset = (*pMesh)->centerOffset_;
-	float absMax = (*pMesh)->absMax_;
+	unsigned size = unsigned((*mesh)->points_.size());
+	vec3 centerOffset = (*mesh)->centerOffset;
+	float absMax = (*mesh)->absMax;
 
 	// Set vertex container
 	for (unsigned i = 0; i < size; i++) {
 
 		// convert normal
-		vec3 convertedPos = get_converted_position((*pMesh)->points_[i],
+		vec3 convertedPos = get_converted_position((*mesh)->points_[i],
 			centerOffset, absMax);
 
 		// Normal vertexes
-		(*pMesh)->vertex_.push_back(Vertex{ convertedPos, vec3::zero , vec3::zero });
-		(*pMesh)->vPoints_.push_back(convertedPos);
+		(*mesh)->vertex.push_back(Vertex{ convertedPos, vec3::zero , vec2::zero });
+		(*mesh)->vPoints_.push_back(convertedPos);
 	}
 }
 
-void ObjLoader::parse_vertex(const std::string& data, Mesh** pMesh)
+void ObjLoader::parse_vertex(const std::string& data, Mesh** mesh)
 {
 	// skip any leading white space
 	unsigned it = unsigned(data.find_first_not_of("\n\r\0 "));
-	unsigned size = unsigned((*pMesh)->points_.size());
+	unsigned size = unsigned((*mesh)->points_.size());
 
 	while (it != max_unsinged)
 	{
 		// extract vertex data
 		if (data[it] == 'v')
-			read_vertex(data, it + 1, (*pMesh)->points_);
+			read_vertex(data, it + 1, (*mesh)->points_);
 
 		// extract face data
 		if (data[it] == 'f')
-			read_face(data, it + 1, (*pMesh)->indices_, size);
+			read_face(data, it + 1, (*mesh)->indices_, size);
 
 		// skip to next line
 		it = unsigned(data.find_first_of("\n\r\0 ", it));
@@ -220,12 +224,12 @@ unsigned ObjLoader::get_next_elements(const std::string& file_data, unsigned pos
 	return unsigned(file_data.find_first_not_of(" ", pos));
 }
 
-void ObjLoader::calculate_normals(Mesh** pMesh)
+void ObjLoader::calculate_normals(Mesh** mesh)
 {
-	std::vector<Vertex>& vertices = (*pMesh)->vertex_;
-	std::vector<Vertex>& fNormals = (*pMesh)->faceNormalsDraw_;
-	std::vector<Vertex>& vNormals = (*pMesh)->vertexNormalsDraw_;
-	HalfEdgeMesh* h_mesh = (*pMesh)->hEdgeMesh_;
+	std::vector<Vertex>& vertices = (*mesh)->vertex;
+	std::vector<Vertex>& fNormals = (*mesh)->faceNormalsDraw;
+	std::vector<Vertex>& vNormals = (*mesh)->vertexNormalsDraw;
+	HalfEdgeMesh* h_mesh = (*mesh)->hEdgeMesh;
 
 	const unsigned num_vertices = unsigned(vertices.size());
 	for (unsigned i = 0; i < num_vertices; ++i)
@@ -233,7 +237,7 @@ void ObjLoader::calculate_normals(Mesh** pMesh)
 		Vertex& vert = vertices[i];
 
 		// find surrounding faces
-		auto neighbors = h_mesh->GetNeighborFaces(i);
+		auto neighbors = h_mesh->get_neighbor_faces(i);
 
 		for (const Face* f : neighbors)
 		{
@@ -264,10 +268,10 @@ void ObjLoader::calculate_normals(Mesh** pMesh)
 		}
 	}
 
-	vec3 centerOffset = (*pMesh)->centerOffset_;
-	float absMax = (*pMesh)->absMax_;
+	vec3 centerOffset = (*mesh)->centerOffset;
+	float absMax = (*mesh)->absMax;
 
-	auto faces = h_mesh->GetFaces();
+	auto faces = h_mesh->get_faces();
 
 	for (auto& f : faces)
 	{

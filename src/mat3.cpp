@@ -5,7 +5,7 @@
 
 using namespace Math;
 
-const mat3 mat3::identity = mat3(1.0f, 0.0f, 0.0f,
+const mat3 mat3::identity(1.0f, 0.0f, 0.0f,
 	0.0f, 1.0f, 0.0f,
 	0.0f, 0.0f, 1.0f);
 

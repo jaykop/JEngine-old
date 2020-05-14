@@ -22,9 +22,19 @@ void vec2::set(float _x, float _y)
 	y = _y;
 }
 
+void vec2::set(float f)
+{
+	x = y = f;
+}
+
 void vec2::set_zero(void)
 {
 	x = y = 0.0f;
+}
+
+void vec2::set_one(void)
+{
+	x = y = 1.0f;
 }
 
 float vec2::length(void) const

@@ -39,7 +39,9 @@ struct vec4
 
 	// public methods
 	void set(float x, float y, float z, float w);
+	void set(float f);
 	void set_zero(void);
+	void set_one(void);
 	float length(void) const;
 	float length_sq(void) const;
 	vec4& normalize(void);

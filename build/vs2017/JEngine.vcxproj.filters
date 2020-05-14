@@ -73,9 +73,6 @@
     <ClCompile Include="..\..\src\graphic_system.cpp">
       <Filter>system\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\model.cpp">
-      <Filter>system\graphics</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\text.cpp">
       <Filter>system\graphics</Filter>
     </ClCompile>
@@ -94,14 +91,29 @@
     <ClCompile Include="..\..\src\application.cpp">
       <Filter>core\app</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\mesh.cpp">
-      <Filter>system\graphics</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\transform.cpp">
       <Filter>system</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\behavior.cpp">
       <Filter>system\behavior</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\renderer.cpp">
+      <Filter>system\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\mesh.cpp">
+      <Filter>system\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\obj_loader.cpp">
+      <Filter>core\asset</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\debug_drawer.cpp">
+      <Filter>system\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\quat.cpp">
+      <Filter>util\math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\eigen.cpp">
+      <Filter>util\math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -178,9 +190,6 @@
     <ClInclude Include="..\..\include\lodepng\lodepng.h">
       <Filter>util\lodepng</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\model.hpp">
-      <Filter>system\graphics</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\JEngine\camera.hpp">
       <Filter>system\graphics</Filter>
     </ClInclude>
@@ -191,9 +200,6 @@
       <Filter>system\graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\JEngine\text.hpp">
-      <Filter>system\graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\sprite.hpp">
       <Filter>system\graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\JEngine\behavior_system.hpp">
@@ -208,17 +214,50 @@
     <ClInclude Include="..\..\include\JEngine\shader.hpp">
       <Filter>core\opengl</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\mesh.hpp">
-      <Filter>system\graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\JEngine\elements.hpp">
-      <Filter>system\graphics</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\JEngine\transform.hpp">
       <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\JEngine\behavior.hpp">
       <Filter>system\behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\renderer.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\mesh.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\obj_loader.hpp">
+      <Filter>core\asset</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\texture.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\vertex.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\face.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\half_edge.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\half_edge_mesh.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\half_edge_vertex.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\debug_drawer.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\eigen.hpp">
+      <Filter>util\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\colors.hpp">
+      <Filter>system\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\quat.hpp">
+      <Filter>util\math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

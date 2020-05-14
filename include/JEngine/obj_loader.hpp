@@ -1,19 +1,20 @@
 #pragma once
+#include <macros.hpp>
 #include <vec3.hpp>
-#include <elements.hpp>
 #include <map>
 #include <vector>
 #include <string>
 
+jeBegin
+
 class Mesh;
 class HalfEdgeMesh;
-using MeshList = std::map<std::string, Mesh*>;
-
-jeBegin
 
 class ObjLoader
 {
 public:
+
+	using MeshList = std::map<std::string, Mesh*>;
 
 	static bool load(const char* path);
 	static Mesh* get_mesh(const char* name);
@@ -27,7 +28,7 @@ public:
 private:
 
 	static void update_max_min(const vec3& v);
-	static void convert_mesh(Mesh** pMesh);
+	static void convert_mesh(Mesh** mesh);
 
 	static void parse_vertex(const std::string& data, Mesh** pMesh);
 	static void read_vertex(const std::string& file_data, unsigned pos, std::vector<vec3>& vertices);

@@ -5,7 +5,7 @@
 
 using namespace Math;
 
-const mat4 mat4::identity = mat4(1.0f, 0.0f, 0.0f, 0.0f,
+const mat4 mat4::identity(1.0f, 0.0f, 0.0f, 0.0f,
 	0.0f, 1.0f, 0.0f, 0.0f,
 	0.0f, 0.0f, 1.0f, 0.0f,
 	0.0f, 0.0f, 0.0f, 1.0f);

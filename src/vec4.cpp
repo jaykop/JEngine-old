@@ -26,17 +26,27 @@ vec4::vec4(const vec3& v, float _w)
 {
 }
 
-void vec4::set(float _x, float _y, float _z, float _w)
+void vec4::set(float f1, float f2, float f3, float f4)
 {
-	x = _x;
-	y = _y;
-	z = _z;
-	w = _w;
+	x = f1;
+	y = f2;
+	z = f3;
+	w = f4;
+}
+
+void vec4::set(float f)
+{
+	x = y = z = w = f;
 }
 
 void vec4::set_zero(void)
 {
 	x = y = z = w = 0.0f;
+}
+
+void vec4::set_one(void)
+{
+	x = y = z = w = 1.0f;
 }
 
 float vec4::length(void) const

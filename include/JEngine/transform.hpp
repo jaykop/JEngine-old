@@ -2,6 +2,8 @@
 #include <component_builder.hpp>
 #include <component.hpp>
 #include <vec3.hpp>
+#include <mat4.hpp>
+#include <quat.hpp>
 
 jeBegin
 
@@ -13,8 +15,28 @@ class Transform : public Component {
 
 public:
 
-	vec3 position_, scale_, axis_;
-	float rotation_;
+	// public members
+	quat orientation;
+	vec3 position;
+	vec3 scale;
+
+	// getters
+	vec3 rotation_euler_rad(void) const;
+	vec3 rotation_euler_deg(void) const;
+
+	// orientation
+	vec3 right(void);
+	vec3 up(void);
+	vec3 forward(void);
+
+	// setters
+	void set_euler_rad(const vec3& rad);
+	void set_euler_rad(float rad_x, float rad_y, float rad_z);
+	void set_euler_deg(const vec3& deg);
+	void set_euler_deg(float deg_x, float deg_y, float deg_z);
+
+	// matrix transformation
+	mat4 model_to_world(void) const;
 
 protected:
 
@@ -28,7 +50,6 @@ private:
 	virtual ~Transform() {};
 
 	Transform& operator=(const Transform& rhs);
-	Transform() = delete;
 
 };
 

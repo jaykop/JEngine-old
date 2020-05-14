@@ -30,11 +30,16 @@ void vec3::set(const vec3& v3)
 	z = v3.z;
 }
 
-void vec3::set(float _x, float _y, float _z)
+void vec3::set(float f)
 {
-	x = _x;
-	y = _y;
-	z = _z;
+	x = y = z = f;
+}
+
+void vec3::set(float f1, float f2, float f3)
+{
+	x = f1;
+	y = f2;
+	z = f3;
 }
 
 void vec3::set_zero(void)
