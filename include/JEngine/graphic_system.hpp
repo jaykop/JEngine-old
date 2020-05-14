@@ -17,7 +17,7 @@ Contains the definition of GraphicSystem class
 
 jeBegin
 
-class Model;
+class Renderer;
 class Camera;
 class GraphicSystem {
 
@@ -29,9 +29,9 @@ class GraphicSystem {
 
 	friend class Scene;
 	friend class Camera;
-	friend class Model;
+	friend class Renderer;
 
-	using Models = std::vector<Model*>;
+	using Renderers = std::vector<Renderer*>;
 	using Cameras = std::vector<Camera*>;
 
 public:
@@ -47,8 +47,8 @@ private:
 	static void update(float dt);
 	static void close();
 
-	static void add_model(Model* model);
-	static void remove_model(Model* model);
+	static void add_model(Renderer* model);
+	static void remove_model(Renderer* model);
 
 	static void add_camera(Camera* camera);
 	static void remove_camera(Camera* camera);
@@ -59,7 +59,7 @@ private:
 	static void render();
 
 	static Camera* mainCamera_;
-	static Models models_;
+	static Renderers renderers_;
 	static Cameras cameras_;
 
 };

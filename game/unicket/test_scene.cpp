@@ -20,6 +20,9 @@ void TestScene::initialize()
 	controller->add_component<SceneController>();
 	register_object(controller);
 
+	// set screen color
+	background.set(0.5, 0.5, 0.5, 1);
+
 	// base init
 	Scene::initialize();
 }

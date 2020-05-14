@@ -9,27 +9,25 @@ struct Texture;
 
 class Mesh {
 
-	friend class Model;
+	friend class Renderer;
+	friend class ObjLoader;
 
 public:
 
 private:
 	
-	/*  Mesh Data  */
 	std::vector<Vertex> vertices;
 	std::vector<unsigned> indices;
 	std::vector<Texture> textures;
 
-	/*  Functions  */
-	Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices,
-		const std::vector<Texture>& textures);
-	void draw(Shader* shader);
-
-	/*  Render data  */
 	unsigned int vao_, vbo_, ebo_;
 
-	/*  Functions    */
+	Mesh(const std::vector<Vertex>& vertices, 
+		const std::vector<unsigned int>& indices,
+		const std::vector<Texture>& textures);
+	void draw(Shader* shader);
 	void setup_mesh();
+
 };
 
 jeEnd

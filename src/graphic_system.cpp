@@ -15,12 +15,12 @@ Contains the methods of GraphicSystem class
 #include <scene_manager.hpp>
 #include <scene.hpp>
 #include <camera.hpp>
-#include <model.hpp>
+#include <renderer.hpp>
 
 jeBegin
 
 Camera* GraphicSystem::mainCamera_ = nullptr;
-GraphicSystem::Models GraphicSystem::models_;
+GraphicSystem::Renderers GraphicSystem::renderers_;
 GraphicSystem::Cameras GraphicSystem::cameras_;
 vec4 GraphicSystem::backgroundColor_ = vec4::zero, GraphicSystem::screenColor_ = vec4::zero;
 
@@ -63,16 +63,16 @@ void GraphicSystem::render()
 {
 }
 
-void GraphicSystem::add_model(Model* model) { 
-	models_.emplace_back(model); 
+void GraphicSystem::add_model(Renderer* model) {
+	renderers_.emplace_back(model);
 }
 
 void GraphicSystem::add_camera(Camera* camera) { 
 	cameras_.emplace_back(camera);
 }
 
-void GraphicSystem::remove_model(Model* model) { 
-	models_.erase(std::remove(models_.begin(), models_.end(), model), models_.end()); 
+void GraphicSystem::remove_model(Renderer* model) {
+	renderers_.erase(std::remove(renderers_.begin(), renderers_.end(), model), renderers_.end());
 }
 
 void GraphicSystem::remove_camera(Camera* camera) {

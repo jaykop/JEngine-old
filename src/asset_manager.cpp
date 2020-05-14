@@ -24,7 +24,7 @@ Contains the methods of asset_manager class
 // component list
 #include <component_manager.hpp>
 #include <transform.hpp>
-#include <Model.hpp>
+#include <Renderer.hpp>
 #include <Camera.hpp>
 
 jeBegin
@@ -47,7 +47,7 @@ bool AssetManager::set_bulit_in_components()
 
 	// Graphic components
 	//jeCheckComponentRegistration(jeRegisterComponent(Text));
-	jeRegisterComponent(Model);
+	jeRegisterComponent(Renderer);
 	jeRegisterComponent(Camera);
 	//jeCheckComponentRegistration(jeRegisterComponent(Emitter));
 	//jeCheckComponentRegistration(jeRegisterComponent(Light));
@@ -283,90 +283,6 @@ void AssetManager::load_archetype(const char* /*path*/, const char* /*_archetype
 Mesh* AssetManager::load_object(const char* path)
 {
 	// todo!
-	// use assimp!
-	
-	//Mesh* pNewMesh = new Mesh;
-
-	//std::ifstream obj(path, std::ios::in);
-
-	//if (!obj) {
-	//	jeDebugPrint("!AssetManager - Cannot load the object file: %s", path);
-	//	return nullptr;
-	//}
-
-	//std::string line;
-	//std::vector<unsigned> elements;
-	//std::vector<vec3> temp_points, temp_normals;
-	//std::vector<vec2> temp_uvs;
-
-	//while (std::getline(obj, line)) {
-	//	if (line.substr(0, 2) == "v ") {
-	//		std::istringstream s(line.substr(2));
-	//		vec3 point; s >> point.x; s >> point.y; s >> point.z;
-	//		temp_points.push_back(point);
-	//		pNewMesh->AddPoint(point);
-	//	}
-	//	else if (line.substr(0, 3) == "vt ") {
-	//		std::istringstream s(line.substr(2));
-	//		vec2 uv; s >> uv.x; s >> uv.y;;
-	//		uv.y = -uv.y;
-	//		temp_uvs.push_back(uv);
-	//		pNewMesh->AddTextureUV(uv);
-	//	}
-	//	else if (line.substr(0, 3) == "vn ") {
-	//		std::istringstream s(line.substr(2));
-	//		vec3 normal; s >> normal.x; s >> normal.y; s >> normal.z;
-	//		temp_normals.push_back(normal);
-	//		pNewMesh->AddNormal(normal);
-	//	}
-	//	else if (line.substr(0, 2) == "f ") {
-
-	//		std::istringstream s(line.substr(2));
-	//		unsigned a = 0, b = 0, c = 0;
-
-	//		while (!s.eof()) {
-	//			// Vertex index
-	//			s >> a;
-
-	//			// Check texture/normal index
-	//			if (s.peek() == '/') {
-	//				s.ignore(1);
-
-	//				// a/b/c
-	//				if (s.peek() != '/') {
-	//					s >> b;
-
-	//					if (s.peek() == '/') {
-	//						s.ignore(1);
-	//						s >> c;
-	//					}
-	//				}
-
-	//				// No texture index
-	//				// a//c
-	//				else {
-	//					s.ignore();
-	//					s >> c;
-	//				}
-	//			}
-
-	//			if (a) 	--a;
-	//			if (b)	--b;
-	//			if (c)	--c;
-
-	//			pNewMesh->AddIndice({ a, b, c });
-	//		}
-	//	}
-
-	//	if (pNewMesh->GetNormals().empty()) {
-	//		for (unsigned i = 0; i < temp_normals.size(); ++i)
-	//			pNewMesh->AddNormal(temp_normals.at(i));
-	//	}
-	//}
-
-	//GLM::DescribeVertex(pNewMesh);
-	//return pNewMesh;
-
 	return nullptr;
 }
 
