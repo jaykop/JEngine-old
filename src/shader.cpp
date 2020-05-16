@@ -17,17 +17,20 @@ void Shader::create_shader(const char* file_path, Type type)
 
 	switch (type) {
 
-	case JE_VERTEX:
+	case Type::VERTEX:
 		vertexId_ = glCreateShader(GL_VERTEX_SHADER);
 		localShader = vertexId_;
 		break;
-	case JE_PIXEL:
+	case Type::PIXEL:
 		fragmentId_ = glCreateShader(GL_FRAGMENT_SHADER);
 		localShader = fragmentId_;
 		break;
-	case JE_GEOMETRY:
+	case Type::GEOMETRY:
 		geometryId_ = glCreateShader(GL_GEOMETRY_SHADER);
 		localShader = geometryId_;
+		break;
+	default:
+		jeDebugPrint("!Shader - No type for shader %s\n", file_path);
 		break;
 	}
 

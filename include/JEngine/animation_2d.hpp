@@ -28,7 +28,7 @@ protected:
 
     void add_to_system() override {}
     void remove_from_system() override {}
-    void load(const rapidjson::Value& data) override {}
+    void load(const rapidjson::Value& /*data*/) override {}
 
 private:
 

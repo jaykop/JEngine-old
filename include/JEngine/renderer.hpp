@@ -33,8 +33,8 @@ protected:
 
 public:
 
-	enum ProjectType { PERSPECTIVE, ORTHOGONAL };
-	enum RenderType { R_NONE, R_POSITION, R_NORMAL };
+	enum class ProjectType { PERSPECTIVE, ORTHOGONAL };
+	enum class RenderType { NONE, POSITION, NORMAL };
 
 	Renderer(Object* owner);
 	virtual ~Renderer() {}

@@ -37,8 +37,8 @@ class GLManager
 
 	using Shaders = std::vector<Shader*>;
 
-	enum ShaderType { JE_SHADER_NORMAL, JE_SHADER_TEXT, JE_SHADER_LIGHT, JE_SHADER_PARTICLE, JE_SHADER_SCREEN, JE_SHADER_END };
-	enum Target { JE_TARGET_SCREEN, JE_TARGET_TEXT, JE_TARGET_END };
+	enum class Target { SCREEN, TEXT, END };
+	enum Pipeline { NORMAL, TEXT, LIGHT, PARTICLE, SCREEN, END };
 
 public:
 

@@ -64,19 +64,19 @@ Mesh* ObjLoader::get_mesh(const char* name)
 
 std::string ObjLoader::parse_name(const char* name)
 {
-	std::string key;
+	std::string res;
 
 	for (int i = 0; name[i] != '\0'; i++) {
 
-		key += name[i];
+		res += name[i];
 
 		if (name[i] == '/')
-			key.clear();
+			res.clear();
 	}
 
-	key.erase(key.size() - 4);
+	res.erase(res.size() - 4);
 
-	return key;
+	return res;
 }
 
 void ObjLoader::clear()

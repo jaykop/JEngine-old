@@ -14,6 +14,8 @@ Contains the methods of ObjectManager class
 #include <debug_tools.hpp>
 #include <object_manager.hpp>
 
+#include <transform.hpp>
+
 jeBegin
 
 int ObjectManager::idGenerator_ = 0;
@@ -28,6 +30,10 @@ Object* ObjectManager::create_object(const char* name)
 	}
 
 	Object* newObject = new Object(name);
+
+	// automatically transform is added
+	newObject->add_component<Transform>();
+
 	return newObject;
 }
 

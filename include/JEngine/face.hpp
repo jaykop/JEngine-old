@@ -3,7 +3,7 @@
 
 jeBegin
 
-class HalfEdge;
+struct HalfEdge;
 struct Face
 {
 	Face(void) : edge(nullptr) {}

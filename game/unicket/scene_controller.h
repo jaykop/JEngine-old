@@ -20,7 +20,7 @@ public:
 
 protected:
 
-	void load(const rapidjson::Value& data) override {};
+	void load(const rapidjson::Value& /*data*/) override {};
 
 private:
 

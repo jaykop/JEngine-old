@@ -4,6 +4,7 @@
 #include <graphic_system.hpp>
 #include <obj_loader.hpp>
 #include <gl_manager.hpp>
+#include <object.hpp>
 
 #include <shader.hpp>
 #include <mesh.hpp>
@@ -25,7 +26,7 @@ const static int IS_BILBOARD = 0x010;
 const static int IS_INHERITED = 0x001;
 
 bool Renderer::renderObj_ = true;
-Renderer::RenderType Renderer::renderType_ = Renderer::RenderType::R_NONE;
+Renderer::RenderType Renderer::renderType_ = Renderer::RenderType::NONE;
 
 void Renderer::add_to_system() {
 	GraphicSystem::add_model(this);
@@ -35,14 +36,21 @@ void Renderer::remove_from_system() {
 	GraphicSystem::remove_model(this);
 }
 
-void Renderer::load(const rapidjson::Value& data) {
+void Renderer::load(const rapidjson::Value& /*data*/) {
 
 }
 
 Renderer::Renderer(Object* owner)
-: Component(owner), h_(false), is2d(true), renderBoundary_(false),
-	renderFaceNormals_(false), renderVertexNormals_(false), 
-	status_(0x000), prjType(ProjectType::PERSPECTIVE), drawMode_(GL_TRIANGLES) {}
+	: Component(owner), h_(false), is2d(true), renderBoundary_(false),
+	renderFaceNormals_(false), renderVertexNormals_(false),
+	status_(0x000), drawMode_(GL_TRIANGLES), prjType(ProjectType::PERSPECTIVE),
+	dfactor(GL_ONE_MINUS_SRC_ALPHA), sfactor(GL_SRC_ALPHA), animation_(nullptr),
+	transform_(nullptr)
+{
+	
+	// connect transform component
+	transform_ = owner->get_component<Transform>();
+}
 
 void Renderer::set_mesh(const std::string& name)
 {
@@ -92,7 +100,7 @@ void Renderer::draw(Camera* camera, const mat4& perspective, const vec3& resScal
 	//	}
 	//}
 
-	Shader* shader = GLManager::shader_[GLManager::JE_SHADER_NORMAL];
+	Shader* shader = GLManager::shader_[GLManager::Pipeline::NORMAL];
 	shader->use();
 
 	shader->set_matrix("m4_translate", mat4::translate(transform_->position));
@@ -103,7 +111,7 @@ void Renderer::draw(Camera* camera, const mat4& perspective, const vec3& resScal
 
 	mat4 viewport;
 
-	if (prjType == PERSPECTIVE) {
+	if (prjType == ProjectType::PERSPECTIVE) {
 
 		shader->set_matrix("m4_projection", perspective);
 		viewport = mat4::look_at(camera->position_, camera->target_, camera->up_);
@@ -155,45 +163,48 @@ void Renderer::run_animation()
 {
 	for (auto m : meshes_) {
 
-		glBindTexture(GL_TEXTURE_2D, m->texture_->id);
+		if (animation_) {
 
-		if (animation_ && animation_->activated_) {
+			glBindTexture(GL_TEXTURE_2D, m->texture_->id);
 
-			float realSpeed = animation_->realSpeed_;
+			if (animation_->activated_) {
 
-			if (realSpeed <= animation_->timer_.get_elapsed_time()) {
+				float realSpeed = animation_->realSpeed_;
 
-				float nextFrame = animation_->currentFrame_;
-				float realFrame = animation_->realFrame_;
+				if (realSpeed <= animation_->timer_.get_elapsed_time()) {
 
-				nextFrame = (status_ & IS_FLIPPED) == IS_FLIPPED ? nextFrame - realFrame : nextFrame + realFrame;
+					float nextFrame = animation_->currentFrame_;
+					float realFrame = animation_->realFrame_;
 
-				animation_->currentFrame_ = nextFrame >= 1.f ? 0.f : nextFrame;
-				animation_->timer_.start();
+					nextFrame = (status_ & IS_FLIPPED) == IS_FLIPPED ? nextFrame - realFrame : nextFrame + realFrame;
+
+					animation_->currentFrame_ = nextFrame >= 1.f ? 0.f : nextFrame;
+					animation_->timer_.start();
+				}
+
+				animation_->scale_.set(animation_->realFrame_, 1.f, 0.f);
+				animation_->translate_.set(animation_->currentFrame_, 0.f, 0.f);
+
 			}
 
-			animation_->scale_.set(animation_->realFrame_, 1.f, 0.f);
-			animation_->translate_.set(animation_->currentFrame_, 0.f, 0.f);
+			else {
+				animation_->scale_.set(1, 1, 0);
+				animation_->translate_.set(0, 0, 0);
+			}
 
-		} 
+			// Send color info to shader
+			Shader* shader = GLManager::shader_[GLManager::Pipeline::NORMAL];
+			shader->use();
 
-		else {
-			animation_->scale_.set(1, 1, 0);
-			animation_->translate_.set(0, 0, 0);
+			shader->set_vec4("v4_color", color);
+			shader->set_bool("boolean_flip", (status_ & IS_FLIPPED) == IS_FLIPPED);
+			shader->set_matrix("m4_aniScale", mat4::scale(animation_->scale_));
+			shader->set_matrix("m4_aniTranslate", mat4::translate(animation_->translate_));
 		}
-
-		// Send color info to shader
-		Shader* shader = GLManager::shader_[GLManager::JE_SHADER_NORMAL];
-		shader->use();
-
-		shader->set_vec4("v4_color", color);
-		shader->set_bool("boolean_flip", (status_ & IS_FLIPPED) == IS_FLIPPED);
-		shader->set_matrix("m4_aniScale", mat4::scale(animation_->scale_));
-		shader->set_matrix("m4_aniTranslate", mat4::translate(animation_->translate_));
 	}
 }
 
-void Renderer::draw_lighting_effect(Light* pLight)
+void Renderer::draw_lighting_effect(Light* /*pLight*/)
 {
 	//pShader->set_int("renderType", renderType_);
 
@@ -235,7 +246,7 @@ void Renderer::draw_normals()
 	if (renderVertexNormals_
 		|| renderFaceNormals_) {
 
-		Shader * shader = GLManager::shader_[GLManager::JE_SHADER_NORMAL];
+		Shader * shader = GLManager::shader_[GLManager::Pipeline::NORMAL];
 		shader->use();
 
 		for (const auto& m : meshes_) {
@@ -260,7 +271,7 @@ void Renderer::draw_normals()
 	}
 }
 
-void Renderer::draw_quad(Mesh* m)
+void Renderer::draw_quad(Mesh* /*m*/)
 {
 	//glBindVertexArray(Mesh::quadVAO);
 	//glBindTexture(GL_TEXTURE_2D, m->texture_->id);

@@ -42,7 +42,7 @@ protected:
 
 	virtual void add_to_system() {};
 	virtual void remove_from_system() {};
-	virtual void load(const rapidjson::Value& data) {};
+	virtual void load(const rapidjson::Value& /*data*/) {};
 
 private:
 

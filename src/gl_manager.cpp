@@ -60,7 +60,7 @@ void GLManager::initialize(float w, float h)
 	initialize_shaders();
 }
 
-void GLManager::update(const SDL_Event& event)
+void GLManager::update(const SDL_Event& /*event*/)
 {
 	glViewport(0, 0, (GLsizei)width_, (GLsizei)height_);
 	//if (event.type == SDL_Event::Resized) {
@@ -83,16 +83,16 @@ void GLManager::close()
 void GLManager::initialize_shaders()
 {
 	// do shader stuff
-	for (unsigned i = 0; i < JE_SHADER_END; ++i) {
+	for (unsigned int i = 0; i < Pipeline::END; ++i) {
 
 		Shader* newShader = new Shader;
-		newShader->create_shader(Shader::vsDirectory_[i], Shader::JE_VERTEX);
+		newShader->create_shader(Shader::vsDirectory_[i], Shader::Type::VERTEX);
 
 		// TODO
 		// Work on geometry shader
 		//shader_[i]->CreateShader(Shader::m_geometryShader[i], Shader::JE_GEOMETRY);
 
-		newShader->create_shader(Shader::fsDirectory_[i], Shader::JE_PIXEL);
+		newShader->create_shader(Shader::fsDirectory_[i], Shader::Type::PIXEL);
 		newShader->combine_shaders();
 
 		shader_.push_back(newShader);

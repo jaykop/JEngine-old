@@ -58,7 +58,7 @@ void GraphicSystem::update(float /*dt*/) {
 	resolutionScaler_ = windowSize * stdResolution;
 
 	// Update the perpsective matrix by camera's zoom
-	mat4 perspective_ = mat4::perspective(
+	perspective_ = mat4::perspective(
 		mainCamera_->fovy_, mainCamera_->aspect_,
 		mainCamera_->near_, mainCamera_->far_);
 

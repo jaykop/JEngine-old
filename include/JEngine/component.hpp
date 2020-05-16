@@ -31,7 +31,7 @@ protected:
 	virtual void remove_from_system() = 0;
 	virtual void load(const rapidjson::Value& data) = 0;
 
-	Component(Object* owner) : owner_(owner) {}
+	Component(Object* owner) : owner_(owner), typeName_(nullptr) {}
 	virtual ~Component() {}
 
 private:

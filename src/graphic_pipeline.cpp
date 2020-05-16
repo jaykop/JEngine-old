@@ -11,7 +11,7 @@ jeBegin
 
 using namespace Math;
 
-void GraphicSystem::update_pipelines(float dt)
+void GraphicSystem::update_pipelines(float /*dt*/)
 {
 	// LightSourcePipeline();
 
@@ -23,7 +23,7 @@ void GraphicSystem::update_pipelines(float dt)
 	// Sort orthogonal objects and perspective objects
 	// sort_renderers();
 
-	for (auto r : renderers_) {
+	//for (auto r : renderers_) {
 
 	//	// Emitter
 	//	if ((r->is_ & Model::IS_EMITTER) == Model::IS_EMITTER)
@@ -36,7 +36,7 @@ void GraphicSystem::update_pipelines(float dt)
 	//	// Normal models
 	//	else
 			// r->draw(r);
-	}
+	//}
 }
 
 //void GraphicSystem::RenderToFramebuffer() const

@@ -24,7 +24,6 @@ void TestScene::initialize()
 
 	// testing 2d renderer 
 	Object* renderer_2d = ObjectManager::create_object("renderer_2d");
-	renderer_2d->add_component<Transform>();
 	renderer_2d->add_component<Renderer>();
 	renderer_2d->get_component<Renderer>();
 	register_object(renderer_2d);

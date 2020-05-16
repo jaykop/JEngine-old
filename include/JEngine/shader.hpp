@@ -43,7 +43,7 @@ public:
 
 private:
 
-	enum Type { JE_VERTEX, JE_GEOMETRY, JE_PIXEL };
+	enum class Type { VERTEX, GEOMETRY, PIXEL };
 
 	friend class GLManager;
 	friend class GraphicSystem;

@@ -20,7 +20,7 @@ jeBegin
 class Mesh;
 class Audio;
 class Scene;
-class Texture;
+struct Texture;
 class Archetype;
 struct Font;
 

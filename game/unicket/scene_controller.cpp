@@ -8,7 +8,7 @@ jeDefineUserComponentBuilder(SceneController);
 
 void SceneController::init() { }
 
-void SceneController::update(float dt)
+void SceneController::update(float /*dt*/)
 {
 	if (InputHandler::key_pressed(JE::MOUSE_LEFT))
 		std::cout << "MOUSE_LEFT\n";

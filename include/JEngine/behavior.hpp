@@ -22,7 +22,7 @@ protected:
 
 	void add_to_system() override;
 	void remove_from_system() override;
-	virtual void load(const rapidjson::Value& data) {};
+	virtual void load(const rapidjson::Value& /*data*/) {};
 
 	Behavior(Object* owner) : Component(owner) {};
 	virtual	~Behavior() {};

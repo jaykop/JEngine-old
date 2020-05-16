@@ -40,7 +40,7 @@ public:
 
 protected:
 
-	Scene(const char* name) : name_(name) {}
+	Scene(const char* name) : name_(name), directory_(nullptr) {}
 	~Scene() {};
 
 	virtual void load();

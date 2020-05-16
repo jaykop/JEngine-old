@@ -280,7 +280,7 @@ void AssetManager::load_archetype(const char* /*path*/, const char* /*_archetype
 	// load archetpye assets
 }
 
-Mesh* AssetManager::load_object(const char* path)
+Mesh* AssetManager::load_object(const char* /*path*/)
 {
 	// todo!
 	return nullptr;

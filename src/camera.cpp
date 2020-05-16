@@ -17,7 +17,7 @@ void Camera::remove_from_system() {
 	GraphicSystem::remove_camera(this);
 }
 
-void Camera::load(const rapidjson::Value& data) {
+void Camera::load(const rapidjson::Value& /*data*/) {
 }
 
 Camera::Camera(Object* owner) : Component(owner),
