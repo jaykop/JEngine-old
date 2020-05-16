@@ -42,7 +42,7 @@ void Renderer::load(const rapidjson::Value& data) {
 Renderer::Renderer(Object* owner)
 : Component(owner), h_(false), is2d(true), renderBoundary_(false),
 	renderFaceNormals_(false), renderVertexNormals_(false), 
-	status_(0x000), prjType(ProjectType::PERSPECTIVE) {}
+	status_(0x000), prjType(ProjectType::PERSPECTIVE), drawMode_(GL_TRIANGLES) {}
 
 void Renderer::set_mesh(const std::string& name)
 {
@@ -63,7 +63,7 @@ const Renderer::Meshes& Renderer::get_meshes(void) const
 	return meshes_;
 }
 
-void Renderer::draw(Shader* shader, Camera* camera, const mat4& perspective)
+void Renderer::draw(Camera* camera, const mat4& perspective, const vec3& resScalar)
 {
 	//if (is_2d) {
 	//	
@@ -92,10 +92,12 @@ void Renderer::draw(Shader* shader, Camera* camera, const mat4& perspective)
 	//	}
 	//}
 
+	Shader* shader = GLManager::shader_[GLManager::JE_SHADER_NORMAL];
+	shader->use();
+
 	shader->set_matrix("m4_translate", mat4::translate(transform_->position));
 	shader->set_matrix("m4_scale", mat4::scale(transform_->scale));
 	shader->set_matrix("m4_rotate", transform_->orientation.to_mat4());
-
 	shader->set_vec3("v3_cameraPosition", camera->position_);
 	shader->set_bool("boolean_bilboard", (status_ & IS_BILBOARD) == IS_BILBOARD);
 
@@ -117,13 +119,13 @@ void Renderer::draw(Shader* shader, Camera* camera, const mat4& perspective)
 
 		shader->set_matrix("m4_projection", orthogonal);
 
-		viewport = mat4::scale(resolutionScaler_);
+		viewport = mat4::scale(resScalar);
 	}
 
 	// Send camera info to shader
 	shader->set_matrix("m4_viewport", viewport);
 
-	run_animation(shader);
+	run_animation();
 
 	//bool hasParent = (pModel->status_ & Model::IS_INHERITED) == Model::IS_INHERITED;
 	//glUniform1i(glGetUniformLocation(Shader::pCurrentShader_->programId_, "hasParent"), hasParent);
@@ -139,13 +141,17 @@ void Renderer::draw(Shader* shader, Camera* camera, const mat4& perspective)
 
 	// Update every mesh
 	for (auto mesh : meshes_)
-		mesh->draw();
+	{
+		glBindVertexArray(mesh->vao_);
+		glDrawElements(drawMode_, mesh->get_indice_count(), GL_UNSIGNED_INT, nullptr);
+		glBindVertexArray(0);
+	}
 
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
 }
 
-void Renderer::run_animation(Shader* shader)
+void Renderer::run_animation()
 {
 	for (auto m : meshes_) {
 
@@ -177,6 +183,9 @@ void Renderer::run_animation(Shader* shader)
 		}
 
 		// Send color info to shader
+		Shader* shader = GLManager::shader_[GLManager::JE_SHADER_NORMAL];
+		shader->use();
+
 		shader->set_vec4("v4_color", color);
 		shader->set_bool("boolean_flip", (status_ & IS_FLIPPED) == IS_FLIPPED);
 		shader->set_matrix("m4_aniScale", mat4::scale(animation_->scale_));
@@ -184,7 +193,7 @@ void Renderer::run_animation(Shader* shader)
 	}
 }
 
-void Renderer::draw_lighting_effect(Light* pLight, Shader* pShader)
+void Renderer::draw_lighting_effect(Light* pLight)
 {
 	//pShader->set_int("renderType", renderType_);
 
@@ -220,17 +229,20 @@ void Renderer::draw_lighting_effect(Light* pLight, Shader* pShader)
 
 }
 
-void Renderer::draw_normals(Shader* pShader)
+void Renderer::draw_normals()
 {
 	// Rendering normals
 	if (renderVertexNormals_
 		|| renderFaceNormals_) {
 
+		Shader * shader = GLManager::shader_[GLManager::JE_SHADER_NORMAL];
+		shader->use();
+
 		for (const auto& m : meshes_) {
 
 			// Set uniform location 
-			pShader->set_matrix("model", transform_->model_to_world());
-			pShader->set_bool("uniformColor", false);
+			shader->set_matrix("model", transform_->model_to_world());
+			shader->set_bool("uniformColor", false);
 
 			if (renderVertexNormals_) {
 				glBindVertexArray(m->vnVao_);
@@ -257,7 +269,7 @@ void Renderer::draw_quad(Mesh* m)
 	//glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Renderer::draw_debug_info(Shader* pShader)
+void Renderer::draw_debug_info()
 {
 	//pDDrawer_->render_lines(pShader, pTrans_->model_to_world());
 	//pDDrawer_->render_meshes(pShader);

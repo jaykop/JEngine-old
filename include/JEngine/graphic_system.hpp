@@ -12,8 +12,8 @@ Contains the definition of GraphicSystem class
 
 #pragma once
 #include <macros.hpp>
-#include <vec4.hpp>
 #include <vector>
+#include <vec4.hpp>
 
 jeBegin
 
@@ -62,9 +62,6 @@ private:
 	static Camera* mainCamera_;
 	static Renderers renderers_;
 	static Cameras cameras_;
-
-	static vec3 resolutionScaler_;
-	static mat4 perspective_;
 
 };
 

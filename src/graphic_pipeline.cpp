@@ -11,24 +11,11 @@ jeBegin
 
 using namespace Math;
 
-mat4 GraphicSystem::perspective_;
-
 void GraphicSystem::update_pipelines(float dt)
 {
-	// Update the perpsective matrix by camera's zoom
-	perspective_ = mat4::perspective(
-		mainCamera_->fovy_, mainCamera_->aspect_,
-		mainCamera_->near_, mainCamera_->far_);
-
-	// Update the projection size by window screen size
-	//static vec3 s_windowSize, s_resolutionStandard(1.f / 800.f, 1.f / 600.f, 1.f);
-	//s_windowSize.set(float(width_), float(height_), 1.f);
-
-	//resolutionScaler_ = s_windowSize * s_resolutionStandard;
-
 	// LightSourcePipeline();
 
-	GLManager::shader_[GLManager::JE_SHADER_MODEL]->use();
+	//GLManager::shader_[GLManager::JE_SHADER_MODEL]->use();
 
 	// Inform that there are lights
 	// GLManager::shader_[GLManager::JE_SHADER_MODEL]->set_bool("boolean_light", !lights_.empty());
@@ -48,7 +35,7 @@ void GraphicSystem::update_pipelines(float dt)
 
 	//	// Normal models
 	//	else
-			r->draw(r);
+			// r->draw(r);
 	}
 }
 

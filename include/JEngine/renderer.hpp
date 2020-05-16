@@ -10,6 +10,7 @@ jeBegin
 
 class Mesh;
 class Light;
+class Camera;
 class Shader;
 class Transform;
 class Animation2D;
@@ -42,20 +43,20 @@ public:
 	void set_mesh(const std::string& name);
 	const Meshes& get_meshes(void) const;
 
-	void draw(Shader* shader, Camera* camera, const mat4& perspective);
-	void draw(Shader* shader);
-	void draw_normals(Shader* shader);
-	void run_animation(Shader* shader);
+	virtual void draw(Camera* camera, const mat4& perspective, const vec3& resScalar);
+	void draw_normals();
+	void run_animation();
 
 	static void draw_quad(Mesh* m);
-	static void draw_lighting_effect(Light* light, Shader* shader);
+	static void draw_lighting_effect(Light* light);
 
 	bool is2d;
 	bool renderBoundary_;
 	bool renderFaceNormals_, renderVertexNormals_;
+	unsigned drawMode_;
 	static bool renderObj_;
 
-	void draw_debug_info(Shader* shader);
+	void draw_debug_info();
 	// void on_gui(void) override;
 
 	Transform* transform_ = nullptr;

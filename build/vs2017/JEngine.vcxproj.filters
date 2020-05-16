@@ -118,6 +118,9 @@
     <ClCompile Include="..\..\src\graphic_pipeline.cpp">
       <Filter>system\graphics</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\animation_2d.cpp">
+      <Filter>system\graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\JEngine\macros.hpp" />
@@ -261,6 +264,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\JEngine\quat.hpp">
       <Filter>util\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\JEngine\animation_2d.hpp">
+      <Filter>system\graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

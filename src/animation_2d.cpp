@@ -14,7 +14,7 @@ Animation2D::Animation2D(Object* owner)
 		owner->get_component<Renderer>()->animation_ = this;
 
 	else
-		jeDebugPrint("!Animation - This object has no renderer componnet: %s\n", owner->get_name().c_str());
+		jeDebugPrint("!Animation - This object has no renderer componnet: %s\n", owner->get_name());
 }
 
 Animation2D::~Animation2D() {

@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\include\lodepng\lodepng.cpp" />
     <ClCompile Include="..\..\include\lodepng\lodepng_util.cpp" />
+    <ClCompile Include="..\..\src\animation_2d.cpp" />
     <ClCompile Include="..\..\src\application.cpp" />
     <ClCompile Include="..\..\src\asset_manager.cpp" />
     <ClCompile Include="..\..\src\behavior.cpp" />
@@ -60,6 +61,7 @@
     <ClCompile Include="..\..\src\vec4.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\JEngine\animation_2d.hpp" />
     <ClInclude Include="..\..\include\JEngine\application.hpp" />
     <ClInclude Include="..\..\include\JEngine\asset_manager.hpp" />
     <ClInclude Include="..\..\include\JEngine\behavior.hpp" />
