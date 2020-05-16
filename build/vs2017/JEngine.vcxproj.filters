@@ -115,6 +115,9 @@
     <ClCompile Include="..\..\src\eigen.cpp">
       <Filter>util\math</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\graphic_pipeline.cpp">
+      <Filter>system\graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\JEngine\macros.hpp" />

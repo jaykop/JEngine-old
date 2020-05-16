@@ -30,6 +30,8 @@ class Shader {
 
 public:
 
+	void use();
+
 	void set_int(const char* name, int number);
 	void set_bool(const char* name, bool toggle);
 	void set_enum(const char* name, int typr);

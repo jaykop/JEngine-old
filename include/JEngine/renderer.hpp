@@ -3,6 +3,8 @@
 #include <component.hpp>
 #include <string>
 #include <vector>
+#include <vec4.hpp>
+#include <mat4.hpp>
 
 jeBegin
 
@@ -10,6 +12,7 @@ class Mesh;
 class Light;
 class Shader;
 class Transform;
+class Animation2D;
 class DebugDrawer;
 
 class Renderer : public Component {
@@ -20,7 +23,6 @@ class Renderer : public Component {
 public:
 
 	using Meshes = std::vector<Mesh*>;
-	void load_renderer(const std::string& path);
 
 protected:
 
@@ -30,6 +32,7 @@ protected:
 
 public:
 
+	enum ProjectType { PERSPECTIVE, ORTHOGONAL };
 	enum RenderType { R_NONE, R_POSITION, R_NORMAL };
 
 	Renderer(Object* owner);
@@ -39,21 +42,29 @@ public:
 	void set_mesh(const std::string& name);
 	const Meshes& get_meshes(void) const;
 
-	void draw(Shader* pShader);
-	void draw_normals(Shader* pShader);
+	void draw(Shader* shader, Camera* camera, const mat4& perspective);
+	void draw(Shader* shader);
+	void draw_normals(Shader* shader);
+	void run_animation(Shader* shader);
 
-	static void draw_lighting_effect(Light* pLight, Shader* pShader);
-	static void draw_quad(unsigned& vao);
+	static void draw_quad(Mesh* m);
+	static void draw_lighting_effect(Light* light, Shader* shader);
 
+	bool is2d;
 	bool renderBoundary_;
 	bool renderFaceNormals_, renderVertexNormals_;
 	static bool renderObj_;
 
-	void draw_debug_info(Shader* pShader);
+	void draw_debug_info(Shader* shader);
 	// void on_gui(void) override;
 
-	Transform* pTrans_ = nullptr;
-	DebugDrawer* pDDrawer_ = nullptr;
+	Transform* transform_ = nullptr;
+	Animation2D* animation_ = nullptr;
+	DebugDrawer* ddrawer_ = nullptr;
+
+	vec4 color;
+	ProjectType prjType;
+	unsigned sfactor, dfactor;
 
 	static RenderType renderType_;
 
@@ -66,6 +77,7 @@ private:
 	//BoundingEllipsoid ellipse_;
 	//BoundingSphere sphere_;
 	bool h_;
+	int status_;
 
 	// private methods
 	// void GenerateBV(void);

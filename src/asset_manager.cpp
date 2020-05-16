@@ -59,16 +59,16 @@ bool AssetManager::set_bulit_in_components()
 
 void AssetManager::load_shaders() {
 
-	//// raed shader directory
-	//JsonParser::read_file("../../shader/shaders.json");
+	// raed shader directory
+	JsonParser::read_file("../../shader/shaders.json");
 
-	//const rapidjson::Value& vs = JsonParser::get_document()["vertex"];
-	//const rapidjson::Value& fs = JsonParser::get_document()["fragment"];
-	//const unsigned shader_size = vs.Size();
-	//for (rapidjson::SizeType i = 0; i < shader_size; ++i) {
-	//	Shader::vsDirectory_.push_back(vs[i]["Directory"].GetString());
-	//	Shader::fsDirectory_.push_back(fs[i]["Directory"].GetString());
-	//}
+	const rapidjson::Value& vs = JsonParser::get_document()["vertex"];
+	const rapidjson::Value& fs = JsonParser::get_document()["fragment"];
+	const unsigned shader_size = vs.Size();
+	for (rapidjson::SizeType i = 0; i < shader_size; ++i) {
+		Shader::vsDirectory_.push_back(vs[i]["Directory"].GetString());
+		Shader::fsDirectory_.push_back(fs[i]["Directory"].GetString());
+	}
 }
 
 void AssetManager::load_assets()

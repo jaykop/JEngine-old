@@ -20,8 +20,7 @@ void Camera::remove_from_system() {
 void Camera::load(const rapidjson::Value& data) {
 }
 
-Camera::Camera(Object* pOwner)
-	: Component(pOwner),
+Camera::Camera(Object* owner) : Component(owner),
 	position_(vec3::zero), near_(.1f), far_(1000.f),
 	up_(vec3(0, 1, 0)), target_(vec3::zero), right_(vec3::zero), back_(vec3::zero),
 	viewGeometry_(vec3::zero), distance_(1.f), fovy_(0.f), aspect_(0.f),

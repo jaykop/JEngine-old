@@ -56,11 +56,15 @@ private:
 	//void add_light(Light* pLight);
 	//void remove_light(Light* pLight);
 
+	static void update_pipelines(float dt);
 	static void render();
 
 	static Camera* mainCamera_;
 	static Renderers renderers_;
 	static Cameras cameras_;
+
+	static vec3 resolutionScaler_;
+	static mat4 perspective_;
 
 };
 

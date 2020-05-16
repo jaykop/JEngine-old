@@ -1,18 +1,28 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 #include <renderer.hpp>
-#include <shader.hpp>
 #include <graphic_system.hpp>
-#include <math_util.hpp>
 #include <obj_loader.hpp>
+#include <gl_manager.hpp>
+
+#include <shader.hpp>
 #include <mesh.hpp>
+#include <texture.hpp>
+#include <camera.hpp>
 #include <transform.hpp>
+#include <animation_2d.hpp>
+
+#include <math_util.hpp>
 
 jeBegin
 
 jeDefineComponentBuilder(Renderer);
 
 using namespace Math;
+
+const static int IS_FLIPPED = 0x100;
+const static int IS_BILBOARD = 0x010;
+const static int IS_INHERITED = 0x001;
 
 bool Renderer::renderObj_ = true;
 Renderer::RenderType Renderer::renderType_ = Renderer::RenderType::R_NONE;
@@ -30,8 +40,9 @@ void Renderer::load(const rapidjson::Value& data) {
 }
 
 Renderer::Renderer(Object* owner)
-: Component(owner), h_(false), renderBoundary_(false),
-	renderFaceNormals_(false), renderVertexNormals_(false) {}
+: Component(owner), h_(false), is2d(true), renderBoundary_(false),
+	renderFaceNormals_(false), renderVertexNormals_(false), 
+	status_(0x000), prjType(ProjectType::PERSPECTIVE) {}
 
 void Renderer::set_mesh(const std::string& name)
 {
@@ -52,17 +63,124 @@ const Renderer::Meshes& Renderer::get_meshes(void) const
 	return meshes_;
 }
 
-void Renderer::draw(Shader* pShader)
+void Renderer::draw(Shader* shader, Camera* camera, const mat4& perspective)
 {
-	for (const auto& m : meshes_) {
+	//if (is_2d) {
+	//	
+	//	pShader->set_matrix("renderer", pTrans_->model_to_world());
 
-		// Set uniform location 
-		pShader->set_matrix("model", pTrans_->model_to_world());
+	//	glBindVertexArray(Mesh::quadVAO);
+	//	glBindTexture(GL_TEXTURE_2D, meshes_[0]->texture_->id);
+	//	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+	//	glBindVertexArray(0);
+	//	glBindTexture(GL_TEXTURE_2D, 0);
 
-		glBindVertexArray(m->vao_);
-		glDrawElements(GL_TRIANGLES, m->get_indice_count(), GL_UNSIGNED_INT, nullptr);
-		glBindVertexArray(0);
-		glBindTexture(GL_TEXTURE_2D, 0);
+	//	// continue;
+	//}
+
+	//else {
+	//	for (const auto& m : meshes_) {
+
+	//		// Set uniform location 
+	//		pShader->set_matrix("renderer", pTrans_->model_to_world());
+
+	//		glBindVertexArray(m->vao_);
+	//		glBindTexture(GL_TEXTURE_2D, m->texture_->id);
+	//		glDrawElements(GL_TRIANGLES, m->get_indice_count(), GL_UNSIGNED_INT, nullptr);
+	//		glBindVertexArray(0);
+	//		glBindTexture(GL_TEXTURE_2D, 0);
+	//	}
+	//}
+
+	shader->set_matrix("m4_translate", mat4::translate(transform_->position));
+	shader->set_matrix("m4_scale", mat4::scale(transform_->scale));
+	shader->set_matrix("m4_rotate", transform_->orientation.to_mat4());
+
+	shader->set_vec3("v3_cameraPosition", camera->position_);
+	shader->set_bool("boolean_bilboard", (status_ & IS_BILBOARD) == IS_BILBOARD);
+
+	mat4 viewport;
+
+	if (prjType == PERSPECTIVE) {
+
+		shader->set_matrix("m4_projection", perspective);
+		viewport = mat4::look_at(camera->position_, camera->target_, camera->up_);
+	}
+
+	else {
+		float right_ = GLManager::get_width() * .5f;
+		float left_ = -right_;
+		float top_ = GLManager::get_height() * .5f;
+		float bottom_ = -top_;
+
+		mat4 orthogonal = mat4::orthogonal(left_, right_, bottom_, top_, camera->near_, camera->far_);
+
+		shader->set_matrix("m4_projection", orthogonal);
+
+		viewport = mat4::scale(resolutionScaler_);
+	}
+
+	// Send camera info to shader
+	shader->set_matrix("m4_viewport", viewport);
+
+	run_animation(shader);
+
+	//bool hasParent = (pModel->status_ & Model::IS_INHERITED) == Model::IS_INHERITED;
+	//glUniform1i(glGetUniformLocation(Shader::pCurrentShader_->programId_, "hasParent"), hasParent);
+	//if (hasParent)
+	//	ParentPipeline(pModel->pInherited_);
+
+	//if (pModel->pMaterial_ && isLight_)
+	//	LightingEffectPipeline(pModel->pMaterial_);
+
+	glEnable(GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
+	glBlendFunc(sfactor, dfactor);
+
+	// Update every mesh
+	for (auto mesh : meshes_)
+		mesh->draw();
+
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_BLEND);
+}
+
+void Renderer::run_animation(Shader* shader)
+{
+	for (auto m : meshes_) {
+
+		glBindTexture(GL_TEXTURE_2D, m->texture_->id);
+
+		if (animation_ && animation_->activated_) {
+
+			float realSpeed = animation_->realSpeed_;
+
+			if (realSpeed <= animation_->timer_.get_elapsed_time()) {
+
+				float nextFrame = animation_->currentFrame_;
+				float realFrame = animation_->realFrame_;
+
+				nextFrame = (status_ & IS_FLIPPED) == IS_FLIPPED ? nextFrame - realFrame : nextFrame + realFrame;
+
+				animation_->currentFrame_ = nextFrame >= 1.f ? 0.f : nextFrame;
+				animation_->timer_.start();
+			}
+
+			animation_->scale_.set(animation_->realFrame_, 1.f, 0.f);
+			animation_->translate_.set(animation_->currentFrame_, 0.f, 0.f);
+
+		} 
+
+		else {
+			animation_->scale_.set(1, 1, 0);
+			animation_->translate_.set(0, 0, 0);
+		}
+
+		// Send color info to shader
+		shader->set_vec4("v4_color", color);
+		shader->set_bool("boolean_flip", (status_ & IS_FLIPPED) == IS_FLIPPED);
+		shader->set_matrix("m4_aniScale", mat4::scale(animation_->scale_));
+		shader->set_matrix("m4_aniTranslate", mat4::translate(animation_->translate_));
 	}
 }
 
@@ -111,7 +229,7 @@ void Renderer::draw_normals(Shader* pShader)
 		for (const auto& m : meshes_) {
 
 			// Set uniform location 
-			pShader->set_matrix("model", pTrans_->model_to_world());
+			pShader->set_matrix("model", transform_->model_to_world());
 			pShader->set_bool("uniformColor", false);
 
 			if (renderVertexNormals_) {
@@ -130,12 +248,13 @@ void Renderer::draw_normals(Shader* pShader)
 	}
 }
 
-void Renderer::draw_quad(unsigned& vao)
+void Renderer::draw_quad(Mesh* m)
 {
-	glBindVertexArray(vao);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-	glBindVertexArray(0);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	//glBindVertexArray(Mesh::quadVAO);
+	//glBindTexture(GL_TEXTURE_2D, m->texture_->id);
+	//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+	//glBindVertexArray(0);
+	//glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void Renderer::draw_debug_info(Shader* pShader)

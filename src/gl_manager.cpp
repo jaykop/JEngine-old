@@ -57,7 +57,7 @@ void GLManager::initialize(float w, float h)
 	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &attributes_);
 	jeDebugPrint("*GLManager - Maximum number of vertex attributes supported: %d\n", attributes_);
 
-	// initialize_shaders();
+	initialize_shaders();
 }
 
 void GLManager::update(const SDL_Event& event)

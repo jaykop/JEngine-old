@@ -12,6 +12,7 @@ jeDeclareComponentBuilder(Camera);
 class Camera : public Component
 {
 	jeBaseFriends(Camera);
+	friend class Renderer;
 	friend class GraphicSystem;
 
 public:

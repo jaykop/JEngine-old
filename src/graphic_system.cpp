@@ -13,11 +13,14 @@ Contains the methods of GraphicSystem class
 #include <glew.h>
 #include <graphic_system.hpp>
 #include <scene_manager.hpp>
+#include <gl_manager.hpp>
 #include <scene.hpp>
 #include <camera.hpp>
 #include <renderer.hpp>
 
 jeBegin
+
+const vec3 stdResolution(1.f / 800.f, 1.f / 600.f, 1.f);
 
 Camera* GraphicSystem::mainCamera_ = nullptr;
 GraphicSystem::Renderers GraphicSystem::renderers_;
@@ -46,8 +49,14 @@ void GraphicSystem::update(float /*dt*/) {
 		backgroundColor_.b, 
 		backgroundColor_.a);
 
-	//for (auto& model : models_)
-	//	models_->update();
+	// Update the projection size by window screen size
+	vec3 windowSize(GLManager::get_width(), GLManager::get_height(), 1.f);
+	resolutionScaler_ = windowSize * stdResolution;
+
+	for (auto& r : renderers_) {
+		
+		r->draw(, mainCamera_, );
+	}
 
 }
 

@@ -7,6 +7,7 @@
 
 jeBegin
 
+struct Texture;
 class Transform;
 class HalfEdgeMesh;
 
@@ -31,7 +32,6 @@ public:
 
 	static BVType bvType_;
 	static unsigned quadVAO, quadVBO, quadEBO;
-
 	Transform* transform = nullptr;
 
 	float rotation, absMax;
@@ -57,12 +57,14 @@ protected:
 		faceNormals_, vertexNormals_, 
 		centers_, vPoints_;
 
+	Texture* texture_;
+
 public:
 
 	static void describe_mesh_attribs(Mesh* pMesh);
 
 	static unsigned quadIndices_[6];
-	static float quadVertices_[20];
+	static float quadVertices_[32];
 
 	static void initialize_quad();
 	static void remove_quad();

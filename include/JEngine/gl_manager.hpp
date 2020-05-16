@@ -32,6 +32,7 @@ class GLManager
 
 	friend class Application;
 	friend class SceneManager;
+	friend class GraphicSystem;
 
 	using Shaders = std::vector<Shader*>;
 

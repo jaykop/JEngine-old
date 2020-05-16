@@ -5,6 +5,7 @@
 #include <half_edge_mesh.hpp>
 #include <math_util.hpp>
 #include <colors.hpp>
+#include <asset_manager.hpp>
 
 using namespace Math;
 
@@ -12,6 +13,8 @@ jeBegin
 
 static const float normScale = 0.05f;
 static const unsigned max_unsinged = (std::numeric_limits<unsigned>::max)();
+//static const vec3 vnormColor = Color::red;
+//static const vec3 fnormColor = Color::blue;
 
 std::string ObjLoader::key;
 ObjLoader::MeshList ObjLoader::meshList;
@@ -262,9 +265,9 @@ void ObjLoader::calculate_normals(Mesh** mesh)
 		if (len > 0.0f) {
 			vert.normal /= len;
 
-			vNormals.push_back(Vertex{ vertices[i].position, vec3::zero, blue });
+			vNormals.push_back(Vertex{ vertices[i].position, vec3::zero, vec2::zero });
 			vNormals.push_back(Vertex{ vertices[i].position + vert.normal * normScale,
-				vec3::zero, blue });
+				vec3::zero, vec2::zero });
 		}
 	}
 
@@ -290,8 +293,9 @@ void ObjLoader::calculate_normals(Mesh** mesh)
 		vec3 c_fnorm = get_converted_position(face_normal,
 			centerOffset, absMax);
 
-		fNormals.push_back(Vertex{ center, vec3::zero, red });
-		fNormals.push_back(Vertex{ center + face_normal.normalized() * normScale , vec3::zero, red });
+		fNormals.push_back(Vertex{ center, vec3::zero, vec2::zero });
+		fNormals.push_back(Vertex{ center + face_normal.normalized() * normScale , 
+			vec3::zero, vec2::zero });
 	}
 }
 
