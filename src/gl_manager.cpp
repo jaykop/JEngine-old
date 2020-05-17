@@ -74,10 +74,10 @@ void GLManager::update(const SDL_Event& /*event*/)
 
 void GLManager::close()
 {
-	//for (unsigned i = 0; i < JE_SHADER_END; ++i) 
-	//	delete shader_[i];
+	for (unsigned i = 0; i < Pipeline::END; ++i) 
+		delete shader_[i];
 
-	//shader_.clear();
+	shader_.clear();
 }
 
 void GLManager::initialize_shaders()
