@@ -48,7 +48,7 @@ public:
 private:
 
 	static void initialize(float w, float h);
-	static void update(const SDL_Event& event);
+	static void update(SDL_Window* window, const SDL_Event& event);
 	static void close();
 
 	static void initialize_shaders();

@@ -38,15 +38,7 @@ class SceneManager {
 	friend class AssetManager;
 
 	// enum indicates the status of the current scene
-	enum SceneStatus {
-		JE_STATE_NONE, 
-		JE_STATE_RESTART, 
-		JE_STATE_PAUSE, 
-		JE_STATE_RESUME, 
-		JE_STATE_CHANGE, 
-		JE_STATE_RESUME_AND_CHANGE, 
-		JE_STATE_QUIT
-	};
+	enum class Status {NONE, RESTART, PAUSE, RESUME, CHANGE, RESUME_AND_CHANGE, QUIT};
 
 public:
 
@@ -61,7 +53,7 @@ public:
 	static void resume_and_next(const char* nextState);
 	static void set_first_scene(const char* stateName);
 
-	static SceneStatus get_status(void);
+	static Status get_status(void);
 	static Scene* get_current_scene(void);
 	static Scene* get_scene(const char* stateName);
 	static bool	has_scene(const char* stateName);
@@ -91,7 +83,7 @@ private:
 
 	// scene info
 	static Scenes scenes_;
-	static SceneStatus status_;
+	static Status status_;
 	static Scene *currentScene_, *nextScene_;
 	static SDL_Window *window_;
 	static std::string	firstScene_;

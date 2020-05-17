@@ -24,12 +24,12 @@ void SceneManager::change_scene()
 {
 
 	// If the status has changed
-	if (status_ == JE_STATE_CHANGE
-		|| status_ == JE_STATE_PAUSE
-		|| status_ == JE_STATE_RESTART) {
+	if (status_ == Status::CHANGE
+		|| status_ == Status::PAUSE
+		|| status_ == Status::RESTART) {
 
 		// save the scene to retusm
-		if (status_ == JE_STATE_PAUSE) {
+		if (status_ == Status::PAUSE) {
 
 			Scene* toResume = currentScene_;
 			currentScene_ = nextScene_; // move to the next scene
@@ -37,7 +37,7 @@ void SceneManager::change_scene()
 		}
 
 		// Just change current state
-		else if (status_ == JE_STATE_CHANGE)
+		else if (status_ == Status::CHANGE)
 			currentScene_ = nextScene_;
 
 		// Refresh the scene
@@ -47,7 +47,7 @@ void SceneManager::change_scene()
 	}
 
 	// Resume the scene
-	else if (status_ == JE_STATE_RESUME) {
+	else if (status_ == Status::RESUME) {
 
 		Scene* toRelease = currentScene_;
 
@@ -59,7 +59,7 @@ void SceneManager::change_scene()
 	}
 
 	// Resume and change
-	else if (status_ == JE_STATE_RESUME_AND_CHANGE) {
+	else if (status_ == Status::RESUME_AND_CHANGE) {
 		
 		Scene* toRelease = currentScene_;
 		
@@ -70,13 +70,13 @@ void SceneManager::change_scene()
 		toRelease->lastScene_ = nullptr;
 
 		// change the status
-		status_ = JE_STATE_CHANGE;
+		status_ = Status::CHANGE;
 	}
 
 	// if the current and the next scene are the same,
 	// update the status to normal
 	if (currentScene_ == nextScene_)
-		status_ = JE_STATE_NONE;
+		status_ = Status::NONE;
 }
 
 void SceneManager::push_scene(const char* path, const char* stateName)
@@ -170,7 +170,7 @@ void SceneManager::restart()
 	if (is_paused())
 		jeDoPrint("Cannot restart on a pause scene");
 
-	status_ = JE_STATE_RESTART;
+	status_ = Status::RESTART;
 }
 
 bool SceneManager::is_paused()
@@ -180,7 +180,7 @@ bool SceneManager::is_paused()
 	return currentScene_->lastScene_ != nullptr;
 }
 
-SceneManager::SceneStatus SceneManager::get_status(void)
+SceneManager::Status SceneManager::get_status(void)
 {
 	return status_;
 }
@@ -197,7 +197,7 @@ void SceneManager::set_next_scene(const char* nextState)
 
 	if (has_scene(nextState)) {
 		nextScene_ = get_scene(nextState);
-		status_ = JE_STATE_CHANGE;
+		status_ = Status::CHANGE;
 	}
 		
 }
@@ -211,7 +211,7 @@ void SceneManager::pause(const char* nextState)
 	// set the pause state
 	if (has_scene(nextState)) {
 		nextScene_ = get_scene(nextState);
-		status_ = JE_STATE_PAUSE;
+		status_ = Status::PAUSE;
 	}
 }
 
@@ -221,13 +221,13 @@ void SceneManager::resume()
 	if (currentScene_->lastScene_ == nullptr)
 		jeDoPrint("No state to resume");
 
-	status_ = JE_STATE_RESUME;
+	status_ = Status::RESUME;
 }
 
 void SceneManager::resume_and_next(const char* nextState)
 {
 	if (has_scene(nextState)) {
-		status_ = JE_STATE_RESUME_AND_CHANGE;
+		status_ = Status::RESUME_AND_CHANGE;
 		nextScene_ = get_scene(nextState);
 	}
 }

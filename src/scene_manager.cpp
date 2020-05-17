@@ -28,7 +28,7 @@ int SceneManager::frames_ = 0;
 float SceneManager::frameTime_ = 0.f;
 SDL_Window* SceneManager::window_ = nullptr;
 Scene* SceneManager::currentScene_ = nullptr;
-SceneManager::SceneStatus SceneManager::status_ = SceneManager::SceneStatus::JE_STATE_CHANGE;
+SceneManager::Status SceneManager::status_ = SceneManager::Status::CHANGE;
 
 bool SceneManager::initialize(SDL_Window* window)
 {
@@ -51,11 +51,13 @@ void SceneManager::update(SDL_Event* event)
 	timer_.start();
 	change_scene();
 
-	while (status_ == JE_STATE_NONE) // state updating loop
+	while (status_ == Status::NONE) // state updating loop
 	{
-		SDL_PollEvent(event);
-		InputHandler::update(*event);
-		GLManager::update(*event);
+		if (SDL_PollEvent(event))
+		{
+			InputHandler::update(*event);
+			GLManager::update(window_, *event);
+		}
 
 		elapsedTime = timer_.get_elapsed_time(); // get elapsed time
 		frameTime_ = elapsedTime - currentTime; // get frame time
@@ -84,12 +86,12 @@ void SceneManager::update(SDL_Event* event)
 	switch (status_) {
 
 		// Pause process
-	case JE_STATE_PAUSE:
+	case Status::PAUSE:
 		/*SYSTEM::Pause();*/
 		break;
 
 		// The case to quit app
-	case JE_STATE_QUIT:				
+	case Status::QUIT:
 		while (currentScene_) {
 			Scene* last = currentScene_->lastScene_;
 			currentScene_->close();
@@ -99,7 +101,7 @@ void SceneManager::update(SDL_Event* event)
 		break;
 
 		// The case to resume to last state
-	case JE_STATE_RESUME:				
+	case Status::RESUME:
 		/*currentScene_->close();
 		currentScene_->unload();
 		SYSTEM::Resume();*/
@@ -108,15 +110,15 @@ void SceneManager::update(SDL_Event* event)
 		// The case to restart the current state
 		// The case to change to next state
 		// The case to resume and change
-	case JE_STATE_RESTART:				
-	case JE_STATE_CHANGE:				
-	case JE_STATE_RESUME_AND_CHANGE:
+	case Status::RESTART:
+	case Status::CHANGE:
+	case Status::RESUME_AND_CHANGE:
 		currentScene_->close();
 		currentScene_->unload();
 		break;
 
 		// Keep updaring - this should not happen
-	case JE_STATE_NONE:
+	case Status::NONE:
 	default:
 		break;
 	}

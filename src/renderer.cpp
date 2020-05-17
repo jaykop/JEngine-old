@@ -147,12 +147,17 @@ void Renderer::draw(Camera* camera, const mat4& perspective, const vec3& resScal
 	glEnable(GL_DEPTH_TEST);
 	glBlendFunc(sfactor, dfactor);
 
-	// Update every mesh
-	for (auto mesh : meshes_)
-	{
-		glBindVertexArray(mesh->vao_);
-		glDrawElements(drawMode_, mesh->get_indice_count(), GL_UNSIGNED_INT, nullptr);
-		glBindVertexArray(0);
+	if (is2d)
+		draw_quad(/*meshes_[0]*/nullptr);
+
+	else {
+		// Update every mesh
+		for (auto mesh : meshes_)
+		{
+			glBindVertexArray(mesh->vao_);
+			glDrawElements(drawMode_, mesh->get_indice_count(), GL_UNSIGNED_INT, nullptr);
+			glBindVertexArray(0);
+		}
 	}
 
 	glDisable(GL_DEPTH_TEST);
@@ -271,13 +276,13 @@ void Renderer::draw_normals()
 	}
 }
 
-void Renderer::draw_quad(Mesh* /*m*/)
+void Renderer::draw_quad(Mesh* m)
 {
-	//glBindVertexArray(Mesh::quadVAO);
-	//glBindTexture(GL_TEXTURE_2D, m->texture_->id);
-	//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-	//glBindVertexArray(0);
-	//glBindTexture(GL_TEXTURE_2D, 0);
+	glBindVertexArray(Mesh::quadVAO);
+	// glBindTexture(GL_TEXTURE_2D, m->texture_->id);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+	glBindVertexArray(0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void Renderer::draw_debug_info()

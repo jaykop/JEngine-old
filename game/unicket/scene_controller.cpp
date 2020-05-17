@@ -10,25 +10,29 @@ void SceneController::init() { }
 
 void SceneController::update(float /*dt*/)
 {
-	if (InputHandler::key_pressed(JE::MOUSE_LEFT))
+	if (InputHandler::key_pressed(KEY::MOUSE_LEFT))
 		std::cout << "MOUSE_LEFT\n";
 
-	if (InputHandler::key_triggered(JE::MOUSE_RIGHT))
+	if (InputHandler::key_triggered(KEY::MOUSE_RIGHT)) {
+		
+		// TODO: Need to get position
+		// InputHandler::position
 		std::cout << "MOUSE_RIGHT\n";
+	}
 
-	if (InputHandler::get_mouse_wheel_status(JE::MOUSE_WHEEL_DOWN))
+	if (InputHandler::get_mouse_wheel_status(KEY::MOUSE_WHEEL_DOWN))
 		std::cout << "MOUSE_WHEEL_DOWN\n";
 
-	if (InputHandler::get_mouse_wheel_status(JE::MOUSE_WHEEL_UP))
+	if (InputHandler::get_mouse_wheel_status(KEY::MOUSE_WHEEL_UP))
 		std::cout << "MOUSE_WHEEL_UP\n";
 
-	if (InputHandler::key_pressed(JE::ENTER))
+	if (InputHandler::key_pressed(KEY::ENTER))
 		std::cout << "ENTER\n";
 
-	if (InputHandler::key_triggered(JE::SPACE))
+	if (InputHandler::key_triggered(KEY::SPACE))
 		std::cout << "SPACE\n";
 
-	if (InputHandler::key_triggered(JE::ESC))
+	if (InputHandler::key_triggered(KEY::ESC))
 		Application::quit();
 }
 

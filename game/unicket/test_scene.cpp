@@ -24,11 +24,11 @@ void TestScene::initialize()
 	controller->add_component<SceneController>();
 	register_object(controller);
 
-	//// testing 2d renderer 
-	//Object* renderer_2d = ObjectManager::create_object("renderer_2d");
-	//renderer_2d->add_component<Renderer>();
-	//renderer_2d->get_component<Renderer>();
-	//register_object(renderer_2d);
+	// testing 2d renderer 
+	Object* renderer_2d = ObjectManager::create_object("renderer_2d");
+	renderer_2d->add_component<Renderer>();
+	renderer_2d->get_component<Renderer>();
+	register_object(renderer_2d);
 
 	// set screen color
 	background.set(0.5, 0.5, 0.5, 1);

@@ -14,6 +14,7 @@ Contains the methods of GLManager class
 #include <gl_manager.hpp>
 #include <debug_tools.hpp>
 #include <shader.hpp>
+#include <SDL_events.h>
 
 jeBegin
 
@@ -60,16 +61,18 @@ void GLManager::initialize(float w, float h)
 	initialize_shaders();
 }
 
-void GLManager::update(const SDL_Event& /*event*/)
+void GLManager::update(SDL_Window* window, const SDL_Event& event)
 {
+	if (event.type == SDL_WINDOWEVENT_RESIZED) {
+		int w, h;
+		SDL_GetWindowSize(window, &w, &h);
+		width_ = float(w), height_ = float(h);
+	}
+	else if (event.type == SDL_WINDOWEVENT_CLOSE) {
+		// TODO
+	}
+
 	glViewport(0, 0, (GLsizei)width_, (GLsizei)height_);
-	//if (event.type == SDL_Event::Resized) {
-	//	glViewport(0, 0, event.size.width, event.size.height);
-	//	width_ = float(event.size.width), height_ = float(event.size.height);
-	//}
-	//else if (event.type == SDL_Event::Closed) {
-	//	// TODO
-	//}
 }
 
 void GLManager::close()

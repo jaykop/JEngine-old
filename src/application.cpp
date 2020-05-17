@@ -175,7 +175,7 @@ void Application::close()
 void Application::quit()
 {
 	run_ = false;
-	SceneManager::status_ = SceneManager::SceneStatus::JE_STATE_QUIT;
+	SceneManager::status_ = SceneManager::Status::QUIT;
 }
 
 jeEnd
